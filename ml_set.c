@@ -58,6 +58,8 @@
  *                           we have a quorum if variant changed
                              Also disallow set password!=alphanum
  *  25 Nov 1999 M. Miller    Added SET [nø]LATECOUNT parameter 
+ *  26 May 2001 M. Becroft   Added ontimerat & resrat commands
+ *	        T. Miller
  */
 
 /*
@@ -79,6 +81,7 @@
 #include "functions.h"
 #include "dipstats.h"
 #include "diplog.h"
+#include "plyrdata.h"
 
 extern char *accesses[], *levels[];
 extern int avalue[], lvalue[], naccess, nlevel;
@@ -277,6 +280,7 @@ void mail_setp(char *s)
 {
 
 	int i, k, chk24nmr;
+	float f,temprat; /* Used in ratio dedication systems. */
         int passOK;  /* used to see if password string is alright on setpass */
 	char c, *t, *temp,*s1;
 	sequence seq;
@@ -534,6 +538,10 @@ void mail_setp(char *s)
 #define PRV_ATTACKTRANS	 'm'
 #define SET_NOATTACKTRANS 124
 #define PRV_NOATTACKTRANS 'm'
+#define SET_ONTIMERAT     125
+#define PRV_ONTIMERAT     'm'
+#define SET_RESRAT        126
+#define PRV_RESRAT        'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -576,6 +584,7 @@ void mail_setp(char *s)
 	 "quiet", "no quiet",
 	 "rated", "unrated",
 	 "access", "level", "variant", "dedication",
+	 "ontimerat","resrat",
 	 "show", "no show",
 	 "dias", "no dias", "nodias",
 	 "draw", "no draw", "nodraw",
@@ -691,6 +700,7 @@ void mail_setp(char *s)
 	 SET_QUIET, SET_NOQUIET,
 	 SET_RATE, SET_NORATE,
 	 SET_ACCESS, SET_LEVEL, SET_VARIANT, SET_DEDICATE,
+	 SET_ONTIMERAT, SET_RESRAT,
 	 SET_SHOW, SET_NOSHOW,
 	 SET_DIAS, SET_NODIAS, SET_NODIAS,
 	 SET_DRAW, SET_NODRAW, SET_NODRAW,
@@ -811,6 +821,7 @@ void mail_setp(char *s)
 	 PRV_QUIET, PRV_NOQUIET,
 	 PRV_RATE, PRV_NORATE,
 	 PRV_ACCESS, PRV_LEVEL, PRV_VARIANT, PRV_DEDICATE,
+	 PRV_ONTIMERAT, PRV_RESRAT,
 	 PRV_SHOW, PRV_NOSHOW,
 	 PRV_DIAS, PRV_NODIAS, PRV_NODIAS,
 	 PRV_DRAW, PRV_NODRAW, PRV_NODRAW,
@@ -1226,6 +1237,76 @@ void mail_setp(char *s)
 			}
 			break;
 
+		case SET_ONTIMERAT:
+		f = (float)atof(s);
+			while (isdigit(*s) || *s == '.' || *s == '+')
+                		                s++;
+        		if(get_data(dipent.players[player].userid,total) != 0)  
+        		{
+				temprat = 1.0 * get_data(dipent.players[player].userid,ontime) / get_data(dipent.players[player].userid,total);
+			} else temprat = 1;
+			if(f > 1 || f < 0)
+			{
+				fprintf(rfp,"set ontimerat %.3f\n",f);
+				fprintf(rfp,"Ontime ratio must be between 0 an 1.\n");
+			} else if(f == dipent.orded) {
+				fprintf(rfp,"The ontime ratio already is %.3f!\n",dipent.orded);	
+			} else if(f > temprat) {
+				fprintf(rfp,"set ontimerat %.3f\n",f);
+				fprintf(rfp,"You may not set an ontime ratio higher than your own.\n");
+				fprintf(rfp,"Use 'get dedication' to check your ratio.\n");
+			} else {
+				dipent.orded = f;
+				fprintf(rfp,"Ontime ratio in game '%s' set to %.3f.\n",dipent.name,dipent.orded);
+				pprintf(cfp,"%s%s as %s in '%s' set the\nontime ratio to %.3f.\n",
+					NowString(),
+					xaddr,powers[dipent.players[player].power],
+					dipent.name,dipent.orded);
+				fprintf(bfp,"%s as %s in '%s' set the\nontime ratio to %.3f.\n",
+					xaddr,PRINT_POWER,dipent.name,dipent.orded);
+				fprintf(mbfp,"%s as %s in '%s' set the\nontime ratio to %.3f.\n",
+					xaddr,PRINT_POWER,dipent.name,dipent.orded);
+				broadcast = 1;
+				}
+				break;
+
+		case SET_RESRAT:
+			f = (float)atof(s);
+			while (isdigit(*s) || *s == '.' || *s == '+')
+               			s++;
+			if(get_data(dipent.players[player].userid,started) == 0 && get_data(dipent.players[player].userid,tookover) == 0)
+			{
+				temprat = 0;
+			}
+			else
+			{
+				temprat = 1.0 * get_data(dipent.players[player].userid,resigned) / (get_data(dipent.players[player].userid,started) + get_data(dipent.players[player].userid,total));
+			}
+			if(f > 1 || f < 0)
+			{
+				fprintf(rfp,"set resrat %.3f\n",f);
+				fprintf(rfp,"Ratio value must be between 0 and 1.\n");
+			} else if(f == dipent.rrded) {
+				fprintf(rfp,"The resignation ratio is already %.3f.\n", dipent.rrded);
+			} else if(f < temprat) {
+				fprintf(rfp,"set resrat %.3f\n",f);
+				fprintf(rfp,"You may not set a minimum resignation ratio lower than your own.\n");
+				fprintf(rfp,"Use 'get dedication' to check your record.\n");
+			} else {
+				dipent.rrded = f;
+				fprintf(rfp,"Resignation ratio in game '%s' set to %.3f.\n",dipent.name,dipent.rrded);
+				pprintf(cfp,"%s%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+					NowString(),
+					xaddr,powers[dipent.players[player].power],
+					dipent.name,dipent.rrded);
+				fprintf(bfp,"%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+					xaddr,PRINT_POWER,dipent.name,dipent.rrded);
+				fprintf(mbfp,"%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+					xaddr,PRINT_POWER,dipent.name,dipent.rrded);
+				broadcast = 1;
+				}
+				break;
+
 		case SET_LEVEL:
 			s = lookfor(s, levels, nlevel, &i);
 			if (!i) {
@@ -1520,7 +1601,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_VARIANT:
-			s = lookforv(s, variants, NVARIANT + NVAROPTS, &i,1);
+			s = lookforv(s, variants, NVARIANT + NVAROPTS,&i,1);
 			if (!i) {
 				fprintf(rfp, "Invalid variant: %s", s);
 				fputs("Valid variants are:\n", rfp);
