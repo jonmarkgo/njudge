@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.4  2001/05/11 07:18:02  greg
+ * added subjectlines and allowed "signoff"
+ * even if there's no valid "signon"
+ *
  * Revision 1.3  2001/01/06 18:48:43  davidn
  * Changes to allow game creator to be automatically made master
  *
@@ -98,6 +102,9 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define WHOGAME   35
 /* #define DEDGAME   36 */
 #define PROMOTE   37
+#define PREDICT 38
+#define EJECT   39
+
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -139,7 +146,8 @@ static char *commands[] =
  "summary", "status",
  "terminate", "resume", "become",
  "process", "roll back", "map",
- "promote"
+ "promote", "predict",
+ "eject"
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -152,7 +160,8 @@ static int cvalue[] =
  SUMMARY, SUMMARY,
  TERMINATE, RESUME, BECOME,
  PROCESS, ROLLBACK, MAP,
- PROMOTE
+ PROMOTE, PREDICT,
+ EJECT
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
@@ -1099,37 +1108,51 @@ int mail(void)
 					 * broadcast to occur.
 					 */
 
-				case RESIGN:
-					if (dipent.players[player].power == MASTER) 
-					{
-						while (isspace(*s)) ++s;
-					
-						resign_index = ResignPower(s);
-						switch (resign_index) {	
-						    case RP_BLANK:
-							fprintf(rfp, "Master MUST specify who is to be resigned.\n\n");
-							mail_reply(E_WARN);
-							return(E_WARN);
-							break;
-						    case RP_INVALID:
-					                fprintf(rfp, 
-								"Power '%s' not recognized.\n\n", s);
-							mail_reply(E_WARN);
-							return E_WARN;
-							break;
-						    case RP_NOT_FOUND:
-							fprintf(rfp,
+				case EJECT:
+                                        if (dipent.players[player].power == MASTER)
+                                        {
+                                                while (isspace(*s)) ++s;
+ 
+                                                resign_index = ResignPower(s);
+                                                switch (resign_index) {
+                                                    case RP_BLANK:
+                                                        fprintf(rfp, "Master MUST specify who is to be resigned.\n\n");
+                                                        mail_reply(E_WARN);
+                                                        return(E_WARN);
+                                                        break;
+                                                    case RP_INVALID:
+                                                        fprintf(rfp,
+                                                                "Power '%s' not recognized.\n\n", s);
+                                                        mail_reply(E_WARN);
+                                                        return E_WARN;
+                                                        break;
+                                                    case RP_NOT_FOUND:
+                                                        fprintf(rfp,
                                                                 "Email '%s' not found in this game.\n\n", s);
                                                         mail_reply(E_WARN);
                                                         return E_WARN;
                                                         break;
-					  	    case RP_MULTIPLE:
-							fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
+                                                    case RP_MULTIPLE:
+                                                        fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
                                                         mail_reply(E_WARN);
                                                         return E_WARN;
-							break;
-							
-						}
+                                                        break;
+ 
+                                                }
+ 
+                                        } else {
+					    fprintf(rfp, "Only Master can use the 'eject' command.\n\n");
+					    mail_reply(E_WARN);
+					    return E_WARN;
+					}
+				        break;
+
+				case RESIGN:
+					if (dipent.players[player].power == MASTER) 
+					{
+						fprintf(rfp, "Master MUST use 'eject' command.\n\n");
+						mail_reply(E_WARN);
+						return(E_WARN);
 					
 					} else {
 					    resign_index = player;
@@ -1404,6 +1427,18 @@ int mail(void)
 					broadcast = 1;
 					break;
 				
+                                case PREDICT:
+                                        /* Predict the move results (to master only) */
+                                        if (dipent.players[player].power != MASTER) {
+                                                          fprintf(rfp, "Sorry, but only masters can predict turns.\n");
+                                                          mail_reply(E_WARN);
+                                                          return(E_WARN);
+                                                                  }
+                                        fprintf(rfp, "Predicting turn %s for game '%s'.\n",dipent.phase, dipent.name);
+					fprintf(rfp, "*** Note: This is NOT definitive results, DO NOT DISCLOSE TO PLAYERS ***\n\n");
+                                        predict = 1;
+                                        break;
+
 				case PROMOTE: 
 					/* Make an observer a (joint) master */
 					if (dipent.players[player].power != MASTER) {
@@ -1445,6 +1480,12 @@ int mail(void)
 
 	
 				case BECOME:
+                                        if (predict) {
+                                                fprintf(rfp, "Cannot do a become when predicting.\n");
+                                                mail_reply(E_WARN);
+                                                return E_WARN;
+                                        }
+
 					if (dipent.players[player].power != MASTER) {
 						if (dipent.n == 1 && dipent.players[player].power == WILD_PLAYER) {
 							/* Not likely to occur, but just in case the player managed
