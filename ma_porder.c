@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.7  2002/03/25 23:47:55  miller
+ * Fixed properly bug for ownership when unit has just moved there
+ * (it wasn't having 'loc' set correctly in pr structure)
+ *
  * Revision 1.5  2002/02/25 11:51:51  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -112,7 +116,11 @@ static void CalculateNewOwners(void)
                         continue;
                 if (unit[u].type == 'G') {
                         ncown[p] = unit[u].owner;
-                        if (pr[unit[u].loc].unit == 0 || unit[pr[unit[u].loc].gunit].owner == 0) {
+                        if (pr[unit[u].loc].unit == 0 || 
+			    unit[pr[unit[u].loc].gunit].owner == 0 ||
+			    unit[pr[unit[u].loc].gunit].owner == unit[u].owner) {
+				/* Province is owned by city owner if no-one in province or
+				   provice unit is owned by same power */
                                 npown[p] = unit[u].owner;
                         }
                 } else {
