@@ -37,19 +37,19 @@ after creating the game:
    BECOME MASTER
 
 The "NOLIST" setting will prevent any announcements about the game being
-distributed to anyone not signed onto the game.  People can still use the
-"LIST older" command to get a status of the game, but a "LIST" command
-that lists all current games will not display this game.  People cannot
-find out about the game unless they've been told.  This is useful for
-games that you want to set up as "by invitation only".  Once the invited
-players have signed on and powers have been assigned you can use the "SET
-LIST" command to allow other people to begin seeing the game.  Note that
-you don't have to be the Master in such a game, it could be unmoderated
-with you as a player if you wish.  The point demonstrated here is that
-the "SET NOLIST" must appear before the "BECOME MASTER" or before another
-player signs on since either of those actions would generate an
-announcement on a "listed" game.  (On many judges, however, "NoList" is the
-default for newly-created games.)
+distributed to anyone not signed onto the game.  (On many Judges, NoList is
+now the default, but you should still use it to be on the safe side.)  People
+can still use the "LIST older" command to get a status of the game, but a
+"LIST" command that lists all current games will not display this game.
+People cannot find out about the game unless they've been told.  This is
+useful for games that you want to set up as "by invitation only".  Once the
+invited players have signed on and powers have been assigned you can use the
+"SET LIST" command to allow other people to begin seeing the game.  Note that
+you don't have to be the Master in such a game, it could be unmoderated with
+you as a player if you wish.  The point demonstrated here is that the "SET
+NOLIST" must appear before the "BECOME MASTER" or before another player signs
+on since either of those actions would generate an announcement on a "listed"
+game.
 
 Once you have become the Master for a game you can sign on to your game using
 the "m<name>" syntax and use the following commands:
@@ -99,14 +99,14 @@ the "m<name>" syntax and use the following commands:
      password for a player who has lost or forgotten their password.
      Example:
 
-       signon mexample password
-       press to X
+       SIGNON Mexample password
+       PRESS to X
        Your new password will be "iforgot" (without the quotation marks.)
        -- Master
-       endpress
-       become X
-       set password iforgot
-       signoff
+       ENDPRESS
+       BECOME X
+       SET PASSWORD iforgot
+       SIGNOFF
 
 
    PROCESS [season year phase]
@@ -144,6 +144,14 @@ the "m<name>" syntax and use the following commands:
      changes in the results of the reprocessed turn.  Any pending orders that
      existed will also be reprocessed so if they were revised by hand the
      first time the replayed phase was processed the revisions may get lost.
+
+   UNSTART
+     You can't use ROLLBACK to go back before the start of turn 1 (Spring
+     1901), but you can use the "UNSTART" command for that.  UNSTART will only
+     work if the current phase is turn 1 (Spring 1901), and will unassign the
+     powers and set the game to ManualStart mode.  You may want to use this,
+     for example, if a player resigns before Spring 1901 and you want to give
+     his replacement a chance to start fresh by reassigning all the powers.
 
    EJECT power|email_address
      This allows you to "resign" any player or Observer from your game.
@@ -191,45 +199,52 @@ the "m<name>" syntax and use the following commands:
      This command sets the flag that will cause all partial press between
      the players to be copied (silently) to you as well.  This is useful
      in a gunboat game to see what devious plans the players are preparing.
-     It is not too useful in non-gunboat games as players may communicate
+     It is not as useful in non-gunboat games as players may communicate
      directly rather than going through the judge so you may miss traffic.
-     Note, if you use this option you must pay careful attention so that
-     you don't leak any information to the other players.
+     Nonetheless, it is one possible means of detecting cheating, and is also
+     valuable in Novice games for finding out if a player is hopelessly
+     confused.  Note, if you use this option you must pay careful attention
+     so that you don't leak any information to the other players.
 
    SET NORMAL PRESS
      This command clears the "all press" flag.
 
-Get the file 'index' for a complete list of the rest of the flags that
-you can set or clear as the Master.  In general, the commands listed in this
-document can only be used by a Master; but the other "SET" commands listed
-in file 'index' can also be used by any player in an unmoderated game.
+   SET WATCH ALL PRESS
+     This enables Observers to use the SET ALL PRESS command and see all the
+     players' partial press.  This setting should be used with EXTREME
+     caution, for obvious reasons.  Disable with SET NO WATCH ALL PRESS.
 
-The reply that you get back from the judge after signing on as Master
-(unless you relinquish the Master status by using the BECOME command)
-will include the [partial] orders that the players have submitted.  It
-is assumed that if you are taking the role of Master that you will not
-leak this information to the wrong people.
+Get the file 'index' for a complete list of the rest of the flags that you can
+set or clear as the Master.  In general, the commands listed in this document
+can only be used by a Master; but the other "SET" commands listed in file
+'index' can also be used by any player in an unmoderated game.
 
-As a special note about finding replacement players, the proper way to
-get a new player signed on is to allow him to submit the SIGNON himself
-for an abandoned power.  You can always EJECT the old player, but
-if you then BECOME that power and use "SET ADDRESS" and "SET PASSWORD"
-to set it up for the new player, the judge won't properly update the internal
-tables that indicate who is playing that power.  The dedication ratings and
-site access info may not reflect what is really happening if the player
-doesn't go through the taking over of the power himself.  It is possible to
-submit mail to the judge and make it look like it came from the player,
-however.  The judge only pays attention to the last "Reply-To: " line that it
-finds in the mail, or if there isn't a Reply-To, then to the last "From: "
-that it finds.  Thus you can submit a message to the judge that looks like:
+The reply that you get back from the judge after signing on as Master (unless
+you relinquish the Master status by using the BECOME command) will include the
+[partial] orders that the players have submitted.  It is assumed that if you
+are taking the role of Master that you will not leak this information to the
+wrong people.
+
+As a special note about finding replacement players, the proper way to get a
+new player signed on is to allow him to submit the SIGNON himself for an
+abandoned power.  You can always EJECT the old player, but if you then BECOME
+that power and use "SET ADDRESS" and "SET PASSWORD" to set it up for the new
+player, the judge won't properly update the internal tables that indicate who
+is playing that power.  The dedication ratings and site access info may not
+reflect what is really happening if the player doesn't go through the taking
+over of the power himself.  It is possible to submit mail to the judge and
+make it look like it came from the player, however.  The judge only pays
+attention to the last "Reply-To: " line that it finds in the mail, or if there
+isn't a Reply-To, then to the last "From: " that it finds.  Thus you can
+submit a message to the judge that looks like:
 
     Reply-To: user@host.domain.org
     SIGNON xname password
 
-to ensure that that player gets signed on properly.  You won't, however,
-get a reply from the judge (it will go to the player) so you're really
-operating blind if you do this.  It is preferred to have the player do
-the SIGNON himself.
+to ensure that that player gets signed on properly.  You won't, however, get a
+reply from the judge (it will go to the player) so you're really operating
+blind if you do this.  It is preferred to have the player do the SIGNON
+himself.
 
 For further information, see the files 'house.rules' and 'how2gm', which are
 available via mail to the judge, using the "GET file" command.

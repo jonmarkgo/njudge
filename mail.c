@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.32  2003/02/17 12:41:41  millis
+ * Fixed Bug 108, make lines >=1024 terminate in '\n'
+ *
  * Revision 1.31  2003/01/30 22:49:11  millis
  * Fixed small error (SET not SETUP)
  *
@@ -215,6 +218,11 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define POSTALPRESS	46
 #define FORCE_BEGIN	47
 
+/* Note: in both prelim and commands below, a blank character means
+ * that whitespace is optional in the user input; a '#' character
+ * means that whitespace (or parentheses) is required in the user input.
+ */
+
 static char *prelim[] =
 {"", "list", "help", "from:",
  "reply-to:", "resent-from:",
@@ -225,10 +233,10 @@ static char *prelim[] =
  "get#", "send me", "send#",
  "summary", "status",
  "register", "i am also",
- "nocontrol", "adjust",
+ "no control", "adjust",
  "version", "history",
- "who game#", "who is#", "who#", "fixid",
- "map", "signoff", "record", "infoplayer"
+ "who game#", "who is#", "who#", "fix id",
+ "map", "sign off", "record", "info player"
  ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
 	"ded#" */ };
@@ -261,8 +269,8 @@ static char *commands[] =
  "terminate", "resume", "become",
  "process", "roll back", "map",
  "promote", "predict",
- "eject", "record", "infoplayer", "unstart",
- "set", "pause", "suspend", "postalpress", 
+ "eject", "record", "info player", "unstart",
+ "set", "pause", "suspend", "postal press", 
  "force begin", 
  "if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
 			     /* , "ded game", "dedicate#", "ded#" */ };

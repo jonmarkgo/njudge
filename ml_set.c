@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.35  2003/02/28 22:27:28  russblau
+ * Minor changes to documentation; "SET BROADCAST" should now work as described
+ * in documentation (but kept previous form "SET NORMAL BROADCAST" for backwards
+ * compatibility).
+ *
  * Revision 1.34  2003/02/28 20:16:43  nzmb
  * Changed the name of resignation ratio to CD ratio, to avoid confusion with
  * Doug Massey's DRR.
@@ -34,7 +39,8 @@
  * Fixed up mistake in PRV array, added more flexibility to commands.
  *
  * Revision 1.24  2002/07/16 18:14:22  nzmb
- * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ * Many changes dealing with the addition of szine style postal press. Also 
+ * fixed apparent bug in signons for games which have not started.
  *
  * Revision 1.23  2002/06/11 16:26:19  nzmb
  *
@@ -78,7 +84,8 @@
  * Revision 1.17  2001/11/11 21:16:21  greg
  * Subjectline Fixes
  *  - New player signons will no longer show "Preference Change"
- *  - Manual start games will no longer say "Waiting for More Players" after the game is full
+ *  - Manual start games will no longer say "Waiting for More Players" after 
+ *    the game is full
  *  - reply lines no longer assume JUDGE_CODE is four characters
  *
  * Revision 1.16  2001/10/20 12:11:13  miller
@@ -115,7 +122,8 @@
  * Added functionality to set ontime ratio, CD ratio in a game.
  *
  * Revision 1.5  2001/05/14 22:58:21  miller
- * Corrected transformation setting/display. Also disabled Mach1,2,3 flags (to be removed later for good).
+ * Corrected transformation setting/display. Also disabled Mach1,2,3 flags 
+ * (to be removed later for good).
  *
  * Revision 1.4  2001/05/10 08:33:25  greg
  * added subjectlines
@@ -125,16 +133,19 @@
  *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * ENORMOUS number of changes, including:
- *  - Checks to warn if trying to set 'silly' options  (for example, Mach options in non-Mach game, press options in nopress game etc.)
- *  - Check when a quorum exists to start the game if number of plyers is changed
- *  - Show players preferences to master
+ *  - Checks to warn if trying to set 'silly' options  (for example, Mach 
+ *    options in non-Mach game, press options in nopress game etc.)
+ *  - Check when a quorum exists to start the game if number of plyers is 
+ *    changed
+ *  - Show players' preferences to master
  *  - New general purpose function to ease flag setting/resetting
- *  - setting of absence delay checks (non-master cannot be greater than game limit)
+ *  - setting of absence delay checks (non-master cannot be greater than game 
+ *    limit)
  *  - New commands, which are:
  *     SET_(NO)LATECOUNT, SET_(NO)STRCONVOY, SET(NO)LATEPRESS, SET(NO)MANUALPROC,
  *     SET_(NO)MANSTART, SET_(NO)TRANSFORM, SET_(ANY/ONE/HOME)CENTRES,
- *     SET(NO)ABSENCE, SET_MAXABSENCE, SET_(NO)NORMBROAD, SET_(NO)BLANKPRESS,
- *     SET(NO)MINORPRESS, SET_MAC(1/2/3), SET_(NO)AIRLIFT, SET_BLANKBOARD,
+ *     SET_(NO)ABSENCE, SET_MAXABSENCE, SET_(NO)NORMBROAD, SET_(NO)BLANKPRESS,
+ *     SET_(NO)MINORPRESS, SET_MAC(1/2/3), SET_(NO)AIRLIFT, SET_BLANKBOARD,
  *     SET_(NO)AUTODISBAND
  *    (some of which are to be implemented still)
  *   - Observers can watch press of a game (if flag enablingthis is set)
@@ -746,6 +757,11 @@ void mail_setp(char *s)
 #define SET_BLIND_NOCENTRES 160
 #define PRV_BLIND_NOCENTRES 'm'
 
+/* Note:  in keys below, a blank space indicates that whitespace is
+ * optional at that point in the user input; a '#' character indicates
+ * that white space (or parentheses) is required in user input.
+ */
+	
 	static char *keys[] =
 	{"", ",", "press",
 	 "address", "ad#", "password#", "pw#", "p#",
@@ -754,11 +770,11 @@ void mail_setp(char *s)
 	 "moves", "builds", "adjusts", "retreats",
 	 "move", "build", "adjust", "retreat",
 	 "deadline", "start", "grace",
-	 "nonmr", "nocd", "nmr", "cd",
+	 "no nmr", "no cd", "nmr", "cd",
 	 "moderated", "unmoderated",
 	 "moderate", "unmoderate",
 	 "reveal", "no reveal",
-	 "nolist", "unlist", "private", "list", "public",
+	 "no list", "unlist", "private", "list", "public",
 	 "white/grey", "grey/white", "white", "grey",
 	 "no white", "no grey", "no press", "none",
 	 "gray", "white/gray", "gray/white", "no gray",
@@ -789,25 +805,25 @@ void mail_setp(char *s)
 	 "access", "level", "variant", "dedication",
 	 "ontimerat","resrat",
 	 "show", "no show",
-	 "dias", "no dias", "nodias",
-	 "concessions", "noconcessions", "no concessions",
-	 "conc", "noconc",
-	 "draw", "no draw", "nodraw",
-	 "ep", "ep number", "ep num", "epnum", "epnumber",
+	 "dias", "no dias", /*"nodias",*/
+	 "concessions", /*"noconcessions",*/ "no concessions",
+	 "conc", "concede", "no conc", "no concede",
+	 "draw", "no draw", /*"nodraw",*/
+	 "ep", "ep number", "ep num", /*"epnum", "epnumber",*/
 	 "centres", "centers",
-	 "bn", "bn number", "bn num", "bnnum", "bnnumber",
-	 "bnc", "bnc number", "bnc num", "bncnum", "bncnumber",
-	 "mn", "mn number", "mn num", "mnnum", "mnnumber",
-	 "mnc", "mnc number", "mnc num", "mncnum", "mncnumber",
+	 "bn", "bn number", "bn num", /*"bnnum", "bnnumber",*/
+	 "bnc", "bnc number", "bnc num", /*"bncnum", "bncnumber",*/
+	 "mn", "mn number", "mn num", /*"mnnum", "mnnumber",*/
+	 "mnc", "mnc number", "mnc num", /*"mncnum", "mncnumber",*/
 	 "no strict grace", "nostrictgrace",
 	 "strict grace", "strictgrace",
+	 "players",
 	 "allow player", "allow players", "player allow", "players allow",
 	 "deny player", "deny players", "player deny", "players deny",
 	 "allow master", "allow masters", "master allow", "masters allow",
 	 "deny master", "deny masters", "master deny", "masters deny",
 	 "strict wait", "strictwait",
 	 "no strict wait", "nostrictwait",
-	 "players",
          "latecount", "late count",
 	 "no latecount", "nolatecount", "no late count",
 	 "strict convoy", "strictconvoy",
@@ -837,8 +853,8 @@ void mail_setp(char *s)
 	 "max vacations", "maxvacations",
 	 "max holidays", "maxholidays",
 	 "one centre", "onecentre", "one center", "onecenter",
-	 "broadcast", "broadcast press", "normalbroadcast",
-	 "no broadcast", "no broadcast press", "nonormalbroadcast",
+	 "broadcast", "broadcast press", "normal broadcast",
+	 "no broadcast", "no broadcast press", "no normal broadcast",
 	 "blank press", "blankpress",
 	 "no blank press", "noblankpress", "no blankpress",
 	 "minor press", "minorpress",
@@ -929,25 +945,25 @@ void mail_setp(char *s)
 	 SET_ACCESS, SET_LEVEL, SET_VARIANT, SET_DEDICATE,
 	 SET_ONTIMERAT, SET_RESRAT,
 	 SET_SHOW, SET_NOSHOW,
-	 SET_DIAS, SET_NODIAS, SET_NODIAS,
-	 SET_CONCESSIONS, SET_NOCONCESSIONS, SET_NOCONCESSIONS,
-	 SET_CONC, SET_NOCONC,
-	 SET_DRAW, SET_NODRAW, SET_NODRAW,
-	 SET_EPNUM, SET_EPNUM, SET_EPNUM, SET_EPNUM, SET_EPNUM,
+	 SET_DIAS, SET_NODIAS, /*SET_NODIAS,*/
+	 SET_CONCESSIONS, /*SET_NOCONCESSIONS,*/ SET_NOCONCESSIONS,
+	 SET_CONC, SET_CONC, SET_NOCONC, SET_NOCONC,
+	 SET_DRAW, SET_NODRAW, /*SET_NODRAW,*/
+	 SET_EPNUM, SET_EPNUM, SET_EPNUM, /*SET_EPNUM, SET_EPNUM,*/
 	 SET_CENTERS, SET_CENTERS,
-	 SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN,
-	 SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN,
-	 SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN,
-	 SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN, SET_BN_MN,
+	 SET_BN_MN, SET_BN_MN, SET_BN_MN, /*SET_BN_MN, SET_BN_MN,*/
+	 SET_BN_MN, SET_BN_MN, SET_BN_MN, /*SET_BN_MN, SET_BN_MN,*/
+	 SET_BN_MN, SET_BN_MN, SET_BN_MN, /*SET_BN_MN, SET_BN_MN,*/
+	 SET_BN_MN, SET_BN_MN, SET_BN_MN, /*SET_BN_MN, SET_BN_MN,*/
 	 SET_GRACEDAYS, SET_GRACEDAYS,
 	 SET_NOGRACEDAYS, SET_NOGRACEDAYS,
+	 SET_NO_PLAYERS,
 	 SET_PLAYERALLOW, SET_PLAYERALLOW, SET_PLAYERALLOW, SET_PLAYERALLOW,
 	 SET_PLAYERDENY, SET_PLAYERDENY, SET_PLAYERDENY, SET_PLAYERDENY,
 	 SET_MASTERALLOW, SET_MASTERALLOW, SET_MASTERALLOW, SET_MASTERALLOW,
 	 SET_MASTERDENY, SET_MASTERDENY, SET_MASTERDENY, SET_MASTERDENY,
 	 SET_STRWAIT, SET_STRWAIT,
 	 SET_NOSTRWAIT, SET_NOSTRWAIT,
-	 SET_NO_PLAYERS,
 	 SET_LATECOUNT, SET_LATECOUNT,
 	 SET_NOLATECOUNT, SET_NOLATECOUNT, SET_NOLATECOUNT,
 	 SET_STRCONVOY, SET_STRCONVOY,
@@ -994,39 +1010,39 @@ void mail_setp(char *s)
 	 SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD,
 	 SET_FORT, SET_FORT, SET_FORT, SET_FORT,
 	 SET_NOFORT, SET_NOFORT, SET_NOFORT, SET_NOFORT,
-	SET_NOFORT, SET_NOFORT, SET_NOFORT, SET_NOFORT,
-	SET_RESUME,
-	SET_NORESUME, SET_NORESUME,
-	SET_AUTODISBAND, SET_AUTODISBAND,
-	SET_NOAUTODISBAND, SET_NOAUTODISBAND, SET_NOAUTODISBAND,
-	SET_ANYDISBAND, SET_ANYDISBAND,
-        SET_NORMALDISBAND, SET_NORMALDISBAND,
-	SET_ATTACKTRANS , SET_ATTACKTRANS,
-        SET_NOATTACKTRANS, SET_NOATTACKTRANS,
-	SET_NOATTACKTRANS, SET_NOATTACKTRANS,
-        SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY,
-        SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
-        SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
-	SET_MONEY, SET_NOMONEY, SET_NOMONEY, 
-	SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
-	SET_BASIC, SET_ADVANCED,
-	SET_DUALITY, SET_NODUALITY, SET_NODUALITY,
-	SET_HONGKONG, SET_HONGKONG,
-	SET_NOHONGKONG, SET_NOHONGKONG, SET_NOHONGKONG,
-	SET_GATEWAY, SET_GATEWAY,
-	SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY,
-	SET_RAILWAY, SET_RAILWAY,
-	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
-	SET_STORM, SET_STORM,
-	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
-	SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
-	SET_MUSTORDER, SET_MUSTORDER, SET_NOMUSTORDER,
-	SET_NOMUSTORDER, SET_NOMUSTORDER, SET_SECRET,
-	SET_NOSECRET, SET_NOSECRET,
-	SET_NOTVARIANT, SET_NOTVARIANT,
-	SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS,
-	SET_BLIND_CENTRES, SET_BLIND_CENTRES,
-        SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES
+	 SET_NOFORT, SET_NOFORT, SET_NOFORT, SET_NOFORT,
+	 SET_RESUME,
+	 SET_NORESUME, SET_NORESUME,
+	 SET_AUTODISBAND, SET_AUTODISBAND,
+	 SET_NOAUTODISBAND, SET_NOAUTODISBAND, SET_NOAUTODISBAND,
+	 SET_ANYDISBAND, SET_ANYDISBAND,
+         SET_NORMALDISBAND, SET_NORMALDISBAND,
+	 SET_ATTACKTRANS , SET_ATTACKTRANS,
+         SET_NOATTACKTRANS, SET_NOATTACKTRANS,
+	 SET_NOATTACKTRANS, SET_NOATTACKTRANS,
+         SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY,
+         SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
+         SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
+	 SET_MONEY, SET_NOMONEY, SET_NOMONEY, 
+	 SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
+	 SET_BASIC, SET_ADVANCED,
+	 SET_DUALITY, SET_NODUALITY, SET_NODUALITY,
+	 SET_HONGKONG, SET_HONGKONG,
+	 SET_NOHONGKONG, SET_NOHONGKONG, SET_NOHONGKONG,
+	 SET_GATEWAY, SET_GATEWAY,
+	 SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY,
+	 SET_RAILWAY, SET_RAILWAY,
+	 SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
+	 SET_STORM, SET_STORM,
+	 SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
+	 SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
+	 SET_MUSTORDER, SET_MUSTORDER, SET_NOMUSTORDER,
+	 SET_NOMUSTORDER, SET_NOMUSTORDER, SET_SECRET,
+	 SET_NOSECRET, SET_NOSECRET,
+	 SET_NOTVARIANT, SET_NOTVARIANT,
+	 SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS,
+	 SET_BLIND_CENTRES, SET_BLIND_CENTRES,
+         SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES
     };
 
 
@@ -1073,25 +1089,25 @@ void mail_setp(char *s)
 	 PRV_ACCESS, PRV_LEVEL, PRV_VARIANT, PRV_DEDICATE,
 	 PRV_ONTIMERAT, PRV_RESRAT,
 	 PRV_SHOW, PRV_NOSHOW,
-	 PRV_DIAS, PRV_NODIAS, PRV_NODIAS,
-	 PRV_CONCESSIONS, PRV_NOCONCESSIONS, PRV_NOCONCESSIONS,
-	 PRV_CONC, PRV_NOCONC,
-	 PRV_DRAW, PRV_NODRAW, PRV_NODRAW,
-	 PRV_EPNUM, PRV_EPNUM, PRV_EPNUM, PRV_EPNUM, PRV_EPNUM,
+	 PRV_DIAS, PRV_NODIAS, /*PRV_NODIAS,*/
+	 PRV_CONCESSIONS, /*PRV_NOCONCESSIONS,*/ PRV_NOCONCESSIONS,
+	 PRV_CONC, PRV_CONC, PRV_NOCONC, PRV_NOCONC,
+	 PRV_DRAW, PRV_NODRAW, /*PRV_NODRAW,*/
+	 PRV_EPNUM, PRV_EPNUM, PRV_EPNUM, /*PRV_EPNUM, PRV_EPNUM,*/
 	 PRV_CENTERS, PRV_CENTERS,
-	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN,
-	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN,
-	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN,
-	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, PRV_BN_MN,
+	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, /*PRV_BN_MN, PRV_BN_MN,*/
+	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, /*PRV_BN_MN, PRV_BN_MN,*/
+	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, /*PRV_BN_MN, PRV_BN_MN,*/
+	 PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, /*PRV_BN_MN, PRV_BN_MN,*/
 	 PRV_GRACEDAYS, PRV_GRACEDAYS,
 	 PRV_NOGRACEDAYS, PRV_NOGRACEDAYS,
+	 PRV_NO_PLAYERS,
 	 PRV_PLAYERALLOW, PRV_PLAYERALLOW, PRV_PLAYERALLOW, PRV_PLAYERALLOW,
 	 PRV_PLAYERDENY, PRV_PLAYERDENY, PRV_PLAYERDENY, PRV_PLAYERDENY,
 	 PRV_MASTERALLOW, PRV_MASTERALLOW, PRV_MASTERALLOW, PRV_MASTERALLOW,
 	 PRV_MASTERDENY, PRV_MASTERDENY, PRV_MASTERDENY, PRV_MASTERDENY,
 	 PRV_STRWAIT, PRV_STRWAIT,
 	 PRV_NOSTRWAIT, PRV_NOSTRWAIT,
-	 PRV_NO_PLAYERS,
 	 PRV_LATECOUNT, PRV_LATECOUNT,
 	 PRV_NOLATECOUNT, PRV_NOLATECOUNT, PRV_NOLATECOUNT,
 	 PRV_STRCONVOY, PRV_STRCONVOY,
@@ -1139,39 +1155,39 @@ void mail_setp(char *s)
 	 PRV_FORT, PRV_FORT, PRV_FORT, PRV_FORT,
 	 PRV_NOFORT, PRV_NOFORT, PRV_NOFORT, PRV_NOFORT,
 	 PRV_NOFORT, PRV_NOFORT, PRV_NOFORT, PRV_NOFORT,
-        PRV_RESUME,
-        PRV_NORESUME, PRV_NORESUME,
-        PRV_AUTODISBAND, PRV_AUTODISBAND,
-        PRV_NOAUTODISBAND, PRV_NOAUTODISBAND, PRV_NOAUTODISBAND,
-	PRV_ANYDISBAND, PRV_ANYDISBAND,
-        PRV_NORMALDISBAND, PRV_NORMALDISBAND,
-	PRV_ATTACKTRANS, PRV_ATTACKTRANS,
-	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
-	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
-        PRV_COASTALCONVOY, PRV_COASTALCONVOY,  PRV_COASTALCONVOY, PRV_COASTALCONVOY,
-        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
-        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
-        PRV_MONEY, PRV_NOMONEY, PRV_NOMONEY,
-        PRV_MOVEDISBAND, PRV_NOMOVEDISBAND, PRV_NOMOVEDISBAND,
-        PRV_BASIC, PRV_ADVANCED,
-	PRV_DUALITY, PRV_NODUALITY, PRV_NODUALITY,	
-	PRV_HONGKONG, PRV_HONGKONG,
-	PRV_NOHONGKONG, PRV_NOHONGKONG, PRV_NOHONGKONG,
-	PRV_GATEWAY, PRV_GATEWAY,
-	PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY,
-	PRV_RAILWAY, PRV_RAILWAY,
-	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY,
-	PRV_STORM, PRV_STORM,
-	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM,
-	PRV_PREFLIST, PRV_PREFBOTH, PRV_PREFRAND,
-	PRV_MUSTORDER, PRV_MUSTORDER, PRV_NOMUSTORDER,
-	PRV_NOMUSTORDER, PRV_NOMUSTORDER,
-	PRV_SECRET,
-	PRV_NOSECRET, PRV_NOSECRET,
-        PRV_NOTVARIANT, PRV_NOTVARIANT,
-	PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS,
-	PRV_BLIND_CENTRES, PRV_BLIND_CENTRES,
-        PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES
+         PRV_RESUME,
+         PRV_NORESUME, PRV_NORESUME,
+         PRV_AUTODISBAND, PRV_AUTODISBAND,
+         PRV_NOAUTODISBAND, PRV_NOAUTODISBAND, PRV_NOAUTODISBAND,
+	 PRV_ANYDISBAND, PRV_ANYDISBAND,
+         PRV_NORMALDISBAND, PRV_NORMALDISBAND,
+	 PRV_ATTACKTRANS, PRV_ATTACKTRANS,
+	 PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
+	 PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
+         PRV_COASTALCONVOY, PRV_COASTALCONVOY,  PRV_COASTALCONVOY, PRV_COASTALCONVOY,
+         PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
+         PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
+         PRV_MONEY, PRV_NOMONEY, PRV_NOMONEY,
+         PRV_MOVEDISBAND, PRV_NOMOVEDISBAND, PRV_NOMOVEDISBAND,
+         PRV_BASIC, PRV_ADVANCED,
+	 PRV_DUALITY, PRV_NODUALITY, PRV_NODUALITY,	
+	 PRV_HONGKONG, PRV_HONGKONG,
+	 PRV_NOHONGKONG, PRV_NOHONGKONG, PRV_NOHONGKONG,
+	 PRV_GATEWAY, PRV_GATEWAY,
+	 PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY,
+	 PRV_RAILWAY, PRV_RAILWAY,
+	 PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY,
+	 PRV_STORM, PRV_STORM,
+	 PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM,
+	 PRV_PREFLIST, PRV_PREFBOTH, PRV_PREFRAND,
+	 PRV_MUSTORDER, PRV_MUSTORDER, PRV_NOMUSTORDER,
+	 PRV_NOMUSTORDER, PRV_NOMUSTORDER,
+	 PRV_SECRET,
+	 PRV_NOSECRET, PRV_NOSECRET,
+         PRV_NOTVARIANT, PRV_NOTVARIANT,
+	 PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS,
+	 PRV_BLIND_CENTRES, PRV_BLIND_CENTRES,
+         PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES
 };
 
 	chk24nmr = 0;
@@ -2836,22 +2852,22 @@ void mail_setp(char *s)
 
                case SET_COASTALCONVOY:
                         if (dipent.seq[0] != 'x') {
-                            fprintf(rfp, "Game '%s' has already started: not allowed to set CostalConvoy flag!\n\n",
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set CoastalConvoy flag!\n\n",
                                     dipent.name);
                         } else {
-                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CostalConvoy", CATF_SETON,
-                                           "Costal convoys will now be permitted.\n",
+                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CoastalConvoy", CATF_SETON,
+                                           "Coastal convoys will now be permitted.\n",
                                             CATF_NORMAL);
                         }
                         break;
 
                 case SET_NOCOASTALCONVOY:
                         if (dipent.seq[0] != 'x') {
-                            fprintf(rfp, "Game '%s' has already started: not allowed to clear CostalConvoy flag!\n\n",
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear CoastalConvoy flag!\n\n",
                                     dipent.name);
                         } else {
-                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CostalConvoy", CATF_SETOFF,
-                                           "Costal convoys are now NOT allowed.\n",
+                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CoastalConvoy", CATF_SETOFF,
+                                           "Coastal convoys are now NOT allowed.\n",
                                             CATF_NORMAL);
                         }
                         break;
