@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2004/05/22 10:31:33  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.23  2004/01/04 11:34:35  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -144,8 +147,9 @@ void PrintTwoColTable( char * title, char *power_col, char *other_col );
 int PowerControlledBy( int p);
 
 /* defined in bailout.c */
-void real_bailout(int, char *, int);
-#define bailout(btype) real_bailout(btype, __FILE__, __LINE__ )
+void real_bailout(int, char *, int, int);
+#define bailout(btype) real_bailout(btype, __FILE__, __LINE__, 1)
+#define rdip_bailout(btype) real_bailout(btype, __FILE__, __LINE__, 0)
 
 /* void bailout(int); */
 

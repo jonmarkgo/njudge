@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2002/08/27 22:27:44  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Small change to log bailout error before bailing out
  *
@@ -37,7 +40,7 @@ void inform_rgd(void);
 
 /****************************************************************************/
 
-void real_bailout(int level, char *sourcename, int linenum)
+void real_bailout(int level, char *sourcename, int linenum, int dolog)
 {
 	/*
 	 * Bailout.  We have detected some sort of fatal error that will prevent
@@ -54,11 +57,14 @@ void real_bailout(int level, char *sourcename, int linenum)
 	if (!Dflg) {
 		if (!stat(BAILOUT_PLAN, &sbuf))
 			rename(BAILOUT_PLAN, PLAN);
-		inform_rgd(); 
+		inform_rgd();
 		rename(FORWARD, KEEPOUT);
 		rename(YFORWARD, FORWARD);
-		fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", FORWARD,
-			KEEPOUT);
+		if(dolog)
+		{
+			fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", FORWARD,
+				KEEPOUT);
+		}
 		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
 			SMAIL_CMD, sourcename, linenum, GAMES_MASTER);
 		system(myline);

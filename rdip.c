@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2003/09/14 22:08:19  jaldhar
+ * Included fcntl.h for symbols not defined in unistd.h
+ *
  * Revision 1.5  2003/09/09 18:51:33  jaldhar
  * Got rid of port.h and replaced with some extra configure checks.  The
  * include strings.h was not carried over because it is commented out and
@@ -31,6 +34,7 @@
 #include <sys/resource.h>
 #include <unistd.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "config.h"
 #include "functions.h"
@@ -75,6 +79,13 @@ static struct stat sbuf;
 
 static int Aflg, xflg, bflg;
 int Dflg;
+
+/* kill the judge cleanly if we should ever receive a SIGPIPE here... */
+void handle_sigpipe(int signo)
+{
+	fprintf(stderr, "rdip caught signal %d -- bailing out.\n", signo);
+	rdip_bailout(E_FATAL);
+}	
 
 /* Will retry the lock several times before giving up */
 int retry_lockfd(int n, int m)
@@ -123,6 +134,10 @@ int main(int argc, char **argv)
  	OPENDIPLOG(temp_text);
         DIPINFO("Started rdip");
 */	
+
+	/* we ought to use sigaction, but it's late and this is already hacky... */
+	signal(SIGPIPE, handle_sigpipe);
+
 	for (i = 1; i < argc; i++) {
 		if (*argv[i] == '-') {
 			for (s = argv[i] + 1; *s; s++) {
@@ -249,9 +264,11 @@ int main(int argc, char **argv)
 	 */
 
       step6:
-	if (rename(MAIL, INPUT)) {	/*
-					   fprintf(stderr,"mv %s -> ",MAIL);
-					   perror(INPUT);                               */
+	if (rename(MAIL, INPUT)) {	
+		/*
+	        fprintf(stderr,"mv %s -> ",MAIL);
+	        perror(INPUT);                               
+		*/
 		goto step11;
 	}
 	time(&now);
@@ -272,19 +289,19 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 	pfp = NULL;
+
+	sprintf(line1,"%s -C %s -q", DIP_CMD, CONFIG_DIR);
 	while (fgets(line, sizeof(line), fp)) {
 		if (!strncmp(line, "From ", 5)) {
 			if (pfp) {
 				pclose(pfp);
 				pfp = NULL;
 			}
-			sprintf(line1,"%s -C %s -q", DIP_CMD, CONFIG_DIR);
 			if (!(pfp = popen(line1, "w"))) {
 				perror("popen");
 				exit(1);
 			}
 			fputs(line, stdout);
-
 		}
 		if (!pfp) {
 			fprintf(stderr, "First line doesn't look like From.\n");
@@ -292,7 +309,6 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 		fputs(line, pfp);
-
 	}
 
 	fclose(fp);
@@ -300,7 +316,7 @@ int main(int argc, char **argv)
 		dipstat = pclose(pfp);
 		if (dipstat >> 8) {
 			perror("pclose");
-			bailout(E_FATAL);
+			rdip_bailout(E_FATAL);
 			exit(dipstat >> 8);
 		}
 		pfp = (FILE *) NULL;
@@ -309,6 +325,7 @@ int main(int argc, char **argv)
 	 *  9) Reobtain the interlock on dip.lock1.
 	 */
 
+	fprintf(stderr, "TDBG: @ step 9\n");
 	fd1 = open(LOCK1, O_RDWR | O_CREAT, 0666);
 	if (fd1 < 0) {
 		perror(LOCK1);
