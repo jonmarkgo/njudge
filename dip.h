@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.29  2003/05/14 07:59:16  nzmb
+ * Fixed bug #122 -- splits dip.reply into part created before and after
+ * the GM issues a "become" command.
+ *
  * Revision 1.28  2003/05/13 00:07:26  millis
  * Bug 110, move on process deadline by 24 hours on bailout recovery
  *
@@ -390,8 +394,8 @@ struct dipent {
 struct dedication {
 	short r;		/* Actual rating */
 	short i1, i2;		/* Accumulators for expanded formula */
-	long ls;		/* Last signon time */
-	long md;		/* Last motd time */
+	time_t ls;		/* Last signon time */
+	time_t md;		/* Last motd time */
 	long d0;		/* Date for expanded formula */
 };
 
