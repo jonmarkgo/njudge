@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.26  2002/05/13 12:28:32  greg
+# Tweaked Makefile
+#
 # Revision 1.25  2002/05/11 09:15:30  greg
 # Minor bug fixes
 # - fixed subjectline for absence requests
@@ -419,7 +422,7 @@ ${INSTALLDIR}/runlistmap: runlistmap
 ${INSTALLDIR}/newlogs: newlogs
 	cp newlogs ${INSTALLDIR}/newlogs
 
-dist: tarZ targz tarbz2
+dist: tarZ targz tarbz2 
 
 tarZ: ../njudge-${JVERSION}.tar.Z 
 
@@ -427,23 +430,10 @@ targz: ../njudge-${JVERSION}.tar.gz
 
 tarbz2: ../njudge-${JVERSION}.tar.bz2 
 
-tar: ../njudge-${JVERSION}.tar 
+tar: ../njudge-${JVERSION}.tar
 
-../njudge-${JVERSION}.tar: ${FILES} 
-#	newvers VERMAJ
-#	@touch .log/oldlog
-	rm -f ../njudge-${JVERSION}.tar
-#	tar --exclude data/CVS/ -cf ../njudge-${JVERSION}.tar ${FILES}
-#	tar --exclude ../njudge/CVS ../njudge/data/CVS ../njudge/docs/CVS -cf ../njudge-${JVERSION}.tar ../njudge/
-
-#	tar --exclude ../njudge/CVS \
-#	    --exclude ../njudge/data/CVS \
-#	    --exclude ../njudge/docs/CVS \
-#	    -cf ../njudge-${JVERSION}.tar ../njudge/
-
-	cd ..;\
-	tar -X njudge/xfile \
-	    -cf njudge-${JVERSION}.tar njudge/
+../njudge-${JVERSION}.tar: ${FILES} xfile
+	tar -Xcf xfile ../njudge-${JVERSION}.tar ${FILES}
 
 
 ../njudge-${JVERSION}.tar.Z: ../njudge-${JVERSION}.tar
