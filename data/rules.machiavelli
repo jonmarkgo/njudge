@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!            24th July, 2002
+Greetings from the Diplomacy* Adjudicator!!           26th October, 2002
 Rules.machiavelli*
 
 INTRODUCTION
@@ -180,7 +180,8 @@ move to the containing province to be able to besiege a port city.  After
 successfully issuing the first besiege order, the besieging unit must
 either issue a second besiege order or a "lift siege" order in the
 subsequent movement phase.  When the siege is complete, the garrison is
-eliminated.
+eliminated.  (Also see 'effects of assassination' for additional
+information.)
 A besieged garrison (one whose city's siege started during the previous
 campaign) cannot convert regardless of strength, although it can support
 another unit moving into its province to displace the besieging unit.
@@ -816,9 +817,14 @@ EFFECTS OF ASSASSINATION
    attempting are broken.
 2) Expenses are wasted if the bank assassinates you, but go through if you
    are assassinated by another player.
-3) Any of the victim's besieged garrisons are immediately eliminated,
-   except if the besieging unit's player also is assassinated, in which case
-   the garrison remains.
+3) Any of the victim's garrisons that are *already under siege* (because
+   the enemy began besiegeing in the previous campaign) are immediately 
+   eliminated. (To clarify: the G is *not* eliminated if the enemy ordered 
+   to begin to besiege in the same campaign as the assassination occurs).  
+   If the *besieging unit's player is also assassinated*, the garrison 
+   remains.  
+   (This rule means that the enemy may chance to order the besiegeing unit 
+   to do something else and still get rid of the garrison !)
 4) Some provinces controlled by the victim will rebel.  See under
    rebellions for effects.  Based on a 1d6 die roll:
       Type of province               Die to rebel
@@ -1079,3 +1085,4 @@ v2b 17th of December 2001. Minor additions re. Basic and Adv. rules and some
 clarifications. Author Sergio Lidsell.
 v2c 24th of July 2002. Additions to Introduction and clarification of loan 
 repayment procedure in the borrowing phase. Author Sergio Lidsell.
+v2c2 26th of Oct 2002. Correction of G elim. at assass. Auth. S. Lidsell

@@ -1,12 +1,16 @@
-Greetings from the Diplomacy* Adjudicator!!                 Dec. 13, 2001.
+Greetings from the Diplomacy* Adjudicator!!                Nov. 17, 2002.
 Info.machiavelli*
 
 
 For rule differences between Machiavelli and Diplomacy, see the file
 "rules.machiavelli".
 
-The generic Machiavelli variant starts in 1454 with eight powers.  The
-powers and their initial starting locations and owned provinces are:
+
+Machiavelli Classic Setup
+
+The standard Machiavelli variant (The balance of Power) starts in 1454 
+with eight powers.  The powers and their initial starting locations and 
+owned provinces are:
 
 
 A: Austria      A-Austria, Carinthia, A-Hungary, A-Tyrolea
@@ -18,7 +22,7 @@ L: Florence     A-Arezzo, A-Florence, F-Pisa, Pistoia
 I: Milan        Como, A-Cremona, Fornova, A-Milan, Parma, A-Pavia, Piancenza
 
 N: Naples       Aquila, A-Bari, Capua, A-Messina, F-Naples, Otranto,
-                F-Palermo, Salerno,
+                F-Palermo, Salerno
 
 P: Papacy       F-Ancona, A-Bologna, Patrimony, A-Perugia, Romagna, 
                 A-Rome, Spoleto, Urbino
@@ -30,7 +34,7 @@ V: Venice       Bergamo, Brescia, F-Dalmatia, Friuli, Istria, A-Padua,
 
 x: Autonomous   G-Ferrara, G-Genoa, G-Lucca, G-Mantua, G-Modena,
                 G-Montferrat, G-Piombino, G-Ragusa G-Saluzzo, G-Savoy,
-                G-Sienna, G-Trent,
+                G-Siena, G-Trent
 
 
 Note that the single letter abbreviations for the powers Milan, I, and 
@@ -63,3 +67,6 @@ Default victory conditions:
 All rights reserved.  Used with permission.
 
 
+REVISION HISTORY
+v1 ??
+v1c, Nov 17th 2002.  Minor text changes/additions.  By Sergio Lidsell.

@@ -1,6 +1,6 @@
-#
-# $Log$
-#
+#Machiavelli Classic map file. Balance of Power scenario.
+#Rev. 3.  Nov. 17th 2002.  Mach1/2 abbr. 'cross-compatible'.
+#First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
 Ancona,                  P1P  anc ancon
@@ -9,21 +9,21 @@ Arezzo,                  L1f  are arezz
 Austria,                 A1f  aus austr
 Avignon,                 F1f  avi avign
 Bari,                    N1P  bar
-Bay of Tunis,            w0.  bot
+Bay of Tunis,            w0.  bot cms cmed cm
 Bergamo,                 V0f  ber berga
 Bologna,                 P1f  bol bolog
 Bosnia,                  T0.  bos bosni
 Brescia,                 V0f  bre bresc
 Capua,                   N0.  cap
 Carinthia,               A0.  car carin
-Carniola,                x1.  crn carni  
+Carniola,                x1.  crn carni
 Como,                    I0.  com
 Corsica,                 x1p  cor corsi
 Cremona,                 I1f  cre cremo
 Croatia,                 x1.  cro croat
 Dalmatia,                V1.  dal dalma
 Durazzo,                 T1P  dur duraz
-Eastern Gulf of Lyons,   w0.  egl egol
+Eastern Gulf of Lyons,   w0.  egl egol lig lis ls
 Eastern Tyrrhenian Sea,  w0.  ets
 Ferrara,                 x1f  fer ferra
 Florence,                L3f  flo flore
@@ -35,7 +35,7 @@ Herzegovina,             T0.  her herze
 Hungary,                 A1.  hun hunga
 Ionian Sea,              w0.  ion is
 Istria,                  V0.  ist istri
-Lower Adriatic Sea,      w0.  low las
+Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
 Mantua,                  x1f  man mantu
 Marseilles,              F1P  mar marse marseille
@@ -51,7 +51,7 @@ Parma,                   I0f  par
 Patrimony,               P0f  pat patri
 Pavia,                   I1f  pav
 Perugia,                 P1f  per perug
-Piancenza,               I0f  pia pianc
+Piancenza,               I0f  pia pianc piace piacenza
 Piombino,                x1P  pio piomb
 Pisa,                    L1P  psa
 Pistoia,                 L0.  pst pisto pis
@@ -64,8 +64,8 @@ Salerno,                 N0P  sal saler
 Saluzzo,                 x1f  slz saluz
 Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
-Sienna,                  x1f  sie sienn
-Slavonia,                x0.  sla slavo  
+Siena,                   x1f  sie sienn sienna
+Slavonia,                x0.  sla slavo
 Spoleto,                 P0f  spo spole
 Swiss,                   F1.  swi
 Tivoli,                  x0P  tiv tivol
@@ -74,14 +74,14 @@ Treviso,                 V1f  tre trevi
 Tunis,                   T2P  tun
 Turin,                   x1f  tur
 Tyrolea,                 A1f  tyr tyrol
-Upper Adriatic Sea,      w0.  uas
+Upper Adriatic Sea,      w0.  uas upp ua
 Urbino,                  P0f  urb urbin
 Lagoon,                  w0.  lag lagoo
 Venice,                  V3PV  ven venic
 Verona,                  V0f  ver veron
 Vicenza,                 V0f  vic vicen
 Western Gulf of Lyons,   w0.  wgl wgol
-Western Mediterranean,   w0.  wms wme wmed
+Western Mediterranean,   w0.  wms wme wmed wm
 Western Tyrrhenian Sea,  w0.  wts
 -1
 xxx-mv: xxx
@@ -138,8 +138,7 @@ ion-xc: otr las dur bot pal gon/cc mes
 ion-cc: gon
 ist-mv: cro dal
 ist-xc: uas cro/nc cro/sc dal
-low-xc: uas dal her rag alb dur ion otr
-low-xc: bar aqu anc
+las-xc: uas dal her rag alb dur ion otr bar aqu anc
 luc-mv: mod bol pst psa
 luc-xc: mod psa egl
 man-mv: cre bre ver fer bol mod par
@@ -209,12 +208,12 @@ vic-mv: trt car fri tre pad ver
 wgl-xc: avi pro/nc mar pro/sc egl cor wts sar wms
 wms-xc: wgl sar wts pal bot tun
 wts-xc: cor egl psa pio ets pal wms sar wgl
--1 
+-1
 Famine:   2     3     4     5     6     7     8     9    10    11    12
      2: ----- ----- Prove Patri Moden ----- Corsi Ancon ----- ----- -----
      3: ----- Piomb ----- ----- ----- ----- ----- Tunis ----- ----- Paler
      4: Tivol ----- Otran Padua Swiss Cremo Pontr ----- Herze ----- -----
-     5: Friul ----- Bolog Saler Veron Austr Milan Sienn ----- ----- Duraz
+     5: Friul ----- Bolog Saler Veron Austr Milan Siena ----- ----- Duraz
      6: Marse Ragus Vicen Carin Berga Pisto Spole ----- Pianc Hunga -----
      7: ----- Bari  Slavo Montf Urbin Forno ----- Como  Trent ----- -----
      8: Ferra ----- Rome  Pavia ----- ----- Arezz Bresc Saluz Alban Genoa
@@ -228,7 +227,7 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
      3: Pontr Bosni Slavo ----- ----- ----- Croat ----- Tivol Bari  Tyrol
      4: Savoy ----- ----- Friul ----- Rome  ----- Marse Pavia ----- -----
      5: ----- Saler Veron ----- Dalma Lucca Bolog Carin Prove ----- -----
-     6: ----- ----- Turin Sienn Messi Padua Austr Ferra ----- ----- -----
+     6: ----- ----- Turin Siena Messi Padua Austr Ferra ----- ----- -----
      7: Paler ----- Genoa Alban Pisa  Tunis Avign Milan ----- ----- Sardi
      8: Duraz ----- Naple Moden Perug Cremo Venic Flore ----- ----- -----
      9: ----- Berga Ancon Parma ----- ----- ----- ----- Mantu Istri -----
@@ -257,7 +256,7 @@ Ownership (city) ordering:
 Center (province) order for summary report:
    bosni herze ragus alban duraz tunis sardi paler messi otran bari
    saler naple aquil capua tivol spole ancon patri rome  perug urbin
-   romag bolog sienn piomb arezz flore pisa  pisto lucca corsi prove
+   romag bolog siena piomb arezz flore pisa  pisto lucca corsi prove
    marse avign swiss turin saluz savoy montf genoa moden pontr parma
    forno pianc pavia como  milan cremo trent mantu ferra berga bresc
    padua veron vicen venic trevi friul istri dalma croat carni slavo
@@ -265,38 +264,15 @@ Center (province) order for summary report:
 #End of province ordering
 
 Storms:   2     3     4     5     6     7     8     9    10    11    12
-     2: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     2: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- uas  
      3: ----- ----- wgl   ----- ----- ----- ----- ----- bot   ----- -----
-     4: ----- uas   ----- ----- ----- ----- ----- ----- ----- wts   -----
-     5: gon   ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     4: ----- ----- ----- ----- ----- ----- ----- ----- ----- gon   -----
+     5: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
      6: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-     7: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     7: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  
      8: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-     9: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ets
+     9: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ets  
     10: ----- ion   ----- ----- ----- ----- ----- ----- ----- wme   -----
     11: ----- ----- las   ----- ----- ----- ----- ----- egl   ----- -----
-    12: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
-
-#Limits follow following format:
-# <power-letter> <Army x 4chars> <Fleet x 4chars> <garrison x 4chars>
-#Each char is:
-# 'x' = Unit allowed anytime
-# '.' Unit never allowed
-# 'b' Unit can only be built
-# 'r' Unit can only be bribed
-#Unit qualifers are in order:
-# Ordinary, Citizens, Mercenary, Professional
-
-Limits for Units Types:
-   A x.xx x.xx x.xx
-   T x..x x..x x..x
-   V xxxx xxxx xxxx
-   L xxx. xxx. xxx.
-   P xxx. xxx. xxx.
-   N xxx. xxx. xxx.
-   I xxx. xxx. xxx.
-   F x.x. x.x. x.x.
-#end of limits (this line compulsory!)
-
+    12: wts   ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 -1
-
