@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.16  2003/01/18 23:46:03  millis
+   ** Integrated USTV changes.
+   **
    ** Revision 1.15  2003/01/18 15:17:28  millis
    ** first intermediate checkin, with Native and Multi-province support
    **
@@ -851,8 +854,9 @@ void buildout(int pt)
                                                 pr[unit[u].loc].name);
  			    }
 				unit[u].status = ':';
-			} else if (unit[u].status == ':' && (dipent.xflags & XF_ALTBUILD)) {
-				num_units[unit[u].owner]++;
+			} else if (unit[u].status == ':') {
+			    num_units[unit[u].owner]++;
+			    if (dipent.xflags & XF_ALTBUILD) {
                                 fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
                                 for (i = strlen(powers[p]); i < LPOWER; i++)
                                                 putc(' ', rfp);
@@ -864,6 +868,7 @@ void buildout(int pt)
                                         more_orders++;
                                 }
                                 fprintf(rfp, " (maintain).\n");
+			    }
                         }
 		}
 	    }
