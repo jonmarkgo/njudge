@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.16  2003/02/17 15:39:20  millis
+ * bug 10, prevent overlapping absences
+ * Also improve text output for absences.
+ *
  * Revision 1.15  2003/01/13 22:29:48  millis
  * Merged from ustv
  *
@@ -183,6 +187,7 @@ void next_year(void);
 void init_movement(void);
 void init_retreats(void);
 int valid_move(int u, int p, int *c, int *b);
+int valid_artillery_move(int u, int p, int *c, int *b);
 
 /* defined in po_mastrpt.c */
 void mast_rpt(int current_power, int line_up);
