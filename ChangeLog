@@ -1,3 +1,11 @@
+2003-10-09 13:28  jaldhar
+
+	* debian/changelog: Updates for 1.5.2 release.
+
+2003-10-08 06:45  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_2
+
 2003-10-08 06:16  millis
 
 	* BUGS, NEWS, configure, configure.ac, njudge.spec: Updates for
