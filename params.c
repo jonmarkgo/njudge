@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2002/11/14 00:07:49  millis
+ * Trivial change to remove a space character
+ *
  * Revision 1.16  2002/11/13 22:29:16  millis
  * Bug 42 fix, Storms setting not being shown
  *
@@ -499,9 +502,9 @@ void params(FILE * fp)
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_NO_CENTRES) {
-                strcatf(line, "NoBlindCentres", &first_flag);
-            } else {
                 strcatf(line, "BlindCentres", &first_flag);
+            } else {
+                strcatf(line, "NoBlindCentres", &first_flag);
             } 
 	}
 	

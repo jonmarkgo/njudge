@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2002/08/27 22:27:54  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.25  2002/07/17 16:50:44  nzmb
  *
  * Fixed up mistake in PRV array, added more flexibility to commands.
@@ -192,6 +195,8 @@ char * SetSubkey(int act, char *s);
 #define CheckPress() if (!HasPress(dipent)) fprintf(rfp, "Game '%s' has no press enabled,  option is useless.\n\n", dipent.name); 
 
 #define CheckWings() if (!(dipent.flags & F_WINGS)) fprintf(rfp, "Game '%s' has no wings, option is useless.\n\n", dipent.name);
+
+#define CheckBlind() if (!(dipent.flags & F_BLIND)) fprintf(rfp, "Game '%s' is not blind, option is useless.\n\n", dipent.name);
 
 #define DRAW_VOTE 1
 #define CONC_VOTE 2
@@ -711,6 +716,10 @@ void mail_setp(char *s)
 #define PRV_POSTALPRESS   'm'
 #define SET_NOPOSTALPRESS 158
 #define PRV_NOPOSTALPRESS 'm'
+#define SET_BLIND_CENTRES 159
+#define PRV_BLIND_CENTRES 'm'
+#define SET_BLIND_NOCENTRES 160
+#define PRV_BLIND_NOCENTRES 'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -846,7 +855,9 @@ void mail_setp(char *s)
 	 "no must order", "secret",
 	 "nosecret", "no secret",
          "not variant", "notvariant",
-	 "postalpress", "nopostalpress", "no postalpress"
+	 "postalpress", "nopostalpress", "no postalpress",
+         "bcenters", "bcentres",
+         "no bcentres", "no bcenters", "nobcentres", "nobcenters"
  	};
 
 
@@ -988,7 +999,9 @@ void mail_setp(char *s)
 	SET_NOMUSTORDER, SET_NOMUSTORDER, SET_SECRET,
 	SET_NOSECRET, SET_NOSECRET,
 	SET_NOTVARIANT, SET_NOTVARIANT,
-	SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS
+	SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS,
+	SET_BLIND_CENTRES, SET_BLIND_CENTRES,
+        SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES
     };
 
 
@@ -1131,8 +1144,10 @@ void mail_setp(char *s)
 	PRV_SECRET,
 	PRV_NOSECRET, PRV_NOSECRET,
         PRV_NOTVARIANT, PRV_NOTVARIANT,
-	PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS
-	};
+	PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS,
+	PRV_BLIND_CENTRES, PRV_BLIND_CENTRES,
+        PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES
+};
 
 	chk24nmr = 0;
 	while (*s) {
@@ -2945,6 +2960,28 @@ void mail_setp(char *s)
                                 CheckAndToggleFlag(&dipent.xflags,  XF_BLANKBOARD, "BlankBoard", CATF_SETON,
                                            "Game will now start in a build phase with no units placed.\n",
                                             CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_BLIND_CENTRES:
+                       CheckBlind();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change BlindCentres flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_NO_CENTRES, "BlindCentres", CATF_SETOFF,
+                                               "Blind game will show owned centres.\n",CATF_INVERSE);
+                        }
+                        break;
+
+                case SET_BLIND_NOCENTRES:
+                        CheckBlind();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change BlindCentres flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_NO_CENTRES, "BlindCentres", CATF_SETON,
+                                               "Blind game will NOT show owned centres.\n",CATF_INVERSE);
                         }
                         break;
 
