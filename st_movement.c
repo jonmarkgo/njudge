@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.9  2001/06/05 00:52:39  miller
+** Fix proxy-unit order bug
+**
 ** Revision 1.8  2001/05/14 23:08:49  miller
 ** Remove DOS ^M
 **
@@ -52,7 +55,7 @@
 #include "functions.h"
 #include "dip.h"
 #include "porder.h"
-#define convoyable(p) (water(p))
+#define convoyable(p) (water(p) | (dipent.xflags & XF_COASTAL_CONVOYS))
 extern int one_owned[];
 int StrictConvoy(int p_index)
 {

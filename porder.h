@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/02/23 00:19:59  miller
+ * unDOSify
+ *
  * Revision 1.3  2001/02/03 10:38:25  miller
  * add new structure members
  *
@@ -52,6 +55,7 @@
 
 #define bribe(c)        (c == 'b' || c == 'd' || c == 'g')
 #define water(p)	(pr[p].type == 'w' || pr[p].type == 'v')
+#define water2(p)	(water(p) || pr[p].type2 == 'w')
 
 extern int cmap[CMAP_SIZE];
 
@@ -64,6 +68,7 @@ extern struct province {
 	int cown;		/* Owner of the city/fortress (Machiavelli)   */
 	int home;		/* Power whose home this is part of           */
 	char type;		/* 'X'=supply center, 'l'=land, 'w'=water     */
+	char type2;		/* if XF_PROV_DUALITY, 'l'= land, 'w'=water   */
 	short flags;		/* Flags for province                         */
 	int blockaded;		/* set to non-zero when centre is blockaded   */
 	int gconv;		/* Mach: Non-zero if garrison converteddd     */
@@ -117,8 +122,8 @@ extern int more_orders;		/* Nonzero if not all units ordered           */
 
 
 extern char *get_action();
-extern char *get_amount();
-extern char *get_duration();
+extern char *get_amount(char *, int *);
+extern char *get_duration( char *, int *);
 extern char *get_expense();
 extern char *get_exptype();
 extern char *get_order();
