@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/02/03 10:38:25  miller
+ * add new structure members
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added values for blockades and transformations
  *
