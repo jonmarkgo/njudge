@@ -1,11 +1,12 @@
  This is the list of all people having contributed in the code base:
 
 [This is only the skeleton of the file, as I don't know who did that in the 
-12 past years]
+12 past years - some digging in CHANGES still to be done]
 
 M. Becroft		: plyrdata (with Tim Miller)
 Chris Brand		: (1997) mail.c modifications
 Christophe Courtois	: documentation
+Nicholas Fitzpatrick	: Hall Of Fame
 Gregory A.Greenman	: Many many things
 David Kovar		: Many many things
 Dietmar Kulsch		: German version (DEAC)
@@ -15,13 +16,23 @@ David Norman		: many many many things, including countless variants
 C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
 Millis Miller		: many things, including maintenance, CVS and tarball maintenance
 Tim Miller		: plyrdata, Crowded_1898, and many other things
+Larry Richardson        : allow/deny (1995)
 Kevin A. Roust		:
 T.Ruelle		: (1994) params.c
+Andy Schwartz		:
 Alain Tesio		:
 Nathan Wagner		: (1997)
 
-Found in the source code but who are they?
+Found in the source code or logs but who are they?
 
 rpaar
 Positron
 BLR
+Curt
+Jimmy
+RV
+SS
+Eric
+Travis 
+Sean
+Andre
