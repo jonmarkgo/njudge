@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.3  2001/05/30 21:03:48  miller
+ * Lookfor will terminate search only if string has really ended
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Lots of changes, including
  *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
@@ -426,8 +429,7 @@ char *lookfor(char *l, char *w[], int len, int *n)
 			}
 		}
 
-                /* terminate only if at end of string */
-                if ((!*t) && ((!*s) || (!isalnum(*s)) || (*s != '_'))) {
+		if (!*t && (!*s || isspace(*s) || strchr("(;/,)",*s))) {
 			*n = i;
 			while (isspace(*s))
 				s++;
