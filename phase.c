@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/05/02 18:19:20  millis
+ * More for Bug 137, Optional summer turns
+ *
  * Revision 1.9  2002/08/27 22:27:56  millis
  * Updated for automake/autoconf functionality
  *
@@ -63,6 +66,8 @@
 #include "dip.h"
 #include "porder.h"
 #include "functions.h"
+
+static char line[1024]; /* Local temporary buffer */
 
 int phase(char *s)
 {
