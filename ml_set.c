@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2001/07/22 10:03:32  greg
+ * customized subjectline for player's preference change
+ *
  * Revision 1.10  2001/07/15 09:17:53  greg
  * added support for game directories in a sub directory
  *
@@ -576,6 +579,15 @@ void mail_setp(char *s)
 #define PRV_BASIC	  'm'
 #define SET_ADVANCED	  134
 #define PRV_ADVANCED	  'm'
+/* Tim Miller's Concession stuff */
+#define SET_CONCESSIONS   135
+#define PRV_CONCESSIONS   'm'
+#define SET_NOCONCESSIONS 136
+#define PRV_NOCONCESSIONS 'm'
+#define SET_CONC          137 /* This is how player votes to concede */
+#define PRV_CONC          'a'
+#define SET_NOCONC        138
+#define PRV_NOCONC        'a'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -621,6 +633,8 @@ void mail_setp(char *s)
 	 "ontimerat","resrat",
 	 "show", "no show",
 	 "dias", "no dias", "nodias",
+	 "concessions", "noconcessions", "no concessions",
+	 "conc", "noconc",
 	 "draw", "no draw", "nodraw",
 	 "ep", "ep number", "ep num", "epnum", "epnumber",
 	 "centres", "centers",
@@ -742,6 +756,8 @@ void mail_setp(char *s)
 	 SET_ONTIMERAT, SET_RESRAT,
 	 SET_SHOW, SET_NOSHOW,
 	 SET_DIAS, SET_NODIAS, SET_NODIAS,
+	 SET_CONCESSIONS, SET_NOCONCESSIONS, SET_NOCONCESSIONS,
+	 SET_CONC, SET_NOCONC,
 	 SET_DRAW, SET_NODRAW, SET_NODRAW,
 	 SET_EPNUM, SET_EPNUM, SET_EPNUM, SET_EPNUM, SET_EPNUM,
 	 SET_CENTERS, SET_CENTERS,
@@ -867,6 +883,8 @@ void mail_setp(char *s)
 	 PRV_ONTIMERAT, PRV_RESRAT,
 	 PRV_SHOW, PRV_NOSHOW,
 	 PRV_DIAS, PRV_NODIAS, PRV_NODIAS,
+	 PRV_CONCESSIONS, PRV_NOCONCESSIONS, PRV_NOCONCESSIONS,
+	 PRV_CONC, PRV_NOCONC,
 	 PRV_DRAW, PRV_NODRAW, PRV_NODRAW,
 	 PRV_EPNUM, PRV_EPNUM, PRV_EPNUM, PRV_EPNUM, PRV_EPNUM,
 	 PRV_CENTERS, PRV_CENTERS,
@@ -1563,6 +1581,39 @@ void mail_setp(char *s)
 			dipent.players[player].status &= ~SF_DRAW;
 			break;
 
+		case SET_CONC:
+			if(check_can_vote(player, "concession"))
+				break;
+			if(dipent.flags & F_NODIAS)
+			{
+				fprintf(rfp,"It is pointless to vote for a concession in a NoDIAS game\n");
+				fprintf(rfp,"Simply vote for a one player draw!\n\n");
+				fprintf(rfp, "Send 'get draws' for more details.\n");
+				break;
+			}
+			for (t = s; *s && !isspace(*s) && *s != ','; s++);
+                                if (*s)
+                                        *s++ = '\0';
+                                while (isspace(*s))
+                                        s++;
+                                if (!*t || *t == '\n') {
+                                        fprintf(rfp, "You must specify the largest power on the board as the power\nyou are proposing the concession to.\n");
+                                } else if (chkconc(t)) {
+                                        fprintf(rfp, "Concession not set.\n");
+                                } else {
+					fprintf(rfp, "Concession to '%s' set.\n", t);
+					dipent.players[player].status |= SF_CONC;
+					process_conc();
+			}
+			break;
+
+		case SET_NOCONC:
+			if (check_can_vote(player, "concession"))
+                                break;
+			fprintf(rfp,"You will no longer accept a concession to the largest power on the board.\n");
+                        dipent.players[player].status &= ~SF_CONC;
+                        break;
+		
 		case SET_DIAS:
 			if (dipent.flags & F_NODIAS) {
 				dipent.flags ^= F_NODIAS;
@@ -1611,6 +1662,50 @@ void mail_setp(char *s)
 					dipent.players[i].status &= ~SF_DRAW;
 			}
 			break;
+
+		case SET_CONCESSIONS:
+		        if(dipent.flags & F_NODIAS)
+        		{
+                		fprintf(rfp,"NODIAS game already allow concessions!\n");
+                		break;
+        		}
+        		if(dipent.xflags & XF_NOCONCESSIONS)
+        		{
+                		dipent.xflags ^= XF_NOCONCESSIONS;
+                		fprintf(rfp,"Concessions are now permitted in %s.\n",dipent.name);
+				pprintf(cfp,"%s%s as %s in '%s' set the concessions flag.\nPowers may
+                        		concede the game to the largest power on the board.\n",
+                        		NowString(),xaddr,
+                        		powers[dipent.players[player].power],dipent.name);
+                        	fprintf(bfp,"%s as %s in '%s' set the concessions flag.\nPowers may now concede to the largest power on the board.\n",
+                                	xaddr,PRINT_POWER,dipent.name);
+                        	fprintf(mbfp,"%s as %s in '%s' set the concession flag.\nPowers may now concede to the largest power on the board.\n",
+                                	xaddr,PRINT_POWER,dipent.name);
+                                broadcast = 1;
+        		}
+			else
+        		{
+                		fprintf(rfp,"Game %s already allows concessions.\n",dipent.name);
+        		}
+        		break;
+
+		case SET_NOCONCESSIONS:
+        		if(dipent.xflags & XF_NOCONCESSIONS)
+        		{
+                		fprintf(rfp,"Game %s is already set to disallow concessions!\n", dipent.name);
+        		} else {
+                		dipent.xflags ^= XF_NOCONCESSIONS;
+                		fprintf(rfp,"Concessions are now disallowed.\n");
+		                pprintf(cfp,"%s%s as %s in '%s' disallowed concessions.\n",
+                		        NowString(),xaddr,powers[dipent.players[player].power],dipent.name);
+				fprintf(bfp,"%s as %s in '%s' disallowed concessions.\n",
+                        		xaddr,PRINT_POWER,dipent.name);
+                		fprintf(mbfp,"%s as %s in '%s' disallowed concessions.\n",
+                        	xaddr,PRINT_POWER,dipent.name);
+                		broadcast = 1;
+        		}
+        		break;
+
 
 		case SET_NOREVEAL:
 			if (dipent.flags & F_NOREVEAL) {
