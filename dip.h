@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2003/07/20 08:37:04  millis
+ * make ls & md members of type time_t
+ *
  * Revision 1.29  2003/05/14 07:59:16  nzmb
  * Fixed bug #122 -- splits dip.reply into part created before and after
  * the GM issues a "become" command.
@@ -151,6 +154,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <time.h>
 
 #include "conf.h"
 
