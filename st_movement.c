@@ -1,5 +1,11 @@
 /*
 ** $Log$
+** Revision 1.16  2003/01/18 14:36:05  millis
+** Merged in USTV changes, basically:
+** Native Units
+** 1/2 stregnth movements
+** Multi-unit provinces
+**
 ** Revision 1.15  2002/08/28 00:32:11  millis
 ** Removed some warnings only
 **
@@ -1600,7 +1606,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				 fprintf(rfp, "%s %s", "Unit", pr[unit[u].unit_prov].name);
 				if (unit[u].unit_coast > XC)
 					fprintf(rfp, " (%s)", mtype[unit[u].unit_coast]);
-				if (unit[u2].loc != unit[u].dest) {
+				if (u2 && unit[u2].loc != unit[u].dest) {
 					fprintf(rfp, " -> %s", pr[unit[u].dest].name);
 					if (unit[u].dcoast > XC)
 						fprintf(rfp, " (%s)", mtype[unit[u].dcoast]);
