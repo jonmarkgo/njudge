@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2004/08/07 16:05:44  machmstr
+ * All AH Mach variants added and then some
+ *
  * Revision 1.18  2004/08/07 01:35:00  Sergio Lidsell
  * All AH Mach variants added and then some
 
@@ -165,7 +168,7 @@ enum {
 #define LPOWER        24	/* Length of the longest power name              */
 
 /* Do not exceed byte limit as these are used in char arrays */
-#define WILD_PLAYER  140  /* First non-player player ordinal    123+17 new mach */
+#define WILD_PLAYER  139  /* First non-player player ordinal */
 #define NEUTRAL	     (WILD_PLAYER +1) /* Neutral power 			   */
 #define AUTONOMOUS   (NEUTRAL +1)     /* Non-player ordinal                */
 #define OBSERVER     (AUTONOMOUS +1)  /* Non-player ordinal                */
