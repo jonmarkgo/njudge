@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/05/14 23:16:24  miller
+ * Added 'h' province type and new_owner value for units
+ *
  * Revision 1.8  2002/04/15 12:55:45  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -54,12 +57,14 @@
 #define NPOWER      (WILD_PLAYER-1)
 #define MV          0		/* Army/land movement                         */
 #define MX          1		/* Special loeb9 water crossing             */
-#define XC          2		/* Any coast                                  */
-#define NC          3		/* North coast                              */
-#define EC          4		/* East coast                               */
-#define WC          5		/* West coast                               */
-#define SC          6		/* South coast                              */
-#define CC	    7		/* Special conditional movement             */
+#define XC          4		/* Any coast                                  */
+#define NC          5		/* North coast                              */
+#define EC          6		/* East coast                               */
+#define WC          7		/* West coast                               */
+#define SC          8		/* South coast                              */
+#define CC	    9		/* Special conditional movement             */
+#define HX	    2		/* Half-unit movement			    */
+#define LX	    3		/* Half unit movement and convoys	    */
 #define PF_CONSTANT    0x00FF	/* Portion of flags that are constant         */
 
 #define CMAP_NAME   0
@@ -72,6 +77,7 @@
 #define bribe(c)        (c == 'b' || c == 'd' || c == 'g')
 #define water(p)	(pr[p].type == 'w' || pr[p].type == 'v' || pr[p].type == 'h')
 #define water2(p)	(water(p) || pr[p].type2 == 'w')
+#define highsea(p)      (pr[p].type == 'h')
 #define centre(p)       ((pr[p].type == 'x') || (pr[p].type >= 'A' && pr[p].type <= 'Z') || (pr[p].type >= '0' && pr[p].type <= '9'))
 #define railway(p)      (pr[p].type == 'r')
 #define gateway(p)      (pr[p].type == 'g')
@@ -86,12 +92,13 @@ extern struct province {
 	int owner;		/* Owner of the province                      */
 	int cown;		/* Owner of the city/fortress (Machiavelli)   */
 	int home;		/* Power whose home this is part of           */
-	char type;		/* 'X'=supply center, 'l'=land, 'w'=water     */
+	char type;		/* 'X'=supply center, 'l'=land, 'w'=water     */				/* 'h'=High Sea				      */
 	char type2;		/* if XF_PROV_DUALITY, 'l'= land, 'w'=water   */
 	short flags;		/* Flags for province                         */
 	int blockaded;		/* set to non-zero when centre is blockaded   */
-	int gconv;		/* Mach: Non-zero if garrison converteddd     */
+	int gconv;		/* Mach: Non-zero if garrison converted       */
 	int new_owner;		/* For setup, the new owner of province	      */
+	int order_index;	/* index of next unit to be ordered	      */	
 } pr[NPROV + 1];
 
 extern int npr;			/* Actual number of provinces                 */

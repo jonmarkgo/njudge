@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/12/22 02:00:34  millis
+ * Added DIE_STORMS setting for new random seed for storms
+ *
  * Revision 1.6  2002/04/15 12:55:41  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -72,12 +75,12 @@
 #define DIE_INCOME      atoi(config("DIE_INCOME"))
 #define MAXGAMES	atoi(config("MAXGAMES"))
 #define SYSLOG_FLAG	atoi(config("SYSLOG_FLAG"))
-#define STATS_FLAG	atoi(config("STATS_FLAG"))
-#define STATS_DIR	config("STATS_DIR")
 #define TIME_TOLERANCE  atoi(config("TIME_TOLERANCE"))
 #define WARP_FILE	config("WARP_FILE")
 #define GAME_DIR	config("GAME_DIR")
-#define BLIND_CMD        config("BLIND_CMD")
+#define BLIND_CMD       config("BLIND_CMD")
+#define NOBODY		config("NOBODY")
+#define BLOCK_FILE	config("BLOCK_FILE");
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think

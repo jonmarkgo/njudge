@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/12/28 00:02:54  millis
+ * Fixed bug 77, adding wrap_char() function
+ *
  * Revision 1.13  2002/11/08 21:51:19  millis
  * Resolve bug 36
  *
@@ -101,6 +104,10 @@ int IsGatewayOrder(int u, int *igw);
 int IsGatewayOrdered(int igw, int u, int result[]);
 char HasUnit(int province_index);
 int AllowedGatewayRetreat(int u, int p);
+int GetNativeIndex(void);
+int IsMultiProvince(int p);
+int CheckForMultiUnitProvinces(void);
+int GetUnitIndex(int p, int power);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);
@@ -145,6 +152,7 @@ void process_input(int pt, char phase);
 int ownership(void);
 
 /* defined in st_build.c */
+int CountCentres( int p );
 int buildin_td(char **s, int p);
 int buildin(char **s, int p);
 void init_build(void);
