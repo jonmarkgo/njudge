@@ -1,3 +1,5 @@
+(9th April 2002)
+ - Small change to dip.c to avoid repeated abandoned messages
 (6th April 2002)
  - Fixed dip.c to not process build turns without waiting
  - Small fix to ml_short.c to add space after province and allow "prov" 
