@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.40  2003/06/29 21:37:40  nzmb
+ * Made EOG draw entries broadcasted at the end of the game.
+ *
  * Revision 1.39  2003/05/13 00:07:25  millis
  * Bug 110, move on process deadline by 24 hours on bailout recovery
  *
@@ -335,12 +338,11 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
         system(line);
 
        if (!(dipent.players[player_index].status & SF_RESIGN)) {
-           sprintf(line, "%s %s '%s:%s - %s Blind Results' '%s'",
-                SMAIL_CMD, out_file, JUDGE_CODE, dipent.name, turn_text,
-                dipent.players[player_index].address);
+           sprintf(line, "%s '%s:%s - %s Blind Results'",
+                out_file, JUDGE_CODE, dipent.name, turn_text);
 
            if (*(dipent.players[player_index].address) != '*' && !Dflg) {
-                                execute(line);
+                MailOut(line, dipent.players[player_index].address);
            }
 	}
 }
@@ -716,9 +718,9 @@ void master(void)
 			    if (dipent.players[i].power == MASTER && 
 				!(dipent.players[i].status & SF_RESIGN)) {
                                 sprintf(line,
-                                        "%s %s 'Diplomacy time-warp: %s' '%s'",
-                                         SMAIL_CMD, WARP_FILE, dipent.name, dipent.players[i].address);
-                                execute(line);
+                                        "%s 'Diplomacy time-warp: %s'",
+                                         WARP_FILE, dipent.name);
+				MailOut(line, dipent.players[i].address);
 			      }
   
 			    }
@@ -732,7 +734,27 @@ void master(void)
 				} else {
 					continue;
 				}
-			} else {
+			} else if (GAME_PAUSED) {
+			    ibmfp = fopen(WARP_FILE, "w");
+                            if (ibmfp != NULL) {
+                                fprintf(ibmfp, 
+				"Game is paused - master must send the 'resume' command to resume it or 'terminate' to finish.\n\n");
+                                fclose(ibmfp);
+
+                               for (i = 0; i < dipent.n; i++) {
+                                if (dipent.players[i].power < 0)
+                                    continue;
+                                if (!(dipent.players[i].status & SF_RESIGN)) {
+                                    sprintf(line,
+                                        "%s 'Game pause reminder: %s'",
+                                         WARP_FILE, dipent.name);
+				    MailOut(line, dipent.players[i].address);
+				}
+                              }
+			      dipent.process = now + 3 * 60 * 60; /* Remind every 3 days that game is paused */
+			    }
+
+        		} else {
 				process();
 			}
 		}
@@ -772,42 +794,42 @@ void master(void)
 	if (control < 1000)
 		fclose(cfp);
 
-	if (control && control < 1000 && ded[0].md < now) {
-		stat("dip.control", &sbuf);
-		if (sbuf.st_size > 0) {
-			s = notifies;
-			while (*s && *s != '*') {
-				if (*s == '+')
-					s++;
-				sprintf(line,
-					"%s dip.control 'Diplomacy control information' '%s'", 
-					 SMAIL_CMD, s);
-				execute(line);
-				while (*s++);
-			}
-		}
-		remove("dip.control");
-		ded[0].md = now + MIN_CONTROL;
-	}
-	fclose(xfp);
-	stat("dip.xcontrol", &sbuf);
-	if (sbuf.st_size > 0) {
-		s = notifies;
-		while (*s && *s != '*') {
-			if (*s == '+') {
-				s++;
-				sprintf(line,
-					"%s dip.xcontrol 'Diplomacy xcontrol information' '%s'", 
-					SMAIL_CMD, s);
-				execute(line);
-			}
-			if (control >= 1000)
-				break;
-			while (*s++);
-		}
-	}
-	remove("dip.xcontrol");
-	control = 0;
+        if (control && control < 1000 && ded[0].md < now) {
+                stat("dip.control", &sbuf);
+                if (sbuf.st_size > 0) {
+                        s = notifies;
+                        while (*s && *s != '*') {
+                                if (*s == '+')
+                                        s++;
+                                sprintf(line,
+                                        "%s dip.control 'Diplomacy control information' '%s'",
+                                         SMAIL_CMD, s);
+                                execute(line);
+                                while (*s++);
+                        }
+                }
+                remove("dip.control");
+                ded[0].md = now + MIN_CONTROL;
+        }
+        fclose(xfp);
+        stat("dip.xcontrol", &sbuf);
+        if (sbuf.st_size > 0) {
+                s = notifies;
+                while (*s && *s != '*') {
+                        if (*s == '+') {
+                                s++;
+                                sprintf(line,
+                                        "%s dip.xcontrol 'Diplomacy xcontrol information' '%s'",
+                                        SMAIL_CMD, s);
+                                execute(line);
+                        }
+                        if (control >= 1000)
+                                break;
+                        while (*s++);
+                }
+        }
+        remove("dip.xcontrol");
+        control = 0;
 }
 
 /* See if the passed player need to make a move, 
@@ -900,14 +922,14 @@ void CheckRemindPlayer(int player, long one_quarter)
 		fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
 	fclose(rfp);
 
-	sprintf(line, "%s %s '%s:%s - %s Reminder' '%s'",
-	  SMAIL_CMD, temp_file, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[player].address);
+	sprintf(line, "%s '%s:%s - %s Reminder'",
+	  temp_file, JUDGE_CODE, dipent.name, dipent.phase);
 
 	dipent.players[player].status |= SF_REMIND;
 
 	if (*(dipent.players[player].address) != '*' &&
 	    !(dipent.players[player].status & SF_RESIGN)) {
-		execute(line);
+		MailOut(line, dipent.players[player].address);
 		sprintf(line,"Move reminder send to %s in game %s", dipent.players[player].address, dipent.name);
 		DIPINFO(line);
 	}
@@ -943,17 +965,6 @@ int process(void)
 	*/
 	dedtest = dipent.dedapplied;
 
-        if (GAME_PAUSED) {
-		/**** To be created proper file etc. 
-                fprintf(lfp,
-                        "Diplomacy game '%s' is waiting to be continued.\n",
-                        dipent.name);
-                fprintf(mlfp,
-                        "Diplomacy game '%s' is waiting to be continued.\n",
-                        dipent.name);
-		****/
-                return 0;
-        }
 
 	if (now < dipent.grace) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
@@ -1157,14 +1168,14 @@ int process(void)
 					if (*(dipent.players[i].address) != '*' &&
 					    !(dipent.players[i].status & SF_RESIGN)) {
 						if (dipent.players[i].power == MASTER) {
-							sprintf(line, "%s dip.mlate '%s:%s - %s Late Notice: %s' '%s'",
-								SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
-							execute(line);
+							sprintf(line, "dip.mlate '%s:%s - %s Late Notice: %s'",
+								JUDGE_CODE, dipent.name, dipent.phase, late);
+							MailOut(line, dipent.players[i].address);
 						} else {
-							sprintf(line, "%s dip.late '%s%s:%s - %s Late Notice: %s' '%s'",
-								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase,
-									(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
-							execute(line);
+							sprintf(line, "dip.late '%s%s:%s - %s Late Notice: %s'",
+								 w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase,
+									(dipent.x2flags & X2F_SECRET) ? "?" : late);
+							MailOut(line, dipent.players[i].address);
 						}
 					}
 				}
@@ -1221,8 +1232,8 @@ int process(void)
 
 			if (*(dipent.players[i].address) != '*' &&
 			    !(dipent.players[i].status & SF_RESIGN)) {
-				sprintf(line, "%s dip.result '%s' '%s'", SMAIL_CMD, subjectline, dipent.players[i].address);
-				execute(line);
+				sprintf(line, "dip.result '%s'", subjectline);
+				MailOut(line, dipent.players[i].address);
 			}
 		}
 		dipent.process = now + 168 * 60 * 60;
@@ -1332,11 +1343,10 @@ int process(void)
 
 					if (*(dipent.players[i].address) != '*' && !Dflg &&
 					    !(dipent.players[i].status & SF_RESIGN)) {
-						sprintf(line, "%s dip.result '%s:%s - %s Waiting for Replacements: %s' '%s'",
-							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase,
-							(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
-
-						execute(line);
+						sprintf(line, "dip.result '%s:%s - %s Waiting for Replacements: %s'",
+							JUDGE_CODE, dipent.name, dipent.phase,
+							(dipent.x2flags & X2F_SECRET) ? "?" : late);
+						MailOut(line, dipent.players[i].address);
 					}
 				}
 				dipent.dedapplied = dedtest;
@@ -1353,12 +1363,12 @@ int process(void)
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
-					sprintf(line, "%s dip.result '%s:%s - %s Turn Waiting' '%s'",
-					  SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+					sprintf(line, "dip.result '%s:%s - %s Turn Waiting'",
+					  JUDGE_CODE, dipent.name, dipent.phase);
 
 					if (*(dipent.players[i].address) != '*' &&
 					    !(dipent.players[i].status & SF_RESIGN))
-						execute(line);
+						MailOut(line, dipent.players[i].address);
 				}
 				dipent.process = now + 24 *60 *60;  /* Remind each day */
 				dipent.dedapplied = dedtest;
@@ -1377,8 +1387,8 @@ int process(void)
 			fprintf(stderr, "Error %d processing orders.\n", i);
 			if (!Dflg)
 				fclose(rfp);
-			sprintf(line, "%s dip.result 'Diplomacy error' '%s'", SMAIL_CMD, GAMES_MASTER);
-			execute(line);
+			sprintf(line, "dip.result 'Diplomacy error'");
+			MailOut(line, GAMES_MASTER);
 			bailout(1);
 		}
 
@@ -1436,22 +1446,23 @@ int process(void)
 					continue;
 
 				if (*(dipent.players[i].address) != '*' && !Dflg) {
-					sprintf(line, "%s dip.victory '%s:%s - %s Victory: %c' '%s'",
-					  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.pl[victor], dipent.players[i].address);
-					execute(line);
+					sprintf(line, "dip.victory '%s:%s - %s Victory: %c'",
+					  JUDGE_CODE, dipent.name, phase, dipent.pl[victor]);
+					MailOut(line, dipent.players[i].address);
 				}
 			}
 
 			{
-				if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-					sprintf(line, "%s dip.temp 'MNC: Victory in game %s' '%s'",
-					      SMAIL_CMD,
-					      dipent.name, MN_CUSTODIAN);
-				else
-					sprintf(line, "%s dip.temp 'BNC: Victory in game %s' '%s'",
-					      SMAIL_CMD, dipent.name, BN_CUSTODIAN);
+				if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
+					sprintf(line, "dip.temp 'MNC: Victory in game %s'",
+					      dipent.name);
+					MailOut(line, MN_CUSTODIAN);
+				} else {
+					sprintf(line, "dip.temp 'BNC: Victory in game %s'",
+					      dipent.name);
+					MailOut(line, BN_CUSTODIAN);
+				}
 			}
-			execute(line);
 
 			/*
 			 * This seems as good a place as any to send out EOG diaries
@@ -1481,9 +1492,9 @@ int process(void)
 
 			/*  Mail summary to HALL_KEEPER */
 
-			sprintf(line, "%s %s%s/summary 'HoF: Victory in %s' '%s'",
-				SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
-			execute(line);
+			sprintf(line, "%s%s/summary 'HoF: Victory in %s'",
+				GAME_DIR, dipent.name, dipent.name);
+			MailOut(line, HALL_KEEPER);
 
 		} else {
 			deadline((sequence *) NULL, 1);
@@ -1544,25 +1555,25 @@ int process(void)
 
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) 
 			{
-				sprintf(line, "%s dip.result '%s:%s - %s Results' '%s'",
-				  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
+				sprintf(line, "dip.result '%s:%s - %s Results'",
+				  JUDGE_CODE, dipent.name, phase);
 			}
 
 		        /* let's do postal press */
 			/* TODO: tidy this code up */ 
 			sprintf(pppath, "%s%s/ppress-%s", GAME_DIR, dipent.name, phase);
 		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
-	    		    sprintf(ppline, "%s %s%s/ppress-%s '%s:%s - %s game press' '%s'",
-	        		SMAIL_CMD, GAME_DIR, dipent.name, phase,
-				JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
+	    		    sprintf(ppline, "%s%s/ppress-%s '%s:%s - %s game press'",
+	        		GAME_DIR, dipent.name, phase,
+				JUDGE_CODE, dipent.name, phase);
 
 			if (*(dipent.players[i].address) != '*' && !Dflg &&
 					    !(dipent.players[i].status & SF_RESIGN)) 
 			{
 			    if(!(dipent.flags & F_BLIND) || dipent.players[i].power == MASTER)
-				execute(line);
+				MailOut(line, dipent.players[i].address);
 			    if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
-				execute(ppline);
+				MailOut(ppline, dipent.players[i].address);
 			}
 
 			if (dipent.flags & F_BLIND) {
@@ -1573,9 +1584,9 @@ int process(void)
 		}
 
 		if (!strcmp(dipent.seq, "002") && !(dipent.flags & F_BLIND)) {
-			sprintf(line, "%s dip.result 'Diplomacy results %s %s' '%s'",
-				SMAIL_CMD, dipent.name, phase, GAMES_OPENER);
-			execute(line);
+			sprintf(line, "dip.result 'Diplomacy results %s %s'",
+				dipent.name, phase);
+			MailOut(line, GAMES_OPENER);
 		}
 		sprintf(line, "%s:%s - %s Results", JUDGE_CODE, dipent.name, phase);
 		archive("dip.result", line);

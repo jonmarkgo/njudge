@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2003/07/16 14:50:56  millis
+ * Used D_X2FLAGS to allow default setting for X2FLAGS for games (if desired)
+ *
  * Revision 1.18  2003/06/20 00:21:02  millis
  * Tried to fix it correctly!
  *
@@ -310,8 +313,8 @@ int getdipent(FILE * fp)
 			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
 			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
 			fprintf(stderr, "Time warp indicated.  GM notified.\n");
-			sprintf(line, "%s /dev/null 'Diplomacy time warp' '%s'", SMAIL_CMD, GAMES_MASTER);
-			execute(line);
+			sprintf(line, "/dev/null 'Diplomacy time warp'");
+			MailOut(line, GAMES_MASTER);
 			/* bailout(E_FATAL); */
 			/* Try to fix time warp by advancing deadline */
 			deadline(NULL, 1);
@@ -320,8 +323,8 @@ int getdipent(FILE * fp)
 
 			/* If recovering from bailout, notify the GAMES_MASTER */
            		if (bailout_recovery && !recover_print) {
-                    	    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
-                            execute(line);
+                    	    sprintf(line, "/dev/null 'Bailout recovery initiated'");
+			    MailOut(line, GAMES_MASTER);
                             recover_print = 1;
 			}
 			
@@ -415,8 +418,8 @@ void putdipent(FILE * fp, int dopw)
 	}
 	if (fprintf(fp, "-\n") == 0) {
 		fprintf(stderr, "Error writing to dip.master. Disk error suspected. Bailing out\n");
-		sprintf(line, "%s /dev/null 'File error writing dip.master' '%s'", SMAIL_CMD, GAMES_MASTER);
-		execute(line);
+		sprintf(line, "/dev/null 'File error writing dip.master'");
+		MailOut(line, GAMES_MASTER);
 		bailout(E_FATAL);
 	}
 }
