@@ -39,6 +39,8 @@ BUGS:
 
 - Makefile : copy docs/ too ?
 
+- BUGS file : whatisit ?
+
 - LICENSE must be written by someone who knows who owns what in
 the judge code (David Kovar ?)
 
