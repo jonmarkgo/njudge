@@ -972,7 +972,7 @@ Where:
 <s-prov>   = Source province.
 <d-prov>   = Destination province.
 <c-prov>   = Intermediate water province in a convoy route.
-<coast>    = <empty>, "nc", "sc", "ec" or "wc"
+<coast>    = <empty>, "/nc", "/sc", "/ec" or "/wc"
 <holds>    = "h", "hold", "holds", "stand", "stands".
 <moves>    = "-", "->", "m", "move", "moves", "move to", "moves to".
 <support>  = "s", "support", "supports".
