@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2003/10/08 12:28:08  millis
+ * Fix bug 236
+ *
  * Revision 1.23  2003/09/14 08:25:13  millis
  * Fix bug 225
  *
@@ -1220,7 +1223,6 @@ int ma_moveout(int pt)
 
 			case 'd':
                                 fprintf(rfp, " DISBAND");
-                                 unit[u].owner = 0;
                                 break;
 
                        case 'l':
@@ -1298,6 +1300,12 @@ int ma_moveout(int pt)
 	if (processing || predict) {
 		i = 0;
 		for (u = 1; u <= nunit; u++) {
+		    /* Bug 249, reset disbanding owners to zero */	
+		    if (unit[u].owner > 0 && unit[u].order == 'd')
+			    unit[u].owner = 0;
+		}
+
+		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
 				continue;
 
@@ -1374,7 +1382,10 @@ int ma_moveout(int pt)
 					remove_siege(p);
 					remove_rebellion(p);
 				} else {
-					set_siege(p);
+					/* Bug 249, only set siege if garrison is not disbanding */
+					if (!(pr[p].gunit != 0 && unit[pr[p].gunit].order == 'd')) {
+					    set_siege(p);
+					}
 				}
 			}
 			/*
