@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.59  2004/07/07 22:50:40  millis
+ * Bug91: further fixes for Duplex code
+ * (these mainly to get absences and late handling working)
+ *
  * Revision 1.58  2004/07/04 03:10:02  millis
  * Bug 329, allow changes of settigns when game is running, just set the
  * 'irregular' flag
@@ -3217,7 +3221,7 @@ CATF_SETOFF,
 				fprintf(mbfp,"A master must approve this as it exceeds game limit of %d days.\n\n",
 					dipent.max_absence_delay);
 				fprintf(mbfp,"To approve, send the following commands:\n");
-				fprintf(mbfp,"BECOME %c\n", pletter[dipent.variant][dipent.players[RealPlayerIndex(player)].power]);
+				fprintf(mbfp,"BECOME %c\n", pletter[dipent.variant][dipent.players[player].power]);
 				fprintf(mbfp,"SET ABSENCE %s", abs_time(&dates));
 				fprintf(mbfp," TO %s\n\n", abs_time(&datee));
 				broadcast_master_only = 1;
@@ -3259,7 +3263,7 @@ CATF_SETOFF,
 				raddr, PRINT_POWER, ptime(&dates));
 				fprintf(mbfp,"%s; Master's approval NOT required.\n\n", ptime(&datee));
 				fprintf(mbfp,"To revoke this, if you feel it necessary, send the following commands:\n");
-				fprintf(mbfp,"    BECOME %c\n", pletter[dipent.variant][dipent.players[RealPlayerIndex(player)].power]);
+				fprintf(mbfp,"    BECOME %c\n", pletter[dipent.variant][dipent.players[player].power]);
 				fprintf(mbfp,"    SET NOABSENCE %s\n", abs_time(&dates));
 				broadcast_master_only = 1;
 			} else {

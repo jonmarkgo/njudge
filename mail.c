@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.71  2004/05/22 09:18:23  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.70  2004/05/13 00:17:19  millis
  * Don't send emails to NOBODY (Bug 306)
  *
@@ -447,6 +450,9 @@ static int address_not_in_list(char *reply_address, char *players_addresses);
 /* Resign passed player */
 void ResignPlayer( int resign_index)
 {
+    int i;
+    int index = RealPlayerIndex(resign_index);
+
     if (any_broadcast && broad_part) {
         send_press();
         open_press();
@@ -456,38 +462,48 @@ void ResignPlayer( int resign_index)
         return;
     }
 
-    dipent.players[resign_index].status |= SF_RESIGN;
-    fprintf(rfp, "%s has resigned from game '%s'.\n\n",
-        powers[dipent.players[resign_index].power], dipent.name);
-    /* WAS mfprintf  1/95 BLR */
+    for (i = 0; i < dipent.np; i++) {
+        if (i == index || (dipent.players[index].controlling_power == 0 &&
+			   FindPower(dipent.players[i].controlling_power) == i &&
+			   !(dipent.flags & F_INTIMATE))) {
+            dipent.players[i].status |= SF_RESIGN;
+    	    fprintf(rfp, "%s has resigned from game '%s'.\n",
+                    powers[dipent.players[i].power], dipent.name);
+
+            fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n", xaddr,
+                    ((dipent.flags & F_GUNBOAT) &&
+                    (dipent.players[i].power != MASTER))
+                    ? someone
+                    : dipent.players[i].address,
+                    powers[dipent.players[i].power], dipent.name);
+
+            fprintf(mbfp, "%s has resigned %s\nas %s in game '%s'.\n", raddr,
+                    dipent.players[i].address,
+                    powers[dipent.players[i].power], dipent.name);
+
+
+            if (dipent.players[resign_index].power != OBSERVER) {
+                pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
+                NowString(),
+                powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
+                dipent.players[resign_index].units, dipent.players[resign_index].centers);
+                pcontrol++;
+            }
+	}
+    }
+    fputc('\n', rfp);
+    fputc('\n', bfp);
+    fputc('\n', mbfp);
+
+    broad_signon = 1;
     sprintf(subjectline,
             "%s:%s - %s Resignation: %s",
             JUDGE_CODE,
             dipent.name,
             dipent.phase,
-            powers[dipent.players[resign_index].power]);
+            dipent.x2flags & X2F_SECRET ? "power(s)" : powers[dipent.players[resign_index].power]);
 
-    fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
-       ((dipent.flags & F_GUNBOAT) &&
-        (dipent.players[resign_index].power != MASTER))
-        ? someone
-        : dipent.players[resign_index].address,
-        powers[dipent.players[resign_index].power], dipent.name);
-
-    fprintf(mbfp, "%s has resigned %s\nas %s in game '%s'.\n\n", raddr,
-        dipent.players[resign_index].address,
-        powers[dipent.players[resign_index].power], dipent.name);
-
-
-    broad_signon = 1;
-    if (dipent.players[resign_index].power != OBSERVER) {
-        pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
-                NowString(),
-                powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
-                dipent.players[resign_index].units, dipent.players[resign_index].centers);
-        pcontrol++;
-    }
-    strcpy(dipent.players[resign_index].password, GOING_PWD);
+    strcpy(dipent.players[index].password, GOING_PWD);
  }
 
 /*
@@ -508,10 +524,10 @@ int FindByEmail(char *power_text)
         int found = 0;
         int found_index = -1;
 
-        for (i = 0; i < dipent.n; i++) {
+        for (i = 0; i < dipent.n && !found; i++) {
                 if (strstr(dipent.players[i].address,power_text) != NULL) {
                         found++;
-                        found_index = i;
+                        found_index = RealPlayerIndex(i);
                 }
         }
 
@@ -2307,18 +2323,18 @@ int mail(void)
 			fprintf(rfp, "Error renaming %s to %s.\n", Tfile, Mfile);
 			mail_reply(E_FATAL);
 		}
-		if (*dipent.players[player].address != '*')
+		if (*dipent.players[RealPlayerIndex(player)].address != '*')
 		{
-			if(dipent.players[player].status & (SF_CD | SF_ABAND))
+			if(dipent.players[RealPlayerIndex(player)].status & (SF_CD | SF_ABAND))
 				put_data(dipent.players[player].userid, tookover);
-			dipent.players[player].status &= ~(SF_CD | SF_ABAND);
+			dipent.players[RealPlayerIndex(player)].status &= ~(SF_CD | SF_ABAND);
 		}
 		if (!more_orders)
 		{
-			dipent.players[player].status |= SF_PART;
+			dipent.players[RealPlayerIndex(player)].status |= SF_PART;
 		}
 		else
-			dipent.players[player].status &= ~SF_PART;
+			dipent.players[RealPlayerIndex(player)].status &= ~SF_PART;
 
 		if (i == 0) {
 			if (more_orders) {
@@ -2327,7 +2343,7 @@ int mail(void)
 					fprintf(rfp, "Deadline is\n%s, ", ptime(&dipent.deadline));
 					fprintf(rfp, "grace is %s.\n\n", ptime(&dipent.grace));
 				} else {
-					dipent.players[player].status &= ~SF_MOVED;
+					dipent.players[RealPlayerIndex(player)].status &= ~SF_MOVED;
 					if (time(NULL) > dipent.deadline) {
 						 fprintf(rfp, "\n\nNote: you are LATE and orders are still not");
 						 fprintf(rfp, " received for all units.\n");
@@ -2349,8 +2365,8 @@ int mail(void)
 					}
 				}
 			} else {
-				dipent.players[player].status |= SF_MOVED;
-				if (dipent.players[player].status & SF_WAIT) {
+				dipent.players[RealPlayerIndex(player)].status |= SF_MOVED;
+				if (dipent.players[RealPlayerIndex(player)].status & SF_WAIT) {
 					fprintf(rfp, "\n\nYou have set 'wait' status");
 					if (time(NULL) <= dipent.deadline) {
 						fprintf(rfp, " so orders will not be ");
@@ -2361,12 +2377,12 @@ int mail(void)
 				}
 			}
 		} else {
-			dipent.players[player].status &= ~SF_MOVED;
+			dipent.players[RealPlayerIndex(player)].status &= ~SF_MOVED;
 			fprintf(rfp, "\n\n%d error%s encountered.\n\n", i, i == 1 ? "" : "s");
 
 			/* don't set error flag if player doesn't have
 			   moves do -- Tim Miller Jun 18, 2003 */
-			if(dipent.players[player].status & SF_MOVE)
+			if(dipent.players[RealPlayerIndex(player)].status & SF_MOVE)
 			{
 				errorflag++;
 				fprintf(rfp,"Error flag set.\n\n");
@@ -2374,7 +2390,7 @@ int mail(void)
 				fprintf(rfp,"Since you have no moves due, the error flag is not set.\n\n");
 			}
 			
-			if ((dipent.players[player].status & SF_MOVE) &&
+			if ((dipent.players[RealPlayerIndex(player)].status & SF_MOVE) &&
                            (dipent.players[player].power != MASTER) &&
                             !GAME_PAUSED && (dipent.phase[6] != 'X')) {
                                 long then;
@@ -2915,12 +2931,13 @@ static int InsertDummyPlayers()
     if (i + (dipent.np - players) >= MAXPLAYERS && (dipent.np - players) > 0)
         return 0;
 
-    if (players < dipent.np) {
+    if (players < dipent.no_of_players) {
         /* OK, we are missing players, so let's add the right number of dummy ones */
-        while (players != dipent.np && i < MAXPLAYERS ) {
+        while (players != dipent.no_of_players && i < MAXPLAYERS ) {
             dipent.players[i].power = WILD_PLAYER;
             dipent.players[i].userid = 0;
             strcpy(dipent.players[i].address,NULL_EMAIL);
+	    strcpy(dipent.players[i].password, "-none-");
             dipent.players[i].status = SF_ABAND;
             players++;
             dipent.n++;

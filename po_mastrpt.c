@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.5  2004/05/22 08:51:47  millis
+   ** Bug 297: Add Intimate Diplomacy
+   **
    ** Revision 1.3  2003/05/02 22:16:57  millis
    ** Remove moves from non-players (stops Chaos games with lots of junk lines)
    **
@@ -51,6 +54,8 @@ void mast_rpt(int current_power, int line_up)
 	for (cnt = 0; cnt < MAXPLAYERS; cnt++) {
 		tmp = 0;
 		if (dipent.players[cnt].power == current_power) {
+		    if (dipent.players[cnt].controlling_power == 0 || 
+		        dipent.players[cnt].controlling_power >= WILD_PLAYER) {
 			if ((dipent.players[cnt].status & SF_MOVE) &&
 			    !(dipent.players[cnt].status & SF_PART)) {
 				fprintf(rfp, " Move Required");
@@ -95,6 +100,9 @@ void mast_rpt(int current_power, int line_up)
 				fprintf(rfp, " WAIT");
 			};
 			fprintf(rfp, ".");
+		    } else {
+		        fprintf(rfp, " controlled by %s.", powers[dipent.players[RealPlayerIndex(cnt)].power]);
+		    }
 		};
 	};
 	fprintf(rfp, "\n");
