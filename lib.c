@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.8  2001/07/08 22:55:37  miller
+ * Use CUSTODIAN name in better order
+ *
  * Revision 1.7  2001/07/01 23:19:29  miller
  * Add InformCustodians func
  *
@@ -71,7 +74,7 @@ void archive(char *file, char *subject)
 	char name[60];
 	FILE *ofp, *ifp;
 
-	sprintf(name, "D%s/archive", dipent.name);
+	sprintf(name, "%s%s/archive", GAME_DIR, dipent.name);
 	if (!(ofp = fopen(name, "a"))) {
 		perror(name);
 		fprintf(log_fp, "Unable to append to archive file for '%s'.\n", dipent.name);
