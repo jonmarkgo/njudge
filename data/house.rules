@@ -1,16 +1,17 @@
-Generic Judge House Rules		13th January 2003
+Generic Judge House Rules                                 13th January 2003
 ---------------------------------------------------------------------------
 
 This document describes the Generic Judge House Rules. These House Rules
 apply to any game running on any judge.
 
-These House Rules may be modifiedby any rules specific to the judge being 
+These House Rules may be modified by any rules specific to the judge being 
 used. They can also be modified by the rules of the particular variant
 being played and/or specifically by the GM. GMs should announce such
 differences at the time of the game creation.
 
 This document supplements Avalon Hill's Diplomacy rules (most recent
 American edition.)
+
 
 General rules:
 
@@ -19,8 +20,9 @@ Leaving a game without a good reason is considered very disrespectful. Don't
 join unless you are willing to commit yourself to an entire game, which
 may take several months or more.
 
-2) Automatic allies or automatic enemies will not be allowed in the same game.
-If you violate this rule you risk, at the very least, expulsion from the game.
+2) Automatic allies or automatic enemies will not be allowed in the same
+game.  If you violate this rule you risk, at the very least, expulsion from
+the game.
 
 3) Players may not communicate with each other directly (ie, through
 a mechanism other than the judge) in games where the identity of other
@@ -49,20 +51,21 @@ more time they should request a deadline extension. If you have already
 submitted orders, you may continue to diplome after the deadline has
 passed.
 
-8) It is unacceptable behavior to deliberately submit moves late for any reason
-(example, while awaiting reply from an ally).
+8) It is unacceptable behavior to deliberately submit moves late for any
+reason (example, while awaiting reply from an ally).
 
-9) Turns will never be replayed. THe previous turn may be reprocessed if required
-to correct an error, but no new orders will be allowed. Turns will only be
-so reprocessed if there was an error in calculating the results on the part of the
-judge software. If an error occurs which, to be fixed, requires new orders, that
-error will stand and the game will continue. The GM may alter orders as required
-to acheive the correct result (for example, changing to a hold order).
-[For example, if a unit is incorrectly marked as dislodged, in a turn, that turn
- can be replayed as long as no further turns have been processed that involve 
- other units orders.
- However, if, for example, an extra unit is discovered several turns later, that
- unit will stay and the correction made at the next adjustment phase.]
+9) Turns will never be replayed. The previous turn may be reprocessed if
+required to correct an error, but no new orders will be allowed. Turns will
+only be so reprocessed if there was an error in calculating the results on
+the part of the judge software. If an error occurs which, to be fixed,
+requires new orders, that error will stand and the game will continue. The GM
+may alter orders as required to acheive the correct result (for example,
+changing to a hold order).
+[For example, if a unit is incorrectly marked as dislodged, in a turn, that 
+turn can be replayed as long as no further turns have been processed that
+involve other units' orders.  However, if, for example, an extra unit is
+discovered several turns later, that unit will stay and the correction made
+at the next adjustment phase.]
 
 10) If a player is unable to continue playing, the player should
 notify the GM as soon as possible to allow the GM time to find a
@@ -73,13 +76,15 @@ replacement.
 12) A valid registration form is required for all players. Lying on your
 registration for is grounds for expulsion from the judge. The following
 fields must be valid: 
+
     Name, Email, Level, Address (city and state only), Country.
 
 13) A player is responsible for submitting their own orders. In case of
 difficulty, orders can be emailed directly to the GM but the final
 responsibility lies with the player.
 
-Player Guidlines
+
+Player Guidelines
 
 1) Players should direct all questions and comments to the
 GM, not the JK, unless one of the situations described in
@@ -90,7 +95,7 @@ the JK immediately so that he can resolve the situation.
 
 3) If the GM is suspected of cheating, players should
 contact the JK immediately so that he can investigate the
-allegation
+allegation.
 
 4) Players will review their registration every time they
 sign onto a new game to ensure that it is complete, up to
@@ -101,6 +106,7 @@ appropriate instructions to insure that their current
 registration is updated, and that they don't end up with a
 second registration. 
 
+
 Player Replacement:
 
 1) Players may not reenter a game as a different power under any
@@ -108,6 +114,7 @@ conditions.
 Note that if this is specifically over-ruled for a game, that 
 game will invalid for rating purposes and must be stated by the GM
 and approved by all players, if the game is in progress.
+
 
 GM rules:
 
@@ -123,7 +130,8 @@ conditions, press flags, etc.
 4) GMs may not play in their own game. Judge keepers may not play in
 any game on their own judge.
 
-GM Guidlines:
+
+GM Guidelines:
 
 1) The GM will answer any questions about rule mechanics,
 adjudication or judge commands and operation that players
@@ -167,11 +175,11 @@ until it is finished. If a GM cannot fulfill this
 requirement, he will notify the JK immediately.
 
 
-Voting:.
+Voting:
 
 1) All votes to change the nature of the game (deadline calculation,
-et al) must be unanimous. Settings that do not change the character of the
-game (such as deadline calculation etc.) require unanimity of all surviving
+etc.) must be unanimous. Settings that do not change the character of the
+game (such as deadline calculation, etc.) require unanimity of all surviving
 players: any other changes require all players to agree. 
 The game will never under any circumstances be changed to non-DIAS once 
 started.
@@ -189,6 +197,7 @@ is assumed to have voted against the proposal, ie NVR=no.
 run by the judge keeper. This is really a method of last resort and the
 judge keeper will only allow this after all other methods have failed.
 
+
 Draws:
 
 1) A win is defined as a draw including only one player. 
@@ -205,28 +214,31 @@ have not been eliminated from the game.  Draws may not give order of
 finishes such as 2nd place, 3rd place, etc.  Players are either
 included in the draw or not.
 
-4) The following people can vote in a draw: All players who have units may vote.
-Only players who can vote can be included in the draw.
+4) The following people can vote in a draw: All players who have units
+may vote.  Only players who can vote can be included in the draw.
 
 5) All players entitled to vote must vote unanimously for the draw
 vote for it to pass.
 
-(Note that the judge clears the draw votes every time a turn processes: thus 
- you need to cast your vote again.)
+(Note that the judge clears the draw votes every time a turn processes: thus
+you need to cast your vote again.)
+
 
 Concessions:
 
-Similar to a draw, all players may conceed the game to the largest power.
+Similar to a draw, all players may concede the game to the largest power.
 For this vote, all players still owning SCs must vote unanimously for the 
 concession to pass. [Note: different to draws, where you must have units 
 to vote.]
 
+
 Draw Clock:
+
 The GM reserves the right to terminate a game in a draw including all of
 the remaining powers, if it is clear that the board has reached a
 stalemate. The GM must announce their decision to start the three game-year
 Draw Clock during the Fall turn prior to it starting. The clock will then
-run until one of the following events occur :
+run until one of the following events occur:
 
 (a) A province changes ownership (where a province is defined as being
 owned by the last power to have had a unit in the province at the end of a
@@ -239,7 +251,7 @@ none of (a), (b) and (c) occurring, in which case the game is declared a
 draw by the GM.
 
 Before the draw clock is started, the following sequence of events should
-occur :
+occur:
 
 (1) A player asks the GM to start the Draw Clock. The GM should never start
 the Draw Clock without a request from a player.
@@ -259,7 +271,7 @@ started at the end of the Fall turn, and states the year in which it will
 expire.
 
 A reasonable objection is any plan which the power making the objection is
-able to carry out. This includes :
+able to carry out. This includes:
 
 * I have a multi-way guess over [list of provinces], and the other side can
 not defend all of them. Eventually I will guess right.
@@ -267,7 +279,7 @@ not defend all of them. Eventually I will guess right.
 line to give the other side some room to manoeuvre.
 
 Unreasonable objections are any plan which the power is unable to carry out
-himself. This includes :
+himself. This includes:
 
 * It is clearly in France's interest to stab Germany, and I'm not accepting
 a draw until he does.
@@ -336,8 +348,8 @@ be ejected.
 You can not enter a single game as multiple players, use an
 alias without prior arrangement, or be "related" to another player. 
 Information provided in your registration form must be accurate as mentioned
-above. "Related" includes not only blood or legal ties, but friends, work-mates 
-and anyone else with whom you have personal links.
+above. "Related" includes not only blood or legal ties, but friends, work-
+mates and anyone else with whom you have personal links.
 
 Disputes:
 
@@ -346,12 +358,15 @@ disputes in the specified areas. Disputes that cannot be resolved at
 that level should be promoted to the next level up.
 
 GM - internal game problems and house rules
+
 Judge keeper - technical problems and house rules, as well as general judge
 considerations (such as banning players from the judge).
 
+
 AH Rules That Have Been Replaced:
+
 (Note: although references are to 1982 rulebook, the changes apply 
- equally to all rulebooks. At time of writing, 4th Edition 2000 rules were 
+equally to all rulebooks. At time of writing, 4th Edition 2000 rules were 
 available online at http://www.hasbro.com/instruct/Diplomacy.PDF.)
 
 1) VII.3.b
@@ -390,7 +405,7 @@ For example:
         France:  F Spa(nc) S F Mid, F Mid Convoy A Por-Bre, A Por-Mid-Bre
         Italy:   F Gulf of Lyon Convoy A Tus-Spa, A Tus-GoL-Spa
 
-What happens in the Mid-Atlantic ocean?  What about if the additional order:
+What happens in the Mid-Atlantic Ocean?  What about if the additional order:
         Italy:   A Mar S A Tus-Spa
 is entered?  With literal interpretation of the rules, the fleet
 in Spain would be dislodged, but its support to the fleet in the
@@ -409,7 +424,7 @@ passes to determine what support gets cut:
            status is cleared.
 
 Using this algorithm, Spain's support above would be cut in pass
-three.  The Mid-Atlantic Ocean's dislodgement would be detected
+three.  The Mid-Atlantic Ocean's dislodgment would be detected
 in pass four.  Portugal would be given the "no convoy" status and
 thus would have no effect on any unit in Brest in pass five.
 
@@ -428,7 +443,7 @@ retreats (if any) made, each player's number of units MUST be
 adjusted to equal the number of supply centers his Great Power
 controls.  If he has fewer centers than units, he MUST disband the
 excess units only, by removing them from the board.  The units
-removed may be any of his units he choses.  If he has more centers
+removed may be any of his units he chooses.  If he has more centers
 than units, he MAY build units by placing them..." (Emphasis on MUST
 and MAY is not in the original.)
 
@@ -455,6 +470,7 @@ The judge requires that an order for a unit supporting a fleet movement
 to a bi-coastal province specify the correct coast, otherwise the support
 will be void.
 
+
 Unusual Board Situations:
 
 Certain extremely rare situations are not covered by the rules of
@@ -474,9 +490,12 @@ entire Internet hobby at risk.
 2) CHANGE OF ADDRESS
 The GM is not responsible for problems caused by you changing your
 e-mail address without notifying the GM.
-Extra eMail addresses should be added with the IAmAlso command. You 
-should do so whenever prompted to by the judge.
-Your return address can be changed with the SET ADDRESS command.
+Extra e-mail addresses should be added with the IAmAlso command. You
+should do so whenever prompted to by the judge.  This links your extra
+address to your existing registration, but does not change your return
+address for any game.
+Your return address for a particular game can be changed with the SET ADDRESS
+command.
 To remove an address, re-REGISTER.
 
 
