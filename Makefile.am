@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.27  2003/07/16 15:04:34  millis
+# Remove ign program
+#
 # Revision 1.26  2003/06/10 10:33:30  millis
 # Bug174 fix, delete the map files first
 #
@@ -66,7 +69,7 @@ AWK=@AWK@
 LN_S=@LN_S@
 PERL=@PERL@
 
-bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
+bin_PROGRAMS= dip rdip size_check cmap summary deddump delgame flock \
 	fmtwho ded_to_ascii ascii_to_ded zpblind recdump lenlimit \
         ascii2rec
 
@@ -177,8 +180,6 @@ delgame_SOURCES=delgame.c
 flock_SOURCES=	flock.c
 
 fmtwho_SOURCES=	fmtwho.c
-
-pdip_SOURCES=	pdip.c
 
 rdip_SOURCES=	rdip.c \
 		diplog.c \

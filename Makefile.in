@@ -17,6 +17,9 @@
 # Process this file with automake to produce Makefile.in
 #
 # $Log$
+# Revision 1.32  2003/07/16 15:04:34  millis
+# Remove ign program
+#
 # Revision 1.31  2003/06/10 10:33:30  millis
 # Bug174 fix, delete the map files first
 #
@@ -184,7 +187,7 @@ docdir = @DIR@
 AM_CFLAGS = -pipe -Wall 
 MAIL = @_MAIL_@
 
-bin_PROGRAMS = dip rdip pdip size_check cmap summary deddump delgame flock \
+bin_PROGRAMS = dip rdip size_check cmap summary deddump delgame flock \
 	fmtwho ded_to_ascii ascii_to_ded zpblind recdump lenlimit \
         ascii2rec
 
@@ -302,8 +305,6 @@ flock_SOURCES = flock.c
 
 fmtwho_SOURCES = fmtwho.c
 
-pdip_SOURCES = pdip.c
-
 rdip_SOURCES = rdip.c \
 		diplog.c \
 		bailout.c \
@@ -377,7 +378,7 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES = smail dipclean
-bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) pdip$(EXEEXT) \
+bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) \
 	size_check$(EXEEXT) cmap$(EXEEXT) summary$(EXEEXT) \
 	deddump$(EXEEXT) delgame$(EXEEXT) flock$(EXEEXT) \
 	fmtwho$(EXEEXT) ded_to_ascii$(EXEEXT) \
@@ -455,11 +456,6 @@ lenlimit_OBJECTS = $(am_lenlimit_OBJECTS)
 lenlimit_LDADD = $(LDADD)
 lenlimit_DEPENDENCIES =
 lenlimit_LDFLAGS =
-am_pdip_OBJECTS = pdip.$(OBJEXT)
-pdip_OBJECTS = $(am_pdip_OBJECTS)
-pdip_LDADD = $(LDADD)
-pdip_DEPENDENCIES =
-pdip_LDFLAGS =
 am_rdip_OBJECTS = rdip.$(OBJEXT) diplog.$(OBJEXT) bailout.$(OBJEXT) \
 	conf.$(OBJEXT) strdup.$(OBJEXT) hashtable.$(OBJEXT) \
 	global.$(OBJEXT)
@@ -519,7 +515,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/ml_getaddr.Po ./$(DEPDIR)/ml_list.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ml_press.Po ./$(DEPDIR)/ml_set.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ml_short.Po ./$(DEPDIR)/ml_signon.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/params.Po ./$(DEPDIR)/pdip.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/phase.Po ./$(DEPDIR)/plyrdata.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/po_condition.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/po_errmsg.Po ./$(DEPDIR)/po_get.Po \
@@ -542,7 +537,7 @@ DIST_SOURCES = $(ascii2rec_SOURCES) $(ascii_to_ded_SOURCES) \
 	$(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) \
 	$(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) \
 	$(fmtwho_SOURCES) $(lenlimit_SOURCES) \
-	$(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) \
+	$(rdip_SOURCES) $(recdump_SOURCES) \
 	$(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
 
 NROFF = nroff
@@ -556,7 +551,7 @@ DIST_COMMON = README $(dist_data_DATA) $(dist_doc_DATA) \
 	Makefile.in NEWS aclocal.m4 config.guess config.h.in config.sub \
 	configure configure.ac depcomp dipclean.in install-sh missing \
 	mkinstalldirs smail.in
-SOURCES = $(ascii2rec_SOURCES) $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(lenlimit_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
+SOURCES = $(ascii2rec_SOURCES) $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(lenlimit_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
 
 all: $(BUILT_SOURCES) config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -654,9 +649,6 @@ fmtwho$(EXEEXT): $(fmtwho_OBJECTS) $(fmtwho_DEPENDENCIES)
 lenlimit$(EXEEXT): $(lenlimit_OBJECTS) $(lenlimit_DEPENDENCIES) 
 	@rm -f lenlimit$(EXEEXT)
 	$(LINK) $(lenlimit_LDFLAGS) $(lenlimit_OBJECTS) $(lenlimit_LDADD) $(LIBS)
-pdip$(EXEEXT): $(pdip_OBJECTS) $(pdip_DEPENDENCIES) 
-	@rm -f pdip$(EXEEXT)
-	$(LINK) $(pdip_LDFLAGS) $(pdip_OBJECTS) $(pdip_LDADD) $(LIBS)
 rdip$(EXEEXT): $(rdip_OBJECTS) $(rdip_DEPENDENCIES) 
 	@rm -f rdip$(EXEEXT)
 	$(LINK) $(rdip_LDFLAGS) $(rdip_OBJECTS) $(rdip_LDADD) $(LIBS)
@@ -740,7 +732,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ml_short.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ml_signon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/params.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pdip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plyrdata.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/po_condition.Po@am__quote@
