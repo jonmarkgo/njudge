@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2002/02/25 11:51:52  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.2.2.1  2001/10/19 23:07:42  dema
  * Added missing header file include
  *
@@ -207,7 +210,9 @@ void ma_retreatout(int pt)
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
 				putc(' ', rfp);
-			fprintf(rfp, "%-5s %s", Utype(unit[u].type), pr[unit[u].loc].name);
+			/* Bug 79, show type of special unit */
+			fprintf(rfp, "%s%s %s", Stype(unit[u].stype),
+			Utype(unit[u].type), pr[unit[u].loc].name);
 
 			if (unit[u].coast > XC)
 				fprintf(rfp, " (%s)", mtype[unit[u].coast]);
