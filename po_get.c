@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/07/01 23:19:29  miller
+ * Change function signature
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added support for wing units
  *
@@ -44,7 +47,7 @@ char *get_action(char *l, char *a)
 	int i;
 	static char *words[] =
 	{"0",
-	 "trafo", "transform to", "transforms to", "transform", "transforms", "tr#",
+	 "trafo to", "trafo", "transform to", "transforms to", "transforms", "transform", "tr#",
 	 "besieges", "besiege", "sieges", "siege", "b#",
 	 "convoys", "convoy", "transports", "transport", "t",
 	 "fast ferry", "ferry", "ff", "f",
@@ -68,7 +71,7 @@ char *get_action(char *l, char *a)
 
 	static char reply[] =
 	{'x',
-	  't', 't', 't', 't', 't', 't',
+	  't', 't', 't', 't', 't', 't', 't',
 	  'b', 'b', 'b', 'b', 'b',
 	 'c', 'c', 'c', 'c', 'c',
 	 'c', 'c', 'c', 'c',
