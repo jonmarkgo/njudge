@@ -353,7 +353,8 @@ You can create such a file with any content you like.
 
 <p>(I'll try to put this in the official distribution someday).
 
-<p>- <b>Warning</b> : <tt>dip.msg</tt> and <tt>dip.footer</tt> must be configured AFTER the installation.
+<p>- <b>Warning</b> : <tt>dip.msg</tt> and <tt>dip.footer</tt> must be configured AFTER the installation,
+they won't be copid when installing.
 <br>Think to remove the useless blank lines in them.  Don't try to add too much and take the risk to
 break some tools relying on the judge e-mail format.
 
@@ -526,7 +527,7 @@ by setting the <tt>GAME_DIR</tt> variable.  You MUST create the directory before
 
 <p> Don't forget the last '/'!
 
-<p>By default, <tt>GAME_DIR=D</tt>. If you leave this variable commented out, the
+<p>By default (and <strike>conservatism</strike> compatibility with old judges), <tt>GAME_DIR=D</tt>. If you leave this variable commented out, the
 games subdirectories will accumulate in the <tt>dip/</tt> directory with a name
 beginning by D (example : Dtest).  So if you move existing game
 subdirectories from <tt>~/dip/</tt> to <tt>~/dip/my_games/</tt>, you must set
@@ -615,6 +616,10 @@ English-speaking, and does not put a capital at the beginning, it will bail out.
 <h2><a name="5.6">5.6 Ready?</a></h2>
 
 <p> At this point, the judge should be ready to run.
+
+<h2><a name="5.7">5.7 Customise e-mails fomr the judge</a></h2>
+
+<p>It's time to configure the <tt>dip.msg</tt> and <tt>dip.footer</tt> in the new binaries directory.
 
 
 <h1><a name="6">6. What are these files?</a></h1>

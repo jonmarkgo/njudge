@@ -336,7 +336,7 @@
    (I'll try to put this in the official distribution someday).
 
    - Warning : dip.msg and dip.footer must be configured AFTER the
-   installation.
+   installation, they won't be copid when installing.
    Think to remove the useless blank lines in them. Don't try to add too
    much and take the risk to break some tools relying on the judge e-mail
    format.
@@ -512,7 +512,8 @@ atrun script
 
    Don't forget the last '/'!
 
-   By default, GAME_DIR=D. If you leave this variable commented out, the
+   By default (and [DEL: conservatism :DEL] compatibility with old
+   judges), GAME_DIR=D. If you leave this variable commented out, the
    games subdirectories will accumulate in the dip/ directory with a name
    beginning by D (example : Dtest). So if you move existing game
    subdirectories from ~/dip/ to ~/dip/my_games/, you must set
@@ -607,6 +608,11 @@ atrun script
 5.6 Ready?
 
    At this point, the judge should be ready to run.
+
+5.7 Customise e-mails fomr the judge
+
+   It's time to configure the dip.msg and dip.footer in the new binaries
+   directory.
 
                            6. What are these files?
 

@@ -38,7 +38,7 @@
 
 <h2><a name="1.2">1.2 Last version</a></h2>
 
-<p> This is a guide which aims to help people creating variants for the Diplomacy judge alone.
+<p> This is a guide which aims to help people creating variants for the Diplomacy judge.
 
 <br>The reference version is the HTML version.  The text should be
 automatically generated against the HTML.
@@ -47,6 +47,111 @@ snapshot of the judge at <a href="http://www.njudge.org/">http://www.njudge.org/
 
 <h2><a name="1.3">1.3 Why?</a></h2>
 
+<p> Creating a variant is currently almost impossible for someone alone.
+<a href="http://www.ellought.demon.co.uk/">David Norman</a> provides some useful help but many things
+don't need to go through him now that everyone can have a judge at home.
+
+<p> I'll try to sum up here most knowledge on variants creation, beginning by the basic
+ones ('fleet_in_Marseille').  I won't cover variants with new rules not yet implemented in the judge.
+
+<h1><a name="2">2. Data to provide</a></h1>
+
+<p> You MUST provide this:
+<ul type=square>
+<li>- <b>Map file</b>: this lists the territories, the way they communicate with each other, the order
+which must be used in summary reports.
+<br>Example: <tt>data/map, data/map.loeb9</tt>
+</li>
+<li>- <b>Seed file</b> : this lists the units beginning positions.
+<br>Example: <tt>data/seed.1</tt>
+</li>
+<li>- <b>Report file</b> : this file is sent at game start, giving the initial positions.
+<br><br>Example: <tt>data/report.38</tt>
+</li>
+</ul>
+
+<p> You MUST modify theses files in the source code of the judge:
+<ul type=square>
+<li>- <tt>variant.h</tt></li>
+<li>- <tt>variant.c</tt></li>
+</ul>
+
+<p> You MAY provide these files, but the judge will work without them.  They may be necessary for the
+players.
+<ul>
+<li>- <b>Info file</b>: It contains the differences between the standard game and the variant.
+</li>
+<li>- <b>Rules file</b>: Only if you create a whole new game.
+<br>Example: <tt>data/rules.machiavelli</tt>
+</li>
+</ul>
+
+<p> There are some additional files to modify to package a new variant into the official judge, see later.
+
+<h2><a name="2.1">2.1. Map files</a></h2>
+
+<p> A map file is in the <tt>data/</tt> subdirectory.  The name is <tt>map.&lt;<i>variant_name</i>&gt;.
+
+<p> The format is fully described by a document from Sergio Lidsell that is part of the judge package:
+<a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.  Following are juste examples from the
+standard map to sum it up.
+
+<h3><a name="2.1.1">2.1.1 Declaration of lands and centers</a></h3>
+<table cellpadding=3>
+<tr><td><tt>Switzerland,</tt><br>(Neutral land)<td><tt>l  swi switz swiss</tt><br>(Possible names)
+<tr><td><tt>Adriatic Sea,</tt><br>(Sea)<td><tt>w  adr adriatic
+<tr><td><tt>Ankara,</tt><br>(Home center of T)<td><tt>T  ank ankar
+<tr><td><tt>Belgium,</tt><br>(Neutral center with sea shore)<td><tt>xw  bel belgi
+</table>
+
+<h3><a name="2.1.2">2.1.2 Movements</a></h3>
+
+<table cellpadding=3>
+<tr><td><tt>swi-mv:</tt><br>(Switzerland, no possible move)<td><tt>swi</tt><br>&nbsp;
+<tr><td><tt>adr-xc:</tt><br>(Between a coast and its neighbours)<td><tt>alb apu ven tri ion</tt><br>&nbsp;
+<tr><td><tt>bud-mv:</tt><br>(Between a land and its neighbours)<td><tt>vie gal rum ser tri</tt><br>&nbsp;
+<tr><td><tt>con-mv:<br>con-xc:</tt>
+<br>(Special case for Constantinophe)<td><tt>bul ank smy<br>bul/sc bul/ec bla ank smy aeg</tt><br>&nbsp;
+</table>
+
+<h3><a name="2.1.3">2.1.3 ordering for summaries (optional)</a></h3>
+
+<p><tt>Center order for summary report:
+<br>&nbsp;&nbsp;ven rom nap tun edi lon lvp bre par mar por spa bel hol mun kie ber
+<br>&nbsp;&nbsp;den swe nor stp war mos sev con ank smy bul rum gre ser bud vie tri
+<br>#End of center ordering
+</tt>
+
+<h3><a name="2.1.4">2.1.4 Other optional data</a></h3>
+
+<p> Hong Kong flag, railways, and so on, are described in <a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.
+ For a good example, see <tt>map.colonial</tt>.
+
+<h2><a name="2.2">2.2 Seed file</a></h2>
+
+<p> The seed file is in the <tt>data/</tt> subdirectory.  The name is <tt>seed.&lt;<i>variant_number</i>&gt;.
+(The variant number is obtained when modifying the source; see below).
+
+<h1><a name="3">3. Examples</a></h1>
+
+<h1><a name="5">5. floc.net</a></h1>
+
+<h1><a name="6">6. Mapmaker</a></h1>
+
+<p>
+DN :
+There are a number of files you need - a map, a report, a seed and an info
+file, plus you have to update the variant.h (and variant.c in the newer
+versions of the judge).
+
+It can be done without MapMaker. But by using MapMaker :
+
+(1) It takes a fraction of the time
+(2) You get Mapper, Mapit and a PS map too
+(3) You get floc.net support
+
+And also, you get my experience of getting a variant through draft versions
+without confusing the various systems that run around the judges...
 
 <h1><a name="7">7. Automatic tests</a></h1>
 
@@ -57,10 +162,12 @@ snapshot of the judge at <a href="http://www.njudge.org/">http://www.njudge.org/
 <p>These are some problems and solutions:
 
 <table border=1 cellpadding=3>
-
 <tr><td> * <td> *
 </table>
 
+<h1><a name="9">9. Integration in the official judge source</a></h1>
+
+<p> CVS, Makefile.am
 
 
 
