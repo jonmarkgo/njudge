@@ -1,3 +1,6 @@
+(31 May 2002)
+Change to ma_build.c to allow venice builds to change mind
+Change to ma_porder.c to fix problem with provinces stayin unowned
 
 1.1.1 (17th May 2002)
 Fixed transform build error  (st_build.c)
