@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.35  2003/12/28 00:00:41  millis
+ * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
+ *
  * Revision 1.34  2003/08/18 23:16:43  millis
  * Refix bug 211
  *
@@ -286,11 +289,11 @@ void params(FILE * fp)
 	if (dipent.flags & F_GUNBOAT) {
 		strcat(line, ", Gunboat");
 	}
-	if (dipent.flags & F_NOSHOW) {
-		strcat(line, ", No Show");
-	}
 	if (dipent.flags & F_BLIND) {
 		strcat(line, ", Blind");
+	}
+	if (dipent.np != dipent.no_of_players) {
+	        strcat(line, ", Duplex");
 	}
 	if (!(dipent.flags & F_MACH)) {
 	    if (dipent.flags & F_AFRULES) {
@@ -303,6 +306,9 @@ void params(FILE * fp)
 		strcat(line, ", Wings");
  	    }
 	}	
+	if (dipent.np != dipent.no_of_players) {
+		strcat(line, ", Duplex");
+	}
 	strcat(line, ".");
 	print_params(fp, line);
 
@@ -338,6 +344,9 @@ void params(FILE * fp)
 	}
 	if (dipent.flags & F_STRWAIT) {
 		strcat(line, ", StrictWait");
+	}
+	if (dipent.flags & F_NOSHOW) {
+	        strcat(line, ", No Show");
 	}
 
         strcat(line, ".");

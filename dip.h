@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.38  2003/12/28 00:00:40  millis
+ * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
+ *
  * Revision 1.37  2003/09/09 18:51:28  jaldhar
  * Got rid of port.h and replaced with some extra configure checks.  The
  * include strings.h was not carried over because it is commented out and
@@ -342,7 +345,7 @@ typedef struct Sequence {
 #define SF_MOVED   0x2		/* Received move from this player               */
 #define SF_CD      0x4		/* This player has gone CD, won't wait for him  */
 #define SF_WAIT    0x8		/* Player requests processing to hold til dline */
-#define SF_ABAND   0x10		/* Power has been abandoned, freee for takeover */
+#define SF_ABAND   0x10		/* Power has been abandoned, free for takeover  */
 #define SF_PROCESS 0x20		/* Master has requested immediate processing    */
 #define SF_PRESS   0x40		/* Master requests all partial press            */
 #define SF_PART    0x80		/* We've gotten valid orders for all units      */
@@ -353,9 +356,13 @@ typedef struct Sequence {
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
 #define SF_UNUSED  0x4000	/*** NOT CURRENTLY USED ***/ 
-#define SF_CONC    0x8000     /* Player agreed to concession */
+#define SF_CONC    0x8000       /* Player agreed to concession */
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
-#define SF_BROAD_SENT 0x20000 /* Player has sent one broadcast message this turn */
+#define SF_BROAD_SENT 0x20000   /* Player has sent one broadcast message this turn */
+
+
+/* This will clear out non-essential status for a new player */
+#define NewPlayerSF(i) dipent.players[i].status &= (SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
