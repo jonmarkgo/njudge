@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/05/10 09:05:05  greg
+ * added subjectlines
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Various changes including
  *  - Partial press between master and only one power is NOT sent to others with WATCHALL set
@@ -458,7 +461,7 @@ void mail_press(char *s, int need_opts)
 
 
 /* OK, let's see if press from late powers is allowed */
-//	if (partial) 
+//	if (partial && !(dipent.phase[6] == 'X')) 
 	{
 		if (WAITING(dipent.players[player].status)) {
 			/* it is not, let us see if this power is late and not pressing to master */
