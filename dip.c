@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2002/08/27 22:27:49  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.25  2002/07/16 18:14:20  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -1324,20 +1327,9 @@ int process(void)
 
 			/*  Find out who has won */
 
-			v = 0;
-
-			for (i = 0; i < dipent.n; i++) {
-				if (dipent.players[i].power < 0)
-					continue;
-
-				if (dipent.players[i].centers >= dipent.vp) {
-					fprintf(ofp, "%s.\n\n", powers[dipent.players[i].power]);
-					fprintf(dfp, "%s.\n", powers[dipent.players[i].power]);
-					fprintf(gfp, "%s.\n", powers[dipent.players[i].power]);
-					v = i;
-					break;
-				}
-			}
+			fprintf(ofp, "%s.\n\n", powers[victor]);
+			fprintf(dfp, "%s.\n", powers[victor]);
+			fprintf(gfp, "%s.\n", powers[victor]);
 
 			fprintf(gfp, "Congratulations on a well deserved victory!");
 
@@ -1354,7 +1346,7 @@ int process(void)
 
 				if (*(dipent.players[i].address) != '*' && !Dflg) {
 					sprintf(line, "%s dip.victory '%s:%s - %s Victory: %c' '%s'",
-					  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.pl[dipent.players[v].power], dipent.players[i].address);
+					  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.pl[victor], dipent.players[i].address);
 					execute(line);
 				}
 			}

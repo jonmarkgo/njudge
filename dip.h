@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2002/07/16 18:14:21  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.15  2002/06/11 16:26:18  nzmb
  *
  * Added set [no]mustorder to require players to submit avalid set of orders
@@ -379,5 +382,7 @@ extern int control;
 extern int predict;		/* =1 when predicting a turn			*/
 
 extern int canbuild;	/* can a player build? (used when being reminded to move */
+
+extern int victor;             /* Set to power index if there is a game winner  */
 
 #endif				/* _DIP_H */

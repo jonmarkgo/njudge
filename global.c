@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.6  2002/05/11 09:15:31  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.5  2001/10/20 12:11:11  miller
  * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
  *
@@ -109,3 +120,4 @@ int control = 0;
 int predict = 0; 		/* =1 to predict a move for master */
 
 int canbuild = 1;		/* can the power being reminded to move build? */
+int victor = 0;			/* Set to index of power when there is a victor */

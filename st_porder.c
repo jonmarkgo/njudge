@@ -1,5 +1,16 @@
 /*
   ** $Log$
+  ** Revision 1.8  2002/05/11 09:15:35  greg
+  ** Minor bug fixes
+  ** - fixed subjectline for absence requests
+  ** - fixed phase length, so it's no longer hard coded for responses
+  ** - partial fix for unusable builds, players with only unusable builds
+  **    will no longer be flagged as having orders due, however players
+  **    with some usable builds will need to waive any unusable builds,
+  **    also, if one or more players have unusable builds, but no
+  **    player has usable builds, the build phase will process after
+  **    a short delay
+  **
   ** Revision 1.7  2002/04/15 12:55:46  miller
   ** Multiple changes for blind & Colonial & setup from USTV
   **
@@ -130,6 +141,7 @@ int ownership(void)
 			continue;
 		if (np[tmpi] >= maxcen)
 			numwin++;
+			victor = tmpi;
 	}
 	if (numwin > 1) {
 		dipent.vp = maxcen + 1;

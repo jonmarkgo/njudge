@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/08/27 22:27:52  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.8  2002/05/31 12:37:22  millis
  * Fixed small bug allowing provinces to stay incorrectly unowned
  *
@@ -450,6 +453,7 @@ int victory(void)
 	}
 	if (numwin == 1) {
 		fprintf(rfp, "(* VICTORY!! *) by %s\n", powers[winner]);
+		victor = winner;
 		return 1;
 	}
 	return 0;
