@@ -34,6 +34,8 @@ unsigned char allies[NPOWER + 1][NPOWER + 1];	/* Who is allowing whom     */
 
 int ftab[12 - 1][12 - 1];	/* Machiavelli famine province list          */
 int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list          */
+int stab[12 - 1][12 - 1];       /* Machiavelli storm  province list          */
+struct p_unit permitted_units[MAXPLAYERS]; /* Mach list of permitted unit types	     */
 
 /* from porder.c, probably from some header file before that, i didn't
  * keep very good track -- nw Sun Oct  5 07:00:38 GMT 1997
@@ -84,4 +86,4 @@ char *inname = NULL;
 FILE *inp;
 
 int control = 0;
-
+int predict = 0; 		/* =1 to predict a move for master */
