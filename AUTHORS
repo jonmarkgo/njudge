@@ -23,6 +23,7 @@ Andy Schwartz		:
 Nathan Wagner		: (1997)
 
 Contributed to other parts of the development than the code:
+Russell Blau		: data help files and command text rationalisation
 Christophe Courtois	: documentation, data/ cleaning
 Alain Tesio		: observer and judge-maint archives on floc.net
 Jaldhar H. Vyas		: autoconfiscation and debian packaging.
