@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030922;22590400">
+	<META NAME="CHANGED" CONTENT="20030922;23095200">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -59,7 +59,10 @@ is given for all judges and must be accepted by all clients.</P>
 <OL START=2>
 	<LI><H1 CLASS="western">Existing e-mail types</H1>
 </OL>
-<P CLASS="western">The following e-mails can be sent by the judge:</P>
+<P CLASS="western">The following e-mails can be sent by the judge.
+Not everything is covered in this document. If an e-mail type is not
+listed here, or not described, or not precisely enough, and a some
+tool depend on it, please tell me (christophe@courtois.cc).</P>
 <UL>
 	<UL>
 		<UL>
@@ -73,6 +76,7 @@ is given for all judges and must be accepted by all clients.</P>
 			<LI><P CLASS="western">Player(s) is/are late or abandoned</P>
 			<LI><P CLASS="western">Parameters of the game</P>
 			<LI><P CLASS="western">Administrative e-mails about options change</P>
+			<LI><P CLASS="western">End of games</P>
 			<LI><P CLASS="western">Summary</P>
 			<LI><P CLASS="western">History</P>
 			<LI><P CLASS="western">Version</P>
@@ -182,7 +186,7 @@ e-mail, with the same provisions as the header.</P>
 		SOLVE: see exact format and allowed length</FONT>]</P>
 		<LI><P CLASS="western">followed by a space</P>
 		<LI><P CLASS="western">Deadline date as given by the <FONT FACE="Courier New">ptime
-		</FONT>function, in English (code in <SPAN STYLE="font-style: normal"><FONT FACE="Courier New">jm.c</FONT>)</SPAN>.
+		</FONT>function, in English (code in <FONT FACE="Courier New">jm.c</FONT>).
 				</P>
 		<UL>
 			<LI><P CLASS="western">If the deadline is not yet known (game has
@@ -252,7 +256,6 @@ successfully subscribed to a game. Parts are:</P>
 		<LI><P CLASS="western"><FONT COLOR="#ff0000">TO DO if this is
 		important: preference list management, what happens if the game
 		could start now, or effectively starts.</FONT></P>
-		<P CLASS="western"></P>
 	</UL>
 </UL>
 <P CLASS="western">Example (header and footer suppressed) :</P>
@@ -294,7 +297,6 @@ the game.</P>
 	<LI><P CLASS="western">DEDO : translated messages ??? =&gt; English
 	compatibility mode</P>
 	<LI><P CLASS="western"></P>
-	<H1 CLASS="western"></H1>
 </UL>
 <OL START=8>
 	<LI><H1 CLASS="western">Comments</H1>
