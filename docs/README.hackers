@@ -43,8 +43,8 @@ Adding files to the judge distribution
   3. Adding a document
   --------------------
 
-  To add a document to the judge distribution, add it to the DOCS macro.  
-  It should br located in the docs directory.
+  To add a document to the judge distribution, add it to the dist_doc_DATA
+  macro.  The document should be located in the docs directory.
 
   4. After adding a program/script/document
   -----------------------------------------
@@ -110,4 +110,4 @@ Making public distributions
 
   $  fakeroot ./debian/rules clean
 
-Jaldhar H. Vyas <jaldhar@braincells.com> Mon, 22 Aug 2002 23:04:05 -0400
+Jaldhar H. Vyas <jaldhar@braincells.com> Sun, 22 Dec 2002 19:51:50 -0500
