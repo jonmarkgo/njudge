@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2003/05/02 22:20:59  millis
+ * Further flags (NoSummer, CaptureHome)
+ *
  * Revision 1.26  2003/04/16 04:32:13  millis
  * Fix bug 65
  *
@@ -568,7 +571,7 @@ void params(FILE * fp)
                 strcatf(line, "NoBCentres", &first_flag);
             } 
 	}
-	if (dipent.x2flags & X2F_SUMMER) {
+	if ( !(dipent.flags & F_MACH) && (dipent.x2flags & X2F_SUMMER)) {
 		strcatf(line, "Summer", &first_flag);
 	}
 	
