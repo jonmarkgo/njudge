@@ -1,0 +1,218 @@
+#
+# ancient_med variant map file
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 23:22:54  ustv
+# *** empty log message ***
+#
+#
+Adriatic Sea,      w adr
+Aegean Sea,        w aeg
+Alexandria,        E ale
+Antioch,           P ant
+Apulia,            l apu
+Arabia,            l ara
+Armenia,           l arm
+Athens,            G ath
+Ausonian Sea,      w aus
+Baleares,          xw bal
+Bayuda,            l bay
+Berber Sea,        w ber
+Bithynia,          l bit
+Black Sea,         w bla
+Byzantium,         x byz
+Cappadocia,        l cap
+Carthage,          C car
+Chersonesus,       x che
+Cilician Strait,   w cil
+Cirta,             C cir
+Corsica,           l cor
+Crete,             x cre
+Cyprus,            x cyp
+Cyrene,            x cyr
+Dacia,             l dac
+Dalmatia,          x dal
+Damascus,          P dam
+Egyptian Sea,      w egy
+Epirus,            l epi
+Etruria,           l etr
+Galatia,           l gal
+Gaul,              l gau
+Gulf of Pelusium,  w gop
+Gulf of Syrtis,    w gos
+Gulf of Tacape,    w got
+Iberian Sea,       w ibe
+Illyria,           l ill
+Ionian Sea,        w ion
+Isauria,           l isa
+Jerusalem,         x jer
+Leptis,            x lep
+Libyan Sea,        w lib
+Ligurian Sea,      w lig
+Lusitania,         l lus
+Macedonia,         G mac
+Marmarica,         l mar
+Massilia,          x mas
+Mauretania,        l mau
+Memphis,           E mem
+Messenian Sea,     w mes
+Miletus,           x mil
+Minoan Sea,        w min
+Nabatea,           l nab
+Neapolis,          R nea
+Numidia,           x num
+Petra,             x pet
+Phazania,          l pha
+Punic Sea,         w pun
+Ravenna,           R rav
+Reed Sea,          w ree
+Rhaetia,           l rha
+Roma,              R rom
+Saguntum,          x sag
+Sahara,            l sah
+Sardinia,          x sad
+Sarmatia,          l sam
+Sicilia,           x sic
+Sidon,             P sid
+Sinai,             l sii
+Sinope,            x sip
+Sparta,            G spa
+Syrian Sea,        w syr
+Tarraconensis,     l tar
+Thapsus,           C tha
+Thebes,            E the
+Tyre,              x tye
+Tyrrhenean Sea,    w tyn
+Venetia,           l ven
+Vindobona,         x vin
+-1
+adr-xc: apu rav ven dal epi ion
+aeg-xc: ath mac byz mil min cre mes spa
+ale-mv: cyr mem the sii
+ale-xc: cyr mem the sii egy gop lib
+ant-mv: cap dam sid
+ant-xc: cap sid cil
+apu-mv: rav rom nea
+apu-xc: rav nea adr ion
+ara-mv: dam sid tye jer nab
+arm-mv: che sip cap dam
+ath-mv: spa epi mac
+ath-xc: spa epi ion mac aeg
+aus-xc: ion mes lib got pun sic tyn nea
+bal-xc: tar sag ber lig
+bay-mv: pha mem the mar sah
+bay-xc: the mem
+ber-xc: ibe mau car pun sad lig bal sag
+bit-mv: sip gal byz
+bit-xc: sip bla byz
+bla-xc: byz dac che sip bit
+byz-mv: mac dac bit gal mil
+byz-xc: mac dac bit mil bla aeg
+cap-mv: isa gal sip arm dam ant
+cap-xc: isa ant cil
+car-mv: cir tha mau
+car-xc: mau tha pun ber
+che-mv: arm dac sam sip
+che-xc: dac sip bla
+cil-xc: isa cap ant sid syr cyp egy min mil
+cir-mv: car tha num mau sah pha
+cor-mv: sad
+cor-xc: sad lig tyn
+cre-xc: aeg min egy lib mes
+cyp-xc: cil syr egy
+cyr-mv: ale mar lep mem
+cyr-xc: lep ale lib gos
+dac-mv: che sam ill mac byz
+dac-xc: che byz bla
+dal-mv: ven vin ill epi
+dal-xc: ven adr epi
+dam-mv: arm cap ant sid ara
+egy-xc: cyp cre min cil syr gop lib ale
+epi-mv: ill mac ath dal
+epi-xc: adr ion dal ath
+etr-mv: mas rha ven rav rom
+etr-xc: mas rom lig
+gal-mv: byz bit sip cap isa mil
+gau-mv: rha mas tar lus
+gop-xc: syr egy ale the sii jer
+gos-xc: lib got cyr lep
+got-xc: pun aus mes lib gos lep num tha
+ibe-xc: sag mau ber
+ill-mv: dal vin sam dac mac epi
+ion-xc: adr aus mes apu nea epi spa ath
+isa-mv: mil gal cap
+isa-xc: mil cap cil
+jer-mv: tye ara nab pet sii
+jer-xc: tye sii syr gop
+lep-mv: num pha cyr mar
+lep-xc: num cyr gos got
+lib-xc: cre egy cyr gos got aus mes ale
+lig-xc: cor sad tyn ber bal tar mas etr rom
+lus-mv: gau tar sag
+mac-mv: ath epi ill dac byz
+mac-xc: aeg byz ath
+mar-mv: bay pha lep cyr mem
+mas-mv: tar gau rha etr
+mas-xc: tar etr lig
+mau-mv: sag car cir sah
+mau-xc: sag ibe car ber
+mem-mv: bay ale mar the cyr
+mem-xc: bay ale the
+mes-xc: aus got lib cre aeg spa ion
+mil-mv: byz gal isa
+mil-xc: byz isa cil min aeg
+min-xc: mil cre aeg egy cil
+nab-mv: pet jer ara
+nab-xc: pet ree
+nea-mv: apu rom sic
+nea-xc: apu rom sic ion aus tyn
+num-mv: lep pha tha cir
+num-xc: lep tha got
+pet-mv: nab jer sii
+pet-xc: nab ree sii
+pha-mv: sah lep mar bay cir num
+pun-xc: ber tyn car sic sad tha aus got
+rav-mv: apu rom etr ven
+rav-xc: ven apu adr
+ree-xc: the sii pet nab
+rha-mv: gau mas etr ven vin sam
+rom-mv: etr rav apu nea
+rom-xc: etr nea lig tyn
+sag-mv: lus tar mau
+sag-xc: mau ber bal tar ibe
+sah-mv: mau cir bay pha
+sad-mv: cor
+sad-xc: cor lig tyn pun ber
+sam-mv: rha vin ill dac che
+sic-mv: nea
+sic-xc: nea aus tyn pun
+sid-mv: ant dam ara tye
+sid-xc: ant tye syr cil
+sii-mv: pet jer the ale
+sii-xc: jer the ale gop ree pet
+sip-mv: che arm cap gal bit
+sip-xc: che bit bla
+spa-mv: ath
+spa-xc: aeg mes ion ath
+syr-xc: cil egy gop cyp sid tye jer
+tar-mv: mas gau lus sag
+tar-xc: mas sag bal lig
+tha-mv: car cir num
+tha-xc: car num pun got
+the-mv: sii ale mem bay
+the-xc: sii ale mem bay gop ree
+tye-mv: sid ara jer
+tye-xc: jer sid syr
+tyn-xc: cor sad sic nea rom lig pun aus
+ven-mv: rav etr rha vin dal
+ven-xc: rav dal adr
+vin-mv: rha sam ven ill dal
+-1
+Center order for summary report:
+   rom rav nea sic sad mas bal
+   sag car cir tha num lep cyr
+   ale mem the pet jer tye ant
+   dam sid cyp sip che byz mil
+   cre ath mac spa dal vin
+#End of center ordering
+-1
