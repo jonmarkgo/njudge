@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.9  2003/01/14 13:51:37  millis
+   ** Merges from USTV
+   **
    ** Revision 1.8  2002/08/27 22:27:54  millis
    ** Updated for automake/autoconf functionality
    **
@@ -467,10 +470,12 @@ void mail_listbrief(void)
 				else
 					fputs(", ", rfp);
 
-				fprintf(rfp, "%s (%d/%d)", powers[dipent.players[i].power],
-					dipent.players[i].units, 
-					dipent.players[i].centers-dipent.players[i].centres_blockaded);
-			}
+				fprintf(rfp, "%s", powers[dipent.players[i].power]);
+                                if (!(dipent.flags & F_BLIND))
+                                    fprintf(rfp, " (%d/%d)",
+                                        dipent.players[i].units,
+                                        dipent.players[i].centers-dipent.players[i].centres_blockaded);
+ 			}
 		}
 		if (n)
 			fputs("\n", rfp);
