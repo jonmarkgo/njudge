@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.14  2003/02/18 14:04:44  millis
+  ** Display home centres if X2F_HOMETRANSFER is set
+  **
   ** Revision 1.13  2003/01/18 23:48:21  millis
   ** Don't call temporary USTV functions
   **
@@ -78,7 +81,7 @@
 
 static void newowner(void);
 static void next_phase(void);
-static char HongKongCheck(int, int);
+static int HongKongCheck(int, int);
  #define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type <= '9'))
 /***************************************************************************/
 /*  Print out build statistics.  
@@ -425,7 +428,7 @@ int process_output(int pt, char phase)
 	return 1;		/* not reached */
 }
 
-char
+int
 HongKongCheck(int power, int prov_index)
 {
     int i,j;
