@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2002/12/30 15:27:59  millis
+ * Add Duality flag default for colonial games (because of Cebu)
+ *
  * Revision 1.11  2002/12/28 01:08:09  millis
  * Bug 57, Add colonial96 variant
  *
@@ -109,7 +112,7 @@ enum {
 	V_empire,		/* 24 Empire version		     */
 	V_african2,		/* 25 African2			     */
 	V_wraparound2,		/* 26 2nd version of wraparound	     */
-	V_shift_around,		/* 27 Shift around verison	     */
+	V_shift_around,		/* 27 Shift around version	     */
 	V_layered,		/* 28 Layered			     */
         V_sailho_crowded,       /* 29 SailHo crowded                 */
 	V_sailho,		/* 30 SailHo			     */
@@ -206,7 +209,7 @@ extern char *owners[];
 /*  Power abbreviations based on variant ('x' means corresponding power isn't
    in this variant).  The last five characters should always be '?xOM', except
    for Machiavelli where it's '?&OM'.  Likewise, 'O' and 'M' should not be
-   used for anything other than Observer and Master, respecitively.  */
+   used for anything other than Observer and Master, respectively.  */
 
 extern char *pletter[];
 
