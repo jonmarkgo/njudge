@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                July 20, 2003
+Greetings from the Diplomacy* Adjudicator!!                Aug 31, 2004
 Rules.machiavelli2
 
 
@@ -38,7 +38,7 @@ of your units in the province (or city) at the end the of fall turn. (If
 one player controls the city and another the province nobody has control.)
 
 This also means that conquest of another home country or elimination is
-not checked for until the end of fall.
+not checked for until after the end of fall.
 
 'Tech note'. The original rules define control changes to occur at the
 start of the spring turn.
@@ -47,7 +47,6 @@ start of the spring turn.
 MOVEMENT (retreats, sieges, and convoys)  **IMPORTANT DIFFERENCES**
 A unit can always retreat into a city, even if it can retreat into
 another province.
-You may disband a unit instead of retreat it.
 A unit need not issue a lift siege order to be able to move away from
 an ongoing siege.
 Conversions are treated as attacks, thus besiegeing units of lesser 
@@ -81,13 +80,25 @@ IMPORTANT MAP CHANGES
 1)  Armies *and* fleets may move between Sardinia and Corsica.
 2)  Armies *and* fleets may move between Messina and Otranto.
 3)  Venice **IMPORTANT DIFFERENCE**
-    a) There is no Lagoon. Venice is a *sea area with a city*.
-    b) No armies may be built, exist or enter in Venice.
-    c) Fleets can only be in the Venica sea area (VSA).
-    d) Fleets in the VSA may enter the city by converting to garrisons.
-       Garrisons in Venice may enter the VSA by converting to fleets.
-    e) Fleets in the VSA may retreat to the adjacent provinces.
-    f) Fleets in the VSA may support into the adjacent areas.
+    There is no Lagoon. Venice is a *sea area with a city*.
+
+
+VENICE SEA AREA (VSA) EFFECTS ON UNITS
+1) No armies may be built, exist or enter in the VSA.
+2) Only fleets may be built in the VSA.
+3) Fleets in the VSA may enter the city by converting to garrison.
+   Garrisons in Venice may enter the VSA by converting to fleets.
+4) Fleets in the VSA may retreat to the adjacent areas.
+5) Fleets in the VSA may support into the adjacent areas.
+
+
+VENICE SEA AREA EFFECTS ON INCOME AND CONTROL
+1) The player controlling Venice will gain 3 ducats, as there is only a 
+   city and no land province.
+2) If a fleet is present in the sea area it will get 1 ducat in income 
+   as per the normal sea income rules.
+3) If Venice is ungarrisoned control passes to the player entering the 
+   sea area.
 
 
 VARIOUS
@@ -169,3 +180,5 @@ v1.1b 22nd February 2003. Clarified rules for bribes and adj. Notes
       rules.machiavelli. Author Sergio Lidsell.
 v1.2  20th July 2003. Note on conversion of besieged units and straits. 
       Author Sergio Lidsell.
+v1.2b 25th August 2004. Removed incorrect disband note. Auth S Lidsell.
+v1.3 31st August 2004. Clarified Venice sea area effects. Auth S Lidsell.
