@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.18  2004/08/07 17:05:58  machmstr
+ * Correction of adjectives: it is portugal portuguese and cyprus cypriotic (or cyprean).
+ * WARNING there are two entries for Norway Norwegian !!!  (I have not touched in case there is some reason to it.)
+ *
  * Revision 1.17  2004/08/07 16:05:42  machmstr
  * All AH Mach variants added and then some
  *
@@ -249,7 +253,7 @@ char *powers[] =
 	//** ADD NEW POWERS ABOVE THIS LINE! **/
 	"a power", "Neutral", "Autonomous","Observer","Master"};
 
-/*  Owner names (i.e., possessive form of power names).  */
+/*  Owner names (i.e., adjective form of power names).  */
 
 char *owners[] =
 {
@@ -257,7 +261,7 @@ char *owners[] =
 	"Austrian","Balkan","British","Burgundian","Byzantine","Chinese",
 	"Egyptian","Irish","English","Florentine","French","German",
 	"Hungarian","Indian","Indonesian","Israelite","Italian","Japanese",
-	"Lowland","Milanese","Neapolitan","Norwegian","Papal","Persian",
+	"Lowlander","Milanese","Neapolitan","Norwegian","Papal","Persian",
 	"Polish","Russian","Siberian","Sicilian","Spanish","Turkish",
 	"Ukranian","Venetian","Dutch",
 	"1Austrian","2Austrian","1English","2English","1French","2French",
