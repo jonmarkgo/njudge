@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/12/28 00:11:36  millis
+ * Fixed bug 2, so that disbands can happen even if under siege
+ *
  * Revision 1.13  2002/12/23 01:43:31  millis
  * Really fixed Bug 69 (incorrect change)
  *
@@ -1108,7 +1111,7 @@ int ma_moveout(int pt)
 						bounce++;
 					    } else {
 					         if (!result[u2] && unit[u2].order != 'd')
->                                                   result[u2] = BESIEGE; /* Bug2, must not be disbanding */
+                                                   result[u2] = BESIEGE; /* Bug2, must not be disbanding */
 					    }
 					}
 				}
