@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.28  2003/07/19 13:13:57  millis
+# Bug 196, remove pdip
+#
 # Revision 1.27  2003/07/16 15:04:34  millis
 # Remove ign program
 #
@@ -238,8 +241,11 @@ dist_doc_DATA=	docs/InstallationHOWTO.txt \
 		ChangeLog \
 		README
 
-upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
+dirs:
 	$(mkinstalldirs) ${DESTDIR}${bindir}
+	$(mkinstalldirs) ${DESTDIR}$(datadir)
+
+upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA} dirs remap
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
@@ -247,8 +253,7 @@ upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
 	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir); \
 	done;
 
-upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
-	$(mkinstalldirs) ${DESTDIR}${bindir}
+upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA} dirs remap
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} -s $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
@@ -276,7 +281,7 @@ magic:
 		rm -f .magic.h; \
 	fi;
 
-remap: ${DESTDIR}${datadir}
+remap: dirs
 	rm -f ${DESTDIR}${bindir}/map.*
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 
@@ -294,8 +299,7 @@ install-check:
 		exit 1 ; \
 	fi
 
-install-data-hook: flist magic
-	$(mkinstalldirs) ${DESTDIR}$(datadir)
+install-data-hook: dirs flist magic
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 	${INSTALL_DATA} dip.conf ${DESTDIR}${bindir}/dip.conf
 	touch ${DESTDIR}${bindir}/dip.msg
