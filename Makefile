@@ -177,8 +177,8 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 		ln -f -s ${INSTALLDIR}/atrun ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/smail ${DESTDIR}; \
 	fi;
-	rm -f data/RCS
-	cp -p data/* ${INSTALLDIR}/data
+	-rm -f data/RCS
+	-cp -p data/* ${INSTALLDIR}/data
 #FIXME
 #	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 #	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
