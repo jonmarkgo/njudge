@@ -2,7 +2,7 @@
 
                  Creating variants for the Diplomacy judge
 
-                                   v.0.3
+                                   v.0.31
               [1]Christophe Courtois (christophe@courtois.cc)
      _________________________________________________________________
 
@@ -110,6 +110,8 @@ This documentation is not finished and may contain many errors.
                                3 Data to provide
 
    For a complete new variant, you MUST provide this:
+   Warning : from 1.4, all files follow the same naming scheme; seed and
+       report use variant names like maps now. -- CC
      * Map file: this lists the territories, the way they communicate
        with each other, the order which must be used in summary reports.
        Example: data/map, data/map.loeb9
