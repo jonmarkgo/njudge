@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.42  2004/01/05 13:49:33  millis
+ * Added missing definition for extra_centre
+ *
  * Revision 1.41  2004/01/04 11:34:34  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -456,6 +459,8 @@ struct extra_centre {
     char power_letter;		/* Letter of power that is involved */
     int count;			/* How many extra centres this power has */
 };
+
+extern struct extra_centre extra_centres[MAXPLAYERS];
 
 #include "variant.h"
 
