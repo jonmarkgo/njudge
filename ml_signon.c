@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2003/07/15 11:42:04  millis
+ * Fixed compile bug
+ *
  * Revision 1.28  2003/07/14 23:35:53  millis
  * Fix bug 179 - do not allow takeover of eliminated players
  *
@@ -211,6 +214,7 @@ int mail_signon(char *s)
 	int master = 0; // Whether the players has been auto-promoted to master
 	int userid, siteid, level, variant = V_STANDARD, flags = 0;
 	char *t, *gdirname, line[150];
+	int one_abandoned = 0;
 
 /*
  *  Process SIGNON command.  The format of the signon command is:
@@ -733,10 +737,20 @@ int mail_signon(char *s)
 					xaddr, powers[n], dipent.name);
 
 				time(&now);
+			
+				for (i = 0; i < dipent.n; i++) {
+                            	    if (dipent.players[i].power < 0)
+                                        continue;
+
+				    if(dipent.players[i].status & (SF_CD | SF_ABAND | SF_MOVE)) {
+				        one_abandoned++;
+				    }
+				}	
 				
-				/* bump up takeover in accordance with phase settings */
-				/* TBD: bump up only if no other abandoned country */
-				deadline( (sequence * ) NULL, 1);
+				if (!one_abandoned) {
+				    /* bump up takeover in accordance with phase settings */
+				    /* but only if no other countries abandoned */
+				    deadline( (sequence * ) NULL, 1);
 
 					fprintf(rfp, "Deadline for '%s' advanced to %s.\n",
 						dipent.name, ptime(&dipent.deadline));
@@ -750,6 +764,7 @@ int mail_signon(char *s)
 						 dipent.name, ptime(&dipent.grace));
 					pprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.grace));
+				}
 				break;
 			}
 		}
