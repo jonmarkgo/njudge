@@ -259,7 +259,8 @@ man_MANS = judge.6
 
 dist_data_DATA = data/*
 
-dist_doc_DATA = docs/README.bailout \
+dist_doc_DATA = docs/InstallationHOWTO \
+		docs/README.bailout \
 		docs/README.flags \
 		docs/README.flist \
 		docs/README.hackers \
@@ -271,7 +272,8 @@ dist_doc_DATA = docs/README.bailout \
 		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
-		docs/TODO \
+		docs/njudgemapdatahowto.htm \
+		docs/njudgemapdatahowto.txt \
 		AUTHORS \
 		COPYING \
 		ChangeLog \
@@ -1074,8 +1076,8 @@ install-data-hook: flist magic
 	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 
-# smail.in is already automatically included as are top-level docs like COPYING
-#  etc.
+# smail.in and dipclean.in are  already automatically included as are 
+top-level docs like COPYING etc.
 distclean-local:
 	-rm -rf autom4te.cache
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

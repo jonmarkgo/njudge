@@ -172,7 +172,8 @@ man_MANS=	judge.6
 
 dist_data_DATA=	data/*
 
-dist_doc_DATA=	docs/README.bailout \
+dist_doc_DATA=	docs/InstallationHOWTO \
+		docs/README.bailout \
 		docs/README.flags \
 		docs/README.flist \
 		docs/README.hackers \
@@ -184,7 +185,8 @@ dist_doc_DATA=	docs/README.bailout \
 		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
-		docs/TODO \
+		docs/njudgemapdatahowto.htm \
+		docs/njudgemapdatahowto.txt \
 		AUTHORS \
 		COPYING \
 		ChangeLog \
