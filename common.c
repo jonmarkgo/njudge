@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2004/05/22 08:53:14  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.6  2003/05/02 22:23:39  millis
  * Added valid_artillery_move()
  *
@@ -168,13 +171,25 @@ void init_movement(void)
 			need_order[unit[i].owner]++;
 }
 
+int HasOneMercenaryAlive(void)
+{
+    int i;
+
+    for (i = 0; i < dipent.n; i++) {
+        if (dipent.players[i].controlling_power != 0 &&
+	    dipent.players[i].centers > 0 )
+	    return 1;
+    }
+
+    return 0;  /* No-one found alive! */
+}
 void next_year(void)
 {
 	int dipent_year = atoi(&dipent.phase[1]) + 1;
 	while (dipent_year >= 10000)
 		dipent_year -= 10000;
 	sprintf(dipent.phase, "S%04dM", dipent_year);
-	if (dipent.flags & F_INTIMATE)
+	if (dipent.flags & F_INTIMATE && HasOneMercenaryAlive())
 		dipent.phase[5] = 'A'; /* Intimate adjustment phase */
 	else 
 	    init_movement();
