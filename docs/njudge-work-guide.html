@@ -1,31 +1,111 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Win32)">
-	<META NAME="CREATED" CONTENT="20040303;13240377">
-	<META NAME="CHANGED" CONTENT="20040303;14481286">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.0.3  (Linux)">
+	<META NAME="CREATED" CONTENT="20040303;13240300">
+	<META NAME="CHANGED" CONTENT="20040405;20553600">
+	<STYLE>
+	<!--
+		H1 { page-break-before: always }
+		H2.western { font-family: "Times New Roman", serif }
+		H2.cjk { font-family: "Arial Unicode MS" }
+		H2.ctl { font-family: "Tahoma" }
+		H3.western { font-family: "Times New Roman", serif }
+		H3.cjk { font-family: "Arial Unicode MS" }
+		H3.ctl { font-family: "Tahoma" }
+		H4.western { font-family: "Times New Roman", serif }
+		H4.cjk { font-family: "Arial Unicode MS" }
+		H4.ctl { font-family: "Tahoma" }
+	-->
+	</STYLE>
 </HEAD>
-<BODY LANG="en-US" DIR="LTR">
-<H1>Guide to Working on Njudge</H1>
+<BODY LANG="en-US">
+<DIV TYPE=HEADER>
+	<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><B><FONT SIZE=4>Njudge
+	Work Guide Version 1</FONT></B>		<SDFIELD TYPE=DATETIME SDNUM="1033;1033;MMM D, YYYY">Apr 5, 2004</SDFIELD></P>
+	<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><BR>
+	</P>
+	<P ALIGN=JUSTIFY STYLE="margin-bottom: 0cm"><BR>
+	</P>
+</DIV>
+<P><BR><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT SIZE=7><B>Guide to
+Working on Njudge</B></FONT></P>
+<DIV ID="Table of Contents1" STYLE="background: transparent">
+	<DIV ID="Table of Contents1_Head">
+		<P STYLE="margin-top: 0.42cm; page-break-after: avoid"><FONT FACE="Albany, sans-serif"><FONT SIZE=4 STYLE="font-size: 16pt"><B>Table
+		of Contents</B></FONT></FONT></P>
+	</DIV>
+	<P STYLE="margin-bottom: 0cm">1.Introduction	2</P>
+	<P STYLE="margin-bottom: 0cm">2.CVS	3</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">3.Browsing	3</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">4.Checkout and
+	Checkins	3</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">5.Branching and
+	Tagging	3</P>
+	<P STYLE="margin-bottom: 0cm">6.Bugzilla Bug-reporting	4</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">7.Classification	4</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">8.Lifecycle	4</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">9.How to report	5</P>
+	<P STYLE="margin-bottom: 0cm">10.Development Platforms	6</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">11.Devel.diplom	6</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">12.Linux	6</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">13.Koppix	6</P>
+	<P STYLE="margin-left: 1.5cm; margin-bottom: 0cm">14.Installation	6</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">15.Others	7</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">16.Windows	7</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">17.Cygwin	7</P>
+	<P STYLE="margin-bottom: 0cm">18.Development	8</P>
+	<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">19.Builds	8</P>
+	<P STYLE="margin-left: 1.5cm; margin-bottom: 0cm">20.automake/autoconf	8</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">21.Editing	8</P>
+	<P STYLE="margin-left: 1.5cm; margin-bottom: 0cm">22.Ide &ndash;
+	antje	8</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">23.Debugging	8</P>
+	<P STYLE="margin-left: 1.5cm; margin-bottom: 0cm">24.ddd	9</P>
+	<P STYLE="margin-bottom: 0cm">25.Testing	10</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">26.Test script
+	environment	10</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">27.One-off	10</P>
+	<P STYLE="margin-bottom: 0cm">28.Releases	11</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">29.Procedures	11</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">30.Files	11</P>
+	<P STYLE="margin-left: 1cm; margin-bottom: 0cm">31.Versioning 	11</P>
+	<P STYLE="margin-left: 1.5cm; margin-bottom: 0cm">32.Cvs2log	11</P>
+</DIV>
+<P><BR><BR>
+</P>
+<P STYLE="margin-bottom: 0cm"><BR>
+</P>
+<OL>
+	<LI><H1>Introduction</H1>
+</OL>
 <P>This document is designed to be used as a guide for developers
 working on the Njudge project.</P>
 <P>It is designed to be read by those whoare already familiar with
 the scope of the project, and are assumed to have relevant knowledge
 ('C' language) in any standard platform (i.e. Windows or *nix).</P>
 <P>A general description of the njudge project can be found <A HREF="http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html">here.</A></P>
-<H2>CVS</H2>
+<OL START=2>
+	<LI><H1>CVS</H1>
+</OL>
 <P>This is the versioning system (Concurrent Versioning System) that
 is used to store the njudge code. For those unfamiliar with this tool
 the following <A HREF="http://www.cvshome.org/docs/manual/">link</A>
 can be consulted to see the manual.</P>
-<H3>Setup</H3>
+<P STYLE="margin-left: 0.5cm; margin-bottom: 0cm">Setup</P>
 <P>A specific guide to working with CVS can be found <A HREF="http://devel.diplom.org/~njudge/Njudge_CVS_HowTo.html">here</A>.</P>
-<H3>Browsing</H3>
+<OL START=3>
+	<LI><H2 CLASS="western">Browsing</H2>
+</OL>
 <P>You can see the current state of the CVS repository graphically,
 using the CVSWeb tool, <A HREF="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi">here</A>.</P>
-<H3>Checkout and Checkins</H3>
+<OL START=4>
+	<LI><H2 CLASS="western">Checkout and Checkins</H2>
+</OL>
 <P>Files are normally checked out in the standard CVS sense, i.e. Not
 reserved. When ready to checkin, it is the responsibility of the
 person doing the chekin to ensure that the version is correct, and
@@ -37,7 +117,9 @@ ignored.</P>
 link) clean, neither giving errors nor warnings. They should be
 expected to work, and not be functionally incorrect, such that a
 system built with the latest files should work.</P>
-<H3>Branching and Tagging</H3>
+<OL START=5>
+	<LI><H2 CLASS="western">Branching and Tagging</H2>
+</OL>
 <P>All work done in CVS should normally take place in the main
 branch. Files versions are tagged for each release that they are used
 in (see Releases section below). 
@@ -48,11 +130,15 @@ released, but it is important to save in CVS (for example, a new
 functionality that seems to work but might create problems elsewhere
 that are not fully investigated yet). 
 </P>
-<H2>Bugzilla Bug-reporting</H2>
+<OL START=6>
+	<LI><H1>Bugzilla Bug-reporting</H1>
+</OL>
 <P>The <A HREF="http://www.bugzilla.org/">Bugzilla</A> tool is used
 to control the reporting of Bugs. A web interface is <A HREF="http://devel.diplom.org/~njudge/cgi-bin/bugzilla/index.cgi">provided</A>
 that allows bugs to be reported and controlled.</P>
-<H3>Classification</H3>
+<OL START=7>
+	<LI><H2 CLASS="western">Classification</H2>
+</OL>
 <P>For njudge, only certain products should have bugs reported
 against them. These, and their associated components, are clearly
 documented in the Bugzilla setup itself. (Other products exist for
@@ -60,80 +146,80 @@ different usages).</P>
 <P>Bugs can have on eof a number of serverities. Though the term
 'bug' is used, it actually refers to any change, be it a true defect
 or an enhancement request. The following types of bugs exist:</P>
-<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
-	<COL WIDTH=43*>
-	<COL WIDTH=213*>
+<TABLE WIDTH=683 BORDER=1 CELLPADDING=4 CELLSPACING=3>
+	<COL WIDTH=149>
+	<COL WIDTH=507>
 	<THEAD>
 		<TR VALIGN=TOP>
-			<TH WIDTH=17%>
+			<TH WIDTH=149>
 				<P>Type</P>
 			</TH>
-			<TH WIDTH=83%>
+			<TH WIDTH=507>
 				<P>Description</P>
 			</TH>
 		</TR>
 	</THEAD>
 	<TBODY>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Blocker</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>A problem that prevents the software from being even being
 				built. An absolute 'must-fix'.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Critical</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>A problem that causes severe problems (such as the judge
 				crashing). Must be fixed before the next release.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Major</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>A problem whereby the judge can make bad ajudications, pass
 				incorrect information to players, breach gunboat etc. Should be
 				fixed for the next version, unless a good reason exists.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Normal</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>A problem that is normally visibile, but can be lived with,
 				either by ignoring the situaiton or using a known work-around.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Minor</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>A problem that rarely occurs, or is not apparent to other
 				players.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Trivial</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>Typically simple spelling mistakes or text formatting output
 				only.</P>
 			</TD>
 		</TR>
 		<TR VALIGN=TOP>
-			<TD WIDTH=17%>
+			<TD WIDTH=149>
 				<P>Enhancement</P>
 			</TD>
-			<TD WIDTH=83%>
+			<TD WIDTH=507>
 				<P>Anything that is not a 'defect' or problem, but a change.</P>
 			</TD>
 		</TR>
@@ -141,34 +227,327 @@ or an enhancement request. The following types of bugs exist:</P>
 </TABLE>
 <P><BR><BR>
 </P>
-<H3>Lifecycle</H3>
-<H3>How to report</H3>
-<H2>Development Platforms</H2>
-<H3>Devel.diplom</H3>
-<H3>Linux</H3>
-<H4>Koppix Installation</H4>
-<H4>Others</H4>
-<H3>Windows</H3>
-<H4>Cygwin</H4>
-<H2>Development</H2>
-<H3>Builds</H3>
-<H4>automake/autoconf</H4>
-<H3>Editing</H3>
-<H4>Ide &ndash; antja</H4>
-<H4>vi</H4>
-<H3>Debugging</H3>
-<H4>ddd</H4>
-<H2>Testing</H2>
-<H3>Test script environment</H3>
-<H3>One-off</H3>
-<H2>Releases</H2>
-<H3>Procedures</H3>
-<H3>Files</H3>
-<H3>Versioning- 
-</H3>
-<H4>cvs2log</H4>
-<P>Millis Miller<BR>3<SUP>rd</SUP> March 2004</P>
+<OL START=8>
+	<LI><H2 CLASS="western">Lifecycle</H2>
+</OL>
+<P>Bugs have the following lifecycle in Bugzilla:</P>
+<TABLE WIDTH=680 BORDER=1 CELLPADDING=4 CELLSPACING=3>
+	<COL WIDTH=163>
+	<COL WIDTH=490>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=163>
+				<P>State</P>
+			</TH>
+			<TH WIDTH=490>
+				<P>Description</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>NEW</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>A bug's initial state, when it has been created</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>ASSIGNED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>When a developer starts to work on the bug, it should be
+				changed to this state to notify the creator and other developers
+				(to avoid several people working to fix the same problem!)</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>RESOLVED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>When the developer thinks the bug is fixed, after internal
+				testing, it is placed in this state.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>VERIFIED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>Not normally used, intended so that the bug creator can signal
+				that they accept that the bug has been fixed.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>CLOSED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>Not used (intended to indicate that he bug has been
+				incorporated in a release.)</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>REOPENED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>When a previsously thought resolved bug is found to be
+				unfixed.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=163>
+				<P>UNCONFIRMED</P>
+			</TD>
+			<TD WIDTH=490>
+				<P>Not used.</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<OL START=9>
+	<LI><H2 CLASS="western">How to report</H2>
+</OL>
+<P>Anyone can create a bug report in Bugzilla, as long as they have
+previously created an account (a simple email/password combination). 
+</P>
+<P>The bug title should be short and indicate the type of the
+problem, prefixing with 'Mach:' if it is a Machivalli problem only.
+The full text should obviously provide information sufficient to
+understand and reproduce the bug (attachments can be used if
+necessary). 
+</P>
+<P>Normally, if left assigned to the default owners, it is not
+necessary to 'cc' the bug to anyone as normal bugs got to the
+judge-maint mailing list, and Machiavelli ones to
+MachFix@yahoogroups.com.</P>
+<OL START=10>
+	<LI><H1>Development Platforms</H1>
+</OL>
+<P>The following list is of the existing development platforms, and
+indicates how they can be used.</P>
+<OL START=11>
+	<LI><H2 CLASS="western">Devel.diplom</H2>
+</OL>
+<P>At the time of writing, the devel.diplom machine is a SunOS SPARC
+platform. Developers should normally have their own account created
+on this machine, with a default environment suitable for compilations
+and test runs.</P>
+<P>No graphical environment is available for this machine, and, due
+to the remote nature of the connection, sustained development effort
+on it may become tedious. However, it is more than adequate for
+simple editing and CVS operations. At a pinch, it can also be used to
+build the software, although it is both limited in disk and CPU
+power.</P>
+<OL START=12>
+	<LI><H2 CLASS="western">Linux</H2>
+</OL>
+<P>Linux is the standard development environment for njudge. There is
+no specific requirements from the system, apart from the following:</P>
+<UL>
+	<LI><P>Mail Server (sendmail, exim, qmail etc.)</P>
+	<LI><P>'C' compiler (gcc)</P>
+	<LI><P>automake and autoconf installed (for regenerating 'configure'
+	files)</P>
+	<LI><P>ddd grpahical debugger for code debugging</P>
+	<P></P>
+</UL>
+<OL START=13>
+	<LI><H3 CLASS="western">Koppix</H3>
+</OL>
+<P>For those unfamiliar with Linux, or wishing for a painless quick
+install of a system, the Knoppix distribution is highly recommended
+(click  <A HREF="http://www.knopper.net/knoppix/index-en.html">here</A>
+for more information). It provides a bootable CD image that can be
+easily installed onto a spare hard-drive partition, automatically
+detecting most hardware configurations. 
+</P>
+<P>Once installed, it works as per a normal <A HREF="http://www.debian.org/">Debian</A>
+distribution.</P>
+<P>Though other documentation exists, a brief guide follows on how to
+set it up.</P>
+<OL START=14>
+	<LI><H4 CLASS="western">Installation</H4>
+</OL>
+<P>Once the initial CD has been booted, the user should invoke the
+command 'knx-hdinstall' from a root shell (either press 'ALT-F2' or
+launch a root xterm session from the KNOPPIX menu). This will prompt
+the user for where to install the system and what partitions to use.
+IT is recommended to create a swap partition of at least the size of
+your systems RAM, and a minimum of 3GB (preferably more) for the
+system itself (ext3 or reiserfs recommended system).</P>
+<P>If you don't wish to disturb an existing boot loader (for example,
+Windows) make sure to generate a boot floppy when prompted to.</P>
+<P>Note: IF, on the initial bootup, you do not get an image, it can
+be due to the fact that Knoppix has chosen too high a resolution for
+your monitor. Using the 'ALT +' key combination will allow you to
+cycle through other lower resolution settings.</P>
+<OL START=15>
+	<LI><H3 CLASS="western">Others</H3>
+</OL>
+<P>Njudge works with other main.line distributions, with no known
+problems. Thouse known at present to work include:</P>
+<UL>
+	<LI><P>Suse</P>
+	<LI><P>RedHat</P>
+	<LI><P>Mandrake</P>
+	<LI><P>Slackware</P>
+</UL>
+<P>MAC-OS has been used to a limited extented, and probably will be
+ok after some small changes.</P>
+<OL START=16>
+	<LI><H2 CLASS="western">Windows</H2>
+</OL>
+<P>Njudge has not been certified to work on a Windows platform,
+mainly due to the absence of a standard email send &amp; receive
+mechanism. Unix 'C' functions are used, which can cause some problems
+when trying to build on a Windows environment.</P>
+<P>At present, this is considered beyond the scope of this project,
+although <A HREF="http:/www.cygwin.org">Cygwin</A> can be considered
+an option worth investigating.</P>
+<OL START=17>
+	<LI><H3 CLASS="western">Cygwin</H3>
+</OL>
+<P>This is a suite of programs compiled for a Windows PC to provide a
+complete Unix environment (including shells, compilers, linkers,
+debuggeres and even 'X'). njudge is known to compile on these
+system,s but to date no know success in actually running it has been
+made public.</P>
+<OL START=18>
+	<LI><H1>Development</H1>
+	<P>The following section lists all the concerns for working in
+	'development mode' on njudge, assuming that the environment has
+	already been created. Also, it is assumed that CVS (as previously
+	detailed) has also been correctly configured.</P>
+	<LI><H2 CLASS="western">Builds</H2>
+	<LI><H4 CLASS="western">automake/autoconf</H4>
+	<P>Njudge has an automake/autoconf environment established. What
+	this means, in simple terms, is that a lot of the headache of
+	maintaining make files and automatically configured files is taken
+	away.</P>
+</OL>
+<P>By using a couple of simple configuration files, configure.ac and
+Makefile.am, a makefile is automatically generated as required.</P>
+<P>At the moment, it is beyond the scope of this guide to teach how
+to maintain the complete automake/autoconf environment. But a simple
+guide follows:</P>
+<P>The  installer has an automatic script., configure, that is used
+to generate the make files. The normal procedure for installing a
+judge is thus:</P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2>./configure
+--with-user=njudge --with-dir=/home/njudge/dip (or other similar
+defaults)<BR>make <BR>make install </FONT></FONT>
+</P>
+<P>and then, to update an existing installation:</P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2>make upgrade</FONT></FONT></P>
+<P>If the developer changes one of the configuration files
+configure.ac or Makefile.am, they have to regenerate the
+configuration file via:</P>
+<P><FONT FACE="Courier, monospace"><FONT SIZE=2>automake; autoconf</FONT></FONT></P>
 <P><BR><BR>
 </P>
+<OL START=21>
+	<LI><H3 CLASS="western">Editing</H3>
+	<P>A variety of editors exist for editing files in *nix, some
+	examples being vi/vim and emacs. The code itself has a failry loose
+	coding standard, which, such as it is, should try to be respected
+	(as in terms of commenting and braces).</P>
+	<LI><H4 CLASS="western">Ide &ndash; antje</H4>
+	<P>The author has no experience of using any IDE Integrated
+	Development Environment) that includes code editing, building and
+	debugging.</P>
+	<LI><H3 CLASS="western">Debugging</H3>
+	<P>The standard *nix debugging tool is gdb. It is a simple tool that
+	allows, via a command line interface, standard debugging type
+	facilities.</P>
+	<P>Note: To make an executable suitable for debugging, it must be
+	compiled for debugging. This can be acheived via:</P>
+	<P><FONT FACE="Courier, monospace"><FONT SIZE=2>make clean; make
+	CFLAGS=''-ggdb'' upgrade</FONT></FONT></P>
+	<P>(the 'make clean' can be ommitted if code was previosuly built
+	for debugging and only a few files have been altered)</P>
+	<LI><H4 CLASS="western">ddd</H4>
+	<P>Ddd is a GUI that sits on top of gdb, and provides a very good
+	graphical debugging interface. It is highly recommended for those
+	that have access to graphical capabilities and wish to properly
+	debug the code.</P>
+	<LI><H1>Testing</H1>
+	<P>There are a variety of ways of testing the njudge code, of which
+	some are described below.</P>
+	<LI><H3 CLASS="western">Test script environment</H3>
+	<P>A new feature, below the 'tests' subdirectory, it allows
+	automated testing, using preconfigured data. At the moment, use of
+	this mechanism is still in the experiemental phase, so details will
+	be added here later.</P>
+	<LI><H3 CLASS="western">One-off</H3>
+	<P>This is the standard mode of testing. The program to be tested
+	(usually the ''dip'' executable) is invoked in the debugger, passing
+	it a file that represents an email (via the -i &lt;filename&gt;
+	switch). Stepping through the code will then allow it to be
+	debugged.</P>
+	<LI><H1>Releases</H1>
+	<LI><H3 CLASS="western">Procedures</H3>
+</OL>
+<P>A special user on the development machine, 
+njudge@<A HREF="http://devel.diplom.org/">devel.diplom.org</A>, is
+used to execute the build scripts. 
+</P>
+<P>A script, daily.sh, runs every day to try to build the latest CVS
+njudge snapshot. This should pick out any problems that might have
+occured in checkins. If successful, it will copy the snapshot build
+into a directory (visible on the web-site) and inform the judge-maint
+mailing list</P>
+<P>A script called 'release.sh' is used to generate a release. It is
+passed a parameter, the version (substituting '.' for '_', i.e.
+<A HREF="http://Njudge-1.6.0/">Njudge-1.6.0</A> become njudge_1_6_0).
+If successful, the completed release will be made available in the
+ftp sub-directory.</P>
+<OL START=30>
+	<LI><H3 CLASS="western">Files</H3>
+	<P>In any release, the following special files need to be
+	considered:</P>
+</OL>
+<UL>
+	<LI><P>NEWS	Used to say whats new about this release (normally a
+	list of fixed bugs)</P>
+	<LI><P>BUGS	A list of the outstanding bugs, as known at time of this
+	release</P>
+	<LI><P>configure.ac	Needs to be updated to correct version number</P>
+	<LI><P>njudge.spec	Again, to be updated to the correct version
+	number.</P>
+</UL>
+<OL START=31>
+	<LI><H3 CLASS="western">Versioning 
+	</H3>
+	<P>Njudge versioning is currently based on the following <A HREF="http://v.m.n/">v.m.n</A>
+	sequence, namely:</P>
+</OL>
+<UL>
+	<LI><P>'v'	Version, currently  always '1'</P>
+	<LI><P>'m'	Major release, an incrementing number.</P>
+	<LI><P>'n'	Minor release/bug-fix, an incrementing number, reset to
+	'0' when the major number changes.</P>
+</UL>
+<P>A major release is made when essentially new functionality is
+added to the judge, whereas it is only considered a minor release if
+existing (or new) bugs were fixed.</P>
+<OL START=32>
+	<LI><H4 CLASS="western">Cvs2log</H4>
+</OL>
+<P>Cvs2log is a perl script that is used to automatically generate
+the CHANGELOG file that lists all changes made to the source files
+(based on their CVS checkins). As long as reasonable comments are
+placed on checked in files, this tool should be useful.</P>
+<P>Millis Miller<BR>5<SUP>th</SUP> April 2004</P>
+<P><BR><BR>
+</P>
+<DIV TYPE=FOOTER>
+	<P ALIGN=CENTER STYLE="margin-bottom: 0cm">Page <SDFIELD TYPE=PAGE SUBTYPE=RANDOM FORMAT=PAGE>11</SDFIELD>
+	of <SDFIELD TYPE=DOCSTAT SUBTYPE=PAGE FORMAT=PAGE>11</SDFIELD></P>
+</DIV>
 </BODY>
 </HTML>
