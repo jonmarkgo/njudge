@@ -1,0 +1,313 @@
+Himalayas,      l him himal
+Abyssinia,      l aby
+Aden,   B ade
+Afghanistan,    l afg
+Akita,  l aki
+Akmolinsk,      l akm
+Andaman Sea,    w ands and
+Angora, T ang
+Annam,  F ann
+Arabia, l arb
+Arabian Sea,    w aras
+Armenia,        l arm
+Assam,  x ass
+Baghdad,        T bag
+Baku,   l bak
+Bangkok,        x ban
+Bay of Bengal,  w bob bgl benb
+Bengal, x ben
+Black Sea,      w blas bs bla
+Bokhara,        l bok
+Bombay, B bom
+Borneo, H bor
+Cambodia,       l cam
+Canton, C can
+Cebu,   x ceb
+Celebes Sea,    w cels cs
+Celebes,        l cel
+Ceylon, x cey sri
+Chungking,      x chu
+Cochin, F coc
+Constantinople, T con
+Davao,  x dav
+Delhi,  B del
+East China Sea, w ecs echs
+East Indian Ocean,      w eio
+Egypt,  x egy
+Eritrea,        l eri
+Formosa,        x for
+Fusan,  x fus
+Gulf of Aden,   w goa adeg
+Gulf of Manaar, w gom man
+Gulf of Siam,   w gos siag
+Hong Kong,      B hk
+Hyderabad,      l hyd
+Irkutsk,        l irk
+Java Sea,       w javs js
+Java,   H jav
+Karachi,        x kar
+Kashgar,        x kag
+Kashmir,        x kam
+Kirghiz,        l kir
+Krasnoyarsk,    l kra
+Kyoto,  J kyo
+Kyushu, J kyu
+Langchow,       l lan
+Lower Pacific,  w lp pacl low lpo
+Lucknow,        l luc
+Luzon Strait,   w luzs ls luz
+Madras, B mad
+Malaya, x mal
+Manchuria,      C mac
+Mandalay,       x may
+Manila, x mna
+Mecca,  l mec
+Mediterranean Sea,      w meds ms med 
+Middle Pacific, w mp pacm mid mpo
+Mongolia,       x mon
+Moscow, R mos
+Mysore, l mys
+Nagpur, l nag
+Nanchang,       l nan
+Nepal,  l nep
+New Guinea,     x gui new guin
+North Siam,     l nsia nsam
+Odessa, R ode
+Okhotsk Sea,    w okhs os okh
+Oman,   l oma
+Omsk,   R oms
+Orenburg,       l ore
+Otaru,  J ota
+Peking, C pek
+Perm,   l prm
+Persia, x prs
+Persian Gulf,   w perg pg 
+Port Arthur,    R part dal
+Punjab, l pun
+Rajputana,      l raj
+Rangoon,        x ran
+Red Sea,        w reds rs red
+Rumania,        x rum
+Sakhalin,       x sak
+Sarawak,        x sar
+Sea of Japan,   w soj japs
+Semipalatinsk,  l sem
+Seoul,  x seo
+Shanghai,       C sha
+Shiraz, x shi
+Singapore,      B sig
+Sinkiang,       C sik
+Somaliland,     l som
+South China Sea,        w scs schs
+Southeast Indian Ocean, w sio
+Sudan,  x sud
+Sulu Sea,       w suls
+Sumatra,        H sum
+Sunda Sea,      w suns sun
+Syria,  l syr
+Tabriz, x tab
+Tashkent,       x tas
+Tibet,  l tib
+Timor Sea,      w tims ts tim
+Tokyo,  J tok
+Tongking,       F ton
+Upper Burma,    x ubur ub
+Upper Pacific,  w up pacu upp upo
+Urumchi,        l uru
+Vladivostok,    R vla
+West Indian Ocean,      w wio
+Yellow Sea,     w yels ys yel
+Yunnan, l yun
+-1
+him-mv: him
+aby-mv: sud som eri
+ade-mv: mec arb
+ade-xc: mec arb/sc goa reds
+afg-mv: prs bok tas kag kam pun kar
+aki-mv: kyo tok
+aki-xc: soj okhs tok kyo
+akm-mv: ore oms kra sem kir tas
+ands-xc: gom bob ran ban/wc mal javs sum eio 
+ang-mv: con syr arm
+ang-xc: con blas arm syr meds
+ann-mv: ton coc cam
+ann-xc: ton scs coc gos
+arb-mv: ade mec syr bag oma
+arb-nc: bag perg oma
+arb-sc: ade goa aras oma
+aras-xc: wio goa arb/sc oma perg kar raj bom mys 
+arm-mv: bak tab bag syr ang
+arm-xc: ang blas bak
+ass-mv: tib sik yun ubur ben
+bag-mv: arb syr arm tab shi
+bag-xc: arb/nc perg shi
+bak-mv: ode mos tab arm
+bak-xc: ode arm blas
+ban-ec: gos cam mal
+ban-mv: cam nsia ran mal
+ban-wc: mal ands ran
+ben-mv: tib ass ubur hyd luc nep
+ben-xc: hyd ubur bob
+blas-xc: meds con rum ode bak arm ang 
+bob-xc: gom hyd ben ubur ran ands
+bok-mv: mos ore tas afg prs
+bom-mv: raj nag hyd mys
+bom-xc: raj mys aras
+bor-mv: sar
+bor-xc: javs sar cels
+cam-mv: ban nsia ton ann coc
+cam-xc: ban/ec coc gos
+can-mv: hk ton may yun chu nan
+can-xc: hk scs ton nan
+ceb-mv: mna dav
+ceb-xc: suls luzs mna mp lp dav
+cel-xc: cels tims javs
+cels-xc: javs bor sar suls dav lp gui tim cel 
+cey-xc: wio gom eio
+chu-mv: can yun sik lan nan
+coc-mv: cam ann
+coc-xc: gos cam ann
+con-mv: ang rum
+con-xc: meds rum blas ang
+dav-mv: ceb
+dav-xc: lp cels suls ceb
+del-mv: luc nag raj pun nep
+ecs-xc: scs nan sha yels kyu up for
+egy-mv: syr mec sud
+egy-xc: meds syr mec reds sud
+eio-xc: sio wio cey gom ands sum
+eri-mv: som aby sud
+eri-xc: sud som reds goa
+for-xc: ecs up mp luzs scs
+fus-mv: seo
+fus-xc: seo/ec seo/wc yels soj
+goa-xc: som eri ade arb/sc aras wio reds 
+gom-xc: eio cey wio mad hyd bob ands 
+gos-xc: mal ban/ec cam coc ann scs sun 
+gui-xc: tims cels lp
+hk-mv: can
+hk-xc: can scs
+hyd-mv: mad mys bom nag luc ben
+hyd-xc: mad ben bob gom
+irk-mv: vla mac mon kra
+jav-xc: javs tims sio
+javs-xc: sio sum ands mal sun sig sar bor cels cel tim jav 
+kag-mv: sik tib kam afg tas kir uru
+kam-mv: tib pun afg kag
+kar-mv: prs afg pun raj
+kar-xc: aras perg prs raj
+kir-mv: kag tas akm sem uru
+kra-mv: irk mon uru sem akm oms
+kyo-mv: kyu aki tok
+kyo-xc: kyu yels soj aki tok up
+kyu-mv: kyo
+kyu-xc: up ecs yels kyo
+lan-mv: sik mon pek sha nan chu
+lp-xc: cels dav ceb mp gui
+luc-mv: hyd nag del nep ben
+luzs-xc: scs for mp mna ceb suls
+mac-mv: irk vla seo part sha pek mon 
+mac-xc: part yels sha
+mad-mv: hyd mys
+mad-xc: wio mys hyd gom
+mal-mv: ban sig
+mal-xc: ban/ec ban/wc gos suns javs ands sig 
+may-mv: yun can nsia ran ubur ton
+mec-mv: egy syr arb ade
+mec-xc: ade reds egy
+meds-xc: reds egy con blas ang syr
+mna-mv: ceb
+mna-xc: ceb luzs mp
+mon-mv: uru kra irk mac pek lan sik
+mos-mv: ode bak bok ore prm
+mp-xc: ceb mna luzs for up lp
+mys-mv: bom hyd mad
+mys-xc: aras bom mad wio
+nag-mv: bom raj del luc hyd
+nan-mv: can chu lan sha
+nan-xc: scs can sha ecs
+nep-mv: ben luc del pun
+nsia-mv: cam ban ran may ton
+ode-mv: rum mos bak
+ode-xc: rum bak blas
+okhs-xc: soj sak vla ota aki tok up
+oma-mv: arb
+oma-xc: arb/nc arb/sc perg aras
+oms-mv: kra akm ore prm
+ore-mv: bok mos prm oms akm tas
+ota-xc: soj okhs
+part-mv: seo mac
+part-xc: seo/wc yels mac
+pek-mv: mac sha lan mon
+perg-xc: aras oma arb/nc bag shi prs kar 
+prm-mv: mos oms ore
+prs-mv: shi tab bok afg kar
+prs-xc: perg shi kar
+pun-mv: nep del raj kar afg kam tib
+raj-mv: kar pun del nag bom
+raj-xc: kar aras bom
+ran-mv: ban nsia may ubur
+ran-xc: ban/wc ands bob ubur
+reds-xc: eri sud egy meds mec ade goa 
+rum-mv: con ode
+rum-xc: con ode blas
+sak-xc: okhs
+sar-mv: bor
+sar-xc: bor javs suns suls cels
+scs-xc: ann ton hk can nan ecs for luzs suls suns gos 
+sem-mv: uru kir akm kra
+seo-ec: vla soj fus
+seo-mv: part mac vla fus
+seo-wc: yels part fus
+sha-mv: nan lan pek mac
+sha-xc: ecs nan mac yels
+shi-mv: bag tab prs
+shi-xc: bag prs perg
+sig-mv: mal
+sig-xc mal javs
+sik-mv: tib kag uru mon lan chu yun ass 
+sio-xc: wio eio sum javs jav tims
+soj-xc: yels fus seo/ec vla okhs ota aki kyo 
+som-mv: aby eri
+som-xc: eri goa
+sud-mv: egy aby eri
+sud-xc: egy reds eri
+suls-xc: suns scs luzs ceb dav cels sar 
+sum-xc: ands javs sio eio
+suns-xc: javs mal gos scs suls sar
+syr-mv: ang arm bag arb mec egy
+syr-xc: egy meds ang
+tab-mv: bag arm bak prs shi
+tas-mv: bok ore akm kir kag afg
+tib-mv: pun kam kag sik ass ben
+tims-xc: sio jav javs cel cels gui
+tok-mv: kyo aki
+tok-xc: up kyo aki okhs
+ton-mv: nsia can ann cam may
+ton-xc: can scs ann
+ubur-mv: ben ass yun may ran
+ubur-xc: bob ben ran
+up-xc: for ecs yels kyu kyo okhs mp tok 
+uru-mv: sik kag kir sem kra mon
+vla-mv: seo mac irk
+vla-xc: okhs seo/ec soj
+wio-xc: sio eio gom cey mad mys aras goa 
+yels-xc: ecs sha mac part seo/wc fus soj kyo up kyu 
+yun-mv: ass sik chu can may ubur
+-1
+Center order for summary report:
+   ang egy sud ade bag con rum ode mos tab shi prs oms tas kar kag kam  
+   del bom mad mon sik cey ben ass ubur may ran ban mal coc ann ton hk 
+   can chu sha pek mac vla part seo fus sak ota tok kyo kyu for mna 
+   ceb dav gui sar bor jav sum sig
+#End of center ordering
+-1
+     
+     
+     
+     
+     
+     
+     
+     
+
