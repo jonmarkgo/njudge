@@ -1,5 +1,13 @@
 /*
  * $Log$
+ * Revision 1.64  2003/12/20 07:05:30  nzmb
+ * Changed judge so that the original message sent to it is echoed back only
+ * when either the sender is registered with a judge or it contains a valid
+ * command such as REGISTER. This is to solve judges crashing with smail errors
+ * when smail tries to interpret binary files as part of the e-mail message.
+ *
+ * Also, when a message is echoed back, added code to strip off the headers.
+ *
  * Revision 1.63  2003/12/12 10:16:13  millis
  * Fixed compile error
  *
@@ -1847,6 +1855,8 @@ int mail(void)
 
 					/* gm only gets confirmation of commands to this point */
 					fclose(rfp);
+				        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 					sprintf(cmdline, "mv %s %s", rfile, r2file);
 					system(cmdline);
 					
@@ -2469,6 +2479,8 @@ void mail_reply(int err)
                         	fprintf(rfp, "\nTime to grace period expiration: %s.\n", timeleft(&dipent.grace));
 		}	
 		fclose(rfp);
+        	msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 	}
 	fclose(ifp);
 

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/07/21 21:37:45  millis
+ * Fix bug 199 (phased waits not working correctly)
+ *
  * Revision 1.12  2003/07/17 00:01:29  millis
  * Use MailOut to send emails
  *
@@ -74,6 +77,7 @@
 #include "functions.h"
 
 static char line[1024]; /* Local temporary buffer */
+extern int msg_header_done;
 
 int phase(char *s)
 {
@@ -272,6 +276,8 @@ void phase_pending(void)
 			if (porder('T', n, 0) == E_FATAL) {
 				sprintf(line, "dip.reply 'Pending orders error'");
 				fclose(rfp);
+			        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 				MailOut(line, GAMES_MASTER);
 			} else {
 
@@ -287,6 +293,8 @@ void phase_pending(void)
 				sprintf(line, "dip.reply '%s:%s - %s Pending Orders'",
 					JUDGE_CODE, dipent.name, dipent.phase);
 				fclose(rfp);
+			        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 				MailOut(line, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;

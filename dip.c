@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.47  2004/02/14 23:32:11  millis
+ * Allow use of fixed time via parameter (for debugging)
+ *
  * Revision 1.46  2004/01/21 00:55:57  millis
  * Allow passing of forced date/time (for testing)
  *
@@ -957,6 +960,7 @@ void CheckRemindPlayer(int player, long one_quarter)
 			fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
 	}
 	fclose(rfp);
+	msg_header_done = 0;  /* Bug 282, header will need to be redone */
 
 	sprintf(line, "%s '%s:%s - %s Reminder'",
 	  temp_file, JUDGE_CODE, dipent.name, dipent.phase);
@@ -1264,6 +1268,8 @@ int process(void)
                  	       		fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 			}
 			fclose(rfp);
+		        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
@@ -1375,6 +1381,8 @@ int process(void)
                         				fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 					}
 					fclose(rfp);
+				        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 				}
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
@@ -1399,7 +1407,11 @@ int process(void)
 		if (dipent.xflags & XF_MANUALPROC) {
 			if (!(dipent.players[0].status & SF_PROCESS)) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
-				if (!Dflg) fclose (rfp);
+				if (!Dflg) {
+				    fclose (rfp);
+			            msg_header_done = 0;  /* Bug 282, header will need to be redone */
+				}
+
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
@@ -1425,8 +1437,10 @@ int process(void)
 		if ((i = porder('M', -1, 0))) {
 			fprintf(rfp, "Error %d processing orders.\n", i);
 			fprintf(stderr, "Error %d processing orders.\n", i);
-			if (!Dflg)
+			if (!Dflg) {
 				fclose(rfp);
+        			msg_header_done = 0;  /* Bug 282, header will need to be redone */
+			}
 			sprintf(line, "dip.result 'Diplomacy error'");
 			MailOut(line, GAMES_MASTER);
 			bailout(1);
@@ -1577,6 +1591,8 @@ int process(void)
 		                        fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 			}
 			fclose(rfp);
+		        msg_header_done = 0;  /* Bug 282, header will need to be redone */
+
 		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
