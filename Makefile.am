@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.25  2003/05/11 16:15:16  millis
+# Fixed bug 153 (make not upgrading data files correctly)
+#
 # Revision 1.24  2003/05/04 05:33:20  jaldhar
 # Rolled back to automake 1.6/autoconf 2.50
 #
@@ -275,6 +278,7 @@ magic:
 	fi;
 
 remap: ${DESTDIR}${datadir}
+	rm -f ${DESTDIR}${bindir}/map.*
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 
 install: install-check install-am
