@@ -267,7 +267,7 @@ distclean-local:
 	-rm -rf autom4te.cache
 
 EXTRA_DIST= config.h.in defaults.inc.in dip.conf dip.template starter.flist \
-	debian $(man_MANS) $(bin_SCRIPTS)
+	debian njudge.spec $(man_MANS) $(bin_SCRIPTS)
 
 CLEANFILES=flist.info flist
 DISTCLEANFILES=defaults.inc

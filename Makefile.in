@@ -275,7 +275,7 @@ dist_doc_DATA = docs/README.bailout \
 
 
 EXTRA_DIST = config.h.in defaults.inc.in dip.conf dip.template starter.flist \
-	debian $(man_MANS) $(bin_SCRIPTS)
+	debian njudge.spec $(man_MANS) $(bin_SCRIPTS)
 
 
 CLEANFILES = flist.info flist
