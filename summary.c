@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Accept -C option to specify config_dir
+ * Handle blind summaries differently (if not master)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -116,8 +120,8 @@ int main(int argc, char **argv)
 				case 'C':
                                   if (*++s)
                                         CONFIG_DIR = s;
-                                  else if (++i < argc)
-                                        CONFIG_DIR = argv[i];
+                                  else if (i+1 < argc)
+                                        CONFIG_DIR = argv[i+1];
                                   else {
                                         fprintf(stderr, "Directory must follow C option.\n");
                                         goto usage;
