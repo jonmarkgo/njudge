@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2003/04/16 04:32:13  millis
+ * Fix bug 65
+ *
  * Revision 1.25  2003/02/28 20:16:46  nzmb
  * Changed the name of resignation ratio to CD ratio, to avoid confusion with
  * Doug Massey's DRR.
@@ -382,7 +385,6 @@ void params(FILE * fp)
 		}
                 if (dipent.xflags & XF_NOMONEY)
                     strcat(line, ", NoMoney");
-
             strcat(line, ".");
             print_params(fp, line);
 
@@ -537,25 +539,27 @@ void params(FILE * fp)
                 strcatf(line, temp1, &first_flag);
         }
 
-        if (dipent.x2flags & X2F_NEUTRALS) {
-                strcatf(line, "Neutrals", &first_flag);
-        }
+	if (dipent.x2flags & X2F_NEUTRALS) {
+		strcatf(line, "Neutrals", &first_flag);
+	}
 
-        if (dipent.x2flags & X2F_RIVERS) {
-                strcatf(line, "Rivers", &first_flag);
-        }
+	if (dipent.x2flags & X2F_RIVERS) {
+		strcatf(line, "Rivers", &first_flag);
+	}
 
-        if (dipent.x2flags & X2F_HOMETRANSFER) {
-                strcatf(line, "HomeTransfer", &first_flag);
-        }
+	if (dipent.x2flags & X2F_HOMETRANSFER) {
+		strcatf(line, "HomeTransfer", &first_flag);
+	}
 
-        if (dipent.x2flags & X2F_CAVALRY) {
-                strcatf(line, "Cavalry", &first_flag);
-        }
+	if (dipent.x2flags & X2F_CAVALRY) {
+		strcatf(line, "Cavalry", &first_flag);
+	}
 
-        if (dipent.x2flags & X2F_ARTILLERY) {
-                strcatf(line, "Artillery", &first_flag);
-        }
+	if (dipent.x2flags & X2F_ARTILLERY) {
+		strcatf(line, "Artillery", &first_flag);
+	}
+
+	
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {
@@ -699,7 +703,10 @@ void params(FILE * fp)
 		}
 	}
 
-	fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
+	if (dipent.x2flags & X2F_CAPTUREWIN) 
+	    fprintf(fp, "  Win by capturing 1 power's home centres, or all draw at %d centres.\n", dipent.vp);
+        else
+            fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
 
 	/* No of centres added. DAN. */
 	if ((dipent.no_of_players != dipent.np) &&
