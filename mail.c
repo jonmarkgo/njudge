@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.35  2003/03/21 20:25:04  russblau
+ * Allow space in "sign off" when used to terminate a press message (to be
+ * consistent with usage in other contexts).
+ *
  * Revision 1.34  2003/03/08 23:25:26  russblau
  * Fixed minor spacing glitch in "set wait" notification.
  *
@@ -915,7 +919,7 @@ int mail(void)
                 						if(now2 < dipent.deadline)
 									fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
         	        					if(now2 < dipent.grace)
-                	        					fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+                	        					fprintf(rfp, "\nTime to grace period expiration: %s.\n", timeleft(&dipent.grace));
 							}
 							fclose(rfp);
 							rfp = tfp;
@@ -2466,7 +2470,7 @@ void mail_reply(int err)
         	        if(now < dipent.deadline)
                 	        fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
                 	if(now < dipent.grace)
-                        	fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+                        	fprintf(rfp, "\nTime to grace period expiration: %s.\n", timeleft(&dipent.grace));
 		}	
 		fclose(rfp);
 	}
