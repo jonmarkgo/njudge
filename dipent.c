@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/01/13 22:38:51  millis
+ * merged in from ustv
+ *
  * Revision 1.10  2002/08/27 22:27:50  millis
  * Updated for automake/autoconf functionality
  *
@@ -100,7 +103,7 @@ int getdipent(FILE * fp)
  */
 
 	int i, j, tempvp, tempplayers;
-	int tempcentres;
+	int old_flags, old_xflags, old_x2flags;  /* Remember flags settings! */
 	time_t now;
 	unsigned char line[1000];
 	char *s; 
@@ -162,10 +165,13 @@ int getdipent(FILE * fp)
 		bailout(E_FATAL);
 	}
 	/* tempcentres will remember centres setting */
-	tempcentres = dipent.xflags & XF_BUILD_ONECENTRE;
+	old_flags = dipent.flags;
+	old_xflags = dipent.xflags;
+	old_x2flags = dipent.x2flags;
 	SETNP(dipent.variant);
-	dipent.xflags &= ~XF_BUILD_ONECENTRE;
-	dipent.xflags += tempcentres;
+	dipent.xflags = old_xflags;
+	dipent.x2flags = old_x2flags;
+	dipent.flags = old_flags;
 	dipent.has_natives = GetNativeIndex();
 
 	if (tempvp != 0)
