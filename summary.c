@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/03/16 00:06:17  miller
+ * Fix 'C' parameter so that next one is not squashed
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Accept -C option to specify config_dir
  * Handle blind summaries differently (if not master)
@@ -309,6 +312,10 @@ int main(int argc, char **argv)
 			fprintf(log_fp, "sum: cmap ptab read error, %d. %s\n", i, line);
 			return E_FATAL;
 		}
+		if ((i = fread(stab, sizeof(stab), 1, ifp)) != 1) {
+                        fprintf(log_fp, "sum: cmap stab read error, %d. %s\n", i, line);
+                        return E_FATAL;
+                }
 	}
 	/*
 	 *  Get the province/supply center ordering.
@@ -572,7 +579,7 @@ int main(int argc, char **argv)
 				if (!i) {
 					while (i < j)
 						player[i++][p] = n;
-					fprintf(ifp, "  %s:%*s", powers[p], 14 - strlen(powers[p]), "");
+					fprintf(ifp, "  %s:%*s", powers[p], (int) (14 - strlen(powers[p])), "");
 				} else {
 					fprintf(ifp, "   from %6.6s:  ", phaze[j - 1]);
 				}
