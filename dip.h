@@ -1,5 +1,14 @@
 /*
  * $Log$
+ * Revision 1.47  2004/05/22 08:54:04  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
+ * Revision 1.46  2004/03/28 16:06:08  millis
+ * Added approval flags (for bug 193)
+ *
+ * Revision 1.45  2004/02/22 23:26:09  millis
+ * Small Bug91 change
+ *
  * Revision 1.44  2004/02/14 23:15:32  millis
  * Fixed X2F_PRESS_OPTIONS to use '|' not '&', else shows blank x2flags setting
  *
@@ -338,9 +347,10 @@
 #define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 #define X2F_TOUCHPRESS		0x800000 /* Powers can only press to neighbours */
 #define X2F_EXTRA_HC	        0x1000000 /* Game has extra home centre(s) according to map file */
-#define X2F_PROXY		0x2000000 /* Game allows proxy orders */
-#define X2F_NODIAS		0x4000000 /* Game has NODIAS settings */
-#define X2F_STRWAIT		0x8000000 /* Only players with moves can place waits */
+#define X2F_APPROVAL 		0x2000000 /* Master needs to approve players to let them make moves */
+#define X2F_PROXY		0x4000000 /* Game allows proxy orders */
+#define X2F_NODIAS		0x8000000 /* Game has NODIAS settings */
+#define X2F_STRWAIT		0x10000000 /* Only players with moves can place waits */
 
 
 /* Define for X2F flags for params.c to display */
@@ -379,14 +389,14 @@ typedef struct Sequence {
 #define SF_RESIGN  0x800	/* This player has resigned 			*/
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
-#define SF_UNUSED  0x4000	/*** NOT CURRENTLY USED ***/ 
+#define SF_NOT_APPROVED  0x4000 /* Player needs to be approved before can move  */
 #define SF_CONC    0x8000       /* Player agreed to concession */
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
 #define SF_BROAD_SENT 0x20000   /* Player has sent one broadcast message this turn */
 
 
 /* This will clear out non-essential status for a new player */
-#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
+#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_RESIGN | SF_CD | SF_ABAND | SF_REMIND | SF_LATE | SF_DRAW);
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
