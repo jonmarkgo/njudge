@@ -78,6 +78,7 @@ AWK = @AWK@
 CC = @CC@
 DEPDIR = @DEPDIR@
 DIR = @DIR@
+DOMAIN = @DOMAIN@
 
 # locations of some support programs
 HEAD = @HEAD@
