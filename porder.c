@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2004/05/22 10:02:26  millis
+ * Oh dear: shouldn't check in before trying to compile!
+ *
  * Revision 1.6  2004/05/22 10:00:48  millis
  * Restored version 1.4 changes mistakenly lost
  *
@@ -72,13 +75,15 @@ int porder(char c, int player, int listflg)
 		processing = player == -1;
 		more_orders = 0;
 
-		if (dipent.flags & F_MACH) {
+		if (dipent.phase[6] != 'X') {
+		    if (dipent.flags & F_MACH) {
 			ma_process_input(power, dipent.phase[5], player);
 			ma_process_output(power, dipent.phase[5]);
-		} else {
+		    } else {
 			process_input(power, dipent.phase[5], player);
 			process_output(power, dipent.phase[5]);
-		}
+		    }
+ 		}
 
 		fclose(ifp);
 	}
