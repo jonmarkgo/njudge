@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.40  2004/05/22 08:56:52  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.38  2004/02/14 23:31:15  millis
  * Display duplex ratio (if not secret)
  *
@@ -325,6 +328,9 @@ void params(FILE * fp)
 	    }
 	}
 
+	if (dipent.x2flags & X2F_IRREGULAR)
+	     strcat(line, ", Irregular");
+
 	strcat(line, ".");
 	print_params(fp, line);
 
@@ -627,6 +633,9 @@ void params(FILE * fp)
 	if ( !(dipent.flags & F_MACH) && (dipent.x2flags & X2F_SUMMER)) {
 		strcatf(line, "Summer", &first_flag);
 	}
+
+	if (dipent.x2flags & X2F_PORTAGE) 
+	    strcatf(line, "Portage", &first_flag);
 	
 	if (!first_flag) 
 		strcat(line,".");
