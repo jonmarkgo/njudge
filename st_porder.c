@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.21  2004/01/04 11:34:36  millis
+  ** Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+  **
   ** Revision 1.20  2004/01/02 08:43:36  nzmb
   ** Fix bug #219 -- advance to the build phase when a game ends in a solo.
   **
@@ -170,7 +173,7 @@ int ownership(void)
 				np[i]++;
 
 		}
-		np[i] += ExtraCentres(p);
+		np[i] += ExtraCentres(j);
 
 		if (!p)
 			continue;
@@ -378,7 +381,7 @@ static void newowner(void)
 	}
 }
 
-void process_input(int pt, char phase)
+void process_input(int pt, char phase, int player)
 {
 	char *s;
 	int u, p;
@@ -406,6 +409,10 @@ void process_input(int pt, char phase)
 			if ((GAME_SETUP)) {
 			    status = setupin(&s, p);
 			} else {
+			if ((player >= 0) && (dipent.players[player].status & SF_NOT_APPROVED)) {
+			    status = 1;
+			    fprintf(rfp, "You are not approved to make moves: please contact the Master.\n\n");
+			} else 
 			switch (phase) {
 			case 'B':
 				status = buildin(&s, p);

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2004/01/04 11:34:34  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.12  2003/12/28 00:00:40  millis
  * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
  *
@@ -755,7 +758,7 @@ int main(int argc, char *argv[])
 
 			case 'E': /* Extra Unit(s) */
                                 power_index = 0;
-                                while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+                                while (fgets(line, sizeof(line), ifp) && !isspace(*line)) {
                                     if (sscanf(line, "%s %d",
                                                 power_name,
                                                 &extra_centre) != 2 ){
