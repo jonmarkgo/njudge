@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.21  2002/04/12 12:10:01  miller
+# Added blind and check executables, removed bgreet
+#
 # Revision 1.20  2002/04/12 01:26:41  miller
 # Better attempt for HOME directory
 #
@@ -213,7 +216,7 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	${INSTALLCMD} ${INSFLAGS} pdip ${INSTALLDIR}/pdip
 	${INSTALLCMD} ${INSFLAGS} rdip ${INSTALLDIR}/rdip
 	${INSTALLCMD} ${INSFLAGS} recdump ${INSTALLDIR}/recdump
-	${INSTALLCMD} ${INSFLAGS) zpblind ${INSTALLDIR}/zpblind
+	${INSTALLCMD} ${INSFLAGS} zpblind ${INSTALLDIR}/zpblind
 	${INSTALLCMD} ${INSFLAGS} ascii_to_ded ${INSTALLDIR}/ascii_to_ded
 	${INSTALLCMD} ${INSFLAGS} ded_to_ascii ${INSTALLDIR}/ded_to_ascii
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
