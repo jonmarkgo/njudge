@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2001/07/15 09:18:34  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.8  2001/06/24 06:03:28  nzmb
  * Added functionality to enforce the new dedication systems, while keeping
  * intact Millis' previous changes.
@@ -458,6 +461,9 @@ int mail_signon(char *s)
                                 powers[power(name[0])], dipent.name);
 			fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
 			mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
+
+			sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
+
 			broad_signon = 1;
 		        if (dipent.n != 1) {
                                 pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
