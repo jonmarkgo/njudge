@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2001/10/20 12:11:14  miller
+ * Merged in changes from DEMA and USTV 
+ *
  * Revision 1.8.2.2  2001/10/20 00:52:20  dedo
  * Correctedcompile error
  *
@@ -277,6 +280,9 @@ void params(FILE * fp)
 				strcat(line, ", NoPlague");
 			} else {
 				strcat(line, ", Plague");
+			}
+			if (dipent.xflags & XF_STORMS) {
+				strcat(line, ", Storms");
 			}
 			if (dipent.flags & F_NOLOANS) {
 				strcat(line, ", NoLoans");

@@ -38,6 +38,10 @@
 
 #define convoyable(p) (water(p) | (dipent.xflags & XF_COASTAL_CONVOYS))
 
+static int result[MAXUNIT];
+static int support[MAXUNIT];
+static int supportvalue[MAXUNIT];
+
 /*
  * Input processing of the regular movement orders
  */
@@ -421,20 +425,40 @@ int ma_movein(char **s, int p)
 	return 0;
 }
 
+#define supval(u)   (unit[u].stype == 'm' || unit[u].stype == 'p' ? 2 : 1)
+
+
+/* Function to only cut one support of special units if Mach2 */
+void SupportCut(int u, int value)
+{
+    if (dipent.xflags & XF_MACH2) {
+	support[unit[u].unit]--;
+	supportvalue[u]--; /* Registers amount of support unit was last giving */
+        /* See if any support left: if not, mark as cut */
+	if (!supportvalue[u])  
+	    result[u] = value;
+    } else {
+	/* Normal game, cuts always full support */
+	 result[u] = value;
+         support[unit[u].unit] -= supval(u);
+    }
+}
+
 int ma_moveout(int pt)
 {
 
 /*  Process movement orders.  */
 
 	int u, u2, u3, bounce = 0, i, index, p;
-	unsigned char *s, *t, c, contest[NPROV + 1];
+	unsigned char *s, *t, c, contest[NPROV + 1], converted[NPROV+1];
 
 	char cbuffer[1024];
 
-	int result[MAXUNIT];
+/*	int result[MAXUNIT];
 	int support[MAXUNIT];
+	int supportvalue[MAXUNIT];
+ */	int has_other_retreat = 0; 
 
-#define supval(u)   (unit[u].stype == 'm' || unit[u].stype == 'p' ? 2 : 1)
 
 #define VOID        1
 #define NO_CONVOY   2
@@ -467,6 +491,7 @@ int ma_moveout(int pt)
 
 	for (p = 1; p <= npr; p++) {
 		contest[p] = 0;
+		converted[p] = 0;
 	}
 
 	if (err)
@@ -490,6 +515,7 @@ int ma_moveout(int pt)
 		result[u] = 0;
 
 		support[u] = unit[u].dcoast == MX ? -1 : supval(u) - 1;
+		supportvalue[u] = supval(u);
 
 		/*
 		   **  You get an extra support moving into a rebelling province
@@ -649,8 +675,7 @@ int ma_moveout(int pt)
 			    && unit[u2].order == 's' && !result[u2]
 			    && unit[u2].dest != unit[u].loc	/* X */
 			    && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-				result[u2] = CUT;
-				support[unit[u2].unit] -= supval(u2);
+				SupportCut(u2,CUT);
 			}
 			/* MLM 22/6/2001 Also block moves on attempt to enter 
 			   rebelling Venice */
@@ -673,11 +698,33 @@ int ma_moveout(int pt)
 				  && unit[u2].order == 's' && !result[u2]
 				    && unit[u2].dest != unit[u].loc	/* X */
 				    && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-					result[u2] = CUT;
-					support[unit[u2].unit] -= supval(u2);
+					SupportCut(u2, CUT);
 				}
 			}
 		}
+/* Pass 2a.2: Check again if any partially cut special units are fully cut, only for Mach2 */
+    if (dipent.xflags & XF_MACH2) {
+	for (u = 1; u <= nunit; u++) {
+		/* Only interested in special units */
+		if (supval(u) < 2) continue; 
+		if (unit[u].order != 's') continue; /* Only want units ordering support */
+		/* OK, identifier a full cut by an attack with > 0 support */
+                 for (u2 = 1; u2<= nunit; u2++) {
+		     /* Ok, see if a unit is attacking this special unit and,
+			if the unit attacking is a special too, or has support
+                        it will fully cut the unit[u] support
+		      */
+		     if (unit[u2].order == 'm' && 
+			 unit[u2].dest == unit[u].loc && 
+			 (support[u2] || supval(u2) > 1) && 
+			 unit[u2].owner != unit[u].owner) {
+		     result[u] = CUT;
+		     support[u] -= (supval(u) -1); /* -1 as already reduced by one before */
+		     break;
+		    }
+		}
+        }
+    }
 
 /*  Pass 3a: Check for dislodged convoys. XII.3 */
 
@@ -720,8 +767,7 @@ int ma_moveout(int pt)
 					if (unit[u2].unit == *s)
 						goto nextp2b;
 
-				result[u2] = CUT;
-				support[unit[u2].unit] -= supval(u2);
+				SupportCut(u2,CUT);
 			}
 		      nextp2b:;
 		}
@@ -770,8 +816,7 @@ int ma_moveout(int pt)
 						if (unit[u2].unit == *s)
 							goto nextp2c;
 
-					result[u2] = CUT;
-					support[unit[u2].unit] -= supval(u2);
+					SupportCut(u2,CUT);
 				}
 			}
 		      nextp2c:;
@@ -847,6 +892,14 @@ int ma_moveout(int pt)
 			}
 		}
 
+/* Pass 5aa: Disband requested disband units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'd') {
+                            result[u] = 0; /* Disbands never fail */
+                        }
+                }
 
 /*  Pass 5: Check for movement bounces */
 
@@ -856,14 +909,24 @@ int ma_moveout(int pt)
 				if (unit[u].owner <= 0)
 					continue;
 				if ((unit[u].order == 'm' ||
-				     (unit[u].order == 'v' && unit[u].type == 'G')) && !result[u]) {
+                                     (unit[u].order == 'v' && (unit[u].type == 'G' || is_venice(unit[u].loc)))) && !result[u]) {
 
 					/*
 					   **  The destination is contested by unit u unless there is a
 					   **  unit there moving into unit u's starting location.
 					 */
 
-					if (!((u2 = pr[unit[u].dest].unit) && !result[u2]	/* IX.7.note */
+					/* u2 is set to garrison unit if none in province 
+					   and we're talking about venice */
+
+					u2 = pr[unit[u].dest].unit;
+					if (!u2 && pr[unit[u].dest].flags & PF_VENICE) {
+						u2 = pr[unit[u].dest].gunit;
+					}
+					 if (u2 == u)
+                                                u2 = 0;  /* Can't bounce with myself! */
+
+					if (!((u2) && !result[u2]	/* IX.7.note */
 					      &&unit[u2].order == 'm'
 					  && unit[u2].dest == unit[u].loc
 					      && !unit[u2].convoy && !unit[u].convoy)) {	/* XIV.6 */
@@ -887,14 +950,16 @@ int ma_moveout(int pt)
 							}
 						}
 						/*
-						   **  Unit u bounces if the unit there is holding with more support.
+						   **  Unit u bounces if the unit there is holding with more support
+						   ** or trying to go to Venice with a garrison.
 						 */
 
-						if ((unit[u2].order != 'm' && unit[u2].order != 'v')
+						if ((unit[u2].order != 'm' && unit[u2].order != 'v' && unit[u2].order != 'd')
 						    || (unit[u2].dest == unit[u].loc
 							&& !unit[u2].convoy && !unit[u].convoy)) {	/* XIV.6 */
-							if (support[u] - p <= support[u2]
-							    || unit[u].owner == unit[u2].owner) {	/* IX.3 */
+							if (support[u] - p <= support[u2] 
+							    || (unit[u2].type == 'G' && is_venice(unit[u2].loc))
+							    || unit[u].owner == unit[u2].owner  ) {	/* IX.3 */
 								bounce++;
 								result[u] = BOUNCE;
 								goto nextp5;
@@ -920,10 +985,10 @@ int ma_moveout(int pt)
 						if (unit[u3].owner <= 0)
 							continue;
 						if (u != u3 && unit[u].dest == unit[u3].dest &&
-						((unit[u3].order == 'm' ||
-						  (unit[u3].order == 'v' && unit[u3].type == 'G')) &&
-						 (!result[u3] || result[u3] == BOUNCE)) &&
-						    support[u] - p <= support[u3]) {
+                                                ((unit[u3].order == 'm' ||
+                                                  (unit[u3].order == 'v' && (unit[u3].type == 'G' || is_venice(unit[u3].loc)))) &&
+                                                 (!result[u3] || result[u3] == BOUNCE)) &&
+                                                    support[u] - p <= support[u3]) {
 
 							/*
 							   **  Won't bounce if unit there dislodges other unit.  IX.7.note
@@ -942,14 +1007,6 @@ int ma_moveout(int pt)
 			      nextp5:;
 			}
 		} while (bounce);
-/* Pass 5aa: Disband requested disband units */
-                for (u = 1; u <= nunit; u++) {
-                        if (unit[u].owner <= 0)
-                                continue;
-                        if (unit[u].order == 'd') {
-                            result[u] = 0; /* Disbands never fail */
-                        }
-                }
 
 /*  Pass 5a: flag dislodgements */
 
@@ -961,7 +1018,7 @@ int ma_moveout(int pt)
 			(unit[u].order == 'v' && unit[u].type == 'G')) &&
 			    !result[u]) {
 				if ((u2 = pr[unit[u].dest].unit) &&
-				    ((unit[u2].order != 'm' && unit[u2].order != 'v') ||
+				    ((unit[u2].order != 'm' && unit[u2].order != 'v' && unit[u2].order != 'd') ||
 				     result[u2])) {
 /*                fprintf(rfp, "First part: Dislodge in %s unit %d by %d\n",
  */
@@ -1170,8 +1227,11 @@ int ma_moveout(int pt)
 				 */
 				if (is_garrison(u))
 					pr[unit[u].loc].gunit = u;
+					if (pr[unit[u].loc].unit == u)
+					   pr[unit[u].loc].unit = 0; /* If I converted, mark my province as empty */
 				else
 					pr[unit[u].loc].gunit = 0;
+					converted[unit[u].loc] = u; /* remember that a conversion occured */
 
 				if (has_rebellion(p) &&
 				    pr[p].owner != unit[u].owner) {
@@ -1233,13 +1293,15 @@ int ma_moveout(int pt)
 						t++;
 				}
 				i = 0;
-				if (!is_garrison(u)) {
+				has_other_retreat = 0;
+				if (!is_garrison(u) && !(dipent.xflags & XF_AUTODISBAND)) {
 					for (s = pr[unit[u].loc].move; (p = *s++); s++) {
 						if (!contest[p] && (*s >> 4) == unit[u].coast && (*s & 0x0f) != MX
 						    && (!(u2 = pr[p].unit)	/* XI: can't retreat to */
 						     ||(unit[u2].loc != p	/* attackers origin.    */
 							&& unit[u2].loc != unit[u].loc))
 						    && (dipent.phase[0] != 'F' || pr[p].type != 'v')) {
+							has_other_retreat = 1;
 
 							if (!i++)
 								sprintf(t, " can retreat to ");
@@ -1265,19 +1327,22 @@ int ma_moveout(int pt)
 
 					/*
 					   ** The rules to retreat to a garrison are:
+					   ** 1a) There was no conversion FROM garrison made
 					   ** 1) There should be a fortress.
 					   ** 2) It should be unoccupied.
 					   ** 3) Free of rebellion.
 					   ** 3a) not Venice
 					   ** 4) And if we are a fleet, it should have a port.
 					 */
-					if (has_fortress(unit[u].loc) &&
+					if (!converted[unit[u].loc] &&
+					    has_fortress(unit[u].loc) &&
 					    !has_garrison(unit[u].loc) &&
 					  !has_crebellion(unit[u].loc) &&
 					  !is_venice(unit[u].loc) &&
 					    (has_port(unit[u].loc) || unit[u].type == 'A')) {
 						if (!i++ || dipent.xflags & XF_GCONVERT_ANYTIME) {
-							sprintf(t, " can convert to a Garrison");
+							sprintf(t, "%s can convert to a Garrison",
+							has_other_retreat ? " or" : "");
 							while (*t)
 								t++;
 							heap[hp++] = unit[u].loc;

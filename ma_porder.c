@@ -92,6 +92,54 @@ static void next_phase(int power)
 	}
 }
 
+static void CalculateNewOwners(void)
+{
+    int u,p;
+       if (dipent.phase[5] == 'A') {
+	    /* Adjust phase, set city owners to province owners */
+	   for (p = 1; p <= npr; p++)
+		pr[p].cown = pr[p].owner;
+       } 
+       else 
+         for (u = 1; u <= nunit; u++) {
+                if (unit[u].owner <= 0)
+                        continue;
+                p = unit[u].loc;
+                if (water(p))
+                        continue;
+                if (unit[u].type == 'G') {
+                        ncown[p] = unit[u].owner;
+                        if (pr[unit[u].loc].unit == 0 || unit[pr[unit[u].loc].gunit].owner == 0) {
+                                npown[p] = unit[u].owner;
+                        }
+                } else {
+                        /* MLM change ownership to autonomous for Mach2 if other city owner */
+                        if (!(dipent.xflags & XF_NO_MIXED_CONTROL) || 
+			     pr[unit[u].loc].gunit == 0 || 
+                             unit[pr[unit[u].loc].gunit].owner == 0)
+                                npown[p] = unit[u].owner;
+                        else if ((dipent.xflags & XF_NO_MIXED_CONTROL) && unit[u].owner != unit[pr[unit[u].loc].gunit].owner)
+                                npown[p] = AUTONOMOUS;
+			/* If the city has a value and no garrison or a dead-player's garrison, you now own it! */
+                        if (cityvalue(p) && (pr[unit[u].loc].gunit == 0 || unit[pr[unit[u].loc].gunit].owner == 0)) {
+                                ncown[p] = unit[u].owner;
+                        }
+                }
+        }
+}
+
+static void SetNewOwners(void)
+{
+    int p;
+       for (p = 1; p <= npr; p++) {
+                if (npown[p])
+                        pr[p].owner = npown[p];
+                if (ncown[p])
+                        pr[p].cown = ncown[p];
+        }
+}
+
+
 static void newowner(void)
 {
 
@@ -103,6 +151,7 @@ static void newowner(void)
 	char *t, buf[1024];
 
 	int p_elim [WILD_PLAYER ];
+	int someone_eliminated = 0;
 
 	/* 
 	   ** Update the pr[].gunit info
@@ -115,28 +164,7 @@ static void newowner(void)
 	   **  Compute the new owner based on what units are around.
 	 */
 
-	for (u = 1; u <= nunit; u++) {
-		if (unit[u].owner <= 0)
-			continue;
-		p = unit[u].loc;
-		if (water(p))
-			continue;
-		if (unit[u].type == 'G') {
-			ncown[p] = unit[u].owner;
-			if (pr[unit[u].loc].unit == 0) {
-				npown[p] = unit[u].owner;
-			}
-		} else {
-			/* MLM change ownership to autonomous for Mach2 if other city owner */
-			if (!(dipent.xflags & XF_NO_MIXED_CONTROL) || pr[unit[u].loc].gunit == 0)
-				npown[p] = unit[u].owner;
-			else if ((dipent.xflags & XF_NO_MIXED_CONTROL) && unit[u].owner != unit[pr[unit[u].loc].gunit].owner)
-				npown[p] = AUTONOMOUS;
-			if (cityvalue(p) && pr[unit[u].loc].gunit == 0) {
-				ncown[p] = unit[u].owner;
-			}
-		}
-	}
+	CalculateNewOwners();
 
 	/*
 	   **  Display changes in province ownership.
@@ -215,13 +243,7 @@ static void newowner(void)
 	/*
 	   **  Actually transfer the ownership.
 	 */
-
-	for (p = 1; p <= npr; p++) {
-		if (npown[p])
-			pr[p].owner = npown[p];
-		if (ncown[p])
-			pr[p].cown = ncown[p];
-	}
+	SetNewOwners();
 
 	/*
 	   **  Check for any schmucks who lost all their home cities.
@@ -248,8 +270,8 @@ static void newowner(void)
 	/* MachMLM 28/4/01 fix for simultaeneous eliminations */
 	for (i = 1; i < WILD_PLAYER; i++) {
 	          if (p_elim[i]) {
-
-				fprintf(rfp, "\n%s has been eliminated due to having no home cities.\n",
+			someone_eliminated = 1;
+			fprintf(rfp, "\n%s has been eliminated due to having no home cities.\n",
 					powers[i]);
 
 			for (u = 1; u <= nunit; u++) {
@@ -266,15 +288,19 @@ static void newowner(void)
 			for (p = 1; p <= npr; p++) {
 				if (pr[p].owner == i) {
 					pr[p].owner = AUTONOMOUS;
+					npown[p] = AUTONOMOUS;
 				}
 				if (pr[p].cown == i) {
 					pr[p].cown = AUTONOMOUS;
+					ncown[p] = AUTONOMOUS;
 				}
 				if (pr[p].home == i) {
 					pr[p].home = AUTONOMOUS;
 				}
 			}
-			/* TODO: Also make player himself as dead via SF_DEAD flag */
+			/* Mark dead power as DEAD */
+			dipent.players[FindPower(i)].status |= SF_DEAD;
+
 			ducats[i].treasury = 0;
 			for (p = 0; p < 6; p++) {
 				ducats[i].loan[p] = 0;
@@ -319,6 +345,13 @@ static void newowner(void)
 			}
 		}
 	}
+
+	/* Redo calculations as an elimination may have changed this */
+	if (someone_eliminated) {
+	    CalculateNewOwners();
+	    SetNewOwners();
+	}
+
 
 	/* See if NoMoney, need to do a standard-style report */
 
@@ -435,6 +468,7 @@ void income(int mindie)
 			chits[i][n] = 0;
 		}
 		fprintf(rfp, "Welcome to game %s of Machiavelli Diplomacy!\n", dipent.name);
+		newowner();
 	}
 	fprintf(rfp, "\nIncome phase for Winter of %4.4s.\n", dipent.phase + 1);
 	ma_ownership();
@@ -478,6 +512,8 @@ void income(int mindie)
 				    (!has_fortcity(p) && !has_prebellion(p))) {
 /*              fprintf(rfp,"City income of %s (%d) -> %s\n", */
 /*                              pr[p].name, cityvalue(p), powers[pr[p].cown]); */
+			   /* Only unsieged cities give income */
+				    if (!is_sieged(p))
 					cinc[pr[p].cown] += cityvalue(p);
 				}
 		}

@@ -97,7 +97,7 @@ int ma_init_build_basic(void)
 		}
 		for (i = 1; i <= npr; i++) {
 			if (pr[i].cown == p && 
-			    ((pr[i].type == dipent.pl[p]))) 
+			    ((pr[i].home == p))) 
 				cnb[p] = 0;
 		}
 	}
@@ -142,7 +142,7 @@ int ma_buildin_basic(char **s, int p)
 		if (pr[p1].unit) {
 			p = unit[pr[p1].unit].owner;
 		} else {
-			p = power(pr[p1].type);
+			p = pr[p1].home;
 		}
 	}
 	if (order == 'x')
@@ -162,8 +162,9 @@ int ma_buildin_basic(char **s, int p)
                                 pr[p1].name);
                         return E_WARN;
                 }
-		if (pr[p1].type != dipent.pl[p]) {
-			errmsg("%s is not a home province for %s.\n",
+		if (pr[p1].home != p) {
+			errmsg("%d %d %s is not a home province for %s.\n",
+			       pr[p1].home, dipent.pl[p], 
 			       pr[p1].name, powers[p]);
 			return E_WARN;
 		}
@@ -209,6 +210,15 @@ int ma_buildin_basic(char **s, int p)
 				return E_WARN;
 			}
 		}
+                /* If Venice, only allow one unit to exist at a time */
+                if (is_venice(p1)) {
+                        if ((pr[p1].unit && unit[pr[p1].unit].status != 'b' ) ||
+                            (pr[p1].gunit && unit[pr[p1].gunit].status != 'b')) {
+                            errmsg("Cannot have more than one unit in %s.\n", pr[p1].name);
+                            return E_WARN;
+                        }
+                }
+
 
 		/*  FALL THROUGH  */
 	case 'w':
@@ -418,7 +428,7 @@ void ma_buildout_basic(int pt)
 				putc(' ', rfp);
 			for (i = 1; i <= npr; i++) {
 				if (pr[i].owner == p && !pr[i].unit &&
-				    (pr[i].type == dipent.pl[p]))
+				    (pr[i].home == p))
 					break;
 			}
 

@@ -1,7 +1,10 @@
 /*
  * $Log$
+ * Revision 1.7  2001/10/26 23:20:35  nzmb
+ * put the crowded_1898 variant in (Tim Miller)
+ *
  * Revision 1.6  2001/10/20 12:11:16  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV
  *
  * Revision 1.5.2.1  2001/10/15 00:36:05  ustv
  * Added Ancient_Med variant

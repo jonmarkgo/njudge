@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/10/20 12:11:13  miller
+ * Merged in changes from DEMA and USTV
+ *
  * Revision 1.2.2.1  2001/10/19 23:09:27  dema
  * Extra values for initial money settings (as in Mach2)
  *

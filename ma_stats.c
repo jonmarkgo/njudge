@@ -119,8 +119,55 @@ void ma_ownership(void)
 
 	int u=1,l=2;
 	int nc[NPOWER+1];
+	int first_country;
+	int owned_country[NPOWER+1];
+	int one_owned;
+        int x;
 
 	reb = noin = fam = sig = 0;
+
+	fprintf(rfp,"\nCountries Controlled:\n\n");
+	for (j = 1; j <= NPOWER + 1; j++) {
+		one_owned = 0;
+                if (dipent.pl[j] == 'x')
+                        continue;
+	    for (i = 1; i <= NPOWER+1; i++)
+                owned_country[i] = 0;
+
+                i = j == NPOWER + 1 ? 0 : j;
+
+                s = buf;
+                strcpy(s, powers[i]);
+                while (*s)
+                        s++;
+                *s++ = ':';
+                for (p = strlen(powers[i]) + 2; p < 12; p++)
+                        *s++ = ' ';
+
+		x = j == WILD_PLAYER ? j + 1 : j;
+
+                for (p = 0, n = 1; n <= npr; n++) {
+		    if ( pletter[dipent.variant][pr[n].home] == 
+		         pletter[dipent.variant][x]) {
+		           owned_country[power(pr[n].type)] = 1; 
+		           one_owned = 1;
+		    }
+		}
+		first_country = 1;
+		for (i = 1; i<= NPOWER + 1; i++)
+		    if (owned_country[i]) {
+			if (!first_country) {
+			    *s++ = ','; *s++ = ' ';
+			}
+			strcpy(s, powers[i]);
+			while (*s)
+                        s++;
+			first_country = 0;
+		}
+                strcpy(s, ".\n");
+                if (one_owned)
+		    wrap(rfp, buf, 0, 11);
+	}
 
 	fprintf(rfp, "\nCities Controlled:\n\n");
 
@@ -169,11 +216,12 @@ void ma_ownership(void)
 				if (pr[n].home == i && i != 0) {
 					*s++ = '*';
 					need_order[i]++;
-				} else if (pr[n].home != AUTONOMOUS && pr[n].home != 0) {
-					sprintf(s, " (%s)", powers[pr[n].home]);
-					while (*s)
-						s++;
 				}
+				if (pr[n].type >= 'A' && pr[n].type <= 'Z') {
+				    sprintf(s, "(%c)", pr[n].type);
+				    while (*s) s++;
+				}
+
 			}
 		}
 
@@ -207,8 +255,7 @@ void ma_ownership(void)
 		for (p = 0, n = 1; n <= npr; n++) {
 			if ((pr[n].type == 'x' || !islower(pr[n].type)) &&
 			    (pr[n].owner == i || (i == 0 && pr[n].owner == AUTONOMOUS))) {
-			    if (!(dipent.xflags & XF_NOMONEY) ||
-				(pr[n].owner != pr[n].cown && cityvalue(n))) {
+			    if ( 0== 0 ) /* Do always */ {
 				np[i]++;
 				if (p++) {
 					*s++ = ',';
@@ -227,11 +274,11 @@ void ma_ownership(void)
 				}
 				if (pr[n].home == i && i != 0) {
 					*s++ = '*';
-				} else if (pr[n].home != AUTONOMOUS && pr[n].home != 0) {
-					sprintf(s, " (%s)", powers[pr[n].home]);
-					while (*s)
-						s++;
 				}
+				if (pr[n].type >= 'A' && pr[n].type <= 'Z') {
+                                    sprintf(s, "(%c)", pr[n].type);
+                                    while (*s) s++;
+                                }
 			}
 		    }
 		}

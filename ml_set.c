@@ -1,7 +1,13 @@
 /*
  * $Log$
+ * Revision 1.17  2001/11/11 21:16:21  greg
+ * Subjectline Fixes
+ *  - New player signons will no longer show "Preference Change"
+ *  - Manual start games will no longer say "Waiting for More Players" after the game is full
+ *  - reply lines no longer assume JUDGE_CODE is four characters
+ *
  * Revision 1.16  2001/10/20 12:11:13  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.15.2.3  2001/10/19 23:55:13  dedo
  * Remove warning for over-large string literal
@@ -628,7 +634,10 @@ void mail_setp(char *s)
 #define PRV_RAILWAY	  'm'
 #define SET_NORAILWAY     146
 #define PRV_NORAILWAY     'm'
-
+#define SET_STORM	  147
+#define PRV_STORM	  'm'
+#define SET_NOSTORM	  148
+#define PRV_NOSTORM	  'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -756,7 +765,9 @@ void mail_setp(char *s)
 	 "gateways", "gateway",
 	 "no gateways", "no gateway", "nogateways", "nogateway",
 	 "railways", "railyway",
-	 "no railways", "no railway", "norailways", "norailway" 
+	 "no railways", "no railway", "norailways", "norailway",
+	 "storms", "storm",
+	 "nostorms", "nostorm", "no storms", "no storm" 
  	};
 
 
@@ -890,6 +901,9 @@ void mail_setp(char *s)
 	SET_GATEWAY, SET_GATEWAY,
 	SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY,
 	SET_RAILWAY, SET_RAILWAY,
+	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
+	SET_STORM, SET_STORM,
+	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY
     };
 
@@ -1024,8 +1038,9 @@ void mail_setp(char *s)
 	PRV_GATEWAY, PRV_GATEWAY,
 	PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY,
 	PRV_RAILWAY, PRV_RAILWAY,
-	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY
-
+	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY,
+	PRV_STORM, PRV_STORM,
+	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM
 };
 
 	chk24nmr = 0;
@@ -1950,6 +1965,7 @@ void mail_setp(char *s)
 			CheckMach();
 			SETFLAGS(F_NODICE | F_NOFAMINE | F_NOPLAGUE | F_NOLOANS | F_NOASSASS,
 				 F_NODICE | F_NOFAMINE | F_NOPLAGUE | F_NOLOANS | F_NOASSASS);
+			dipent.xflags &= ~XF_STORMS;
 			broad_params = 1;
 			break;
 
@@ -1980,8 +1996,8 @@ void mail_setp(char *s)
 		case SET_PLAGUE:
 			CheckMach();
                         SETFLAGS(0, F_NOPLAGUE | F_NODICE);
-			broad_params = 1;
-			break;
+                        broad_params = 1;
+                        break;
 
 		case SET_NOLOANS:
 			CheckMach();
@@ -2549,8 +2565,6 @@ void mail_setp(char *s)
 
 		case SET_MACH2:
                         CheckMach();
-                        fprintf(rfp, "Mach2 flag not yet supported!\n\n");
-			/*** MLM Temp disabled 2001/07/01
 			if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Mach2 flag!\n\n",
                                     dipent.name);
@@ -2559,7 +2573,6 @@ void mail_setp(char *s)
                                            "Machiavelli will now be played according to 2nd Edition rules.\n",
                                             CATF_NORMAL);
                         }
-                        ***/
 			break;
 
                 case SET_NOMACH2:
@@ -2596,6 +2609,33 @@ void mail_setp(char *s)
                         } else {
                                 CheckAndToggleFlag(&dipent.xflags,  XF_FORT, "Forts", CATF_SETOFF,
                                            "Machiavelli will now be played with NO fortresses.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_STORM:
+                        CheckMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Storms flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_STORMS, "Storms", CATF_SETON,
+                                           "Machiavelli will now be played with storms.\n",
+                                            CATF_NORMAL);
+				/* IF no dice set, set them! */
+				if (dipent.flags & F_NODICE) dipent.flags &= ~F_NODICE;
+				broad_params = 1;
+                        }
+                        break;
+
+                case SET_NOSTORM:
+                        CheckMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear Storms flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_STORMS, "Storms", CATF_SETOFF,
+                                           "Machiavelli will now be played with NO storms.\n",
                                             CATF_NORMAL);
                         }
                         break;

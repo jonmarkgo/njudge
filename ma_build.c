@@ -105,7 +105,7 @@ int ma_buildin(char **s, int p)
 			errmsg("Unit type must be specified for build.\n");
 			return E_WARN;
 		}
-
+		
 		if ((u = pr[p1].unit)) {
 			if (unit[u].status == 'b' || unit[u].status == 'x') {
 				unit[u].status = 'x';
@@ -124,6 +124,16 @@ int ma_buildin(char **s, int p)
 				return E_WARN;
 			}
 		}
+
+                /* If Venice, only allow one unit to exist at a time */
+                if (is_venice(p1)) {
+                        if ((pr[p1].unit && unit[pr[p1].unit].status != 'b' ) ||
+                            (pr[p1].gunit && unit[pr[p1].gunit].status != 'b')) {
+                            errmsg("Cannot order for more than one unit in %s.\n", pr[p1].name);
+                            return E_WARN;
+                        }
+                }
+
 		if (stype != 'x') {
 			if (NO_SPECIAL_UNITS) {
 				errmsg("Game %s does not allow special units.\n", dipent.name);

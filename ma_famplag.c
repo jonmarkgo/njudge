@@ -82,6 +82,10 @@ void fam_plag(int t)
 			remove_infection(p);
 		}
 	}
+
+	if (t == PLAGUE)
+	    if (atoi(&dipent.phase[1]) < 1348) return;  /* No plague prior to 1348 */
+
 	if (t==PLAGUE)
 		pftab = ptab;
 	else if (t== FAMINE) {
