@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.39  2004/08/17 14:53:25  jaldhar
+# Removed GNUism in date command for better portability.  Fixes bug 351.
+#
 # Revision 1.38  2004/05/22 08:39:57  millis
 # Bug 297: Add Intimate Diplomacy
 #
@@ -275,8 +278,8 @@ dist_doc_DATA=	docs/InstallationHOWTO.txt \
 		docs/README.syslog \
 		docs/README.timewarp \
 		docs/README.timezone \
-		docs/njudgemapdatahowto.htm \
-		docs/njudgemapdatahowto.txt \
+		docs/njudgeMapFileHOWTO.htm \
+		docs/njudgeMapFileHOWTO.txt \
 		docs/manual-all.htm \
 		AUTHORS \
 		COPYING \
