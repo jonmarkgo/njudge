@@ -37,6 +37,8 @@ Administrator Guide (C.Courtois)
 -----------------------------------------------------------------
 BUGS:
 
+- Makefile : copy docs/ too ?
+
 - LICENSE must be written by someone who knows who owns what in
 the judge code (David Kovar ?)
 
