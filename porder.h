@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:51:14  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -56,6 +59,8 @@ extern struct province {
 	int home;		/* Power whose home this is part of           */
 	char type;		/* 'X'=supply center, 'l'=land, 'w'=water     */
 	short flags;		/* Flags for province                         */
+	int blockaded;		/* set to non-zero when centre is blockaded   */
+	int gconv;		/* Mach: Non-zero if garrison converteddd     */
 } pr[NPROV + 1];
 
 extern int npr;			/* Actual number of provinces                 */
@@ -63,10 +68,12 @@ extern int npr;			/* Actual number of provinces                 */
 extern struct units {
 	unsigned char owner;	/* The power that owns this unit              */
 	char status;		/* ':' for normal, 'r' for retreat            */
-	char type;		/* 'A' for Army, 'F' for fleet                */
+	char type;		/* 'A' for Army, 'F' for fleet, 'W' wing      */
+	char new_type;		/* New type of unit			      */
 	char stype;		/* 'c' for Militia, 'm' for Mercenary, 'p'... */
 	unsigned char loc;	/* Province ordinal                           */
 	unsigned char coast;	/* The coast and/or movement type allowed     */
+	unsigned char new_coast; /* The new coast type 			      */
 	char order;		/* Move, Hold, Support or Convoy              */
 	short proxy;		/* Actual unit ordinal for proxy order        */
 	short unit;		/* Unit for support or convoy order           */
