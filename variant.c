@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/06/01 01:02:35  millis
+ * Undo last change, caused blind games to be rejected at signon stage
+ *
  * Revision 1.9  2002/05/16 09:40:05  miller
  * Blind game also sets quiet flag
  *
@@ -7,7 +10,7 @@
  * put the crowded_1898 variant in (Tim Miller)
  *
  * Revision 1.7  2001/10/20 12:11:16  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.6.2.2  2001/10/20 00:53:08  dedo
  * Removed compile warnings
@@ -87,6 +90,7 @@ char *variants[] =
 	"sailho",		/* Sailho, 			   */
 	"ancient_med",		/* Ancient medieteraenean	   */
 	"crowded_1898",		/* crowded powers, 1898 style      */
+        "machiavelli2",         /* Mach2                           */
 	/** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
@@ -130,6 +134,7 @@ int vvalue[] =
         V_sailho,               /* 30 SailHo                         */
 	V_ancient_med,		/* 31 Ancient_Med		     */
 	V_crowded_1898,		/* 32 crowded_1898		     */
+        V_machiavelli2,         /* 33 Machiavelli2                   */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
@@ -238,6 +243,9 @@ char *pletter[] =
     ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWxxxxxxx?xOM",                          /* SailHo2 Diplomacy             */
     ".xxxxxxExxxxxxxxxxxxxxxxPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCxRG?xOM",                          /* AncMed Diplomacy 	       */
     ".ABxxxxxxExFGxxxxIxLxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM", /* crowded_1898 */
+    ".AxxxxxxxxLFxxxxxxxxINxPxxxxxxTxVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?&OM",                          /* Machia
+velli2 1454              */
  /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
 
@@ -278,5 +286,6 @@ char *sphase[] =
 	"S1901M",               /* Sailho2_Crowded Diplomacy       */
 	"S0001M",		/* Ancient_Med Diplomacy		   */
 	"S1899M",		/* crowded_1898 Diplomacy	   */
+        "F1453A",               /* Machiavelli2 1454                */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };

@@ -1,0 +1,162 @@
+Greetings from the Diplomacy* Adjudicator!!         12th December, 2001
+Rules.machiavelli2
+
+
+YOU MUST ALSO READ RULES.MACHIAVELLI
+
+
+INTRODUCTION
+This text highlights the differences between the original Machiavelli
+release (1978 by Battleline and 1980 and 1983 by Avalon Hill) and the
+2:nd edition release (Avalon Hill 1995).  For detailed information about 
+all the rules see "rules.machiavelli".  "Rules.machiavelli" take 
+precedence in judge play.
+
+Differences between 1995 edition and older:
+     1)  The rules concerning control.
+     2)  You can *always* retreat into cities.
+     3)  You need *not* lift a siege to move off.
+     4)  Coastal convoys not allowed.
+     5)  Restrictions on special units.
+     6)  Adjacency rules for bribes differ somewhat.
+     7)  The map (fewer provinces and sea areas; no fortresses).
+
+'Tech note'. Mach2 also has two optional rules that are *not implemented*
+on the judge these are:
+     1)  Excommunication
+     2)  Strategic movement
+For information about this see appendix 1 at the end.
+
+
+CONTROL OF PROVINCES AND CITIES  **IMPORTANT DIFFERENCE**
+You gain control as per standard Diplomacy.  That is: you must have one
+of your units in the province (or city) at the end the of fall turn. (If
+one player controls the city and another the province nobody has control.)
+
+This also means that conquest of another home country or elimination is
+not checked for until the end of fall.
+
+'Tech note'. The original rules define control changes to occur at the
+start of the spring turn.
+
+
+MOVEMENT (retreats, sieges, and convoys)
+A unit can always retreat into a city, even if it can retreat into
+another province.
+You may disband a unit instead of retreat it.
+A unit need not issue a lift siege order to be able to move away from
+an ongoing siege.
+The default setting for coastal convoys is: *not allowed*, which is 
+contrary to the earlier editions.  As this is a game flag you may change it.
+
+
+SPECIAL UNITS
+Any country cannot buy any special unit.
+Austria, Turkey and Venice may own Elite Professionals.
+Florence, Milan, Papacy and Venice may own Citizen∆s Militia.
+Every country *except Turkey* may own Elite Mercenaries.
+
+'Tech note'.  There is a problem with this as it only states that units
+may not be built.  There is no mention whatsoever if they may be
+maintained or bribed.  The judge is coded on the supposition that a
+country not allowed to build a certain unit, may always bribe and
+maintain it.  See appendix 3 for the settings in the map file.
+
+
+BRIBES AND ADJACENCY
+Bribes may be directed into any province adjacent to a province that
+you *control* or have a unit in.
+
+
+IMPORTANT MAP CHANGES
+1)  There is no Lagoon. Venice is a sea area with a city.
+2)  Armies *and* fleets may move between Sardinia and Corsica.
+3)  Armies *and* fleets may move between Messina and Otranto.
+
+
+VARIOUS
+1)  Rebellions
+The rules on rebellions follow the judge rulings in rules.machiavelli.
+
+2)  Support
+Support is cut as explained in rules.machiavelli.
+
+'Tech note'.  The rules errata state that multistrength units have their
+support broken on a point by point basis.  I.e. only one strength point
+is cut by a one strength point unit thus leaving the 2nd strength point
+intact for support.  This is *not* implemented by the judge.
+
+3)  Scenarios
+No 'Expansion of States 1385-1425' scenario.  Fixed amounts of starting
+money.  Minor differences in setup due to the differing maps.
+
+
+APPENDIX 1 -- FEATURES THAT ARE *NOT* IMPLEMENTED
+
+1)  Excommunication
+The Papacy may 'excommunicate' *one* player of his choice before the
+diplomacy phase begins.  That player may not talk with any other player
+until the diplomacy phase ends.  If all other players vote to ignore
+any excommunications it is the Pope who cannot talk with any other
+player until the diplomacy phase ends.
+
+'Tech note'.  The Turk is not excommunicated.  Against him the Pope
+'sends a crusade'.
+
+2)  Strategic movement
+Any player may every turn, after movement is resolved, move up to two
+of his army and/or fleet units through an unlimited number of
+*consecutive unoccupied friendly controlled provinces*.  Armies may
+also be convoyed (exception to the unoccupied rule).  Fleets may move
+along coasts and *through unoccupied seas bordering controlled
+provinces*.  The player must end his move in a province that he
+controls.
+
+Players may allow each other to use their provinces !!  (Use the
+alliance command.)
+
+Garrisons may obviously not use 'strategic movement'.
+
+Units involved in a siege may not use 'strategic movement'.
+
+Players move beginning with the player owning most cities and end
+with the player owning the fewest.  If tied a 1d6 is rolled.
+
+
+APPENDIX 2 -- MAIN DIFFERENCES BETWEEN OLDER VERSIONS OF MACH
+
+Differences between AH 1980 and 1983 (the first 2nd edition) editions.
+1)  No money lenders -- no bank (this must surely be a misprint in my
+    rules)
+2)  Necessary to control both city and province to gain the additional
+    "city/province" variable income roll.
+3)  Balance of Power scenario.  Papal home country includes Tivoli.
+    Control of Naples or Milan city and province awards 1d6 variable
+    income roll.
+4)  Struggle for Dominance I scenario.  Control of Genoa or Florence city
+    and province awards 1d6 variable income roll.
+
+
+APPENDIX 3 -- HOW TO DEFINE UNIT LIMITS
+Add the below at the end of the map file.  Note that you must know of
+the *power letter used on the judge* and that you must add an entry for
+*every* country.  The control letters correspond to: x=allowed,
+.=not allowed, b=only built, r=only bribed.  The qualifiers are in the
+following order: ordinary units, citizen's militia, elite mercenary and
+elite professionals.  The columns are in this order army, fleet and
+garrison.
+
+Example:
+Limits for unit types:
+    A xxxx x.br xx.x
+#end of limit
+
+
+-----
+* AVALON HILL, MACHIAVELLI AND DIPLOMACY ARE TRADEMARKS OF HASBRO INC.,
+ALL RIGHTS RESERVED.
+-----
+
+
+REVISION HISTORY
+v1 12th of December 2001. Author Sergio Lidsell.
