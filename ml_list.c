@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.4  2001/05/12 07:42:55  greg
+   ** minor bug fixes proposed by Mario Becroft & Philippe Lalande
+   ** to display zero dedications in listing and problems with
+   ** user's dedication
+   **
    ** Revision 1.3  2001/04/15 21:21:22  miller
    ** Add use of GetMaxCountryStrlen() to space out properly for big country names
    **
@@ -216,7 +221,7 @@ void mail_listit(void)
 			    && 0 < dipent.players[i].userid
 			    && dipent.players[i].userid <= nded)
 /*			    && ded[dipent.players[i].userid].r */
-			    && (0 != strcmp(dipent.players[i].password,GONE_PWD))))
+			    && (0 != strcmp(dipent.players[i].password,GONE_PWD)))
 				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r);
 			else
 				fputs("    ", rfp);
