@@ -1,3 +1,342 @@
+2003-07-26 05:59  millis
+
+	* BUGS, NEWS: New information for 1.5.0
+
+2003-07-26 05:49  millis
+
+	* configure, configure.ac: Update version to 1.5.0
+
+2003-07-26 05:45  millis
+
+	* ma_porder.c, ma_stats.c: Fix Bug 203
+
+2003-07-24 16:00  millis
+
+	* st_build.c: Fix bug 202
+
+2003-07-23 20:57  jaldhar
+
+	* njudge.spec: Whoops that can't be a macro there.
+
+2003-07-23 20:55  jaldhar
+
+	* njudge.spec: Updated for upcoming version 1.5.0 release.
+
+2003-07-23 20:54  jaldhar
+
+	* debian/changelog: Update for upcoming 1.5.0 release.
+
+2003-07-23 16:13  millis
+
+	* ma_retreat.c: Fix Bug 195, do not block retreat into straights if
+	a fleet is retreating to the controlling province.
+
+2003-07-23 15:42  millis
+
+	* ma_movement.c: Fix bug 172
+
+2003-07-23 14:47  millis
+
+	* Makefile.am, Makefile.in: Remove delete of map files from remap
+	target.
+
+2003-07-23 06:13  millis
+
+	* docs/VariantsHOWTO.html: Spelling corrections
+
+2003-07-22 23:00  jaldhar
+
+	* Makefile.am, Makefile.in: Force calls to date in Makefile.am to
+	use the 'C' locale.  (Fixes Bug 138) auxilliary files regenerated
+	to match this change.
+
+2003-07-22 22:48  jaldhar
+
+	* Makefile.in, configure: Regenerate due to Makefile.am and
+	configure.ac changes.
+
+2003-07-22 22:44  jaldhar
+
+	* njudge.spec, debian/postinst: Make sure OURSELVES=judge in
+	dip.conf.
+
+2003-07-22 22:36  jaldhar
+
+	* Makefile.am, configure.ac, dip.conf, dip.conf.in: Autogenerate
+	dip.conf (fixes bug 154)
+
+2003-07-22 22:12  jaldhar
+
+	* Makefile.in, aclocal.m4, configure: Regenerated after Makefile.am
+	change.
+
+2003-07-22 22:05  jaldhar
+
+	* Makefile.am: Remake map on upgrades (Closes bug 175) and some
+	rearrangement of targets.
+
+2003-07-22 17:11  millis
+
+	* dip.h, lib.c, ml_signon.c: Bug 192
+
+2003-07-22 16:45  millis
+
+	* ml_signon.c: Bug 135
+
+2003-07-22 16:32  millis
+
+	* st_movement.c: Fix Bug 201
+
+2003-07-22 16:10  millis
+
+	* docs/: Map-HowTo-Njudge.html, epsembed.txt,
+	mapit-howto/Maharajah1.cmap.ps, mapit-howto/Maharajah1.info,
+	mapit-howto/epsembed.txt, mapit-howto/gv.png,
+	mapit-howto/index.html, mapit-howto/maha1.eps,
+	mapit-howto/maharajah.results, mapit-howto/orig.Maharajah1.cmap.ps,
+	mapit-howto/orig.Maharajah1.info: [no log message]
+
+2003-07-22 16:04  millis
+
+	* docs/: HowToFloc.html, Map-HowTo-Njudge.html, epsembed.txt: [no
+	log message]
+
+2003-07-21 17:13  millis
+
+	* mail.c: Fix bug 198
+
+2003-07-21 14:51  machmstr
+
+	* data/: map.mach2_sfd1, map.mach2_sfd2, map.mach2_span,
+	map.machiavelli2: Added comment explaining how to calculate initial
+	income.  Corrected/recalculated some values.  Zeroed values for
+	Genoa city, Naples city, Milan city when autonomous
+
+2003-07-21 14:37  millis
+
+	* phase.c: Fix bug 199 (phased waits not working correctly)
+
+2003-07-21 00:57  machmstr
+
+	* data/: rules.machiavelli, rules.machiavelli2: Addotional
+	clarifications of the straits blockade rules
+
+2003-07-20 16:51  machmstr
+
+	* data/rules.machiavelli: Removed point 1d3 (conversions) and
+	rephrased 2d.
+
+2003-07-20 16:17  machmstr
+
+	* data/map.mach2_sfd2: Entry for Milan removed as Milan state does
+	not own Milan province, and no one else is to get variable income
+	from it. Changed the new qualifier for Milanese variabel income
+	form Moden to Pavia as that is a 'traditional core' milanese
+	province (uhm I think I sound rather "high-falouting" here)
+
+2003-07-20 08:45  millis
+
+	* ma_movement.c: Bug 195 fix
+
+2003-07-20 02:41  millis
+
+	* data/map.mach2_sfd2: Added Modena to give Milan a power income
+
+2003-07-20 02:10  millis
+
+	* data/: info.mach2_sfd2.original, info.mach2_span.original,
+	map.mach2_sfd2.original, map.mach2_span.original,
+	map.mach_sfd2.original, map.mach_span.original: [no log message]
+
+2003-07-20 02:10  millis
+
+	* data/: map.mach2_sfd2, map.mach2_span: Update initial incomes
+
+2003-07-20 02:09  millis
+
+	* configure: Updated for removed files
+
+2003-07-20 01:47  millis
+
+	* data/map.mach2_sfd1: fixed initial income for France
+
+2003-07-20 01:43  millis
+
+	* dip.h: Missing include
+
+2003-07-20 01:38  millis
+
+	* mail.c: Removed incorrect execute(line) calls Also deleted some
+	unused variables
+
+2003-07-20 01:37  millis
+
+	* dip.h: make ls & md members of type time_t
+
+2003-07-20 01:24  millis
+
+	* Makefile.in, aclocal.m4: Newer versions on automake1.7.5
+
+2003-07-19 08:26  christ
+
+	* docs/: VariantsHOWTO.html, VariantsHOWTO.txt: Added in
+	VariantsHOWTO warning on change of names of seed and report files;
+	no time to make a clean update.
+
+2003-07-19 07:04  millis
+
+	* lib.c: fixed bug in address handling
+
+2003-07-19 06:14  millis
+
+	* pdip.c: [no log message]
+
+2003-07-19 06:13  millis
+
+	* Makefile.am, Makefile.in: Bug 196, remove pdip
+
+2003-07-19 06:11  millis
+
+	* mail.c: Bug 197, remove map command
+
+2003-07-19 06:08  millis
+
+	* data/index: Add pause command specification
+
+2003-07-19 06:03  millis
+
+	* data/report.shift_left: [no log message]
+
+2003-07-18 14:03  machmstr
+
+	* data/rules.machiavelli: Section clarifying conversions added. New
+	rule re straits and support  orders. New commands described. Auth.
+	S. Lidsell.
+
+2003-07-18 13:59  machmstr
+
+	* data/rules.machiavelli2: Note on conversion of besieged units and
+	straits.  Author Sergio Lidsell.
+
+2003-07-18 08:16  russblau
+
+	* data/index: Editorial changes to "DIARY" and "MAP" entries.
+
+2003-07-17 18:36  nzmb
+
+	* data/index: dded diary documentation.
+
+2003-07-17 18:24  nzmb
+
+	* tm_xpress.c: Changed it so the "diary" command by itself defaults
+	to "diary record"
+
+2003-07-17 15:59  millis
+
+	* dip.c, dipent.c: Bug 185
+
+2003-07-16 17:04  millis
+
+	* mail.c: [no log message]
+
+2003-07-16 17:01  millis
+
+	* draw.c, lib.c, phase.c: Use MailOut to send emails
+
+2003-07-16 08:14  millis
+
+	* INSTALL: Trivial spelling correction
+
+2003-07-16 08:04  millis
+
+	* Makefile.am, Makefile.in, ign.c: Remove ign program
+
+2003-07-16 07:50  millis
+
+	* dipent.c, defaults.h, defaults.inc.in: Used D_X2FLAGS to allow
+	default setting for X2FLAGS for games (if desired)
+
+2003-07-16 07:44  millis
+
+	* COPYING: Tried to reword copyright file to something decent
+
+2003-07-16 07:37  millis
+
+	* AUTHORS: Added Russell Blau credit
+
+2003-07-15 15:47  millis
+
+	* functions.h, lib.c, mail.c, summary.c: Fix Bug 185 (call smail
+	for each email individually)
+
+2003-07-15 09:38  millis
+
+	* data/index: Added some future commands (not yet implemented)
+	Also, SET BUILD DISBAND now active.
+
+2003-07-15 09:16  millis
+
+	* mail.c: Make null mail 'nobody'
+
+2003-07-15 05:11  millis
+
+	* variant.h: Make non-player ordinals relative
+
+2003-07-15 05:00  millis
+
+	* makedata, newvers, rdip.pl: Removed unused files
+
+2003-07-15 04:42  millis
+
+	* ml_signon.c: Fixed compile bug
+
+2003-07-14 16:35  millis
+
+	* ml_signon.c: Fix bug 179 - do not allow takeover of eliminated
+	players
+
+2003-07-14 15:52  millis
+
+	* params.c: Fix bug 187
+
+2003-07-14 15:33  millis
+
+	* ma_porder.c: Fix bug 194 (not counting last province)
+
+2003-07-12 17:31  millis
+
+	* phase.c: Bug 189 fix, make line[] a static
+
+2003-07-12 10:47  nzmb
+
+	* mail.c: Fix so that lenlimit gets called on outgoing press
+	messages, not just replies.
+
+2003-07-11 18:48  nzmb
+
+	* tm_xpress.c: Master now gets notified when a player enters a new
+	diary entry.
+
+2003-06-29 14:37  nzmb
+
+	* dip.c, draw.c, functions.h, tm_xpress.c: Made EOG draw entries
+	broadcasted at the end of the game.
+
+2003-06-28 18:06  millis
+
+	* ml_set.c: Fix bug 176 (duplicate grace setting line to master)
+
+2003-06-21 21:10  nzmb
+
+	* functions.h, mail.c, mail.h, tm_xpress.c: Added code to allow
+	users to record diary entries, read them, and delete them if they
+	make a mistake. The diaries will be broadcast when the games end
+	(this part is not as of now, yet written).
+
+2003-06-20 17:52  njudge
+
+	* ChangeLog: Autobuild njudge_1_4_2
+
 2003-06-20 17:23  njudge
 
 	* ChangeLog: Autobuild
@@ -3639,7 +3978,7 @@
 	data/info.hundred3, data/info.loeb9, data/info.machiavelli,
 	data/info.milan, data/info.modern, data/info.pure, data/info.rootz,
 	data/info.shift, data/info.v1898, data/info.wraparound,
-	data/info.youngstown, data/seed,1898, data/seed,aberration,
+	data/info.youngstown, data/seed.1898, data/seed.aberration,
 	data/seed.asia, data/seed.britain, data/seed.chaos,
 	data/seed.chromatic, data/seed.classical, data/seed.colonial,
 	data/seed.crowded, data/seed.fleet_rome, data/seed.h31,
