@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/11/13 23:18:19  millis
+ * Bug 43, change ownership prior to movement in MAch games
+ *
  * Revision 1.13  2002/11/09 13:27:10  millis
  * Fixed bug 40, ownership of province incorrect in MAach2
  *
@@ -126,6 +129,8 @@ static void CalculateNewOwners(void)
          for (u = 1; u <= nunit; u++) {
                 if (unit[u].owner <= 0)
                         continue;
+		if (!unit[u].exists)
+			continue;
                 p = unit[u].loc;
                 if (water(p))
                         continue;

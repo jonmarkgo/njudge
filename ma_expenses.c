@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2002/11/13 22:26:38  millis
+ * Bug 28, besieged garrisons must be eliminated when assassinated
+ *
  * Revision 1.5  2002/02/25 11:51:51  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -976,6 +979,7 @@ void expout(int pt)
 									pr[p2].unit = u1;
 								}
 								unit[u1].proxy = 0;
+								unit[u1].exists = 1;
 								unit[u].owner = 0;
 
 								for (u2 = 1; u2 <= nunit; u2++) {

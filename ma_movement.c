@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/11/13 22:30:33  millis
+ * Bug 30, correctly calculate support on assasination
+ *
  * Revision 1.9  2002/10/19 21:39:16  millis
  * Fixed Bug 21: Mach2 games allowing Armies in Venice
  *
@@ -113,6 +116,8 @@ int ma_movein(char **s, int p)
 			++nunit;
 		}
 		memcpy(&unit[u2], &unit[u], sizeof(unit[0]));
+		if (u2 == nunit)
+		    unit[nunit].exists = 0; /* Unit does not yet exist */
 		unit[u2].owner = p;
 		unit[u2].proxy = u;
 		unit[u2].order = 'n';
