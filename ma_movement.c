@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/08/09 23:05:52  millis
+ * Fixed bug 213
+ *
  * Revision 1.21  2003/07/23 22:42:41  millis
  * Fix bug 172
  *
@@ -99,7 +102,9 @@ int ma_movein(char **s, int p)
 	/* char **s; Input stream */
 	/* int p; Power specification */
 
-	char c, order, *t, target_type;
+	char c, order;
+	unsigned char *t;
+	char target_type;
 	char cc; /* MLM 12/06/2001 remember unit type for convert order */
 	int i, j, p1, p2, u, u1, u2, c1, c2, bl;
 	unsigned char *bp;
@@ -443,6 +448,20 @@ int ma_movein(char **s, int p)
 		if (cc == 'x')
 			cc = 'G';
 
+		if (cc == 'F') {
+			/* Bug 225, enforce coast on convert to fleet */
+                       *s = get_coast(*s, &c1);
+                       for (t = (char *) pr[unit[u].loc].move; *t; t++)
+                                if (*++t >> 4 == c1)
+                                        break;
+                        if (!*t) {
+                                errmsg("Invalid coast specified for fleet in %s.\n",
+                                       pr[unit[u].loc].name);
+                                return E_WARN;
+                        }
+                }
+
+
 		if (!has_fortress(p1)) {
 			errmsg("No fortress or fortified city in %s.\n", pr[p1].name);
 			return E_WARN;
@@ -476,7 +495,7 @@ int ma_movein(char **s, int p)
 
 		p2 = p1;
 		u2 = cc;
-		c2 = cc == 'F' ? XC : MV;
+		c2 = cc == 'F' ? c1 : MV;
 		break;
 
 
@@ -521,7 +540,7 @@ int ma_moveout(int pt)
 
 /*  Process movement orders.  */
 
-	int u, u2, u3, u4,  bounce = 0, i, index, p;
+	int u, u2, u3, u4,  bounce = 0, i, index, p, c1;
 	unsigned char *s, *t, c, contest[NPROV + 1], converted[NPROV+1];
 	int unit_dislodged;
 	char cbuffer[1024];
@@ -1253,6 +1272,9 @@ int ma_moveout(int pt)
 
 			case 'v':
 				fprintf(rfp, " CONVERT TO %s", Utype(unit[u].unit));
+				if ((c1 = unit[u].dcoast) > XC)
+                                	fprintf(rfp, " (%s)", mtype[c1]);
+
 				break;
 
 			default:

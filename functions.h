@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.21  2003/07/15 22:47:06  millis
+ * Fix Bug 185 (call smail for each email individually)
+ *
  * Revision 1.20  2003/06/29 21:37:42  nzmb
  * Made EOG draw entries broadcasted at the end of the game.
  *
@@ -130,6 +133,7 @@ int IsMultiProvince(int p);
 int CheckForMultiUnitProvinces(void);
 int GetUnitIndex(int p, int power);
 void MailOut(char *out_line, char *address);
+char *get_coast(char * coast_string, int *coast);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);

@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.20  2003/08/25 14:39:36  millis
+	 * Fixed bug 220
+	 *
 	 * Revision 1.19  2003/07/23 00:11:43  millis
 	 * Bug 192
 	 *
@@ -297,6 +300,52 @@ void ferrck(FILE * fp, int n)
 
 /****************************************************************************/
 
+       static char *words[] =
+        {"0", "(north coast)", "(nc)", "/north coast", "/nc",
+         "(east coast)", "(ec)", "/east coast", "/ec",
+         "(west coast)", "(wc)", "/west coast", "/wc",
+         "(south coast)", "(sc)", "/south coast", "/sc"};
+
+        static int coasts[] =
+        {0, NC, NC, NC, NC, EC, EC, EC, EC,
+         WC, WC, WC, WC, SC, SC, SC, SC};
+
+/* Get Coast called to return coast index for passed string */
+
+char *get_coast(coast_string, coast)
+char *coast_string;
+int *coast;
+{
+	int ret_coast = XC;  /* default coast */
+	char c_string[256];
+	char *t = coast_string;
+	char *s = c_string;
+
+	while (isspace(*t) && *t) t++;  /* Strip out leading blanks */
+
+	while (isprint(*t) && *t) {
+		*s = *t; t++; s++;
+	}
+	*s = '\0';
+
+	/* Todo, work backwards, consuming non-prints until first printable char */
+
+	lookfor(c_string, words, nentry(words), &ret_coast);
+
+        /* If there is a coast, decode its coast code */
+
+        if (ret_coast) 
+            ret_coast = coasts[ret_coast];
+	else
+	    ret_coast = XC;
+
+	*coast = ret_coast;
+
+    return t;
+}
+
+/****************************************************************************/
+
 char *get_prov(search_province, province_number, coast)
 char *search_province;		/* The province to search for */
 int *province_number;		/* OUTPUT: The number of the province */
@@ -320,16 +369,6 @@ int *coast;			/* OUTPUT: The specified coast */
 	 *        coast           = coast specification if present.
 	 *        Return          = the part of the search province which was not used
 	 */
-
-	static char *words[] =
-	{"0", "(north coast)", "(nc)", "/north coast", "/nc",
-	 "(east coast)", "(ec)", "/east coast", "/ec",
-	 "(west coast)", "(wc)", "/west coast", "/wc",
-	 "(south coast)", "(sc)", "/south coast", "/sc"};
-
-	static int coasts[] =
-	{0, NC, NC, NC, NC, EC, EC, EC, EC,
-	 WC, WC, WC, WC, SC, SC, SC, SC};
 
 	/* Initialise the province number to 0 */
 
