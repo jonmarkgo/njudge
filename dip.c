@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2002/04/06 14:40:27  miller
+ * Fixed a bad '=' that casued all builds to not set SF_MOVE flag (DAMN!)
+ *
  * Revision 1.17  2002/03/10 12:32:52  miller
  * Added automatic wait for all players in BUILD_TRANSFORM games
  *
@@ -1106,7 +1109,8 @@ int process(void)
 					n++;
 				}
 			}
-			if (n) {
+			/* Only send warning if process time passed */
+			if (n && (dipent.process < now)) {
 				late[n] = '\0';
 
 				dipent.process = now + 48 * 60 * 60;
