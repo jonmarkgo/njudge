@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2004/01/04 11:34:35  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.14  2003/12/06 11:32:52  millis
  * Fix bug 254 (can only broadcast once per game in touch press games)
  *
@@ -510,10 +513,12 @@ int gamein(void)
 					while (isspace(*t))
 						t++;
 					if (!(i = power(*t))) {
+						/**** Bug 268, disable
 						fprintf(rfp, "Unknown power %c on '%s' alliance: %s",
 						  *t, dipent.name, line);
 						fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
 						  *t, dipent.name, line);
+						 ****/
 						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
@@ -522,10 +527,12 @@ int gamein(void)
 							t++;
 						while (*t && !isspace(*t)) {
 							if (!(j = power(*t))) {
+								/**** Bug 268, disable	
 								fprintf(rfp, "Unknown power %c on '%s' alliance: %s",
 									*t, dipent.name, line);
 								fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
 									*t, dipent.name, line);
+								 ****/
 								/*err++;*/
 							} else {
 								allies[i][j] = 1;
@@ -544,10 +551,12 @@ int gamein(void)
 					while (isspace(*t))
 						t++;
 					if (!(i = power(*t))) {
+						/**** Bug 268, disable
 						fprintf(rfp, "Unknown power %c on '%s' assassinate: %s",
 						  *t, dipent.name, line);
 						fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
 						  *t, dipent.name, line);
+						 ****/
 						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
@@ -556,10 +565,12 @@ int gamein(void)
 							t++;
 						for (j = 0; j < MAX_CHIT && *t && !isspace(*t); t++, j++) {
 							if (!(chits[i][j] = power(*t))) {
+								/**** Bug 268, disable
 								fprintf(rfp, "Unknown power %c on '%s' assassinate: %s",
 									*t, dipent.name, line);
 								fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
 									*t, dipent.name, line);
+								 ****/
 								/*err++;*/
 							}
 						}
@@ -599,10 +610,12 @@ int gamein(void)
 					while (isspace(*t))
 						t++;
 					if (!(i = power(*t))) {
+						/**** Bug 268, disable
 						fprintf(rfp, "Unknown power on '%s' ducats line: %s",
 						      dipent.name, line);
 						fprintf(log_fp, "Unknown power on '%s' ducats line: %s",
 						      dipent.name, line);
+						 ****/
 						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
