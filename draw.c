@@ -1,5 +1,8 @@
-/*
+ /*
  * $Log$
+ * Revision 1.4  2001/07/15 09:14:55  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.3  2001/05/08 07:29:27  greg
  * added subjectline to draws
  *
@@ -31,23 +34,35 @@
 #include "functions.h"
 #include "mail.h"
 
-int check_can_vote(int i)
+int check_can_vote(int i, const char *s)
 {
+	if( (strcmp(s,"draw") != 0) && (strcmp(s,"concession") != 0))
+	{
+		fprintf(stderr,"Invalid argument %s for check_can_vote.\n",
+			s);
+		bailout(E_FATAL); /* Is this right? */
+	}
+	/* Don't want concessions in games where they aren't allowed. */
+	if((strcmp(s, "concession") == 0) && (dipent.xflags & XF_NOCONCESSIONS))
+	{
+		fprintf(rfp,"No concessions are permitted in this game.\n");
+		return 1;
+	}
 	if (dipent.players[i].power == OBSERVER) {
-		fprintf(rfp, "Observers are not eligible to vote on a draw.\n");
+		fprintf(rfp, "Observers are not eligible to vote on a %s.\n",s);
 		return 1;
 	}
 	if (dipent.players[i].power == MASTER) {
-		fprintf(rfp, "The Master is not eligible to vote on a draw.\n");
+		fprintf(rfp, "The Master is not eligible to vote on a %s.\n",s);
 		return 1;
 	}
 	if (dipent.phase[0] == 'x') {
-		fprintf(rfp, "You cannot declare a game which has not begun a draw!\n");
+		fprintf(rfp, "You cannot declare a game which has not begun a %s!\n",s);
 		return 1;
 	}
  	
-	if (!dipent.players[i].units) {
-		fprintf(rfp, "You have no units and cannot vote.\n");
+	if (!dipent.players[i].units && !dipent.players[i].centers) {
+		fprintf(rfp, "You have no units or centers and cannot vote on a %s.\n",s);
 		return 1;
 	}
 	return 0;
@@ -110,6 +125,70 @@ int chkdraw(char *to_check)
 		fprintf(rfp, "%d %s encountered in draw list.\n", errcnt,
 			(errcnt == 1) ? "error" : "errors");
 	return errcnt;
+}
+
+/* Chkconc, checks a concession string for validity */
+
+int chkconc(char *to_check)
+{
+	int i, j;
+        int errcnt = 0;
+                        
+        for (i = 0; i < strlen(to_check); i++) {
+                to_check[i] = toupper(to_check[i]);
+                if (!(j = power(to_check[i]))) {
+                        fprintf(rfp, "%c: invalid power\n", to_check[i]);
+                        errcnt++;
+                        continue;   
+		}
+
+	if ((j = find_player(j)) == -1) {
+                        fprintf(rfp, "%c: invalid power\n", to_check[i]);
+                        errcnt++;
+                        continue;
+                }
+
+	if (dipent.players[j].power == OBSERVER) {
+                        fprintf(rfp, "You may not concede the game to an observer.\n");
+                        errcnt++;
+                        continue;   
+                }
+        if (dipent.players[j].power == MASTER) {
+                        fprintf(rfp, "You may not concede the game to the master.\n");
+                        errcnt++;
+                        continue;
+                }
+	if (strlen(to_check) > 1) {
+	        fprintf(rfp, "You may not concede to more than 1 player!\n");
+                errcnt++;  
+		}
+	}
+
+	/* Now here's the tricky part -- we only want the player to be able
+	** to concede the game to the largest power.
+	*/
+
+	for(i = 0; i <= dipent.n; i++)
+	{
+		if(dipent.players[i].power == MASTER) continue;
+		if(dipent.players[i].power == OBSERVER) continue;
+		if(dipent.players[i].power == dipent.players[j].power)
+			continue;
+		
+		if(dipent.players[j].centers <= dipent.players[i].centers)
+		{
+                        fprintf(rfp, "%s has at least as many centers as %s. You may only concede to the largest power on the board.\n",
+                            powers[dipent.players[i].power],
+			    powers[dipent.players[j].power]);
+                        errcnt++;
+		}
+	}
+	if (errcnt)
+	{
+                fprintf(rfp, "%d %s encountered in concession.\n", errcnt,
+                        (errcnt == 1) ? "error" : "errors");
+	}
+        return errcnt;
 }
 
 int char_in_string(char the_char, char *the_string)
@@ -208,7 +287,7 @@ int process_draw(void)
  * Hooray, we've got a draw.
  */
 
-	sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/draw",GAME_DIR, dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		fprintf(log_fp, "draw: Error opening draw file.\n");
 		bailout(E_FATAL);
@@ -300,7 +379,7 @@ int process_draw(void)
 	 */
 
 	if (dipent.flags & F_GUNBOAT) {
-		sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+		sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);
 		remove(line);
 	}
 	/* 
@@ -328,6 +407,136 @@ int process_draw(void)
 	return 1;
 }
 
+int process_conc(void)
+{
+	/*
+	** Is there a concession here? Only this function knows. First
+	** we will flag the largest player (since only he can be conceded
+	** to), and then see if everyone else wants to concede to him.
+	*/
+	int largest = -1;
+	int i;
+	char *s, *t;
+	char line[1024],line2[1024];
+	FILE *ofp, *dfp;
+	long now;
+
+	for(i = 1; i <= dipent.n; i++)
+	{
+		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
+			continue;
+
+		if(largest == -1)
+		{
+			largest = i;
+			continue;
+		}
+
+		if(dipent.players[i].centers > dipent.players[largest].centers)
+			largest = i;
+	}
+	for(i = 1; i <= dipent.n; i++)
+	{
+		if(i == largest) continue;
+		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
+			continue;
+
+		if(dipent.players[i].centers > 0 &&
+			!(dipent.players[i].status & SF_CONC))
+				return 0;
+	}
+	/* OK, if we're this far, we have a concession. This next set of 
+	   code is ripped, with some modifications, from process_draw */
+
+	sprintf(line, "%s%s/conc",GAME_DIR, dipent.name);
+        if ((dfp = fopen(line, "w")) == NULL) {
+                fprintf(log_fp, "conc: Error opening concession file.\n");
+                bailout(E_FATAL);
+        }
+        if ((ofp = fopen("dip.temp", "w")) == NULL) {
+                fprintf(log_fp, "draw: Error opening second temporary file.\n");
+                bailout(E_FATAL);  
+        }
+        msg_header(ofp);   
+                        
+        time(&now);
+        fprintf(dfp, "Concession declared: %s\n", ctime(&now));
+
+	sprintf(line,"Game %s conceded to %s.\n",dipent.name,powers[dipent.players[largest].power]);
+
+	sprintf(subjectline,"%s:%s - %s. Game conceded to %s",JUDGE_CODE,dipent.name,dipent.phase,
+		powers[dipent.players[largest].power]);
+
+	dipent.phase[6] = 'X';
+
+	strcat(line, "The game is over. Thank you for playing.");
+        strcat(line2, ".");   
+	/* We think this code just wraps lines. */
+	for (t = s = line, i = 0; *s; s++, i++) {
+                if (i > 78) {
+                        while (*--s != ' ');
+                        *s++ = '\0';
+                        fprintf(ofp, "%s\n", t);
+                        fprintf(rfp, "%s\n", t);
+                        mfprintf(bfp, "%s\n", t);
+                        pprintf(cfp, "%s%s\n", NowString(), t);
+                        t = s;
+                        i = 0;
+                }
+        }
+	fprintf(ofp, "%s\n\n", t);
+        fprintf(rfp, "%s\n\n", t);  
+        mfprintf(bfp, "%s\n\n", t);
+        pprintf(cfp, "%s%s\n\n", NowString(), t);
+                        
+        for (t = s = line2, i = 0; *s; s++, i++) {
+                if (i > 78) { 
+                        while (*--s != ' ');
+                        *s++ = '\0';
+                        fprintf(dfp, "%s\n", t);
+                        t = s;
+                        i = 0;
+                }
+        }
+	fprintf(dfp, "%s\n", t);
+        fclose(dfp);
+	fclose(ofp);
+
+	/* Now we must notify the various custodians of the concession. */
+	{
+        	if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
+                        sprintf(line, "%s dip.temp 'MNC: Concession in game %s' '%s'",
+                                SMAIL_CMD,dipent.name, MN_CUSTODIAN);
+                else
+                        sprintf(line, "%s dip.temp 'BNC: Concession in game %s' '%s'",
+                                SMAIL_CMD, dipent.name, BN_CUSTODIAN);
+        }
+	execute(line);
+	/* Regenerate the summary */
+	if (dipent.flags & F_GUNBOAT) {
+                sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);
+                remove(line);
+        }
+	{  
+                char *mflg, *gflg;
+                gflg = (dipent.flags & F_GUNBOAT &&
+                        (dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
+                mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
+                sprintf(line, "%s -C %s -%s%s%slv%d %s", CONFIG_DIR, mflg,gflg,
+                        SUMMARY_CMD,
+                        dipent.flags & F_QUIET ? "q" : "", dipent.variant,dipent.name);
+                system(line);
+	}
+	/* Now mail the summary to the hall keeper. */
+	sprintf(line, "%s %s%s/summary 'HoF: Concession to %s in %s' '%s'",
+                SMAIL_CMD, GAME_DIR, dipent.name,powers[dipent.players[largest].power],
+		dipent.name, HALL_KEEPER);
+        execute(line);
+                        
+        broadcast = 1;
+	return 1;
+
+}
 /*
  * Believe it or not, the following hodgepodge of code works. It's more-
  * or-less the only good algorithm for coming up with all subsets of a
