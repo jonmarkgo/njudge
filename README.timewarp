@@ -37,3 +37,10 @@ deadlines by their standard values when it detects a warp to a future
 date. No notifications of this are made, but it is better than nothing.
 
 -Millis Miller 6th Oct 2000
+
+The judge was improved to notify all masters of active games when a 
+timewarp is noticed. A tolerance of drift parameter was added for dip.conf,
+in seconds, called TIME_TOLERANCE (default 60 if not specified): drifts less
+than this tolerance will not be considered drifts.
+
+-Millis Miller 26th May 2001 
