@@ -1,3 +1,200 @@
+2003-10-08 06:16  millis
+
+	* BUGS, NEWS, configure, configure.ac, njudge.spec: Updates for
+	1.5.2 release
+
+2003-10-08 05:28  millis
+
+	* ma_movement.c: Fix bug 236
+
+2003-09-27 08:14  machmstr
+
+	* data/rules.machiavelli: Added [no]garrisons flag and appendix 3
+	describing how	to play in standard diplomacy style.
+
+2003-09-27 07:18  machmstr
+
+	* data/: info.dipmach, map.dipmach, seed.dipmach: DipMach VERSION 2
+	files for DEMA testing (only new games)
+
+2003-09-27 07:15  machmstr
+
+	* data/map.dipmach1: changed to map.dipmach
+
+2003-09-27 07:12  machmstr
+
+	* data/map.dipmach: no message
+
+2003-09-26 12:58  christ
+
+	* docs/mail_format.html: Finished turn results (at last!!)
+
+2003-09-25 14:24  christ
+
+	* docs/mail_format.html: Turn results hald finished
+
+2003-09-24 14:03  christ
+
+	* docs/mail_format.html: Begun the part on results of turns -
+	bigger than expected...
+
+2003-09-24 13:14  christ
+
+	* docs/mail_format.html: Summary changed with described/will be
+	described/wil not be described
+
+2003-09-23 13:02  christ
+
+	* docs/mail_format.html: E-mail for game beginning
+
+2003-09-22 14:11  christ
+
+	* docs/mail_format.html: Added some mail types
+
+2003-09-22 14:00  christ
+
+	* docs/mail_format.html: Subscribing players e-mails done.
+
+2003-09-14 15:08  jaldhar
+
+	* deddump.c, flock.c, fmtwho.c, rdip.c: Included fcntl.h for
+	symbols not defined in unistd.h
+
+2003-09-14 15:07  jaldhar
+
+	* acconfig.h, aclocal.m4, config.h.in, Makefile.in, configure:
+	Changed include of fcntl.h to unistd.h in acconfig.h so lockf get
+	the proper prototype.  Regenerated configure etc. to pick up
+	change.
+
+2003-09-14 13:42  christ
+
+	* docs/mail_format.html: almost nothing...
+
+2003-09-14 04:09  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt,
+	mail_format.html: Links in Installation guide
+
+2003-09-14 03:31  christ
+
+	* docs/mail_format.html: Structure and message header description
+
+2003-09-14 01:25  millis
+
+	* functions.h, lib.c, ma_movement.c: Fix bug 225
+
+2003-09-14 01:03  millis
+
+	* po_init.c: Do not flag some errors in Mach data (just ignore
+	them)
+
+2003-09-13 17:18  millis
+
+	* mail.c: Fix bug 223
+
+2003-09-13 15:59  millis
+
+	* ma_build.c: Fix bug 224
+
+2003-09-13 15:54  millis
+
+	* ml_press.c: fix bug 228. Also prohibit press to non-masters while
+	game is paused.
+
+2003-09-13 12:09  christ
+
+	* docs/mail_format.html: -
+
+2003-09-13 11:33  christ
+
+	* docs/mail_format.html: first draft
+
+2003-09-13 08:15  christ
+
+	* docs/mail_format.html: Empty yet...
+
+2003-09-13 07:25  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt: Added web
+	links in documentation ; made clear that autoconf must be 1.7
+
+2003-09-09 12:57  nzmb
+
+	* dip.c, mail.c: Fixed Bug 31 -- the time to deadline/grace
+	expiration messages are no longer printed for terminated games, and
+	neither are the "orders not received ... you will be considered
+	late/abandoned" message. The list of entered orders is still
+	displayed, though.
+
+2003-09-09 12:21  jaldhar
+
+	* acconfig.h: Whoops forgot to commit this.
+
+2003-09-09 11:51  jaldhar
+
+	* Makefile.am, Makefile.in, config.h.in, configure, configure.ac,
+	delgame.c, dip.h, flock.c, fmtwho.c, ml_date.c, port.h, rdip.c: Got
+	rid of port.h and replaced with some extra configure checks.  The
+	include strings.h was not carried over because it is commented out
+	and likely wouldn't work anyway.
+
+2003-09-06 23:03  jaldhar
+
+	* docs/README.hackers: Update to mention that we use automake 1.7
+	and autoconf 2.57 now.
+
+2003-09-06 23:00  jaldhar
+
+	* Makefile.in, aclocal.m4, configure: Update to automake 1.7 and
+	autoconf 2.57.
+
+2003-09-03 06:12  millis
+
+	* data/index: Small updates
+
+2003-08-31 06:40  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt:  Update
+	installation for 1.5.1 judge
+
+2003-08-27 05:04  millis
+
+	* ml_set.c, ml_signon.c: Fix bug 222
+
+2003-08-26 16:54  millis
+
+	* ml_set.c: Fix bug 188
+
+2003-08-25 07:39  millis
+
+	* dip.c, dip.h, lib.c, mail.c: Fixed bug 220
+
+2003-08-23 02:59  russblau
+
+	* ml_set.c: deleted commented-out keywords
+
+2003-08-18 16:16  millis
+
+	* dip.h, params.c: Refix bug 211
+
+2003-08-18 15:49  millis
+
+	* data/: map.colonial, map.colonial96: Allow JVS as Java Sea
+	abbreviation
+
+2003-08-14 15:56  millis
+
+	* dip.c: Fix bug 158
+
+2003-08-14 05:46  millis
+
+	* dip.h, params.c: Fix bug 211
+
+2003-08-13 23:48  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_1
+
 2003-08-13 15:11  millis
 
 	* BUGS, NEWS, configure, configure.ac, njudge.spec: Prepared for
