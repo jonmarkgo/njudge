@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2003/06/29 21:37:42  nzmb
+ * Made EOG draw entries broadcasted at the end of the game.
+ *
  * Revision 1.19  2003/06/22 04:10:19  nzmb
  * Added code to allow users to record diary entries, read them, and delete them
  * if they make a mistake. The diaries will be broadcast when the games end (this
@@ -126,6 +129,7 @@ int GetNativeIndex(void);
 int IsMultiProvince(int p);
 int CheckForMultiUnitProvinces(void);
 int GetUnitIndex(int p, int power);
+void MailOut(char *out_line, char *address);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);

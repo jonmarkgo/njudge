@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.15  2003/06/11 15:48:52  millis
+	 * Remove the 'unit' text
+	 *
 	 * Revision 1.14  2003/02/18 14:05:28  millis
 	 * Added display of new Cavalry and Artillery units
 	 *
@@ -1152,21 +1155,22 @@ void InformCustodians( char *game_name, char *text, int variant, int is_gunboat)
 {
     char *variant_guardian;
     char guardian_string[200];
+    char *out_addr;
 
-    if (variant != V_STANDARD || is_gunboat)
-           sprintf(line, text,
-                SMAIL_CMD, "dip.temp", "MNC", game_name, MN_CUSTODIAN);
-    else
-           sprintf(line, text,
-                SMAIL_CMD, "dip.temp", "BNC", game_name, BN_CUSTODIAN);                   
-   execute(line);
+    if (variant != V_STANDARD || is_gunboat) {
+           sprintf(line, text, "dip.temp", "MNC", game_name);
+	   out_addr = MN_CUSTODIAN;
+    } else {
+           sprintf(line, text, "dip.temp", "BNC", game_name);                   
+	   out_addr = BN_CUSTODIAN;
+   }
+   MailOut(line, out_addr);
    sprintf(guardian_string, "CUSTODIAN_%s", variants[variant]);
    variant_guardian = config(guardian_string);
 
    if (variant_guardian) {
-        sprintf(line, text,
-                SMAIL_CMD, "dip.temp", variants[variant], game_name, variant_guardian);
-        execute(line);
+        sprintf(line, text, "dip.temp", variants[variant], game_name);
+        MailOut(line, variant_guardian);
     }
 
 }
@@ -1374,4 +1378,60 @@ int GetUnitIndex(int p, int power)
 
     *nordinal = 0;  /* not found requested unit, so reset ordinal */
     return first_unit;  /* wrapped round to first unit in province */
+}
+
+/* return the nth address in a string 
+   using ';' and ',' as separators
+   returns a string with only the address if found
+   return NULL if not found */
+
+static char *GetAddressPart(int index, char *address)
+{
+
+    static char part_address[256];  /* Address part to find */
+    int i, count = 0;
+    char *cur_ptr, *ptr;
+
+    strcpy(part_address, address);
+
+    /* Convert all ';' to ',', so as to have only one separator character */
+
+    for (i = 0; i < strlen(part_address); i++)
+	if (part_address[i] == ';')
+	    part_address[i] = ',';
+
+
+    cur_ptr = part_address;
+    do {
+        ptr = strchr(cur_ptr, ',');
+        if (ptr) {
+	    *ptr = '\0';
+        }
+        if (count != index ) {
+	    cur_ptr = ptr + 1;
+	    count++;
+        }
+    } while (count < index && ptr); 
+	
+    if (count != index) 
+	return NULL;  /* No next part found */
+    else
+	return cur_ptr;  /* Return found part */
+
+} 
+
+/* Send mail out, using individual calls to SMAIL_CMD per email address */
+
+void MailOut(char *out_line, char *address)
+{
+
+   int count = 0;
+   char *ptr;
+   static char lline[256];
+
+   while ( ptr = GetAddressPart(count++, address)) {
+       sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
+       execute(lline);
+   }
+
 }

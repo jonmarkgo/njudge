@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.16  2003/02/12 07:46:07  nzmb
+ * Fixed several bugs in the concession handling code, including a severe one
+ *
+ * that could, in rare circumstances, lead to an undeserved concession being
+ * granted
+ *
  * Revision 1.15  2003/01/18 23:57:43  millis
  * Updated from USTV
  *
@@ -594,7 +600,7 @@ int main(int argc, char **argv)
 			}
 
 			if (!n) {
-				for (i = 0; i < npr; i++) {
+				for (i = 0; i <= npr; i++) {
 					if ((p = power(owner[turn][i]))) {
 						centers[turn][p]++;
 					}
@@ -615,7 +621,7 @@ int main(int argc, char **argv)
 			 *  land non-center, & 'w' = water non-center, so don't count those.
 			 */
 
-			for (i = 0; i < npr; i++) {
+			for (i = 0; i <= npr; i++) {
 				if ((pr[i + 1].type != 'x') && (pr[i + 1].type != 'l') &&
 				    (pr[i + 1].type != 'w')) {
 					owner[turn][i] = cownr[turn][i] = homes[turn][i] = pr[i + 1].type;

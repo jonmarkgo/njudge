@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.50  2003/07/15 16:16:48  millis
+ * Make null mail 'nobody'
+ *
  * Revision 1.49  2003/07/12 17:47:38  nzmb
  * Fix so that lenlimit gets called on outgoing press messages, not just
  * replies.
@@ -886,9 +889,9 @@ int mail(void)
 						*t = '\0';
 						if ((tfp = fopen(temp, "r"))) {
 							fclose(tfp);
-							sprintf(line, "%s %s 'Diplomacy file %s' '%s'",
-								SMAIL_CMD, temp, temp, raddr);
-							execute(line);
+							sprintf(line, "%s 'Diplomacy file %s'",
+								temp, temp);
+							MailOut(line, raddr);
 							fprintf(rfp, "File %s sent.\n\n", temp);
 							listflg++;
 						} else {
@@ -941,9 +944,8 @@ int mail(void)
 
 							if ((tfp = fopen("map.out", "r"))) {
 								fclose(tfp);
-								sprintf(line, "%s map.out 'Diplomacy map request' '%s'", SMAIL_CMD,
-								  raddr);
-								execute(line);
+								sprintf(line, "map.out 'Diplomacy map request'");
+								MailOut(line, raddr);
 								fprintf(rfp, "\nMap request sent.\n");
 								if (uuenc != 'n') {
 									fprintf(rfp, "\nThe file is sent in a UUencoded unix compressed format.\n");
@@ -1023,9 +1025,8 @@ int mail(void)
 							execute(rdcom);
 							if ((tfp = fopen("map.out", "r"))) {
 								fclose(tfp);
-								sprintf(line, "%s map.out 'Diplomacy map for %s' '%s'",
-									SMAIL_CMD, name, raddr);
-								execute(line);
+								sprintf(line, "map.out 'Diplomacy map for %s'", name);
+								MailOut(line, raddr);
 								fprintf(rfp, "\nMap of game '%s' sent.\n", name);
 								if (uuenc != 'n') {
 									fprintf(rfp, "\nThe file is sent in a UUencoded unix compressed format.\n");
@@ -1517,9 +1518,9 @@ int mail(void)
 						*t = '\0';
 						if ((tfp = fopen(temp, "r"))) {
 							fclose(tfp);
-							sprintf(line, "%s %s 'Diplomacy file %s' '%s'",
-								SMAIL_CMD, temp, temp, raddr);
-							execute(line);
+							sprintf(line, "%s 'Diplomacy file %s'",
+								temp, temp);
+							MailOut(line, raddr);
 							fprintf(rfp, "File %s sent.\n\n", temp);
 							listflg++;
 						} else {
@@ -1774,14 +1775,17 @@ int mail(void)
 					 */
 
 					{
-						if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
+						if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
 							sprintf(line,
-								"%s dip.temp 'MNC: Termination in %s' '%s'",
-								SMAIL_CMD, dipent.name, MN_CUSTODIAN);
-						else
+								"dip.temp 'MNC: Termination in %s' ",
+								dipent.name);
+							MailOut(line, MN_CUSTODIAN);
+						} else {
 							sprintf(line,
-								"%s dip.temp 'BNC: Termination in %s' '%s'",
-								SMAIL_CMD, dipent.name, BN_CUSTODIAN);
+								"dip.temp 'BNC: Termination in %s'",
+								dipent.name);
+							MailOut(line, BN_CUSTODIAN);
+						}
 					}
 					execute(line);
 
@@ -1814,9 +1818,9 @@ int mail(void)
 
 					/*  Mail summary to HALL_KEEPER */
 
-					sprintf(line, "%s %s%s/summary 'HoF: Termination in %s' '%s'",
-						SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
-					execute(line);
+					sprintf(line, "%s%s/summary 'HoF: Termination in %s'",
+						GAME_DIR, dipent.name, dipent.name);
+					MailOut(line, HALL_KEEPER);
 					}
 					broadcast = 1;
 					break;
@@ -2562,7 +2566,7 @@ void mail_reply(int err)
 
 	char line[1024];
 	char *s;
-	int i, slen;
+	int slen;
 	char jline[50];
 	time_t now;
 
@@ -2591,8 +2595,8 @@ void mail_reply(int err)
 	fclose(ifp);
 
 	if (err == E_FATAL) {
-		sprintf(line, "%s %s 'Diplomacy Error' '%s'", SMAIL_CMD, rfile, GAMES_MASTER);
-		execute(line);
+		sprintf(line, "%s 'Diplomacy Error'", rfile);
+		MailOut(line, GAMES_MASTER);
 		bailout(E_FATAL);
 	}
 	if (junkmail)
@@ -2668,11 +2672,9 @@ void mail_reply(int err)
 		 * rfile.
 		 * May 14, 2003
 		 */
-		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag] " : "", jline, subject, s);
+		sprintf(line, "%s 'Re: %s%s %s'", rfile, errorflag ? "[Error Flag] " : "", jline, subject);
+		MailOut(line,s);
 
-		if ((i = execute(line))) {
-			fprintf(log_fp, "Error %d sending mail to %s.\n", i, s);
-		}
 	}
 
 	if (*raddr != '*' && address_not_in_list(raddr,s) && !Dflg) {
@@ -2690,15 +2692,9 @@ void mail_reply(int err)
                         sprintf(line, "mv dip.tempreply %s", rfile);
                         system(line);
                 }
-                sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD,
-                        rfile, errorflag ? "[Error Flag]" : "", jline, subject,
-				raddr);
-                if ((i = execute(line))) {
-                        /* TODO, why not just have execute() write its errors
-                           to the log */ 
-                        fprintf(log_fp, "Error %d sending mail to %s.\n",
-                                i, raddr);
-                }
+                sprintf(line, "%s 'Re: %s%s %s'", 
+                        rfile, errorflag ? "[Error Flag]" : "", jline, subject);
+		MailOut(line, raddr);
         }
 
 	return;
@@ -2842,9 +2838,8 @@ void send_press(void)
 						system(line);
 						lmdone = 1;
 					}
-
-					sprintf(line, "%s %s '%s' '%s'",
-						SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
+					sprintf(line, "%s '%s'", mbfile, subjectline);
+                                        MailOut(line, dipent.players[i].address);
 
 				       if ((j = execute(line))) {
                                         fprintf(log_fp, "Error %d sending master broadcast message to %s.\n",
@@ -2855,6 +2850,7 @@ void send_press(void)
 					  (master_only_press && dipent.players[i].power == power(broad_list[0]))) {
 					/* send if not master only press or if master-only but this is the
 					   destination power */
+					sprintf(line, "%s '%s'", bfile, subjectline);
 				
 					if(!lbdone) {
 						sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, bfile, bfile);
@@ -2864,14 +2860,10 @@ void send_press(void)
 						lbdone = 1;
 					}
 
-					sprintf(line, "%s %s '%s' '%s'",
-						SMAIL_CMD, bfile, subjectline, dipent.players[i].address);
+					sprintf(line, "%s '%s'", bfile, subjectline);
 
-				    if (!(dipent.players[i].status & SF_RESIGN) &&
-					(j = execute(line))) {
-                                        fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
-                                           j, dipent.players[i].address);
-                                    }
+				    if (!(dipent.players[i].status & SF_RESIGN))
+					MailOut(line, dipent.players[i].address);
 
 				}
 			}
@@ -2884,10 +2876,8 @@ void send_press(void)
 		 */
 
 		if (*baddr != '*') {
-			sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
-				SMAIL_CMD, bfile, dipent.name, baddr);
-			if ((j = execute(line)))
-				fprintf(log_fp, "Error %d sending broadcast message to %s.\n", j, baddr);
+			sprintf(line, "%s 'Diplomacy notice: %s'", bfile, dipent.name);
+			MailOut(line, baddr);
 		}
 		/*  Put a copy into the archives.  */
 
@@ -2904,10 +2894,9 @@ void send_press(void)
 			archive(bfile, line);
 		}
 	}
-
 	/* OK, let's look for resigning players and mark them as resigned
 	 * (left this late so that they get notice of resignation if master
-	 * did it for them!
+	 * did it for them)!
          */
 	for (i = 0; i < dipent.n; i++) {
 		if (!strcmp(dipent.players[i].password,GOING_PWD)) {
@@ -2925,20 +2914,13 @@ void send_press(void)
 		   message should be sent */
 		if (broadcast_master_only && dipent.players[i].power == MASTER &&
 		    !(dipent.players[i].status & SF_RESIGN)) {
-			sprintf(line, "%s %s '%s' '%s'",
-				SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
-
-                     if ((j = execute(line))) {
-                            fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
-                                    j, dipent.players[i].address);
-                     }
+			sprintf(line, "%s '%s'", mbfile, subjectline);
+			MailOut(line, dipent.players[i].address);
 		}
 	}
 		
-
 	return;
 }
-
 /*
  * address_not_in_list: Checks whether the reply_address is part of
  *                      the players_address.
@@ -3023,5 +3005,4 @@ static int InsertDummyPlayers()
     }
     return 1;  /* Dummy players inserted ok */
 }
-
 
