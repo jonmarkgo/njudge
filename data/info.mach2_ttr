@@ -1,0 +1,117 @@
+Greetings from the Diplomacy* Adjudicator!!                Jul. 27, 2004.
+Info.mach2ttr*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+For rule differences between Machiavelli and Machiavelli2 see the file 
+"rules.machiavelli2".
+
+
+Machiavelli 2 To the Renaissance (1250-1300) (Scenario VIII)
+
+As a result of both continual opposition by the Papacy and the rising
+influence of the Italian city states, the Holy Roman Empire's hold on
+northern Italy was virtually at an end. In the south too, the descendants of
+Frederick II found their power stripped from them by the active cooperation
+of Pope Urban IV and his French favorite, Charles of Anjou. Charles brought
+an army to southern Italy, defeated Frederick's son Manfred in battle, and
+seized what was left of Imperial power there, calling himself King of Naples.
+Deeply resenting French influence in their affairs, the Sicilians called upon
+Pedro III of Aragon (who was related to Frederick by marriage) for military
+assistance. Pedro defeated Charles and became King of Sicily. In the ensuing
+years Pedro's descendants extended the power of Aragon to include both
+Corsica and Sardinia. Thus, by the end of the century, southern Italy was
+divided between the French and the Spanish. The Holy Roman Empire had been
+effectively excluded from the Italian peninsula.
+
+In the north, the trade rivalries between Venice and Genoa had led to open
+warfare. Genoa, in this period, gained the upper hand and reached the peak
+of its power and prestige. (It was at this time that Marco Polo, who had
+since returned from China, was captured by the Genoese and imprisoned).
+
+Milan also grew in importance as the leading manufacturing center on the
+Lombard plain, while Florence on the other side of the Apennines began to
+acquire neighboring lands and to increase its military muscle. In a short
+period of time, Florence became the cultural capital of Europe and the
+birthplace of the Renaissance.
+
+
+Start Date: Spring 1253
+
+
+Setup
+
+A: (Kingdom of) Aragon            A-Palermo, F-Messina, F-Sardinia
+                                  Initial income: 6 ducats.
+
+N: (Angevine Kingdom of) Naples   A-Avignon, F-Marseilles, A-Naples, F-Bari
+                                  Initial income: 8 ducats.
+   
+L: (Republic of) Florence         A-Florence, A-Pisa, A-Piombino
+                                  Initial income: 4 ducats.
+
+G: (Republic of) Genoa            F-Genoa, F-Savoy, A-Modena
+                                  Initial income: 6 ducats.
+
+I: (Duchy of) Milan               A-Milan, A-Pavia, A-Cremona
+                                  Initial income: 6 ducats.
+
+P: Papacy                         A-Rome, Patrimony, A-Perugia, F-Ancona
+                                  Initial income: 4 ducats.
+
+V: (Republic of) Venice           F-Venice, A-Padua, A-Ferrara
+                                  Initial income: 6 ducats.
+
+x: Autonomous                     G-Turin, G-Montferrat, G-Saluzzo, G-Trent,
+                                  G-Lucca, G-Bologna, G-Siena, G-Arezzo,
+                                  G-Treviso, G-Ragusa, G-Durazzo
+
+The country letters are used for signing on and for sending individual 
+press messages.
+
+
+Variable Income
+
+  All powers get 1d6.
+  
+  There is *no* VI from any other autonomous city.
+
+
+Special Rules
+
+  These provinces are impassable: Austria and Hungary.
+
+  Fortresses are not used (in case you play by the Classic Mach rules).
+
+
+Special Units
+
+  *Unit restrictions only apply to play under the Mach2 rules.*
+
+  Citizen Militia units are available to Florence, Milan, Genoa, the Papacy,
+  and Venice.
+
+  Elite Mercenary units are available to all powers.
+
+  Elite Professional units are available to Aragon, Naples, Genoa, and Venice.
+  All other powers cannot build these but may bribe them.
+
+  Tech note: the original scenario rules say nothing about these.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1, Jul 27th 2004.  Initial release version.

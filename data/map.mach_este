@@ -1,0 +1,273 @@
+#Machiavelli 1 Expansion of States with Este
+#Rev. 1.  Aug 1st 2004.
+XXXXXX,                  l0.  xxx
+Albania,                 x1.  alb alban
+Ancona,                  N1P  anc ancon
+Aquila,                  N0f  aqu aquil
+Arezzo,                  L1f  are arezz
+Bari,                    N1P  bar
+Bay of Tunis,            w0.  bot cms cmed cm
+Bergamo,                 x0f  ber berga
+Bologna,                 x1f  bol bolog
+Bosnia,                  x0.  bos bosni
+Brescia,                 x0f  bre bresc
+Capua,                   x0.  cap
+Carniola,                x1.  crn carni  
+Como,                    I0.  com
+Corsica,                 x1p  cor corsi
+Cremona,                 I1f  cre cremo
+Croatia,                 x1.  cro croat
+Dalmatia,                V1.  dal dalma
+Durazzo,                 x1P  dur duraz
+Eastern Gulf of Lyons,   w0.  egl egol lig lis ls
+Eastern Tyrrhenian Sea,  w0.  ets
+Ferrara,                 E1f  fer ferra
+Florence,                L3f  flo flore
+Fornova,                 x0f  for forno
+Friuli,                  x0.  fri friul
+Genoa,                   I3P  gen
+Gulf of Naples,          w0.  gon
+Herzegovina,             x0.  her herze
+Ionian Sea,              w0.  ion is ios
+Istria,                  V0.  ist istri
+Lower Adriatic Sea,      w0.  low las la
+Lucca,                   x1f  luc
+Mantua,                  E1f  man mantu
+Messina,                 x1P  mes messi
+Milan,                   I3f  mil
+Modena,                  E1f  mod moden
+Montferrat,              x1f  mon montf
+Naples,                  N2P  nap naple
+Otranto,                 x0.  otr otran
+Padua,                   x1f  pad
+Palermo,                 x1P  pal paler
+Parma,                   x0f  par
+Patrimony,               x0f  pat patri
+Pavia,                   I1f  pav
+Perugia,                 x1f  per perug
+Piancenza,               x0f  pia pianc piace piacenza
+Piombino,                x1P  pio piomb
+Pisa,                    L1P  psa
+Pistoia,                 L0.  pst pisto
+Pontremoli,              x0.  pon pontr
+Ragusa,                  V1P  rag ragus
+Romagna,                 x0f  rma romag
+Rome,                    x2f  rme
+Salerno,                 N0P  slr saler
+Saluzzo,                 x1f  slz saluz
+Sardinia,                x1p  sar sardi
+Savoy,                   x1P  sav
+Siena,                   x1f  sie sienna sienn
+Slavonia,                x0.  sla slavo  
+Spoleto,                 x0f  spo spole
+Tivoli,                  x0P  tiv tivol
+Trent,                   x1f  trt
+Treviso,                 x1f  trv trevi
+Tunis,                   x2P  tun
+Turin,                   x1f  tur
+Upper Adriatic Sea,      w0.  uas upp ua
+Urbino,                  x0f  urb urbin
+Lagoon,                  w0.  lag lagoo
+Venice,                  V3PV  ven venic
+Verona,                  x0f  ver veron
+Vicenza,                 x0f  vic vicen
+Western Gulf of Lyons,   w0.  wgl wgol 
+Western Mediterranean,   w0.  wms wme wmed wm
+Western Tyrrhenian Sea,  w0.  wts
+-1
+xxx-mv: xxx
+alb-mv: rag her dur
+alb-xc: rag las dur
+anc-mv: rma aqu urb spo
+anc-xc: rma aqu uas las
+aqu-mv: anc spo cap nap slr bar
+aqu-xc: anc bar las
+are-mv: flo urb per sie
+bar-mv: aqu otr slr
+bar-xc: aqu las otr
+bot-xc: wms pal ion tun
+ber-mv: mil trt bre cre
+bol-mv: man fer rma flo pst luc mod
+bol-xc: fer uas rma
+bos-mv: cro her dal
+bre-mv: ber trt ver man cre
+cap-mv: spo aqu nap tiv
+cap-xc: tiv nap gon
+crn-mv: sla cro fri
+crn-xc: cro/nc uas fri
+com-mv: mil pav tur
+cor-xc: egl wts wgl
+cre-mv: mil ber bre man par pia
+cro-mv: crn sla bos dal ist
+cro-nc: crn ist uas
+cro-sc: dal ist
+dal-mv: cro bos her ist
+dal-xc: cro/sc her las uas ist
+dur-mv: alb
+dur-xc: las alb ion
+egl-xc: sav gen mod luc psa wts cor wgl
+ets-xc: psa/cc pio sie pat tiv gon mes pal wts
+ets-cc: psa
+fer-mv: man ver pad bol
+fer-xc: pad uas bol
+flo-mv: bol rma urb are sie psa pst
+for-mv: pav pia par pon gen mon
+fri-mv: crn trv vic
+fri-xc: crn uas lag trv
+gen-mv: sav mon for pon mod
+gen-xc: sav mod egl
+gon-xc: tiv cap nap slr otr ion/cc mes ets
+gon-cc: ion
+her-mv: bos alb rag dal
+her-xc: rag las dal
+ion-xc: otr las dur bot pal gon/cc mes
+ion-cc: gon
+ist-mv: cro dal
+ist-xc: uas cro/nc cro/sc dal
+low-xc: uas dal her rag alb dur ion otr bar aqu anc
+luc-mv: mod bol pst psa
+luc-xc: mod psa egl
+man-mv: cre bre ver fer bol mod par
+mes-mv: pal
+mes-xc: ets gon ion pal
+mil-mv: com trt ber cre pia pav
+mod-mv: gen pon par man bol luc
+mod-xc: gen luc egl
+mon-mv: tur pav for gen sav
+nap-mv: cap aqu slr
+nap-xc: cap slr gon
+otr-mv: slr bar
+otr-xc: gon slr bar las ion
+pad-mv: ver vic trv fer
+pad-xc: trv lag uas fer
+pal-mv: mes
+pal-xc: wts ets mes ion bot wms
+par-mv: pia cre man mod pon for
+pat-mv: sie per rme tiv
+pat-xc: sie tiv ets
+pav-mv: com mil pia for mon tur
+per-mv: are urb spo rme pat sie
+pia-mv: pav mil cre par for
+pio-mv: psa sie
+pio-xc: wts psa sie ets
+psa-mv: luc pst flo sie pio
+psa-xc: egl luc ets/cc pio wts
+psa-cc: ets
+pst-mv: luc bol flo psa
+pon-mv: for par mod gen
+rag-mv: her alb
+rag-xc: her alb las
+rma-mv: bol anc urb flo
+rma-xc: bol uas anc
+rme-mv: per spo tiv pat
+slr-mv: nap aqu bar otr
+slr-xc: nap otr gon
+slz-mv: tur sav
+sar-xc: wgl wts wms
+sav-mv: slz tur mon gen
+sav-xc: gen egl
+sie-mv: pio psa flo are per pat
+sie-xc: pio pat ets
+sla-mv: cro crn 
+spo-mv: per urb anc aqu cap tiv rme
+tiv-mv: pat rme spo cap
+tiv-xc: pat cap gon ets
+trt-mv: mil vic ver bre ber
+trv-mv: vic fri pad
+trv-xc: fri lag pad
+tun-xc: wms bot
+tur-mv: com pav mon sav slz  
+uas-xv: fer pad lag fri crn cro/nc ist dal las
+uas-xc: anc rma bol
+urb-mv: flo rma anc spo per are
+lag-xc: pad trv fri uas ven
+ven-xc: lag
+ver-mv: bre trt vic pad fer man
+vic-mv: trt fri trv pad ver
+wgl-xc: egl cor wts sar wms
+wms-xc: wgl sar wts pal bot tun
+wts-xc: cor egl psa pio ets pal wms sar wgl
+-1 
+Famine:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- ----- ----- Patri Moden ----- Corsi Ancon ----- ----- -----
+     3: ----- Piomb ----- ----- ----- ----- ----- Tunis ----- ----- Paler
+     4: Tivol ----- Otran Padua ----- Cremo Pontr ----- Herze ----- -----
+     5: Friul ----- Bolog Saler Veron ----- Milan Siena ----- ----- Duraz
+     6: ----- Ragus Vicen ----- Berga Pisto Spole ----- Pianc ----- -----
+     7: ----- Bari  Slavo Montf Urbin Forno ----- Como  Trent ----- -----
+     8: Ferra ----- Rome  Pavia ----- ----- Arezz Bresc Saluz Alban Genoa
+     9: ----- ----- Croat ----- Flore Turin Mantu Capua Trevi ----- -----
+    10: Savoy ----- Sardi ----- Parma Bosni ----- ----- Naple Romag Dalma
+    11: ----- ----- Venic ----- ----- ----- ----- Carni ----- Messi -----
+    12: ----- ----- ----- Pisa  Aquil ----- Lucca ----- Istri ----- -----
+
+Plague:   2     3     4     5     6     7     8     9    10    11    12
+     2: Vicen ----- ----- ----- Carni ----- ----- ----- ----- Montf Capua
+     3: Pontr Bosni Slavo ----- ----- ----- Croat ----- Tivol Bari  -----
+     4: Savoy ----- ----- Friul ----- Rome  ----- ----- Pavia ----- -----
+     5: ----- Saler Veron ----- Dalma Lucca Bolog ----- ----- ----- -----
+     6: ----- ----- Turin Siena Messi Padua ----- Ferra ----- ----- -----
+     7: Paler ----- Genoa Alban Pisa  Tunis ----- Milan ----- ----- Sardi
+     8: Duraz ----- Naple Moden Perug Cremo Venic Flore ----- ----- -----
+     9: ----- Berga Ancon Parma ----- ----- ----- ----- Mantu Istri -----
+    10: Romag ----- ----- Urbin ----- ----- ----- ----- Trevi ----- Como
+    11: Pianc Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
+    12: Trent Herze ----- Bresc ----- ----- ----- Corsi ----- Patri Saluz
+
+#Initial income differs from AH setup due to technical reasons.
+#The formula used is AHInitial-(IncomeAtSetup-MaintenanceAtSetup)=NjudgeInitial
+Variable Income:  City         dice   1  2  3  4  5  6 Initial
+                  Ferrara       1     1  2  2  3  3  4    3
+                  Florence      1     1  2  3  3  4  5    0
+                  Milan         1     2  3  3  4  4  5    0
+                  Naples        1     1  2  2  3  3  4    3
+                  Rome          1     2  3  3  4  5  6    0
+                  Venice        1     2  3  3  4  4  5    0
+# End of Variable Income.
+
+Ownership (city) ordering:
+   tur slz sav cor gen mon pav cre mil trt crn cro dal trv pad ven man fer mod 
+   luc psa flo pio sie are bol per rme anc nap bar mes pal sar tun dur alb rag
+#End of center ordering
+
+Center (province) order for summary report:
+   bosni herze ragus alban duraz tunis sardi paler messi otran bari
+   saler naple aquil capua tivol spole ancon patri rome  perug urbin
+   romag bolog siena piomb arezz flore pisa  pisto lucca corsi 
+   turin saluz savoy montf genoa pontr parma moden mantu ferra 
+   forno pianc pavia como  milan cremo trent  berga bresc
+   padua veron vicen venic trevi friul istri dalma croat carni slavo
+#End of province ordering
+
+Storms:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- uas  
+     3: ----- ----- wgl   ----- ----- ----- ----- ----- bot   ----- -----
+     4: ----- ----- ----- ----- ----- ----- ----- ----- ----- gon   -----
+     5: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     6: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     7: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----  
+     8: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     9: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ets  
+    10: ----- ion   ----- ----- ----- ----- ----- ----- ----- wme   -----
+    11: ----- ----- las   ----- ----- ----- ----- ----- egl   ----- -----
+    12: wts   ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+#Limits follow following format:
+# <power-letter> <Army x 4chars> <Fleet x 4chars> <garrison x 4char>
+#Each char is:
+# 'x' = Unit allowed anytime
+# '.' Unit never allowed
+# 'b' Unit can only be built
+# 'r' Unit can only be bribed
+#Unit qualifers are in order:
+# Ordinary, Citizens, Mercenary, Professional
+
+Limits for Units Types:
+   E xxxx xxxx xxxx
+   L xxxx xxxx xxxx
+   I xxxx xxxx xxxx
+   N xxxx xxxx xxxx
+   V xxxx xxxx xxxx
+#end of limit (this line is compulsory!)
+
+-1

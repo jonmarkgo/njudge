@@ -1,0 +1,122 @@
+Greetings from the Diplomacy* Adjudicator!!                Jul. 27, 2004.
+Info.mach2pamt*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+For rule differences between Machiavelli and Machiavelli2 see the file 
+"rules.machiavelli2".
+
+
+Machiavelli 2 Papal Ascendancy and Mongol Threat (1177-1250) (Scenario VII)
+
+IMPORTANT NOTE:
+This is the 5-player version. If you play with 2-4 players the Mongols 
+are not in play and the Mongol controlled provinces are impassable.
+
+The judge also supports the 4-player variant (mach2_pa).
+
+
+Historical background
+
+In 1176, the Holy Roman Empire's control of northern Italy was dealt a
+severe blow when the "Lombard League," under the leadership of Milan,
+defeated the Imperial army at the battle of Legnano. Then, when dynastic
+struggles erupted in Germany, the Papacy was able to strengthen its hold
+over the Papal States under the able leadership of Pope Innocent III. In
+the south, however, the Empire fared better. The marriage of 
+Emperor Henry VI to the Norman princess Constance of Sicily helped ensure 
+the spread of Imperial influence to Naples and Palermo. In fact, their 
+son, Frederick II, was to rule the Empire largely from Sicily.
+
+During this time, while the fortunes of Byzantium declined, those of smaller
+kingdoms within its borders rose. This was especially true of Hungary and
+Serbia, which developed into small but powerful principalities. Venice, too,
+basking in its wealth as one of the dominant commercial powers of the
+Mediterranean, made good use of the increased trading opportunities
+engendered by the collapse of Byzantium and the rise of the Crusader States.
+
+However, the ever-present threat of Mongol invasion loomed over all of Europe.
+During this period, the Mongols swept through Asia, the Middle East, Russia
+and Central Europe, and seemed to be on the brink of crushing Vienna and
+Venice. It was only the fortuitous death of Ogodai Khan which caused the
+Mongol armies to retire to Asia, never again to threaten Europe.
+
+
+Start Date: Spring 1177
+
+
+Setup
+
+E: (Holy Roman) Empire  F-Messina, A-Palermo, F-Naples, A-Bari
+                        Initial income: 2 ducats.
+
+I: (Republic of) Milan  A-Milan, A-Trent, A-Cremona, A-Mantua, A-Modena
+                        Initial income: 6 ducats.
+
+G: Mongols              A-Austria, A-Tyrolea, A-Hungary, A-Carniola, A-Croatia
+                        Initial income: 5 ducats.
+
+P: Papacy               A-Rome, Patrimony, A-Perugia, A-Arezzo, A-Florence
+                        F-Pisa
+                        Initial income: 4 ducats.
+
+V: (Republic of) Venice F-Venice, F-Dalmatia, A-Padua, A-Treviso, A-Ferrara
+                        Initial income: 6 ducats.
+
+x: Autonomous           G-Turin, G-Montferrat, G-Genoa, G-Pavia, G-Lucca
+                        G-Bologna, G-Siena, G-Piombino, G-Ancona, G-Tunis
+                        G-Ragusa, G-Durazzo
+
+The country letters are used for signing on and for sending individual 
+press messages.
+
+
+Variable Income
+
+  All powers get 1d6.
+
+  There is *no* Genoa city variable income nor VI from any other 
+  autonomous city.
+
+
+Special Rules
+
+  These provinces are impassable: Avignon, Marseilles, Provence, Savoy,
+  Saluzzo and Swiss.
+
+  Florence is a two ducat major city.
+
+  Fortresses are not used (in case you play by the Classic Mach rules).
+
+
+Special Units
+
+  *Unit restrictions only apply to play under the Mach2 rules.*
+
+  Citizen Militia units are available to Milan, Venice and the Mongols.
+
+  Elite Mercenary units are available to all powers.
+
+  Elite Professional units are available to the Mongols, Venice and 
+  the Holy Roman Empire.  All other powers cannot build these but may 
+  bribe them.
+
+  Tech note: the original scenario rules say nothing about these.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1, Jul 27th 2004.  Initial release version.
