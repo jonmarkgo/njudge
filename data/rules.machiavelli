@@ -1,23 +1,29 @@
-Greetings from the Diplomacy* Adjudicator!!            17th December, 2001
+Greetings from the Diplomacy* Adjudicator!!            24th July, 2002
 Rules.machiavelli*
 
 INTRODUCTION
-Machiavelli is a board game by Avalon Hill, which is similar to Diplomacy,
+Machiavelli is a board game by Avalon Hill.  It is similar to Diplomacy,
 but more complicated.  The original release was by Battleline Publ. in 1978
 and it is that version that was adapted for use by the Judge.  Avalon Hill
-has printed three editions (1st ed. 1980, 2nd ed. 1983 - reprint with new
-board and chits and no bankers, and 2nd ed. 1995 - yes this is correct it
-is a new edition and has major changes).  The reader is cautioned that the
-rules in this document take precedence in judge play.
+has printed three editions: 1st ed. 1980, 2nd ed. 1983 (reprint with new
+board and chits and no bankers) and 2nd ed. 1995 (yes this is correct it
+is a new edition and has major changes).  
 The Battleline and Avalon Hill editions are now out of print so unless
 you've already got one it is not likely that you'll find a copy of it.
-This description of the game should be enough to teach you the rules if
-you're familiar with the rules of Diplomacy.  You will also need a map.
-A PostScript version is available via the adjudicator with the "get
-machiavelli.ps" command.
+This document is not a simple rehash of the official rules.  The official 
+rules are unfortunately in many cases unclear and incomplete.  As the 
+computerized judge version was encoded it became obvious that the official 
+rules partly needed to be rewritten and clarified.  The result was this 
+document.  The reader is cautioned that the rules in this document take 
+precedence over the original rules in judge play. 
+In addition to the above this document is also a description (by 
+permission) of the game mechanics that should be enough to get you started, 
+especially if you're familiar with the rules of Diplomacy or similar games.
+A PostScript map is available via the adjudicator with the "get
+machiavelli.ps" command or on various sites on the Internet.
 The time frame of Machiavelli is Renaissance Italy from 1385 to 1529.
 
-The main changes from standard diplomacy are:
+The main changes from standard Diplomacy are:
      1) Powers have finances.
      2) The use of money to buy, build, disband and maintain units.
      3) Famine and plague events.
@@ -528,14 +534,25 @@ rolls on the "Plague Table":
 
 3) Borrowing phase.
 The first option during the expenditures phase is the borrowing of ducats.
-Players may borrow up to 25 ducats from "the bank".  The loan can either be
-for 1 year at 20% interest or for 2 years at 50% interest.  The loan incl.
-interest must be repaid in full at the *end* of the borrowing phase of the
-indicated season of the indicated year.  The interest is always and
-automatically paid back first.  Loans can be paid back earlier if you wish.
-A new loan can be taken out to pay off the first loan as long as the
-outstanding principle (the borrowed amount excl. interest) at any time is
-not greater than 25 ducats.
+Players may borrow up to a total maximum of 25 ducats from "the bank".  
+You may choose whether to loan 1 ducat 25 times or all 25 ducats at once, 
+or any combination in between.  The loan can either be for 1 year at 20% 
+interest or for 2 years at 50% interest.  *Only* the fall income report 
+will show when any outstanding loans are due.  The loan incl. interest 
+must be repaid in full at the *end* of the borrowing phase of the
+indicated season of the indicated year.  Loans may be repayed at any 
+time before this according to the procedure below.  
+
+Loan repayments are processed in this way:
+     a) In the order shown in the income report.
+     b) Always beginning with the interest of the earliest due loan.
+     c) Then principal (non-interest part) of the earliest due loan.
+     d) Then interest of 2nd earliest due loan (if any) and so on.
+
+Notice that you are *not allowed to pick which loan to pay off first*.  
+A new loan can be taken out to pay off the oldest loan as long as the
+outstanding principal (the borrowed amount excl. interest) is within the
+25 ducat limit.  
 Careful planning must be executed to ensure that you don't default on the
 loan.  If you are unable to pay off a loan, you'll be assassinated by the
 bankers (see assassination for effects) and nevermore be allowed to borrow
@@ -557,6 +574,7 @@ The judge processes the pay/borrow commands in the following sequence:
      c) "Borrow" commands.  (Total debt to bank, excl. interest, cannot
         exceed 25d.)
      d) Bank collects any due loans.
+     e) Expenses processed
 
 Example 1: You take a loan of 15 ducats in the Summer of 1492 for two
 years.  By the Summer of 1494 you must pay 23 (15+8) ducats (interest is
@@ -581,6 +599,9 @@ remaining 12d due.
 Example 3: You regret that you borrowed from the bank and want to get rid
 of the loan?  Just send the order "borrow 0 ducats for 1 year" or
 "borrow 0 ducats for 2 years" (0=zero) depending on the loan you took.
+
+'Tech note'.  Loans are for unknown reasons (probably an error) omitted 
+from the AH 1983 rules edition.
 
 4) Expenditures phase.
 Each player can make up to four expenditures ("expense 1:", "expense 2:",
@@ -966,7 +987,7 @@ Famine relief (a)    required (to prov or city)      not required
 Pacify reb (b)       required (to prov or city)      not required
 Counter bribe (c)    required (to army or fleet)     not required
 Bribes d-i           required (to army or fleet)     not required
-Cause reb. (j,k)     required (to army or fleet)     not required
+Cause reb. (j,k)     required (to prov or city)      not required
 Assassination (l)    not required                    not required
 
 set [no]storm
@@ -1022,7 +1043,7 @@ set by an additional V following all other flags (see below).
 Examples.
 Albania,       T1.  alb alban  =  Turkish home city, 1d, unfortified.
 Ancona,        P1P  anc ancon  =  Papal home city, 1d, fortif. port.
-Aquila,        N0.f aqu aquil  =  Napalese home prov., no city, fortr.
+Aquila,        N0f  aqu aquil  =  Neapolitan home prov., no city, fortr.
 Bay of Tunis,  w0.  bot        =  water prov., 0d, no city.
 Venice,        V3PV ven venic  =  Venetian home, 3d, fortif. port,
                                      "venice" rules apply
@@ -1056,3 +1077,5 @@ Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and Robert
 Rehbold.
 v2b 17th of December 2001. Minor additions re. Basic and Adv. rules and some 
 clarifications. Author Sergio Lidsell.
+v2c 24th of July 2002. Additions to Introduction and clarification of loan 
+repayment procedure in the borrowing phase. Author Sergio Lidsell.

@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!         12th December, 2001
+Greetings from the Diplomacy* Adjudicator!!         11th October, 2002
 Rules.machiavelli2
 
 
@@ -20,6 +20,7 @@ Differences between 1995 edition and older:
      5)  Restrictions on special units.
      6)  Adjacency rules for bribes differ somewhat.
      7)  The map (fewer provinces and sea areas; no fortresses).
+     8)  Venice rules.
 
 'Tech note'. Mach2 also has two optional rules that are *not implemented*
 on the judge these are:
@@ -53,7 +54,7 @@ contrary to the earlier editions.  As this is a game flag you may change it.
 SPECIAL UNITS
 Any country cannot buy any special unit.
 Austria, Turkey and Venice may own Elite Professionals.
-Florence, Milan, Papacy and Venice may own Citizen∆s Militia.
+Florence, Milan, Papacy and Venice may own Citizenís Militia.
 Every country *except Turkey* may own Elite Mercenaries.
 
 'Tech note'.  There is a problem with this as it only states that units
@@ -69,9 +70,16 @@ you *control* or have a unit in.
 
 
 IMPORTANT MAP CHANGES
-1)  There is no Lagoon. Venice is a sea area with a city.
-2)  Armies *and* fleets may move between Sardinia and Corsica.
-3)  Armies *and* fleets may move between Messina and Otranto.
+1)  Armies *and* fleets may move between Sardinia and Corsica.
+2)  Armies *and* fleets may move between Messina and Otranto.
+3)  Venice **IMPORTANT DIFFERENCE**
+    a) There is no Lagoon. Venice is a *sea area with a city*.
+    b) No armies may be built, exist or enter in Venice.
+    c) Fleets can only be in the Venica sea area (VSA).
+    d) Fleets in the VSA may enter the city by converting to garrisons.
+       Garrisons in Venice may enter the VSA by converting to fleets.
+    e) Fleets in the VSA may retreat to the adjacent provinces.
+    f) Fleets in the VSA may support into the adjacent areas.
 
 
 VARIOUS
@@ -160,3 +168,4 @@ ALL RIGHTS RESERVED.
 
 REVISION HISTORY
 v1 12th of December 2001. Author Sergio Lidsell.
+v1b Oct 11th 2002. Venice rules corrected and clarified. Author S Lidsell.
