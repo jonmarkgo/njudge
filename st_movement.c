@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.6  2001/04/18 12:33:53  miller
+** Fixed blind flag problem
+**
 ** Revision 1.5 2001/04/15 21:21:22 miller
 ** Added handling of XF_NOTRANSATTACK flag
 **
@@ -404,7 +407,7 @@ return E_WARN;
 		*s = get_prov(*s, &p2, &c2);
 		if (!p2) {
 			errmsg("Movement from %s%s to unrecognized province -> %s",
-			 water(p1) ? "the " : "", pr[p1].name, s);
+			 water(p1) ? "the " : "", pr[p1].name, *s);
 			return E_WARN;
 		}
 		t = get_action(*s, &c);
