@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -15,7 +18,7 @@
 int has_fortress(int prov)
 {
 	if (pr[prov].flags & PF_FORTRESS)
-		return (dipent.flags & F_FORTRESS ||
+		return (dipent.xflags & XF_FORT ||
 			pr[prov].flags & PF_VALUE);
 	else
 		return 0;
@@ -42,4 +45,64 @@ void set_rebellion(int prov)
 	   ** This assumes rebellion always affects the province
 	 */
 	set_prebellion(prov);
+}
+
+/*
+ * PermittedMachUnit - see if power is allowed unit type requested
+ */
+
+int PermittedMachUnit(int power, char type, char stype, int mode)
+{
+    int i, power_index = 0;
+    int unit_type, unit_stype;
+    int mask;
+
+    if (!(dipent.xflags & XF_LIMIT_TYPES))
+	return 1; /* No unit limits enabled, always ok */
+
+/* Firstly, find powe in permitted array */
+
+    
+    for (i = 0; i < MAXPLAYERS && !power_index; i++)
+    {
+	if (dipent.pl[power] == permitted_units[i].power_letter)
+	    power_index = i;
+    }
+/* Now, convert type and stype to my defines */
+
+    switch (tolower(type))
+    {
+	case 'a':
+	    unit_type = P_ARMY;
+	    break;
+	case 'f':
+	    unit_type = P_FLEET;
+	    break;
+	default:
+	    unit_type = P_GARRISON;
+    }
+    switch (tolower(stype))
+    {
+	case 'c':
+	    unit_stype = P_CITIZEN;
+	    break;
+        case 'm':
+            unit_stype = P_MERC;
+	    break;
+	case 'p':
+	    unit_stype = P_PROF;
+	    break;
+	default:
+	    unit_stype = P_NORMAL;
+    }
+/* OK, let's see if this unit is permitted or not */
+
+   mask = (permitted_units[power_index].permissions[unit_type]);
+   mask &=  (0x3 << unit_stype * 2);
+   mask = mask >>  (unit_stype * 2);
+   mask &= mode;
+
+/*   mask = ((permitted_units[power_index].permissions[unit_type] & (0xFF << unit_stype * 2)) >> (unit_stype * 2)) & mode;
+*/
+    return mask;
 }
