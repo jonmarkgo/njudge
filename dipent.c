@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2004/09/03 13:30:17  millis
+ * Added use of AlliedWin value.
+ *
  * Revision 1.23  2004/07/25 16:07:16  millis
  * Bug 151, allow less powers than variant default.
  *
@@ -144,7 +147,6 @@ int getdipent(FILE * fp)
 	time_t now;
 	unsigned char line[1000];
 	char *s; 
-	char *malloc();
 	static int recover_print = 0;
 
 	memset(&dipent, 0, sizeof(dipent));
