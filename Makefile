@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.18  2002/01/06 22:49:45  miller
+# depend target now addes Makefile dependency
+#
 # Revision 1.17  2002/01/05 17:09:36  miller
 # Moved version to another file (Makefile.version) and removed mapit
 #
@@ -108,7 +111,7 @@ FILES=	${SRCDIR}/Makefile ${SRCDIR}/Makefile.version ${SRCDIR}/README ${SRCDIR}/
 	${SRCDIR}/diprun ${SRCDIR}/smail ${SRCDIR}/dipclean ${SRCDIR}/atrun \
         ${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
 	${SRCDIR}/data/* ${SRCDIR}/starter.flist \
-	${SRCDIR}/rundipmap ${SRCDIR}/README.* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
+	${SRCDIR}/rundipmap ${SRCDIR}/docs/* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
 	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base
 
 .SUFFIXES: .c .o .h
