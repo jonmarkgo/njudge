@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.7  2003/05/10 00:46:15  millis
+   ** Bug 140 fix, display 'orders' when orders and 'results' when results
+   **
    ** Revision 1.6  2003/01/20 12:33:00  millis
    ** Small USTV change
    **
@@ -45,7 +48,7 @@
 #include "mach.h"
 
 
-static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
+static int nu[NPOWER + 1], lu[NPOWER + 1];
 
 /* See if passed location is in conditions to be built on */
 int MachCheckOwnedOKBasic( char type, int u, int p, int p1, int *c1)
@@ -106,8 +109,9 @@ int ma_init_build_basic(void)
 		}
 		for (i = 1; i <= npr; i++) {
 			if (pr[i].cown == p && 
-			    ((pr[i].home == p))) 
-				cnb[p] = 0;
+			    ((pr[i].home == p))) { 
+			/* was doing something here, no longer! */	
+			}
 		}
 	}
 	return move_to_make;
@@ -158,8 +162,8 @@ int ma_buildin_basic(char **s, int p)
 	if (order == 'x')
 		order = nu[p] >= 0 ? 'b' : 'r';
 
-	if ((order == 'b' && (nu[p] <= 0 || cnb[p])) ||
-	    (order == 'w' && (nu[p] <= 0 || cnb[p])) ||
+	if ((order == 'b' && (nu[p] <= 0 )) ||
+	    (order == 'w' && (nu[p] <= 0 )) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
@@ -448,7 +452,7 @@ void ma_buildout_basic(int pt)
 					break;
 			}
 
-			if (i > npr || cnb[p]) {
+			if (i > npr) {
 				i = nu[p] - 1;
 				fprintf(rfp, "%d unusable build%s pending.\n", i, i == 1 ? "" : "s");
 				nu[p] = 1;
