@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2001/07/01 23:19:29  miller
+ * Add costal convoys
+ *
  * Revision 1.7  2001/06/24 05:49:30  nzmb
  * Added functionality to set ontime ratio, resignation ratio in a game.
  *
@@ -555,7 +558,18 @@ void mail_setp(char *s)
 #define PRV_COASTALCONVOY  'm'
 #define SET_NOCOASTALCONVOY 128
 #define PRV_NOCOASTALCONVOY 'm'
-
+#define SET_MONEY	  129
+#define PRV_MONEY	  'm'
+#define SET_NOMONEY	  130
+#define PRV_NOMONEY	  'm'
+#define SET_MOVEDISBAND	  131
+#define	PRV_MOVEDISBAND	  'm'
+#define SET_NOMOVEDISBAND 132
+#define PRV_NOMOVEDISBAND 'm'
+#define SET_BASIC	  133
+#define PRV_BASIC	  'm'
+#define SET_ADVANCED	  134
+#define PRV_ADVANCED	  'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -671,11 +685,14 @@ void mail_setp(char *s)
 	 "no attack tranform", "noattack transform",
          "coastal convoys", "coastalconvoys", "coastal convoy", "coastalconvoy",
          "no coastal convoys", "nocoastalconvoys", "no coastalconvoys", "no coastal convoy",
-         "nocoastalconvoy", "no coastalconvoy"
+         "nocoastalconvoy", "no coastalconvoy",
+	 "money", "nomoney", "no money",
+	 "disband", "no disband", "nodisband", 
+	 "basic", "advanced"
  	};
 
 
-	static char action[] =
+	static unsigned char action[] =
 	{'x', SET_NOOP, SET_NOOP,
 	 SET_ADD, SET_ADD, SET_PW, SET_PW, SET_PW,
 	 SET_WAIT, SET_WAIT, SET_NOWAIT, SET_NOWAIT,
@@ -793,9 +810,10 @@ void mail_setp(char *s)
 	SET_NOATTACKTRANS, SET_NOATTACKTRANS,
         SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY,
         SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
-        SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY
-
-
+        SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
+	SET_MONEY, SET_NOMONEY, SET_NOMONEY, 
+	SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
+	SET_BASIC, SET_ADVANCED
     };
 
 
@@ -917,7 +935,10 @@ void mail_setp(char *s)
 	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
         PRV_COASTALCONVOY, PRV_COASTALCONVOY,  PRV_COASTALCONVOY, PRV_COASTALCONVOY,
         PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
-        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY
+        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
+        SET_MONEY, SET_NOMONEY, SET_NOMONEY,
+        SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
+        SET_BASIC, SET_ADVANCED
 
 };
 
@@ -2283,7 +2304,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_ANYDISBAND:
-			fprintf(rfp,"Sorry, the AnyDisband feature isnot yet implemented.\n");
+			fprintf(rfp,"Sorry, the AnyDisband feature is not yet implemented.\n");
 			/*			
 			CheckNoMach();
                        if (dipent.seq[0] != 'x') {
@@ -2291,7 +2312,7 @@ void mail_setp(char *s)
                                     dipent.name);
                         } else {
                         CheckAndToggleFlag(&dipent.xflags,  XF_ANYDISBAND, "AnyDisband", CATF_SETON,
-                                               "Disbands can now be mae in a build phase of ANY unit.\n",CATF_NORMAL);
+                                               "Disbands can now be made in a build phase of ANY unit.\n",CATF_NORMAL);
                         }
 			*/
                         break;
@@ -2813,7 +2834,54 @@ void mail_setp(char *s)
                                                    CATF_NORMAL);
                         break;
 
+/*
+		case SET_MONEY:
+			CheckMach();
+                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETON,
+                                                "Game now has money.\n", CATF_INVERSE);
+			break;
 
+		case SET_NOMONEY:
+                        CheckMach();
+                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETOFF,
+                                                "Game now does not have money.\n", CATF_INVERSE);
+                        break;
+*/
+		case SET_MOVEDISBAND:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Disband!\n\n",
+                                    dipent.name);
+                        } else {
+			    CheckAndToggleFlag(&dipent.xflags, XF_MOVEDISBAND, "Disband", CATF_SETON,
+                                                "Players may now disband in a movement phase.\n", CATF_NORMAL);
+                        }
+			break;
+
+		case SET_NOMOVEDISBAND:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear Disband!\n\n",
+                                    dipent.name);
+                        } else {
+                            CheckAndToggleFlag(&dipent.xflags, XF_MOVEDISBAND, "Disband", CATF_SETOFF,
+                                                "Players may not disband in a movement phase.\n", CATF_NORMAL);
+                        }
+			break;
+/*
+		case SET_BASIC:
+			CheckMach();
+			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Basic", CATF_SETON,
+                                                "Game is now in basic settings.\n", CATF_INVERSE);
+			 
+                        break;
+
+
+		case SET_ADVANCED:
+			CheckMach();
+			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Advanced", CATF_SETOFF,
+                                                "Game is now in advanced settings.\n", CATF_INVERSE);
+			break;
+
+*/	
 
 		default:
 			fprintf(rfp, "Invalid command: set %s\n", t);
