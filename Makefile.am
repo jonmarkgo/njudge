@@ -3,6 +3,10 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.36  2004/05/10 14:21:51  jaldhar
+# Fixed bug 215 by ensuring that the data files were copied before we
+# tried to run cmap.  Automake files regenerated in the process.
+#
 # Revision 1.35  2004/01/02 10:00:16  millis
 # no message
 #
@@ -293,7 +297,7 @@ upgrade-progs-strip: defaults.h ${bin_PROGRAMS} dirs
 
 upgrade-data: ${dist_data_DATA} dirs
 	@for i in ${dist_data_DATA}; \
-	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
+	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/`basename $$i`; \
 	done;
 
 defaults.h: defaults.inc
