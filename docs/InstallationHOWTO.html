@@ -21,12 +21,12 @@
 
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.3.2.7
+<p align=center>v.1.3.2.8
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
 <table align=center width="80%" summary="Summary"><tr valign=top><td>
 
-<small>
+<small><a href="#"></a>
 <br><a href="#1">1 Introduction</a>
 <br><a href="#1.1">1.1 History</a>
 <br><a href="#1.2">1.2 Last version</a>
@@ -57,7 +57,7 @@
 <br><a href="#5.5">5.5 dip.control date problems</a>
 <br><a href="#5.6">5.6 Ready?</a>
 <br><a href="#5.7">5.7 Customise e-mails from the judge</a>
-</small></td><td>
+</td><td><small>
 <br><a href="#6">6 What are these files?</a>
 <br><a href="#6.1">6.1 Documentation</a>
 <br><a href="#6.2">6.2 Binaries</a>
@@ -74,7 +74,7 @@
 <br><a href="#7.2">7.2 Automatic judge tester</a>
 <br><a href="#8">8 Troubleshooting</a>
 <br><a href="#9">9 Other customisations</a>
-<br><a href="#10">10. Backup</a>
+<br><a href="#10">10 Backup</a>
 <br><a href="#11">11 Upgrading and patching a judge</a>
 <br><a href="#11.1">11.1 Locking the judge</a>
 <br><a href="#11.2">11.2 Archiving</a>
@@ -86,6 +86,7 @@
 <br><a href="#12.1">12.1 The author</a>
 <br><a href="#12.2">12.2 Thanks</a>
 <br><a href="#12.3">12.3 Copyright and boring stuff</a>
+<br><a href="#"></a>
 </small>
 </td></tr></table>
 
@@ -95,8 +96,8 @@
 
 <h2><a name="1.1">1.1 History</a></h2>
 
-<p>- 1.3.2.x : Mar 2003
-<br>- 1.3.0-pre : Dec 2002
+<p>- 1.3.2.x : March-May 2003
+<br>- 1.3.0-pre : December 2002
 <br>- 1.1.1.x : May 2002
 <br>- 1.0.1.x : February 2002
 <br>- 1.0.0.0-2 : January 2002
@@ -110,8 +111,8 @@
 newbie-friendly than the INSTALL file.
 
 <p> This file deals with installing a clean standard version of njudge v 1.3.2.
-There are good chances it will work for following versions (especially as
-the installation process has stabilized recently).
+It probably works with 1.4.0.  There are good chances it will work for following
+versions (especially as the installation process has stabilized recently).
 
 <p>The version number of this file follows judge versions.
 <br>The reference version is now the HTML guide. The text should be
@@ -334,6 +335,15 @@ are the main ones you're likely to use.
 <p> This command will detect your system configuration, binaries paths...
 to generate a <tt>Makefile</tt> suited to your system.
 
+<p> There may be a problem if you have a <tt>sendmail</tt> binary or alias which
+is not easy to find by the script.  Although every MTA (Exim, Postfix, Qmail, Sendmail itself...)
+seems to provide a compatibility mode, it is sometimes not easy to find, and often not in the
+<tt>$PATH</tt>.  If the <tt>./.configure</tt> fails by telling you it didn't find
+<tt>sendmail</tt>, search for it yourself with <tt>find / -name sendmail -print</tt>,
+and add another parameter to the script: <tt>--with-sendmail=/path_where_sednmail_id</tt>.
+Thank you for <a href="mailto:judge-maint@devel.diplom.org">telling us</a> this unknown path,
+it will be added in the script in the next version </p>
+
 <p>- (This should not be necessary on new judges) Verify permissions
 and change them if necessary to be able to write to the files.
 
@@ -387,31 +397,24 @@ modified anymore (as in the good old times).
 
 <p>'<tt>smail</tt>' is the script which builds the messages and sends them. This script
 is created during the compilation.  There is a <tt>smail.in</tt> script which
-contains the default lines.  (Change only <tt>smail.in</tt>, as smail is destroyed when recompiling).
+contains the default lines.  (Change only <tt>smail.in</tt>, as <tt>smail</tt> is
+destroyed when recompiling).
 
 <p>- You should not change the <tt>FROM</tt> line: there go the user and the domain that
 you indicated when launching <tt>./configure</tt>.
 
 <p>- The judge uses <tt>dip.msg</tt> (if it exists) as a header for all messages.
-You can create such a file with any content you like.
+You can create such a file with any content you like.  It uses <tt>dip.footer</tt> as a footer.
 
-<p>- If you want to use a footer in judge messages too, you will have to create a file named
-<tt>dip.footer</tt>, and add it in the parameters of cat on the 10<sup>th</sup> line of the script:
-
-<p><tt> cat dip.msg $1 dip.footer</tt>
-
-<p>(I'll try to put this in the official distribution someday).
-
-<p>- <b>Warning</b> : <tt>dip.msg</tt> and <tt>dip.footer</tt> must be configured AFTER the installation,
-they won't be copid when installing.
+<p>- <b>Warning</b> : <tt>dip.msg</tt> and <tt>dip.footer</tt> must be configured
+AFTER the installation in the binaries directory, they won't be copied when installing.
 <br>Think to remove the useless blank lines in them.  Don't try to add too much and take the risk to
 break some tools relying on the judge e-mail format.
 
 <p>- The <tt>smail</tt> script may need other modifications.  For example, Greg Greenman
 had some problem on USTX with the mails headers with
 sendmail. This is his smail script which solves the problems:
-
-<p><tt>
+       <p><tt>
 <br>     #!/bin/csh
 <br>     # /bin/sh  (Note: /bin/sh fails to work if N files are open)
 <br>     #

@@ -2,7 +2,7 @@
 
                  Installation-HOWTO for the Diplomacy judge
 
-                                 v.1.3.2.7
+                                 v.1.3.2.8
               [1]Christophe Courtois (christophe@courtois.cc)
 
                              [2]1 Introduction
@@ -51,7 +51,7 @@
                        [45]7.2 Automatic judge tester
                            [46]8 Troubleshooting
                          [47]9 Other customisations
-                               [48]10. Backup
+                               [48]10 Backup
                    [49]11 Upgrading and patching a judge
                          [50]11.1 Locking the judge
                              [51]11.2 Archiving
@@ -69,8 +69,8 @@
 
 1.1 History
 
-   - 1.3.2.x : Mar 2003
-   - 1.3.0-pre : Dec 2002
+   - 1.3.2.x : March-May 2003
+   - 1.3.0-pre : December 2002
    - 1.1.1.x : May 2002
    - 1.0.1.x : February 2002
    - 1.0.0.0-2 : January 2002
@@ -84,8 +84,9 @@
    newbie-friendly than the INSTALL file.
 
    This file deals with installing a clean standard version of njudge v
-   1.3.2. There are good chances it will work for following versions
-   (especially as the installation process has stabilized recently).
+   1.3.2. It probably works with 1.4.0. There are good chances it will
+   work for following versions (especially as the installation process
+   has stabilized recently).
 
    The version number of this file follows judge versions.
    The reference version is now the HTML guide. The text should be
@@ -315,6 +316,16 @@
    This command will detect your system configuration, binaries paths...
    to generate a Makefile suited to your system.
 
+   There may be a problem if you have a sendmail binary or alias which is
+   not easy to find by the script. Although every MTA (Exim, Postfix,
+   Qmail, Sendmail itself...) seems to provide a compatibility mode, it
+   is sometimes not easy to find, and often not in the $PATH. If the
+   ./.configure fails by telling you it didn't find sendmail, search for
+   it yourself with find / -name sendmail -print, and add another
+   parameter to the script: --with-sendmail=/path_where_sednmail_id.
+   Thank you for [75]telling us this unknown path, it will be added in
+   the script in the next version
+
    - (This should not be necessary on new judges) Verify permissions and
    change them if necessary to be able to write to the files.
 
@@ -372,18 +383,12 @@
    domain that you indicated when launching ./configure.
 
    - The judge uses dip.msg (if it exists) as a header for all messages.
-   You can create such a file with any content you like.
-
-   - If you want to use a footer in judge messages too, you will have to
-   create a file named dip.footer, and add it in the parameters of cat on
-   the 10^th line of the script:
-
-   cat dip.msg $1 dip.footer
-
-   (I'll try to put this in the official distribution someday).
+   You can create such a file with any content you like. It uses
+   dip.footer as a footer.
 
    - Warning : dip.msg and dip.footer must be configured AFTER the
-   installation, they won't be copid when installing.
+   installation in the binaries directory, they won't be copied when
+   installing.
    Think to remove the useless blank lines in them. Don't try to add too
    much and take the risk to break some tools relying on the judge e-mail
    format.
@@ -417,7 +422,7 @@
 2.7 sendmail problems
 
    Some people had problems with some sendmail configuration (especially
-   with [75]Red Hat Linux). If you use smrsh, place a symbolic link to
+   with [76]Red Hat Linux). If you use smrsh, place a symbolic link to
    rdip in the /etc/smrsh/ dir. Also make sure only the owner has write
    permission to the .forward file.
    (Briefly: smrsh allows only programs from a unique directory to call
@@ -517,8 +522,8 @@
    - To avoid compiling yourself, you can get the Debian package from
    Jaldhar Vyas.
    Download the version suitable for your architecture from
-   [76]http://www.njudge.org/ if it is available there, or from
-   [77]http://src.braincells.com/debian/woody/njudge/, and (as root) use
+   [77]http://www.njudge.org/ if it is available there, or from
+   [78]http://src.braincells.com/debian/woody/njudge/, and (as root) use
    dpkg to install it, or add the lines given on the site to your
    /etc/apt/sources.list, run apt-get update and apt-get install it.
    It is still to be considered experimental.
@@ -955,7 +960,7 @@
    what it contains.
    The judge crashes at the first time, in dipent.c Check that the
    dip.master file was not generated with a bad format in dip.control
-   (see [78]5.5).
+   (see [79]5.5).
    The judge crashes when you try a new variant Look in install.log what
    variants are installed. Check that all files (source and compiled) are
    there.
@@ -1132,6 +1137,7 @@
 
 References
 
+   Visible links
    1. mailto:christophe@courtois.cc
    2. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#1
    3. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#1.1
@@ -1206,7 +1212,12 @@ References
   72. http://www.dyndns.org/
   73. http://www.braincells.com/jaldhar/
   74. ftp://ftp.gnu.org/pub/gnu/
-  75. http://www.redhat.com/
-  76. http://www.njudge.org/
-  77. http://src.braincells.com/debian/woody/njudge/
-  78. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#5.5
+  75. mailto:judge-maint@devel.diplom.org
+  76. http://www.redhat.com/
+  77. http://www.njudge.org/
+  78. http://src.braincells.com/debian/woody/njudge/
+  79. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#5.5
+
+   Hidden links:
+  80. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
+  81. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
