@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 Nov 5, 1994
+Greetings from the Diplomacy* Adjudicator!!                 Jan 3, 2000
 Info.Modern
 
   Modern Diplomacy is intended to be diplomacy with an updated map,
@@ -18,16 +18,17 @@ any case, it will not intervene in Europe.
   Other than this, borders and neutral supply centers were distributed
 to even out the game. Monaco was made a neutral SC (it has lots 
 of money) even though it's size does not warrant it, and Gibraltar was
-made a British home SC, bot to give Britain a port in the Mediterranean,
+made a British home SC, both to give Britain a port in the Mediterranean,
 and to give Spain more than one neighbour). 
 
-  Also, there was originally, a new type of unit - planes - added to the
-game. Planes could go over water and land but could not capture a
-supply center. Therefore, if France managed to move a plane over London,
-England would still own it, but not be able to build there. The game
-was playtested both with and without planes, and it was felt that
-both were valid games. For reasons of simplicity in moving it to the
-judge, what is discussed below is the game without planes.
+  There is also another type of unit optionally available, the wing. This
+will be active if the game is set up with wings variant modifier.
+Wings can go over water and land but can not capture a
+supply center. Therefore, if France manages to move a plane over London,
+England would still own it, but not be able to build there. 
+Only the three 'nuclear' powers have wings available at the start
+(Britain, France and Russia) though any power can build them.
+See the file 'wings' for more information.
 
   Powers:
 
@@ -36,15 +37,15 @@ judge, what is discussed below is the game without planes.
                    Turkey (T), Ukraine (U)
   5 center powers: Russia (R)
 
-  Starting positions (Spring 1994):
+  Starting positions (Spring 1994): (Games with A/F rules play the 'W' units)
 
-  Britain (B) : F EDI, F GIB, F LIV, F LON
+  Britain (B) : F EDI, F GIB, F LIV, F/W LON 
   Egypt (E) : F ALE, A ASW, F CAI
-  France (F) : F BOR, A LYO, A MAR, A PAR
+  France (F) : F/W BOR, A LYO, A MAR, A PAR
   Germany (G) : F BER, A FRA, F HAM, A MUN
   Italy (I) : A MIL, F NAP, A ROM, F VEN
   Poland (P) : F GDA, A KRA, A WAR
-  Russia (R) : A GOR, A MOS, A MUR, F ROS, F STP
+  Russia (R) : A/W GOR, A MOS, A MUR, F ROS, F STP
   Spain (S) : F BAR, A MAD, A SEV
   Turkey (T) : A ADA, F ANK, A IST, F IZM
   Ukraine (U) : A KHA, A KIE, A ODE, F SEV  
@@ -140,3 +141,4 @@ except for:
 spaces. See the map file for these alternative abbreviations.
 
 Programmed for the judge by Vincent Mous & Nicholas Fitzpatrick
+Wings added by Millis Miller
