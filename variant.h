@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:51:14  david
+ * Initial revision
+ *
  * Revision 1.2  1997/01/01 22:10:12  davidn
  * Extra marker lines added for use with AddMap.
  *
@@ -28,6 +31,7 @@
  *      11 May 1994 Nick F.      Added Asian Diplomacy
  *      24 Oct 1994 Nick F.      Added Modern Diplomacy
  *      29 Dec 1996 David N.     Added extra markers for AddMap
+ *      09 Dec 1999 M. Miller    Added any_centres flag setting 
  */
 
 /*
@@ -77,7 +81,7 @@ enum {
 };
 
 /** UPDATE DEFINES AS NECESSARY BELOW **/
-#define NVAROPTS       2	/* Number of variant options (blind/gunboat)     */
+#define NVAROPTS       4	/* Number of variant options (blind/gunboat/shorthand/a/f) */
 #define MAX_POWERS    36	/* Max. powers in a single game (letters+digits) */
 #define LPOWER         9	/* Length of the longest power name              */
 
@@ -94,12 +98,14 @@ enum {
 #define SETNP(variant) \
   dipent.pl = pletter[variant];                                         \
   if (dipent.pl[AUTONOMOUS] == '&') dipent.flags |= F_MACH;             \
+   dipent.xflags &= ~XF_BUILD_ANYCENTRES; 				\
+   dipent.xflags &= ~XF_BUILD_ONECENTRE;				\
   switch (variant) {                                                    \
     case V_STANDARD:    dipent.np =  7; dipent.vp = 18; break;          \
     case V_youngstown:  dipent.np = 10; dipent.vp = 37; break;          \
     case V_loeb9:       dipent.np =  9; dipent.vp = 20; break;          \
     case V_pure:        dipent.np =  7; dipent.vp =  4; break;          \
-    case V_chaos:       dipent.np = 34; dipent.vp = 18; break;          \
+    case V_chaos:       dipent.np = 34; dipent.vp = 18; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_britain:     dipent.np =  7; dipent.vp = 19; break;          \
     case V_1898:        dipent.np =  7; dipent.vp = 18; break;          \
     case V_crowded:     dipent.np = 11; dipent.vp = 18; break;          \
@@ -108,16 +114,16 @@ enum {
     case V_shift_right: dipent.np =  7; dipent.vp = 18; break;          \
     case V_shift_left:  dipent.np =  7; dipent.vp = 18; break;          \
     case V_rootz:       dipent.np = 14; dipent.vp = 28; break;          \
-    case V_aberration:  dipent.np =  9; dipent.vp = 27; break;          \
+    case V_aberration:  dipent.np =  9; dipent.vp = 27; dipent.xflags |= XF_BUILD_ONECENTRE; break;          \
     case V_wraparound:  dipent.np =  7; dipent.vp = 19; break;          \
     case V_chromatic:   dipent.np =  5; dipent.vp = 11; break;          \
     case V_milan:       dipent.np =  7; dipent.vp = 18; break;          \
     case V_asia:        dipent.np =  7; dipent.vp = 21; break;          \
     case V_modern:      dipent.np = 10; dipent.vp = 33; break;          \
     case V_colonial:    dipent.np =  7; dipent.vp = 30; break;          \
-    case V_h31:         dipent.np =  3; dipent.vp =  9; break;          \
-    case V_h32:         dipent.np =  3; dipent.vp =  9; break;          \
-    case V_classical:   dipent.np =  5; dipent.vp =  18; break;         \
+    case V_h31:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
+    case V_h32:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
+    case V_classical:   dipent.np =  5; dipent.vp =  18; dipent.xflags |= XF_BUILD_ANYCENTRES; break;         \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
