@@ -1,5 +1,5 @@
 #Machiavelli 2 map file. Balance of Power scenario.
-#Rev. 3.  Nov. 17th 2002.  Mach1/2 abbr. 'cross-compatible'.
+#Rev. 3.  Feb. 22nd 2003.  Mach1/2 abbr. 'cross-compatible'.
 #         Mes-Otr xc-moves added. Sal port fortress removed.
 #First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
@@ -32,7 +32,7 @@ Genoa,                   x3P  gen
 Gulf of Naples,          w0.  gon
 Herzegovina,             T0.  her herze
 Hungary,                 A1.  hun hunga
-Ionian Sea,              w0.  ion is
+Ionian Sea,              w0.  ion is ios
 Istria,                  V0.  ist istri
 Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
