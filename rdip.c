@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.5  2003/09/09 18:51:33  jaldhar
+ * Got rid of port.h and replaced with some extra configure checks.  The
+ * include strings.h was not carried over because it is commented out and
+ * likely wouldn't work anyway.
+ *
  * Revision 1.4  2003/04/08 09:58:31  millis
  * Fix bug 131 (problems with dip.lock2 lock)
  *
@@ -16,6 +21,7 @@
  * Morrolan v9.0
  */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>

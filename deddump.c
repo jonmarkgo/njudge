@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2002/08/27 22:27:48  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.3  2001/05/12 08:05:28  greg
  * added Mario Becroft's dedication bug fix
  *
@@ -30,6 +33,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 #include "config.h"

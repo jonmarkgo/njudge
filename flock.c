@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.2  2003/09/09 18:51:29  jaldhar
+ * Got rid of port.h and replaced with some extra configure checks.  The
+ * include strings.h was not carried over because it is commented out and
+ * likely wouldn't work anyway.
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -11,6 +16,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 #include "config.h"

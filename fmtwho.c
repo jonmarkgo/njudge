@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.3  2003/09/09 18:51:30  jaldhar
+ * Got rid of port.h and replaced with some extra configure checks.  The
+ * include strings.h was not carried over because it is commented out and
+ * likely wouldn't work anyway.
+ *
  * Revision 1.2  2002/08/27 22:27:50  millis
  * Updated for automake/autoconf functionality
  *
@@ -10,6 +15,7 @@
  * Morrolan v9.0
  */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
