@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2004/04/03 16:29:16  millis
+ * Fixed ExtraCentres problem (wasn't working!)
+ *
  * Revision 1.13  2004/01/04 11:34:34  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -83,7 +86,7 @@ int main(int argc, char *argv[])
 	char file[255],  dir[100];
 	unsigned char *t;
 	long t1, t2;
-	struct stat sbuf;
+	struct stat sbuf, tbuf;
 	PFTAB(pftab);
 	short cent[NPROV];
 	short prov[NPROV];
@@ -94,11 +97,20 @@ int main(int argc, char *argv[])
 	char power_name[20];
 	char *s;
 	char temp_line[100];
+	char *seed_file, *rep_file;
 	int money;
 
 	extra_centres[0].power_letter = '\0';  /* Zero the array */
 	permitted_units[0].power_letter = '\0';  /* Zero this array too */
 
+	/*
+	 * Tim Miller -- July 5, 2004
+	 * The code in this file is a buffer overflow waiting to happen.
+	 * We need to allocate space based on the length of dir. I
+	 * will assume a variant is no more than 128 characters in
+	 * length. seed_file and rep_file are thus allocated safely,
+	 * but other buffers in here aren't.
+	 */
 	switch (argc) {
 	case 1:
 		dir[0] = '\0';
@@ -111,9 +123,17 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+	seed_file = malloc(strlen(dir) + 129);
+	rep_file = malloc(strlen(dir) + 129);
+	if(!seed_file || !rep_file) {
+		fprintf(stderr, "Unable to allocate space for buffers.\n");
+		exit(1);
+	}
 	maxheap = 10000;
 	if (!(heap = (unsigned char *) malloc(maxheap + 10))) {
 		fprintf(stderr, "Unable to allocate heap.\n");
+		free(seed_file);
+		free(rep_file);
 		exit(1);
 	}
 	for (v = 1; v < NVARIANT; v++) {
@@ -122,8 +142,28 @@ int main(int argc, char *argv[])
 			sprintf(line, "%s/map", dir);
 		else
 			sprintf(line, "%s/map.%s", dir, variants[v]);
-		if (stat(line, &sbuf)) {
+
+		sprintf(seed_file, "%s/seed.%s", dir, variants[v]);
+		sprintf(rep_file, "%s/report.%s", dir, variants[v]);
+		if(stat(line, &sbuf)) {
 			perror(line);
+			fprintf(stderr, "Error: no good map file for the %s variant.\n", variants[v]);
+			free(seed_file);
+			free(rep_file);
+			exit(1);
+		}
+		if(stat(seed_file, &tbuf)) {
+			perror(seed_file);
+			fprintf(stderr, "Error: no good seed file for the %s variant.\n", variants[v]);
+			free(seed_file);
+			free(rep_file);
+			exit(1);
+		}
+		if(stat(rep_file, &tbuf)) {
+			perror(rep_file);
+			fprintf(stderr, "Error: no good report file for the %s variant.\n", variants[v]);
+			free(seed_file);
+			free(rep_file);
 			exit(1);
 		}
 		t1 = sbuf.st_mtime;
@@ -137,6 +177,8 @@ int main(int argc, char *argv[])
 		if (stat(*argv, &sbuf)) {
 			fprintf(stderr, "stat: ");
 			perror(*argv);
+			free(seed_file);
+			free(rep_file);
 			exit(1);
 		}
 		if (t1 < t2 && sbuf.st_mtime < t2)
@@ -145,6 +187,8 @@ int main(int argc, char *argv[])
 		printf("Compiling new %s for %s variant.\n", file, variants[v]);
 		if ((ifp = fopen(line, "r")) == NULL) {
 			fprintf(stderr, "Error opening map data file %s.\n", line);
+			free(seed_file);
+			free(rep_file);
 			exit(1);
 		}
 		hp = 0;
@@ -854,6 +898,8 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	free(seed_file);
+	free(rep_file);
 	exit(err);
 
 }
