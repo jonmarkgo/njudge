@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/12/28 01:08:09  millis
+ * Bug 57, Add colonial96 variant
+ *
  * Revision 1.10  2002/09/26 21:53:11  millis
  * Added Machiavelli2 variant
  *
@@ -159,7 +162,7 @@ enum {
     case V_milan:       dipent.np =  7; dipent.vp = 18; break;          \
     case V_asia:        dipent.np =  7; dipent.vp = 21; break;          \
     case V_modern:      dipent.np = 10; dipent.vp = 33; break;          \
-    case V_colonial:    dipent.np =  7; dipent.vp = 30; break;          \
+    case V_colonial:    dipent.np =  7; dipent.vp = 30; dipent.xflags |= XF_PROV_DUALITY; break;          \
     case V_h31:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_h32:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_classical:   dipent.np =  5; dipent.vp =  18; dipent.xflags |= XF_BUILD_ONECENTRE; break;         \
@@ -173,7 +176,7 @@ enum {
     case V_ancient_med: 	dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
     case V_crowded_1898: dipent.np = 11; dipent.vp = 18; break; \
     case V_machiavelli2: dipent.np =  8; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
-    case V_colonial96:    dipent.np =  7; dipent.vp = 30; break;          \
+    case V_colonial96:    dipent.np =  7; dipent.vp = 30; dipent.xflags |= XF_PROV_DUALITY; break;          \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
