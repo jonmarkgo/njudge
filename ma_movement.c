@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2003/07/20 15:45:28  millis
+ * Bug 195 fix
+ *
  * Revision 1.19  2003/05/16 21:13:42  millis
  * Bug 155 fix, moved Bug 126 fix to end (as otherwise, does not know of where units were).
  *
@@ -1105,7 +1108,8 @@ int ma_moveout(int pt)
 			    !result[u]) {
 				if ((u2 = pr[unit[u].dest].unit) &&
 				    ((unit[u2].order != 'm' && unit[u2].order != 'v' && unit[u2].order != 'd') ||
-				     result[u2])) {
+				     result[u2]) &&
+				     (!(dipent.xflags & XF_MACH2) && !is_sieged(unit[u2].loc))) {
 /*                fprintf(rfp, "First part: Dislodge in %s unit %d by %d\n",
  */
 /*                              pr[unit[u2].loc].name, u2, u); */
@@ -1115,7 +1119,7 @@ int ma_moveout(int pt)
 					bounce++;
 				}
 			} else if (unit[u].order == 'b' && !result[u]) {
-				if ((u2 = has_garrison(unit[u].loc)) /*&& is_sieged(unit[u].loc)*/) {
+				if ((u2 = has_garrison(unit[u].loc))) {
 					for (u3 = 1; u3 <= nunit; u3++) {
 						if (unit[u3].order == 'm'
 						    && unit[u3].dest == unit[u].loc
