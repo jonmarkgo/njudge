@@ -1,3 +1,342 @@
+2004-10-24 02:11  millis
+
+	* BUGS, NEWS, configure.ac, njudge.spec: Next version 1.7.2
+
+2004-10-24 02:02  millis
+
+	* st_porder.c, dip.c, ma_porder.c: Small victory handling
+	  corrections
+
+2004-10-23 15:43  millis
+
+	* dip.c, dip.h, dipent.c, draw.c, ml_set.c, st_porder.c: Bug 363
+	  and 368, AlliedWin and Conced/NoDias in duplex games fixes
+
+2004-10-23 14:27  millis
+
+	* mail.c: Bug 374, skip rest of input if 'become' command fails
+
+2004-10-23 14:08  millis
+
+	* dip.h, ma_movement.c: Fix Bug 375, Mach2 allow besieged to
+	  dislodge
+
+2004-10-23 12:17  millis
+
+	* ml_set.c: Bug 370 & 371, missing breaks added to case statement
+	  end
+
+2004-10-23 12:03  millis
+
+	* st_retreat.c: Fixed bug 376 (allow player self-dislodged units to
+	  retreat in duplex)
+
+2004-10-19 12:59  machmstr
+
+	* data/rules.machiavelli2: Clarified besieged conversion
+
+2004-10-17 15:18  alange
+
+	* lib.c: Fix Bug 369: deadline problems ater time changes.
+
+2004-10-16 14:06  machmstr
+
+	* data/rules.machiavelli2: Venice sea area effects, winning
+	  conditions, handling of home country conquest and assassination
+	  rules
+
+2004-10-12 17:23  alange
+
+	* dip.c: Added newline to end of Congrats line so dip.footer would
+	  start on a new line.
+
+2004-10-11 18:14  alange
+
+	* mail.c: Fix typo in case MAP: message
+
+2004-10-05 16:18  millis
+
+	* st_build.c: Fix Bug 366 (cannot waive in duplex games)
+
+2004-09-28 13:38  alange
+
+	* ml_signon.c: Bug 353 Faster deadline for first turn when NO_PRESS
+
+2004-09-17 12:15  nzmb
+
+	* Makefile.am, Makefile.in: Fix bug #351.
+
+2004-09-17 11:28  nzmb
+
+	* ascii2rec.c: Fixed compile warning.
+
+2004-09-17 06:33  millis
+
+	* docs/njudge-compile-farm.html: First entry
+
+2004-09-13 16:03  millis
+
+	* ml_set.c, params.c, data/index: Further changes for Bug 363
+
+2004-09-12 18:48  nzmb
+
+	* dipent.c: Removed redefinition of malloc (incorrectly, I may add)
+	  that was causing compile to fail on FreeBSD.
+
+2004-09-12 18:33  nzmb
+
+	* dip.h: Trivial typo fix
+
+2004-09-07 06:26  millis
+
+	* variant.h: update dipent.avp too on variant setup.
+
+2004-09-07 06:19  millis
+
+	* dip.h: Invert sense of ALLIEDWIN flag
+
+2004-09-07 05:45  millis
+
+	* data/info.portage: Small spelling corrections
+
+2004-09-06 15:08  millis
+
+	* dip.c, dip.h, global.c: Bug363 Allow more than one victor
+
+2004-09-03 06:30  millis
+
+	* dip.h, dipent.c, ml_set.c, params.c: Added use of AlliedWin
+	  value.
+
+2004-09-03 05:22  millis
+
+	* data/index: Small command text change (Allied Win)
+
+2004-09-02 06:33  millis
+
+	* data/: syntax, index, info.duplex: Bug 361, update information
+	  files for duplex games
+
+2004-09-02 06:01  millis
+
+	* data/info.wings: Small textual help updates
+
+2004-08-31 10:41  machmstr
+
+	* data/rules.machiavelli2: Clarification of income and control for
+	  Venice/Venice sea area
+
+2004-08-24 04:40  millis
+
+	* variant.c: Fixed compile error
+
+2004-08-23 09:42  millis
+
+	* variant.c, variant.h: Add space for Initiamte variant specifier
+
+2004-08-23 06:27  millis
+
+	* variant.c, variant.h: Removed extra Norway definition
+
+2004-08-22 11:48  machmstr
+
+	* data/map.machfive: Corrected misspelled abbreviation and wrong
+	  province designation
+
+2004-08-19 14:30  russblau
+
+	* data/: info.empire, map.empire: Fixed spelling mistake: it's
+	  "Massachusetts"!
+
+2004-08-18 14:49  jaldhar
+
+	* Makefile.in, configure: regenerated autofiles for recent
+	  Makefile.am update.
+
+2004-08-18 03:01  millis
+
+	* Makefile.in: Changed name of document to njudgeMapFileHOWTO.*
+
+2004-08-18 02:58  millis
+
+	* Makefile.am: Change name of document to njudgeMapFileHOWTO
+
+2004-08-17 12:36  machmstr
+
+	* docs/njudgeMapFileHOWTO.txt: Q'n'D text version.    Former
+	  'njudgemapdatahowto'. Changes: Added description of the seed file
+	  format and of official power names. Revision of text (clean up,
+	  clarifications and syntax).
+
+2004-08-17 12:35  machmstr
+
+	* docs/njudgeMapFileHOWTO.htm: Former 'njudgemapdatahowto'.
+	  Changes: Added description of the seed file format and of
+	  official power names. Revision of text (clean up, clarifications
+	  and syntax).
+
+2004-08-17 12:32  machmstr
+
+	* docs/: njudgemapdatahowto.htm, njudgemapdatahowto.txt: File
+	  renamed. Replaced with 'nJudgeMapFileHOWTO'
+
+2004-08-17 12:15  machmstr
+
+	* data/rules.machiavelli: Appendix 6 added. (On how to know what
+	  rule set is used.)
+
+2004-08-17 12:08  machmstr
+
+	* data/: info.dipmach, map.dipmach, report.dipmach, seed.dipmach:
+	  Official release version (=dipmach2)
+
+2004-08-17 12:05  machmstr
+
+	* data/: info.dipmach2, map.dipmach2, report.dipmach2,
+	  seed.dipmach2: replaced with xxx.dipmach file
+
+2004-08-17 07:59  jaldhar
+
+	* debian/changelog, docs/README.hackers: Updated version number in
+	  changelog.  Slightly changed the numbering scheme (this is a
+	  native package) and updated documentation accordingly.
+
+2004-08-17 07:53  jaldhar
+
+	* Makefile.am: Removed GNUism in date command for better
+	  portability.	Fixes bug 351.
+
+2004-08-17 02:49  millis
+
+	* dip.c: Bug 355: missed incrementing just_now_abandoned flag.
+
+2004-08-16 14:51  millis
+
+	* dip.c: Refix bug 347 (games can go NoNMR) and also Bug 355 (no
+	  abandoned player(s) messages.
+
+2004-08-16 10:49  machmstr
+
+	* data/: seed.mach_aoc, report.mach_aoc, map.mach_aoc,
+	  info.mach_aoc: Official release version (=mach_aoc3)
+
+2004-08-16 10:45  machmstr
+
+	* data/: info.mach_aoc3, map.mach_aoc3, report.mach_aoc3,
+	  seed.mach_aoc3: Name changed to mach_aoc without the version
+	  number
+
+2004-08-14 19:20  nzmb
+
+	* dip.c: Fixed various problems related to the addition of intimate
+	  and dipent.wait.
+
+2004-08-10 15:25  machmstr
+
+	* data/map.machfive: missing sea to coast moves added, abbreviation
+	  info revised (lower adriatic la...->las...)
+
+2004-08-10 15:24  machmstr
+
+	* data/info.machfive: abbreviation info revised (lower adriatic
+	  la...->las...)
+
+2004-08-10 15:22  machmstr
+
+	* data/map.mach2_ttr: incorrect move from carinthia to aus (aus
+	  impassable in this scenario) corrected
+
+2004-08-09 13:15  machmstr
+
+	* variant.c: While I am at it: Lowland had Lowland as adjective,
+	  corrected to 'Lowlander'.
+
+2004-08-07 10:05  machmstr
+
+	* variant.c: Correction of possessives: it is portugal portuguese
+	  and cyprus cypriotic (or cyprean).  WARNING there are two entries
+	  for Norway Norwegian !!!  (I have not touched in case there is
+	  some reason to it.)
+
+2004-08-07 09:05  machmstr
+
+	* variant.c, variant.h: All AH Mach variants added and then some
+
+2004-08-07 09:01  machmstr
+
+	* data/: info.machfive, map.machfive, seed.machfive: njudge 1.7
+	  release version
+
+2004-08-06 12:22  machmstr
+
+	* data/report.dipmach2: no message
+
+2004-08-06 02:15  machmstr
+
+	* data/seed.dipmach1: current game version running on DEMA
+
+2004-08-06 02:13  machmstr
+
+	* data/: seed.mach2_eai, seed.mach2_fotl, seed.mach2_pa,
+	  seed.mach2_pamt, seed.mach2_sfd1, seed.mach2_sfd2,
+	  seed.mach2_span, seed.mach2_ttr, seed.mach_aoc2, seed.mach_aoc3,
+	  seed.mach_eos, seed.mach_este, seed.mach_sfd1, seed.mach_sfd2,
+	  seed.mach_span, seed.machho, seed.machiavelli, seed.machiavelli2:
+	  njudge 1.7 distribution version
+
+2004-08-06 02:09  machmstr
+
+	* data/: report.mach100, report.mach2_eai, report.mach2_fotl,
+	  report.mach2_pa, report.mach2_pamt, report.mach2_sfd1,
+	  report.mach2_sfd2, report.mach2_span, report.mach2_ttr,
+	  report.mach_aoc2, report.mach_aoc3, report.mach_eos,
+	  report.mach_este, report.mach_sfd1, report.mach_sfd2,
+	  report.mach_span, report.machfive, report.machho: mach report
+	  files
+
+2004-08-06 02:08  machmstr
+
+	* data/map.mach_aoc3: njudge 1.7x distribution version new version
+	  3 of variant
+
+2004-08-06 02:07  machmstr
+
+	* data/map.mach_aoc2: current version running on DEMA
+
+2004-08-06 02:06  machmstr
+
+	* data/map.dipmach2: njudge 1.7x distribution version minor changes
+	  of income and unit availability
+
+2004-08-06 02:04  machmstr
+
+	* data/info.mach_aoc3: njudge 1.7 distribution version new version
+	  3 of variant
+
+2004-08-06 01:53  machmstr
+
+	* data/info.mach_aoc2: current version running on DEMA
+
+2004-08-06 01:52  machmstr
+
+	* data/: info.dipmach2, info.mach2_eai, info.mach_eos,
+	  info.mach_este, info.mach_sfd2, info.mach_span: nJudge 1.7x
+	  distribution version
+
+2004-08-06 01:43  machmstr
+
+	* data/: info.mach_aoc, map.mach_aoc: Invalid file
+
+2004-08-06 00:51  machmstr
+
+	* data/: seed.eai, seed.este, seed.fotl, seed.machaoc,
+	  seed.machiavelli, seed.machiavelli2, seed.pa, seed.pamt,
+	  seed.ttr: Invalid versions
+
+2004-08-05 14:41  njudge
+
+	* ChangeLog: Autobuild njudge_1_7_1
+
 2004-08-05 14:11  millis
 
 	* NEWS, BUGS, configure.ac, njudge.spec: Update for 1.7.1 release
