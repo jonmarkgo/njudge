@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.55  2004/05/20 14:08:41  russblau
+ * Fix Bug 310 (Wrong error message when using inverted flag logic)
+ *
  * Revision 1.54  2004/05/20 02:21:31  russblau
  * Fixed Bug 308 (Error parsing powerlist in SET APPROVE command)
  *
@@ -512,13 +515,13 @@ void break_date_into_two(char * instring, char *s1, char *s2)
 void mail_setp(char *s)
 {
 	int i, k, chk24nmr;
-	float f,temprat; /* Used in ratio dedication systems. */
+	float f, temprat; /* Used in ratio dedication systems. */
         int passOK;  /* used to see if password string is alright on setpass */
 	char c, *t, *temp,*s1, *u;
 	sequence seq;
 	long dates, datee;
 	struct tm *tm, *localtime();
-	char ss1[150],se1[150];
+	char ss1[150], se1[150];
 	char *ss = ss1;
 	char *se = se1;
 	char stat_text[20];
@@ -699,14 +702,14 @@ void mail_setp(char *s)
 #define PRV_LATEPRESS	'm'
 #define SET_NOLATEPRESS 86
 #define PRV_NOLATEPRESS 'm'
-#define SET_MANPROC  87
-#define PRV_MANPROC 'm'
-#define SET_NOMANPROC 88
-#define PRV_NOMANPROC 'm'
-#define SET_MANSTART 89
-#define PRV_MANSTART 'm'
-#define SET_NOMANSTART 90
-#define PRV_NOMANSTART 'm'
+#define SET_MANPROC     87
+#define PRV_MANPROC     'm'
+#define SET_NOMANPROC   88
+#define PRV_NOMANPROC   'm'
+#define SET_MANSTART    89
+#define PRV_MANSTART    'm'
+#define SET_NOMANSTART  90
+#define PRV_NOMANSTART  'm'
 #define SET_TRANSFORM   91
 #define PRV_TRANSFORM	'm'
 #define SET_NOTRANSFORM 92
@@ -724,8 +727,8 @@ void mail_setp(char *s)
 #define SET_WATCHALL	98
 #define PRV_WATCHALL	'm'
 #define SET_NOWATCHALL  99
-#define PRV_NOWATCHALL 'm'
-#define SET_ABSENCE    100
+#define PRV_NOWATCHALL  'm'
+#define SET_ABSENCE     100
 #define PRV_ABSENCE	'a'
 #define SET_NOABSENCE	101
 #define PRV_NOABSENCE   'a'
@@ -742,7 +745,7 @@ void mail_setp(char *s)
 #define SET_NOBLANKPRESS 107
 #define PRV_NOBLANKPRESS 'm'
 #define SET_MINORPRESS  108
-#define PRV_MINORPRESS 'm'
+#define PRV_MINORPRESS  'm'
 #define SET_NOMINORPRESS 109
 #define PRV_NOMINORPRESS 'm'
 #define SET_MACH2	110
@@ -768,12 +771,12 @@ void mail_setp(char *s)
 #define SET_NOAUTODISBAND 119
 #define PRV_NOAUTODISBAND 'm'
 /* NOTE: 120 CANNOT be used: it is the 'unassigned' value */
-#define SET_ANYDISBAND 121
-#define PRV_ANYDISBAND 'm'
+#define SET_ANYDISBAND    121
+#define PRV_ANYDISBAND    'm'
 #define SET_NORMALDISBAND 122
 #define PRV_NORMALDISBAND 'm'
 #define SET_ATTACKTRANS	  123
-#define PRV_ATTACKTRANS	 'm'
+#define PRV_ATTACKTRANS	  'm'
 #define SET_NOATTACKTRANS 124
 #define PRV_NOATTACKTRANS 'm'
 #define SET_ONTIMERAT     125
@@ -870,9 +873,9 @@ void mail_setp(char *s)
 #define SET_NOAUTOCREATE  170
 #define PRV_NOAUTOCREATE  'm'
 #define SET_TOUCHPRESS    171
-#define PRV_TOUCHPRESS     'm'
-#define SET_NOTOUCHPRESS 172
-#define PRV_NOTOUCHPRESS 'm'
+#define PRV_TOUCHPRESS    'm'
+#define SET_NOTOUCHPRESS  172
+#define PRV_NOTOUCHPRESS  'm'
 #define SET_APPROVAL	  173
 #define PRV_APPROVAL	  'm'
 #define SET_NOAPPROVAL	  174
@@ -2497,18 +2500,27 @@ void mail_setp(char *s)
 				fprintf(rfp, "Game '%s' is already StrictGrace.\n", dipent.name);
 			}
 			break;
-		case SET_MASTERALLOW:
-			process_allowdeny(&s, "masters.ALLOW");
-			break;
+			
+                case SET_MASTERALLOW:
+                    if (!strcmp(dipent.name, "control")) {
+                        process_allowdeny(&s, "masters.ALLOW");
+                    } else {
+                        fprintf(rfp, "You are not authorized to access the masters.ALLOW file.\n");
+                    }
+                    break;
 		case SET_PLAYERALLOW:
-			process_allowdeny(&s, "players.ALLOW");
-			break;
+                    process_allowdeny(&s, "players.ALLOW");
+                    break;
 		case SET_MASTERDENY:
-			process_allowdeny(&s, "masters.DENY");
-			break;
+                    if (!strcmp(dipent.name, "control")) {
+                        process_allowdeny(&s, "masters.DENY");
+                    } else {
+                        fprintf(rfp, "You are not authorized to access the masters.DENY file.\n");
+                    }
+                    break;
 		case SET_PLAYERDENY:
-			process_allowdeny(&s, "players.DENY");
-			break;
+                    process_allowdeny(&s, "players.DENY");
+                    break;
 
 		case SET_LATECOUNT:
 			if (dipent.xflags & XF_LATECOUNT) {
