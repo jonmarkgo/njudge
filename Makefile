@@ -1,6 +1,10 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.28  2002/05/16 12:02:22  miller
+# Attempt to have two distribution targets, dist and dist1
+# Also removed list and more targets (as not used)
+#
 # Revision 1.27  2002/05/14 09:59:52  njudge
 # Updated to properly exclude CVS sub-directories (specified in 'xfile')
 #
@@ -443,7 +447,7 @@ dist1: targz1
 
 targz1:  ../njudge-${JVERSION}.tar.gz
 	cd .. 
-	tar -X xfile -cfz njudge-${JVERSION}.tar.gz njudge/* 
+	tar -X njudge/xfile -cfz njudge-${JVERSION}.tar.gz njudge/* 
 
 
 
