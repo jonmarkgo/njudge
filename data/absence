@@ -10,7 +10,7 @@ not be available and when the game should extend its deadlines automatically.
 The concerned player commands are:
 
   SET ABSENCE start_date [TO end_date]
-    Requests an absence between the date sepcified (or the single day if no
+    Requests an absence between the date specified (or the single day if no
     end date is given. Neither start_date nor end_date can be before the
     current date. If end_date is before the current deadline, it will be
     effectively ignored. If absences are overlaid, they count as separate
