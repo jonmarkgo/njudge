@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.29  2004/07/11 23:32:08  millis
+  ** Bug297: Improved Intimate victory checking.
+  **
   ** Revision 1.28  2004/06/27 01:50:23  millis
   ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
   ** and correct turns not processing, plus more information printed.
@@ -132,7 +135,7 @@ static int HongKongCheck(int, int);
    Return positive if builds are needed
    Return negative if victory occurred            
  */
-int ownership(int new_flag)
+int ownership(int new_flag, int *status)
 {
 	int nu[NPOWER + 1], np[NPOWER + 1], i, ii, j, n, l, p, u, maxcen,
 	 tmpi, numwin, win = 0;
@@ -140,6 +143,7 @@ int ownership(int new_flag)
 	int p_count;
 	static int p_list[NPOWER+1];
 	char *s, buf[1024];
+	*status = 0;  /* Initialise */
 
 	fprintf(rfp, "\nOwnership of supply centers:\n\n");
 
@@ -427,11 +431,11 @@ int ownership(int new_flag)
 
 	        if (np[i] > 0) {
 	            win++;
-		    statusval = i;
+		    *status = i;
 	        }
 	    }
-	    if (win > 1) statusval = 0;
-	    if (win == 0) statusval = -1;  /* All players eliminated! */
+	    if (win > 1) *status = 0;
+	    if (win == 0) *status = -1;  /* All players eliminated! */
 	}
 	return statusval;
 }
@@ -593,6 +597,7 @@ int CheckIntimateVictory()
 static void next_phase(void)
 {
 	int status = 0;
+	int int_status;
 
 	if (dipent.flags & F_INTIMATE) 
 	    status = CheckIntimateVictory();
@@ -604,14 +609,14 @@ static void next_phase(void)
 
 		/* Init build phase or advance to the next spring */
 		newowner();
-		status = ownership(1);
+		status = ownership(1, &int_status);
 		if (dipent.flags & F_INTIMATE) {
-		    if (status != 0) victor = status;
+		    if (int_status != 0) victor = int_status;
 		} else if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
 		    CheckCaptureWin(&status);
 
 		if ((status < 0 && !(dipent.flags & F_INTIMATE)) ||
-		    (status !=0 && (dipent.flags & F_INTIMATE))) {	/* VICTORY */
+		    (int_status !=0 && (dipent.flags & F_INTIMATE))) {	/* VICTORY */
 			dipent.phase[6] = 'X';
 			/* fix bug 219 -- increment the phase even if the game
 			 * is over, just in case somebody resumes it.

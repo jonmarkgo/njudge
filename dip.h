@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.49  2004/07/04 03:33:38  millis
+ * Added Portage and irregular flags
+ *
  * Revision 1.48  2004/05/22 09:39:43  millis
  * Repleaced inadvertently lost changes from 1.46 and 1.45
  *
@@ -452,15 +455,18 @@ struct dipent {
 	float orded;	        /* Minimum ontime ratio requirement             */
 	float rrded;            /* Maximum resignation ratio requirement        */
 	int dedapplied;         /* Have we applied dedication / taken stats yet?*/		
-	long process;		/* Time to process this entry                   */
-	long start;		/* Minimum time before processing this entry    */
-	long deadline;		/* Current deadline to process this entry       */
-	long grace;		/* Absolute deadline including grace period     */
+	time_t process;		/* Time to process this entry                   */
+	time_t start;		/* Minimum time before processing this entry    */
+	time_t deadline;	/* Current deadline to process this entry       */
+	time_t grace;		/* Absolute deadline including grace period     */
+	time_t wait;		/* Time to wait before sending a pause reminder */
+
 	sequence movement;	/* Parameters for movement order deadlines      */
 	sequence retreat;	/* Parameters for retreat order deadlines       */
 	sequence builds;	/* Parameters for build order deadlines         */
 	int n;			/* Number of players/observers in the game      */
 	int np;			/* Number of powers for this variant            */
+	int powers;		/* Number of active powers for this variant     */
 	int vp;			/* Number of victory points required            */
 	char *pl;		/* Power significant letter                     */
 	Player players[MAXPLAYERS];	/* The players involved in the game     */

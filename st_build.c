@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.31  2004/07/13 00:29:26  millis
+   ** Fix bug 339, allowing build transform games to permit players changing
+   ** mind about builds without allowing too many.
+   **
    ** Revision 1.30  2004/06/27 01:50:22  millis
    ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
    ** and correct turns not processing, plus more information printed.
@@ -467,7 +471,7 @@ int buildin(char **s, int p)
 
 	char type, order;
 	unsigned char *t;
-	int i, j, u=0, p1, c1, p2;
+	int i, j, u=0, p1, c1, p2, pow;
 
 	/*
 	   **  Process lines of the form:
@@ -574,6 +578,27 @@ int buildin(char **s, int p)
 
 		/*  FALL THROUGH  */
 	case 'w':
+
+		if (order == 'w' && (IS_DUPLEX(dipent) && !(dipent.flags & F_INTIMATE))) {
+		   /* If real duplex, need to specify power that want to waive for */
+		   get_power(*s, &pow);
+
+		   if (!pow) {
+		        pow = power(**s);
+		        if (pow <= 0 || pow >= WILD_PLAYER) {
+		               errmsg("Unrecognized power -> %s", *s);
+		               return E_WARN;
+		        }
+		        *s+= 2;  /* Skip power letter and space */
+		   } else {
+		        *s = get_power(*s, &i);  /* Consume the power text (if there) */
+		   }
+		   if (!(pow == p || PowerControlledBy(pow) == p)) {
+		       errmsg("Power is not controlled by you - invalid waive.\n");
+		       return E_WARN;
+		   } else
+		   p = pow;  /* Become the power that you want to waive for */
+		}
 
 		if ((u = pr[p1].unit)) {
 			if (unit[u].status != 'b' && unit[u].exists ) {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2004/05/22 09:23:48  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.40  2004/05/12 23:56:56  millis
  * Fix bug 298, don't advance deadline if first turn and other players still CD
  * on takeover.
@@ -194,6 +197,47 @@
 
 #define ADMINISTRATOR	'@'
 
+static int NewGameSignon(char *password);
+
+
+static int GetFirstAbandonedPower(char *power_letter)
+{
+    int i;
+    /* Try to see if there is an abandoned power */
+
+    for (i = 0; i < dipent.n; i++) {
+        if (dipent.players[i].status & SF_ABAND) {
+	    *power_letter = dipent.pl[dipent.players[i].power];
+	    return 1;
+	}
+    }
+    return 0;  /* No abandoned powers found */
+}
+
+
+ 
+/* Power starting messages for game */
+static void PowerStartingList(FILE *fptr, int index)
+{
+    int i;
+    int one_done = 0;
+    char *stext = "You have been selected as %s in game '%s' of Diplomacy.";
+
+    if (!(IS_DUPLEX(dipent)) || dipent.players[index].power >= WILD_PLAYER)
+       fprintf(fptr, stext, powers[dipent.players[index].power], dipent.name);
+    else {
+	for (i = 0; i < dipent.n; i++) {
+	    if (i == index || FindPower(dipent.players[i].controlling_power) == index) {
+		if (one_done)
+		    fputc('\n', fptr);
+		fprintf(fptr, stext, powers[dipent.players[i].power], dipent.name);
+		one_done++;
+	    }
+	}
+    }
+
+}
+
 /*
  * Place the correct money values in the beginning players treasury
  */
@@ -230,8 +274,8 @@ void SetupIntimateTreasury(void)
 		        value = 20;
 	        }
 	    } else {
-            /* For non-standard games, 3 * numer of powers */
-	    value = dipent.np * 3;
+                /* For non-standard games, 3 * numer of powers */
+	        value = dipent.np * 3;
 	    }
 
 	} else 
@@ -291,9 +335,10 @@ int mail_signon(char *s)
 
 	char password[20];
 	int i, j, n, found;
+	int jj, one_done = 0;
 	int master = 0; // Whether the players has been auto-promoted to master
 	int userid, siteid, level, variant = V_STANDARD, flags = 0;
-	char *t, *gdirname, line[150];
+	char *t, *gdirname, line[150], tmp1[2];
 	int one_abandoned = 0;
 
 /*
@@ -498,178 +543,20 @@ int mail_signon(char *s)
 	else
 		xaddr = raddr;
 
-	if (name[0] == '?') {
-
-		/*
-		 * Reject signon if game is marked to be terminated.
-		 */
-                if (dipent.phase[6]=='X') {
-		    fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
-		    return E_WARN;
-                }
-		/*
-                 * Sign this fellow up.
-                 */
-		else if (dipent.seq[0] != 'x') {
-			if (!msg_header_done)
-				msg_header(rfp);
-			fprintf(rfp, "Game '%s' is already in progress.\n", &name[1]);
-			for (i = 0; i < dipent.n; i++) {
-				if (dipent.players[i].power < 0)
-					continue;
-
-				if ((dipent.players[i].status & (SF_ABAND | SF_CD)
-				     || *dipent.players[i].address == '*')
-				    && dipent.players[i].centers != 0) {
-					fprintf(rfp,
-						"\nor  'signon %c%s password ...' if you want to take over %s",
-						dipent.pl[dipent.players[i].power], dipent.name,
-					powers[dipent.players[i].power]);
-				}
-			}
-			fprintf(rfp, "\nor 'observe %s password' if you just want to watch.\n",
-				dipent.name);
-			return E_WARN;
-		}
-		if ((i = mail_access(-1, userid, siteid, level, &n)) < 0) {
-			return E_WARN;
-		}
-		if (i > 0) {
-			player = n;
-			signedon = -1;
-			listflg = 0;
-			if (!msg_header_done)
-				msg_header(rfp);
-			if (*dipent.players[player].pref) {
-				fprintf(rfp, "Preference list is currently set to %s.\n",
-					dipent.players[player].pref);
-			} else {
-				fprintf(rfp, "No preference list has been established.\n");
-			}
-			return 0;
-		}
-		if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {
-                    /* Game is already full, waiting manual start?, so reject signon */
-                    fprintf(rfp,"Game '%s' is already full: no new players allowed.\n", &name[1]);
-                    return E_WARN;
-                }
-
-		if (!*raddr) {
-			if (!msg_header_done)
-				msg_header(rfp);
-			fprintf(rfp, "Sorry, valid return address required.\n");
-			return E_WARN;
-		}
-		if (n < 0) {
-			if (dipent.n + 1 >= MAXPLAYERS) {
-				if (!msg_header_done)
-					msg_header(rfp);
-				fprintf(rfp, "Too many observers are signed up for game '%s'.\n",
-					dipent.name);
-				return E_FATAL;
-			}
-			n = dipent.n++;
-		}
-		// Make the first player the master
-		if ( master )
-		{
-			name[0] = 'm';
-		}
-
-		dipent.players[n].power = power(name[0]);
-		dipent.players[n].status = 0;
-		dipent.players[n].units = 0;
-		dipent.players[n].centers = 0;
-		dipent.players[n].userid = userid;
-		dipent.players[n].siteid = siteid;
-		dipent.players[n].late_count = 0; /* initialise late count */
-		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
-		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
-		*dipent.players[n].pref = '\0';
-		strcpy(dipent.players[n].address, raddr);
-		strcpy(dipent.players[n].password, password);
-		player = n;
-		signedon = -1;
-		listflg = 0;
-		time(&dipent.process);
-		dipent.process += 168 * 60 * 60;
-
-		/*
-		 * Increment the number of people signed up and start the game if ready.
-		 */
-
-		if (!msg_header_done)
-			msg_header(rfp);
-		fprintf(rfp, "You've been selected to play %s in game '%s'.\n",
-			powers[power(name[0])], dipent.name);
-
-		if (name[0] == '?' && ++dipent.seq[1] == '0' + dipent.no_of_players) {
-		 /* Game is startable, lets see if starting is allowed */
-		    if (!(dipent.xflags & XF_MANUALSTART) ) {
-			strcpy(dipent.seq, "001");
-			starting++;
-		    } else {
-			/* Tell all players waiting for master to start game */
-		        fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
-                                powers[power(name[0])], dipent.name);
-                        fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
-                                powers[power(name[0])], dipent.name);
-			fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
-			mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
-
-			sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
-
-			broad_signon = 1;
-		        if (dipent.n != 1) {
-                                pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
-                                        NowString(), xaddr,
-                                    powers[power(name[0])], dipent.name);
-                                pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s"); pprintf(cfp, ".\n\n");
-                                pcontrol++;
-			}
-		    }
-		} else {
-			if (dipent.seq[0] == 'x' && dipent.phase[6] != 'X' ) {
-				n = dipent.no_of_players - (dipent.seq[1] - '0');
-
-				if (!(dipent.x2flags & X2F_SECRET)) {
-					fprintf(rfp, "You'll be notified when %d more player%s sign%s on.\n",
-					n, n == 1 ? "" : "s", n == 1 ? "s" : "");
-				}
-
-				n = dipent.seq[1] - '0';
-			} else {
-				n = dipent.np;
-			}
-			if ( !master )
-			{
-				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", JUDGE_CODE, dipent.name, dipent.phase, n);
-
-				fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
-					powers[power(name[0])], dipent.name);
-				fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
-					powers[power(name[0])], dipent.name);
-				mfprintf(bfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
-				mfprintf(bfp, ".\n\n");
-				broad_signon = 1;
-			}
-
-			if (!(dipent.x2flags & X2F_SECRET)) {
-				fprintf(rfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
-			}
-			fprintf(rfp, ".\n\n");
-			if (dipent.n != 1) {
-				pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
-					NowString(), xaddr,
-				    powers[power(name[0])], dipent.name);
-				pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
-				pprintf(cfp, ".\n\n");
-				pcontrol++;
-			}
-		}
-		return 0;
-
+	if ((dipent.seq[0] == 'x' || dipent.phase[6] == 'X') && name[0] == '?' ) {
+	    NewGameSignon(password);
 	} else {
+
+	        if (name[0] == '?') {
+		    /* 
+		     * Player is trying to take over first abandoned power 
+		     */
+		    if (GetFirstAbandonedPower(&name[0]) == 0) {
+			/* Unable to find one abandoned power */
+			fprintf(rfp," No abandoned powers in this game for takeover.\n\n");
+			return E_WARN;
+		    }
+		}    
 
 		/*
 		 * This is a normal signon attempt to an existing game.
@@ -694,7 +581,7 @@ int mail_signon(char *s)
 			if (dipent.players[i].power != n)
 				continue;
 
-			if (!strcmp(dipent.players[i].password, password) ||
+			if (!strcmp(dipent.players[RealPlayerIndex(i)].password, password) ||
 			    ((n == OBSERVER) && !strcasecmp(dipent.players[i].address, raddr))) {
 				player = i;
 				signedon = 1;
@@ -763,7 +650,7 @@ int mail_signon(char *s)
 				if (mail_access(i, userid, siteid, level, &j))
 					return E_WARN;
 
-				if ((dipent.players[i].status & SF_DEAD) &&
+				if ((IsPlayerDead(i)) &&
 				     (userid != dipent.players[i].userid)) {
 					fprintf(rfp, "Player is eliminated - takeover not allowed.\n");
 					return E_WARN;
@@ -772,71 +659,120 @@ int mail_signon(char *s)
 				if (j >= 0)
 					dipent.players[j].power = -1;	/* Remove him as observer */
 
-				broad_signon = 1;
+				if (!(dipent.flags & F_QUIET)) 
+				    broad_signon = 1;
 				pcontrol++;
-				strcpy(baddr, dipent.players[i].address);
-				strcpy(dipent.players[i].address, raddr);
-				strcpy(dipent.players[i].password, password);
-				if (dipent.players[i].userid == userid) {
-				    /* Same player is returning, do not reset anything */
 
-                                    sprintf(subjectline, "%s:%s - %s Returning Player Signon: %c", 
-					JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+				for (jj = 0; jj < dipent.n; jj++) {
+				    /* Loop round power and all controlled powers, setting them as taken over */
+				    if (RealPlayerIndex(i) != RealPlayerIndex(jj)) continue;  /* Not for the same power */
+				    /* If not a true duplex, only process for the same power */
+				    if ((!IS_DUPLEX(dipent) || dipent.flags & F_INTIMATE) && i != jj) continue;
+				    strcpy(baddr, dipent.players[jj].address);
+				    strcpy(dipent.players[jj].address, raddr);
+				    strcpy(dipent.players[jj].password, password);
+				    n = dipent.players[jj].power;
+				    if (dipent.players[jj].userid == userid) {
+				        /* Same player is returning, do not reset anything */
+					if (!(dipent.flags & F_QUIET)) {
+					    if (dipent.x2flags & X2F_SECRET) {
+						if (!one_done) {
+					            sprintf(subjectline, "%s:%s - %s Returning Player Signon",
+					                JUDGE_CODE, dipent.name, dipent.phase);
+						    fprintf(bfp, "%s has returned in game '%s'.\n",
+						            xaddr, dipent.name);
+						    fprintf(mbfp, "%s has returned in game '%s'.\n",
+						            raddr, dipent.name);
+					            pprintf(cfp, "%s%s has returned in game '%s'.\n", NowString(),
+						            xaddr, dipent.name);
+																		    					}
+					    } else {
+                                                if (!one_done) 
+					            sprintf(subjectline, "%s:%s - %s Returning Player Signon: %c", 
+					                    JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+					        else {
+						    sprintf(tmp1, "%c", dipent.pl[n]);
+						    strcat(subjectline, tmp1);
+						}
 
-                                    fprintf(bfp, "%s has returned as %s in game '%s'.\n",
-                                        xaddr, powers[n], dipent.name);
-                                    fprintf(mbfp, "%s has returned as %s in game '%s'.\n",
-                                        raddr, powers[n], dipent.name);
-                                    pprintf(cfp, "%s%s has returned as %s in game '%s'.\n", NowString(),
-                                        xaddr, powers[n], dipent.name);
-				    player = i;
-                                    signedon = 1;
-				    listflg = 0;
-				    if (!msg_header_done)
-                                        msg_header(rfp);
-				    break;  /* jump out */
-				}
+                                                fprintf(bfp, "%s has returned as %s in game '%s'.\n",
+                                                        xaddr, powers[n], dipent.name);
+                                                fprintf(mbfp, "%s has returned as %s in game '%s'.\n",
+                                                        raddr, powers[n], dipent.name);
+                                                pprintf(cfp, "%s%s has returned as %s in game '%s'.\n", NowString(),
+                                                        xaddr, powers[n], dipent.name);
+					    }
+					}
+				        player = RealPlayerIndex(jj);
+                                        signedon = 1;
+				        listflg = 0;
+				        if (!msg_header_done)
+                                            msg_header(rfp);
+				    } else {
 
-				dipent.players[i].userid = userid;
-				dipent.players[i].siteid = siteid;
-				dipent.players[i].late_count = 0;  /* reset old late_count */
-				player = i;
-				signedon = 1;
-				listflg = 0;
-				/* Reset the user's waiting flags */
-				dipent.players[i].status &= ~(SF_LATE | SF_REMIND);
-				dipent.players[i].status |= SF_WAIT;  
-                		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
-                    		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
+				        dipent.players[jj].userid = userid;
+				        dipent.players[jj].siteid = siteid;
+				        dipent.players[jj].late_count = 0;  /* reset old late_count */
+				        player = RealPlayerIndex(jj);
+				        signedon = 1;
+				        listflg = 0;
+				        /* Reset the user's waiting flags */
+				        dipent.players[player].status &= ~(SF_LATE | SF_REMIND);
+				        dipent.players[player].status |= SF_WAIT;  
+                		        if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
+                    		            dipent.players[player].status |= SF_NOT_APPROVED;  /* New player needs approval */
 				
+				        if (!msg_header_done)
+					    msg_header(rfp);
+				        if (jj == player)
+					    put_data(dipent.players[player].userid,tookover);
+				        if (!one_done)
+					    fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
+					fprintf(rfp, "Take over of abandoned %s allowed.\n", powers[n]);
+				        time(&now);
+				        if (dipent.deadline < now + 24 * 60 * 24 && dipent.phase[5] == 'M'
+				            && !(dipent.flags & F_MODERATE) && !one_done) {
+					    now = now + 48 * 60 * 60;
+					    then = now + 168 * 60 * 60;
+					    fprintf(rfp, "To give yourself time to communicate with the other ");
+					    fprintf(rfp, "players, you may wish\n");
+					    fprintf(rfp, "to submit commands to extend the current deadline ");
+					    fprintf(rfp, "and/or grace periods.\n");
+					    fprintf(rfp, "Suggested commands are:\n\n");
+					    fprintf(rfp, "    set grace    %-6.6s 23:30\n", ctime(&then) + 4);
+					    fprintf(rfp, "    set deadline %-6.6s 23:30\n\n", ctime(&now) + 4);
+				        }
+				        /* WAS mfprintf  1/94 BLR */
+				        if (!(dipent.flags & F_QUIET)) {
+				           if (dipent.x2flags & X2F_SECRET) {
+					      if (!one_done) {
+					          sprintf(subjectline, "%s:%s - %s New Player Signon", JUDGE_CODE, dipent.name, dipent.phase);
+					          fprintf(bfp, "%s has taken over abandoned power(s)\n in game '%s'.\n",
+					                  xaddr, dipent.name);
+					          fprintf(mbfp, "%s has taken over abandoned power(s)\n in game '%s'.\n",
+						          raddr, dipent.name);
+                                                  pprintf(cfp, "%s%s has taken over abandoned power(s)\n in game '%s'.\n", NowString(),
+						          xaddr, dipent.name);
+					       }
+				           } else {
+					       if (!one_done)
+				                   sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+					       else {
+						   sprintf(tmp1, "%c", dipent.pl[n]);
+					           strcat(subjectline, tmp1);
+					       }						   
 
-				if (!msg_header_done)
-					msg_header(rfp);
-				put_data(dipent.players[i].userid,tookover);
-				fprintf(rfp, "Take over of abandoned %s allowed.\n\n", powers[n]);
-				fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
-				time(&now);
-				if (dipent.deadline < now + 24 * 60 * 24 && dipent.phase[5] == 'M'
-				    && !(dipent.flags & F_MODERATE)) {
-					now = now + 48 * 60 * 60;
-					then = now + 168 * 60 * 60;
-					fprintf(rfp, "To give yourself time to communicate with the other ");
-					fprintf(rfp, "players, you may wish\n");
-					fprintf(rfp, "to submit commands to extend the current deadline ");
-					fprintf(rfp, "and/or grace periods.\n");
-					fprintf(rfp, "Suggested commands are:\n\n");
-					fprintf(rfp, "    set grace    %-6.6s 23:30\n", ctime(&then) + 4);
-					fprintf(rfp, "    set deadline %-6.6s 23:30\n\n", ctime(&now) + 4);
+				               fprintf(bfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
+					               xaddr, powers[n], dipent.name);
+				               fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
+					               raddr, powers[n], dipent.name);
+			    	               pprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
+					               xaddr, powers[n], dipent.name);
+				           }
+				       }
+				    }
+				    one_done++;
 				}
-				/* WAS mfprintf  1/94 BLR */
-				sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
-
-				fprintf(bfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
-					xaddr, powers[n], dipent.name);
-				fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
-					raddr, powers[n], dipent.name);
-				pprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
-					xaddr, powers[n], dipent.name);
 
 				time(&now);
 			
@@ -878,10 +814,10 @@ int mail_signon(char *s)
                                         if (dipent.players[j].power < 0)
                                             continue;
 
-                                        if(!(dipent.players[j].status & SF_DEAD)) {
-					    if (dipent.players[j].status & SF_MOVE ||
+                                        if(!(IsPlayerDead(j))) {
+					    if (dipent.players[RealPlayerIndex(j)].status & SF_MOVE ||
 						!DIPENT_NO_PRESS)
-				            dipent.players[j].status |= SF_WAIT;
+				            dipent.players[RealPlayerIndex(j)].status |= SF_WAIT;
 				        }
 				    }
 				}
@@ -1225,7 +1161,7 @@ void mail_igame(void)
 	FILE *fp, *dfp;
 	sequence seq;
 	int p;
-
+	int value;
 
 #define UNAVAILABLE_PREFERENCE INT_MAX
 
@@ -1365,7 +1301,9 @@ void mail_igame(void)
 	 * "set players" command has been entered.
 	 */
 
-	while (assigned < dipent.np && number_of_players != 0) {
+	value = dipent.powers;
+
+	while (assigned < value && number_of_players != 0) {
 		/* Blank out all the taken preferences in the copy of the
 		 * preference array.
 		 */
@@ -1380,7 +1318,7 @@ void mail_igame(void)
 		 * player at random.
 		 */
 
-		while (assigned + number_of_players > dipent.np) {
+		while (assigned + number_of_players > value) {
 			player_to_remove = ((unsigned int) (rand() / 23)) % number_of_players;
 
 			number_of_players--;
@@ -1417,9 +1355,12 @@ void mail_igame(void)
 				if (dipent.flags & F_INTIMATE) {                                                                   /* in intimate, other powers are autonomous */
 				    dipent.players[dipent.n].controlling_power = AUTONOMOUS;
 				    strcpy(dipent.players[dipent.n].address, NULL_EMAIL);
-				    strcpy(dipent.players[dipent.n].password, "password");
+				    strcpy(dipent.players[dipent.n].password, "-none-");
 				} else {
 				    memcpy(&dipent.players[dipent.n], &dipent.players[i], sizeof(Player));
+				    dipent.players[dipent.n].controlling_power = dipent.players[i].power;
+				    /*strcpy(dipent.players[dipent.n].address, NULL_EMAIL);*/
+				    strcpy(dipent.players[dipent.n].password, "-password-");
 				}
 				dipent.players[dipent.n].power = j;
 				dipent.n++;
@@ -1501,14 +1442,19 @@ void mail_igame(void)
 	}
 	while (fgets(line, sizeof(line), tfp))
 	{
-	    if (!(dipent.xflags & XF_BLANKBOARD) || line[1] != ':') 
+	    i = power(line[0]);
+	    p = FindPower(i);
+	    if (!(dipent.xflags & XF_BLANKBOARD) || line[1] != ':')
+	        if (dipent.powers == dipent.np || line[1] != ':' ||
+		    p < dipent.n)
 		    fputs(line, ofp);
 	}
 
 	if (dipent.x2flags & X2F_NEUTRALS)  {
 	   /* We've got Neutrals so set them up */
 	    for (p = 1; p <= npr; p++) {
-		if (pr[p].type == 'x') {
+		if (pr[p].type == 'x' ||
+		    FindPower(power(pr[p].type)) >= dipent.n) {
 		    sprintf(line, "=: A %s\n", pr[p].name);
 		    fputs(line, ofp);
 		}
@@ -1529,6 +1475,8 @@ void mail_igame(void)
 	for (i = 0; i < dipent.n + 1; i++) {
 		if (dipent.players[i].power < 0)
 			continue;
+		if (IS_DUPLEX(dipent) && dipent.players[i].controlling_power != 0)
+			continue;  /* Don't send mail message to controlled powers */
 
 		if ((dipent.flags & F_INTIMATE) && 
 		     dipent.players[i].controlling_power != AUTONOMOUS && 
@@ -1540,8 +1488,8 @@ void mail_igame(void)
 			bailout(E_FATAL);
 		}
 		msg_header(ofp);
-		fprintf(ofp, "You have been selected as %s in game '%s' of Diplomacy.",
-			powers[dipent.players[i].power], dipent.name);
+		PowerStartingList(ofp, i);
+		
 		/* Increment the started value for plyrdata. But only if the
 		   game is rated and we're not an observer. */
 		if((!(dipent.flags & F_NORATE)) && dipent.players[i].power != OBSERVER) {
@@ -1560,7 +1508,7 @@ void mail_igame(void)
 				putc(' ', ofp);
 			fprintf(ofp, "%s\n", (dipent.flags & F_GUNBOAT) && j != i
 				&& dipent.players[j].power != MASTER
-			   && dipent.players[i].power != MASTER ? someone
+			   && dipent.players[i].power != MASTER ? SomeoneText(j)
 				: dipent.players[j].address);
 		}
 		if (dipent.xflags & XF_BLANKBOARD) {
@@ -1592,7 +1540,7 @@ void mail_igame(void)
 			for (k = strlen(powers[k]); k < LPOWER + 1; k++)
 				putc(' ', cfp);
 			pprintf(cfp, "%s\n", (dipent.flags & F_GUNBOAT)
-			   && dipent.players[i].power != MASTER ? someone
+			   && dipent.players[i].power != MASTER ? SomeoneText(i)
 				: dipent.players[i].address);
 		}
 	}
@@ -1697,7 +1645,7 @@ void mail_igame(void)
 		for (k = strlen(powers[k]); k < LPOWER + 1; k++)
 			putc(' ', ofp);
 		fprintf(ofp, "%s\n", (dipent.flags & F_GUNBOAT)
-			&& dipent.players[i].power != MASTER ? someone
+			&& dipent.players[i].power != MASTER ? SomeoneText(i)
 			: dipent.players[i].address);
 	}
 
@@ -1792,3 +1740,180 @@ int chkpref(char *s, int wp[WILD_PLAYER], int wv[WILD_PLAYER])
 	return 0;
 
 }
+
+int NewGameSignon(char *password)
+{
+
+	int i, n, userid, siteid, level;
+
+
+		/*
+		 * Reject signon if game is marked to be terminated.
+		 */
+                if (dipent.phase[6]=='X') {
+		    fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
+		    return E_WARN;
+                }
+		/*
+                 * Sign this fellow up.
+                 */
+		else if (dipent.seq[0] != 'x') {
+			if (!msg_header_done)
+				msg_header(rfp);
+			fprintf(rfp, "Game '%s' is already in progress.\n", &name[1]);
+			for (i = 0; i < dipent.n; i++) {
+				if (dipent.players[i].power < 0)
+					continue;
+
+				if ((dipent.players[i].status & (SF_ABAND | SF_CD)
+				     || *dipent.players[i].address == '*')
+				    && dipent.players[i].centers != 0) {
+					fprintf(rfp,
+						"\nor  'signon %c%s password ...' if you want to take over %s",
+						dipent.pl[dipent.players[i].power], dipent.name,
+					powers[dipent.players[i].power]);
+				}
+			}
+			fprintf(rfp, "\nor 'observe %s password' if you just want to watch.\n",
+				dipent.name);
+			return E_WARN;
+		}
+		if ((i = mail_access(-1, userid, siteid, level, &n)) < 0) {
+			return E_WARN;
+		}
+		if (i > 0) {
+			player = n;
+			signedon = -1;
+			listflg = 0;
+			if (!msg_header_done)
+				msg_header(rfp);
+			if (*dipent.players[player].pref) {
+				fprintf(rfp, "Preference list is currently set to %s.\n",
+					dipent.players[player].pref);
+			} else {
+				fprintf(rfp, "No preference list has been established.\n");
+			}
+			return 0;
+		}
+		if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {
+                    /* Game is already full, waiting manual start?, so reject signon */
+                    fprintf(rfp,"Game '%s' is already full: no new players allowed.\n", &name[1]);
+                    return E_WARN;
+                }
+
+		if (!*raddr) {
+			if (!msg_header_done)
+				msg_header(rfp);
+			fprintf(rfp, "Sorry, valid return address required.\n");
+			return E_WARN;
+		}
+		if (n < 0) {
+			if (dipent.n + 1 >= MAXPLAYERS) {
+				if (!msg_header_done)
+					msg_header(rfp);
+				fprintf(rfp, "Too many observers are signed up for game '%s'.\n",
+					dipent.name);
+				return E_FATAL;
+			}
+			n = dipent.n++;
+		}
+		// Make the first player the master
+		if ( master )
+		{
+			name[0] = 'm';
+		}
+
+		dipent.players[n].power = power(name[0]);
+		dipent.players[n].status = 0;
+		dipent.players[n].units = 0;
+		dipent.players[n].centers = 0;
+		dipent.players[n].userid = userid;
+		dipent.players[n].siteid = siteid;
+		dipent.players[n].late_count = 0; /* initialise late count */
+		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
+		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
+		*dipent.players[n].pref = '\0';
+		strcpy(dipent.players[n].address, raddr);
+		strcpy(dipent.players[n].password, password);
+		player = n;
+		signedon = -1;
+		listflg = 0;
+		time(&dipent.process);
+		dipent.process += 168 * 60 * 60;
+
+		/*
+		 * Increment the number of people signed up and start the game if ready.
+		 */
+
+		if (!msg_header_done)
+			msg_header(rfp);
+		fprintf(rfp, "You've been selected to play %s in game '%s'.\n",
+			powers[power(name[0])], dipent.name);
+
+		if (name[0] == '?' && ++dipent.seq[1] == '0' + dipent.no_of_players) {
+		 /* Game is startable, lets see if starting is allowed */
+		    if (!(dipent.xflags & XF_MANUALSTART) ) {
+			strcpy(dipent.seq, "001");
+			starting++;
+		    } else {
+			/* Tell all players waiting for master to start game */
+		        fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
+                                powers[power(name[0])], dipent.name);
+                        fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
+                                powers[power(name[0])], dipent.name);
+			fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
+			mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
+
+			sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
+
+			broad_signon = 1;
+		        if (dipent.n != 1) {
+                                pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
+                                        NowString(), xaddr,
+                                    powers[power(name[0])], dipent.name);
+                                pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s"); pprintf(cfp, ".\n\n");
+                                pcontrol++;
+			}
+		    }
+		} else {
+			if (dipent.seq[0] == 'x' && dipent.phase[6] != 'X' ) {
+				n = dipent.no_of_players - (dipent.seq[1] - '0');
+
+				if (!(dipent.x2flags & X2F_SECRET)) {
+					fprintf(rfp, "You'll be notified when %d more player%s sign%s on.\n",
+					n, n == 1 ? "" : "s", n == 1 ? "s" : "");
+				}
+
+				n = dipent.seq[1] - '0';
+			} else {
+				n = dipent.np;
+			}
+			if ( !master )
+			{
+				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", JUDGE_CODE, dipent.name, dipent.phase, n);
+
+				fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
+					powers[power(name[0])], dipent.name);
+				fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
+					powers[power(name[0])], dipent.name);
+				mfprintf(bfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+				mfprintf(bfp, ".\n\n");
+				broad_signon = 1;
+			}
+
+			if (!(dipent.x2flags & X2F_SECRET)) {
+				fprintf(rfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+			}
+			fprintf(rfp, ".\n\n");
+			if (dipent.n != 1) {
+				pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
+					NowString(), xaddr,
+				    powers[power(name[0])], dipent.name);
+				pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+				pprintf(cfp, ".\n\n");
+				pcontrol++;
+			}
+		}
+		return 0;
+}
+

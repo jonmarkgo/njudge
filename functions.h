@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2004/07/04 03:25:24  millis
+ * Fix bug 328, implement Portage variant
+ *
  * Revision 1.27  2004/06/27 01:50:21  millis
  * Futher Intimate fixes (Bug 297) specifically to allow phased orders
  * and correct turns not processing, plus more information printed.
@@ -204,7 +207,7 @@ int canpreprocess(char *s);
 /* defined in st_porder.c */
 int process_output(int pt, char phase);
 void process_input(int pt, char phase, int player);
-int ownership(int new_type);
+int ownership(int new_type, int *int_status);
 
 /* defined in st_bid.c */
 int bidin(char **s, int p, int syntaxcheck);

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.9  2004/06/09 22:05:09  millis
+   ** More fixes for Bug 297, Intimate Diplomacy
+   **
    ** Revision 1.8  2003/08/10 00:57:39  millis
    ** Fix bug 214
    **
@@ -149,7 +152,7 @@ int retreatin(char **s, int pt)
 	}
 	for (u = 1; u <= nunit; u++)
 		if (unit[u].loc == p1 && (unit[u].owner == pt ||
-		    (dipent.flags & F_INTIMATE && (unit[u].controller == pt))
+		    (IS_DUPLEX(dipent) && (unit[u].controller == pt))
 				|| (unit[u].status == 'r' && pt == MASTER)))
 			break;
 
@@ -295,7 +298,7 @@ void retreatout(int pt)
 		if (unit[u].status != ':' &&
 		    !gateway(unit[u].loc) && !railway(unit[u].loc) &&
 		    (pt == (p = unit[u].owner) || pt == MASTER || processing ||
-		     (dipent.flags & F_INTIMATE && (unit[u].controller == pt)))) {
+		     (IS_DUPLEX(dipent) && (unit[u].controller == pt)))) {
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
 				putc(' ', rfp);

@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.7  2004/05/22 08:51:01  millis
+   ** Bug 297: Add Intimate Diplomacy
+   **
    ** Revision 1.6  2002/04/15 12:55:47  miller
    ** Multiple changes for blind & Colonial & setup from USTV
    **
@@ -57,7 +60,7 @@ void status(int pt)
 
 	char *t, *s, line[1024];
 	unsigned char *b;
-	int i, l, p, u;
+	int i, l, p, u, dummy;
 	char *type_space;
 
 	int not_ok_as_blind = 0;
@@ -152,7 +155,7 @@ void status(int pt)
                 balance(pt, 0, 1);
                 ma_ownership();
           } else
-                ownership(0);
+                ownership(0, &dummy);
         }
 
 	putc('\n', rfp);

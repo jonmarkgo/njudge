@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.56  2004/07/12 09:46:14  millis
+ * Bug 226: ON reflection, 3 day reminders for paused games seems right
+ * (as if less, players would get most annoyed!).
+ *
  * Revision 1.55  2004/07/12 00:21:59  millis
  * Fix Bug 226: remind every move frequency for paused games.
  * Also a fix for Bug 91 / Bug 297, to only mail real players on a game pause.
@@ -811,7 +815,7 @@ void master(void)
 				} else {
 					continue;
 				}
-			} else if (GAME_PAUSED) {
+			} else if (GAME_PAUSED && (dipent.wait < now)) {
 			    ibmfp = fopen(WARP_FILE, "w");
                             if (ibmfp != NULL) {
                                 fprintf(ibmfp, 
@@ -830,6 +834,7 @@ void master(void)
 				}
                               }
 			      dipent.process = now + 3 * 24 * 60 * 60; /* Remind every 3 days that game is paused */
+			      dipent.wait = dipent.process;
 			    }
 
         		} else {
@@ -1402,7 +1407,7 @@ int process(void)
 			}
 
 			/* Only send warning if process time passed */
-			if (n && (dipent.process < now)) {
+			if (n && (dipent.process < now) && dipent.wait < now) {
 				late[n] = '\0';
 
 				if (dipent.x2flags & X2F_SECRET) {
@@ -1411,6 +1416,7 @@ int process(void)
 				}
 
 				dipent.process = now + 48 * 60 * 60;
+				dipent.wait = dipent.process;
 
 				if (!Dflg)
 				{
