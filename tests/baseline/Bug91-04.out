@@ -1,0 +1,30 @@
+input/Bug91-04.txt
+input/Bug91-04.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer1@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer1@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M New Player Signon: O
+observer1@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to master1@localhost/XXXX:dt - S1901M Press from O to M
+Message from observer1@localhost as Observer to Master in 'dt':
+
+OK, observer has signed on
+===== end of mail ======
+===== mail sent to observer1@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Thu Jan 01 1970 00:00:00 +0000  
+
+You are now an Observer in game 'dt'.
+Message sent to Master:
+
+Message from observer1@localhost as Observer to Master in 'dt':
+
+OK, observer has signed on
+
+End of message.
+
+===== end of mail ======

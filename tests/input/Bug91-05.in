@@ -1,0 +1,8 @@
+From: player3@localhost
+To: judge@localhost
+
+signon ?dt pass
+set preference ATEFRIG
+signoff
+
+

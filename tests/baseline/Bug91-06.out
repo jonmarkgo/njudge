@@ -1,0 +1,502 @@
+input/Bug91-06.txt
+input/Bug91-06.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Master in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player3@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Austria in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as England in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as France in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Germany in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Italy in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Russia in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Turkey in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M Game Starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You have been selected as Observer in game 'dt' of Diplomacy.
+
+The following players are in this game:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna.
+Austria: Army  Budapest.
+Austria: Fleet Trieste.
+
+England: Fleet London.
+England: Fleet Edinburgh.
+England: Army  Liverpool.
+
+France:  Army  Paris.
+France:  Army  Marseilles.
+France:  Fleet Brest.
+
+Germany: Army  Berlin.
+Germany: Army  Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army  Rome.
+Italy:   Army  Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army  Moscow.
+Russia:  Army  Warsaw.
+Russia:  Fleet St Petersburg (south coast).
+Russia:  Fleet Sevastopol.
+
+Turkey:  Army  Constantinople.
+Turkey:  Army  Smyrna.
+Turkey:  Fleet Ankara.
+
+
+The deadline for the first orders is Tue Jan 06 2004 23:30:00 +0000.
+===== end of mail ======
+===== mail sent to bn_custodian@ugcs.caltech.edu/BNC: Game dt starting
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+Press:   White, No Fake Broadcast.
+Winning Centers: 18.
+
+The game is unlisted.
+
+Game 'dt' now has a quorum and is starting:
+     Master:                   master1@localhost
+     Austria:                  player3@localhost
+     England:                  player4@localhost
+     France:                   player1@localhost
+     Germany:                  player2@localhost
+     Italy:                    player2@localhost
+     Russia:                   player1@localhost
+     Turkey:                   player4@localhost
+     Observer:                 observer1@localhost
+===== end of mail ======
+===== mail sent to master1@localhost/XXXX:dt - S1901M Preference Change
+Player player4@localhost changed preference list.
+
+ Preference lists are now:
+player1@localhost has set 'FRIGATE'.
+player2@localhost has set 'IGATEFR'.
+player3@localhost has set 'ATEFRIG'.
+player4@localhost has set 'EFRIGAT'.
+
+===== end of mail ======
+===== mail sent to player4@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Thu Jan 01 1970 00:00:00 +0000  
+
+You've been selected to play a power in game 'dt'.
+Preference list 'EFRIGAT' set.
+
+Time to deadline: 5 days, 23 hours, 30 minutes, and 0 seconds.
+
+Time to grace period expiration: 12 days, 22 hours, 30 minutes, and 0 seconds.
+===== end of mail ======

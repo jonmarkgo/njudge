@@ -1,0 +1,139 @@
+Test good master signon and list command
+===== mail sent to master1@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+Game 'dt' order #001 (S1901M) has a deadline of Tue Jan 06 2004 23:30:00 +0000.
+The earliest orders will be processed is Thu Jan 01 2004 12:00:00 +0000.
+One or more players have not gotten their orders in.
+Those who haven't gotten their orders in will be abandoned if nothing
+is received by Tue Jan 13 2004 22:30:00 +0000.
+
+The parameters for 'dt' are as follows:
+  Move    clock 1410 min 12.00 next  71.00 grace 167.00 delay 0.50 days -MTWTF-
+  Retreat clock   -1 min  0.00 next  23.00 grace  71.00 delay 0.50 days -MTWTF-
+  Adjust  clock   -1 min  0.00 next  23.00 grace  71.00 delay 0.50 days -MTWTF-
+   Access:  Any-site, Level: Any, Moderated, Dedication: -10000.
+  Variant:  Standard, Duplex 4/7.
+    Flags:  NoNMR, NoList, NoProxy, DIAS.
+   xFlags:  HomeCentres, Concessions, Max Absence: 15.
+    Press:  White, Partial Allowed, No Fake.
+  Power Assignments: By Preference List Only.
+  Winning Centers: 18.
+  Number of Players: 4.
+    Index:  0  
+
+The following players are signed up for game 'dt':
+   Master                        0 master1@localhost
+   Austria    move               0 player3@localhost
+   England    move               0 player4@localhost
+   France     move               0 player1@localhost
+   Germany    move               0 player2@localhost
+   Italy      move               0 player2@localhost
+   Russia     move               0 player1@localhost
+   Turkey     move               0 player4@localhost
+   Observer                        observer1@localhost
+   Observer                        observer2@localhost
+   Observer                        observer3@localhost
+
+Status of the Movement phase for Spring of 1901.  (dt.001)
+
+Austria: Army Budapest.
+Austria: Army Vienna.
+Austria: Fleet Trieste.
+
+England: Army Liverpool.
+England: Fleet Edinburgh.
+England: Fleet London.
+
+France:  Army Marseilles.
+France:  Army Paris.
+France:  Fleet Brest.
+
+Germany: Army Berlin.
+Germany: Army Munich.
+Germany: Fleet Kiel.
+
+Italy:   Army Rome.
+Italy:   Army Venice.
+Italy:   Fleet Naples.
+
+Russia:  Army Moscow.
+Russia:  Army Warsaw.
+Russia:  Fleet Sevastopol.
+Russia:  Fleet St Petersburg (south coast).
+
+Turkey:  Army Constantinople.
+Turkey:  Army Smyrna.
+Turkey:  Fleet Ankara.
+
+
+Ownership of supply centers:
+
+Austria:   Budapest, Trieste, Vienna.
+England:   Edinburgh, Liverpool, London.
+France:    Brest, Marseilles, Paris.
+Germany:   Berlin, Kiel, Munich.
+Italy:     Naples, Rome, Venice.
+Russia:    Moscow, Sevastopol, St Petersburg, Warsaw.
+Turkey:    Ankara, Constantinople, Smyrna.
+Unowned:   Belgium, Bulgaria, Denmark, Greece, Holland, Norway, Portugal,
+           Rumania, Serbia, Spain, Sweden, Tunis.
+
+Austria:   3 Supply centers,  3 Units:  Builds   0 units.
+England:   3 Supply centers,  3 Units:  Builds   0 units.
+France:    3 Supply centers,  3 Units:  Builds   0 units.
+Germany:   3 Supply centers,  3 Units:  Builds   0 units.
+Italy:     3 Supply centers,  3 Units:  Builds   0 units.
+Russia:    4 Supply centers,  4 Units:  Builds   0 units.
+Turkey:    3 Supply centers,  3 Units:  Builds   0 units.
+
+
+Movement orders for Spring of 1901. (dt.001)
+
+Austria: Move Required.
+Austria: Army Budapest, No Order Processed.
+Austria: Army Vienna, No Order Processed.
+Austria: Fleet Trieste, No Order Processed.
+
+England: Move Required.
+England: Army Liverpool, No Order Processed.
+England: Fleet Edinburgh, No Order Processed.
+England: Fleet London, No Order Processed.
+
+France: Move Required.
+France: Army Marseilles, No Order Processed.
+France: Army Paris, No Order Processed.
+France: Fleet Brest, No Order Processed.
+
+Germany: Move Required.
+Germany: Army Berlin, No Order Processed.
+Germany: Army Munich, No Order Processed.
+Germany: Fleet Kiel, No Order Processed.
+
+Italy: Move Required.
+Italy: Army Rome, No Order Processed.
+Italy: Army Venice, No Order Processed.
+Italy: Fleet Naples, No Order Processed.
+
+Russia: Move Required.
+Russia: Army Moscow, No Order Processed.
+Russia: Army Warsaw, No Order Processed.
+Russia: Fleet Sevastopol, No Order Processed.
+Russia: Fleet St Petersburg (south coast), No Order Processed.
+
+Turkey: Move Required.
+Turkey: Army Constantinople, No Order Processed.
+Turkey: Army Smyrna, No Order Processed.
+Turkey: Fleet Ankara, No Order Processed.
+
+
+
+Orders not listed as received from all players.  Deadline is
+Tue Jan 06 2004 23:30:00 +0000, grace is Tue Jan 13 2004 22:30:00 +0000.
+
+
+Time to deadline: 5 days, 23 hours, 30 minutes, and 0 seconds.
+
+Time to grace period expiration: 12 days, 22 hours, 30 minutes, and 0 seconds.
+===== end of mail ======

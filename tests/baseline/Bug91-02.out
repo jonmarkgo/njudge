@@ -1,0 +1,22 @@
+input/Bug91-02.txt
+input/Bug91-02.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M New Player Signon: #1
+player1@localhost has signed up to play a power in game 'dt'.
+Game 'dt' now has 1 player.
+
+Player player1@localhost changed preference list.
+
+ Preference lists are now:
+player1@localhost has set 'FRIGATE'.
+
+===== end of mail ======
+===== mail sent to player1@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Thu Jan 01 1970 00:00:00 +0000  
+
+You've been selected to play a power in game 'dt'.
+You'll be notified when 3 more players sign on.
+Game 'dt' now has 1 player.
+
+Preference list 'FRIGATE' set.
+===== end of mail ======

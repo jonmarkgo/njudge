@@ -1,1 +1,2 @@
 Register player 1
+input/A-Reg01.txt

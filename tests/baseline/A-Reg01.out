@@ -1,0 +1,12 @@
+Current date Thu Jan  1 00:00:00 2004 should be between...
+Time warp indicated.  GM notified.
+Register player 1
+input/A-Reg01.txt
+===== mail sent to player1@localhost/Re: XXXX 
+:: Judge: XXXX  
+
+Newuser package is not being sent.  To get it, send 'get package' to the Judge.
+Registration processed.
+===== end of mail ======
+===== mail sent to judgekeeper@localhost/Diplomacy time warp
+===== end of mail ======

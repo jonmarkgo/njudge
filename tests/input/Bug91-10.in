@@ -1,0 +1,7 @@
+From: master1@localhost
+To: judge@localhost
+
+signon mdt 181d
+list
+signoff
+

@@ -1,0 +1,14 @@
+Test bad (master) signon 
+===== mail sent to master1@localhost/Re: XXXX 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+Invalid password or power ID specified.
+
+---- Original message follows:
+
+signon mdt 181d
+list
+signoff
+
+===== end of mail ======

@@ -1,0 +1,10 @@
+From: master1@localhost
+To: judge@localhost
+
+signon mdt pass
+broadcast
+Press from the master!
+endbroadcast
+signoff
+
+

@@ -1,0 +1,8 @@
+From: player1@localhost
+To: judge@localhost
+
+signon ?dt pass
+set preference FRIGATE
+signoff
+
+

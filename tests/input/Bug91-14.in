@@ -1,0 +1,6 @@
+From: player1@localhost
+To: judge@localhost
+
+signon fdt pass
+signoff
+

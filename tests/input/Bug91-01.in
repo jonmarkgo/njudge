@@ -1,0 +1,8 @@
+From: master1@localhost
+To: judge@localhost
+
+create ?dt pass
+set players 4
+signoff
+
+

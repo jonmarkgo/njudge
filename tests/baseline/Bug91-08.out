@@ -1,0 +1,112 @@
+input/Bug91-08.txt
+input/Bug91-08.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player3@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to observer2@localhost/XXXX:dt - S1901M Broadcast from M
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+===== end of mail ======
+===== mail sent to master1@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+Broadcast message sent:
+
+Broadcast message from master1@localhost as Master in 'dt':
+
+Press from the master!
+
+End of message.
+
+Movement orders for Spring of 1901. (dt.001)
+
+Austria: Move Required.
+Austria: Army Budapest, No Order Processed.
+Austria: Army Vienna, No Order Processed.
+Austria: Fleet Trieste, No Order Processed.
+
+England: Move Required.
+England: Army Liverpool, No Order Processed.
+England: Fleet Edinburgh, No Order Processed.
+England: Fleet London, No Order Processed.
+
+France: Move Required.
+France: Army Marseilles, No Order Processed.
+France: Army Paris, No Order Processed.
+France: Fleet Brest, No Order Processed.
+
+Germany: Move Required.
+Germany: Army Berlin, No Order Processed.
+Germany: Army Munich, No Order Processed.
+Germany: Fleet Kiel, No Order Processed.
+
+Italy: Move Required.
+Italy: Army Rome, No Order Processed.
+Italy: Army Venice, No Order Processed.
+Italy: Fleet Naples, No Order Processed.
+
+Russia: Move Required.
+Russia: Army Moscow, No Order Processed.
+Russia: Army Warsaw, No Order Processed.
+Russia: Fleet Sevastopol, No Order Processed.
+Russia: Fleet St Petersburg (south coast), No Order Processed.
+
+Turkey: Move Required.
+Turkey: Army Constantinople, No Order Processed.
+Turkey: Army Smyrna, No Order Processed.
+Turkey: Fleet Ankara, No Order Processed.
+
+
+
+Orders not listed as received from all players.  Deadline is
+Tue Jan 06 2004 23:30:00 +0000, grace is Tue Jan 13 2004 22:30:00 +0000.
+
+
+Time to deadline: 5 days, 23 hours, 30 minutes, and 0 seconds.
+
+Time to grace period expiration: 12 days, 22 hours, 30 minutes, and 0 seconds.
+===== end of mail ======

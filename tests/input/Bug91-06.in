@@ -1,0 +1,8 @@
+From: player4@localhost
+To: judge@localhost
+
+signon ?dt pass
+set preference EFRIGAT
+signoff
+
+

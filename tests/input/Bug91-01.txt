@@ -1,0 +1,2 @@
+Create Duplex game (standard for 4 players)
+input/Bug91-01.txt

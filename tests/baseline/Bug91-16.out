@@ -1,0 +1,134 @@
+France is replaced (and takes over other country too) 
+===== mail sent to master1@localhost/XXXX:dt - S1901M Takeover of France, Russia
+player5@localhost has taken over the abandoned
+France in game 'dt'.
+player5@localhost has taken over the abandoned
+Russia in game 'dt'.
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player3@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player5@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to observer2@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to observer3@localhost/XXXX:dt - S1901M Takeover of France, Russia
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player1@localhost/Diplomacy notice: dt
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+Also, a wait has been placed for all active players.
+This can be removed with the 'SET NOWAIT' command.
+
+===== end of mail ======
+===== mail sent to player5@localhost/Re: XXXX:dt - S1901M 
+Take over of abandoned France allowed.
+Wait has been set automatically for you - send 'set nowait' to clear.
+
+Take over of abandoned Russia allowed.
+
+Deadline for 'dt' advanced to Tue Jan 06 2004 23:30:00 +0000.
+Grace period for 'dt' advanced to Tue Jan 13 2004 22:30:00 +0000.
+
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+Movement orders for Spring of 1901. (dt.001)
+
+France: Army Marseilles, No Order Processed.
+France: Army Paris, No Order Processed.
+France: Fleet Brest, No Order Processed.
+
+
+Orders not received for all units.  If complete orders are not
+received by Tue Jan 06 2004 23:30:00 +0000, you will be considered late.
+You will be considered abandoned if all orders
+are not received by
+Tue Jan 13 2004 22:30:00 +0000.
+
+
+Time to deadline: 5 days, 23 hours, 30 minutes, and 0 seconds.
+
+Time to grace period expiration: 12 days, 22 hours, 30 minutes, and 0 seconds.
+===== end of mail ======

@@ -1,0 +1,22 @@
+control   001       S1801MX   1 1 1 0 2 18 7 0 0 0 0
+Process   Thu Jan  8 00:00:00 2004 (1073520000)
+Start     Wed Dec 31 23:59:59 2003 (1072915199)
+Ontime rat. min 0.000
+T = resignation ratio max 1.000
+Yet_Applied_deadline? 0
+-
+dt        x2        S1901M    1 1 1 -10000 10020007 18 4 0 15 0 0
+Process   Thu Jan  8 00:00:00 2004 (1073520000)
+Ontime rat. min 0.000
+T = resignation ratio max 1.000
+Yet_Applied_deadline? 0
+Moves     clock 1410 min 12.00 next  71.00 grace 167.00 delay 0.50 days -MTWTF-
+Retreat   clock   -1 min  0.00 next  23.00 grace  71.00 delay 0.50 days -MTWTF-
+Adjust    clock   -1 min  0.00 next  23.00 grace  71.00 delay 0.50 days -MTWTF-
+master       0  0  0  11 50500 pass         master1@localhost    0  0 0 0 0 0 0 0 0 0
+?_power      0  0  0   1 50500 pass         player1@localhost    0  0 0 0 0 0 0 0 0 0
+_pref: FRIGATE
+?_power      0  0  0   2 50500 pass         player2@localhost    0  0 0 0 0 0 0 0 0 0
+_pref: IGATEFR
+observer     0  0  0   0     0 pass         observer1@localhost    0  0 0 0 0 0 0 0 0 0
+-

@@ -1,0 +1,14 @@
+Second test to just see if it works!
+input/S001.txt
+===== mail sent to me@localhost/Re: XXXX 
+:: Judge: XXXX  
+
+
+Use 'list name' or 'list full' for more information on these games.
+Press options are: WGPF
+    where: W = White press allowed
+           G = Grey press allowed
+           P = Partial press allowed
+           F = Fake press allowed
+           - = Option not allowed
+===== end of mail ======

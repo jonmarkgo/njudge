@@ -1,0 +1,10 @@
+From: observer3@localhost
+To: judge@localhost
+
+signon odt pass3
+broadcast
+Press from the 3rd observer!
+endbroadcast
+signoff
+
+

@@ -1,0 +1,100 @@
+input/Bug91-09.txt
+input/Bug91-09.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player3@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to observer2@localhost/XXXX:dt - S1901M New Player Signon: O
+observer3@localhost has signed on as an Observer in game 'dt'.
+===== end of mail ======
+===== mail sent to master1@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player3@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to player4@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to observer2@localhost/XXXX:dt - S1901M Broadcast from O
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+===== end of mail ======
+===== mail sent to observer3@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Tue Jan 06 2004 23:30:00 +0000  
+
+You are now an Observer in game 'dt'.
+Broadcast message sent:
+
+Broadcast message from observer3@localhost as Observer in 'dt':
+
+Press from the 3rd observer!
+
+End of message.
+
+
+Time to deadline: 5 days, 23 hours, 30 minutes, and 0 seconds.
+
+Time to grace period expiration: 12 days, 22 hours, 30 minutes, and 0 seconds.
+===== end of mail ======

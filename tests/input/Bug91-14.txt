@@ -1,0 +1,1 @@
+France returns * minor problem: message header appears first in player text (the ::Judge XXXX bit)

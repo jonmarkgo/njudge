@@ -1,0 +1,39 @@
+input/Bug91-05.txt
+input/Bug91-05.txt
+===== mail sent to master1@localhost/XXXX:dt - S1901M New Player Signon: #3
+player3@localhost has signed up to play a power in game 'dt'.
+Game 'dt' now has 3 players.
+
+Player player3@localhost changed preference list.
+
+ Preference lists are now:
+player1@localhost has set 'FRIGATE'.
+player2@localhost has set 'IGATEFR'.
+player3@localhost has set 'ATEFRIG'.
+
+===== end of mail ======
+===== mail sent to player1@localhost/XXXX:dt - S1901M New Player Signon: #3
+player3@localhost has signed up to play a power in game 'dt'.
+Game 'dt' now has 3 players.
+
+===== end of mail ======
+===== mail sent to player2@localhost/XXXX:dt - S1901M New Player Signon: #3
+player3@localhost has signed up to play a power in game 'dt'.
+Game 'dt' now has 3 players.
+
+===== end of mail ======
+===== mail sent to observer1@localhost/XXXX:dt - S1901M New Player Signon: #3
+player3@localhost has signed up to play a power in game 'dt'.
+Game 'dt' now has 3 players.
+
+===== end of mail ======
+===== mail sent to player3@localhost/Re: XXXX:dt - S1901M 
+:: Judge: XXXX  Game: Dt  Variant: Standard
+:: Deadline: S1901M Thu Jan 01 1970 00:00:00 +0000  
+
+You've been selected to play a power in game 'dt'.
+You'll be notified when 1 more player signs on.
+Game 'dt' now has 3 players.
+
+Preference list 'ATEFRIG' set.
+===== end of mail ======

@@ -1,0 +1,2 @@
+Test observer signon and list command
+input/Bug91-11.txt
