@@ -1,7 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                8th August 2000
+Greetings from the Diplomacy* Adjudicator!!                20th February 2001
 index.
 
-(Note new commands for this judge version are marked witn an '*'.)
+(Note: New commands for this judge version are marked with an '*'.
+	 Still to be implemented ones are marked with a '+'.)
 
 This is an alphabetical list of all the commands that the adjudicator will
 process with a brief description.  Each command is preceded by a who/where
@@ -230,7 +231,7 @@ mod/aft*SET ANYCENTRE[S]
 	Override variant settings so that a power can build in any owned
 	centre/center during a build phase.
 
-mod/aft*SET ANYDISBAND
+mod/aft+SET ANYDISBAND
 	Allow powers to disband any unit during a build phase (and thus
 	gaining option to rebuild on a buildable centre if desired).
 	A 'wait' is set for all active players during the build phase.
@@ -259,10 +260,10 @@ mod/mac SET [NO]ASSASSINATIONS
 mod/aft*SET BLANKBOARD
         Set the game to start in a build phase, with no units, so that players
 	can place a different initial stating unit position.
-	Can only be set before hte game begins, and has no effect on games
+	Can only be set before the game begins, and has no effect on games
 	that alreaady start in a build phase (such as Chaos).
 
-mod/aft*SET [NO]BLANKPRESS
+mod/aft+SET [NO]BLANKPRESS
 	Disables/enables players to send blank press messages. Usually not very 
 	useful to enable.
 
@@ -339,7 +340,7 @@ mod/aft SET EP number
 mod/mac SET [NO]FAMINE
         Disables/enables optional famine rules.
 
-mod/mac*SET [NO]FORT[RESS]
+mod/mac+SET [NO]FORT[RESS]
         Disables/enables optional fortress rules.
 
 mod/aft SET GRACE date
@@ -385,18 +386,18 @@ mod/mac SET [NO]LOANS
         Disables/enables optional rules allowing players to borrow money
         from the bank.
 
-mod/mac*SET MACH[-]1
-mod/mac*SET MACHIAVELLI[-]1
+mod/mac+SET MACH[-]1
+mod/mac+SET MACHIAVELLI[-]1
         Enables original rules for a Machiavelli game. Can only be set
         before game starts. See rules.mach1 for details.
 
-mod/mac*SET MACH[-]2
-mod/mac*SET MACHIAVELLI[-]2
+mod/mac+SET MACH[-]2
+mod/mac+SET MACHIAVELLI[-]2
         Enables 2nd Edition rules for a Machiavelli game. Can only be set
         before game starts. See rules.mach2 for details.
 
-mod/mac*SET MACH[-]3
-mod/mac*SET MACHIAVELLI[-]3
+mod/mac+SET MACH[-]3
+mod/mac+SET MACHIAVELLI[-]3
 	Enables Special rules for a Machiavelli game. Can only be set
 	before game starts. See rules.mach3 for details.
 
@@ -405,7 +406,7 @@ mod/aft*SET [NO]MANUALPROCESS
 	when the master executes the 'PROCESS' command.
 
 mod/aft*SET [NO]MANUALSTART
-	Disables/enables the requriement that the gaem will only start 
+	Disables/enables the requriement that the game will only start 
 	when the master allows. If game was NOMANUALSTART and ready to go,
 	the SET NOMANUALSTART will start it.
 
@@ -466,7 +467,7 @@ any/aft SET NORMAL PRESS
 
 mod/aft*SET NORMAL DISBAND
         Uses the standard rules for disbands on a build turn, i.e. can
-        only disband when power has moer units than centres. 
+        only disband when power has more units than centres. 
 	Opposite of SET ANYDISBAND (see above).
 
 mod/aft SET OBSERVER ANY [PRESS]
@@ -478,6 +479,12 @@ mod/aft SET OBSERVER NO [PRESS]
 
 mod/aft SET OBSERVER WHITE [PRESS]
         Disallows observers and alternates from submitting grey press.
+
+mod/aft*SET ONECENTRE[S]
+	SET ONECENTER[S]
+	Override variant settings so that a power can build in any owned
+	centre/center during a build phase, as long as one home centre is
+	still owned.
 
 mod/aft SET [PRESS] NONE
         Same as "set nopress".
