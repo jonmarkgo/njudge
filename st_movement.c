@@ -661,6 +661,7 @@ int moveout(int pt)
 
 	int result[MAXUNIT];
 	int support[MAXUNIT];
+	int fail[MAXUNIT]; /* Marked as failed when attacked, useful for transforms only */
 
 #define supval(u)   (unit[u].stype == 'm' || unit[u].stype == 'p' ? 2 : 1)
 
@@ -710,6 +711,7 @@ int moveout(int pt)
 
 	for (u = 1; u <= nunit; u++) {
 		result[u] = 0;
+		fail[u] = 0;
 		/*** Not sure why this was here, but it messed up land-units
 		   giving support to fleets to a costal region
 		   MLM 28/09/2000
@@ -804,6 +806,12 @@ int moveout(int pt)
 						result[u] = NO_CONVOY;
 						support[u] = supval(u) - 1;
 						break;
+					}
+					if (unit[unit[u].dest].owner != unit[u].owner) {
+					    /* Non owner attacked this unit, so set the fail flag */
+					    if (dipent.xflags & XF_NOATTACK_TRANS)
+					        if (dipent.xflags & XF_TRANS_MANYW)
+						    fail[unit[u].dest] = 'f';
 					}
 				}
 			}
@@ -1233,7 +1241,7 @@ int moveout(int pt)
                                         fprintf(rfp, " (%s)", mtype[c1]);
                                 }
 				/* Now apply the changes iif not dislodged */
-				if (unit[u].status != 'r') {
+				if (unit[u].status != 'r' && !fail[u]) {
 				    unit[u].type = unit[u].new_type;
 				    unit[u].coast = unit[u].new_coast;
 				}
@@ -1244,7 +1252,9 @@ int moveout(int pt)
 				fprintf(rfp, " INVALID ORDER (internal error)");
 			}
 
-			if (result[u]) {
+			if (fail[u])
+				fprintf(rfp, ".  (*failed*)\n");
+			else if (result[u]) {
 				fprintf(rfp, ".  (*%s%s*)\n", results[result[u] % DISLODGED],
 					result[u] > DISLODGED ? ", dislodged" : "");
 			} else {
