@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.6  2001/07/01 23:19:29  miller
+ * Default for XF_COASTAL
+ *
  * Revision 1.5  2001/06/24 05:30:29  nzmb
  * Added read/write capability for new dipent variables (dedapplied, orded,
  * rrded) used in the plyrdata and new deadline systems.
@@ -78,8 +81,9 @@ int getdipent(FILE * fp)
  *  Read the next game entry from the master file.
  */
 
-	int i, j, temp, tempvp, tempplayers;
+	int i, j, tempvp, tempplayers;
 	int tempcentres;
+	int temp;
 	time_t now;
 	unsigned char line[1000];
 	char *s; 
@@ -88,7 +92,7 @@ int getdipent(FILE * fp)
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%d", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
@@ -120,6 +124,8 @@ int getdipent(FILE * fp)
 	}
 	if (i == 11) {
 		dipent.max_absence_delay = 0;
+		dipent.rrded = 1.000;
+		dipent.orded = 0.000; /* Set ded settings for migrated games */
 		i = 12;
 	}
 
@@ -244,8 +250,9 @@ int getdipent(FILE * fp)
 
 	if (!strcmp(dipent.name, "control")) {
 		time(&now);
-		/* MLM 26/5/2001 only notify warp on shift 60s or more  */
-		if (dipent.process && (dipent.start > (now +59) || now > (59 + dipent.process))) {
+		/* MLM 26/5/2001 only notify warp on shift more than TIME_TOLERANCE */
+		if (dipent.process && (dipent.start > (now +TIME_TOLERANCE) || 
+		    now > (TIME_TOLERANCE + dipent.process))) {
 			fprintf(stderr, "Current date %24.24s should be between...\n", ctime(&now));
 			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
 			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
@@ -298,13 +305,13 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %d\n", 
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
 		dipent.no_of_players, dipent.xflags,
 		dipent.max_absence_delay,
-                0 /* This 0 indicates version 0.8.9 onwards */);
+                0 /* This indicates version 0.8.9 onwards */);
 
 	if (dipent.process)
 		fprintf(fp, "Process   %24.24s (%ld)\n",
