@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.4  2000/11/18 21:12:14  miller
+   ** Fixed ONECENTRE bug
+   **
    ** Revision 1.3  2000/11/16 20:42:40  miller
    ** New changes for phased move syntax check, transformations and onecentre/anycentre
    **
@@ -101,7 +104,7 @@ void init_build(void)
 	/*  Count number of units allowed to be built.  */
 
 	for (p = 1; p <= NPOWER; p++) {
-		one_owned[i] = 0;
+		one_owned[p] = 0;
 		nu[p] = 0;
 		lu[p] = 0;
 		for (i = 1; i <= npr; i++)
