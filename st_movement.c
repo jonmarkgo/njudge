@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.18  2003/05/02 22:16:08  millis
+** Various changes (NEUTRALS, Artillery etc.)
+**
 ** Revision 1.17  2003/02/09 23:07:45  millis
 ** Fixed blind game reports showing unrequested support of unit to itself
 **
@@ -690,7 +693,7 @@ int movein(char **s, int p)
 		}
                 *s = get_type(*s, &c);
                 if (c == 'x') {
-                    errmsg("Uknown unit type to transform to.\n");
+                    errmsg("Unknown unit type to transform to.\n");
                     return E_WARN;
                 }
                 if (unit[u].type == c && c != 'F') {
