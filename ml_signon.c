@@ -1,10 +1,5 @@
 /*
  * $Log$
- * Revision 1.42  2004/07/25 16:13:43  millis
- * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
- * return in duplex) and Bug 206 (allow takeover of unknown abandoned
- * countries)
- *
  * Revision 1.41  2004/05/22 09:23:48  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -202,7 +197,7 @@
 
 #define ADMINISTRATOR	'@'
 
-static int NewGameSignon(char *password, int master);
+static int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int llevel);
 
 
 static int GetFirstAbandonedPower(char *power_letter)
@@ -341,8 +336,8 @@ int mail_signon(char *s)
 	char password[20];
 	int i, j, n, found;
 	int jj, one_done = 0;
-	int master = 0; // Whether the players has been auto-promoted to master
-	int userid, siteid, level, variant = V_STANDARD, flags = 0;
+	int lmaster = 0; // Whether the players has been auto-promoted to master
+	int luserid, lsiteid, llevel, variant = V_STANDARD, flags = 0;
 	char *t, *gdirname, line[150], tmp1[2];
 	int one_abandoned = 0;
 
@@ -421,7 +416,7 @@ int mail_signon(char *s)
 			else
 				variant = vvalue[i];
 		}
-		if (!getuser(raddr, &userid, &siteid, &level)) {
+		if (!getuser(raddr, &luserid, &lsiteid, &llevel)) {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Your address %s is not registered with the judge.\n", raddr);
@@ -484,7 +479,7 @@ int mail_signon(char *s)
 			name[0] = '?';
 			free(gdirname);
 
-			if (ded[userid].r < atoi(config("CREATE_DEDICATION"))) {
+			if (ded[luserid].r < atoi(config("CREATE_DEDICATION"))) {
 				fprintf(rfp, "You must have a minimum dedication of %i to create games\non this judge.\n", atoi(config("CREATE_DEDICATION")));
 				return E_WARN;
 			}
@@ -499,7 +494,7 @@ int mail_signon(char *s)
                         // Automatically upgrade creator to master
                         if ( !strcmp(AUTO_MASTER,"yes") && strcmp(raddr,GAMES_MASTER) ) 
 			{
-                                master++;
+                                lmaster++;
                                 pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);
                                 dipent.flags |= F_MODERATE;
                                 dipent.flags &= ~F_NORATE;
@@ -549,7 +544,7 @@ int mail_signon(char *s)
 		xaddr = raddr;
 
 	if ((dipent.seq[0] == 'x' || dipent.phase[6] == 'X') && name[0] == '?' ) {
-	    NewGameSignon(password, master);
+	    NewGameSignon(password, lmaster, luserid, lsiteid, llevel);
 	} else {
 
 	        if (name[0] == '?') {
@@ -567,7 +562,7 @@ int mail_signon(char *s)
 		 * This is a normal signon attempt to an existing game.
 		 */
 
-		userid = siteid = 0;
+		luserid = lsiteid = 0;
 		n = power(name[0]);
 		for (i = 0; i < dipent.n; i++) {
 			if (name[0] == ADMINISTRATOR && 
@@ -592,9 +587,9 @@ int mail_signon(char *s)
 				signedon = 1;
 				listflg = 0;
 				if (!dipent.players[i].userid) {
-					if (getuser(raddr, &userid, &siteid, &level)) {
-						dipent.players[i].userid = userid;
-						dipent.players[i].siteid = siteid;
+					if (getuser(raddr, &luserid, &lsiteid, &llevel)) {
+						dipent.players[i].userid = luserid;
+						dipent.players[i].siteid = lsiteid;
 					}
 				}
 				if (dipent.players[i].power == MASTER)
@@ -602,7 +597,7 @@ int mail_signon(char *s)
 
 				if (strcasecmp(dipent.players[i].address, raddr) ||
 				    !dipent.players[i].userid) {
-					if (!getuser(raddr, &userid, &siteid, &level)) {
+					if (!getuser(raddr, &luserid, &lsiteid, &llevel)) {
 						if (!msg_header_done)
 							msg_header(rfp);
 						fprintf(rfp, "Note: Your address %s\n", raddr);
@@ -611,7 +606,7 @@ int mail_signon(char *s)
 							dipent.players[i].address);
 						fprintf(rfp, "that is indeed the case or else use 'get form'.\n\n");
 					}
-					if (userid != dipent.players[i].userid && dipent.players[i].userid) {
+					if (luserid != dipent.players[i].userid && dipent.players[i].userid) {
 					        /* See if sender is part of player's email adress 
 						   in case player has email1,email2 and sends from either */
 						if (!(strstr(dipent.players[i].address, raddr)))
@@ -645,18 +640,18 @@ int mail_signon(char *s)
 
 				long now, then;
 
-				if (!getuser(raddr, &userid, &siteid, &level)) {
+				if (!getuser(raddr, &luserid, &lsiteid, &llevel)) {
 					if (!msg_header_done)
 						msg_header(rfp);
 					fprintf(rfp, "Your address %s is not registered with the judge.\n", raddr);
 					fprintf(rfp, "Use a 'get form' request for information on registering.\n");
 					return E_WARN;
 				}
-				if (mail_access(i, userid, siteid, level, &j))
+				if (mail_access(i, luserid, lsiteid, llevel, &j))
 					return E_WARN;
 
 				if ((IsPlayerDead(i)) &&
-				     (userid != dipent.players[i].userid)) {
+				     (luserid != dipent.players[i].userid)) {
 					fprintf(rfp, "Player is eliminated - takeover not allowed.\n");
 					return E_WARN;
 				}
@@ -677,7 +672,7 @@ int mail_signon(char *s)
 				    strcpy(dipent.players[jj].address, raddr);
 				    strcpy(dipent.players[jj].password, password);
 				    n = dipent.players[jj].power;
-				    if (dipent.players[jj].userid == userid) {
+				    if (dipent.players[jj].userid == luserid) {
 				        /* Same player is returning, do not reset anything */
 					if (!(dipent.flags & F_QUIET)) {
 					    if (dipent.x2flags & X2F_SECRET) {
@@ -715,8 +710,8 @@ int mail_signon(char *s)
                                             msg_header(rfp);
 				    } else {
 
-				        dipent.players[jj].userid = userid;
-				        dipent.players[jj].siteid = siteid;
+				        dipent.players[jj].userid = luserid;
+				        dipent.players[jj].siteid = lsiteid;
 				        dipent.players[jj].late_count = 0;  /* reset old late_count */
 				        player = RealPlayerIndex(jj);
 				        signedon = 1;
@@ -848,8 +843,8 @@ int mail_signon(char *s)
 					dipent.players[dipent.n].status = 0;
 					strcpy(dipent.players[dipent.n].address, raddr);
 					strcpy(dipent.players[dipent.n].password, password);
-					dipent.players[dipent.n].userid = userid;
-					dipent.players[dipent.n].siteid = siteid;
+					dipent.players[dipent.n].userid = luserid;
+					dipent.players[dipent.n].siteid = lsiteid;
 					dipent.players[dipent.n].units = 0;
 					dipent.players[dipent.n].centers = 0;
 					player = dipent.n;
@@ -943,7 +938,7 @@ int mail_signon(char *s)
 
 /***************************************************************************/
 
-int mail_access(int ignore, int userid, int siteid, int level, int *idx)
+int mail_access(int ignore, int luserid, int lsiteid, int llevel, int *idx)
 {
 
 /*
@@ -978,7 +973,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 
 		if (i == ignore)
 			continue;
-		if ((dipent.players[i].userid == userid &&
+		if ((dipent.players[i].userid == luserid &&
 		     *dipent.players[i].address != '*') ||
 		    !strcasecmp(dipent.players[i].address, raddr)) {
 			if (dipent.players[i].power == OBSERVER) {
@@ -994,7 +989,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 		}
 		if (dipent.access == A_DIFF && dipent.players[i].power <= WILD_PLAYER
 		    && *dipent.players[i].address != '*') {
-			s1 = siteid;
+			s1 = lsiteid;
 			s2 = dipent.players[i].siteid;
 			if (!(s1 % 100) || !(s2 % 100)) {
 				s1 /= 100;
@@ -1013,7 +1008,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 		}
 		if (dipent.access == A_SAME && dipent.players[i].power <= WILD_PLAYER
 		    && *dipent.players[i].address != '*') {
-			s1 = siteid;
+			s1 = lsiteid;
 			s2 = dipent.players[i].siteid;
 			if (!(s1 % 100) || !(s2 % 100)) {
 				s1 /= 100;
@@ -1033,82 +1028,82 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 		}
 	}
 
-	if (dipent.level == L_NOVICE && level != L_NOVICE) {
+	if (dipent.level == L_NOVICE && llevel != L_NOVICE) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' is designated as Novice-only\n",
 			dipent.name);
 		fprintf(rfp, "and you are registered as %s.\n",
-			(temp = printlevel(level)));
+			(temp = printlevel(llevel)));
 		free(temp);
 		return -1;
 	}
-	if (dipent.level == L_INTERMEDIATE && level != L_INTERMEDIATE) {
+	if (dipent.level == L_INTERMEDIATE && llevel != L_INTERMEDIATE) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' is designated as Intermediate-only\n",
 			dipent.name);
 		fprintf(rfp, "and you are registered as %s.\n",
-			(temp = printlevel(level)));
+			(temp = printlevel(llevel)));
 		free(temp);
 		return -1;
 	}
-	if (dipent.level == L_EXPERT && level != L_EXPERT) {
+	if (dipent.level == L_EXPERT && llevel != L_EXPERT) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' is designated as Expert-only\n",
 			dipent.name);
 		fprintf(rfp, "and you are registered as %s.\n",
-			(temp = printlevel(level)));
+			(temp = printlevel(llevel)));
 		free(temp);
 		return -1;
 	}
-	if (dipent.level == L_ADVANCED && (!level || level == L_NOVICE)) {
+	if (dipent.level == L_ADVANCED && (!llevel || llevel == L_NOVICE)) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' is designated as Advanced-only\n",
 			dipent.name);
 		fprintf(rfp, "and you are registered as %s.\n",
-			(temp = printlevel(level)));
+			(temp = printlevel(llevel)));
 		free(temp);
 		return -1;
 	}
-	if (dipent.level == L_AMATEUR && (!level ||
-			       level == L_EXPERT || level == L_WINNER)) {
+	if (dipent.level == L_AMATEUR && (!llevel ||
+			       llevel == L_EXPERT || llevel == L_WINNER)) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' is designated as Amateur-only\n",
 			dipent.name);
 		fprintf(rfp, "and you are registered as %s.\n",
-			(temp = printlevel(level)));
+			(temp = printlevel(llevel)));
 		free(temp);
 		return -1;
 	}
-	if (ded[userid].r < dipent.dedicate) {
+	if (ded[luserid].r < dipent.dedicate) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' requires a dedication of at least %d and you\n",
 			dipent.name, dipent.dedicate);
 		fprintf(rfp, "are currently rated at %d.  Use 'get deadline' for more info.\n",
-			ded[userid].r);
+			ded[luserid].r);
 		return -1;
 	}
-	if(get_data(userid,total) == 0)
+	if(get_data(luserid,total) == 0)
 	{
 		ont_rat = -1;
 		/* We're doing this to avoid divide by 0 errors. */
 	}
 	else
 	{
-		ont_rat = 1.0 * get_data(userid,ontime) / get_data(userid,total);
+		ont_rat = 1.0 * get_data(luserid,ontime) / get_data(luserid,total);
 	}
-	if(get_data(userid,started) == 0 && get_data(userid,tookover) == 0) 
+	if(get_data(luserid,started) == 0 && get_data(luserid,tookover) == 0) 
 	{
 		res_rat = -1;
 	}
 	else
 	{
-		res_rat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
+		res_rat = 1.0 * get_data(luserid,resigned) / (get_data(luserid,started) + get_data(luserid,tookover));
 	}
         /* Fix res_rat if over limit */
         if (res_rat > 1.0 ) res_rat = 1.0;
@@ -1746,10 +1741,10 @@ int chkpref(char *s, int wp[WILD_PLAYER], int wv[WILD_PLAYER])
 
 }
 
-int NewGameSignon(char *password, int master)
+int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int llevel)
 {
 
-	int i, n, userid, siteid, level;
+	int i, n;
 
 
 		/*
@@ -1783,7 +1778,7 @@ int NewGameSignon(char *password, int master)
 				dipent.name);
 			return E_WARN;
 		}
-		if ((i = mail_access(-1, userid, siteid, level, &n)) < 0) {
+		if ((i = mail_access(-1, luserid, lsiteid, llevel, &n)) < 0) {
 			return E_WARN;
 		}
 		if (i > 0) {
@@ -1823,7 +1818,7 @@ int NewGameSignon(char *password, int master)
 			n = dipent.n++;
 		}
 		// Make the first player the master
-		if ( master )
+		if ( lmaster )
 		{
 			name[0] = 'm';
 		}
@@ -1832,8 +1827,8 @@ int NewGameSignon(char *password, int master)
 		dipent.players[n].status = 0;
 		dipent.players[n].units = 0;
 		dipent.players[n].centers = 0;
-		dipent.players[n].userid = userid;
-		dipent.players[n].siteid = siteid;
+		dipent.players[n].userid = luserid;
+		dipent.players[n].siteid = lsiteid;
 		dipent.players[n].late_count = 0; /* initialise late count */
 		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
 		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
@@ -1893,7 +1888,7 @@ int NewGameSignon(char *password, int master)
 			} else {
 				n = dipent.np;
 			}
-			if ( !master )
+			if ( !lmaster )
 			{
 				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", JUDGE_CODE, dipent.name, dipent.phase, n);
 
