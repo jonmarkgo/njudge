@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.10  2002/12/16 23:19:04  nzmb
+  ** Fixed bug that was causing the victor in games to be reported incorrectly. Also fixed a typo in ma_porder.c.
+  **
   ** Revision 1.9  2002/08/27 23:56:11  millis
   ** Added better victory display (fixing Mach victory bug)
   **
@@ -125,7 +128,9 @@ int ownership(void)
 			continue;
 
 		strcpy(s, ".\n");
-		wrap(rfp, buf, 0, GetMaxCountryStrlen()+1);
+		/* Bug 77, wrap on the ',' character only */
+               /* will mess up if line ends on a ',' or place has a ',' in it */
+               wrap_char(rfp, buf, 0, GetMaxCountryStrlen()+1, ',');
 	}
 
 	statusval = 0;

@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.11  2002/08/27 22:27:52  millis
+	 * Updated for automake/autoconf functionality
+	 *
 	 * Revision 1.10  2002/04/15 12:55:43  miller
 	 * Multiple changes for blind & Colonial & setup from USTV
 	 *
@@ -647,6 +650,28 @@ void wrap(FILE * fp, char *buf, int pos, int indent)
 		}
 	}
 	fputs(t, fp);
+
+}
+/* Do a wrap bu around the passed character */
+void wrap_char(FILE * fp, char *buf, int pos, int indent, char w_char)
+{
+
+        char *s, *t;
+
+        for (t = s = buf; *s; s++, pos++) {
+                if (pos > 78) {
+			while (*--s != w_char);
+                        /* Will wrap at the NEXT space character or line-end */
+			while (*++s != ' ' && *s != '\0');
+                        *s = '\0';
+                        fputs(t, fp);
+                        fprintf(fp, "\n%*s", indent, "");
+                        *s++ = ' ';
+                        t = s;
+                        pos = indent;
+                }
+        }
+        fputs(t, fp);
 
 }
 

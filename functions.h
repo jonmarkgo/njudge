@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2002/11/08 21:51:19  millis
+ * Resolve bug 36
+ *
  * Revision 1.12  2002/07/16 18:14:21  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -67,6 +70,7 @@ int execute(char *command);
 void ferrck(FILE * fp, int n);
 int power(char c);
 void wrap(FILE * fp, char *buf, int pos, int indent);
+void wrap_char(FILE * fp, char *buf, int pos, int indent, char w_char);
 char *autype(char c);
 char *utype(char c);
 char *Stype(char c);
