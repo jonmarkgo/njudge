@@ -245,7 +245,7 @@ install-data-hook: flist magic
 	@echo "Process   " `date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "Start     " `date '+%a %b %d %X %Y'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "-" >> ${DESTDIR}${bindir}/dip.master
-	@echo "\"| ${bindir}/rdip -b -d ${bindir} \"" > ${DESTDIR}${bindir}/forward
+	@echo "\"| ${bindir}/rdip -b -d ${bindir} \"" > ${DESTDIR}${bindir}/${USER}-forward
 	-@chown ${USER} ${DESTDIR}${bindir}
 	-@chown ${USER} ${DESTDIR}${bindir}/Dcontrol
 	-@chown ${USER} ${DESTDIR}${datadir}
@@ -254,7 +254,7 @@ install-data-hook: flist magic
 	@echo 
 	@echo "you must now edit ${bindir}/dip.conf and "
 	@echo "${bindir}/dip.msg (which last may be left empty)"
-	@echo "To start the judge, rename ${bindir}/forward to ${bindir}/.forward"
+	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 
 # smail.in is already automatically included as are top-level docs like COPYING
