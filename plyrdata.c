@@ -296,7 +296,7 @@ int put_data(int recno, PLYRDATA_TYPE type)
             temp = get_long(rec.tookover); 
             temp++;
             rec.tookover = put_long(temp);
-            put_plyrdata_record(recno, &rec ;
+            put_plyrdata_record(recno, &rec);
             return 0;
             break;
 
