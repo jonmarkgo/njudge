@@ -1,6 +1,6 @@
 Install-HOWTO for the Diplomacy judge
 
-v.1.0.1.2
+v.1.0.1.3
 
 Christophe Courtois ( christophe@courtois.cc )
 - 1.0.1.x : February 2002
@@ -938,11 +938,12 @@ symlink.
 
  - Modify the .c code, or apply a patch (this way for example:
 patch summary.c patch-bug160701 ), or download the last CVS version
-if you have an account on devel.diplom.org.
+if you have an account on devel.diplom.org, or download a whole new 
+source code tarball in a *new* source directory.
 
- - Or download a whole new source code tarball in a *new* source directory,
-copy the defaults.inc from your current judge into the new source directory,
-and compile from there. Don't forget to read the install-howto of this
+ - Anyway, you must copy the defaults.inc and Makefile.defines
+from your current judge into the new source directory, and compile 
+from there. Don't forget to read the install-howto of this
 new version to be sure that the important configuration files to move across
 both versions are the same (judge mainteners try to do it).
  - dip.conf is the configuration file, stored in the judge directory,
