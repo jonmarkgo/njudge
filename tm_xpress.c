@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2003/06/29 21:37:43  nzmb
+ * Made EOG draw entries broadcasted at the end of the game.
+ *
  * Revision 1.3  2003/06/22 04:10:23  nzmb
  * Added code to allow users to record diary entries, read them, and delete them
  * if they make a mistake. The diaries will be broadcast when the games end (this
@@ -86,6 +89,10 @@ void process_diary(char *cmd)
 	{
 		/* record a new diary entry */
 		new_diary_entry();
+		broadcast_master_only = 1;
+		sprintf(subjectline, "%s:%s - %s New diary entry from %c",
+			JUDGE_CODE, dipent.name, dipent.phase,
+			dipent.pl[dipent.players[player].power]);
 		return;
 	}
 	if(!strcasecmp(cmd, "list"))
