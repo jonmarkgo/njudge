@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.14  2002/04/15 12:55:46  miller
+** Multiple changes for blind & Colonial & setup from USTV
+**
 ** Revision 1.13  2002/03/05 23:19:49  miller
 ** Fix special bleagured garisson bug
 **
@@ -300,7 +303,7 @@ int movein(char **s, int p)
 {
 /* Read movement in from input file. */
 	char c, order, *t;
-	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl, igw, irw;
+	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl, igw=-1, irw=-1;
 	int railway_flag = 0;
 	unsigned char *bp;
 	char temp_text[256];
