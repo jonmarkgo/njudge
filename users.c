@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/08/27 22:27:58  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.8  2002/06/23 22:56:29  nzmb
  * Cosmetic change to infoplayer/getdedication display.
  *
@@ -968,8 +971,75 @@ int setsite(char *s)
 
 int is_allowed(int type_flag)
 {
+        char fname[40], uname[40];
+        int ret_val = 1;
+        FILE *fp;
+
+        switch (type_flag) {
+        case GLOBAL_MASTER:
+                strcpy(fname, "masters");
+                break;
+        case GAME_PLAYER:
+                if (strlen(dipent.name) == 0) {
+                        perror("nogame");
+                        return 0;
+                }
+                sprintf(fname, "%s%s/players", GAME_DIR, dipent.name);
+                break;
+        case GAME_MASTER:
+                 if (strlen(dipent.name) == 0) {
+                        perror("nogame");
+                        return 0;
+                }
+                sprintf(fname, "%s%s/masters", GAME_DIR, dipent.name);
+                break;
+        case GLOBAL_PLAYER:
+        default:
+                strcpy(fname, "players");
+                break;
+        }
+/* Pass #1.  Look for a file named fname.ALLOW.  If it exists, check to see
+   if the name is in there and set the return value accordingly. */
+        sprintf(uname, "%s%s", fname, ALLOW);
+        fp = fopen(uname, "r");
+        if (fp != (FILE *) NULL) {
+                ret_val = new_checklist(fp, raddr);
+                fclose(fp);
+        }
+/* Pass #2.  Look for a file named fname.DENY.  If it exists, check to see
+   if the name is in there and set the return value accordingly. */
+        else {
+                sprintf(uname, "%s%s", fname, DENY);
+                fp = fopen(uname, "r");
+                if (fp != (FILE *) NULL) {
+                        ret_val = !new_checklist(fp, raddr);
+                        fclose(fp);
+                }
+        }
+
+/* Pass #3.  If neither the .ALLOW or the .DENY file exists, it must be ok,
+   so set the return value, and return. */
+        return ret_val;
+}
+
+/*
+ * is_disallowed( int type_flag )
+ *  where:   type_flag = GLOBAL_PLAYER - global player list
+ *                     = GLOBAL_MASTER - global master list
+ *                     = GAME_PLAYER   - game-specific player list
+ *                     = GAME_MASTER   - included for completeness, not
+ *                                       used
+ * returns:  TRUE  - player is specifically denied at the level specified
+ *           FALSE - player is NOT specifically denied (but may still not be allowed)
+ *
+ * Note: This function should only be called after calling is_allowed() to deterimine
+ *       why player is not allowed
+ */
+
+int is_disallowed(int type_flag)
+{
 	char fname[40], uname[40];
-	int ret_val = 1;
+	int ret_val = 0;
 	FILE *fp;
 
 	switch (type_flag) {
@@ -995,26 +1065,18 @@ int is_allowed(int type_flag)
 		strcpy(fname, "players");
 		break;
 	}
-/* Pass #1.  Look for a file named fname.ALLOW.  If it exists, check to see
+/* Pass #1.  Look for a file named fname.DENY.  If it exists, check to see
    if the name is in there and set the return value accordingly. */
-	sprintf(uname, "%s%s", fname, ALLOW);
-	fp = fopen(uname, "r");
-	if (fp != (FILE *) NULL) {
-		ret_val = new_checklist(fp, raddr);
-		fclose(fp);
-	}
-/* Pass #2.  Look for a file named fname.DENY.  If it exists, check to see
-   if the name is in there and set the return value accordingly. */
-	else {
+	{
 		sprintf(uname, "%s%s", fname, DENY);
 		fp = fopen(uname, "r");
 		if (fp != (FILE *) NULL) {
-			ret_val = !new_checklist(fp, raddr);
+			ret_val = new_checklist(fp, raddr);
 			fclose(fp);
 		}
 	}
 
-/* Pass #3.  If neither the .ALLOW or the .DENY file exists, it must be ok,
+/* Pass #2.  If not in .DENY file, player is not banned 
    so set the return value, and return. */
 	return ret_val;
 }
