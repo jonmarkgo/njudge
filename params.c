@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/01 23:19:29  miller
+ * Coastal convoy
+ *
  * Revision 1.5  2001/06/24 06:05:35  nzmb
  * Made it so new dedication settings appear in game parameters.
  *
@@ -158,9 +161,16 @@ void params(FILE * fp)
 		sprintf(&line[strlen(line)], ", Dedication: %d", dipent.dedicate);
 	}
 	strcat(line, ".");
-	sprintf(&line[strlen(line)], " Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",dipent.orded,dipent.rrded);
-	strcat(line, ".");
-	print_params(fp, line);
+        print_params(fp, line);
+
+	if (dipent.orded != 0.000 && dipent.rrded != 1.000) {
+		sprintf(line, "  DSettng:" );
+		sprintf(&line[strlen(line)], 
+			" Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",
+			dipent.orded,dipent.rrded);
+		strcat(line, ".");
+		print_params(fp, line);
+	}
 
 	/* Variant & option information. */
 
@@ -223,14 +233,20 @@ void params(FILE * fp)
 	if (dipent.flags & F_STRWAIT) {
 		strcat(line, ", StrictWait");
 	}
+
+        strcat(line, ".");
+        print_params(fp, line);
+
 	if (dipent.flags & F_MACH) {
+        sprintf(line, "   Mach:   ");
+
 		if (dipent.flags & F_NODICE) {
-			strcat(line, ", NoDice");
+			strcat(line, "NoDice");
 		} else {
 			if (dipent.flags & F_NOFAMINE) {
-				strcat(line, ", NoFamine");
+				strcat(line, "NoFamine");
 			} else {
-				strcat(line, ", Famine");
+				strcat(line, "Famine");
 			}
 			if (dipent.flags & F_NOPLAGUE) {
 				strcat(line, ", NoPlague");
@@ -258,14 +274,18 @@ void params(FILE * fp)
                                 strcat(line, ", NoForts");
                         }*/
 		}
+		
 		if (dipent.flags & F_NOADJ) {
 			strcat(line, ", NoAdjacency");
 		} else {
 			strcat(line, ", Adjacency");
 		}
+                if (dipent.xflags & XF_NOMONEY)
+                    strcat(line, ", NoMoney");
+            strcat(line, ".");
+            print_params(fp, line);
+
 	}
-	strcat(line, ".");
-	print_params(fp, line);
 	
         /* Transform information.  */
         if (!(dipent.flags & F_MACH) && (dipent.xflags & XF_TRANS_ANYT)) {
@@ -353,7 +373,6 @@ void params(FILE * fp)
 	    if (dipent.xflags & XF_ANYDISBAND) {
                 strcatf(line, "AnyDisband",&first_flag);
             }
-
 	
 	    if (dipent.xflags & XF_STRCONVOY) {
                     strcatf(line, "StrictConvoy",&first_flag);
@@ -381,6 +400,8 @@ void params(FILE * fp)
         if (dipent.xflags & XF_COASTAL_CONVOYS) {
                 strcatf(line, "CostalConvoy", &first_flag);
         }
+	if (dipent.xflags & XF_MOVEDISBAND)
+		strcatf(line, "Disband", &first_flag);
 
 	if (first_flag != 1) {
 		/* Only show xflags if there are some to show! */
