@@ -1,5 +1,9 @@
 	/*
 	 * $Log$
+	 * Revision 1.28  2004/06/27 01:50:21  millis
+	 * Futher Intimate fixes (Bug 297) specifically to allow phased orders
+	 * and correct turns not processing, plus more information printed.
+	 *
 	 * Revision 1.27  2004/06/12 13:00:35  alange
 	 * Fixed logic error in safety code from previous commit.
 	 *
@@ -1640,9 +1644,35 @@ void PrintTreasury(int pt, int power_bid_total[], int processing, int predict)
 
 	        fprintf(rfp, "%d",  ducats[p].treasury);
 	       if (power_bid_total != NULL)
-	           fprintf(rfp, " - %d = %d.\n",  power_bid_total[p], ducats[p].treasury - power_bid_total[p]);
+	           fprintf(rfp, " - %d = %d",  power_bid_total[p], ducats[p].treasury - power_bid_total[p]);
 	       fprintf(rfp,".\n");
            }
            if (processing && power_bid_total) ducats[p].treasury -= power_bid_total[p];
      }
 }
+
+/* See if province has any fleet-type moves allowed */
+int LandLocked(int p)
+{
+	char *t;
+        if (!pr[p].move)
+           return 0;  /* Province has no valid moves, so return 0 */
+        for (t = pr[p].move; *t; t++) {
+	    t++;  /* Skip destination province record */
+	    switch (*t >> 4) {
+		case XC:
+		case EC:
+		case NC:
+		case WC:
+		case SC:
+		    return 0;
+
+		default:
+		    break;
+
+	    }
+	}
+	
+	return 1;
+}
+

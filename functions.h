@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.27  2004/06/27 01:50:21  millis
+ * Futher Intimate fixes (Bug 297) specifically to allow phased orders
+ * and correct turns not processing, plus more information printed.
+ *
  * Revision 1.26  2004/06/16 07:54:50  nzmb
  * A couple of changes to improve the interaction between rdip and bailout, and
  * make rdip a bit more fault tolerant:
@@ -156,7 +160,7 @@ char *SomeoneText( int index);
 int RealPlayerIndex(int index);
 int IsPlayerDead(int index);
 void PrintTreasury(int pt, int power_bid_total[], int processing, int predict);
-	
+int LandLocked(int p);	
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int, int);

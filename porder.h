@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2004/05/22 08:37:28  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.13  2003/05/02 21:30:43  millis
  * Aded new stuff for AF rules
  *
@@ -77,6 +80,10 @@
 #define CC	    9		/* Special conditional movement             */
 #define HX	    2		/* Half-unit movement			    */
 #define LX	    3		/* Half unit movement and convoys	    */
+#define HAS_NC	   0x1		/* Set of flags for province 'coasts' 	    */
+#define HAS_SC	   0x2
+#define HAS_WC	   0x4
+#define HAS_EC	   0x8
 #define PF_CONSTANT    0x00FF	/* Portion of flags that are constant         */
 
 #define CMAP_NAME   0
@@ -116,6 +123,7 @@ extern struct province {
 	int new_owner;		/* For setup, the new owner of province	      */
 	int order_index;	/* index of next unit to be ordered	      */	
 	int unit_held;		/* 1 if unit held here from last turn, else 0 */
+	int coasts;		/* Set of flags per coast, to say if has them */
 } pr[NPROV + 1];
 
 extern int npr;			/* Actual number of provinces                 */

@@ -122,17 +122,56 @@
                 return E_WARN;
 
 
+static int HasCoast(int p, char c) {
+/* See if the province has the required coast */
+
+    int ret = 0;
+
+
+    /* If has coasts but none specified, also fail */
+    if (!(c == MV && pr[p].coasts))
+    
+      switch (c) {
+
+        case EC:
+	    ret = pr[p].coasts & HAS_EC;
+	    break;
+
+	case NC:
+	    ret = pr[p].coasts & HAS_NC;
+	    break;
+
+	case SC:
+	    ret = pr[p].coasts & HAS_SC;
+	    break;
+
+	case WC:
+	    ret = pr[p].coasts & HAS_WC;
+	    break;
+
+	case XC:
+	    ret = 1;  /* Always have coast */
+
+	default:
+	    break;
+
+
+    }
+
+    return ret;
+}
+
 static int valid_aw_move(int i, int p2, int *c2, int *j)
 {
     /* See firstly if a valid fleet move */
-    /* Then, if airlifts permitted, check if a valid land move */
+    /* Then, if airlifts or portage permitted, check if a valid land move */
 
     int ret;
 
     ret = valid_move(i, p2, c2, j);
 
     if (!ret)
-        if (dipent.xflags & XF_AIRLIFTS) {
+        if (dipent.xflags & XF_AIRLIFTS || HAS_PORTAGE) {
 	    unit[i].coast = MV;
 	    ret = valid_aw_move(i, p2, c2, j);
         }
@@ -163,6 +202,9 @@ static int CheckValidACUnit( int u)
    if (unit[u].type == 'W' && dipent.xflags & XF_AIRLIFTS)
 	return 1;
 
+   if (unit[u].type == 'A' && HAS_PORTAGE)
+	return 1;
+
    return 0;
 }
 
@@ -181,6 +223,9 @@ int convoyable(int p)
 
     if ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 == 'w'))
         return 1; /* Province can also act as water and game is duality */
+
+    if (HAS_PORTAGE)
+	return 1;  /* All land provinces can also convoy */
 
     return 0;  /* Other cases, nothing doing! */
 
@@ -225,8 +270,13 @@ extern int one_owned[];
 int StrictConvoy(int p_index)
 {
 	if (!(dipent.xflags & XF_STRCONVOY ) ) return 1; /* allow when no flag */
+
+	/* See if unit is landlocked, and thus cannot be convoyed ever */
+	if (LandLocked(p_index))
+	    return 0;
+
+	return 1;
 	
-	return 0; /* Invalid so disallow */
 }
 /*
 * General purpose move checker routine.
@@ -316,9 +366,9 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 				return E_WARN;
 			}
 		}
-		if (order == 'c' && water(p2)) {
+		if (order == 'c' && (water(p2) || (HAS_PORTAGE && !LandLocked(p2)))) {
 			errmsg("The convoy order should specify source %s\n",
-			 "and final destination of an army.");
+			 "and final destination.");
 			return E_WARN;
 		}
 		if (order == 'c' && !StrictConvoy(p2)) {
@@ -464,6 +514,7 @@ int movein(char **s, int p)
 	/*
 	 ** Process regular orders.
 	 */
+
 	*s = get_type(*s, &c);
 	*s = get_prov(*s, &p1, &c1);
 	if (!p1) {
@@ -494,7 +545,7 @@ int movein(char **s, int p)
 	u = GetUnitIndex(p1, p); /* return next unit if multi-unit province */
 
 	unit[u].railway_index = -1;  /* to reset */
-	if (p != unit[u].owner && p != MASTER && !(dipent.flags & F_INTIMATE 
+	if (p != unit[u].owner && p != MASTER && !(IS_DUPLEX(dipent) 
 					&& (unit[u].controller == 0 || unit[u].controller == p))) {
 		if (!((dipent.x2flags & (X2F_PROXY)))) {
 			errmsg("%s doesn't own the %s %s %s.\n", powers[p], utype(c),
@@ -574,7 +625,8 @@ int movein(char **s, int p)
 		 }
 		 if ((order == 'a' || order == 'c') &&
 			!(dipent.flags & F_BLIND) && 
-			unit[u2].type != 'A' && unit[u2].type != 'R') {
+			unit[u2].type != 'A' && unit[u2].type != 'R' && 
+			!(HAS_PORTAGE && unit[u2].type == 'F')) {
 			errmsg("The specified unit is of a type that cannot be %sed.\n",
 			 order == 'c' ? "convoy" : "airlift");
 			return E_WARN;
@@ -600,7 +652,7 @@ int movein(char **s, int p)
 				return E_WARN;
 			}
 		}
-		if (order == 'c' && unit[u].type != 'F') {
+		if (order == 'c' && !(unit[u].type == 'F' || (HAS_PORTAGE && unit[u].type == 'A'))) {
 			errmsg("The %s in %s can't convoy anything!!\n",
 			 utype(unit[u].type), pr[p1].name);
 			return E_WARN;
@@ -613,7 +665,7 @@ int movein(char **s, int p)
 
 		if (order == 'c' && water(p2)) {
 			errmsg("The convoy order should specify source %s\n",
-			 "and final destination of an army.");
+			 "and final destination.");
 			return E_WARN;
 		}
 		if (order == 'c' && !StrictConvoy(p2)) {
@@ -702,7 +754,7 @@ int movein(char **s, int p)
 		    }
 		} else*/
 		  if (c == 'm') {
-			if (unit[u].type == 'A') {
+			if (unit[u].type == 'A' || (HAS_PORTAGE && unit[u].type == 'F')) {
 				i = nunit + 1;
 				unit[i].loc = unit[u].loc;
 				unit[i].coast = XC;
@@ -712,8 +764,8 @@ int movein(char **s, int p)
 					if (!railway(p2) &&(!valid_aw_move(i, p2, &c2, &j) || !convoyable(p2) ||
 					 (!(u2 = pr[p2].unit) || !CheckValidACUnit(u2)))) {
 					 
-						errmsg("The army in %s can't convoy through %s%s.\n",
-						 pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
+						errmsg("The %s in %s can't convoy through %s%s.\n",
+						 utype(u2), pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
 						return E_WARN;
 					}
 					if (j && !bl)
@@ -721,6 +773,7 @@ int movein(char **s, int p)
 					heap[hp++] = pr[p2].unit;
 					unit[i].loc = p2;
 					if (railway(p2)) railway_flag = 1;
+					p3 = p2;  /* Remember previous province */
 					*s = get_prov(t, &p2, &c2);
 					if (!p2) {
 						errmsg("Movement from %s%s to unrecognized province -> %s",
@@ -738,18 +791,42 @@ int movein(char **s, int p)
                             			return E_WARN;
                         		}
 				}
-				if (!railway_flag && (!valid_move(i, p2, &c2, &j))) {
-					errmsg("The army in %s can't convoy from %s to %s.\n",
-					 pr[p1].name, pr[unit[i].loc].name, pr[p2].name);
+				if (unit[u].type == 'F' && LandLocked(p2)) {
+				    errmsg("Fleet cannot end up in landlocked province %s.\n", pr[p2].name);
+				    return E_WARN;
+				}
+				c3 = MV;
+				if (!railway_flag && (!valid_move(i, p2, &c3, &j))) {
+					errmsg("The %s in %s can't convoy from %s to %s.\n",
+					 utype(unit[u].type), pr[p1].name, pr[unit[i].loc].name, pr[p2].name);
 					return E_WARN;
 				}
 				if (water(p2)) {
-					errmsg("The army in %s can't convoy into the %s.\n",
+					errmsg("The %s in %s can't convoy into the %s.\n",
+					 utype(unit[u].type),
 					 pr[p1].name, pr[p2].name);
 					return E_WARN;
 				}
 				heap[hp++] = 0;
-				c2 = MV;
+				if (unit[u].type != 'F' )
+				    c2 = MV;  /* Fleets will retain their specified coast */
+				else {
+				    /* It is a fleet movement, let's check that the fleet's going to end up
+				     * on a valid coast */
+				    if ((c2 == MV && pr[p2].coasts) || (c2 != MV && !pr[p2].coasts) ) {
+					errmsg("Province has %scoasts - %s specify one.\n",
+					       c2 == MV ? "" : "no ",
+					       c2 == MV ? "please" : "do not");
+					return E_WARN;
+				    }
+					       
+				    if (!HasCoast(p2, c2)) {
+					errmsg("Invalid coast specified for %s.\n", 
+					       pr[p2].name);
+					return E_WARN;
+				    }
+				}
+				
 			} else {
 				errmsg("Invalid order syntax for the unit %s %s.\n",
 				 mov_type(p1, u), pr[p1].name);
@@ -1772,7 +1849,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 		if (unit[u].owner <= 0)
 			continue;
 		if (processing || pt == unit[u].owner || pt == MASTER ||
-		    (dipent.flags & F_INTIMATE && unit[u].controller == pt)) {
+		    (IS_DUPLEX(dipent) && unit[u].controller == pt)) {
 			if (unit[u].owner != p)
 				fprintf(rfp, "\n");
 			if ((unit[u].owner != p) && (pt == MASTER)) {
@@ -1800,7 +1877,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
                                 }
 				else if (!processing && !predict && unit[u2].dest != unit[u].dest)
 					result[u] = BAD_CONVOY;
-				fprintf(rfp, "Army %s -> %s", pr[unit[u].unit_prov].name,
+				fprintf(rfp, "%s %s -> %s", Utype(u), pr[unit[u].unit_prov].name,
 					pr[unit[u].dest].name);
 				break;
 			case 'h':
@@ -2110,6 +2187,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			}
 		}
 	} 
+
+
 	return bounce;
 }
  

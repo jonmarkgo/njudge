@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     12 May, 2004
+Greetings from the Diplomacy* Adjudicator!!                     04 Jul 2004
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -40,7 +40,8 @@ The when options are:
 pre:  Must appear before a SIGNON command.
 mac:  Can only be used in a Machiavelli variant game, and only before the
       game starts.
-bgs:  Can only be used Before Game Starts.
+bgs:  Should only be used Before Game Starts. If used afterwards, game will
+      have an 'irregular' flag set and will not count for any rating purposes.
 
 Items in uppercase are keywords and must be entered exactly as specified
 (although the command parser actually is not case-sensitive), items in
@@ -699,6 +700,10 @@ mod/bgs SET PLAYERS number
         to play multiple powers.  Get file 'info.duplex' for more information
         and an example.
 
+mod/bgs SET [NO]PORTAGE                                                {1.7.0}
+        Enables/disables armies to convoy fleets. See 'info.portage' for
+        more details.
+
 mod/    SET [NO] POSTAL PRESS                                          {1.2.0}
         Turns postal press on/off.  Postal press is press published with the
         results of the turn.  See command "POSTAL PRESS" for more details.
@@ -826,7 +831,7 @@ mod/   !SET [NO] STRICT CONVOY                                         {0.8.9}
         Allows/disallows "implausible" convoys.  Default disabled, so fleets
         can be ordered to convoy any army to any province defined in the map
         file.  If set, only convoys that could conceivably succeed may be
-        ordered.  (As of the current version, the plausibility checking is
+        ordered. (As of the current version, the plausibility checking is
         actually minimal; it only rejects convoys if either the origin or
         destination space has no adjacent sea spaces.)
 

@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.22  2004/06/27 01:50:22  millis
+ * Futher Intimate fixes (Bug 297) specifically to allow phased orders
+ * and correct turns not processing, plus more information printed.
+ *
  * Revision 1.21  2004/06/05 09:00:32  millis
  * Bug 297 : problems with calculating effective bids fixed
  *
@@ -247,6 +251,7 @@ int po_init(void)
 			pr[i].gunit = 0;
 			pr[i].unit_held = 1;
 			pr[i].order_index =0;
+			pr[i].coasts = 0;
 			if (pr[i].type == 'r' || pr[i].type == 'g' )
 			    pr[i].move = NULL;
 		}
@@ -364,6 +369,25 @@ void po_chkmov(void)
 				continue;
 			}
 			i = *s++ & 0x0f;
+			/* save the coasts in the coasts flags */
+			switch (i) {
+				case EC:
+				    pr[to].coasts |= HAS_EC;
+				    break;
+				case WC:
+				    pr[to].coasts |= HAS_WC;
+				    break;
+				case SC:
+				    pr[to].coasts |= HAS_SC;
+				    break;
+				case NC:
+				    pr[to].coasts |= HAS_NC;
+				    break;
+
+				default:
+				    break;
+			}
+									
 			while ((j = *t++) && ((j != from) || (i != MX && i != HX && i != LX && i != *t >> 4)))
 				t++;
 			if (!j) {
