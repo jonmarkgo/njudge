@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.6  2002/10/19 21:39:15  millis
+ * Fixed Bug 21: Mach2 games allowing Armies in Venice
+ *
  * Revision 1.5  2002/05/31 12:38:28  millis
  * Correct problem not allowing builds in Venice to change mind
  * Also allow first turn to have an over-spend (needed for scenarios)
@@ -324,9 +327,9 @@ void ma_buildout(int pt)
 					fprintf(rfp, "  (%d ducats)\n", c1);
                                         ducats[p].treasury = 0;  
 				} else {
-					fprintf(rfp, "  (%d ducats *** NSF\n", c1);
+					fprintf(rfp, "  (%d ducats *** NSF)\n", c1);
 					unit[u].owner = 0;
-					if (!processing) {
+					if (!processing && pt != MASTER) {
 						more_orders++;
 						err++;
 					}
@@ -361,8 +364,10 @@ void ma_buildout(int pt)
 				fprintf(rfp, "%s %s", Utype(unit[u].type), pr[unit[u].loc].name);
 				if (!processing && !predict ) {
 					fprintf(rfp, " *** No order received, maintain or remove");
-					more_orders++;
-					err++;
+					if (pt != MASTER) {
+					    more_orders++;
+					    err++;
+					}
 				} else {
 					fprintf(rfp, " *** No order received, removed");
 				}
