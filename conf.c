@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added new dip.conf variables
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -115,6 +118,7 @@ int conf_init(void)
 	conf_set("SYSLOG_FLAG", "0");
 	conf_set("STATS_FLAG", "0");
 	conf_set("STATS_DIR", "./stats");
+	conf_set("AUTO_MASTER","no");
 	return 1;
 }
 
