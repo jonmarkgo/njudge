@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.57  2003/09/09 19:57:09  nzmb
+ * Fixed Bug 31 -- the time to deadline/grace expiration messages are no
+ * longer printed for terminated games, and neither are the "orders not
+ * received ... you will be considered late/abandoned" message. The list of
+ * entered orders is still displayed, though.
+ *
  * Revision 1.56  2003/08/25 14:39:36  millis
  * Fixed bug 220
  *
@@ -2046,9 +2052,10 @@ int mail(void)
 
 				case PHASE:
 					if (signedon > 0) {
-					    if (!(read_phase = phase(s)))
+					    if (0 > (read_phase = phase(s)))
 					    {
-						fprintf(rfp, "Invalid phase %s specified - phase ignored.\n\n", s);
+						fprintf(rfp, "Invalid phase %s specified!\nPhased orders will be ignored and an error set.\n\n", s);
+						errorflag++;
 					    } else {
 						fprintf(pfp, "%c: %s",
                                                                    dipent.pl[dipent.players[player].power], line);
@@ -2202,7 +2209,7 @@ int mail(void)
 							    fprintf(pfp, "%c: %s",
 								   dipent.pl[dipent.players[player].power], line);
 						        }
-						}
+						} 
 					}
 				}
 			}
@@ -2329,26 +2336,26 @@ int mail(void)
 			} else {
 				fprintf(rfp,"Since you have no moves due, the error flag is not set.\n\n");
 			}
-
+			
 			if ((dipent.players[player].status & SF_MOVE) &&
                            (dipent.players[player].power != MASTER) &&
                             !GAME_PAUSED && (dipent.phase[6] != 'X')) {
-				long then;
-				if (time(NULL) <= dipent.deadline) {
-				    fprintf(rfp, "Unless error-free orders are received by the deadline ");
-				    fprintf(rfp, "of\n%s you will be considered late.\n",
-					    ptime(&dipent.deadline));
-				}
+                                long then;
+                                if (time(NULL) <= dipent.deadline) {
+                                    fprintf(rfp, "Unless error-free orders are received by the deadline ");
+                                    fprintf(rfp, "of\n%s you will be considered late.\n",
+                                            ptime(&dipent.deadline));
+                                }
 
-				then = dipent.grace - ((dipent.flags & F_NONMR) ? 0 : 24 * HRS2SECS);
-				if (more_orders) {
-					fprintf(rfp, "You will be considered abandoned if nothing is ");
-					fprintf(rfp, "received by\n%s.\n\n", ptime(&then));
-				} else {
-					fprintf(rfp, "The partial orders will be processed if nothing ");
-					fprintf(rfp, "is received by\n%s.\n\n", ptime(&then));
-				}
-			}
+                                then = dipent.grace - ((dipent.flags & F_NONMR) ? 0 : 24 * HRS2SECS);
+                                if (more_orders) {
+                                        fprintf(rfp, "You will be considered abandoned if nothing is ");
+                                        fprintf(rfp, "received by\n%s.\n\n", ptime(&then));
+                                } else {
+                                        fprintf(rfp, "The partial orders will be processed if nothing ");
+                                        fprintf(rfp, "is received by\n%s.\n\n", ptime(&then));
+                                }
+                        }
 		}
 
 		temp1 = (dipent.players[0].status & SF_PROCESS);
@@ -2510,6 +2517,11 @@ void mail_reply(int err)
 	{
 		s = dipent.players[player].address;
 		sprintf(jline, "%s:%s - %s", JUDGE_CODE, dipent.name, dipent.phase);
+
+		if (errorflag && (dipent.players[player].status & SF_MOVE)) {
+			dipent.players[player].status &= ~SF_MOVED; /* Make an error */
+
+		}
 	} 
 	else 
 	{
