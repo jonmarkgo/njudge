@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!           26th October, 2002
-Rules.machiavelli*
+Greetings from the Diplomacy* Adjudicator!!                Feb. 23, 2003
+Rules.Machiavelli*
 
 INTRODUCTION
 Machiavelli is a board game by Avalon Hill.  It is similar to Diplomacy,
@@ -249,9 +249,14 @@ This means that:
         control does not change.
      5) If you enter a province with an ungarrisoned city you gain control
         of the city too.
-     6) If Power A has a unit in a province and Power B has a garrison in
-        the city, the province income will go to Power A while the city
-        income goes to Power B as control is shared between both.
+     6) INCOME: If Power A controls the province and Power B controls the 
+        (contained) city, the province income will go to Power A, while 
+        the city income goes to Power B.
+     7) BUILDS: A player must own both a home city and its surrounding 
+        province in order to be able to build there. E.g. if one power has 
+        a unit in the province, while another power has a unit in the city, 
+        and both are simultaneously eliminated by famine or plague, neither 
+        power will have build rights.
 
 Example 1: if a unit is purchased, ownership of the province the unit is in
 changes before the unit moves away.
@@ -496,6 +501,7 @@ Rules concerning builds:
         but also, no "refunds" of ducats are made for units that are
         eliminated or disbanded during the year.
      h) See also the section on Venice.
+     i) See also the section on control over provinces and cities.
 
 Each existing unit must be explicitly maintained or disbanded before the
 adjudicator will consider your orders complete.  If you submit a "maintain"
@@ -770,6 +776,8 @@ EFFECTS OF REBELLIONS:
         disbanded/removed/eliminated/bought after the rebellion event).
 8) How rebellions are removed
    Notice that removal occurs *after* the rebels have given any support.
+   Also notice that cities may not be allowed to retreat/convert into, as 
+   explained in 5.2-3 above *regardless* of what is said in paragraph 8.3-4.
      1) The player who the rebellion is directed against must besiege a
         rebelling city to "put down" the rebellion.  Any rebellion in the
         province is *also removed* at the completion of the siege.
@@ -822,9 +830,12 @@ EFFECTS OF ASSASSINATION
    eliminated. (To clarify: the G is *not* eliminated if the enemy ordered 
    to begin to besiege in the same campaign as the assassination occurs).  
    If the *besieging unit's player is also assassinated*, the garrison 
-   remains.  
-   (This rule means that the enemy may chance to order the besiegeing unit 
-   to do something else and still get rid of the garrison !)
+   remains.
+   (This rule means that the enemy may choose to order the besiegeing unit
+   to do something else and still get rid of the garrison ! Note that if
+   such an order is given and an assassination fails to happen, the result
+   is a wasted season for the unit attempting the siege. The siege remains
+   half-way complete.)
 4) Some provinces controlled by the victim will rebel.  See under
    rebellions for effects.  Based on a 1d6 die roll:
       Type of province               Die to rebel
@@ -838,6 +849,42 @@ effects of assassination merely show the often chaotic effects of a sudden
 shift in power at the top.
 
 (List of allowed expenditures and bribes ends here!)
+
+
+SEQUENCE OF PLAY AND ORDER RESOLUTION
+Below follows a summary of the sequence of play combined with the adjudicating 
+software's order processessing (with the main control adjudications steps).  
+Notice that each *step* (a, b etc) is simultaneous, not the whole turn.
+
+   1) Submittal of player orders -- "conflict" phase.
+      This is done thrice (one time each in spring, summer and fall)
+   1.1) Money and movement
+      a) Banking: i.e. loans and loan repayment.
+      b) Expenditures not concerning assassinations.
+         - control adjudication 1
+      c) Expenditures concerning assassinations.
+      d) Assassinations of players defaulting on their loans.
+      e) Movement order resolution.
+         - control adjudication 2
+      f) Removal of rebellions in provinces.
+         - control adjudication 3
+   1.2) If there are retreats results up to this point are mailed to player.
+      h) Retreats if any.
+         - control adjudication 4
+      g) Removal of rebellions in cities.
+         - control adjudication 5 (for rebellions and famines)
+      h) Removal of famine units (only after spring turn).
+      i) Any plague effects (only after spring turn).
+         - control adjudication 6
+      j) Any storm effects (only after fall turn).
+         - control adjudication 7
+      k) Any famine effects (only after fall turn).
+   1.3) Final results mailed to player.
+   2) Submittal of builds and maintenance -- adjustment phase
+
+Notice that in Machiavelli2 there is only one control adjudication step after 
+the fall turn (technically the rules say before spring) corresponding to step 
+7 in the list above
 
 
 PROVINCE ABBREVIATIONS
@@ -944,37 +991,52 @@ VARIANT SPECIFIC JUDGE COMMANDS FOR GAME OPTIONS
 The "set" command can be used by the moderator/master of a game to enable
 or disable the following options:
 
-set [no]famine
-To disable/enable the famine rules.
+set [no]mach2
+To use or not the Machiavelli 2nd edition (1995) rules.  Always disabled 
+by default.
 
-'Tech note': Perugia never has famine as it is not incl. in the table.
-
-set [no]plague
-To disable/enable the plague rules.  Always disabled by default.
-
-'Tech note': Arezzo, Piombino, Pistoia and Ragusa never have plague as
-they are not incl. in the table.  They are incl.in the 1995 2nd ed.
-
-set [no]loans
-To disable/enable the borrowing of ducats from the bank.  This does not
-affect whether one player can give money to another player.
-
-set [no]assassinations
-To disable/enable the use of the assassination *expenditure*.  Regardless
-of this setting you will still be assassinated by the *bankers* if you do
-not repay your loans.
+set [no]money
+If you set nomoney cities are treated as supply centers and builds are 
+calculated as per normal Diplomacy rules even in Machiavelli1 !  You 
+cannot bribe, assassinate, use special units or get any income.
+To fully enable the Machiavelli Basic rules you also need to set nodice. 
 
 set [no]dice
 To disable/enable random events.  Setting nodice automatically disables
 famine, plague, loans and assassinations.  Enabling any of the said options
 automatically enables the dice option.  Selected rolls for variable income
 will always be a 4 in odd years and a 3 in even years.
+To fully enable the Machiavelli Basic rules you also need to set nomoney. 
+
+set [no]loans  or  set [no]bank[ers]
+To disable/enable the borrowing of ducats from the bank.  This does not
+affect whether one player can give money to another player.
+
+set [no]famine
+To disable/enable the famine rules.
+
+'Tech note': Perugia never has famine as it is not incl. in the table.
+
+set [no]plague
+To disable/enable the plague rules.  Always disabled by default.  It is 
+incl.in the 1995 2nd ed.
+
+'Tech note': Arezzo, Piombino, Pistoia and Ragusa never have plague as
+they are not incl. in the table.  They are incl.in the 1995 2nd ed.
+
+set [no]storm
+To disable/enable the fall sea storms that can sink fleets.
+
+set [no]assassinations
+To disable/enable the use of the assassination *expenditure*.  Regardless
+of this setting you will still be assassinated by the *bankers* if you do
+not repay your loans.
 
 set [no]special
 To disable/enable the special unit types.
 
 set [no]fort[ress]
-To add/remove additional fortified cities to/from the map.
+To allow or not the use of additional fortified cities.
 
 set [no]adjacency
 To disable/enable the restriction that bribes can only be directed to units
@@ -987,7 +1049,7 @@ This means that a fleet in, say, Sienna is considered adjacent to a
 garrison in Florence for the purposes of bribery.  You can always counter-
 bribe your own unit as it will suffice as its own adjacent unit.
 
-Effects of adjacency or not.
+Unit adjacency requirements for bribes and assassinations.
 Action               Adjacency enabled               Adjacency disabled
 Famine relief (a)    required (to prov or city)      not required
 Pacify reb (b)       required (to prov or city)      not required
@@ -996,21 +1058,13 @@ Bribes d-i           required (to army or fleet)     not required
 Cause reb. (j,k)     required (to prov or city)      not required
 Assassination (l)    not required                    not required
 
-set [no]storm
-To disable/enable the fall sea storms that can sink fleets.
-
-set [no]money
-To disable/enable the Basic rules.
-
 set [no]coastal convoys
-To disallow/allow the use of fleets on a coast in convoys.
+To disallow/allow use of fleets in coastal provinces in convoys. Coastal
+convoys are by default enabled for the standard Machiavelli variant.
 
 set [no]disband
 To disable/enable the Mach1 disband rule. That allows you to disband
-units anytime.  E.g. a sav d. 
-
-set [no]mach2
-To disable/enable Machiavelli 2nd Edition (1995) rules (see spec. file).
+units anytime.  E.g. a sav disband. 
 
 The status of these options are listed in the "full" listing of the games
 under the heading "flags".  The default settings for the various Mach
@@ -1068,6 +1122,20 @@ ets-xc: psa/cc pio sie pat tiv gon mes pal wts
 ets-cc: psa
 
 
+APPENDIX 2 -- MAIN DIFFERENCES BETWEEN OLDER VERSIONS OF MACH
+
+Differences between AH 1980 and 1983 (the first 2nd edition) editions.
+1)  No money lenders -- no bank (this must surely be a misprint in my
+    rules)
+2)  Necessary to control both city and province to gain the additional
+    "city/province" variable income roll.
+3)  Balance of Power scenario.  Papal home country includes Tivoli.
+    Control of Naples or Milan city and province awards 1d6 variable
+    income roll.
+4)  Struggle for Dominance I scenario.  Control of Genoa or Florence city
+    and province awards 1d6 variable income roll.
+
+
 -----
 * AVALON HILL, MACHIAVELLI AND DIPLOMACY ARE TRADEMARKS OF HASBRO INC., ALL
 RIGHTS RESERVED.
@@ -1075,14 +1143,21 @@ RIGHTS RESERVED.
 
 
 REVISION HISTORY
-v1 11th of December 1991. Author Ken Lowe??.
-v1b 25th of May 2000. Minor revision. Avalon Hill changed to Hasbro Inc.
-and correction of assassination effects on garrisons. Author Millis Miller.
-v2 30th of June 2001. Major rewrite. Clarifications to most rules. Author
-Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and Robert
-Rehbold.
-v2b 17th of December 2001. Minor additions re. Basic and Adv. rules and some 
-clarifications. Author Sergio Lidsell.
-v2c 24th of July 2002. Additions to Introduction and clarification of loan 
-repayment procedure in the borrowing phase. Author Sergio Lidsell.
-v2c2 26th of Oct 2002. Correction of G elim. at assass. Auth. S. Lidsell
+v1 11th December 1991. Author Ken Lowe??.
+v1b 25th May 2000. Minor revision. Avalon Hill changed to Hasbro Inc.
+    and correction of assassination effects on garrisons. 
+    Author Millis Miller.
+v2 30th June 2001. Major rewrite. Clarifications to most rules. Author
+    Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and 
+    Robert Rehbold.
+v2b 17th December 2001. Minor additions re. Basic and Adv. rules and some 
+    clarifications. Author Sergio Lidsell.
+v2c 24th July 2002. Additions to Introduction and clarification of loan 
+    repayment procedure in the borrowing phase. Author Sergio Lidsell.
+v2c2 26th Oct 2002. Correction of G elim. at assass. Auth. S. Lidsell.
+v2.1 27th Jan 2003. Summary sequence of play added. Retreat into rebelling
+    cities and assassination rule 3 clarified. Builds and divided control 
+    of provinces clarified.  Authors S. Lidsell & B. Duewer.
+v2.1b 23rd Feb. 2003. Moved section on version differences here from
+    rules.machiavelli2. Section on variant specific commands reviewed and 
+    updated. Author Sergio Lidsell.
