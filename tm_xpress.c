@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2003/07/18 01:24:07  nzmb
+ * Changed it so the "diary" command by itself defaults to "diary record"
+ *
  * Revision 1.5  2003/07/12 01:48:43  nzmb
  * Master now gets notified when a player enters a new diary entry.
  *
@@ -72,7 +75,7 @@ int process_ppress(void)
 
 void process_diary(char *cmd)
 {
-	char *ch, *tmp;
+	char *ch, *tmp = NULL;
 	int read = 0;	 /* read a specified entry */
 	int delete = 0;  /* delete a specified entry */
 	int entry = -1;	 /* number of entry to perform action on */
@@ -300,8 +303,8 @@ void send_diary(void)
 		for(j = 0; j < ndiaries; j++)
 		{
 			/* send all diaries */
-			sprintf(subjectln, "NZMB:%s diary #%d from %c",
-				dipent.name, j, pabbr);
+			sprintf(subjectln, "%s:%s diary #%d from %c",
+				JUDGE_CODE, dipent.name, j, pabbr);
 			sprintf(diary_fl, "%s%s/diary-%c-%d", GAME_DIR,
 				dipent.name, pabbr, j);
 			if(stat(diary_fl, &sbuf) == -1)
