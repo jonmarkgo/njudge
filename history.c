@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/02/23 00:19:33  miller
+ * un-DOSify
+ *
  * Revision 1.3  2001/02/03 10:36:16  miller
  * properly hide history in blind game
  *
@@ -94,7 +97,8 @@ char *GameName;
 	while (fgets(Input, sizeof(Input), fp) != NULL) {
 		if (flag == 0) {
 			if (strstr(Input, "Subject:") != NULL) {
-				if ((!nbflag) && (strstr(Input, "notice") != NULL)) {
+				if ((!nbflag) && (strstr(Input, "Results") == NULL)
+					&& (strstr(Input, "Game Starting") == NULL)) {
 					flag = 1;
 				} else if (strstr(Input, against) != NULL) {
 					flag = 2;
