@@ -1,4 +1,6 @@
 /*
+ * $Log$
+ *
  * plyrdata.c. Experimental file to log player statistics on the Judge
  * for a new ratio based dedication system and other monitoring.
  * Created first by Tim Miller, Feb 16, 2001. Preliminary structure
@@ -12,6 +14,8 @@ $ID$
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 
 #include "plyrdata.h"
