@@ -1,5 +1,12 @@
 /*
 ** $Log$
+** Revision 1.32  2004/07/09 04:07:13  nzmb
+** Major convoy changes -- the convoy field in the unit struct now is a
+** list of provinces being convoyed through, not a list of units. This
+** simplifies convoy processing in blind (it allows us to accept all convoys,
+** which allows a fix to bug #290). Fair warning: this code compiles but is
+** not tested -- that's coming.
+**
 ** Revision 1.31  2004/07/07 22:00:00  millis
 ** Small fix as was showing 'Unit' not real type for convoyed units
 **
@@ -265,26 +272,20 @@ static int NoValidConvoyingFleet(char *s, int u)
     int p = (*s) - 1;
     int u1;
 
-    /*
-     * NOTE: this used to be in a do-while loop that only ever executed
-     * one iteration since pr[p].order_index can never be > 1. I have left the
-     * loop in commented out. If this works it and this comment should be
-     * deleted.
-     */
-    pr[p].order_index = 1;
+    pr[p].order_index = 1; /* order_index updated in GetUnitIndex() */
     u1 = GetUnitIndex(p, MASTER);
-    /*do {*/
+    do {
 
-    if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
-       (unit[u1].dest != unit[u].dest && unit[u1].dest != (*(s + 1) - 1)) ) {
-	/* Unit found but is doing something else */
-    } else {
-        /* Unit found and IS convoying/airlifting this one! */
-        ret_code = 0;
-    }
-    u1 = GetUnitIndex(p, MASTER);
+        if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
+           (unit[u1].dest != unit[u].dest && unit[u1].dest != (*(s + 1) - 1)) ) {
+	    /* Unit found but is doing something else */
+        } else {
+            /* Unit found and IS convoying/airlifting this one! */
+            ret_code = 0;
+        }
+        u1 = GetUnitIndex(p, MASTER);
 
-    /*} while (ret_code == 1 && pr[p].order_index > 1); */
+    } while (ret_code == 1 && pr[p].order_index > 1);
 
     pr[p].order_index = 1; /* Reset the index so will start from first unit */
 
