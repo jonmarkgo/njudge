@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.65  2004/10/13 00:23:45  alange
+ * Added newline to end of Congrats line so dip.footer would start on a new line.
+ *
  * Revision 1.64  2004/09/06 22:08:16  millis
  * Bug363 Allow more than one victor
  *
@@ -1587,10 +1590,14 @@ int process(void)
 			for (vic_count = 0; vic_count < victor; vic_count++)
 			{
 			    vic = victors[vic_count];
-			    if (vic_count > 0) {
+			    if (vic_count > 0 && vic_count + 1 < victor ) {
 		                fprintf(ofp, ", ");
                                 fprintf(dfp, ", ");
                                 fprintf(gfp, ", ");
+			    } else if ( vic_count + 1 >= victor) {
+				fprintf(ofp, " and ");
+				fprintf(dfp, " and ");
+	                        fprintf(gfp, " and ");
 			    }
 			    fprintf(ofp, "%s", powers[vic]);
 			    fprintf(dfp, "%s", powers[vic]);

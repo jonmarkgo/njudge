@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.67  2004/10/23 19:17:09  millis
+ * Bug 370 & 371, missing breaks added to case statement end
+ *
  * Revision 1.66  2004/09/13 23:03:45  millis
  * Further changes for Bug 363
  *
@@ -1905,11 +1908,11 @@ void mail_setp(char *s)
 					fprintf(rfp, "Draw list '%s' not set.\n", t);
 					if (dipent.players[player].status & SF_DRAW) {
 						fprintf(rfp, "Draw list remains '%s'.\n",
-							dipent.players[player].pref);
+							dipent.players[player].draw);
 					}
 				} else {
 					fprintf(rfp, "Draw list '%s' set.\n", t);
-					strcpy(dipent.players[player].pref, t);
+					strcpy(dipent.players[player].draw, t);
 					dipent.players[player].status |= SF_DRAW;
 					process_draw();
 				}
@@ -1950,7 +1953,7 @@ void mail_setp(char *s)
                                         fprintf(rfp, "Concession not set.\n");
                                 } else {
 					fprintf(rfp, "Concession to '%s' set.\n", t);
-					strcpy(dipent.players[player].pref, t);
+					strcpy(dipent.players[player].draw, t);
 					dipent.players[player].status |= SF_CONC;
 					process_conc();
 			}

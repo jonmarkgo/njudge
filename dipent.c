@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.25  2004/09/13 01:48:09  nzmb
+ * Removed redefinition of malloc (incorrectly, I may add) that was causing
+ * compile to fail on FreeBSD.
+ *
  * Revision 1.24  2004/09/03 13:30:17  millis
  * Added use of AlliedWin value.
  *
@@ -333,7 +337,16 @@ int getdipent(FILE * fp)
 				for (s = line; !isspace(*s); s++);
 				while (isspace(*s))
 					s++;
-				strcpy(dipent.players[dipent.n - 1].pref, s);
+				switch (line[1]) {
+				    case 'p':  /* Preference */
+					strcpy(dipent.players[dipent.n - 1].pref, s);
+					break;
+				     
+				    case 'd': /* Draw */
+					strcpy(dipent.players[dipent.n - 1].draw, s);
+					break;
+
+				}
 			}
 			break;
 
@@ -343,6 +356,7 @@ int getdipent(FILE * fp)
 				bailout(E_FATAL);
 			}
 			*dipent.players[dipent.n].pref = '\0';
+			*dipent.players[dipent.n].draw = '\0';
 			getplay(line, &dipent.players[dipent.n++]);
 		}
 	}
@@ -710,6 +724,7 @@ void getplay(char *line, Player * p)
 	char c;
 
 	*p->pref = '\0';
+	*p->draw = '\0';
 	/* You'd better be really sure you've not messed with absence array limit! */
 	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s %d %d %d %ld %ld %ld %ld %ld %ld %ld %d", &c, &p->status,
 		   &p->units, &p->centers, &p->userid, &p->siteid,
@@ -766,7 +781,7 @@ void getplay(char *line, Player * p)
 		c = 'o';
 	if (!(p->power = power(c))) {
 		fprintf(stderr, "Invalid power character: %s\n", line);
-		bailout(E_FATAL);
+		//bailout(E_FATAL);
 	}
 }
 
@@ -799,6 +814,8 @@ void putplay(FILE * fp, Player * p, int dopw)
 		   p->absence_total, p->controlling_power);
 		if (*(p->pref))
 			fprintf(fp, "_pref: %s\n", p->pref);
+		if (*(p->draw))
+			fprintf(fp, "_draw: %s\n", p->draw);
 	}
 }
 

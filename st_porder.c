@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.32  2004/08/03 21:55:07  millis
+  ** Fix Bug 349 and 352
+  **
   ** Revision 1.31  2004/07/27 23:14:35  millis
   ** Bug 341, don't show eliminated Mercenary powers in intimate
   **
@@ -137,6 +140,17 @@ static void newowner(void);
 static void next_phase(void);
 static int HongKongCheck(int, int);
  #define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type <= '9'))
+
+
+/* Add the passed power index to the victors array (as this power at least 
+ * is a winner!)
+ */
+void AddVictor(x) 
+{
+    victors[victor++] = x;
+}
+
+
 /***************************************************************************/
 /*  Print out build statistics.  
    Return zero if no builds are needed
@@ -145,7 +159,8 @@ static int HongKongCheck(int, int);
  */
 int ownership(int new_flag, int *status)
 {
-	int nu[NPOWER + 1], np[NPOWER + 1], i, ii, j, n, l, p, u, maxcen,
+	static int player_centres[MAXPLAYERS], power_won[NPOWER+1], 
+         nu[NPOWER + 1], np[NPOWER + 1], i, ii, j, n, l, p, u, maxcen,
 	 tmpi, numwin, win = 0;
 	int statusval;
 	int p_count;
@@ -237,7 +252,6 @@ int ownership(int new_flag, int *status)
 		if (np[tmpi] >= maxcen)
 		{
 			numwin++;
-			victor = tmpi;
 		}
 	}
 	if (numwin > 1) {
@@ -246,6 +260,40 @@ int ownership(int new_flag, int *status)
 		fprintf(rfp, " If you want a draw, then vote for it.\n");
 		broadcast = 1;
 	}
+
+       /* Ok, now see if a player has met the allied win conditions */
+        if (!victor && dipent.x3flags & X3F_ALLIEDWIN) {
+            for (i = 0; i < MAXPLAYERS; i++)
+                 player_centres[i] = 0;
+
+	     for (i = 1; i <= NPOWER; i++)
+	        power_won[i] = 0;
+
+            for (i = 0; i < NPOWER+1; i++) {
+                for (p = 0; p < dipent.n; p++) {
+                    if (dipent.players[p].power == i)
+                        break;
+                }
+                if (p < dipent.n)
+                    player_centres[RealPlayerIndex(p)] += np[i];
+            }
+            /* OK, now filled how many centres each player has
+	     * Now check if one of them has attained the allied win condition
+	     */
+	    for (i = 0; i < MAXPLAYERS; i++)
+	        if (player_centres[i] >= dipent.avp) 
+	            break;  /* This player is a winner! */
+	    
+           if (i < MAXPLAYERS) {
+               /* We have a winner */ 
+               for (p = 0; p < dipent.n; p++) {
+                   if (i == RealPlayerIndex(p) && np[dipent.players[p].power] > 0)
+                         power_won[dipent.players[p].power]++;
+               }
+              statusval = -1; /* Signal that a player has won! */
+           }
+
+        }
 
 	for (i = 1; i <= NPOWER; i++) {
 		if (dipent.pl[i] == 'x')
@@ -306,12 +354,13 @@ int ownership(int new_flag, int *status)
 			nu[i], nu[i] == 1 ? ": " : "s:",
 			np[i] >= nu[i] ? "Builds " : "Removes",
 			l, l == 1 ? "" : "s");
-		if (np[i] >= maxcen && !isNativePower(i) && !(dipent.flags & F_INTIMATE) &&
-		    !(dipent.x2flags & X2F_CAPTUREWIN)) {
+		if ( power_won[i] || (np[i] >= maxcen && !isNativePower(i) && !(dipent.flags & F_INTIMATE) &&
+		    !(dipent.x2flags & X2F_CAPTUREWIN))) {
 			/* Can't handle draws just yet - see above */
-			if ((numwin == 1) /* || (dipent.flags & SF_DRAW) */ ) {
+			if ((numwin == 1 || power_won[i] ) /* || (dipent.flags & SF_DRAW) */ ) {
 				fprintf(rfp, "%s  (* VICTORY!! *)\n", l == 1 ? " " : "");
 				statusval = -1;
+				victors[victor++] = i;
 			} else
 				putc('\n', rfp);
 		} else {
@@ -465,9 +514,8 @@ void CheckCaptureWin(int *status)
     /* To Do!!! */
 
     }
-
-
 }
+
 static int AnotherPlayersHC( int u, int possible_victor[MAXPLAYERS] )
 {
     /* See if unit is occupying another players HC */
@@ -565,7 +613,10 @@ int CheckIntimateVictory()
 
     int occupied = 0;
     int i, u, v;
+    int vic = 0;
     int possible_victor[MAXPLAYERS];
+
+    victor = 0;  /* No victor yet! */
 
     for (i=0; i < MAXPLAYERS; i++)
 	possible_victor[i] = 0;
@@ -574,16 +625,18 @@ int CheckIntimateVictory()
     for (u = 1; u <= nunit; u++) {
 	v = AnotherPlayersHC(u, possible_victor);
 	if (v) {
-            if (victor <= 0) {
-                victor = v;
+            if (vic <= 0) {
+                vic = v;
                 occupied++;
-            } else if (victor != v)
+            } else if (vic != v)
                 occupied++; /* Only mark if a different person is also a victor */
 	}
     }
 
-    if (occupied == 1)
-        return victor;  /* only one power is occupying */
+    if (occupied == 1) {
+	AddVictor(vic);
+        return vic;  /* only one power is occupying */
+    }
     if (occupied == 0)
 	return 0; /* No winner */
 
@@ -591,18 +644,20 @@ int CheckIntimateVictory()
      * So now, let's see if just one person has one
      */
 
-    victor = FindMaximum(possible_victor, 3);  /* Only count up to 3 */
+    vic = FindMaximum(possible_victor, 3);  /* Only count up to 3 */
 
-    if (victor > 0)
-	return victor;  /* Only one person won */
-
+    if (vic > 0) {
+	AddVictor(vic);
+	return vic;  /* Only one person won */
+    }
     /* OK, more than one person has occupied, find the richest one */
 
-    victor = FindRichest(possible_victor);  
+    vic = FindRichest(possible_victor);  
 
-    if (victor)
-	return victor;  /* There was only one richest person */
-
+    if (vic) {
+	AddVictor(vic);
+	return vic;  /* There was only one richest person */
+    }
     return 0;  /* No one was in conditions to have won */
 }
 
@@ -623,7 +678,7 @@ static void next_phase(void)
 		newowner();
 		status = ownership(1, &int_status);
 		if (dipent.flags & F_INTIMATE) {
-		    if (int_status != 0) victor = int_status;
+		    if (int_status != 0) victor = victor;
 		} else if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
 		    CheckCaptureWin(&status);
 

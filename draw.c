@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2004/07/25 16:01:37  millis
+ * Bug 336, allow draw/concede for Intimate games
+ *
  * Revision 1.16  2004/05/22 09:08:15  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -73,6 +76,7 @@
 int check_can_vote(int i, int flag)
 {
 	char *s = NULL;
+	int r_index = RealPlayerIndex(i);
 
 	if(flag == 1)
         {
@@ -107,7 +111,7 @@ int check_can_vote(int i, int flag)
                 return 1;
         }
  	
-	if (!dipent.players[i].units && !dipent.players[i].centers) {
+	if (!dipent.players[r_index].units && !dipent.players[r_index].centers) {
 		fprintf(rfp, "You have no units or centers and cannot vote on a %s.\n",s);
 		return 1;
 	}
@@ -263,7 +267,6 @@ int char_in_string(char the_char, char *the_string)
 /*
  * Why a linked list? Well, why not?
  */
-
 typedef struct list {
 	char draw[MAXPLAYERS + 1];
 	struct list *next;
@@ -280,6 +283,7 @@ int process_draw(void)
 	long now;
 	FILE *ofp, *dfp;
 	listelem *head, *temp;
+	int first_index, concession = 1;
 /*
  * First, make up a list of all survivors. This will help later.
  */
@@ -316,16 +320,16 @@ int process_draw(void)
  */
 		participants[0] = '\0';
 		i = find_player(power(survivors[0]));
-		if (dipent.players[i].status & SF_DRAW)
+		if (dipent.players[RealPlayerIndex(i)].status & SF_DRAW)
 			head =
-			    make_acceptable_list(survivors[0], dipent.players[i].pref);
+			    make_acceptable_list(survivors[0], dipent.players[i].draw);
 		else
 			head = default_acceptable_list(survivors[0]);
 		while (head) {
 			for (s = survivors + 1; *s; s++) {
 				i = find_player(power(*s));
-				if (!acceptable(head->draw, dipent.players[i].status & SF_DRAW,
-					     dipent.players[i].pref, *s))
+				if (!acceptable(head->draw, dipent.players[RealPlayerIndex(i)].status & SF_DRAW,
+					     dipent.players[RealPlayerIndex(i)].draw, *s))
 					break;
 			}
 			if (!(*s) && strlen(head->draw) > strlen(participants)) {
@@ -349,6 +353,13 @@ int process_draw(void)
  * Hooray, we've got a draw.
  */
 
+ /* See if was draw including only the same player or not */
+	first_index =  RealPlayerIndex(find_player(power(*(participants+1))));
+	for (s = participants+1; *s; s++) {
+	    if (first_index != RealPlayerIndex(find_player(power(*s)))) 
+	        concession = 0;
+	}
+	    
 	sprintf(line, "%s%s/draw",GAME_DIR, dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		fprintf(log_fp, "draw: Error opening draw file.\n");
@@ -361,12 +372,12 @@ int process_draw(void)
 	msg_header(ofp);
 
 	time(&now);
-	fprintf(dfp, "Draw declared: %s\n", ctime(&now));
+	fprintf(dfp, "%s declared: %s\n", concession ? "concession" : "draw", ctime(&now));
 
 	sprintf(line, "Game '%s' has been %s ", dipent.name,
-		strlen(participants) == 1 ? "conceded to" : "declared a draw between");
+		concession ? "conceded to" : "declared a draw between");
 	sprintf(line2, "The game was %s ",
-		strlen(participants) == 1 ? "conceded to" : "declared a draw between");
+		concession ? "conceded to" : "declared a draw between");
 	for (s = participants; *s; s++) {
 		strcat(line, powers[power(*s)]);
 		strcat(line2, powers[power(*s)]);
@@ -382,7 +393,7 @@ int process_draw(void)
 	}
 
 	sprintf(subjectline, "%s:%s - %s %s: %s", JUDGE_CODE, dipent.name, dipent.phase, 
-		strlen(participants) == 1 ? "Game Conceded to" : "Draw Declared", participants);
+		concession ? "Game Conceded to" : "Draw Declared", participants);
 
 	dipent.phase[6] = 'X';
 
@@ -426,10 +437,13 @@ int process_draw(void)
 	fclose(ofp);
 
 	{
+		sprintf(line, "%s '%s: %s in game %s'", "%s",
+				"%s", concession ? "Concession" : "Draw",
+				"%s");
 		InformCustodians(dipent.name,
-				 "%s '%s: Draw in game %s'",
+				 line,
 				 dipent.variant,
-				 dipent.flags & F_GUNBOAT);
+				 dipent.flags & F_GUNBOAT); 
 	}
 
 	/*
@@ -456,8 +470,8 @@ int process_draw(void)
 
 	/*  Mail summary to HALL_KEEPER */
 
-	sprintf(line, "%s%s/summary 'HoF: Draw in %s'",
-		GAME_DIR, dipent.name, dipent.name);
+	sprintf(line, "%s%s/summary 'HoF: %s in %s'",
+		GAME_DIR, dipent.name, concession ? "Consession" : "Draw", dipent.name);
 	MailOut(line, HALL_KEEPER);
 
 	/* send eog diaries */
@@ -466,7 +480,6 @@ int process_draw(void)
 	broadcast = 1;
 	return 1;
 }
-
 int process_conc(void)
 {
 	/*
@@ -493,7 +506,7 @@ int process_conc(void)
 		if (dipent.flags & F_INTIMATE) {
 		    /* In Intimate, use the preference chosen */
 		    if (dipent.players[i].status & SF_CONC) {
-		        largest = FindPower(power(dipent.players[i].pref[0]));
+		        largest = FindPower(power(dipent.players[i].draw[0]));
 		    }
 		} else {
  		    if(dipent.players[i].centers > dipent.players[largest].centers)
@@ -513,7 +526,7 @@ int process_conc(void)
 		    if (dipent.players[i].controlling_power == 0 &&
 		        dipent.players[i].centers > 0) {
 	                if (!(dipent.players[i].status & SF_CONC) ||
-			    (FindPower(power(dipent.players[i].pref[0])) != largest)) {
+			    (FindPower(power(dipent.players[i].draw[0])) != largest)) {
 				return 0;
 			}
 		    }
@@ -645,8 +658,12 @@ listelem *link_choice(char the_power, char *the_preflist, int flags, int cont,
 listelem *default_acceptable_list(char the_power)
 {
 	listelem *new;
+	char main_power;  /* Set to letter of principle power */
+	int index1;
 	new = (listelem *) malloc(sizeof(listelem));
-	sprintf(new->draw, "%c", the_power);
+	index1 = RealPlayerIndex(find_player(power(the_power)));
+	main_power = dipent.pl[dipent.players[index1].power];
+	sprintf(new->draw, "%c", main_power);
 	new->next = NULL;
 	return new;
 }
@@ -682,9 +699,18 @@ listelem *make_acceptable_list(char the_power, char *the_preflist)
 int acceptable(char *checking, int draw, char *list, char the_power)
 {
 	char *s;
+        int index1, index2;
+        index1 = RealPlayerIndex(find_player(power(the_power)));
 
-	if (!draw)
-		return strlen(checking) == 1 && checking[0] == the_power;
+	if (!draw) {
+		while (*checking != '\0') {
+		    index2 = RealPlayerIndex(find_player(power(*checking)));
+		    if (index2 != index1)
+			return 0;
+		    checking++;
+		}
+		return 1;
+	}
 	if (char_in_string(the_power, list) &&
 	    !char_in_string(the_power, checking))
 		return 0;

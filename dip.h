@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.55  2004/10/23 21:08:59  millis
+ * Fix Bug 375, Mach2 allow besieged to dislodge
+ *
  * Revision 1.54  2004/09/13 01:33:35  nzmb
  * Trivial typo fix
  *
@@ -451,6 +454,7 @@ typedef struct PLAYER {
 	char password[30];	/* Player's password                          */
 	char address[100];	/* Player's electronic mail address           */
 	char pref[MAXPLAYERS];	/* Player's power preference list             */
+	char draw[MAXPLAYERS];  /* Player's draw preference list              */
 } Player;
 
 struct dipent {
