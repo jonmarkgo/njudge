@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.49  2003/07/12 17:47:38  nzmb
+ * Fix so that lenlimit gets called on outgoing press messages, not just
+ * replies.
+ *
  * Revision 1.48  2003/06/22 04:10:20  nzmb
  * Added code to allow users to record diary entries, read them, and delete them
  * if they make a mistake. The diaries will be broadcast when the games end (this
@@ -2988,7 +2992,7 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 	return result;
 }
 
-#define NULL_EMAIL "no-one@localhost"
+#define NULL_EMAIL "nobody@localhost"
 
 static int InsertDummyPlayers()
 {
