@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.6  2001/06/24 05:35:03  nzmb
+ * Reset dipent.dedapplied to 0 when new deadline is calculated.
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Lots of changes, including
  *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
@@ -142,7 +145,7 @@ long get_die_magic(void)
 	    n = fprintf(rand_ptr, "%6.6ld\n", DIE_MAGIC);
 	    fclose(rand_ptr);
 	}
-	if (!rand_ptr || n != 6) {
+	if (!rand_ptr || n != 7) {
 		fprintf(log_fp, "Unable to write magic data to ./.magic.dat.\n");
                 bailout(1);
 	}
@@ -1068,3 +1071,26 @@ void AddPowerToOrder(char *text, int power)
 	if (text == NULL) return;
 	strcat(text,powers[power]);
 }
+void InformCustodians( char *game_name, char *text, int variant, int is_gunboat)
+{
+    char *variant_guardian;
+    char guardian_string[200];
+
+    if (variant != V_STANDARD || is_gunboat)
+           sprintf(line, text,
+                SMAIL_CMD, "dip.temp", "MNC", game_name, MN_CUSTODIAN);
+    else
+           sprintf(line, text,
+                SMAIL_CMD, "dip.temp", "BNC", game_name, BN_CUSTODIAN);                   
+   execute(line);
+   sprintf(guardian_string, "%s_CUSTODIAN", variants[variant]);
+   variant_guardian = config(guardian_string);
+
+   if (variant_guardian) {
+        sprintf(line, text,
+                SMAIL_CMD, "dip.temp", variants[variant], game_name, variant_guardian);
+        execute(line);
+    }
+
+}
+
