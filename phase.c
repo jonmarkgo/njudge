@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/02/03 23:47:11  nzmb
+ * Fixed phased order bug in Ancient Med and made phase.c able to handle a wider range of years (all positive years).
+ *
  * Revision 1.6  2001/10/20 12:11:14  miller
  * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
  *
@@ -147,7 +150,7 @@ void phase_pending(void)
 	 */
 
 	int i, n, p, found, skip;
-	char *s, Tfile[30], Mfile[30];
+	char *s, Tfile[40], Mfile[40];
 	FILE *ifp, *ofp, *tfp = NULL, *mfp;
 
 	static char *words[] =

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/10/20 12:11:11  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.4.2.2  2001/10/19 23:33:42  dema
  * Added initial_money + CVS header
  *
@@ -104,3 +107,5 @@ FILE *inp;
 
 int control = 0;
 int predict = 0; 		/* =1 to predict a move for master */
+
+int canbuild = 1;		/* can the power being reminded to move build? */

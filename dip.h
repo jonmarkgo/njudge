@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.12  2002/04/18 04:44:31  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.11  2002/04/15 12:55:42  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -331,5 +345,7 @@ extern int xflg;		/* -x: no incoming mail on stdin                */
 extern char *inname;		/* Filename to use for input			*/
 extern int control;
 extern int predict;		/* =1 when predicting a turn			*/
+
+extern int canbuild;	/* can a player build? (used when being reminded to move */
 
 #endif				/* _DIP_H */

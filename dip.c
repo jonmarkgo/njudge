@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.22  2002/05/04 02:06:16  nzmb
+ * Added code to display the time left until the deadline and grace at the
+ * bottom of their reply whenever a player signs on.
+ *
  * Revision 1.21  2002/04/18 04:44:30  greg
  * Added the following commands:
  * - unstart
@@ -27,7 +31,7 @@
  * Added automatic wait for all players in BUILD_TRANSFORM games
  *
  * Revision 1.16  2001/11/20 07:43:45  greg
- * VSFixed last (hopefully) problem with "Waiting for Master to Start" subjectlinE: 
+ * Fixed last (hopefully) problem with "Waiting for Master to Start" subjectline:
  *
  * Revision 1.15  2001/11/11 21:16:19  greg
  * Subjectline Fixes
@@ -692,7 +696,7 @@ void master(void)
 
 /* See if the passed player need to make a move, 
    and send reminder message if not yet made */
-void CheckRemindPlayer( int player, long one_quarter)
+void CheckRemindPlayer(int player, long one_quarter)
 {
     int num_hours;
     char *temp_file = "dip.temp";
@@ -716,7 +720,20 @@ void CheckRemindPlayer( int player, long one_quarter)
          exit(E_FATAL);
     }
 
-    msg_header(rfp);
+	if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
+	num_hours = (int)  (one_quarter / (60 * 60));
+	if (num_hours < 1) num_hours = 1;
+	if (num_hours != 1)
+		pchar = "s ";
+	else
+		pchar = " ";
+
+	if ((rfp = fopen(temp_file, "w")) == NULL) {
+		perror(temp_file);
+		exit(E_FATAL);
+	}
+
+	msg_header(rfp);
 
 /*
  *	code added to fix bug where error messages
@@ -737,8 +754,8 @@ void CheckRemindPlayer( int player, long one_quarter)
 		}
 		fclose(tfp);
 	}
-	fputs("X-marker\n", ofp);
 
+	fputs("X-marker\n", ofp);
 	fclose(ofp);
 
 	if (rename(Tfile, Mfile)) {
@@ -749,34 +766,36 @@ void CheckRemindPlayer( int player, long one_quarter)
  * end added code
  */
 
+	porder('M', player, 0); /* Call this to send copy of player's actual orders */
+	fprintf(rfp,"\n\nThere is less than %d hour%sto the deadline", num_hours, pchar);
 
-    porder('M', player, 0); /* Call this to send copy of player's actual orders */
-    fprintf(rfp,"\n\nThere is less than %d hour%sto the deadline", num_hours, pchar);
-    if ((dipent.players[player].status) &  SF_PART) {
-	fprintf(rfp, " but you\nneed to clear your error status with a valid message.\n");
-    } else {
-        fprintf(rfp," and you\nhave not yet placed complete and valid moves.\n");
-    }
-    fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
-    now=time(NULL);   
-    if(now < dipent.deadline)
-         fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-    if(now < dipent.grace)
-         fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
-    fclose(rfp);
+	if ((dipent.players[player].status) &  SF_PART) {
+		fprintf(rfp, " but you\nneed to clear your error status with a valid message.\n");
+	} else {
+		fprintf(rfp," and you\nhave not yet placed complete and valid moves.\n");
+	}
 
-    sprintf(line, "%s %s '%s:%s - %s Reminder' '%s'",
-        SMAIL_CMD, temp_file, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[player].address);
+	fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
+	now=time(NULL);
 
-   dipent.players[player].status |= SF_REMIND;
+	if(now < dipent.deadline)
+		fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+	if(now < dipent.grace)
+		fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
+	fclose(rfp);
 
-   if (*(dipent.players[player].address) != '*') {
-	execute(line);
-   	sprintf(line,"Move reminder send to %s in game %s", dipent.players[player].address, dipent.name);
-   	DIPINFO(line);
-   }
+	sprintf(line, "%s %s '%s:%s - %s Reminder' '%s'",
+	  SMAIL_CMD, temp_file, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[player].address);
+
+	dipent.players[player].status |= SF_REMIND;
+
+	if (*(dipent.players[player].address) != '*') {
+		execute(line);
+		sprintf(line,"Move reminder send to %s in game %s", dipent.players[player].address, dipent.name);
+		DIPINFO(line);
+	}
 }
- 
+
 /***********************************************************************/
 int process(void)
 {
@@ -800,20 +819,16 @@ int process(void)
 	time(&now);
 
 	/* Set dedtest equal to dipent.dedapplied. This keeps dipent.dedapplied
-	** from being updated until the Judge finishes processing the game. 
+	** from being updated until the Judge finishes processing the game.
 	** At that point dipent.dedapplied will be set to dedtest.
 	*/
 	dedtest = dipent.dedapplied;
 
-        if (GAME_PAUSED) {
-                fprintf(lfp,
-                        "Diplomacy game '%s' is waiting to be continued.\n",
-                        dipent.name);
-                fprintf(mlfp,
-                        "Diplomacy game '%s' is waiting to be continued.\n",
-                        dipent.name);
-                return 0;
-        }
+	if (GAME_PAUSED) {
+		fprintf(lfp, "Diplomacy game '%s' is waiting to be continued.\n", dipent.name);
+		fprintf(mlfp, "Diplomacy game '%s' is waiting to be continued.\n", dipent.name);
+		return 0;
+	}
 
 	if (now < dipent.grace) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
@@ -834,7 +849,7 @@ int process(void)
 					dipent.process = then;
 
 				if (dipent.players[i].status & SF_PART &&
-				    now >= dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60)) {
+				  now >= dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60)) {
 					dipent.players[i].status |= SF_MOVED;
 				} else {
 					if (!n++) {
@@ -1021,7 +1036,7 @@ int process(void)
 							execute(line);
 						} else {
 							sprintf(line, "%s dip.late '%s%s:%s - %s Late Notice: %s' '%s'",
-								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, 
+								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase,
 									(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
 							execute(line);
 						}
@@ -1051,30 +1066,15 @@ int process(void)
 		}
 		i = dipent.np + '0' - dipent.seq[1];
 		if (dipent.xflags & XF_MANUALSTART && i <= 0) {
-			sprintf(subjectline, "%s:%s - Waiting for Master to Start",
-				JUDGE_CODE, dipent.name);
-			fprintf(rfp,
-                        	"Diplomacy game '%s' is still waiting for master to start it.\n",
-                        	dipent.name );
-                	pprintf(cfp,
-                        	"%sDiplomacy game '%s' is still waiting for master to start it.\n",
-                        	NowString(), dipent.name);
-			sprintf(title_text,
-				"Diplomacy game %s startup waiting",
-				dipent.name);
-
+			sprintf(subjectline, "%s:%s - Waiting for Master to Start", JUDGE_CODE, dipent.name);
+			fprintf(rfp, "Diplomacy game '%s' is still waiting for master to start it.\n", dipent.name );
+			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for master to start it.\n", NowString(), dipent.name);
+			sprintf(title_text, "Diplomacy game %s startup waiting", dipent.name);
 		} else {
-			sprintf(subjectline, "%s:%s - Waiting for More Players",
-				JUDGE_CODE, dipent.name);
-			fprintf(rfp,
-				"Diplomacy game '%s' is still waiting for %d player%s to sign on.\n",
-				dipent.name, i, i == 1 ? "" : "s");
-			pprintf(cfp,
-				"%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n",
-				NowString(), dipent.name, i, i == 1 ? "" : "s");
-			sprintf(title_text,
-			        "Diplomacy game %s signup waiting",
-				dipent.name);
+			sprintf(subjectline, "%s:%s - Waiting for More Players", JUDGE_CODE, dipent.name);
+			fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
+			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
+			sprintf(title_text, "Diplomacy game %s signup waiting", dipent.name);
 		}
 		if (!Dflg)
 		{
@@ -1090,8 +1090,7 @@ int process(void)
 				continue;
 
 			if (*(dipent.players[i].address) != '*') {
-				sprintf(line, "%s dip.result '%s' '%s'",
-					SMAIL_CMD, subjectline, dipent.players[i].address);
+				sprintf(line, "%s dip.result '%s' '%s'", SMAIL_CMD, subjectline, dipent.players[i].address);
 				execute(line);
 			}
 		}
@@ -1115,7 +1114,7 @@ int process(void)
 		/* Dietmar Kulsch change 10/10/2000 to avoid players going
 		 * abandoned when they submit error orders
 		 */
-				if ((!(dipent.players[i].status & SF_PART)) && WAITING(dipent.players[i].status)) { 
+				if ((!(dipent.players[i].status & SF_PART)) && WAITING(dipent.players[i].status)) {
 					dipent.players[i].status |= SF_CD;
 					if (!(dipent.flags & F_NORATE)) {
 						put_data(dipent.players[i].userid,resigned);
@@ -1202,7 +1201,7 @@ int process(void)
 
 					if (*(dipent.players[i].address) != '*' && !Dflg) {
 						sprintf(line, "%s dip.result '%s:%s - %s Waiting for Replacements: %s' '%s'",
-							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, 
+							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase,
 							(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
 
 						execute(line);
@@ -1212,48 +1211,42 @@ int process(void)
 				return 0;
 			}
 		}
-		/* 
+		/*
 		 * See if manual processing is enabled, and block if so
                  */
-                if (dipent.xflags & XF_MANUALPROC) {
+		if (dipent.xflags & XF_MANUALPROC) {
 			process_set = 0;
 			/* See if anyone has requested processing */
 			for (i = 0; i < dipent.n && !process_set; i++) {
-                                if (dipent.players[i].power < 0)
-                                        continue;
+				if (dipent.players[i].power < 0)
+					continue;
 					if (dipent.players[i].status & SF_TURNGO)
 						process_set = 1;
 			}
 			if (!process_set) {
-                            fprintf(rfp, "Game '%s' is waiting for master to process turn.\n",
-                                  dipent.name);
-                            if (!Dflg) fclose (rfp);
-                            for (i = 0; i < dipent.n; i++) {
-                                if (dipent.players[i].power < 0)
-                                        continue;
+				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
+				if (!Dflg) fclose (rfp);
+				for (i = 0; i < dipent.n; i++) {
+					if (dipent.players[i].power < 0)
+						continue;
+					sprintf(line, "%s dip.result '%s:%s - %s Turn Waiting' '%s'",
+					  SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
 
-/*
- *				sprintf(line, "%s dip.result '%s' '%s' '%s'",
- *				SMAIL_CMD, "Diplomacy turn waiting:", 
- *				dipent.name, dipent.players[i].address);
- */
-				sprintf(line, "%s dip.result '%s:%s - %s Turn Waiting' '%s'",
-					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
-
-                                if (*(dipent.players[i].address) != '*')
-                                        execute(line);
-                            }
-		            dipent.process = now + 24 *60 *60;  /* Remind each day */
-			    dipent.dedapplied = dedtest;
-			    return 0;
-		        }
-                  } 
+					if (*(dipent.players[i].address) != '*')
+						execute(line);
+				}
+				dipent.process = now + 24 *60 *60;  /* Remind each day */
+				dipent.dedapplied = dedtest;
+				return 0;
+			}
+		}
 
 		/*
 		   **  This is something we can actually process!
 		 */
 
 		strcpy(phase, dipent.phase);
+
 		if ((i = porder('M', -1, 0))) {
 			fprintf(rfp, "Error %d processing orders.\n", i);
 			fprintf(stderr, "Error %d processing orders.\n", i);
@@ -1263,6 +1256,7 @@ int process(void)
 			execute(line);
 			bailout(1);
 		}
+
 		pprintf(cfp, "%sPhase %s processed for game '%s'.\n", NowString(), phase, dipent.name);
 
 		/*
@@ -1273,7 +1267,6 @@ int process(void)
 		remove(line);
 
 		if (dipent.phase[6] == 'X') {
-
 			sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 			if ((dfp = fopen(line, "w")) == NULL) {
 				fprintf(log_fp, "dip: Error opening draw file.\n");
@@ -1374,7 +1367,6 @@ int process(void)
 			execute(line);
 
 		} else {
-
 			deadline((sequence *) NULL, 1);
 
 			fprintf(rfp, "\nThe next phase of '%s' will be %s for %s of %4.4s.\n",
@@ -1384,27 +1376,26 @@ int process(void)
 				dipent.phase[5] == 'B' ? "Winter" :
 				dipent.phase[0] == 'F' ? "Fall" :
 				dipent.phase[0] == 'U' ? "Summer" : "Spring", dipent.phase + 1);
-			if (broadcast_absence_adjust) 
+			if (broadcast_absence_adjust)
 			    fprintf(rfp,"Requested absence(s) activated.\n");
 			fprintf(rfp, "The deadline for orders will be %s.\n",
 				ptime(&dipent.deadline));
-			if (dipent.phase[5] == 'B' && 
+			if (dipent.phase[5] == 'B' &&
 				((dipent.xflags & XF_TRANS_BUILD) || (dipent.xflags & XF_ANYDISBAND))) {
 			    /* A build phase in a transform game means that all can transform */
 			    /* OR when any player can disband */
 			    /* Thus set active players in a wait state */
 			    for  (i = 0; i < dipent.n; i++) {
-                            if (dipent.players[i].power < 0)
-                                continue;
-				dipent.players[i].status &= ~SF_TURNGO;
-				if (dipent.players[i].power != MASTER && 
-				    !(dipent.players[i].status & SF_DEAD)) {
+					if (dipent.players[i].power < 0)
+						continue;
+					dipent.players[i].status &= ~SF_TURNGO;
+					if (dipent.players[i].power != MASTER &&
+					  !(dipent.players[i].status & SF_DEAD)) {
 					/* A real player, set wait status */
-					dipent.players[i].status |= SF_WAIT;
-		                 }
+						dipent.players[i].status |= SF_WAIT;
+					}
 			    }
 			}
-			
 		}
 
 		if (!Dflg)
@@ -1444,11 +1435,10 @@ int process(void)
 			    inform_party_of_blind_turn(i, phase,"dip.result");
 			}
 			/* If a build transfer, set a wait for all players playing */
-                        if ((dipent.phase[5] == 'B') && !(dipent.players[i].status & SF_DEAD)
-                            && (dipent.xflags & XF_TRANS_BANYW)) {
-                            dipent.players[i].status |= SF_WAIT;
-                        }
-  
+			if ((dipent.phase[5] == 'B') && !(dipent.players[i].status & SF_DEAD)
+			  && (dipent.xflags & XF_TRANS_BANYW)) {
+				dipent.players[i].status |= SF_WAIT;
+			}
 		}
 
 		if (!strcmp(dipent.seq, "002")) {
@@ -1462,7 +1452,6 @@ int process(void)
 		phase_pending();
 		deadline((sequence *) NULL, 0);
 	}
-
 	return 0;		/* reached ? */
 }
 /***********************************************************************/

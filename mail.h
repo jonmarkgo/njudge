@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2001/07/01 23:19:29  miller
+   ** Add predict flag
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Added a few extra glags and a couple of defines to force password of resigned payers to a bad value
    **
@@ -67,8 +70,8 @@ char name[20];			/* Signon name: pname, p=power, name=game       */
 int master_press;		/* Set to 1 if press is also to master, else 0  */
 int master_only_press;		/* Set to 1 if press only for master's eyes     */
 
-char Mfile[20];			/* Movement orders file name                    */
-char Tfile[20];			/* Temporary movement orders file name          */
+char Mfile[40];			/* Movement orders file name                    */
+char Tfile[40];			/* Temporary movement orders file name          */
 FILE *mail_bfp;			/* Broadcast file pointer                       */
 FILE *mail_mbfp;		/* Broadcast to master file pointer             */
 FILE *mail_mfp;			/* Master file pointer                          */

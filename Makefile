@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.24  2002/04/15 12:55:40  miller
+# Multiple changes for blind & Colonial & setup from USTV
+#
 # Revision 1.23  2002/04/15 10:55:14  miller
 # Added size_check to dependencies
 #
@@ -326,8 +329,8 @@ ${DESTDIR}/data:
 	chmod 700 ${DESTDIR}/data
 	-chown $(USER) ${DESTDIR}/data
 
-${INSTALLDIR}/data:
-	mkdir ${INSTALLDIR}/data
+ ${INSTALLDIR}/data:
+ 	mkdir ${INSTALLDIR}/data
 
 ${INSTALLDIR}:
 	mkdir ${INSTALLDIR}
@@ -419,7 +422,17 @@ tar: ../njudge-${JVERSION}.tar
 #	newvers VERMAJ
 #	@touch .log/oldlog
 	rm -f ../njudge-${JVERSION}.tar
-	tar -cf ../njudge-${JVERSION}.tar ${FILES}
+#	tar --exclude data/CVS/ -cf ../njudge-${JVERSION}.tar ${FILES}
+#	tar --exclude ../njudge/CVS ../njudge/data/CVS ../njudge/docs/CVS -cf ../njudge-${JVERSION}.tar ../njudge/
+
+#	tar --exclude ../njudge/CVS \
+#	    --exclude ../njudge/data/CVS \
+#	    --exclude ../njudge/docs/CVS \
+#	    -cf ../njudge-${JVERSION}.tar ../njudge/
+
+	cd ..;\
+	tar -X njudge/xfile \
+	    -cf njudge-${JVERSION}.tar njudge/
 
 
 ../njudge-${JVERSION}.tar.Z: ../njudge-${JVERSION}.tar

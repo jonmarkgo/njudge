@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.21  2002/04/18 04:44:32  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.20  2002/04/15 12:55:44  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -1276,12 +1290,6 @@ void mail_setp(char *s)
 				if (!*t || *t == '\n') {
 					fprintf(rfp, "Preference list cleared.\n");
 					*dipent.players[player].pref = '\0';
-/*				} else if (chkpref(t, NULL, NULL)) {
- *					fprintf(rfp, "Preference list '%s' not set.\n", t);
- *					if (*dipent.players[player].pref) {
- *						fprintf(rfp, "Preference list remains '%s'.\n",
- *							dipent.players[player].pref);
- *					} */
 				} else {
 					u = t;
 
@@ -2997,7 +3005,7 @@ void mail_setp(char *s)
                                                "Powers can only build on vacant owned home centres.\n",CATF_INVERSE);
                         }
 			break;
- 		
+
 		case SET_ONECENTRE:
                         CheckNoMach();
                         if (dipent.seq[0] != 'x') {
@@ -3014,9 +3022,9 @@ void mail_setp(char *s)
 		 case SET_WATCHALL:
 			CheckPress();
 			if (CheckAndToggleFlag(&dipent.xflags, XF_WATCHPRESS, "WatchPress", CATF_SETON,
-						"Observers can now set all press.\n", CATF_NORMAL)) {
-				/* 
-				 * See if observer press is allowed 
+				"Observers can now set all press.\n", CATF_NORMAL)) {
+				/*
+				 * See if observer press is allowed
 				 */
 				if (!(dipent.flags & F_OBNONE)) {
 					fprintf(rfp,"\n.WARNING: Game '%s' has a possible security hole by allowing ",
@@ -3029,119 +3037,114 @@ void mail_setp(char *s)
 
 		case SET_NOWATCHALL:
 			CheckPress();
-                        if (CheckAndToggleFlag(&dipent.xflags, XF_WATCHPRESS, "WatchPress", CATF_SETOFF,
-                                                "Only master can now set all press.\n", CATF_NORMAL)) {
-                                /*
-                                 * See if observer press is allowed
-                                 */
+			if (CheckAndToggleFlag(&dipent.xflags, XF_WATCHPRESS, "WatchPress", CATF_SETOFF,
+				"Only master can now set all press.\n", CATF_NORMAL)) {
+				/*
+				 * See if observer press is allowed
+				 */
 				fprintf(bfp,"Any observers with 'set all press' no longer have this set.\n");
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power == OBSERVER) {
 						dipent.players[i].status &= ~SF_PRESS;
 					}
 				}
-                        }
-                        break;
+			}
+			break;
 
 		case SET_ABSENCE:
-                        if (dipent.phase[6] == 'X' ) {
-                                fprintf(rfp,"Game is already terminated - no point!");
-                                s = "";
-                                break;
-                        }
-                        if (dipent.players[player].power == OBSERVER) {
-                                fprintf(rfp, "Observers cannot request a game delay.\n\n");
-                                s = "";
-                                break;
-                        }
-                        if (dipent.players[player].absence_count >=MAX_ABSENCES ) {
-                                fprintf(rfp, "Maximum number of absences already reached.\n");
-                                fprintf(rfp,"You must remove some absences first.\n\n");
-                                s = "";
-                                break;
-                        }
-                        if (dipent.players[player].power != MASTER &&
-                            dipent.players[player].status & SF_DEAD) {
-                                fprintf(rfp,"Sorry, only active players are allowed to request an absence.\n\n");
-                                s = "";
-                                break;
-                        }
-		/* Look to see if date has a <dates> TO <datee> construct */
-                        break_date_into_two(s, ss, se );
-			if (mail_date(&ss, &dates, 0, rfp)) {
-                                fprintf(rfp, "%sInvalid absence start date specified.\n\n", t);
-                                s = "";
-                                break;
-                        } else {
-				if (*ss) {
-				    fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", ss);
-				    s = "";
-				    break;
-				}
-                                if (!*se || mail_date(&se, &datee, 0, rfp)) {
-                                        fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
-                                        datee = dates + (24l * 60l *60l );
-                                }
-
-                                if (datee <= dates ) {
-                                    fprintf(rfp,
-                                            "Absence end date \n  %s\nis not after absence start date \n",
-					    ptime(&datee));
-				    fprintf(rfp,"  %s\nRequest ignored.\n\n", ptime(&dates));
-                                    s="";
-                                    break;
-                                }
-                                if (datee < time(NULL)) {
-                                    fprintf(rfp,"Absence end date has already passed - request ignored.\n\n");
-                                    s = "";
-                                break;
-                                }
-                                if (!i_am_really_master &&
-				    dipent.players[player].power != MASTER &&
-				    absence_delay(dipent.max_absence_delay, datee-dates) == TOO_BIG) {
-                                        fprintf(rfp, "Requested absence delay is too large. \nRequest forwarded to master to approve.\n\n");
-                                        fprintf(mbfp,
-                                                "%s as %s requested absence between \n%s",
-                                                raddr, PRINT_POWER, ptime(&dates));
-
-                                        fprintf(mbfp," to \n%s.\n\n", ptime(&datee));
-                                        fprintf(mbfp,"A master must approve this as it exceeds game limit of %d.\n\n",
-                                                dipent.max_absence_delay);
-                                        broadcast_master_only = 1;
-                                        s="";
-                                        break;
-                                }
-                                for (i=0; i < MAX_ABSENCES &&
-                                              dipent.players[player].absence_start[i] != 0; i++) ;
-                                if (dipent.players[player].absence_start[i] == 0) {
-                                        dipent.players[player].absence_start[i] = dates;
-                                        dipent.players[player].absence_end[i] = datee;
-                                        dipent.players[player].absence_count++;
-                                         fprintf(rfp, "Absence requested from %s to\n",
-						ptime(&dates));
-					fprintf(rfp,"%s.\n\n", ptime(&datee));
-                                        fprintf(mbfp, "%s as %s requested absence from %s to\n",
-					raddr, PRINT_POWER, ptime(&dates));
-					fprintf(mbfp,"%s.\n\n",
-                                                ptime(&datee));
-                                        broadcast_master_only = 1;
-                                }
-                                else
-                                {
-                                        fprintf(rfp, "Too many absences requested.\n\n");
-                                        s = "";
-                                        break;
-                                }
-                        }
-                        s="";
-                        break;
-
-		case SET_NOABSENCE:
-		        if (dipent.phase[6] == 'X' ) {
+			if (dipent.phase[6] == 'X' ) {
 				fprintf(rfp,"Game is already terminated - no point!");
 				s = "";
 				break;
-			}	
+			}
+			if (dipent.players[player].power == OBSERVER) {
+				fprintf(rfp, "Observers cannot request a game delay.\n\n");
+				s = "";
+				break;
+			}
+			if (dipent.players[player].absence_count >=MAX_ABSENCES ) {
+				fprintf(rfp, "Maximum number of absences already reached.\n");
+				fprintf(rfp,"You must remove some absences first.\n\n");
+				s = "";
+				break;
+			}
+			if (dipent.players[player].power != MASTER &&
+			  dipent.players[player].status & SF_DEAD) {
+				fprintf(rfp,"Sorry, only active players are allowed to request an absence.\n\n");
+				s = "";
+				break;
+			}
+		/* Look to see if date has a <dates> TO <datee> construct */
+			break_date_into_two(s, ss, se );
+			if (mail_date(&ss, &dates, 0, rfp)) {
+				fprintf(rfp, "%sInvalid absence start date specified.\n\n", t);
+				s = "";
+				break;
+			}
+			if (*ss) {
+				fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", ss);
+				s = "";
+				break;
+			}
+			if (!*se || mail_date(&se, &datee, 0, rfp)) {
+				fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
+				datee = dates + (24l * 60l *60l );
+			}
+
+			if (datee <= dates ) {
+				fprintf(rfp, "Absence end date \n  %s\nis not after absence start date \n", ptime(&datee));
+				fprintf(rfp,"  %s\nRequest ignored.\n\n", ptime(&dates));
+				s="";
+				break;
+			}
+			if (datee < time(NULL)) {
+				fprintf(rfp,"Absence end date has already passed - request ignored.\n\n");
+				s = "";
+				break;
+			}
+			if (!i_am_really_master && dipent.players[player].power != MASTER &&
+			absence_delay(dipent.max_absence_delay, datee-dates) == TOO_BIG) {
+				fprintf(rfp, "Requested absence delay is too large. \nRequest forwarded to master to approve.\n\n");
+				fprintf(mbfp, "%s as %s requested absence between \n%s",
+					raddr, PRINT_POWER, ptime(&dates));
+
+				fprintf(mbfp," to \n%s.\n\n", ptime(&datee));
+				fprintf(mbfp,"A master must approve this as it exceeds game limit of %d.\n\n",
+					dipent.max_absence_delay);
+				broadcast_master_only = 1;
+				s="";
+				break;
+			}
+			for (i=0; i < MAX_ABSENCES && dipent.players[player].absence_start[i] != 0; i++) ;
+			if (dipent.players[player].absence_start[i] == 0) {
+				dipent.players[player].absence_start[i] = dates;
+				dipent.players[player].absence_end[i] = datee;
+				dipent.players[player].absence_count++;
+				fprintf(rfp, "Absence requested from %s to\n", ptime(&dates));
+				fprintf(rfp,"%s.\n\n", ptime(&datee));
+
+				if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL))
+					sprintf(subjectline, "%s:%s - %s Absence Request", JUDGE_CODE, dipent.name, dipent.phase);
+
+				fprintf(mbfp, "%s as %s requested absence from %s to\n",
+				raddr, PRINT_POWER, ptime(&dates));
+				fprintf(mbfp,"%s.\n\n", ptime(&datee));
+				broadcast_master_only = 1;
+			} else {
+				fprintf(rfp, "Too many absences requested.\n\n");
+				s = "";
+				break;
+			}
+
+			s="";
+			break;
+
+		case SET_NOABSENCE:
+			if (dipent.phase[6] == 'X' ) {
+				fprintf(rfp,"Game is already terminated - no point!");
+				s = "";
+				break;
+			}
 			if (dipent.players[player].power == OBSERVER) {
 				fprintf(rfp, "Observers cannot request a game delay.\n\n");
 				s = "";
@@ -3152,47 +3155,50 @@ void mail_setp(char *s)
 				s = "";
 				break;
                         }
-			if (dipent.players[player].power != MASTER && 
-			    dipent.players[player].status & SF_DEAD) {
+			if (dipent.players[player].power != MASTER &&
+			  dipent.players[player].status & SF_DEAD) {
 				fprintf(rfp,"Sorry, only active players can have absences to cancel.\n\n");
 				s = "";
 				break;
 			}
 
 			if (mail_date(&s, &dates, 0, rfp)) {
-                                fprintf(rfp, "%sInvalid absence cancel date specified.\n\n", t);
+				fprintf(rfp, "%sInvalid absence cancel date specified.\n\n", t);
 				s = "";
 				break;
-                        } else {
-				k = 0;
-				for (i=0; i < MAX_ABSENCES; i++) { 
-				    if (dipent.players[player].absence_start[i] <= dates &&
-				        dipent.players[player].absence_end[i] >=  dates) {
-                                         k++;
-					 fprintf(rfp, "Absence cancelled from \n%s",
-						 ptime(&dipent.players[player].absence_start[i]));
-					 fprintf(rfp," to \n%s.\n\n", 
+			}
+			k = 0;
+			for (i=0; i < MAX_ABSENCES; i++) {
+				if (dipent.players[player].absence_start[i] <= dates &&
+				dipent.players[player].absence_end[i] >=  dates) {
+					k++;
+					fprintf(rfp, "Absence cancelled from \n%s",
+						ptime(&dipent.players[player].absence_start[i]));
+					fprintf(rfp," to \n%s.\n\n",
 						ptime(&dipent.players[player].absence_end[i]));
-                                        fprintf(mbfp, "%s as %s cancelled absence from \n%s",
+
+					if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL))
+						sprintf(subjectline, "%s:%s - %s Absence Cancellation", JUDGE_CODE, dipent.name, dipent.phase);
+
+					fprintf(mbfp, "%s as %s cancelled absence from \n%s",
 						raddr, PRINT_POWER,
-                                                ptime(&dipent.players[player].absence_start[i]));
+						ptime(&dipent.players[player].absence_start[i]));
 					fprintf(mbfp, " to \n%s.\n\n",
 						ptime(&dipent.players[player].absence_end[i]));
 					dipent.players[player].absence_start[i] = 0;
-                                        dipent.players[player].absence_end[i] = 0;
-                                        dipent.players[player].absence_count--;
-                                        broadcast_master_only = 1;
+					dipent.players[player].absence_end[i] = 0;
+					dipent.players[player].absence_count--;
+					broadcast_master_only = 1;
 					s = "";
 					break;
-				    }
-                        	}
-				if (!k) {
-				        fprintf(rfp,"No absence found for requested date.\n");
 				}
 			}
+			if (!k) {
+				fprintf(rfp,"No absence found for requested date.\n");
+			}
 			s="";
-                        break;
-	
+			break;
+
 		case SET_MAXABSENCE:
 #define LOW_MAXABSENCE (0)
 #define HIGH_MAXABSENCE (31)
@@ -3200,7 +3206,7 @@ void mail_setp(char *s)
 			 i = atoi(s);
                         while (isdigit(*s) || *s == '-' || *s == '+')
                                 s++;
-			if (i < LOW_MAXABSENCE || i > HIGH_MAXABSENCE ) 
+			if (i < LOW_MAXABSENCE || i > HIGH_MAXABSENCE )
 			{
 			    fprintf(rfp, "Invalid maximum absence %d. Must be between %d and %d",
 				    i, LOW_MAXABSENCE, HIGH_MAXABSENCE);

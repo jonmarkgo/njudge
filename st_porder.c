@@ -1,5 +1,8 @@
 /*
   ** $Log$
+  ** Revision 1.7  2002/04/15 12:55:46  miller
+  ** Multiple changes for blind & Colonial & setup from USTV
+  **
   ** Revision 1.6  2001/11/18 17:40:18  miller
   ** Small typo fix
   **
@@ -134,33 +137,55 @@ int ownership(void)
 		fprintf(rfp, " If you want a draw, then vote for it.\n");
 		broadcast = 1;
 	}
+
 	for (i = 1; i <= NPOWER; i++) {
 		if (dipent.pl[i] == 'x')
 			continue;
-		if (dipent.xflags & XF_ALTBUILD) {
-                    need_order[i]++;
-                    if (statusval >= 0)
-                                statusval++;
-                }
 
-		else if (np[i] > nu[i]) {
-			for (p = 1; p <= npr; p++) {
-				if (pr[p].owner == i
-				    && (pr[p].type == dipent.pl[i] || IsCentre(p))
-				    && (!(u = pr[p].unit) || unit[u].loc != p)) {
+		if (dipent.xflags & XF_ALTBUILD) {
+			need_order[i]++;
+			if (statusval >= 0)
+				statusval++;
+		} else {
+			if (np[i] > nu[i]) {
+				if (dipent.xflags & XF_BUILD_ANYCENTRES) {
 					need_order[i]++;
 					if (statusval >= 0)
 						statusval++;
-					break;
+				} else {
+					if (dipent.xflags & XF_BUILD_ONECENTRE) {
+						for (p = 1; p <= npr; p++) {
+							if (pr[p].owner == i &&
+							  pr[p].type == dipent.pl[i]) {
+								need_order[i]++;
+								if (statusval >= 0)
+									statusval++;
+								break;
+							}
+						}
+					} else {
+						for (p = 1; p <= npr; p++) {
+							if (pr[p].owner == i &&
+							  pr[p].type == dipent.pl[i] &&
+							  (!(u = pr[p].unit) || unit[u].loc != p)) {
+								need_order[i]++;
+								if (statusval >= 0)
+									statusval++;
+								break;
+							}
+						}
+					}
+				}
+			} else {
+				if (np[i] < nu[i]) {
+					if (np[i] > 0)
+						need_order[i]++;
+					if (statusval >= 0)
+						statusval++;
 				}
 			}
-		} else if (np[i] < nu[i]) {
-			if (np[i] > 0)
-				need_order[i]++;
-			if (statusval >= 0)
-				statusval++;
 		}
-		
+
 		p = strlen(powers[i]) + 1;
 		fprintf(rfp, "%s:", powers[i]);
 		while (p++ < GetMaxCountryStrlen() )
@@ -204,7 +229,7 @@ int ownership(void)
 	}
 
 	/* Build transform and anydisband games always have build phase */
-	if (dipent.xflags & XF_ALTBUILD) 
+	if (dipent.xflags & XF_ALTBUILD)
 	    if (statusval == 0)
 		statusval = 1;
 	return statusval;
@@ -275,7 +300,7 @@ void process_input(int pt, char phase)
 			} else {
 			switch (phase) {
 			case 'B':
-				if (dipent.xflags & XF_ALTBUILD) {  
+				if (dipent.xflags & XF_ALTBUILD) {
 				    status = buildin_td(&s, p);
 				} else {
 				    status = buildin(&s, p);
@@ -312,7 +337,7 @@ int process_output(int pt, char phase)
 	}
 	switch (phase) {
 	case 'B':		/* Adjustments */
-		if (dipent.xflags & XF_ALTBUILD) 
+		if (dipent.xflags & XF_ALTBUILD)
 		    buildout_td(pt);
 		else
 		    buildout(pt);
@@ -345,7 +370,7 @@ int process_output(int pt, char phase)
 	return 1;		/* not reached */
 }
 
-char 
+char
 HongKongCheck(int power, int prov_index)
 {
     int i,j;

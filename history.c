@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/08/30 03:40:12  greg
+ * fix "history exclstart" to work with both old and new subject lines
+ *
  * Revision 1.6  2001/07/15 09:15:19  greg
  * added support for game directories in a sub directory
  *
@@ -167,15 +170,15 @@ static void hist_date(long *date, long *pos, int print)
 int history(char *line, int power_type)
 {
 
-	/* 
+	/*
 	 * power_type is the type of the plyer requesting history
          * Set to OBSERVER if power type is unknown
          */
-	
+
 	/*
 	 *  The input line consists of [name] [from date] [to date] [lines n].
 	 *            or: [name] exclstart turn [exclend turn] [broad].
-	 * 
+	 *
 	 *            'broad' option is default for exstart parameter to
 	 *                        eliminate potentially long histories from being
 	 *                        returned.  Users must specifically ask for notices to
@@ -184,7 +187,7 @@ int history(char *line, int power_type)
 
 	/* Rp - added int flagb to flag incl/excl Broadcasts.  flagt = time/turns */
 	int i, not_eof, flagb, flagt;
-	char *s, name[sizeof(dipent.name)], file[sizeof(name) + 20];
+	char *s, name[sizeof(dipent.name)], file[sizeof(name) + 31];
 	char exstart[10], exend[10];	/* 10 characters should be plenty */
 	long s_date, s_pos, e_date, e_pos, n_date, n_pos, from, pos,
 	 to;

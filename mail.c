@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.18  2002/05/04 02:06:18  nzmb
+ * Added code to display the time left until the deadline and grace at the
+ * bottom of their reply whenever a player signs on.
+ *
  * Revision 1.17  2002/04/18 04:44:32  greg
  * Added the following commands:
  * - unstart
@@ -2297,8 +2301,10 @@ void mail_reply(int err)
 						if (!strncmp(subject, " - ", 3)) {
 							shiftleft(3);
 
-							if (!strncmp(subject, dipent.phase, 6)) {
-								shiftleft(6);
+							slen = strlen(dipent.phase);
+
+							if (!strncmp(subject, dipent.phase, slen)) {
+								shiftleft(slen);
 
 								while (subject[0] == ' ')
 									shiftleft(1);

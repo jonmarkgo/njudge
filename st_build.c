@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.10  2002/04/15 12:55:46  miller
+   ** Multiple changes for blind & Colonial & setup from USTV
+   **
    ** Revision 1.9  2001/12/28 06:21:24  nzmb
    ** Fixed bug causing segmentation fault in st_build.c .. there was an extra %s in line 402.
    **
@@ -113,7 +116,7 @@ int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
 void init_build(void)
 {
 	int i=0, p;
-	
+
 
 	UpdateBlockades();
 
@@ -531,6 +534,7 @@ void buildout(int pt)
 	int i, u, p, c1;
 	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
 
+
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
@@ -604,7 +608,7 @@ void buildout(int pt)
                                                 unit[u].coast = unit[u].new_coast;
 					}
 				unit[u].status = ':';
-			}	
+			}
 		}
 	}
 
@@ -622,11 +626,15 @@ void buildout(int pt)
 
 			if (i > npr || cnb[p]) {
 				i = nu[p] - 1;
-				fprintf(rfp, "%d unusable build%s pending.\n", i, i == 1 ? "" : "s");
+				if (processing)
+					fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
+				else
+					fprintf(rfp, "%d unusable build%s pending.\n", i, i == 1 ? "" : "s");
 				nu[p] = 1;
+				canbuild = 0;
 			} else {
 				i = nu[p] - 1;
-	
+
 				fprintf(rfp, "%d build%s pending.\n", i, i == 1 ? "" : "s");
 			}
 		}
