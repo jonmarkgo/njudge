@@ -1,3 +1,7 @@
+(20th July 2002)
+fixed Mach bug in ma_porder.c that didnt't correctly set province ownership
+to garrisons under all conditions.
+
 1.2.0 (17th July 2002)
 Fixed bug that was causing the judge to segment fault when writing to the
    xcontrol file 
