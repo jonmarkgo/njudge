@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.10  2001/07/01 23:19:29  miller
+** Limit tables
+**
 ** Revision 1.9  2001/06/05 00:52:39  miller
 ** Fix proxy-unit order bug
 **
@@ -82,25 +85,25 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 	s = temp;
 	if (out_string != NULL ) out_text = temp_out;
  
-/* Process lines of the form:
-**
-** cmd ::= <power>: <move list>
-** move list ::= <move>{; <move list>}
-** move ::= <type> <province> - <province>
-** | <type> <province> holds
-** | <type> <province> support {<power>:} <type> <province> {-<province>}
-** | <type> <province> convoy {<power>:} <type> <province> {-<province>}
-** | <type> <province> transform <type>
-** type ::= Army | Fleet | Wing
-*/
-/* 
-* See if a precheck is possible
-* If so, see if it is an canprocess line and assume ok if so
-*/
-if (precheck)
-{
-if (canpreprocess(s)) return 0;
-}
+	/* Process lines of the form:
+	**
+	** cmd ::= <power>: <move list>
+	** move list ::= <move>{; <move list>}
+	** move ::= <type> <province> - <province>
+	** | <type> <province> holds
+	** | <type> <province> support {<power>:} <type> <province> {-<province>}
+	** | <type> <province> convoy {<power>:} <type> <province> {-<province>}
+	** | <type> <province> transform <type>
+	** type ::= Army | Fleet | Wing
+	*/
+	/* 
+	* See if a precheck is possible
+	* If so, see if it is an canprocess line and assume ok if so
+	*/
+	if (precheck)
+	{
+	    if (canpreprocess(s)) return 0;
+	}
  
 	/*
 	 ** Process regular orders.
@@ -145,15 +148,21 @@ if (canpreprocess(s)) return 0;
 			 "and final destination of an army.");
 			return E_WARN;
 		}
-		if (order == 'c' && !StrictConvoy(p2))
-{
-errmsg("The destination %s is landlocked and cannot be convoyed to.",
-pr[p2].name );
-return E_WARN;
-}
+		if (order == 'c' && !StrictConvoy(p2)) {
+		    errmsg("The destination %s is landlocked and cannot be convoyed to.",
+		    pr[p2].name );
+		    return E_WARN;
+		}
 		c1 = 0;
 		break;
  
+	case 'd':
+		if (!(dipent.xflags & XF_MOVEDISBAND)) {
+		    errmsg("This game does not allow disband orders in movement phases.");
+		    return E_WARN;
+		}
+		break;
+
 	case 'h':
 	case 'n':
 		break;
@@ -179,9 +188,9 @@ return E_WARN;
 				t = get_action(s, &c);
 				/* Check that not disallowed for Army/Fleet rules */
 				if (dipent.flags & F_AFRULES && c == 'm') {
-errmsg("Multi-hop convoys are not allowed with A/F rules.");
-return E_WARN;
-}
+				    errmsg("Multi-hop convoys are not allowed with A/F rules.");
+				    return E_WARN;
+				}
 			 c2 = MV;
 			}
 		}
@@ -205,43 +214,41 @@ return E_WARN;
 		}
 		break;
 	case 't':
-		if (!(dipent.xflags & XF_TRANS_MOVE ))
-{
-errmsg ("Game '%s' does not permit move transformations.\n",
-dipent.name);
-return E_WARN;
-}
+		if (!(dipent.xflags & XF_TRANS_MOVE )) {
+		    errmsg ("Game '%s' does not permit move transformations.\n",
+		    dipent.name);
+		    return E_WARN;
+		}
 		if (water(p1)) {
-errmsg("Only units on/over land can be transformed");
-return E_WARN;
-}
+		    errmsg("Only units on/over land can be transformed");
+		    return E_WARN;
+		}
  
-s = get_type(s, &c);
+		s = get_type(s, &c);
 		AddUnitToOrder(out_text, c);
-if (c == 'x')
-{
-errmsg("Uknown unit type to transform to.\n");
-return E_WARN;
-}
+		if (c == 'x') {
+		    errmsg("Uknown unit type to transform to.\n");
+		    return E_WARN;
+                }
 		if (c== 'W' && !(dipent.flags & F_WINGS)) {
 		 errmsg("This game does not allow wings.\n");
 			return E_WARN;
 		}
-if (c == 'F') {
-sprintf(temp_text,"%s %s", pr[p1].name, s);
-get_prov(temp_text, &p2, &c1);
-if (!c1)
-c1 = XC;
-for (t = (char *) pr[p1].move; *t; t++)
-if (*++t >> 4 == c1)
-break;
-if (!*t) {
-errmsg("Invalid coast specified for a fleet in %s.\n",
-pr[p1].name);
-return E_WARN;
-}
+		if (c == 'F') {
+		    sprintf(temp_text,"%s %s", pr[p1].name, s);
+		    get_prov(temp_text, &p2, &c1);
+		    if (!c1)
+		        c1 = XC;
+		    for (t = (char *) pr[p1].move; *t; t++)
+		    if (*++t >> 4 == c1)
+		        break;
+		    if (!*t) {
+		        errmsg("Invalid coast specified for a fleet in %s.\n",
+		        pr[p1].name);
+		        return E_WARN;
+		    }
 			if (c1 != XC) AddCoastToOrder(out_text, c1);
-}
+                }
 		break;
  
 	default:
@@ -385,12 +392,11 @@ int movein(char **s, int p)
 			 "and final destination of an army.");
 			return E_WARN;
 		}
-		if (order == 'c' && !StrictConvoy(p2))
-{
-errmsg("The destination %s is landlocked and cannot be convoyed to.",
-pr[p2].name );
-return E_WARN;
-}
+		if (order == 'c' && !StrictConvoy(p2)) {
+                    errmsg("The destination %s is landlocked and cannot be convoyed to.",
+                    pr[p2].name );
+                    return E_WARN;
+                }
 		c1 = 0;
 		if (order == 's' &&
 		 (!valid_move(u, p2, &c1, &bl) || c1 == MX)) {
@@ -411,7 +417,14 @@ return E_WARN;
 		if (!c2 && unit[u2].type == 'F')
 			valid_move(u2, p2, &c2, &i);	/* set c2 */
 		break;
- 
+
+        case 'd':
+                if (!(dipent.xflags & XF_MOVEDISBAND)) {
+                    errmsg("This game does not allow disband orders in movement phases.");
+                    return E_WARN;
+                }
+                break;
+
 	case 'h':
 	case 'n':
 		break;
@@ -449,9 +462,9 @@ return E_WARN;
 					t = get_action(*s, &c);
 					/* Check that not disallowed for Army/Fleet rules */
 					if (dipent.flags & F_AFRULES && c == 'm') {
-errmsg("Multi-hop convoys are not allowed with A/F rules.");
-return E_WARN;
-}
+                                            errmsg("Multi-hop convoys are not allowed with A/F rules.");
+                                            return E_WARN;
+                                        }
 				}
 				if (!valid_move(i, p2, &c2, &j)) {
 					errmsg("The army in %s can't convoy from %s to %s.\n",
@@ -501,87 +514,84 @@ return E_WARN;
 		u2 = i;
 		break;
 	case 't':
-		if (!(dipent.xflags & XF_TRANS_MOVE ))
-{
-errmsg ("Game '%s' does not permit move transformations.\n",
-dipent.name);
-return E_WARN;
-}
+		if (!(dipent.xflags & XF_TRANS_MOVE )) {
+                    errmsg ("Game '%s' does not permit move transformations.\n",
+                    dipent.name);
+                    return E_WARN;
+                }
 		if (water(p1)) {
 		 errmsg("Cannot transform %s while %s water.\n",
 				utype(unit[u].type),
 				unit[u].type == 'F' ? "in" : "over");
 		 return E_WARN;
 		}
-*s = get_type(*s, &c);
-if (c == 'x')
-{
-errmsg("Uknown unit type to transform to.\n");
-return E_WARN;
-}
-if (unit[u].type == c && c != 'F')
-{
-errmsg("Error: Unit in %s is already of type %s.\n",
-pr[p1].name, Utype(unit[u].type));
-return E_WARN;
-}
-/* if a fleet, check if this is a coast */
-/* If a fleet, check if coast needs to be specified */
-if (c == 'F') {
-sprintf(temp_text,"%s %s", pr[p1].name, *s);
-get_prov(temp_text, &p2, &c1);
-if (!c1)
-c1 = XC;
-for (t = (char *) pr[p1].move; *t; t++)
-if (*++t >> 4 == c1)
-break;
-if (!*t) {
-errmsg("Invalid coast specified for a fleet in %s.\n",
-pr[p1].name);
-return E_WARN;
-}
-**s = '\0'; /* terminate input string */
-if (c1 == unit[u].coast) {
-if (c1 == XC) {
-errmsg("Error: Unit in %s is already of type fleet", pr[p1].name);
-} else {
-errmsg("Fleet %s already on specified coast.\n", pr[p1].name);
-}
-return E_WARN;
-}
-} else {
-c1 = MV; /*Default coast for non-fleet units */
-}
+                *s = get_type(*s, &c);
+                if (c == 'x') {
+                    errmsg("Uknown unit type to transform to.\n");
+                    return E_WARN;
+                }
+                if (unit[u].type == c && c != 'F') {
+                    errmsg("Error: Unit in %s is already of type %s.\n",
+                    pr[p1].name, Utype(unit[u].type));
+                    return E_WARN;
+                }
+                /* if a fleet, check if this is a coast */
+                /* If a fleet, check if coast needs to be specified */
+                if (c == 'F') {
+                    sprintf(temp_text,"%s %s", pr[p1].name, *s);
+                    get_prov(temp_text, &p2, &c1);
+                    if (!c1)
+                        c1 = XC;
+                    for (t = (char *) pr[p1].move; *t; t++)
+                    if (*++t >> 4 == c1)
+                        break;
+                    if (!*t) {
+                        errmsg("Invalid coast specified for a fleet in %s.\n",
+                        pr[p1].name);
+                        return E_WARN;
+                    }
+                    **s = '\0'; /* terminate input string */
+                    if (c1 == unit[u].coast) {
+                        if (c1 == XC) {
+                            errmsg("Error: Unit in %s is already of type fleet", pr[p1].name);
+                        } else {
+                            errmsg("Fleet %s already on specified coast.\n", pr[p1].name);
+                        }
+                        return E_WARN;
+                    }
+                } else {
+                    c1 = MV; /*Default coast for non-fleet units */
+                }
 		/* OK, now check if unit can be transformed */
 		switch ((dipent.xflags & XF_TRANS_MANYW))
 		{
 		 case 0: /* Corresponds to Home centres only */
 			if (pr[p1].type != dipent.pl[p] && pr[p1].type != 'x' ) {
-errmsg("%s is not a home province for %s.\n",
-pr[p1].name, powers[p]);
-return E_WARN;
-	 }
+                            errmsg("%s is not a home province for %s.\n",
+                            pr[p1].name, powers[p]);
+                            return E_WARN;
+	                 }
 			break;
 	 case XF_TRANS_MONEC: /* can do any centre if at least one home owned */
 			if (one_owned[p] < 1) {
-errmsg("%s must own at least one home centre to build.\n",
-powers[p]);
-return E_WARN;
-	}
+                            errmsg("%s must own at least one home centre to build.\n",
+                            powers[p]);
+                            return E_WARN;
+	                }
 		 case XF_TRANS_MANYC: /* Can do on any centre */
 			/* but must own the centre */ 
 			if (pr[p1].owner != p) {
-errmsg("%s does not control %s.\n",
-powers[p], pr[p1].name);
-return E_WARN;
-	}
+                            errmsg("%s does not control %s.\n",
+                            powers[p], pr[p1].name);
+                            return E_WARN;
+	                }
 			break;
 		 default: /* Can do anywhere */
 			break; /* Nothing left to_ do */
 		}
 		
-unit[u].new_type = c; /* Store the new requested type */
-unit[u].new_coast = c1; /* and the new coast */
+                unit[u].new_type = c; /* Store the new requested type */
+                unit[u].new_coast = c1; /* and the new coast */
 		break;
  
 	default:
@@ -667,7 +677,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 	 ** If we're not really processing, clear all the bogus proxy orders and
 	 ** skip to the report generation.
 	 */
-	if (!processing) {
+	if (!processing && !predict) {
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].proxy != 0 && unit[u].order == 'n')
 				unit[u].owner = 0;
@@ -1012,6 +1022,16 @@ result[u] = BLOCKED;
 			 nextp5:;
 			}
 		} while (bounce);
+
+/* Pass 5aa: Disband requested disband units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'd') {
+			    result[u] = 0; /* Disbands never fail */
+			}
+		}
+ 
 /* Pass 5a: flag dislodgements */
 		bounce = 0;
 		for (u = 1; u <= nunit; u++) {
@@ -1049,12 +1069,12 @@ result[u] = BLOCKED;
 			case 'c':
 				fprintf(rfp, " CONVOY ");
 				if ((i = unit[u2 = unit[u].unit].owner) != p) {
-if (!(dipent.flags & F_BLIND))
-fprintf(rfp, "%s ", owners[i]);
-else
-fprintf(rfp,"unknown ");
-}
-				else if (!processing && unit[u2].dest != unit[u].dest)
+                                    if (!(dipent.flags & F_BLIND))
+                                        fprintf(rfp, "%s ", owners[i]);
+                                    else
+                                        fprintf(rfp,"unknown ");
+                                }
+				else if (!processing && !predict && unit[u2].dest != unit[u].dest)
 					result[u] = BAD_CONVOY;
 				fprintf(rfp, "Army %s -> %s", pr[unit[u].unit_prov].name,
 					pr[unit[u].dest].name);
@@ -1062,13 +1082,19 @@ fprintf(rfp,"unknown ");
 			case 'h':
 				fprintf(rfp, " HOLD");
 				break;
+
+			case 'd':
+				fprintf(rfp, " DISBAND");
+				 unit[u].owner = 0;
+				break;
+
 /* case 'l': */
 /* fprintf(rfp," LIFT SIEGE"); */
 /* break; */
 			case 'm':
 				if ((s = unit[u].convoy)) {
 					while (*s) {
-						if (!processing && unit[*s].owner == unit[u].owner &&
+						if (!processing && !predict && unit[*s].owner == unit[u].owner &&
 						 (unit[*s].order != 'c' || unit[*s].unit != u ||
 						 unit[*s].dest != unit[u].dest)) {
 							result[u] = BAD_CONVOY;
@@ -1111,18 +1137,18 @@ fprintf(rfp,"unknown ");
 				}
 				break;
 			 case 't':
-fprintf(rfp, " TRANSFORMS TO %s", Utype(unit[u].new_type));
-if (unit[u].new_type == 'F' ) {
-/* Fleets can have coast, so show it if it has one */
-if ((c1 = unit[u].new_coast) > XC)
-fprintf(rfp, " (%s)", mtype[c1]);
-}
+                            fprintf(rfp, " TRANSFORMS TO %s", Utype(unit[u].new_type));
+                            if (unit[u].new_type == 'F' ) {
+                            /* Fleets can have coast, so show it if it has one */
+                            if ((c1 = unit[u].new_coast) > XC)
+                                fprintf(rfp, " (%s)", mtype[c1]);
+                            }
 				/* Now apply the changes iif not dislodged */
 				if (unit[u].status != 'r' && !fail[u]) {
 				 unit[u].type = unit[u].new_type;
 				 unit[u].coast = unit[u].new_coast;
 				}
-break;
+                            break;
  
 			default:
 				fprintf(rfp, " INVALID ORDER (internal error)");
@@ -1138,7 +1164,7 @@ break;
 		}
 	}
 /* Pass 7: Print out retreats. */
-	if (processing) {
+	if (processing || predict) {
 		i = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
@@ -1230,9 +1256,9 @@ break;
 		}
 	}
 /* Pass 8: recalculate blockade settings */
-	if ((dipent.flags & F_WINGS) && processing ){
+	if ((dipent.flags & F_WINGS) && (processing || predict)){
 		/* Firstly, set all provinces to 'unblockaded' */
-for (i = 1; i <= npr;i++) {
+            for (i = 1; i <= npr;i++) {
 			pr[i].blockaded = 0;
 		}
 		/* Now, go through all units and set to blockaded if occupied by an
