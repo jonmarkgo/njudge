@@ -268,7 +268,7 @@ install-data-hook: flist magic
 	@echo
 
 # smail.in and dipclean.in are  already automatically included as are 
-top-level docs like COPYING etc.
+# top-level docs like COPYING etc.
 distclean-local:
 	-rm -rf autom4te.cache
 
