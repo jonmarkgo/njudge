@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2004/08/23 16:42:14  millis
+ * Add space for Initiamte variant specifier
+ *
  * Revision 1.19  2004/08/23 13:27:45  millis
  * Removed extra Norway definition
  *
@@ -243,7 +246,8 @@ enum {
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
       exit(1);                                                          \
-  }
+  } \
+  dipent.avp = DEFAULT_AVP(dipent);
 
 /*
  *  External Data Object Declarations
