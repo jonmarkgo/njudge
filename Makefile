@@ -318,48 +318,48 @@ ${INSTALLDIR}/newlogs: newlogs
 
 dist: tarZ targz tarbz2
 
-tarZ: ../dip-${JVERSION}.tar.Z ../mapit.tar.Z
+tarZ: ../njudge-${JVERSION}.tar.Z ../mapit.tar.Z
 
-targz: ../dip-${JVERSION}.tar.gz ../mapit.tar.gz
+targz: ../njudge-${JVERSION}.tar.gz ../mapit.tar.gz
 
-tarbz2: ../dip-${JVERSION}.tar.bz2 ../mapit.tar.bz2
+tarbz2: ../njudge-${JVERSION}.tar.bz2 ../mapit.tar.bz2
 
-tar: ../dip-${JVERSION}.tar ../mapit.tar
+tar: ../njudge-${JVERSION}.tar ../mapit.tar
 
-../dip-${JVERSION}.tar: ${FILES} 
+../njudge-${JVERSION}.tar: ${FILES} 
 #	newvers VERMAJ
 #	@touch .log/oldlog
-	rm -f ../dip-${JVERSION}.tar
-	tar -cf ../dip-${JVERSION}.tar ${FILES}
+	rm -f ../njudge-${JVERSION}.tar
+	tar -cf ../njudge-${JVERSION}.tar ${FILES}
 
 ../mapit.tar:
 	rm -f ../mapit.tar 
 	tar -cf ../mapit.tar mapit
 
-../dip-${JVERSION}.tar.Z: ../dip-${JVERSION}.tar
-	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
-	compress -f ../dip-${JVERSION}.tar
-	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+../njudge-${JVERSION}.tar.Z: ../njudge-${JVERSION}.tar
+	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
+	compress -f ../njudge-${JVERSION}.tar
+	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
 
 ../mapit.tar.Z: ../mapit.tar
 	cp -p ../mapit.tar ../mapit.tar.old
 	compress -f ../mapit.tar
 	mv ../mapit.tar.old ../mapit.tar
 
-../dip-${JVERSION}.tar.gz: ../dip-${JVERSION}.tar
-	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
-	gzip -f ../dip-${JVERSION}.tar
-	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+../njudge-${JVERSION}.tar.gz: ../njudge-${JVERSION}.tar
+	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
+	gzip -f ../njudge-${JVERSION}.tar
+	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
 
 ../mapit.tar.gz: ../mapit.tar
 	cp -p ../mapit.tar ../mapit.tar.old
 	gzip -f ../mapit.tar
 	mv ../mapit.tar.old ../mapit.tar
 
-../dip-${JVERSION}.tar.bz2: ../dip-${JVERSION}.tar
-	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
-	bzip2 -f ../dip-${JVERSION}.tar
-	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+../njudge-${JVERSION}.tar.bz2: ../njudge-${JVERSION}.tar
+	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
+	bzip2 -f ../njudge-${JVERSION}.tar
+	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
 
 ../mapit.tar.bz2: ../mapit.tar
 	cp -p ../mapit.tar ../mapit.tar.old
