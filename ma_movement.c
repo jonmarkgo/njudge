@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2003/05/16 21:13:42  millis
+ * Bug 155 fix, moved Bug 126 fix to end (as otherwise, does not know of where units were).
+ *
  * Revision 1.18  2003/05/10 00:22:39  millis
  * Fix bug 126, not always correctly registering province ownership changes
  *
@@ -890,8 +893,7 @@ int ma_moveout(int pt)
 		      nextp2c:;
 		}
 
-/*  Pass 4a: Check for conditional movement blocked by an incoming fleet. */
-
+/*  Pass 4a: Check for conditional movement blocked by an incoming or converting fleet. */
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0 || result[u])
 				continue;
@@ -926,10 +928,15 @@ int ma_moveout(int pt)
 					}
 				}
 
-				if (u3 && (unit[u3].type == 'F' ||
+				if (u3 && ((unit[u3].type == 'F' && !(dipent.xflags & XF_MACH2)) ||
 					   (unit[u3].type == 'G' && unit[u3].unit == 'F')) &&
 				!allies[unit[u3].owner][unit[u].owner]) {
 					result[u] = BLOCKED;
+					if (unit[u].order == 's' && unit[u].unit) {
+					   /* Bug 195
+					    * Blocked units cannot give support, so remove it */
+					   support[unit[u].unit] -= supval(u);
+					}
 				}
 			}
 		}
