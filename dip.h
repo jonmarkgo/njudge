@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2003/04/27 17:23:35  millis
+ * Bug 142, add flag for AutoCreate
+ *
  * Revision 1.22  2003/04/16 04:29:59  millis
  * Fix Bug 65
  *
@@ -261,6 +264,7 @@
 #define X2F_NOGARRISONS		0x100000 /* In Mach, to disable garrisons */
 
 #define X2F_AUTOCREATE		0x200000 /* When game ends, start another one */
+#define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
