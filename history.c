@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Restrict history for blind games (so that players cannot find out more than they should!)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -192,24 +195,6 @@ int history(char *line, int power_type)
 	flagt = 1;		/* Rp - define flagt = 1 do time-wise, define flagt = 0 as exclude */
 
 
-         /* Check if a blind game - if so, only the master can do this */
-	if (dipent.flags & F_BLIND ) {
-		if (dipent.phase[6] != 'X' ) {
-		    /* Non-finished blind games have restrictions on history */	
-		    switch (power_type)
-		    {
-			case OBSERVER:
-				fprintf(rfp,"Observers are not allowed history command in blind games.\n");
-				return 0;
-			case MASTER:
-				break; /* No problem for the master! */
-
-			default:
-				fprintf(rfp, "Players are not allowed history command in blind games.\nContact the master for help in this.\n");
-				return 0;
-		    }
-	       }
-	}
 	while (isspace(*s))
 		s++;
 
@@ -347,6 +332,27 @@ int history(char *line, int power_type)
 		fprintf(rfp, "No history available for game '%s'.\n", name);
 		return 1;
 	}
+
+        /* Check if a blind game - if so, only the master can do this */
+        if (dipent.flags & F_BLIND ) {
+                if (dipent.phase[6] != 'X' ) {
+                    /* Non-finished blind games have restrictions on history */
+                    switch (power_type)
+                    {
+			case 0: /* not signed on */
+                        case OBSERVER:
+                                fprintf(rfp,"Observers are not allowed history command in blind games.\n");
+                                return 0;
+                        case MASTER:
+                                break; /* No problem for the master! */
+
+                        default:
+                                fprintf(rfp, "Players are not allowed history command in blind games.\nContact the master for help in this.\n");
+                                return 0;
+                    }
+               }
+        }
+
 	if (!msg_header_done)
 		msg_header(rfp);
 	fprintf(rfp, "History information for game '%s' ", name);
