@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Minor changes only
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -978,8 +981,7 @@ int new_checklist(FILE * fp, char *addr)
 	char *s, line[200];
 
 	while (fgets(line, sizeof(line), fp)) {
-		s = strchr(line, '=');
-		if (s == 0)
+	        if (*(s = line) != '=')
 			continue;
 		if (cmpaddr(s + 1, addr))
 			return 1;
