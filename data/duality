@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 Aug 26, 2001
+Greetings from the Diplomacy* Adjudicator!!                 Dec 30, 2002
 duality
 
 Duality is where certain preset provinces, normally land only, can also
@@ -22,12 +22,13 @@ shift_left:	Constantinople, Denmark
 shift_right:	Constantinople, Denmark
 wraparound:	Constantinople, Denmark
 wraparound2:	Constantinople, Denmark
-colonial:	Cebu
+colonial:*	Cebu
+colonial96:*	Cebu
 ancient_med:*	Baleares
 
 (Games marked with '*' have this set as default.)
 
-Note that when the game also has CostalConvoys allowed, this setting is
+Note that when the game also has CoastalConvoys allowed, this setting is
 redundant.
 
 Millis Miller
