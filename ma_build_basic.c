@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.6  2003/01/20 12:33:00  millis
+   ** Small USTV change
+   **
    ** Revision 1.5  2002/10/19 21:39:16  millis
    ** Fixed Bug 21: Mach2 games allowing Armies in Venice
    **
@@ -355,7 +358,8 @@ void ma_buildout_basic(int pt)
 
 	seq_val = atoi(dipent.seq) -1; /* = 0 at start of game */
 
-	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
+	fprintf(rfp, "Adjustment %s for Winter of %d.  (%s.%s)\n\n",
+		 pt ? "orders" : "results",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
 	if (pt == MASTER) {

@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.9  2003/05/03 23:33:49  millis
+ * Fix bug 150 (NO_GARRISONS flag)
+ *
  * Revision 1.8  2003/01/13 18:16:11  millis
  * Merged from ustv
  *
@@ -279,7 +282,8 @@ void ma_buildout(int pt)
 
 	if (err)
 		fputc('\n', rfp);
-	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n",
+	fprintf(rfp, "Adjustment %s for Winter of %d.  (%s.%s)\n",
+		 pt ? "orders" : "results",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
 	n = (int) strlen(powers[AUTONOMOUS]);

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2002/12/28 00:09:29  millis
+ * Fixed bug 79, not showing special type on retreats
+ *
  * Revision 1.4  2002/02/25 11:51:52  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -163,7 +166,8 @@ void ma_retreatout(int pt)
 
 	if (err)
 		fprintf(rfp, "\n");
-	fprintf(rfp, "Retreat orders for %s of %d.  (%s.%s)\n\n",
+	fprintf(rfp, "Retreat %s for %s of %d.  (%s.%s)\n\n",
+		 pt ? "orders" : "results",
 		dipent.phase[0] == 'F' ? "Fall" :
 		dipent.phase[0] == 'U' ? "Summer" : "Spring",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);

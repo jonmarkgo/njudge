@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.21  2003/05/04 22:39:45  millis
+   ** Fixed build counting in ExtraCentres() game
+   **
    ** Revision 1.20  2003/05/03 22:45:32  millis
    ** take account of ExtraCentres() if set.
    **
@@ -780,7 +783,8 @@ void buildout(int pt)
         int one_printed;
         int assumed[ NPOWER + 1 ];  /* Count number of centres power is assuming this turn as home centre */
 
-	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
+	fprintf(rfp, "Adjustment %s for Winter of %d.  (%s.%s)\n\n",
+		pt ? "orders" : "results",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
 	for ( u = 0; u <= NPOWER; u++)

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.6  2003/01/18 14:31:39  millis
+   ** Implements half-strength retreats from USTV (for 1900 variant)
+   **
    ** Revision 1.5.2.1  2003/01/13 16:04:58  millis
    ** ustv latest versions
    **
@@ -216,7 +219,8 @@ void retreatout(int pt)
 
 	if (err)
 		fprintf(rfp, "\n");
-	fprintf(rfp, "Retreat orders for %s of %d.  (%s.%s)\n\n",
+	fprintf(rfp, "Retreat %s for %s of %d.  (%s.%s)\n\n",
+		 pt ? "orders" : "results",
 		dipent.phase[0] == 'F' ? "Fall" :
 		dipent.phase[0] == 'U' ? "Summer" : "Spring",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
