@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/06/23 22:56:29  nzmb
+ * Cosmetic change to infoplayer/getdedication display.
+ *
  * Revision 1.7  2001/12/29 20:38:04  nzmb
  *
  * Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
@@ -46,6 +49,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
@@ -63,7 +67,7 @@
 #define LEVEL    4
 #define USER     5
 #define COUNTRY  6
-#define PACKAGE  7
+#define _PACKAGE  7
 
 /*  Defines for "Package:" options  */
 
@@ -97,7 +101,7 @@ int newuser(char *addr, FILE * fp)
 	 "user:", "country:", "package:"};
 	static int vals[] =
 	{0, PHONE, EMAIL, EMAIL, SITE, LEVEL, USER, COUNTRY,
-	 PACKAGE};
+	 _PACKAGE};
 
 	static char *levs[] =
 	{"", "novice", "advanced", "intermediate",
@@ -160,7 +164,7 @@ int newuser(char *addr, FILE * fp)
 			free(lines[--n]);	/* Don't save 'User:' line */
 			break;
 
-		case PACKAGE:
+		case _PACKAGE:
 			printf("found package: %s\n", s);
 			lookfor(s, pkgs, nentry(pkgs), &send_pkg);
 			free(lines[--n]);	/* Don't save 'Package:' line */
@@ -327,7 +331,7 @@ int newuser(char *addr, FILE * fp)
 			/* Ignore 'User:' if entered */
 			break;
 
-		case PACKAGE:
+		case _PACKAGE:
 			lookfor(s, pkgs, nentry(pkgs), &send_pkg);
 			/* Don't write 'Package:' to dip.whois file */
 			break;

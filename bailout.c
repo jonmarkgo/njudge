@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Small change to log bailout error before bailing out
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -22,6 +25,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include "config.h"
 #include "dip.h"
 #include <sys/stat.h>
 #include "diplog.h"

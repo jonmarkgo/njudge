@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2002/06/12 21:08:30  millis
+ * second value in player record is hex, thus us %x and not %d
+ *
  * Revision 1.12  2002/04/23 11:08:35  miller
  * Spelling change "Svmebody" -> "Somebody"
  *
@@ -71,6 +74,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "dip.h"
 #include "porder.h"
 #include "mach.h"

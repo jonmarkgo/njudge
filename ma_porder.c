@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/05/31 12:37:22  millis
+ * Fixed small bug allowing provinces to stay incorrectly unowned
+ *
  * Revision 1.7  2002/03/25 23:47:55  miller
  * Fixed properly bug for ownership when unit has just moved there
  * (it wasn't having 'loc' set correctly in pr structure)
@@ -117,8 +120,8 @@ static void CalculateNewOwners(void)
                 if (unit[u].type == 'G') {
                         ncown[p] = unit[u].owner;
                         if (pr[unit[u].loc].unit == 0 || 
-			    unit[pr[unit[u].loc].unit].owner == 0 ||
-			    unit[pr[unit[u].loc].unit].owner == unit[u].owner) {
+			    unit[pr[unit[u].loc].gunit].owner == 0 ||
+			    unit[pr[unit[u].loc].gunit].owner == unit[u].owner) {
 				/* Province is owned by city owner if no-one in province or
 				   provice unit is owned by same power */
                                 npown[p] = unit[u].owner;

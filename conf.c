@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/04/15 12:55:41  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.6  2001/07/17 15:16:48  greg
  * added GAME_DIR
  *
@@ -27,6 +30,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "config.h"
 #include "conf.h"
 #include "hashtable.h"
 

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/04/15 12:55:45  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.5.2.2  2001/10/19 23:45:15  dema
  * Handle NoMoney settings and initial_money
  *
@@ -46,6 +49,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "dip.h"
 #include "porder.h"
 #include "mach.h"

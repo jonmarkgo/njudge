@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2002/05/16 13:11:55  miller
+ * Removed warning and debug line
+ *
  * Revision 1.4  2002/04/15 12:55:40  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -37,6 +40,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "config.h"
 #include "dip.h"
 #include "conf.h"
 #include "functions.h"
@@ -71,7 +75,7 @@ int main(int argc, char *argv[])
 		dir[0] = '\0';
 		break;
 	case 2:
-		sprintf(dir, "%s/", argv[1]);
+		sprintf(dir, "%s", argv[1]);
 		break;
 	default:
 		fprintf(stderr, "Usage %s [directory]\n", *argv);
@@ -86,16 +90,16 @@ int main(int argc, char *argv[])
 	for (v = 1; v < NVARIANT; v++) {
 		nrw=0; ngw = 0;  /* Initialise variables */
 		if (v == 1)
-			sprintf(line, "%sdata/map", dir);
+			sprintf(line, "%s/map", dir);
 		else
-			sprintf(line, "%sdata/map.%s", dir, variants[v]);
+			sprintf(line, "%s/map.%s", dir, variants[v]);
 		if (stat(line, &sbuf)) {
 			perror(line);
 			exit(1);
 		}
 		t1 = sbuf.st_mtime;
 
-		sprintf(file, "%smap.%d", dir, v);
+		sprintf(file, "%s/map.%d", dir, v);
 		if (stat(file, &sbuf))
 			t2 = 0;
 		else

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -25,6 +28,7 @@
 static char sccsid[] = "@(#)strcasecmp.c	5.6 (Berkeley) 6/27/88";
 #endif				/* LIBC_SCCS and not lint */
 
+#define  _BSD_SOURCE
 #include <sys/types.h>
 
 #ifdef SYSV

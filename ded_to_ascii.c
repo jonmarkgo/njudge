@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  2002/04/11 23:49:00  miller
+   ** First draft.
+   **
 
  */
 
@@ -8,6 +11,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include "config.h"
 #include "dip.h"
 
 int close();  /*missing prototype */

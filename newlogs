@@ -6,15 +6,15 @@ for i in $LOGS; do
 LOG=$i
 	if test -s $LOG
 	then
-		test -f $LOG.6.Z && mv $LOG.6.Z  $LOG.7.Z
-		test -f $LOG.5.Z && mv $LOG.5.Z  $LOG.6.Z
-		test -f $LOG.4.Z && mv $LOG.4.Z  $LOG.5.Z
-		test -f $LOG.3.Z && mv $LOG.3.Z  $LOG.4.Z
-		test -f $LOG.2.Z && mv $LOG.2.Z  $LOG.3.Z
-		test -f $LOG.1.Z && mv $LOG.1.Z  $LOG.2.Z
-		test -f $LOG.0.Z && mv $LOG.0.Z  $LOG.1.Z
+		test -f $LOG.6.gz && mv $LOG.6.gz $LOG.7.gz
+		test -f $LOG.5.gz && mv $LOG.5.gz  $LOG.6.gz
+		test -f $LOG.4.gz && mv $LOG.4.gz  $LOG.5.gz
+		test -f $LOG.3.gz && mv $LOG.3.gz  $LOG.4.gz
+		test -f $LOG.2.gz && mv $LOG.2.gz $LOG.3.gz
+		test -f $LOG.1.gz && mv $LOG.1.gz  $LOG.2.gz
+		test -f $LOG.0.gz && mv $LOG.0.gz  $LOG.1.gz
 		mv $LOG    $LOG.0
-		compress $LOG.0
+		gzip $LOG.0
 		touch $LOG
 		chmod 600    $LOG
 		sleep 40

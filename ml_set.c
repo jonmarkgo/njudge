@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.25  2002/07/17 16:50:44  nzmb
+ *
+ * Fixed up mistake in PRV array, added more flexibility to commands.
+ *
  * Revision 1.24  2002/07/16 18:14:22  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -158,6 +162,7 @@
 #include <time.h>
 #include <ctype.h>
 
+#include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"

@@ -12,6 +12,7 @@ $ID$
 #include <unistd.h>
 #include <string.h>
 
+#include "config.h"
 #include "plyrdata.h"
 
 void writetodata(void);

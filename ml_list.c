@@ -1,5 +1,19 @@
 /*
    ** $Log$
+   ** Revision 1.7  2002/04/18 04:44:32  greg
+   ** Added the following commands:
+   ** - unstart
+   ** - set secret
+   ** - set [prflist|prfrand|prfboth]
+   **
+   ** Fixed Set Absence so that "to" is not case sensitive
+   **
+   ** Fixed Quiet games so that new players are announced
+   ** before the game starts
+   **
+   ** Fixed ascii_to_ded.c so thatit no longer generates an
+   ** error when compiled
+   **
    ** Revision 1.6  2001/07/15 09:17:15  greg
    ** added support for game directories in a sub directory
    **
@@ -58,6 +72,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "config.h"
 #include "functions.h"
 #include "dip.h"
 #include "mail.h"

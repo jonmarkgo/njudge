@@ -1,0 +1,258 @@
+.TH JUDGE 6 
+.SH judge
+judge \- Internet Diplomacy Adjudicator
+.SH "DESCRIPTION"
+This manual page documents briefly the
+.BR judge \.
+.PP
+The 
+.B judge
+adjudicates email games of the 
+.B Avalon Hill 
+boardgame 
+.B Diplomacy\.  
+.B njudge 
+is a forked version of the original 
+.B judge 
+code.
+.SH FILES
+The 
+.B .forward 
+
+file for the adjudicator's account should contain the
+following (including the quotes, substitute for DESTDIR):
+
+.I   "| /DESTDIR/dip/rdip -bd DESTDIR"
+
+All mail sent to the adjudicator will be processed as diplomacy mail, a
+special account should be set up as this.  The GAMES_MASTER mail should
+be directed to a person (DO NOT specify the adjudicator's address as the
+GAMES_MASTER!).
+
+You need to install the map utility files by hand. Go to the mapit
+subdirectory and type "make". Copy mapit and all the support files into
+a directory called "mapit" in your destination directory. Also copy
+rundipmap into the destination directory.
+
+The following files are installed or created in the destination directory:
+
+.B dip
+
+This is the executable.  Dip will be invoked by the .forward file when
+mail is sent to the adjudicator account.  It will figure out when the next
+event should occur and submit a copy of 'diprun' onto the 'at' queue. 
+Diprun will invoke dip with the -x parameter to process any games that are
+ready. 
+
+.B diprun
+
+This is a csh script that will invoke dip via the at queue.
+
+.B dipclean
+
+This is a csh script that should be executed once by hand once.  It will
+put itself onto the at queue for subsequent runs on Saturdays at 2pm. 
+This script relies on the flock program.  The source is included, but is
+not built by the Makefile. 
+
+.B dip.log
+
+This is an interlock file that keeps two dips from running at the same
+time.  In addition, all received mail is written to this file to allow
+reconstruction should some drastic event occur.  The dipclean script will
+move this file to dip.log.0 once per week to keep it from getting out of
+hand.  Before editing dip.master or any of the other databases that the
+adjudicator maintains you should lock this file to shut it out.  The flock
+program can be used to do this interlocking. 
+
+.B dip.master
+
+This database contains the status of each game.  The sequence number of
+the game, the next deadline and the players in the game are in this file. 
+If no file exists, one is created.  If a file exists it will not be
+changed by 'make install'.  Note, you should add yourself as a master in
+game control by hand (use the "observe control <password>" command and
+then edit dip.master to change to "o" in observer to an "m" for master --
+only the first character of that word is significant). 
+
+.B dip.whois
+
+This is a database containing the registration information for the people
+who have registered with the adjudicator.  When people register the
+adjudicator looks for someone else in this file who specified the same
+site name.  If found, the site id of the other person will be used.  If
+not found the area code from the phone number times 100 will be used. 
+This doesn't work very well for European phone numbers.  Site numbers that
+are multiples of 100 will match site numbers that are the same in the
+other digits (40100 matches 40101 and 40102, but 40101 does not match
+40102).  When registrations come in a message is sent to the GAMES_MASTER. 
+Even multiples of 100 should be modified with the fixid command: "fixid
+40103 Site Name" sent in a mail message to the adjudicator.  Anyone can
+use the fixid command, but notification will be sent to the GAMES_MASTER
+notifying you that someone is mucking around. 
+
+.B dip.addr 
+
+This file associates a user number and siteid with an email address and
+vice versa.  Each user may have multiple email addresses. 
+
+.B dip.dedicate
+
+This is a binary file that keeps track of the dedication rating of each of
+the registered players.  The dedication rating can be adjusted for a
+particular person with the "adjust user increase"  command where "user"
+refers to the user number as in the dip.whois file and "increase" is a
+positive or negative number to be added to the dedication rating for the
+user.  Anyone can use the adjust command, but again, a notification will
+be sent to the GAMES_MASTER notifying you that someone is mucking around. 
+If the dip.dedicate file is removed, a new one will be regenerated from
+whatever dedication rating is found in the dip.whois file.  The whois file
+may be out of date.  It is only updated when the whois file needs to be
+updated because of a registration request or a fixid command. 
+
+.B smail
+
+This is a perl script that will send mail out.  The first 10 lines of the
+mail is written to the file 'mail.log' as a debugging aid.  This can be
+commented out.  The mail.log file will be mvoed to mail.log.0 each week by
+the dipclean script to keep it from getting out of hand. 
+
+.B map.n
+
+The map.n files are compiled binary data files containing the Diplomacy
+map.  This consists of the province names, abbreviations, type and whether
+there is a supply center and the adjacency table.  The number specifies
+the variant.  See variant.h for the list of supported variants.  See
+data/map.n below: 
+
+.B data/map.n
+
+This is the source for the map.n files.  Any changes to this file will be
+propagated to the map.n file with a "make install" command which will
+recompile the map with the cmap program. 
+
+.B data/info
+
+This is a help file that will be sent to players when they send the HELP
+command. 
+
+.B data/seed.n
+
+This is the initial position of units on the map.  It is copied to the
+'Dxxx/G001' file when a game starts up. 
+
+.B data/report.n
+
+This is the initial position report.  It is sent to players, along with
+additional information particular to the game or the player when a game
+starts up. 
+
+.B data/xxxx
+
+The rest of the files in the data subdirectory, and the ones listed above,
+can be retrieved by users with the "get xxxx" command. 
+
+.B Dxxx/
+
+The files pertaining to a particular game are each kept in their own
+subdirectory.  The xxx is the name of the game in question. 
+
+.B Dxxx/Gnnn
+
+This is the game file for game xxx turn nnn.  It contains the current and
+past status of the particular game. 
+
+.B Dxxx/Mnnn
+
+This is the current set of moves for game xxx.  Only the highest numbered
+file is necessary.  The dipclean script will remove movement files that
+have not been accessed for more than 90 days. 
+
+.B Dxxx/Pnnn
+
+The P files contain the pending orders for a particular turn.  Only the
+highest numbered file is necessary.  Most of these files will be zero
+length because people don't usually send their orders in ahead of time. 
+The dipclean script will get rid of zero length files. 
+
+.B Dxxx/Tnnn
+
+These files are temporary files that can be cleaned up if they are found
+left lying around.  The dipclean script will get rid of them evenutually
+
+.B Dxxx/archive
+
+This is the archive of broadcasts and game information that an observer
+would see for any given game.  This information can be retrieved with the
+the HISTORY command. 
+
+.B Dxxx/info
+
+Information about the game, which can be set with the SET COMMENT command. 
+This information is shown in the summary, and in the full list. 
+
+.B Dxxx/summary
+
+The summary, as seen by a player in the game. 
+
+.B Dxxx/msummary
+
+The summary, as seen by a master of the game.
+
+.B Dxxx/start
+
+The date and time when the game started (the point when the countries were
+assigned).  This is used in the summary. 
+
+.B Dxxx/draw
+
+Contains the date and time when the game ended, and the result.  This is
+used in the summary.  If this file has been created, it will be deleted if
+another turn processes. 
+
+The following files can be created in the "dip" directory to allow the
+options: 
+
+.B ALLOW.map
+
+Allow use of the map command to produce .ps maps of a game
+
+.B ALLOW.map-star 
+
+Allow use of the "map *" command to produce .ps maps of a game based on a
+LIST output. 
+
+.SH BUGS
+This release has preliminary support for three new hundred variants.  But
+the seed and report files aren't there, nor have the old hundred variants
+been taken out of the code.  I advise against trying to run any type of
+hundred variant unless you want to help debug it.
+
+po_get.c needs the function get_amount() looked at by someone who can fix
+machiavelli code.  there is an type overflow condition there, among other
+things.
+
+the flock/lockf stuff still screws up a sun.  the whole thing should be
+changed to use posix fcntl stuff.
+.SH COPYRIGHT
+Copyright 1987, Ken Lowe.
+
+.B Diplomacy 
+is a trademark of the 
+.B Avalon Hill Game Company\, 
+Baltimore,
+Maryland, all rights reserved; used with permission.
+
+Redistribution and use in source and binary forms are permitted
+provided that it is for non-profit purposes, that this and the
+above notices are preserved and that due credit is given to Mr. Lowe.
+
+.SH AUTHOR
+The original 
+.B judge 
+was was written by Ken Lowe
+
+.B njudge 
+was written by Nathan Wagner <nw@hydaspes.if.org>
+
+This manual page was written by Jaldhar H. Vyas <jaldhar@braincells.com>

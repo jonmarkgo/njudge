@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.8  2002/05/11 09:15:34  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.7  2002/02/03 23:47:11  nzmb
  * Fixed phased order bug in Ancient Med and made phase.c able to handle a wider range of years (all positive years).
  *
@@ -45,6 +56,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "config.h"
 #include "dip.h"
 #include "porder.h"
 #include "functions.h"

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2002/05/14 23:44:46  miller
+   ** Added simple error checking for ded.txt on fopen()
+   **
    ** Revision 1.2  2002/04/18 04:44:30  greg
    ** Added the following commands:
    ** - unstart
@@ -25,6 +28,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <fcntl.h>
+#include "config.h"
 #include "dip.h"
 
 int write();

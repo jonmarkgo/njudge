@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2002/07/16 18:14:20  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.24  2002/05/16 13:05:33  miller
  * Added used of X2F_MORE:HOMES flags
  * Don't send blind games to openings list
@@ -137,6 +140,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "conf.h"

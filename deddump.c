@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/05/12 08:05:28  greg
+ * added Mario Becroft's dedication bug fix
+ *
  * Revision 1.2  2001/05/07 04:30:49  greg
  * minor bug fix
  *
@@ -29,6 +32,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "dip.h"
 
 /*

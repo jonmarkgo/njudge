@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/07/15 09:20:00  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -24,6 +27,7 @@
  * A. Verweij, 1994.
  */
 
+#include "config.h"
 #include "dip.h"
 #include "porder.h"
 #include "functions.h"

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Small correction
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -22,6 +25,7 @@
    **
  */
 
+#include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"

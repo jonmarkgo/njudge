@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.10  2002/04/15 12:55:43  miller
+	 * Multiple changes for blind & Colonial & setup from USTV
+	 *
 	 * Revision 1.9  2001/07/15 09:15:46  greg
 	 * added support for game directories in a sub directory
 	 * /.
@@ -54,6 +57,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "dip.h"
 #include "functions.h"
 #include "porder.h"

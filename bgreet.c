@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Make Linux compatible
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -15,6 +18,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "dip.h"
 #include "functions.h"
 

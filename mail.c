@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2002/07/16 18:14:21  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.22  2002/06/11 14:50:38  hauer
  * Reject conditional orders in Blind.
  *
@@ -116,6 +119,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
@@ -164,7 +168,7 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define JUNKMAIL  	24
 #define PROCESS   	25
 #define ROLLBACK  	26
-#define VERSION   	27
+#define _VERSION   	27
 #define CREATE    	28
 #define SUMMARY   	29
 #define HISTORY   	30
@@ -214,7 +218,7 @@ static int pvalue[] =
  SUMMARY, SUMMARY,
  REGISTER, IAMALSO,
  NOCONTROL, ADJUST,
- VERSION, HISTORY,
+ _VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
  MAP, SIGNOFF, RECORD, INFOPLAYER 
  , COND, COND, COND                   /* -- Tamas -- 2002-06-11 -- */
@@ -242,7 +246,7 @@ static int cvalue[] =
  BROADCAST, PRESS, PHASE, CLEAR,
  REGISTER, IAMALSO,
  WHOGAME, WHOIS, WHOIS,
- VERSION, HISTORY,
+ _VERSION, HISTORY,
  SUMMARY, SUMMARY,
  TERMINATE, RESUME, BECOME,
  PROCESS, ROLLBACK, MAP,
@@ -1178,7 +1182,7 @@ int mail(void)
 					getded(s);
 					break;
 #endif
-				case VERSION:
+				case _VERSION:
 					command++;
 					if (!msg_header_done)
 						msg_header(rfp);
@@ -1971,7 +1975,7 @@ int mail(void)
 					getded(s);
 					break;
 #endif
-				case VERSION:
+				case _VERSION:
 					version(rfp);
 					break;
 

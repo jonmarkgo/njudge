@@ -1,5 +1,5 @@
 #!/bin/csh
-# smail.  Generated from smail.in by configure.
+# @configure_input@
 # /bin/sh  (Note: /bin/sh fails to work if N files are open)
 #
 #  Invoked as smail file subject address
@@ -8,8 +8,8 @@ setenv FROM test_judge
 # FROM=u.washington.edu export FROM
 date >>mail.log
 echo "===== mail sent to $3/$2" >>mail.log
-/usr/bin/head -10 $1 >>mail.log
+@HEAD@ -10 $1 >>mail.log
 cat dip.msg $1 > dip.reply1
-/usr/bin/mail -s "$2" <dip.reply1 $3
+@_MAIL_@ -s "$2" <dip.reply1 $3
 rm -f dip.reply1
 rm -f dip.xfail

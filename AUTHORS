@@ -1,0 +1,42 @@
+ This is the list of all people having contributed in the code base:
+
+[This is only the skeleton of the file, as I don't know who did that in the 
+12 past years - some digging in CHANGES and log (in archives/) still to be done]
+
+M. Becroft		: plyrdata (with Tim Miller)
+Chris Brand		: (1997) mail.c modifications
+Nicholas Fitzpatrick	: Hall Of Fame
+Gregory A.Greenman	: Many things
+David Kovar		: Many things
+Dietmar Kulsch		: German translation coordinator (DEAC)
+Philippe Lalande	: Some code from FROG
+Ken Lowe		: Original development, coded 90% of the judge, from 1987; and others things like NMR/NoNMR
+David Norman		: Many fixes, duplex code, countless variants
+C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
+Millis Miller		: many things, including maintenance, CVS and tarball maintenance
+Tim Miller		: plyrdata, Crowded_1898, and many other things
+Rob Paar		: Many things (1996), old RCS system
+Larry Richardson        : allow/deny (1995)
+Kevin A. Roust		: maintenance (as far as he can remember)
+T.Ruelle		: (1994) params.c
+Andy Schwartz		:
+Nathan Wagner		: (1997)
+
+Contributed to other parts of the development than the code:
+Christophe Courtois	: documentation, data/ cleaning
+Alain Tesio		: observer and judge-maint archives on floc.net
+Jaldhar H. Vyas		: autoconfiscation and debian packaging.
+
+-----------------------------------------------------------------------
+People or pseudonyms found in the source code or logs but who are they?
+
+Positron
+BLR
+Curt
+Jimmy
+RV
+SS
+Eric
+Travis 
+Sean
+Andre

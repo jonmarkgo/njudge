@@ -1,5 +1,9 @@
  /*
  * $Log$
+ * Revision 1.8  2002/04/06 04:23:32  nzmb
+ * Fixed bug in draw.c that caused the noconcessions flag to also reject
+ * draw votes.
+ *
  * Revision 1.7  2001/10/22 20:09:04  nzmb
  * Cw.c draw.c added chenges and fixes so summaries for draws and concessions are properly sent to the HALL_KEEPER address.
  *
@@ -33,6 +37,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "config.h"
 #include "dip.h"
 #include "functions.h"
 #include "mail.h"

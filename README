@@ -1,8 +1,8 @@
  This is the source code from the Diplomacy Judge.
  
- The version number is in Makefile.version 
+ The version number is in configure.ac
  
- Please read documentation in docs/, especially README, INSTALL and LICENSE.
+ Please read documentation in docs/ and README, INSTALL and LICENSE.
  
  
 

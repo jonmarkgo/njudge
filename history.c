@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.8  2002/05/11 09:15:32  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.7  2001/08/30 03:40:12  greg
  * fix "history exclstart" to work with both old and new subject lines
  *
@@ -47,6 +58,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+#include "config.h"
 #include "dip.h"
 #include "functions.h"
 #include "mail.h"
