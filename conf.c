@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/12/22 02:00:34  millis
+ * Added DIE_STORMS setting for new random seed for storms
+ *
  * Revision 1.8  2002/08/27 22:27:45  millis
  * Updated for automake/autoconf functionality
  *
@@ -147,7 +150,16 @@ int conf_init(void)
 	conf_set("CUSTODIAN_sailho", "tarzan_monkeyman@bigfoot.com");
 	conf_set("CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"); 
 
+	conf_set("CUSTODIAN_1900_1", "VonPowell@aol.com");
+	conf_set("CUSTODIAN_1900_2", "VonPowell@aol.com");
+	conf_set("CUSTODIAN_1900_3", "VonPowell@aol.com");
+
 	conf_set("BLIND", "./zpblind");
+
+	conf_set("NOBODY", "nobody@localhost");
+
+	conf_set("BLOCK_FILE", ""); /* File to block dip running */
+
 	return 1;
 }
 

@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.4.2.1  2003/01/13 16:04:47  millis
+ * ustv latest versions
+ *
+ * Revision 1.4  2002/04/15 12:55:41  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.2.2.1  2001/10/19 23:25:18  dema
  * Initialse need-order array
  *
@@ -46,6 +52,8 @@ int valid_move(int u, int p, int *c, int *b)
 
 	*b = 0;
 	if (u <= 0) return 0; /* Invalid unit index */
+	if (!pr[unit[u].loc].move) 
+	    return 0;  /* Province has no valid moves, so return 0 */
 	for (t = pr[unit[u].loc].move; *t; t++) {
 		if (*t++ == p)
 		  if 

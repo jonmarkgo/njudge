@@ -1,7 +1,10 @@
 /*
  * $Log$
+ * Revision 1.10  2002/08/27 22:27:50  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.9  2001/10/20 12:11:11  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV
  *
  * Revision 1.8.2.2  2001/10/19 23:29:08  dema
  * Allow powers with spaces in their names to be used
@@ -106,12 +109,12 @@ int getdipent(FILE * fp)
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x%d", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
 		   &dipent.xflags, &dipent.max_absence_delay,
-		   &dipent.x2flags);
+		   &dipent.x2flags, &dipent.num_homes);
 
 	if (i == 7) {
 		dipent.flags = F_NONMR;
@@ -149,16 +152,21 @@ int getdipent(FILE * fp)
                 i = 13;
 		dipent.x2flags = 0;
         }
+	if (i == 13) {
+	    dipent.num_homes = 0;
+	    i = 14;
+	}
 
-	if (i != 13) {
+	if (i != 14) {
 		fprintf(stderr, "Bad header in master file (returned %d).\n%s\n", i ,line);
 		bailout(E_FATAL);
 	}
-	/* tempcentres will rember centres setting */
+	/* tempcentres will remember centres setting */
 	tempcentres = dipent.xflags & XF_BUILD_ONECENTRE;
 	SETNP(dipent.variant);
 	dipent.xflags &= ~XF_BUILD_ONECENTRE;
 	dipent.xflags += tempcentres;
+	dipent.has_natives = GetNativeIndex();
 
 	if (tempvp != 0)
 		dipent.vp = tempvp;
@@ -321,13 +329,15 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x\n", 
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
 		dipent.no_of_players, dipent.xflags,
 		dipent.max_absence_delay,
-                dipent.x2flags /* This indicates version 0.8.9 onwards */);
+                dipent.x2flags, /* This indicates version 0.8.9 onwards */
+		dipent.num_homes /* This indicates version 1.1.1 onwards */
+	);
 
 	if (dipent.process)
 		fprintf(fp, "Process   %24.24s (%ld)\n",
@@ -389,6 +399,7 @@ void newdipent(char *name, int variant)
 	dipent.level = D_LEVEL;
 	dipent.flags = D_FLAGS;
 	dipent.xflags = D_XFLAGS;
+	dipent.x2flags = 0;
 	dipent.dedicate = D_DEDICATE;
 	dipent.variant = variant;
 	SETNP(variant);
@@ -420,6 +431,7 @@ void newdipent(char *name, int variant)
 	dipent.dedapplied = 0;
 	dipent.no_of_players = dipent.np;
 	dipent.max_absence_delay = D_MAX_ABSENCE_DELAY;
+        dipent.has_natives = GetNativeIndex();
 }
 
 /***********************************************************************/

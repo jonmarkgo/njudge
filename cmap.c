@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/12/17 13:30:02  millis
+ * Corrected some path settings
+ *
  * Revision 1.8  2002/12/11 14:57:12  millis
  * Allow '\r' as blank line character
  *
@@ -65,7 +68,8 @@ int main(int argc, char *argv[])
 
 	unsigned char from = 0, to;
 	int i, j, n, m, p, v, nc, np;
-	char file[255], *t, dir[100];
+	char file[255],  dir[100];
+	unsigned char *t;
 	long t1, t2;
 	struct stat sbuf;
 	PFTAB(pftab);
@@ -324,6 +328,14 @@ int main(int argc, char *argv[])
 					case 'c':
 						to = CC;
 						break;
+					case 'h':
+						to = HX;
+						break;  /* Unit moves at half strength */
+
+					case 'l':
+						to = LX;
+						break;  /* Unit moves at half strength and convoys half-strength */
+
 
 					default:
 						fprintf(stderr, "Movement for %s: %s/%s", pr[n].name, pr[m].name, t);
@@ -836,7 +848,7 @@ void po_chkmov(void)
 				continue;
 			}
 			i = *s++ & 0x0f;
-			while ((j = *t++) && ((j != from) || (i != MX && i != *t >> 4)))
+			while ((j = *t++) && ((j != from) || (i != MX && i != HX && i != LX && i != *t >> 4)))
 				t++;
 			if (!j) {
 				fprintf(stderr, "Can't get back to %s from %s (%s).\n",

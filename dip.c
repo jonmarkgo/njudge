@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/01/12 00:14:37  nzmb
+ * Fixed it so that postal press reports are not sent when no press is submitted.
+ *
  * Revision 1.30  2002/12/28 00:52:18  millis
  * Proper fix to CR 17
  *
@@ -183,7 +186,7 @@ extern int time_warp;  /* Set to 1 if a time-warp was detected */
 int main(int argc, char *argv[])
 {
 	char exe_name[100];
-	
+	char *t;	
 	init(argc, argv);
 	
 	sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
@@ -232,6 +235,13 @@ int main(int argc, char *argv[])
 		close(fd);
 	}
 	close_plyrdata();
+
+	/* If block file exists, remove it */
+
+	t = BLOCK_FILE;
+	if (t[0])
+	    remove(t);
+
         DIPINFO("Ended dip");	
 	exit(0);
 
@@ -339,7 +349,8 @@ void init(int argc, char **argv)
 	unsigned char *s;
 	time_t now;
 	struct stat sbuf;
-
+	FILE *fptr;
+	char *t;
 
 	inp = stdin; /* default */
 
@@ -554,6 +565,23 @@ void init(int argc, char **argv)
 		exit(E_FATAL);
 	}
 	alarm(0);
+
+	/* OK, now see if we're supposed to use block file */
+
+	t = BLOCK_FILE;
+	if (t[0]) {
+	    if (!stat(t, &sbuf)) {
+		fprintf(stderr, 
+			"Block File %s exists - previous dip crashed.\n",
+			t);
+		bailout(E_FATAL);
+	    }
+
+	    fptr = fopen(t,"w");
+	    time(&now);
+	    fprintf(fptr, ctime(&now));
+	    fclose(fptr);
+	}
 
 	time(&now);
 	fprintf(log_fp, "%15.15s: dip -%s%s%s\n", ctime(&now) + 4,
