@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.11  2002/04/18 04:44:34  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.10  2002/03/05 23:38:50  miller
  * Replaced lost changes revison 1.8
  *
@@ -659,7 +673,7 @@ int main(int argc, char **argv)
 						if (dipent.x2flags & X2F_SECRET) {
 							sprintf(names[i], "Somebody   ");
 						} else {
-							sprintf(names[i], "Svmebody #%d", k++);
+							sprintf(names[i], "Somebody #%d", k++);
 						}
 					}
 				}
