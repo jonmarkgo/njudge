@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.10  2004/07/25 16:13:45  millis
+   ** Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+   ** return in duplex) and Bug 206 (allow takeover of unknown abandoned
+   ** countries)
+   **
    ** Revision 1.9  2004/06/09 22:05:09  millis
    ** More fixes for Bug 297, Intimate Diplomacy
    **
@@ -133,7 +138,7 @@ int retreatin(char **s, int pt)
 
 	char c, order;
 	unsigned char *b;
-	int p1, p2, u, c1, c2, bl;
+	int p1, p2, u, u1, c1, c2, bl;
 
 /*  Process lines of the form:
 
@@ -150,11 +155,20 @@ int retreatin(char **s, int pt)
 		errmsg("Unrecognized source province -> %s", *s);
 		return E_WARN;
 	}
-	for (u = 1; u <= nunit; u++)
+	u1 = -1; /* set to invalid index */
+	for (u = 1; u <= nunit; u++) {
 		if (unit[u].loc == p1 && (unit[u].owner == pt ||
 		    (IS_DUPLEX(dipent) && (unit[u].controller == pt))
-				|| (unit[u].status == 'r' && pt == MASTER)))
-			break;
+				|| (unit[u].status == 'r' && pt == MASTER))) {
+		    u1 = u;
+		    if (unit[u].status == 'r') {  
+			break;  /* Found a really retreating unit */
+		    }
+		}
+	}
+
+	if (u1 > -1) 
+		u = u1;  /* Restore found retreating unit */
 
 	if (u > nunit) {
 		errmsg("%s doesn't have a unit %s %s.\n", powers[pt],
