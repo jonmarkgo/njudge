@@ -3,6 +3,10 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.37  2004/05/11 20:10:24  jaldhar
+# Fixed duplication of datadir in upgrade-data target of Makefile.am.
+# Other automake files regenerated in the process.
+#
 # Revision 1.36  2004/05/10 14:21:51  jaldhar
 # Fixed bug 215 by ensuring that the data files were copied before we
 # tried to run cmap.  Automake files regenerated in the process.
@@ -168,6 +172,7 @@ dip_SOURCES=	assign.c \
 		po_init.c \
 		po_mastrpt.c \
 		porder.c \
+		st_bid.c \
 		st_build.c \
 		st_movement.c \
 		st_porder.c \

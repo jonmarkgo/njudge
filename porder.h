@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/05/02 21:30:43  millis
+ * Aded new stuff for AF rules
+ *
  * Revision 1.12  2003/01/18 14:17:21  millis
  * Added isNativeUnit macro
  *
@@ -119,6 +122,7 @@ extern int npr;			/* Actual number of provinces                 */
 
 extern struct units {
 	unsigned char owner;	/* The power that owns this unit              */
+	int controller;		/* The power that controls unit (0= owner)    */
 	char status;		/* ':' for normal, 'r' for retreat            */
 	char type;		/* 'A' for Army, 'F' for fleet, 'W' wing      */
 	char new_type;		/* New type of unit			      */
@@ -201,6 +205,16 @@ extern struct rw_struct rw[MAX_RAILWAYS];
 
 extern int nrw;
 
+struct treasury {
+        short treasury;         /* Number of ducats in the treasury           */
+        short loan[6 + 1];      /* Amount of each loan for next two years     */
+        short interest[6 + 1];  /* Amount of interest due on each loan        */
+	short bid_total;	/* Total amount of bids 		      */
+};
+
+extern struct treasury ducats[NPOWER + 1];
+
+extern short bids[NPOWER + 1][NPOWER + 1];  /* Who is bidding what for what power */
 
 extern FILE *ifp;
 

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2003/03/25 23:58:25  millis
+ * Alter letter for unit bribes to 'r'
+ *
  * Revision 1.4  2002/02/25 11:51:52  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -54,12 +57,6 @@
 extern int npown[NPROV + 1];	/* New province owner  (Machiavelli)          */
 extern int ncown[NPROV + 1];	/* New city owner      (Machiavelli)          */
 
-struct treasury {
-	short treasury;		/* Number of ducats in the treasury           */
-	short loan[6 + 1];	/* Amount of each loan for next two years     */
-	short interest[6 + 1];	/* Amount of interest due on each loan        */
-};
-
 struct expense {
 	char type;		/* Type of expense                            */
 	short amount;		/* Amount to spend on expense                 */
@@ -73,7 +70,6 @@ struct vincome {
 	unsigned char vinc[6];	/* Income for die roll                        */
 };
 
-extern struct treasury ducats[NPOWER + 1];
 extern struct expense expense[NPOWER + 1][4];
 extern struct vincome vincome[MAXVINC];
 
