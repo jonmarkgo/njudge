@@ -107,7 +107,7 @@ Making public distributions
 
   $  fakeroot ./debian/rules binary
 
-  This will create a file called  njudge_<ver>-<debian_ver>_<arch>.deb in the 
+  This will create a file called  njudge_<ver>_<arch>.deb in the 
   parent directory.  Run the following command afterwards:
 
   $  fakeroot ./debian/rules clean
