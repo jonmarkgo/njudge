@@ -941,6 +941,8 @@ mod/    UNSTART                                                        {1.1.0}
         the game.  Powers will be unassigned and the game will be flagged
         manualstart.  Games can only be unstarted if no turns have yet
         processed.
+	The 'ManualStart' flag will be set by this command: the master must
+	send the 'SET AUTOSTART' command to start the game again.
 
         This can be useful if a player is ejected or resigns; the game can be
         unstarted, so a replacement can enter a preference list rather than

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.68  2004/03/28 15:27:56  millis
+ * Ignore any message with 'X-Njudge:' in mail header (or message)
+ *
  * Revision 1.67  2004/03/28 10:17:05  millis
  * Fix Bug 281: generate error if press rejected by MustOrder flag.
  *
@@ -2122,7 +2125,12 @@ int mail(void)
 					sprintf(subjectline, "%s:%s - %s Unstart", JUDGE_CODE, dipent.name, dipent.phase);
 
 					fprintf(rfp, "Game '%s' unstarted.\n\n", dipent.name);
+					fprintf(rfp, "Note: ManualStart flag has also been: a Master must send the command\n");
+					fprintf(rfp, "'set autostart' to allow the game to start again.\n\n");
 					mfprintf(bfp, "Game '%s' unstarted by %s.\n\n", dipent.name, raddr);
+					mfprintf(bfp, "Players can now alter preference if wished before game restarts.\n\n");
+					mfprintf(bfp, "ManualStart flag has also been set: a Master must send the command\n");
+                                        mfprintf(bfp, "'set autostart' to allow the game to start again.\n\n");
 					broadcast = 1;
 
 					for (i = 0, j = 0, k = 0; i < dipent.n; i++) {
