@@ -13,6 +13,10 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.17  2003/01/15 13:30:34  millis
+# Restore mistakenly deleted items
+# -------------------------------------------
+#
 # Revision 1.16  2003/01/14 14:05:51  millis
 # Added history
 #
@@ -110,7 +114,7 @@ AM_CFLAGS = -pipe -Wall
 MAIL = @_MAIL_@
 
 bin_PROGRAMS = dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump lenlimit
 
 
 bin_SCRIPTS = atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
@@ -204,6 +208,7 @@ cmap_SOURCES = cmap.c \
 		global.c \
 		diplog.c 
 
+lenlimit_SOURCES = lenlimit.c
 
 ded_to_ascii_SOURCES = ded_to_ascii.c
 
@@ -300,7 +305,8 @@ bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) pdip$(EXEEXT) \
 	size_check$(EXEEXT) cmap$(EXEEXT) summary$(EXEEXT) \
 	deddump$(EXEEXT) delgame$(EXEEXT) flock$(EXEEXT) \
 	fmtwho$(EXEEXT) ign$(EXEEXT) ded_to_ascii$(EXEEXT) \
-	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) recdump$(EXEEXT)
+	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) recdump$(EXEEXT) \
+	lenlimit$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
 am_ascii_to_ded_OBJECTS = ascii_to_ded.$(OBJEXT)
@@ -321,6 +327,11 @@ ded_to_ascii_OBJECTS = $(am_ded_to_ascii_OBJECTS)
 ded_to_ascii_LDADD = $(LDADD)
 ded_to_ascii_DEPENDENCIES =
 ded_to_ascii_LDFLAGS =
+am_lenlimit_OBJECTS = lenlimit.$(OBJEXT)
+lenlimit_OBJECTS = $(am_lenlimit_OBJECTS)
+lenlimit_LDADD = $(LDADD)
+lenlimit_DEPENDENCIES =
+lenlimit_LDFLAGS =
 am_deddump_OBJECTS = deddump.$(OBJEXT) conf.$(OBJEXT) strdup.$(OBJEXT) \
 	hashtable.$(OBJEXT) global.$(OBJEXT)
 deddump_OBJECTS = $(am_deddump_OBJECTS)
@@ -420,7 +431,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/conf.Po ./$(DEPDIR)/ded_to_ascii.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/deddump.Po ./$(DEPDIR)/delgame.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dip.Po ./$(DEPDIR)/dipent.Po \
-@AMDEP_TRUE@    ./$(DEPDIR)/diplog.Po \
+@AMDEP_TRUE@    ./$(DEPDIR)/diplog.Po ./$(DEPDIR)/lenlimit.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/draw.Po ./$(DEPDIR)/flock.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fmtwho.Po ./$(DEPDIR)/global.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/hashtable.Po ./$(DEPDIR)/history.Po \
@@ -461,7 +472,7 @@ DIST_SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) \
 	$(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) \
 	$(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) \
 	$(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) \
-	$(zpblind_SOURCES)
+	$(zpblind_SOURCES) $(lenlimit_SOURCES)
 
 NROFF = nroff
 MANS = $(man_MANS)
@@ -474,7 +485,7 @@ DIST_COMMON = README $(dist_data_DATA) $(dist_doc_DATA) \
 	Makefile.in aclocal.m4 config.guess config.h.in config.sub \
 	configure configure.ac depcomp dipclean.in install-sh missing \
 	mkinstalldirs smail.in
-SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
+SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES) $(lenlimit_SOURCES)
 
 all: $(BUILT_SOURCES) config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -548,6 +559,9 @@ ascii_to_ded$(EXEEXT): $(ascii_to_ded_OBJECTS) $(ascii_to_ded_DEPENDENCIES)
 cmap$(EXEEXT): $(cmap_OBJECTS) $(cmap_DEPENDENCIES) 
 	@rm -f cmap$(EXEEXT)
 	$(LINK) $(cmap_LDFLAGS) $(cmap_OBJECTS) $(cmap_LDADD) $(LIBS)
+lenlimit(EXEEXT): $(lenlimit_OBJECTS) $(lenlimit_DEPENDENCIES)
+	@rm -f lenlimit$(EXEEXT)
+	$(LINK) $(lenlimit_LDFLAGS) $(lenlimit_OBJECTS) $(lenlimit_LDADD) $(LIBS)
 ded_to_ascii$(EXEEXT): $(ded_to_ascii_OBJECTS) $(ded_to_ascii_DEPENDENCIES) 
 	@rm -f ded_to_ascii$(EXEEXT)
 	$(LINK) $(ded_to_ascii_LDFLAGS) $(ded_to_ascii_OBJECTS) $(ded_to_ascii_LDADD) $(LIBS)
@@ -634,6 +648,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ign.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jm.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lenlimit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ma_build.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ma_build_basic.Po@am__quote@

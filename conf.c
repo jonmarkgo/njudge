@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.12  2003/02/05 23:53:43  millis
+ * Removed dipstats files.
+ * Also added in new JUDGE_TZ variable, to specify timezone
+ *
  * Revision 1.11  2003/01/16 22:51:47  millis
  * Removed STAT stuff
  *
@@ -102,6 +106,7 @@ int conf_init(void)
 	conf_set("RUNDIPMAP_CMD", "./rundipmap");
 	conf_set("DIP_CMD","./dip");
 	conf_set("ATRUN_CMD","./atrun");
+	conf_set("LENLIMIT_CMD","./lenlimit);
 	conf_set("GAME_DIR","D");
 
 	conf_set("GAMES_MASTER", "judge_request");

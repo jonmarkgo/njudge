@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/01/30 22:49:11  millis
+ * Fixed small error (SET not SETUP)
+ *
  * Revision 1.30  2003/01/15 13:59:25  millis
  * Removed Dipstats
  *
@@ -2517,6 +2520,12 @@ void mail_reply(int err)
 		sprintf(jline, "%s", JUDGE_CODE);
 	}
 	if (*s && *s != '*' && !Dflg) {
+		/* call lenlimit to make sure lines <=1024 long */
+		sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, rfile, rfile);
+                system(line);
+                sprintf(line, "mv %s.tmp %s", rfile, rfile);
+                system(line);
+
 		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag] " : "", jline, subject, s);
 
 		if ((i = execute(line))) {

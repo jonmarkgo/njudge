@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.14  2003/01/14 14:05:50  millis
+# Added history
+#
 #
 
 AUTOMAKE_OPTIONS=foreign dist-zip
@@ -27,7 +30,7 @@ LN_S=@LN_S@
 PERL=@PERL@
 
 bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump lenlimit
 
 bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
 
@@ -117,6 +120,8 @@ cmap_SOURCES=	cmap.c \
 		hashtable.c \
 		global.c \
 		diplog.c 
+
+lenlimit_SOURCES = lenlimit.c
 
 ded_to_ascii_SOURCES=	ded_to_ascii.c
 

@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.9  2003/02/05 23:53:43  millis
+ * Removed dipstats files.
+ * Also added in new JUDGE_TZ variable, to specify timezone
+ *
  * Revision 1.8  2003/01/13 22:29:48  millis
  * Merged from ustv
  *
@@ -38,6 +42,7 @@
 #define RUNLISTMAP_CMD	config("RUNLISTMAP_CMD")
 #define	RUNDIPMAP_CMD 	config("RUNDIPMAP_CMD")
 #define DIP_CMD		config("DIP_CMD")
+#define LENLIMIT_CMD	config("LENLIMIT_CMD")
 #define GAMES_MASTER    config("GAMES_MASTER")
 #define GAMES_OPENER	config("GAMES_OPENER")
 #define HALL_KEEPER     config("HALL_KEEPER")
