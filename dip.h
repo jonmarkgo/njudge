@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2003/01/13 17:39:24  millis
+ * Merge from ustv branch
+ *
  * Revision 1.19  2002/12/28 00:52:18  millis
  * Proper fix to CR 17
  *
@@ -243,6 +246,11 @@
 #define X2F_MUSTORDER		0x1000  /* don't allow press (except to m) unless orders are in */
 #define X2F_POSTALPRESS		0x2000  /* allow szine style press (published w/ moves) */
 #define X2F_FORT_GARRISON	0x4000 /* When set, all forts start with garrisons */
+#define X2F_RIVERS              0x8000 /* Duality provinces work like rivers */
+#define X2F_HOMETRANSFER        0x10000 /* Centre becomes your home if occupied 1 full year */
+#define X2F_CAVALRY             0x20000 /* Units that can move two spaces per turn */
+#define X2F_ARTILLERY           0x40000 /* Units that can support from two spaces away */
+
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
