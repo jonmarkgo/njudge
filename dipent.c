@@ -1,6 +1,10 @@
 
 /*
  * $Log$
+ * Revision 1.3  2001/01/05 22:27:53  miller
+ * Fix to test using '==' not '='
+ * (made all games erroneously of Chaos variant when upgrading from older dip.master format.
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added handling of new XF_:FLAGS , and absence data elements in master.dip
  * Used gerenric flags to handle variants (not specificif tests)
@@ -212,7 +216,8 @@ int getdipent(FILE * fp)
 
 	if (!strcmp(dipent.name, "control")) {
 		time(&now);
-		if (dipent.process && (dipent.start > now || now > dipent.process)) {
+		/* MLM 26/5/2001 only notify warp on shift 60s or more  */
+		if (dipent.process && (dipent.start > (now +59) || now > (59 + dipent.process))) {
 			fprintf(stderr, "Current date %24.24s should be between...\n", ctime(&now));
 			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
 			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
