@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.30  2003/07/23 05:36:43  jaldhar
+# Autogenerate dip.conf (fixes bug 154)
+#
 # Revision 1.29  2003/07/23 05:05:09  jaldhar
 # Remake map on upgrades (Closes bug 175) and some rearrangement of targets.
 #
@@ -313,8 +316,8 @@ install-data-hook: dirs flist magic
 	${LN_S} -f ../dip.whois ${DESTDIR}${datadir}/whois
 	$(mkinstalldirs) ${DESTDIR}${bindir}/Dcontrol
 	@echo "control   001       S1801MX   1 1 1 0 2 18 7" > ${DESTDIR}${bindir}/dip.master
-	@echo "Process   " `date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}${bindir}/dip.master
-	@echo "Start     " `date '+%a %b %d %X %Y'` >> ${DESTDIR}${bindir}/dip.master
+	@echo "Process   " `LC_TIME=C date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}${bindir}/dip.master
+	@echo "Start     " `LC_TIME=C date '+%a %b %d %X %Y'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "-" >> ${DESTDIR}${bindir}/dip.master
 	@echo "\"| ${bindir}/rdip -b -d ${bindir} \"" > ${DESTDIR}${bindir}/${USER}-forward
 	-@chown ${USER} ${DESTDIR}${bindir}
