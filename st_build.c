@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -233,13 +236,13 @@ int buildin(char **s, int p)
 void buildout(int pt)
 {
 	int i, u, p, c1;
-	char mastrpt_pr[MAXPLAYERS];
+	char mastrpt_pr[NPOWER + 1];	// Used to be [MAXPLAYERS]. DAN 04/02/1999
 
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
 	if (pt == MASTER) {
-		for (u = 0; u < MAXPLAYERS; u++)
+		for (u = 0; u <= NPOWER; u++)	// Used to be < MAXPLAYERS. DAN.
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
