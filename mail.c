@@ -1,10 +1,13 @@
 /*
  * $Log$
+ * Revision 1.11  2001/10/22 20:09:05  nzmb
+ * Cw.c draw.c added chenges and fixes so summaries for draws and concessions are properly sent to the HALL_KEEPER address.
+ *
  * Revision 1.9  2001/07/22 10:03:13  greg
  * subjectline tweaks
  *
  * Revision 1.8  2001/07/16 22:53:11  miller
- * Fixed EJECT command (was previosuly doing nothing!)
+ * Fixed EJECT command (was previously doing nothing!)
  *
  * Revision 1.7  2001/07/15 09:16:14  greg
  * added support for game directories in a sub directory
@@ -212,11 +215,11 @@ void ResignPlayer( int resign_index)
         powers[dipent.players[resign_index].power], dipent.name);
     /* WAS mfprintf  1/95 BLR */
     sprintf(subjectline,
-            "%s:%s - %s Resignation: %c",
+            "%s:%s - %s Resignation: %s",
             JUDGE_CODE,
             dipent.name,
             dipent.phase,
-            dipent.pl[dipent.players[player].power]);
+            powers[dipent.players[resign_index].power]);
 
     fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
        ((dipent.flags & F_GUNBOAT) &&
@@ -1493,6 +1496,9 @@ int mail(void)
                                                         break;
 					}
 					dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
+
+					sprintf(subjectline, "%s:%s - %s Promotion of %s", JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+
 					fprintf(rfp, "%s is now also a Master for game '%s'.\n",
                                                       dipent.players[i].address, dipent.name);
 					fprintf(bfp," %s is now also a Master for game '%s'.\n",
