@@ -121,158 +121,59 @@ int vvalue[] =
 char *powers[] =
 {
 	"Unowned",
-/* POWER LIST BEGINS HERE */
-	"Austria", "Balkan", "Britain", "Burgundy", "Byzantium",
-	"China", "Egypt", "Eire", "England", "Florence",
-	"France", "Germany", "Hungary", "India", "Indonesia",
-	"Israel", "Italy", "Japan", "Lowland", "Milan",
-	"Naples", "Norway", "Papacy", "Persia", "Poland",
-	"Russia", "Siberia", "Sicily", "Spain", "Turkey",
-	"Ukraine", "Venice",
-	"Holland",
-	"Austria1", "Austria2", "England1", "England2", "France1",
-	"France2", "Germany1", "Germany2", "Italy1", "Italy2",
-	"Russia1", "Russia2", "Turkey1", "Turkey2",
-	"Yellow", "Dark", "Light", "Red", "Blue",
-	"A-Ank", "B-Bel", "C-Ber", "D-Bre", "E-Bud", "F-Bul", "G-Con",
-	"H-Den", "I-Edi", "J-Gre", "K-Hol", "L-Kie", "N-Lvp", "P-Lon",
-	"Q-Mar", "R-Mos", "S-Mun", "T-Nap", "U-Nor", "V-Par", "W-Por",
-	"X-Rom", "Y-Rum", "Z-Ser", "0-Sev", "1-Smy", "2-Spa", "3-StP",
-	"4-Swe", "5-Tri", "6-Tun", "7-Ven", "8-Vie", "9-War",
-     "BC", "California", "Mexico", "Florida", "Heartland", "NewYork",
-     "Peru", "Quebec", "Texas", "Cuba",
-     "Anglia", "Cornubia", "Mercia", "Ireland", "Northumbria",
-     "Scotland", "Wales",
-     "Illinois",
-     "Ethiopia", "Ivory-Coast", "Libya", "Saudi-Arabia",
-     "South-Africa", "Zaire",
-     "Arabia", "Balkans", "Morrocco",
-     "Confederacy", "Indian-Nation", "Union",
-     "North", "South", "East", "West",
-     "Scandinavia", "Hapsburg_Empire", "Ottoman_Empire",
-     "Bulgaria", "Greece", "Albania", "Romania", "Serbia",
-     "Australia", "Malaysia", "Thailand", "Philippines",
-     "Vietnam",
-     "Dalriada", "East_Anglia", "Gwynedd", "Kernow", "Leinster",
-     "Pictland", "Wessex",
-     "Argentina", "Colombia", "Brazil", "Chile", "United_States",
-     "Venezuela", "Great_Britain",
-     "Califate_of_Cordoba", "Denmark", "German-Roman_Empire",
-     "Europe", "Frozen-Antarctica", "Ghana", "Kenya", "Near-East",
-     "Oz", "Pacific-Russia", "USA", "Western-Canada",
-     "Continentals", "Iriquios",
-     "Sweden", "Habsburg_Empire",
-     "Aetolian_Alliance", "Kreta", "Ionia", "Sparta", "Athens",
-     "Theben", "Lydia", "Macedonia",
-     "Czechoslovaquia", "Yugoslavia", "Soviet_Union",
-     "Cyprus", "Dissentos",
-     "Tayside", "Lewis", "SouthHighlands", "Grampian", "Lothian",
-     "NorthHighlands", "Straithclyde",
-     "Iran", "Iraq", "Syria", "Yemen",
-     "Czechoslovakia", "Rumania", "USSR",
-     "High-Reaches", "Benden", "Fort", "Ista", "Igen", "Southern",
-     "Telgar",
-     "Aragon_and_Catalonia", "Castile_and_Leon", "Portugal",
-     "Al-Andalus",
-     "Continental", "Indian",
-     "Bosnia", "Croatia", "Slovenija", "Montenegro",
-     "Slovenia",
-     "Commonwealth", "European_Community", "Islamistic_Federation",
-     "Litano-Republic", "United_States_of_America",
-     "Algonquin", "Erie", "Huron", "Iroquois", "Kaskasia", "Ojibwe",
-     "Otawatomi", "Ottawa", "Mississauga",
-     "Castile", "Holy-Roman-Empire", "Kalmar-Union",
-     "Ottoman-Empire", "Poland-Lithuania",
-     "Holy_Roman_Empire", "Kalmar_Union", "Poland_Lithuania",
-     "Paraguay",
-     "Carthage", "Macedon", "Rome",
-     "Aragon", "Leon",
-     "New_South_Wales", "Queensland", "South_Australia", "Tasmania",
-     "Victoria", "Western_Australia", "New_Zealand",
-     "Northern_Territory",
-    "Canada", "Caribbean-Federation", "Haida", "CSA",
-     "Spanish-America",
-     "Date", "Nobunaga", 
-//** ADD NEW POWERS ABOVE THIS LINE! **/
-	"a power", "Autonomous", "Observer", "Master"};
+	/* POWER LIST BEGINS HERE */
+	"Austria","Balkan","Britain","Burgundy","Byzantium","China",
+	"Egypt","Eire","England","Florence","France","Germany",
+	"Hungary","India","Indonesia","Israel","Italy","Japan",
+	"Lowland","Milan","Naples","Norway","Papacy","Persia",
+	"Poland","Russia","Siberia","Sicily","Spain","Turkey",
+	"Ukraine","Venice","Holland",
+	"Austria1","Austria2","England1","England2","France1","France2",
+	"Germany1","Germany2","Italy1","Italy2","Russia1","Russia2",
+	"Turkey1","Turkey2",
+	"Yellow","Dark","Light","Red","Blue",
+	"A-Ank","B-Bel","C-Ber","D-Bre","E-Bud","F-Bul",
+	"G-Con","H-Den","I-Edi","J-Gre","K-Hol","L-Kie",
+	"N-Lvp","P-Lon","Q-Mar","R-Mos","S-Mun","T-Nap",
+	"U-Nor","V-Par","W-Por","X-Rom","Y-Rum","Z-Ser",
+	"0-Sev","1-Smy","2-Spa","3-StP","4-Swe","5-Tri",
+	"6-Tun","7-Ven","8-Vie","9-War",
+	"BC","California","Mexico","Florida","Heartland","NewYork",
+	"Peru","Quebec","Texas","Cuba",
+	"Ethiopia","Ivory-Coast","Libya","Saudi-Arabia","South-Africa","Zaire",
+	"North","South","East","West","Cyprus","Dissentos",
+	"Syria","Carthage","Macedon","Rome",
+	//** ADD NEW POWERS ABOVE THIS LINE! **/
+	"a power","Autonomous","Observer","Master"};
 
 /*  Owner names (i.e., possessive form of power names).  */
 
 char *owners[] =
 {
 	"unowned",
-	"Austrian", "Balkan", "British", "Burgundian", "Byzantine",
-	"Chinese", "Egyptian", "Irish", "English", "Florentine",
-	"French", "German", "Hungarian", "Indian", "Indonesian",
-	"Israelite", "Italian", "Japanese", "Lowland", "Milanese",
-	"Naplese", "Norwegian", "Papal", "Persian", "Polish",
-	"Russian", "Siberian", "Sicilian", "Spanish", "Turkish",
-	"Ukranian", "Venetian",
-	"Dutch",
-	"1Austrian", "2Austrian", "1English", "2English", "1French",
-	"2French", "1German", "2German", "1Italian", "2Italian",
-	"1Russian", "2Russian", "1Turkish", "2Turkish",
-	"Yellow", "Dark", "Light", "Red", "Blue",
-	"A-Ank", "B-Bel", "C-Ber", "D-Bre", "E-Bud", "F-Bul", "G-Con",
-	"H-Den", "I-Edi", "J-Gre", "K-Hol", "L-Kie", "N-Lvp", "P-Lon",
-	"Q-Mar", "R-Mos", "S-Mun", "T-Nap", "U-Nor", "V-Par", "W-Por",
-	"X-Rom", "Y-Rum", "Z-Ser", "0-Sev", "1-Smy", "2-Spa", "3-StP",
-	"4-Swe", "5-Tri", "6-Tun", "7-Ven", "8-Vie", "9-War",
-     "British Columbian", "Californian", "Mexican", "Floridian",
-     "Heartlander", "New Yorker", "Peruvian", "Quebecois", "Texan",
-     "Cuban",
-     "Anglian", "Cornubian", "Mercian", "Irish", "Northumbrian",
-     "Scottish", "Welsh",
-     "Illinoian",
-     "Ethiopian", "Ivory-Coastish", "Libyan", "Saudi-Arabian",
-     "South-African", "Zairean",
-     "Arab", "Balkan", "Morroccon",
-     "Confederates", "Indian", "Yankee",
-     "Northern", "Southern", "Eastern", "Western",
-     "Scandinavian", "Hapsburgian", "Ottoman",
-     "Bulgarian", "Greek", "Albanian", "Romanian", "Serbian",
-     "Australian", "Malaysian", "Thai", "Filipino", "Vietnamese",
-     "Dalriadic", "East_Anglian", "Gwynedd", "Cornish", "Leinster",
-     "Pictish", "West_Saxon",
-     "Argentinian", "Colombian", "Brazilian", "Chilean", "American",
-     "Venezuelan", "British",
-     "Cordobian", "Danish", "Germano-Roman",
-     "European", "Antarctic", "Ghanan", "Kenyan", "Near Eastern",
-     "Australian", "Pacific Russian", "American", "Canadian",
-     "Continental", "Iriquios",
-     "Swedish", "Habsburg",
-     "aetolian", "kretian", "ionian", "spartian", "athenian",
-     "thebian", "lydian", "macedonian",
-     "Czech", "Yugoslavian", "Soviet",
-     "Cyprus", "Dissentos",
-     "Tayside", "Lewish", "SouthHighland", "Grampian", "Lothian",
-     "NorthHighland", "Straithclyde",
-     "Iranian", "Iraqi", "Syrian", "Yemeni",
-     "Czech", "Rumanian", "Soviet",
-     "Reacher", "Bendenian", "Forter", "Istian", "Igenan",
-     "Southerner", "Telgaren",
-     "Aragonian", "Castilian", "Portuguese", "Moorish",
-     "Continental", "Indian",
-     "Bosnian", "Croatian", "Slovenia", "Montenegrin",
-     "Slovenian",
-     "commonwealthish", "european", "islamistic", "south-american",
-     "american",
-     "Algonquian", "Erian", "Huronian", "Iroquosian", "Kaskasian",
-     "Ojibweian", "Otawatomian", "Ottawaian", "Mississaugaian",
-     "Castilian", "Holy Roman", "Kalmar", "Ottoman",
-     "Polish-Lithuanian",
-     "Holy_Roman", "Kalmar", "Polish_Lithuanian",
-     "Paraguayan",
-     "Carthaginian", "Macedonian", "Roman",
-     "Aragonian", "Leonese",
-     "New_South_Welsh", "Queenslander", "South_Australian",
-     "Tasmanian", "Victorian", "Western_Australian", "New_Zealander",
-     "Northern_Territorian",
-     "Canada", "Free Caribbean Federation", "Haida Confederation",
-     "Confederate States of America", "Spanish America",
-     "Date", "Nobunagan", 
-/** ADD NEW POWERS ABOVE THIS LINE! **/
-	"??????", "Autonomous", "Observer", "Master"};
+	"Austrian","Balkan","British","Burgundian","Byzantine","Chinese",
+	"Egyptian","Irish","English","Florentine","French","German",
+	"Hungarian","Indian","Indonesian","Israelite","Italian","Japanese",
+	"Lowland","Milanese","Naplese","Norwegian","Papal","Persian",
+	"Polish","Russian","Siberian","Sicilian","Spanish","Turkish",
+	"Ukranian","Venetian","Dutch",
+	"1Austrian","2Austrian","1English","2English","1French","2French",
+	"1German","2German","1Italian","2Italian","1Russian","2Russian",
+	"1Turkish","2Turkish",
+	"Yellow","Dark","Light","Red","Blue",
+	"A-Ank","B-Bel","C-Ber","D-Bre","E-Bud","F-Bul",
+	"G-Con","H-Den","I-Edi","J-Gre","K-Hol","L-Kie",
+	"N-Lvp","P-Lon","Q-Mar","R-Mos","S-Mun","T-Nap",
+	"U-Nor","V-Par","W-Por","X-Rom","Y-Rum","Z-Ser",
+	"0-Sev","1-Smy","2-Spa","3-StP","4-Swe","5-Tri",
+	"6-Tun","7-Ven","8-Vie","9-War",
+	"British Columbian","Californian","Mexican","Floridian","Heartlander","New Yorker",
+	"Peruvian","Quebecois","Texan","Cuban",
+	"Ethiopian","Ivory-Coastish","Libyan","Saudi-Arabian","South-African","Zairean",
+	"Northern","Southern","Eastern","Western","Cyprus","Dissentos",
+	"Syrian","Carthaginian","Macedonian","Roman",
+	/** ADD NEW POWERS ABOVE THIS LINE! **/
+	"??????","Autonomous","Observer","Master"};
 
 /*  Power abbreviations based on variant ('x' means corresponding power isn't
    in this variant).  The last five characters should always be '?xOM', except
@@ -283,36 +184,36 @@ char *pletter[] =
 {
     NULL,                               /* Don't use 0 as a variant number */
 /** ADD NEW POWERS TO EACH LINE! **/
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Standard variant              */
-    ".AxxxxCxxExFGxNxxIJxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Youngstown variant            */
-    ".AxxxxxxxExFGxxxxIxxxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Loeb 9 player variant         */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Pure variant                  */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxABCDEFGHIJKLNPQRSTUVWXYZ0123456789xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 34 player nonsense            */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Great Britain variant         */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 1898 variant                  */
-    ".ABxxxxxxExFGxxxxIxLxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Eleven player variant         */
-    ".AxxxxxxxxLFxxxxxxxxINxPxxxxxxTxVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?&OM",                          /* Machiavelli 1454              */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Standard with a fleet in rome */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift right variant           */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift left variant            */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxA1E2F3G4I5R6T7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Root Z Diplomacy              */
-    ".xxxBZxxExxxxHxxIxxxxxxxxPxxCSxUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* The way things might have been*/
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Doughnut shaped nonsense      */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxYDLRBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 5-Italy version with colours  */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Milan Diplomacy               */
-    ".xxxxxCxxxxxxxNIxxJxxxxxPxRSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Asian Diplomacy               */
-    ".xxBxxxExxxFGxxxxIxxxxxxxPRxxSTUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Modern Diplomacy              */
-    ".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Colonial Diplomacy            */
-    ".xxxBxxxxExFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Hundred Years War Diplomacy   */
-    ".xxxBxxxxExFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* H31 Diplomacy                 */
-    ".xxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCARxxxxxxxxxxxxxxxxx?xOM",                          /* Classical Diplomacy           */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxBCXFHNPQTUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Empire4 Diplomacy             */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxEILSAZxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* African2 Diplomacy            */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Wraparound2 Diplomacy         */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift_Around Diplomacy        */
-    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Layered Diplomacy             */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Sailho2_Crowded Diplomacy     */
-    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* SailHo2 Diplomacy             */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Standard variant              */
+    ".AxxxxCxxExFGxNxxIJxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Youngstown variant            */
+    ".AxxxxxxxExFGxxxxIxxxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Loeb 9 player variant         */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Pure variant                  */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxABCDEFGHIJKLNPQRSTUVWXYZ0123456789xxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 34 player nonsense            */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Great Britain variant         */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 1898 variant                  */
+    ".ABxxxxxxExFGxxxxIxLxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Eleven player variant         */
+    ".AxxxxxxxxLFxxxxxxxxINxPxxxxxxTxVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?&OM",                          /* Machiavelli 1454              */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Standard with a fleet in rome */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift right variant           */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift left variant            */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxA1E2F3G4I5R6T7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Root Z Diplomacy              */
+    ".xxxBZxxExxxxHxxIxxxxxxxxPxxCSxUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* The way things might have been*/
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Doughnut shaped nonsense      */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxYDLRBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* 5-Italy version with colours  */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Milan Diplomacy               */
+    ".xxxxxCxxxxxxxNIxxJxxxxxPxRSxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Asian Diplomacy               */
+    ".xxBxxxExxxFGxxxxIxxxxxxxPRxxSTUxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Modern Diplomacy              */
+    ".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Colonial Diplomacy            */
+    ".xxxBxxxxExFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Hundred Years War Diplomacy   */
+    ".xxxBxxxxExFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* H31 Diplomacy                 */
+    ".xxxxxxExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxSCAR?xOM",                          /* Classical Diplomacy           */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxBCXFHNPQTUxxxxxxxxxxxxxxxx?xOM",                          /* Empire4 Diplomacy             */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxEILSAZxxxxxxxxxx?xOM",                          /* African2 Diplomacy            */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Wraparound2 Diplomacy         */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Shift_Around Diplomacy        */
+    ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Layered Diplomacy             */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWCDxxxx?xOM",                          /* Sailho2_Crowded Diplomacy     */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWxxxxxx?xOM",                          /* SailHo2 Diplomacy             */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
 
