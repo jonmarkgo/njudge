@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2003/03/18 16:13:57  millis
+ * Use fputs instead of puts to avoid extra '\n'
+ *
  * Revision 1.2  2003/03/18 13:53:24  millis
  * Added checking for filename exists or not
  *
@@ -44,7 +47,7 @@ int main(int argc, char *argv[])
     fptr = fopen(filename, "r");
 
     if (!fptr) {
-	printf("File %s not found.\n", filename");
+	printf("File %s not found.\n", filename);
 	return ;
     }
 
