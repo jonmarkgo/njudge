@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/09/26 21:53:10  millis
+ * Added Machiavelli2 variant
+ *
  * Revision 1.10  2002/06/01 01:02:35  millis
  * Undo last change, caused blind games to be rejected at signon stage
  *
@@ -91,7 +94,8 @@ char *variants[] =
 	"ancient_med",		/* Ancient medieteraenean	   */
 	"crowded_1898",		/* crowded powers, 1898 style      */
         "machiavelli2",         /* Mach2                           */
-	/** ADD NEW VARIANTS ABOVE THIS LINE! **/
+	"colonial96",           /* Colonial 1996 Diplomacy         */
+/** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
         "shorthand",		/* Shorthand press option          */
@@ -135,6 +139,7 @@ int vvalue[] =
 	V_ancient_med,		/* 31 Ancient_Med		     */
 	V_crowded_1898,		/* 32 crowded_1898		     */
         V_machiavelli2,         /* 33 Machiavelli2                   */
+	V_colonial96,		/* 34 Colonial 1996 variant	     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
@@ -246,6 +251,7 @@ char *pletter[] =
     ".AxxxxxxxxLFxxxxxxxxINxPxxxxxxTxVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?&OM",                          /* Machia
 velli2 1454              */
+    ".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",                          /* Colonial 1996 Diplomacy            */
  /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
 
@@ -284,8 +290,9 @@ char *sphase[] =
 	"S1901M",               /* Layered Diplomacy               */
 	"S1901M",               /* SailHo2 Diplomacy               */
 	"S1901M",               /* Sailho2_Crowded Diplomacy       */
-	"S0001M",		/* Ancient_Med Diplomacy		   */
+	"S0001M",		/* Ancient_Med Diplomacy	   */
 	"S1899M",		/* crowded_1898 Diplomacy	   */
-        "F1453A",               /* Machiavelli2 1454                */
+        "F1453A",               /* Machiavelli2 1454               */
+        "S1870M",               /* Colonial 1996 Diplomacy         */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };

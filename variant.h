@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/09/26 21:53:11  millis
+ * Added Machiavelli2 variant
+ *
  * Revision 1.9  2002/03/20 21:50:27  miller
  * Make Classical use ONECENTRE setting
  *
@@ -107,9 +110,10 @@ enum {
 	V_layered,		/* 28 Layered			     */
         V_sailho_crowded,       /* 29 SailHo crowded                 */
 	V_sailho,		/* 30 SailHo			     */
-	V_ancient_med,		/* 31 Ancient_Med			     */
+	V_ancient_med,		/* 31 Ancient_Med		     */
 	V_crowded_1898,		/* 32 crowded_1898		     */
-        V_machiavelli2,         /* 31 Mach2                          */
+        V_machiavelli2,         /* 33 Mach2                          */
+        V_colonial96,           /* 34 Colonial 1996 Diplomacy        */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
@@ -169,6 +173,7 @@ enum {
     case V_ancient_med: 	dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
     case V_crowded_1898: dipent.np = 11; dipent.vp = 18; break; \
     case V_machiavelli2: dipent.np =  8; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_colonial96:    dipent.np =  7; dipent.vp = 30; break;          \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
