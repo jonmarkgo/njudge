@@ -100,9 +100,9 @@ long put_long( long in )
 {
 #ifdef LITTLE_ENDIAN
 	return
-	((in >> 24) & 0xFF) ||
-	((in >> 8)  & 0xFF00) ||
-	((in << 8)  & 0xFF0000) ||
+	((in >> 24) & 0xFF) |
+	((in >> 8)  & 0xFF00) |
+	((in << 8)  & 0xFF0000) |
 	((in << 24) & 0xFF000000);
 #else
 	return in;
@@ -113,9 +113,9 @@ long get_long( long in )
 {
 #ifdef LITTLE_ENDIAN
 	return
-	((in >> 24) & 0xFF) ||
-	((in >> 8)  & 0xFF00) ||
-	((in << 8)  & 0xFF0000) ||
+	((in >> 24) & 0xFF) |
+	((in >> 8)  & 0xFF00) |
+	((in << 8)  & 0xFF0000) |
 	((in << 24) & 0xFF000000);
 #else
 	return in;
