@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.64  2004/09/06 22:08:16  millis
+ * Bug363 Allow more than one victor
+ *
  * Revision 1.63  2004/08/17 09:49:01  millis
  * Bug 355: missed incrementing just_now_abandoned flag.
  *
@@ -1600,7 +1603,7 @@ int process(void)
                         fprintf(gfp, ".\n");
 
 
-			fprintf(gfp, "Congratulations on a well deserved victory!");
+			fprintf(gfp, "Congratulations on a well deserved victory!\n");
 
 			/*  If game is standard, it has a Boardman Number, if not
 			   it has a Miller Number.  Check to see if it is an EP
