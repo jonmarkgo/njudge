@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.36  2003/03/07 21:24:09  russblau
+ * Editorial changes.
+ *
  * Revision 1.35  2003/02/28 22:27:28  russblau
  * Minor changes to documentation; "SET BROADCAST" should now work as described
  * in documentation (but kept previous form "SET NORMAL BROADCAST" for backwards
@@ -233,6 +236,25 @@ char * SetSubkey(int act, char *s);
 #define CheckWings() if (!(dipent.flags & F_WINGS)) fprintf(rfp, "Game '%s' has no wings, option is useless.\n\n", dipent.name);
 
 #define CheckBlind() if (!(dipent.flags & F_BLIND)) fprintf(rfp, "Game '%s' is not blind, option is useless.\n\n", dipent.name);
+
+
+/* Check if the game has already been started */
+
+int CheckNotStarted(char *text)
+{
+    char *outtext = text;
+    int ret = 1;
+
+    if (dipent.seq[0] != 'x') {
+        if (outtext == NULL)
+	    outtext = "not allowed to change setting";
+
+        fprintf(rfp, "Game '%s' has already started: %s!\n\n",
+                                    dipent.name, outtext);
+	ret = 0;
+    }
+    return ret;
+}
 
 #define DRAW_VOTE 1
 #define CONC_VOTE 2
@@ -756,6 +778,14 @@ void mail_setp(char *s)
 #define PRV_BLIND_CENTRES 'm'
 #define SET_BLIND_NOCENTRES 160
 #define PRV_BLIND_NOCENTRES 'm'
+#define SET_SUMMER	  161
+#define PRV_SUMMER	  'm'
+#define SET_NOSUMMER	  162
+#define PRV_NOSUMMER	  'm'
+#define SET_GARRISONS	  163
+#define PRV_GARRISONS  	  'm'
+#define SET_NOGARRISONS	  164
+#define PRV_NOGARRISONS	  'm'
 
 /* Note:  in keys below, a blank space indicates that whitespace is
  * optional at that point in the user input; a '#' character indicates
@@ -898,7 +928,9 @@ void mail_setp(char *s)
          "not variant", "notvariant",
 	 "postalpress", "nopostalpress", "no postalpress",
          "bcenters", "bcentres",
-         "no bcentres", "no bcenters", "nobcentres", "nobcenters"
+         "no bcentres", "no bcenters", "nobcentres", "nobcenters",
+	 "summer", "nosummer", "no summer",
+	 "garrisons", "no garrisons", "nogarrisons"
  	};
 
 
@@ -1042,7 +1074,9 @@ void mail_setp(char *s)
 	 SET_NOTVARIANT, SET_NOTVARIANT,
 	 SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS,
 	 SET_BLIND_CENTRES, SET_BLIND_CENTRES,
-         SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES
+         SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES,
+	 SET_SUMMER, SET_NOSUMMER, SET_NOSUMMER,
+	 SET_GARRISONS, SET_NOGARRISONS, SET_NOGARRISONS
     };
 
 
@@ -1187,7 +1221,9 @@ void mail_setp(char *s)
          PRV_NOTVARIANT, PRV_NOTVARIANT,
 	 PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS,
 	 PRV_BLIND_CENTRES, PRV_BLIND_CENTRES,
-         PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES
+         PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES,
+	 PRV_SUMMER, PRV_NOSUMMER, PRV_NOSUMMER,
+	 PRV_GARRISONS, PRV_NOGARRISONS, PRV_NOGARRISONS
 };
 
 	chk24nmr = 0;
@@ -3427,7 +3463,7 @@ void mail_setp(char *s)
                                                 "Players may not disband in a movement phase.\n", CATF_NORMAL);
                         }
 			break;
-/*
+
 		case SET_BASIC:
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Basic", CATF_SETON,
@@ -3435,7 +3471,7 @@ void mail_setp(char *s)
 			
 			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice", 
 				 	   CATF_SETON,
-					   "", CATF_INVERSE); 
+					   "Dice disabled.\n", CATF_INVERSE); 
                         break;
 
 
@@ -3443,12 +3479,52 @@ void mail_setp(char *s)
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Advanced", CATF_SETOFF,
                                                 "Game is now in advanced settings.\n", CATF_INVERSE);
-			CheckAndToggleFlag(dipent.flags, F_NODICE, "NoDice",
+			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice",
 					   CATF_SETOFF,
-					   "", CATF_INVERSE);
+					   "Dice enabled.\n", CATF_INVERSE);
 			break;
 
-*/
+
+		case SET_SUMMER:
+			if (CheckNotStarted(NULL))
+			{
+			    if (dipent.flags & F_MACH) 
+                                CheckAndToggleFlag(&dipent.x2flags, X2F_NOSUMMER, "NoSummer", CATF_SETOFF,
+                                                "Game now has summer turns.\n", CATF_NORMAL);
+			    else
+				CheckAndToggleFlag(&dipent.x2flags, X2F_SUMMER, "Summer", CATF_SETON,
+                                                "Game now has summer turns.\n", CATF_NORMAL);
+                        }
+			break;
+
+		case SET_NOSUMMER:
+			if (CheckNotStarted(NULL))
+			{
+                            if (dipent.flags & F_MACH)
+                                CheckAndToggleFlag(&dipent.x2flags, X2F_NOSUMMER, "NoSummer", CATF_SETON,
+                                                "Game now has NO summer turns.\n", CATF_NORMAL);
+			    else
+				 CheckAndToggleFlag(&dipent.x2flags, X2F_SUMMER, "Summer", CATF_SETOFF,
+                                                "Game now has NO summer turns.\n", CATF_NORMAL);
+			}
+                        break;
+/*** To be finished
+		case SET_GARRISONS:
+			if (CheckNotStarted(NULL))
+                        {
+                            CheckMach();
+                            CheckAndToggleFlag(&dipent.x2flags, X2F_NOGARRISONS, "NoGarrison", CATF_SETOFF,                                                "Game now has garrisons.\n", CATF_NORMAL);
+                        }
+                        break;
+
+		case SET_NOGARRISONS:
+			if (CheckNotStarted(NULL))
+                        {
+                            CheckMach();
+                            CheckAndToggleFlag(&dipent.x2flags, X2F_NOGARRISONS, "NoGarrison", CATF_SETON,                                                "Game now disallows garrisons.\n", CATF_NORMAL);
+                        }
+                        break;
+ ***/
 		case SET_PREFLIST:
 			if ((dipent.seq[0] != 'x') && !starting) {
 				fprintf(rfp, "The preference settings cannot be changed after the game has started.\n");
