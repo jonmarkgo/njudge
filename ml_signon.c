@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/04/15 21:21:22  miller
+ * Only send warning for different emails if not a substring
+ *
  * Revision 1.4  2001/01/06 18:48:43  davidn
  * Changes to allow game creator to be automatically made master
  *
@@ -466,6 +469,8 @@ int mail_signon(char *s)
 			}
 			if ( !master )
 			{
+				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", JUDGE_CODE, dipent.name, dipent.phase, n);
+
 				fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
 					powers[power(name[0])], dipent.name);
 				fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
@@ -603,6 +608,8 @@ int mail_signon(char *s)
 					fprintf(rfp, "    set deadline %-6.6s 23:30\n\n", ctime(&now) + 4);
 				}
 				/* WAS mfprintf  1/94 BLR */
+				sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+
 				fprintf(bfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
 					xaddr, powers[n], dipent.name);
 				fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
@@ -663,6 +670,8 @@ int mail_signon(char *s)
 						msg_header(rfp);
 					fprintf(rfp, "You are now an %s in game '%s'.\n", powers[n], dipent.name);
 					/* WAS mfprintf  1/94 BLR */
+					sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+
 					fprintf(bfp, "%s has signed on as an %s in game '%s'.\n",
 					  xaddr, powers[n], dipent.name);
 					fprintf(mbfp, "%s has signed on as an %s in game '%s'.\n",
@@ -884,7 +893,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 		free(temp);
 		return -1;
 	}
-	if (dipent.dedicate && ded[userid].r < dipent.dedicate) {
+	if (ded[userid].r < dipent.dedicate) {
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' requires a dedication of at least %d and you\n",
@@ -1181,8 +1190,9 @@ void mail_igame(void)
 		fclose(tfp);
 
 		if (i != dipent.n) {
-			sprintf(line, "%s dip.temp 'Diplomacy game %s starting' '%s'",
-				SMAIL_CMD, dipent.name, dipent.players[i].address);
+			sprintf(line, "%s dip.temp '%s:%s - %s Game Starting' '%s'",
+				SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+
 			if (execute(line)) {
 				fprintf(stderr, "igame: Error sending mail to %s.\n",
 					dipent.players[i].address);
@@ -1196,7 +1206,7 @@ void mail_igame(void)
 				: dipent.players[i].address);
 		}
 	}
-	sprintf(line, "Diplomacy game '%s' starting", dipent.name);
+	sprintf(line, "%s:%s - %s Game Starting", JUDGE_CODE, dipent.name, dipent.phase);
 	archive("dip.temp", line);
 
 /*
