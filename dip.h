@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/04/15 21:28:30  miller
+ * Added XF_NOATTACKTRANS flag
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added XF_FLAG defines for Extended flags
  * Added absences to player and game structures
@@ -33,6 +36,7 @@
  *  29 Dec 1996 David Norman Addition to dipent (Marked DAN 903)
  *  26 Nov 1999 Millis Miller Added xflags, shorthand, late_count flags and value
  *  08 Dec 1999 Millis Miller Added dipent.build_anywhere flag to fix 'chaos-bug'
+ *  06 May 2001 Gregory A Greenman Added Subjectline variable
  */
 
 #ifndef _DIP_H
@@ -243,6 +247,8 @@ extern FILE *xfp;		/* Control file pointer */
 extern FILE *inp;		/* Input FPTR (usually stdin unless -i used     */
 extern int nded;
 extern struct dedication ded[MAXUSER];
+
+extern char subjectline[80];
 
 extern char *notifies;
 extern int aflg;		/* -a: don't mess with the at queue at all      */
