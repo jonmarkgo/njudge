@@ -74,9 +74,11 @@ Map features
 
   There are only 26 cities in this variant.
 
-  The Bay is adjacent to both Ancona and Capitanata.
+  The Bay is adjacent to both Ancona and Capitanata and Capitanata 
+  is adjacent to the Bay.
 
-  The Upper Adriatic Sea is adjacent to both Ancona and Capitanata.
+  The Upper Adriatic Sea is adjacent to both Ancona and Capitanata 
+  and Ancona is adjacent to the Upper Adriatic Sea.
 
   The Mediterranean Sea encircles the whole map and is accessible 
   from the Ionians Seas.  It is drawn as an "off-map box" on the map.
@@ -89,7 +91,7 @@ Abbreviations
   Urbino = 'ur1' and so on.
 
   Seas are: First Bay = 'by1', First Gulf of Naples = 'gn1', First 
-  Upper Adriatic Sea = 'ua1', First Lower Adriatic Sea = 'la1', First 
+  Upper Adriatic Sea = 'ua1', First Lower Adriatic Sea = 'las1', First 
   Ionian Sea = 'is1' and so on.
   
   The straits are named according to the ordinal of the adjoining land. 
