@@ -96,15 +96,18 @@ NONE:         No transformations are allowed during the specified phase.
 Once activated, players can order transforms using the following syntax:
 
 for moves:
-[<unit>] <location> TRANSFORMS TO <unit> [<coast>]
+[<type>] <location> TRANSFORMS TO <type> [<coast>]
 
 for build phases:
-TRANSFORM <unit> <location> [<coast>] TO <unit>
+TRANSFORM <type> <location> [<coast>]
 
 The abbreviation 'TRAFO' can be used for both of these forms, but otherwise
 cannot be further shortened (to avoid confusion with the 'transport'
 abbreviations already in existence).  The type of unit to be transformed into
-must be specified (because this option can be used in games with Wing units).
+must be specified (because this option can be used in games with Wings and
+other non-standard unit types).  In a build phase, the order must specify the
+*new* unit type that is desired.  For example, to transform a fleet in Greece
+into an army, the correct order would be "Transform Army Greece". 
 
 
 -----

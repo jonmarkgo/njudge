@@ -1,12 +1,15 @@
-Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                      19 May, 2003
 Syntax.
 
 The format of your diplomacy orders depends on the phase of the game:
 Movement, Retreats or Adjustments.  Multiple orders can be entered on
 one line by separating them with commas or semicolons.  
 
-WARNING: the syntax for convoys is different than in the standard Diplomacy
-rules.  See the section below titled "CONVOY ROUTES MUST BE SPECIFIED."
+WARNING: the Judge syntax is different than in the standard Diplomacy rules in
+two circumstances: (1) when supporting or convoying another power's unit, you
+must *not* include the unit's nationality in your order; (2) when an army is
+ordered to move by convoy, it must list each sea space that it will pass
+through.  See the section below titled "CONVOY ROUTES MUST BE SPECIFIED."
 
 Movement orders:
 
@@ -28,7 +31,7 @@ Adjustment orders:
 
 <build>  <type> <s-prov>
 <remove> [<type>] <s-prov>
-<transform> [<type>] <s-prov> <to> <type>
+<transform> <type> <s-prov>
 <waive>
 
 Where:
@@ -51,11 +54,16 @@ Where:
 <transforms> = "transforms to", "transform to", "transform", "transforms",
 		   "trafo", "tr".
 <transform>  = "transform", "transforms", "trafo"
-<to>	       = "to", "->"
 
-    NOTE: "wing" units, "proxy" orders and "transform" orders can only be
-          used if the moderator has enabled the corresponding variant
-          setting.
+    NOTES: "wing" units, "proxy" orders and "transform" orders can only be
+           used if the moderator has enabled the corresponding variant
+           setting.
+
+	   For "transform" orders in the adjustments phase, the order must
+	   specify the new type of the unit.  For example, if the player has a
+	   fleet in Brest, "Transform F Brest" will not do anything.
+	   "Transform A Brest" will transform the fleet into an army (if that
+	   is allowed by the current game settings).
 
 Province names can be abbreviated or can be spelled out.  Valid abbreviations
 can be found in the 'map' file for the variant you are playing (use the
