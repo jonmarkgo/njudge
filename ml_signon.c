@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2003/05/02 22:52:28  millis
+ * Added support for neutrals
+ *
  * Revision 1.22  2003/05/01 14:41:47  millis
  * Fixed small compile bug
  *
@@ -185,7 +188,7 @@ int mail_signon(char *s)
 	int i, j, n, found;
 	int master = 0; // Whether the players has been auto-promoted to master
 	int userid, siteid, level, variant = V_STANDARD, flags = 0;
-	char *t, line[150];
+	char *t, *gdirname, line[150];
 
 /*
  *  Process SIGNON command.  The format of the signon command is:
@@ -297,6 +300,13 @@ int mail_signon(char *s)
 	if (!found) {
 		if (name[0] == '?') {
 			struct stat sbuf;
+			gdirname = malloc(strlen(GAME_DIR) + strlen(name) + 1);
+			if(!gdirname)
+			{
+				fprintf(stderr, "Memory allocation error.\n");
+				bailout(E_FATAL);
+			}
+			sprintf(gdirname, "%s%s", GAME_DIR, &name[1]);
 
 			if (strcmp(raddr, GAMES_MASTER) != 0 && stat("NOCREATE", &sbuf) == 0) {
 				if (!msg_header_done)
@@ -323,14 +333,15 @@ int mail_signon(char *s)
 				fprintf(rfp, "Sorry, '%s' is a reserved name.\n", &name[1]);
 				return E_WARN;
 			}
-			name[0] = 'D';
-			if (stat(name, &sbuf) == 0) {
+			/* name[0] = 'D'; */
+ 			if (stat(gdirname, &sbuf) == 0) {
 				if (!msg_header_done)
 					msg_header(rfp);
 				fprintf(rfp, "Sorry, '%s' is a reserved name.\n", &name[1]);
 				return E_WARN;
 			}
 			name[0] = '?';
+			free(gdirname);
 
 			if (ded[userid].r < atoi(config("CREATE_DEDICATION"))) {
 				fprintf(rfp, "You must have a minimum dedication of %i to create games\non this judge.\n", atoi(config("CREATE_DEDICATION")));
