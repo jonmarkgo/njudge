@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2002/02/25 11:51:52  miller
+   ** Various updates for Machiavelli bug fixes
+   **
    ** Revision 1.2.2.1  2001/10/19 23:08:49  dema
    ** Added XF_NOMONEY handling (for Mach games with no money)
    **
@@ -155,7 +158,7 @@ void ma_ownership(void)
 		}
 		first_country = 1;
 		for (i = 1; i<= NPOWER + 1; i++)
-		    if (owned_country[i]) {
+                    if (owned_country[i] && i != WILD_PLAYER) {
 			if (!first_country) {
 			    *s++ = ','; *s++ = ' ';
 			}
