@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -40,6 +43,12 @@ void status(int pt)
 	unsigned char *b;
 	int i, l, p, u;
 
+	int not_ok_as_blind = 0;
+
+	if ((dipent.flags & F_BLIND) && dipent.seq[6] != 'X' ) {
+		if (pt != MASTER)
+			not_ok_as_blind = 1;
+	}
 
 	fprintf(rfp, "Status of the %s phase for %s of %d.  (%s.%s)\n",
 		dipent.phase[5] == 'M' ? "Movement" :
@@ -55,6 +64,10 @@ void status(int pt)
 
 	p = 0;
 	for (u = 1; u <= nunit; u++) {
+                if (pt == unit[u].owner || !not_ok_as_blind)
+                {
+                    /* ok to show in a blind game */
+
 		if (p != unit[u].owner)
 			putc('\n', rfp);
 		p = unit[u].owner;
@@ -105,6 +118,7 @@ void status(int pt)
 				i = 10;
 			}
 		fprintf(rfp, "%s\n", t);
+	  }
 	}
 
 	putc('\n', rfp);
