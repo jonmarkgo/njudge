@@ -1,10 +1,14 @@
-njudge (1.3.0pre-1) unstable; urgency=low
+njudge (1.3.0pre-20021221-1) unstable; urgency=low
 
   * New upstream version (from CVS.)
   * Fixed broken postinst
   * Fixed bad log rotation.
+  * Reworked installation scripts.  Not interactive now so you have to
+    edit dip.conf by yourself.
+  * Fixed bad NAME section in man page.
+  * Fixed some lintian errors.  Now it's mostly file related stuff.
 
- -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sat, 21 Dec 2002 01:04:42 -0500
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sat, 21 Dec 2002 12:21:39 -0500
 
 njudge (1.2.0-2) unstable; urgency=low
 
