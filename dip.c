@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.59  2004/07/27 23:07:17  millis
+ * Bug 343 (say how many missing players) and Bug 247 (extra dots in secret
+ * game late warning)
+ *
  * Revision 1.57  2004/07/25 16:13:42  millis
  * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
  * return in duplex) and Bug 206 (allow takeover of unknown abandoned
@@ -1401,6 +1405,8 @@ int process(void)
 
 				if ((dipent.players[RealPlayerIndex(i)].status &
 				     (SF_MOVE | SF_MOVED | SF_PART)) == SF_MOVE) {
+				    /* If intimate, only show real players abandoned */
+				    if (! !(dipent.flags & F_INTIMATE && dipent.players[i].controlling_power == 0)) {
 					if (!(dipent.x2flags & X2F_SECRET)) {
 						fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
 						fprintf(rfp, "to take over the abandoned %s.\n",
@@ -1413,14 +1419,23 @@ int process(void)
 						powers[dipent.players[i].power], dipent.players[i].units,
 						dipent.players[i].centers, dipent.phase);
 
-					late[n] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
+					if (!(dipent.x2flags & X2F_SECRET) || n == 0) {
 
-					n++;
+					    late[n] = (dipent.flags & F_QUIET || dipent.x2flags & X2F_SECRET ? '?' : dipent.pl[dipent.players[i].power]);
+					    n++;
+					}
+				    }
 				}
 			}
 
 			/* Only send warning if process time passed */
-			if (n && (dipent.process < now) && dipent.wait < now) {
+			if (n && dipent.process < now ) {
+
+			    dipent.process = now + 48 * 60 * 60;
+
+			    /* Only send warnings if two days since last one */
+			    if (dipent.wait < now) {
+
 				late[n] = '\0';
 
 				if (dipent.x2flags & X2F_SECRET) {
@@ -1428,7 +1443,6 @@ int process(void)
 					fprintf(rfp, "to take over the abandoned power(s).\n");
 				}
 
-				dipent.process = now + 48 * 60 * 60;
 				dipent.wait = dipent.process;
 
 				if (!Dflg)
@@ -1459,8 +1473,9 @@ int process(void)
 						MailOut(line, dipent.players[i].address);
 					}
 				}
-				dipent.dedapplied = dedtest;
-				return 0;
+			    }
+			    dipent.dedapplied = dedtest;
+			    return 0; /* Bug 347, always return even if no warnings are sent! */
 			}
 		}
 		/*
