@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.37  2003/04/16 04:34:42  millis
+ * Implement Bug 65
+ *
  * Revision 1.36  2003/03/07 21:24:09  russblau
  * Editorial changes.
  *
@@ -786,6 +789,14 @@ void mail_setp(char *s)
 #define PRV_GARRISONS  	  'm'
 #define SET_NOGARRISONS	  164
 #define PRV_NOGARRISONS	  'm'
+#define SET_NEUTRALS	  165
+#define PRV_NEUTRALS	  'm'
+#define SET_NONEUTRALS	  166
+#define PRV_NONEUTRALS	  'm'
+#define SET_CAPTUREWIN	  167
+#define PRV_CAPTUREWIN	  'm'
+#define SET_NOCAPTUREWIN  168
+#define PRV_NOCAPTUREWIN  'm'
 
 /* Note:  in keys below, a blank space indicates that whitespace is
  * optional at that point in the user input; a '#' character indicates
@@ -931,6 +942,9 @@ void mail_setp(char *s)
          "no bcentres", "no bcenters", "nobcentres", "nobcenters",
 	 "summer", "nosummer", "no summer",
 	 "garrisons", "no garrisons", "nogarrisons"
+	 "neutrals", "noneutrals", "no neutrals",
+	 "capture win", "capturewin",
+	 "nocapturewin", "no capturewin", "no capture win"
  	};
 
 
@@ -1076,7 +1090,10 @@ void mail_setp(char *s)
 	 SET_BLIND_CENTRES, SET_BLIND_CENTRES,
          SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES, SET_BLIND_NOCENTRES,
 	 SET_SUMMER, SET_NOSUMMER, SET_NOSUMMER,
-	 SET_GARRISONS, SET_NOGARRISONS, SET_NOGARRISONS
+	 SET_GARRISONS, SET_NOGARRISONS, SET_NOGARRISONS,
+	 SET_NEUTRALS, SET_NONEUTRALS, SET_NONEUTRALS,
+	 SET_CAPTUREWIN, SET_CAPTUREWIN,
+	 SET_NOCAPTUREWIN, SET_NOCAPTUREWIN, SET_NOCAPTUREWIN
     };
 
 
@@ -1223,7 +1240,9 @@ void mail_setp(char *s)
 	 PRV_BLIND_CENTRES, PRV_BLIND_CENTRES,
          PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES, PRV_BLIND_NOCENTRES,
 	 PRV_SUMMER, PRV_NOSUMMER, PRV_NOSUMMER,
-	 PRV_GARRISONS, PRV_NOGARRISONS, PRV_NOGARRISONS
+	 PRV_GARRISONS, PRV_NOGARRISONS, PRV_NOGARRISONS,
+	 PRV_CAPTUREWIN, PRV_CAPTUREWIN,
+	 PRV_NOCAPTUREWIN, PRV_NOCAPTUREWIN, PRV_NOCAPTUREWIN
 };
 
 	chk24nmr = 0;
@@ -2732,9 +2751,53 @@ void mail_setp(char *s)
                         }
 			break;
 
+
+		case SET_NEUTRALS:
+			CheckNoMach();
+                       if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change Neutrals flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_NEUTRALS, "Neutrals", CATF_SETON,
+                                               "Neutral units will now exist in every unowned centre at game start.\n",CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NONEUTRALS:
+			CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change Neutrals flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_NEUTRALS, "Neutrals", CATF_SETOFF,
+                                               "All unowned centres will now be unoccupied at game start.\n",CATF_NORMAL);
+                        }
+                        break;
+
+		case SET_CAPTUREWIN:
+                        CheckNoMach();
+                       if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change CaptureWin flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_CAPTUREWIN, "CpatureWin", CATF_SETON,
+                                               "Game will now be won when a power captures ALL home SCs of another.\n",CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOCAPTUREWIN:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to changeCaptureWin flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_CAPTUREWIN, "CaptureWin", CATF_SETOFF,
+                                               "Game will now be won when a power captures enough supply centres.\n",CATF_NORMAL);
+                        }
+                        break;
+
+
 		case SET_ANYDISBAND:
-			fprintf(rfp,"Sorry, the AnyDisband feature is not yet implemented.\n");
-			/*			
 			CheckNoMach();
                        if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set AnyDisband flag!\n\n",
@@ -2743,7 +2806,6 @@ void mail_setp(char *s)
                         CheckAndToggleFlag(&dipent.xflags,  XF_ANYDISBAND, "AnyDisband", CATF_SETON,
                                                "Disbands can now be made in a build phase of ANY unit.\n",CATF_NORMAL);
                         }
-			*/
                         break;
 
                 case SET_NORMALDISBAND:
