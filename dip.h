@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2003/05/06 01:51:49  millis
+ * Maks out Mach flags in X2F display
+ *
  * Revision 1.24  2003/05/02 17:28:43  millis
  * Added define for CAPTUREWIN, prior to actual implementation
  *
@@ -272,9 +275,6 @@
 /* Define for X2F flags for params.c to display */
 /* Do not display Colonial, Preference and Mach-only flags */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS)
-
-/* Define for X2F flags for params.c to display */
-#define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
 
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
 #define GAME_PAUSED           (dipent.phase[6] == 'P')
