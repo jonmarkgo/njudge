@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2003/06/20 23:25:37  millis
+ * Fix bug 180, missing press messages (due to too much stack variables)
+ *
  * Revision 1.6  2002/06/11 16:26:19  nzmb
  *
  * Added set [no]mustorder to require players to submit avalid set of orders
@@ -62,6 +65,7 @@
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
+#include "porder.h"
 
 /*
  *  Declarations & Definitions
@@ -92,6 +96,8 @@ void mail_press(char *s, int need_opts);
  */
 
 static void print_line(FILE * outf, char *line);
+static int IsAdjacent(int asking_power, int other_power);
+
 
 /*
  *  Static Data Object Definitions
@@ -427,6 +433,7 @@ void mail_press(char *s, int need_opts)
 				}
 			    }
 			}
+
 /*  If this is a no-fake-broadcast, is it allowed?  */
 
 			if (fake == NOFAKEB) {
@@ -506,6 +513,30 @@ void mail_press(char *s, int need_opts)
 		    }
 		}
 	}
+
+	if (partial) {
+		if (dipent.x2flags & X2F_TOUCHPRESS) {
+		    xctr =0;
+                    while ((part_list[xctr] = toupper(part_list[xctr])) != '\0') {
+		        if (!IsAdjacent(dipent.players[player].power, power(part_list[xctr]))) {
+		            fprintf(rfp, "You are not currently adjacent to %s.\n",
+			    powers[power(part_list[xctr])]);
+			    bad_cmd = 1;
+		        }
+		        xctr++;
+		    }
+		}
+        } else {
+            if (dipent.x2flags & X2F_TOUCHPRESS) {
+                if ( dipent.players[player].status & SF_BROAD_SENT) {
+                       fprintf(rfp,"Sorry, you have already sent one broadcast: wait until next turn!\n");
+                       bad_cmd = 1;
+                } else {
+                       dipent.players[player].status |= SF_BROAD_SENT;
+		}
+            }
+        }
+
 			
 /*  If command is invalid, discard the following text.  */
 
@@ -887,5 +918,48 @@ static void print_line(FILE * outf, char *line)
 
 	fprintf(outf, "%s\n", line);
 	return;
+}
+
+/* Find out if a power is adjacent to another */
+
+static int IsAdjacent(int asking_power, int other_power)
+{
+    int u, u1, c=0, b=0, adjacent = 0;
+
+    if (asking_power == other_power)
+        return 1;  /* Always adjacent to self! */
+
+    if (other_power == OBSERVER)
+        return 0;  /* Never close to observer */
+
+    if (other_power == MASTER)
+        return 1;  /* Always close to master */
+
+    if (!dipent.pr_valid) {
+                /* pr[] must be filled to run this code */
+                po_init();
+                gamein();
+                dipent.pr_valid++;
+    }
+
+
+/* OK, look though all my units, and see if anyone of them is next to other power's units */
+
+/* Do this by pretending to be a wing, and seeing if can move there */
+
+    for (u=1; u <= nunit && !adjacent; u++) {
+        if (unit[u].owner == asking_power) {
+            unit[++nunit].type = 'W';
+            unit[nunit].loc = unit[u].loc; /* Add dummy wing unit to test moveability */
+            for (u1 = 1; u1 < nunit && !adjacent; u1++) {
+                if (unit[u1].owner == other_power)
+                    if (valid_move(nunit, unit[u1].loc, &c, &b))
+                        adjacent++;
+            }
+            nunit--;  /* Remove dummy unit */
+	}
+    }
+
+    return adjacent;
 }
 

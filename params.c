@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/07/14 22:52:27  millis
+ * Fix bug 187
+ *
  * Revision 1.30  2003/05/24 22:55:44  millis
  * Bug 142, allow use of AutoCreate flag
  *
@@ -579,7 +582,10 @@ void params(FILE * fp)
                 strcatf(line, "AutoCreate", &first_flag);
         }
 
-	
+	if (dipent.x2flags & X2F_TOUCHPRESS) {
+		strcatf(line, "TouchPress", &first_flag);
+	}
+
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {

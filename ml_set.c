@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.47  2003/06/29 01:06:58  millis
+ * Fix bug 176 (duplicate grace setting line to master)
+ *
  * Revision 1.46  2003/05/24 23:57:15  millis
  * Bug 97, removed Generic Handling code
  *
@@ -826,13 +829,17 @@ void mail_setp(char *s)
 #define PRV_AUTOCREATE    'm'
 #define SET_NOAUTOCREATE  170
 #define PRV_NOAUTOCREATE  'm'
+#define SET_TOUCHPRESS    171
+#define PRV_TOUCHPRESS     'm'
+#define SET_NOTOUCHPRESS 172
+#define PRV_NOTOUCHPRESS 'm'
 
 /***********************************************************************
  * Note:  in keys below, a blank space indicates that whitespace is    *
  * optional at that point in the user input; a '#' character indicates *
  * that white space (or parentheses) is required in user input.        *
  ***********************************************************************/
-	
+
 	static char *keys[] = {
 	    "", ",", "press",
 	    "address", "ad#",
@@ -947,28 +954,24 @@ void mail_setp(char *s)
 	    "duality", "no duality",/* "noduality",*/
 	    "hong kong",/* "hongkong",*/
 	    "no hong kong",/* "no hongkong", "nohongkong",*/
-	    "gateways", "gateway",
-	    "no gateways", "no gateway",/* "nogateways", "nogateway",*/
-	    "railways", "railway",
-	    "no railways", "no railway",/* "norailways", "norailway",*/
-	    "storms", "storm",
-	    /* "nostorms", "nostorm",*/ "no storms", "no storm",
+	    "gateways", "gateway", "no gateways", "no gateway",
+	    "railways", "railway", "no railways", "no railway",
+	    "storms", "storm", "no storms", "no storm",
 	    "prflist", "prfboth", "prfrand",
-	    /* "mustorder",*/ "must order",
-	    /* "nomustorder", "no mustorder",*/ "no must order",
-	    "secret",/* "nosecret",*/ "no secret",
-	    "not variant",/* "notvariant",*/
-	    "postal press",/* "nopostalpress",*/ "no postal press",
+	    "must order", "no must order",
+	    "secret", "no secret",
+	    "not variant",
+	    "postal press", "no postal press",
 	    "bcenters", "bcentres",
-	    "no bcentres", "no bcenters",/* "nobcentres", "nobcenters",*/
-	    "summer",/* "nosummer",*/ "no summer",
-	    "garrisons", "no garrisons",/* "nogarrisons",*/
-	    "neutrals",/* "noneutrals",*/ "no neutrals",
-	    "capture win",/* "capturewin",
-	    "nocapturewin", "no capturewin",*/ "no capture win",
-	    "autocreate", "noautocreate"
-	}; 
-	
+	    "no bcentres", "no bcenters",
+	    "summer", "no summer",
+	    "garrisons", "no garrisons",
+	    "neutrals", "no neutrals",
+	    "capture win", "no capture win", 
+	    "auto create", "no auto create",
+	    "touch press", "no touch press"
+	};
+
 	static unsigned char action[] = {
 	    'x', SET_NOOP, SET_NOOP, SET_ADD, SET_ADD, SET_PW, SET_PW, SET_PW,
 	    SET_WAIT, SET_WAIT, SET_NOWAIT, SET_NOWAIT, SET_PREF, SET_PREF,
@@ -1077,9 +1080,10 @@ void mail_setp(char *s)
 	    SET_NEUTRALS,/* SET_NONEUTRALS,*/ SET_NONEUTRALS,
 	    SET_CAPTUREWIN,/* SET_CAPTUREWIN, SET_NOCAPTUREWIN, SET_NOCAPTUREWIN,*/
 	    SET_NOCAPTUREWIN ,
-	    SET_AUTOCREATE, SET_NOAUTOCREATE
-	}; 
-	
+	    SET_AUTOCREATE, SET_NOAUTOCREATE,
+	    SET_TOUCHPRESS, SET_NOTOUCHPRESS
+	};
+
 	static char privs[] = {
 	    'x', PRV_NOOP, PRV_NOOP, PRV_ADD, PRV_ADD, PRV_PW, PRV_PW, PRV_PW,
 	    PRV_WAIT, PRV_WAIT, PRV_NOWAIT, PRV_NOWAIT, PRV_PREF, PRV_PREF,
@@ -1172,7 +1176,8 @@ void mail_setp(char *s)
 	    PRV_NOGARRISONS,/* PRV_NOGARRISONS,*/ PRV_NEUTRALS,/* PRV_NONEUTRALS,*/
 	    PRV_NONEUTRALS, PRV_CAPTUREWIN,/* PRV_CAPTUREWIN, PRV_NOCAPTUREWIN, PRV_NOCAPTUREWIN,*/
 	    PRV_NOCAPTUREWIN,
-	    PRV_AUTOCREATE, PRV_NOAUTOCREATE
+	    PRV_AUTOCREATE, PRV_NOAUTOCREATE,
+	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS
 	};
 
 	chk24nmr = 0;
@@ -2604,7 +2609,7 @@ void mail_setp(char *s)
                                 broadcast = 1;
                         }
                         break;
-		
+
   		case SET_STRCONVOY:
 			CheckNoMach();
 			CheckAndToggleFlag(&dipent.xflags,  XF_STRCONVOY, "StrictConvoy", CATF_SETON,
@@ -2702,6 +2707,27 @@ void mail_setp(char *s)
                                                "All unowned centres will now be unoccupied at game start.\n",CATF_NORMAL);
                         }
                         break;
+
+		case SET_TOUCHPRESS:
+			CheckPress();
+                       if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change TouchPress flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_TOUCHPRESS, "TouchPress", CATF_SETON,
+                                               "Players can now only send one broadcast per turn and press with adjacent powers.\n",CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOTOUCHPRESS:
+			CheckPress();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change TouchPress flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_TOUCHPRESS, "TouchPress", CATF_SETOFF,
+                                               "Players can now send unlimited press.\n",CATF_NORMAL);
+                        }
 
 		case SET_CAPTUREWIN:
                         CheckNoMach();

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.32  2003/07/23 00:11:43  millis
+ * Bug 192
+ *
  * Revision 1.31  2003/07/20 08:43:52  millis
  * Missing include
  *
@@ -291,7 +294,8 @@
 #define X2F_NOGARRISONS		0x100000 /* In Mach, to disable garrisons */
 
 #define X2F_AUTOCREATE		0x200000 /* When game ends, start another one */
-#define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
+#define X2F_CAPTUREWIN         0x400000 /* Powers win the game by capturing another's HCs */
+#define X2F_TOUCHPRESS		0x800000 /* Powers can only press to neighbours */
 
 /* Define for X2F flags for params.c to display */
 /* Do not display Colonial, Preference and Mach-only flags */
@@ -330,6 +334,7 @@ typedef struct Sequence {
 #define SF_TURNGO  0x4000	/* Set by the master to make a manual turn go   */
 #define SF_CONC    0x8000     /* Player agreed to concession */
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
+#define SF_BROAD_SENT 0x20000 /* Player has sent one broadcast message this turn */
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
