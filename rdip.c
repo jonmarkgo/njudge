@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Passing of config_dir setting to dip, use of syslogging
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -167,7 +170,7 @@ int main(int argc, char **argv)
 	 */
 
 	if ((fd2 = open(INPUT, O_RDWR | O_CREAT | O_EXCL, 0666)) < 0) {
-		printf("Exit, %s exists.\n", INPUT);
+		/*printf("Exit, %s exists.\n", INPUT);*/
 		exit(0);
 	}
 	close(fd2);
