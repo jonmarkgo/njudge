@@ -1,221 +1,36 @@
-The following bugs were outstanding as of 1.4.0
+The following bugs were outstanding as of 1.5.0
 
 --------------------
 
-ID
-Sev
-Reporter
-State
-Product
-Comp
-Vers
-Summary
 
-131
-maj
-millis@faztek.org
-REOP
-njudge
-dip
-unspe
-Judge sometime hangs-up with empty dip.input file
+131   maj   P3   All   millis@faztek.org   REOP     Judge sometime hangs-up with empty dip.input file     
+91   nor   P3   All   judge-maint@diplom.org   NEW     Keep duplexed powers together    
+117   nor   P3   All   judge-maint@diplom.org   ASSI     Can't turn off Transformation options     
+149   nor   P3   All   MachFix@yahoogroups.com   NEW     Allow Mach games to be conceeded    
+163   nor   P3   All   millis@faztek.org   NEW     File error messages not getting reported to queue owner     
+168   nor   P3   All   millis@faztek.org   NEW     Add email reporting for vgr/vg queues     
+169   nor   P3   All   millis@faztek.org   NEW     Check validity of contact information     
+186   nor   P3   All   judge-maint@diplom.org   NEW     Must order does not allow press when should    
+31   min   P3   All   judge-maint@diplom.org   NEW     Deadline warnings occur after game has terminated     
+35   min   P3   All   judge-maint@diplom.org   NEW     Player with unusable builds must waive     
+40   min   P3   All   MachFix@yahoogroups.com   ASSI     Sort out summary report spacing     
+88   min   P3   All   millis@faztek.org   NEW     1913: Ireland shown as unowned     
+89   min   P3   All   millis@faztek.org   NEW     1913: Centre summary badly organised     
+94   min   P3   All   judge-maint@diplom.org   NEW     Show owners of supply centres when doing a list     
+95   min   P3   All   judge-maint@diplom.org   NEW     Don't show names of eliminated powers in centre listing     
+100   min   P3   All   judge-maint@diplom.org   NEW     Wrong person sent termination     
+102   min   P3   All   tim@gem.win.co.nz   ASSI     Setting game start date does NOT affect the first turn     
+103   min   P3   All   judge-maint@diplom.org   NEW     Summary incorrect     
+104   min   P3   All   judge-maint@diplom.org   NEW     Only prompt for adjustments if homes still need to be dec...     
+109   min   P3   All   judge-maint@diplom.org   ASSI     Better errors & documentation on Build transform     
+123   min   P3   All   judge-maint@diplom.org   NEW     SET ALLOW|DENY MASTER works when it shouldn't     
+128   min   P3   All   judge-maint@diplom.org   NEW     press to none     
+132   min   P3   All   judge-maint@diplom.org   NEW     Deadline falls during "set absence" period     
+145   min   P3   All   judge-maint@diplom.org   NEW     Change "problem generating summary" error     
+177   min   P3   All   millis@faztek.org   NEW     Summer-time alterations not working     
+183   min   P3   All   judge-maint@diplom.org   NEW     Build order "a edi" rejected when phased.     
+188   min   P3   All   judge-maint@diplom.org   NEW     Wrong email title in rejected absence request     
+200   min   P3   All   judge-maint@diplom.org   NEW     set absence and press shows for master     
+158   tri   P3   All   judge-maint@diplom.org   NEW     Deadline reminder timing is off
 
-138
-nor
-millis@faztek.org
-NEW
-njudge
-Makefile
-unspe
-Automatically generate initial dip.master
-
-91
-nor
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-Keep duplexed powers together
-
-119
-nor
-russblau@imapmail.org
-NEW
-njudge
-dip
-1.3.2
-CD/Abandon grace period in NMR games
-
-157
-nor
-millis@faztek.org
-NEW
-njudge
-dip
-1.3.1
-Secret violated by summary
-
-149
-nor
-millis@faztek.org
-NEW
-njudge
-dip-Mach
-1.3.0
-Allow Mach games to be conceeded
-
-102
-min
-millis@faztek.org
-NEW
-njudge
-dip
-1.2.0
-Setting game start date does NOT affect the first turn
-
-31
-min
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-Deadline warnings occur after game has terminated
-
-35
-min
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-Player with unusable builds must waive
-
-97
-min
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-More useful error message on bad create command
-
-100
-min
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-Wrong person sent termination
-
-103
-min
-millis@faztek.org
-NEW
-njudge
-dip
-1.2.0
-Summary incorrect
-
-104
-min
-millis@faztek.org
-NEW
-njudge
-dip
-1.3.2
-Only prompt for adjustments if homes still need to be declared
-
-109
-min
-millis@faztek.org
-NEW
-njudge
-dip
-1.1.1
-Better errors & documentation on Build transform
-
-117
-min
-russblau@imapmail.org
-NEW
-njudge
-dip
-1.3.2
-Can't turn off Transformation options
-
-123
-min
-russblau@imapmail.org
-NEW
-njudge
-dip
-1.3.2
-SET ALLOW|DENY MASTER works when it shouldn't
-
-128
-min
-rodspade@acm.org
-NEW
-njudge
-dip
-unspe
-press to none
-
-132
-min
-russblau@imapmail.org
-NEW
-njudge
-dip
-unspe
-Deadline falls during "set absence" period
-
-145
-min
-millis@faztek.org
-NEW
-njudge
-dip
-unspe
-Change "problem generating summary" error
-
-135
-min
-millis@faztek.org
-NEW
-njudge
-dip
-1.1.0
-auto-advance deadline only when all players replaced
-
-40
-min
-millis@faztek.org
-NEW
-njudge
-dip-Mach
-1.2.0
-Sort out summary report spacing
-
-32
-tri
-millis@faztek.org
-NEW
-njudge
-dip
-0.8.6
-Shows 'signed on' message even though game is terminated
-
-158
-tri
-russblau@imapmail.org
-NEW
-njudge
-dip
-1.3.2
-Deadline reminder timing is off
-
-23 bugs found. 
+29 Bugs total.
