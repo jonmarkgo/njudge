@@ -1,6 +1,12 @@
 
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Added move syntax checker
+   ** Allow wing units to be used
+   ** Allow transformations
+   ** REcalculate blockade settings
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -270,7 +276,7 @@ int movein(char **s, int p)
 /*  Read movement in from input file.  */
 
 	char c, order, *t;
-	int i, j, p1, p2, u, u1, u2, c1, c2, bl;
+	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl;
 	unsigned char *bp;
 	char temp_text[256];
 
@@ -349,26 +355,31 @@ int movein(char **s, int p)
 	case 'c':
 	case 's':
 		*s = get_type(*s, &c);
-		*s = get_prov(*s, &p2, &c2);
+		*s = get_prov(*s, &p3, &c3);
+		p2 = p3;
+		c2 = c3;
 		if (!p2) {
 			errmsg("Unrecognized source province for support/convoy -> %s", *s);
 			return E_WARN;
 		}
-		if (!(u2 = pr[p2].unit)) {
+		u2 = pr[p2].unit;
+	        if (!(dipent.flags & F_BLIND)) {
+		    if (!(u2)) {
 			errmsg("No unit present %s %s.\n",
 			       water(p2) ? "in the" : "in", pr[p2].name);
 			return E_WARN;
-		}
-		if (order == 'c' && unit[u2].type != 'A') {
+		    }
+		    if (order == 'c' && unit[u2].type != 'A') {
 			errmsg("The convoy order should specify source %s\n",
 			       "and final destination of an army.");
 			return E_WARN;
-		}
-		if (c != 'x' && c != unit[u2].type) {
+		    }
+		    if ((c != 'x' && c != unit[u2].type)) {
 			errmsg("The unit %s %s is %s, not %s.\n",
 			       mov_type(p2,u2), pr[p2].name,
 			       autype(unit[u2].type), autype(c));
 			return E_WARN;
+		    }
 		}
 		if (order == 'c' && !StrictConvoy(p2))
 		{
@@ -604,7 +615,7 @@ int movein(char **s, int p)
 			break;
 
 		    default: /* Can do anywhere */
-			break;  /* Nothing left to do */
+			break;  /* Nothing left to   do */
 		}
 		
                 unit[u].new_type = c;  /* Store the new requested type */
@@ -616,12 +627,14 @@ int movein(char **s, int p)
 	default:
 		errmsg("Invalid order for the %s %s %s.\n",
 		       utype(unit[u].type),
-		       mov_type(p1,u), pr[p1].name);
+		     mov_type(p1,u), pr[p1].name);
 		return E_WARN;
 	}
 
 	unit[u].order = order;
 	unit[u].unit = u2;
+	unit[u].unit_prov = p3;
+	unit[u].unit_coast = c3;
 	unit[u].dest = p2;
 	unit[u].dcoast = c2;
 	unit[u].convoy = bp;
@@ -1138,11 +1151,15 @@ int moveout(int pt)
 
 			case 'c':
 				fprintf(rfp, " CONVOY ");
-				if ((i = unit[u2 = unit[u].unit].owner) != p)
-					fprintf(rfp, "%s ", owners[i]);
+				if ((i = unit[u2 = unit[u].unit].owner) != p) {
+                                    if (!dipent.flags & F_BLIND)
+                                        fprintf(rfp, "%s ", owners[i]);
+                                    else
+                                        fprintf(rfp,"unknown ");
+                                }
 				else if (!processing && unit[u2].dest != unit[u].dest)
 					result[u] = BAD_CONVOY;
-				fprintf(rfp, "Army %s -> %s", pr[unit[u2].loc].name,
+				fprintf(rfp, "Army %s -> %s", pr[unit[u].unit_prov].name,
 					pr[unit[u].dest].name);
 				break;
 
@@ -1184,11 +1201,18 @@ int moveout(int pt)
 
 			case 's':
 				fprintf(rfp, " SUPPORT ");
-				if ((i = unit[u2 = unit[u].unit].owner) != p)
+				if ((i = unit[u2 = unit[u].unit].owner) != p) {
+				    if (!dipent.flags & F_BLIND)
 					fprintf(rfp, "%s ", owners[i]);
-				fprintf(rfp, "%s %s", Utype(unit[u2].type), pr[unit[u2].loc].name);
-				if (unit[u2].coast > XC)
-					fprintf(rfp, " (%s)", mtype[unit[u2].coast]);
+				    else
+					fprintf(rfp,"unknown ");
+				}
+				if (!dipent.flags & F_BLIND)
+				    fprintf(rfp, "%s %s", Utype(unit[u2].type), pr[unit[u].unit_prov].name);
+				else
+				    fprintf(rfp, "%s %s", "Unit", pr[unit[u].unit_prov].name);
+				if (unit[u].unit_coast > XC)
+					fprintf(rfp, " (%s)", mtype[unit[u].unit_coast]);
 
 				if (unit[u2].loc != unit[u].dest) {
 					fprintf(rfp, " -> %s", pr[unit[u].dest].name);
