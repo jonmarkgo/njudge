@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/07/01 23:19:29  miller
+ * New variant guardians
+ *
  * Revision 1.3  2001/01/06 18:48:07  davidn
  * Changes to allow game creator be automatically made master
  *
@@ -122,10 +125,12 @@ int conf_init(void)
 	conf_set("STATS_FLAG", "0");
 	conf_set("STATS_DIR", "./stats");
 	conf_set("AUTO_MASTER","no");
+	conf_set("TIME_TOLERANCE", "60");  /* Time drift before detecting warp */
+	conf_set("WARP_FILE", "./dip.warp");
 
 /* Default custodians for sailho (other variants will default to nothing */
-	conf_set("sailho_CUSTODIAN", "tarzan_monkeyman@bigfoot.com");
-	conf_set("sailho_crowded_CUSTODIAN", "tarzan_monkeyman@bigfoot.com"); 
+	conf_set("CUSTODIAN_sailho", "tarzan_monkeyman@bigfoot.com");
+	conf_set("CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"); 
 
 	return 1;
 }
