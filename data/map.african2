@@ -27,7 +27,7 @@ Khartoum,                                x kha
 Eritrea,                                 l eri
 Somalia,                                 E som
 Djibouti,                                E dji
-Eygpt,                                   x eyg
+Egypt,                                   x egy
 Bengasi,                                 L ben
 Eastern Sahara Desert,                   l esd
 Tripoli,                                 L tri
@@ -96,8 +96,8 @@ ang-mv: kin lub zam bot nam
 ang-xc: kin nam sea goc
 zim-mv: moz pre bot zam
 cha-mv: wsd esd kpl caf cam nga ngr
-kpl-mv: esd eyg kha sud caf cha
-kpl-xc: eyg rse kha
+kpl-mv: esd egy kha sud caf cha
+kpl-xc: egy rse kha
 nam-mv: bot kde ang
 nam-xc: kde sea ang
 bot-mv: zam zim pre kde nam ang
@@ -121,11 +121,11 @@ som-mv: dji ken aab
 som-xc: dji goa nio ken
 dji-mv: som aab eri
 dji-xc: goa som eri
-eyg-mv: dam mec kpl esd ben
-eyg-xc: ems dam mec rse kpl ben
-ben-mv: eyg esd tri
-ben-xc: ise ems eyg tri
-esd-mv: tri ben eyg kpl cha wsd
+egy-mv: dam mec kpl esd ben
+egy-xc: ems dam mec rse kpl ben
+ben-mv: egy esd tri
+ben-xc: ise ems egy tri
+esd-mv: tri ben egy kpl cha wsd
 tri-mv: tun ben esd wsd alg
 tri-xc: tun ise ben
 cam-mv: cha caf gab nga
@@ -161,8 +161,8 @@ gre-mv: tur
 gre-xc: ems ise tur
 tur-mv: irq dam gre irn
 tur-xc: dam ems gre
-mec-mv: irq riy yem eyg dam
-mec-xc: yem rse eyg
+mec-mv: irq riy yem egy dam
+mec-xc: yem rse egy
 yem-mv: mec riy oma
 yem-xc: mec oma goa rse
 riy-mv: oma yem mec irq
@@ -171,11 +171,11 @@ oma-mv: yem riy
 oma-xc: pgu ase goa yem riy
 irq-mv: tur irn riy mec dam
 irq-xc: irn pgu riy
-dam-mv: tur irq mec eyg
-dam-xc: tur eyg ems
+dam-mv: tur irq mec egy
+dam-xc: tur egy ems
 irn-mv: irq tur
 irn-xc: ase pgu irq
-rse-xc: mec yem goa eri kha kpl eyg
+rse-xc: mec yem goa eri kha kpl egy
 goa-xc: eri rse yem oma ase nio som dji
 ase-xc: pgu irn nio goa oma
 pgu-xc: irn ase oma riy irq
@@ -186,7 +186,7 @@ mao-xc: sen gui fre abi gog goc swa nao
 nao-xc: wms mor mau sen mao spa
 wms-xc: ita ise tun alg mor nao spa
 ise-xc: ita gre ems ben tri tun wms
-ems-xc: gre tur dam eyg ben ise
+ems-xc: gre tur dam egy ben ise
 gog-xc: gha nga cam gab goc mao abi
 goc-xc: gog gab kin ang sea swa mao
 sea-xc: ang nam kde cto swa goc
@@ -194,7 +194,7 @@ mad-xc: nio sio mch
 mch-xc: tan nio mad sio ofs moz
 -1
 Center order for summary report:
-   gab abi oua fre sen nga tim mor spa ben tri tun cha gre eyg
+   gab abi oua fre sen nga tim mor spa ben tri tun cha gre egy
    mec riy dam irn kha aab som dji uga tan mad zam zim pre cto
    pel nam ang kis kin lub
 #End of center ordering
