@@ -1,0 +1,119 @@
+Greetings from the Diplomacy* Adjudicator!!              August 7, 2004
+info.machfive
+
+
+Introduction
+
+  Machfive is a symmetrical and totally balanced 5-player variant for 
+  Machiavelli.  It may be played with either v1 or v2 Machiavelli rules.  
+  The adaption was inspired by 5-italies diplomacy.
+
+  Conceived and made by Sergio Lidsell.
+
+
+Setup
+
+  The game starts in spring 3001 and the powers initial starting 
+  locations and owned provinces are:
+
+  1: First (Naples)  G-Bari1, A-Ancona1, F-Napoli1, Capitanata1, 
+                     Lavoro1, Otranto1, Principato1, Spoleto1
+
+  2: Second (Naples) G-Bari2, A-Ancona2, F-Napoli2, Capitanata2, 
+                     Lavoro2, Otranto2, Principato2, Spoleto2
+
+  3: Third (Naples)  G-Bari3, A-Ancona3, F-Napoli3, Capitanata3, 
+                     Lavoro3, Otranto3, Principato3, Spoleto3
+
+  4: Fourth (Naples) G-Bari4, A-Ancona4, F-Napoli4, Capitanata4, 
+                     Lavoro4, Otranto4, Principato4, Spoleto4
+
+  5: Fifth (Naples)  G-Bari5, A-Ancona5, F-Napoli5, Capitanata5, 
+                     Lavoro5, Otranto5, Principato5, Spoleto5
+
+  x: Autonomous      G-Rome1, G-Perugia1, G-Rome2, G-Perugia2, 
+                     G-Rome3, G-Perugia3, G-Rome4, G-Perugia4, 
+                     G-Rome5, G-Perugia5, G-Florence
+
+  Tech note: Naples has been changed in the following way compared to 
+  the standard map. Principato=Principato di Salerno; (Terra di) Lavoro 
+  corresponds to Capua; and Aquila has been subsumed into south 
+  Ancona and Capitanata.
+
+
+Special rules:
+
+  The use of fortresses is set by a flag.  By default it is off. The 
+  fortressess are Siena, Pisa, Lucca, Bologna and Arezzo.
+
+  Major cities with 2 ducats income are: Naples1, Naples2, Naples3,
+  Naples4, Naples5, Rome1, Rome2, Rome3, Rome4 and Rome5.
+
+  Florence is a major city with **five ducats** income.
+
+  Disasters (famine, plague and storms) are available.  Storms will 
+  not affect Gulf of Naples and Lower Adriatic Sea.  Storms will 
+  strike all Bays simultaneously.
+
+  Unit availability for Machiavelli2: no restrictions apply.
+
+
+Variable income.
+
+  Power        dice   1  2  3  4  5  6 Initial*
+  Naples1       1     0  1  2  2  3  4    0    
+  Naples2       1     0  1  2  2  3  4    0    
+  Naples3       1     0  1  2  2  3  4    0    
+  Naples4       1     0  1  2  2  3  4    0    
+  Naples5       1     0  1  2  2  3  4    0    
+
+  *For play with the Machiavelli 2 rules.
+
+
+Map features
+
+  There are only 26 cities in this variant.
+
+  The Bay is adjacent to both Ancona and Capitanata.
+
+  The Upper Adriatic Sea is adjacent to both Ancona and Capitanata.
+
+  The Mediterranean Sea encircles the whole map and is accessible 
+  from the Ionians Seas.  It is drawn as an "off-map box" on the map.
+
+
+Abbreviations
+
+  The basic rule is first two letters or full province name and power 
+  ordinal. E.g. Bari = 'bari1' = 'ba1', Rome = 'ro1', Perugia = 'pe1', 
+  Urbino = 'ur1' and so on.
+
+  Seas are: First Bay = 'by1', First Gulf of Naples = 'gn1', First 
+  Upper Adriatic Sea = 'ua1', First Lower Adriatic Sea = 'la1', First 
+  Ionian Sea = 'is1' and so on.
+  
+  The straits are named according to the ordinal of the adjoining land. 
+  So Strait of Sardinia (->First Strait) = 'st1' and so on.
+
+  The islands are named both according to praxis and to the rightmost 
+  adjoining land. So Sicily = Second Island = 'il'2 *or* 'sic' etc.
+
+  The remaining are 'flo', 'are', 'bol', 'luc', 'pis' and 'sie'.
+
+  For additional abbreviations get the map file.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1, August 7th 2004.  By Sergio Lidsell.

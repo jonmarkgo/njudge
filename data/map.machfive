@@ -1,0 +1,310 @@
+#Machfive by Sergio Lidsell
+#Rev. 1.  Aug 7th 2004.
+XXXXXX,                  l0.  xxx
+First Ancona,            11P  an1 anc1 ancon1 ancona1
+First Bari,              11P  ba1 bar1 bari1
+First Capitanata,        10.  ca1 cap1 capit1 capitanata1
+First Lavoro,            10.  la1 lav1 lavor1 lavoro1 cap1 capua1
+First Naples,            12P  na1 nap1 naple1 naples1
+First Otranto,           10.  ot1 otr1 otran1 otranto1
+First Perugia,           x1f  pe1 per1 perug1 perugia1
+First Principato,        10.  pr1 pri1 princ1 principato1 sal1 salerno1
+First Rome,              x2f  ro1 rom1 rome1
+First Urbino,            x0.  ur1 urb1 urbin1 urbino1
+First Bay,               w0.  fb bay1 by1
+First Gulf of Naples,    w0.  fgn gon1 gul1 gn1
+First Ionian Sea,        w0.  fis ion1 ios1 is1
+First Lower Adriatic,    w0.  fla las1 la1
+First Upper Adriatic,    w0.  fua uas1 ua1
+Strait of Sardinia,      w0.  ssa soa st1
+Sardinia,                x0.  sar sardi il1
+Second Ancona,           21P  an2 anc2 ancon2 ancona2
+Second Bari,             21P  ba2 bar2 bari2
+Second Capitanata,       20.  ca2 cap2 capit2 capitanata2
+Second Lavoro,           20.  la2 lav2 lavor2 lavoro2 cap2 capua2
+Second Naples,           22P  na2 nap2 naple2 naples2
+Second Otranto,          20.  ot2 otr2 otran2 otranto2
+Second Perugia,          x1f  pe2 per2 perug2 perugia2
+Second Principato,       20.  pr2 pri2 princ2 principato2 sal2 salerno2
+Second Rome,             x2f  ro2 rom2 rome2
+Second Urbino,           x0.  ur2 urb2 urbin2 urbino2
+Second Bay,              w0.  sb bay2 by2
+Second Gulf of Naples,   w0.  sgn gon2 gul2 gn2
+Second Ionian Sea,       w0.  sis ion2 ios2 is2
+Second Lower Adriatic,   w0.  sla las2 la2
+Second Upper Adriatic,   w0.  sua uas2 ua2
+Strait of Sicily,        w0.  ssi soy st2
+Sicily,                  x0.  sic sicil il2
+Third Ancona,            31P  an3 anc3 ancon3 ancona3
+Third Bari,              31P  ba3 bar3 bari3
+Third Capitanata,        30.  ca3 cap3 capit3 capitanata3
+Third Lavoro,            30.  la3 lav3 lavor3 lavoro3 cap3 capua3
+Third Naples,            32P  na3 nap3 naple3 naples3
+Third Otranto,           30.  ot3 otr3 otran3 otranto3
+Third Perugia,           x1f  pe3 per3 perug3 perugia3
+Third Principato,        30.  pr3 pri3 princ3 principato3 sal3 salerno3
+Third Rome,              x2f  ro3 rom3 rome3
+Third Urbino,            x0.  ur3 urb3 urbin3 urbino3
+Third Bay,               w0.  tb bay3 by3
+Third Gulf of Naples,    w0.  tgn gon3 gul3 gn3
+Third Ionian Sea,        w0.  tis ion3 ios3 is3
+Third Lower Adriatic,    w0.  tla las3 la3
+Third Upper Adriatic,    w0.  tua uas3 ua3
+Strait of Corsica,       w0.  sco soc st3
+Corsica,                 x0.  cor corsi il3
+Fourth Ancona,           41P  an4 anc4 ancon4 ancona4
+Fourth Bari,             41P  ba4 bar4 bari4
+Fourth Capitanata,       40.  ca4 cap4 capit4 capitanata4
+Fourth Lavoro,           40.  la4 lav4 lavor4 lavoro4 cap4 capua4
+Fourth Naples,           42P  na4 nap4 naple4 naples4
+Fourth Otranto,          40.  ot4 otr4 otran4 otranto4
+Fourth Perugia,          x1f  pe4 per4 perug4 perugia4
+Fourth Principato,       40.  pr4 pri4 princ4 principato4 sal4 salerno4
+Fourth Rome,             x2f  ro4 rom4 rome4
+Fourth Urbino,           x0.  ur4 urb4 urbin4 urbino4
+Fourth Bay,              w0.  ob bay4 by4
+Fourth Gulf of Naples,   w0.  ogn gon4 gul4 gn4
+Fourth Ionian Sea,       w0.  ois ion4 ios4 is4
+Fourth Lower Adriatic,   w0.  ola las4 la4
+Fourth Upper Adriatic,   w0.  oua uas4 ua4
+Strait of Elba,          w0.  sel soe st4
+Elba,                    x0.  elb il4
+Fifth Ancona,            51P  an5 anc5 ancon5 ancona5
+Fifth Bari,              51P  ba5 bar5 bari5
+Fifth Capitanata,        50.  ca5 cap5 capit5 capitanata5
+Fifth Lavoro,            50.  la5 lav5 lavor5 lavoro5 cap5 capua5
+Fifth Naples,            52P  na5 nap5 naple5 naples5
+Fifth Otranto,           50.  ot5 otr5 otran5 otranto5
+Fifth Perugia,           x1f  pe5 per5 perug5 perugia5
+Fifth Principato,        50.  pr5 pri5 princ5 principato5 sal5 salerno5
+Fifth Rome,              x2f  ro5 rom5 rome5
+Fifth Urbino,            x0.  ur5 urb5 urbin5 urbino5
+Fifth Bay,               w0.  ib bay5 by5
+Fifth Gulf of Naples,    w0.  ign gon5 gul5 gn5
+Fifth Ionian Sea,        w0.  iis ion5 ios5 is5
+Fifth Lower Adriatic,    w0.  ila las5 la5
+Fifth Upper Adriatic,    w0.  iua uas5 ua5
+Strait of Malta,         w0.  sma som st5
+Malta,                   x0.  mal il5
+Arezzo,                  x0f  are arezz
+Bologna,                 x0f  bol bolog
+Florence,                x5f  flo flore
+Lucca,                   x0f  luc lucca
+Pisa,                    x0f  pis psa pisa
+Siena,                   x0f  sie sienna sienn
+Mediterranean,           w0.  med medit
+-1
+xxx-mv: xxx
+an1-mv: ur1 pe1 la1 ca1
+an1-xc: ua1 by2
+an2-mv: ur2 pe2 la2 ca2
+an2-xc: ua2 by3
+an3-mv: ur3 pe3 la3 ca3
+an3-xc: ua3 by4
+an4-mv: ur4 pe4 la4 ca4
+an4-xc: ua4 by5
+an5-mv: ur5 pe5 la5 ca5
+an5-xc: ua5 by1
+ba1-mv: ca1 pr1 ot1
+ba1-xc: ua1 la1
+ba2-mv: ca2 pr2 ot2
+ba2-xc: ua2 la2
+ba3-mv: ca3 pr3 ot3
+ba3-xc: ua3 la3
+ba4-mv: ca4 pr4 ot4
+ba4-xc: ua4 la4
+ba5-mv: ca5 pr5 ot5
+ba5-xc: ua5 la5
+ca1-mv: an1 la1 na1 pr1 ba1
+ca1-xc: ua1 by2
+ca2-mv: an2 la2 na2 pr2 ba2
+ca2-xc: ua2 by3
+ca3-mv: an3 la3 na3 pr3 ba3
+ca3-xc: ua3 by4
+ca4-mv: an4 la4 na4 pr4 ba4
+ca4-xc: ua4 by5
+ca5-mv: an5 la5 na5 pr5 ba5
+ca5-xc: ua5 by1
+la1-mv: na1 ca1 an1 pe1 ro1 ur1
+la1-xc: by1
+la2-mv: na2 ca2 an2 pe2 ro2 ur2
+la2-xc: by2
+la3-mv: na3 ca3 an3 pe3 ro3 ur3
+la3-xc: by3
+la4-mv: na4 ca4 an4 pe4 ro4 ur4
+la4-xc: by4
+la5-mv: na5 ca5 an5 pe5 ro5 ur5
+la5-xc: by5
+na1-mv: pr1 ca1 la1
+na1-xc: by1 gn1
+na2-mv: pr2 ca2 la2
+na2-xc: by2 gn2
+na3-mv: pr3 ca3 la3
+na3-xc: by3 gn3
+na4-mv: pr4 ca4 la4
+na4-xc: by4 gn4
+na5-mv: pr5 ca5 la5
+na5-xc: by5 gn5
+ot1-mv: ba1 pr1
+ot1-xc: is1 la1 st1
+ot2-mv: ba2 pr2
+ot2-xc: is2 la2 st2
+ot3-mv: ba3 pr3
+ot3-xc: is3 la3 st3
+ot4-mv: ba4 pr4
+ot4-xc: is4 la4 st4
+ot5-mv: ba5 pr5
+ot5-xc: is5 la5 st5
+pe1-mv: are ro1 la1 an1 ur1
+pe2-mv: bol ro2 la2 an2 ur2
+pe3-mv: luc ro3 la3 an3 ur3
+pe4-mv: pis ro4 la4 an4 ur4
+pe5-mv: sie ro5 la5 an5 ur5
+pr1-mv: ot1 ba1 ca1 na1
+pr1-xc: gn1 st1
+pr2-mv: ot2 ba2 ca2 na2
+pr2-xc: gn2 st2
+pr3-mv: ot3 ba3 ca3 na3
+pr3-xc: gn3 st3
+pr4-mv: ot4 ba4 ca4 na4
+pr4-xc: gn4 st4
+pr5-mv: ot5 ba5 ca5 na5
+pr5-xc: gn5 st5
+ro1-mv: are ur5 la1 pe1
+ro2-mv: bol ur1 la2 pe2
+ro3-mv: luc ur2 la3 pe3
+ro4-mv: pis ur3 la4 pe4
+ro5-mv: sie ur4 la5 pe5
+ur1-mv: are bol pe1 an1 la2 ro2
+ur1-xc: by2
+ur2-mv: bol luc pe2 an2 la3 ro3
+ur2-xc: by3
+ur3-mv: luc pis pe3 an3 la4 ro4
+ur3-xc: by4
+ur4-mv: pis sie pe4 an4 la5 ro5
+ur4-xc: by5
+ur5-mv: sie are pe5 an5 la1 ro1
+ur5-xc: by1
+by1-xc: gn1 na1 la1 ur5 an5 ca5 ua5
+by2-xc: gn2 na2 la2 ur1 an1 ca1 ua1
+by3-xc: gn3 na3 la3 ur2 an2 ca2 ua2
+by4-xc: gn4 na4 la4 ur3 an3 ca3 ua3
+by5-xc: gn5 na5 la5 ur4 an4 ca4 ua4
+gn1-xc: il1 st1 pr1 na1 by1 ua5
+gn2-xc: il2 st2 pr2 na2 by2 ua1
+gn3-xc: il3 st3 pr3 na3 by3 ua2
+gn4-xc: il4 st4 pr4 na4 by4 ua3
+gn5-xc: il5 st5 pr5 na5 by5 ua3
+is1-xc: is5 il1 st1 ot1 la1 il2 is2 med
+is2-xc: is1 il2 st2 ot2 la2 il3 is3 med
+is3-xc: is2 il3 st3 ot3 la3 il4 is4 med
+is4-xc: is3 il4 st4 ot4 la4 il5 is5 med
+is5-xc: is4 il5 st5 ot5 la5 il1 is1 med
+la1-xc: ua5 ba5 ot5 is5 il1
+la2-xc: ua1 ba1 ot1 is1 il2
+la3-xc: ua2 ba2 ot2 is2 il3
+la4-xc: ua3 ba3 ot3 is3 il4
+la5-xc: ua4 ba4 ot4 is4 il5
+ua1-xc: il1 gn1 by1 an5 ca5 ba5 la5
+ua2-xc: il2 gn2 by2 an1 ca1 ba1 la1
+ua3-xc: il3 gn3 by3 an2 ca2 ba2 la2
+ua4-xc: il4 gn4 by4 an3 ca3 ba3 la3
+ua5-xc: il5 gn5 by5 an4 ca4 ba4 la4
+st1-xc: il1 is1 ot1 pr1 gn1
+st2-xc: il2 is2 ot2 pr2 gn2
+st3-xc: il3 is3 ot3 pr3 gn3
+st4-xc: il4 is4 ot4 pr4 gn4
+st5-xc: il5 is5 ot5 pr5 gn5
+il1-xc: is1 st1 gn1 ua5 la5 is5
+il2-xc: is2 st2 gn2 ua1 la1 is1
+il3-xc: is3 st3 gn3 ua2 la2 is2
+il4-xc: is4 st4 gn4 ua3 la3 is3
+il5-xc: is5 st5 gn5 ua4 la4 is4
+are-mv: ur5 ro1 pe1 ur1 bol flo sie
+bol-mv: ur1 ro2 pe2 ur2 luc flo are
+flo-mv: are bol luc pis sie
+luc-mv: ur2 ro3 pe3 ur3 pis flo bol
+pis-mv: ur3 ro4 pe4 ur4 sie flo luc
+sie-mv: ur4 ro5 pe5 ur5 are flo pis
+med-xc: is1 is2 is3 is4 is5
+-1 
+Famine:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- an4   na1   ----- ----- pe3   ----- ----- na3   an2   -----
+     3: an5   ----- ----- ----- ----- are   ro3   ----- ----- ----- -----
+     4: ----- ----- ----- ----- ur4   ----- bol   ----- ----- ----- -----
+     5: ----- ----- ----- ur3   ----- ----- ----- lucca ----- ----- -----
+     6: ----- ----- ur5   ----- ----- ----- ----- ----- pisa  ----- -----
+     7: ----- ur2   ----- ----- ----- flo   ----- ----- ----- siena -----
+     8: ----- ----- pe4   ----- ----- ----- ----- ----- ro2   ----- -----
+     9: ----- ----- ----- ro4   ----- ----- ----- ro1   ----- ----- -----
+    10: ----- ----- ----- ----- pe5   ----- ur1   ----- ----- ----- -----
+    11: an1   ----- ----- ----- pe2   ro5   ----- ----- ----- na4   an3  
+    12: ----- ----- na2   ----- ----- pe1   ----- ----- na5   ----- -----
+
+Plague:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- an5   ----- ----- ----- ----- ----- ----- ----- an1   -----
+     3: an4   ----- ----- ----- ----- ur2   ----- ----- ----- ----- -----
+     4: na1   ----- ----- ----- ur5   ----- pe4   ----- ----- ----- na2
+     5: ----- ----- ----- ur3   ----- ----- ----- ro4   ----- ----- -----
+     6: ----- ----- ur4   ----- ----- ----- ----- ----- pe5   pe2   -----
+     7: pe3   are   ----- ----- ----- flo   ----- ----- ----- ro5   pe1
+     8: ----- ro3   bol   ----- ----- ----- ----- ----- ur1   ----- -----
+     9: ----- ----- ----- lucca ----- ----- ----- ro1   ----- ----- -----
+    10: na3   ----- ----- ----- pisa  ----- ro2   ----- ----- ----- na5
+    11: an2   ----- ----- ----- ----- siena ----- ----- ----- na4   -----
+    12: ----- ----- ----- ----- ----- ----- ----- ----- ----- an3   -----
+
+#Initial income differs from AH setup due to technical reasons.
+#The formula used is AHInitial-(IncomeAtSetup-MaintenanceAtSetup)=NjudgeInitial
+Variable Income:  City         dice   1  2  3  4  5  6 Initial
+                  Naples1       1     0  1  2  2  3  4    0    
+                  Naples2       1     0  1  2  2  3  4    0    
+                  Naples3       1     0  1  2  2  3  4    0    
+                  Naples4       1     0  1  2  2  3  4    0    
+                  Naples5       1     0  1  2  2  3  4    0    
+# End of Variable Income.
+
+Ownership (city) ordering:
+   flo an1 ba1 na1 pe1 ro1 an2 ba2 na2 pe2 ro2 an3 ba3 na3 pe3 ro3 
+       an4 ba4 na4 pe4 ro4 an5 ba5 na5 pe5 ro5
+#End of center ordering
+
+Center (province) order for summary report:
+   florence arezzo bologna lucca pisa siena sardinia sicily corsica elba malta
+   an1 ba1 ca1 la1 na1 ot1 pr1 pe1 ro1 ur1 an2 ba2 ca2 la2 na2 ot2 pr2 pe2 ro2 ur2
+   an3 ba3 ca3 la3 na3 ot3 pr3 pe3 ro3 ur3 an4 ba4 ca4 la4 na4 ot4 pr4 pe4 ro4 ur4
+   an5 ba5 ca5 la5 na5 ot5 pr5 pe5 ro5 ur5
+#End of province ordering
+
+Storms:   2     3     4     5     6     7     8     9    10    11    12
+     2: is1   ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- 
+     3: ----- is2   ----- ----- ----- ----- ----- ----- ----- ----- -----
+     4: ----- ----- ----- ----- ----- ua5   ----- ----- ----- ----- -----
+     5: ----- ----- ----- by1   by2   by3   by4   by5   ----- ----- -----
+     6: ----- ----- ----- by2   ----- ----- ----- st1   ua3   ----- -----
+     7: ----- ----- ua1   by3   ----- med   ----- ----- st4   ----- -----  
+     8: ----- ----- ----- by4   ----- ----- ----- st3   ----- ----- -----
+     9: ----- ----- ----- by5   ua2   ----- st2   ----- ----- ----- ----- 
+    10: ----- ----- ----- ----- ua4   st5   ----- ----- ----- ----- is5  
+    11: ----- ----- ----- ----- ----- ----- ----- ----- ----- is4   ----- 
+    12: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- is3   
+
+#Limits follow following format:
+# <power-letter> <Army x 4chars> <Fleet x 4chars> <garrison x 4char>
+#Each char is:
+# 'x' = Unit allowed anytime
+# '.' Unit never allowed
+# 'b' Unit can only be built
+# 'r' Unit can only be bribed
+#Unit qualifers are in order:
+# Ordinary, Citizens, Mercenary, Professional
+
+Limits for Units Types:
+   E xxxx xxxx xxxx
+   L xxxx xxxx xxxx
+   I xxxx xxxx xxxx
+   N xxxx xxxx xxxx
+   V xxxx xxxx xxxx
+#end of limit (this line is compulsory!)
+
+-1
