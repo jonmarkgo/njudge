@@ -1,5 +1,7 @@
 
 1.1.1 (17th May 2002)
+Fixed transform build error  (st_build.c)
+Fixed duplicate address checking (mail.c)
 Blind games also set to quiet
 Blind games don't inform GAMES_OPENER
 Allow nopress signalling in Mach games
