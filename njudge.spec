@@ -1,32 +1,33 @@
 Summary: Internet Diplomacy Adjudicator
 Name: njudge
-Version: 1.3.0pre-20021221
+Version: 1.3.0pre_20021221
 Release: 1
 Group: Games
 Copyright: free for non-commercial use.  See COPYING for details.
 Packager: Jaldhar H. Vyas <jaldhar@braincells.com>
 URL: http://www.njudge.org/
-Source: http://www.diplom.org/~njudge/ftp/njudge-1.3.0pre-20021221.tar.gz
+Source: %{name}-1.3.0-pre.tar.gz
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
-%description:
+%description
 The judge adjudicates email games of the Hasbro boardgame Diplomacy. In
 Diplomacy players take the role of one of the 7 great powers of Europe at
 the turn of the 20th Century.  They must vie through conquest and
-negotiation to dominate the continent. This package will install in
-/home/judge
+negotiation to dominate the continent. This package will install in /home/judge
 
 %prep
-%setup
+%setup -n %{name}-1.3.0-pre
 
 %build
-%configure --mandir=/usr/share/man --with-dir=/home/judge --with-user=root
+./configure --mandir=/usr/share/man --with-dir=/home/judge --with-user=root
 make 
 
 %install
-%makeinstall DESTDIR=$RPM_BUILD_ROOT docdir=/usr/share/doc/njudge mandir=/usr/share/man
-rm $RPM_BUILD_ROOT/newlogs
-install -m 0755 debian/newlogs $RPM_BUILD_ROOT/newlogs
-install -m 0755 debian/cron.weekly $RPM_BUILD_ROOT/etc/cron.weekly/njudge
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT docdir=/usr/share/doc/njudge mandir=/usr/share/man
+rm $RPM_BUILD_ROOT/home/judge/newlogs
+install -m 0755 debian/newlogs $RPM_BUILD_ROOT/home/judge/newlogs
+install -D -m 0755 debian/cron.weekly $RPM_BUILD_ROOT/etc/cron.weekly/njudge
 
 %post
 /usr/sbin/useradd -d /home/judge -M -c"Diplomacy Adjudicator" judge || true
@@ -51,6 +52,5 @@ rm -rf $RPM_BUILD_ROOT
 %config /home/judge/dip.addr
 %config /home/judge/dip.whois
 %config /home/judge/dip.blist
-%dir /home/judge
-%doc doc/README.* doc/njudgemapdatahowto.* AUTHORS ChangeLog README COPYING
-
+/home/judge
+/usr/share
