@@ -1,5 +1,5 @@
 #Machiavelli 1 Struggle for Dominance 1
-#Rev. 1b.  Nov 17 2002.
+#Rev. 1c.  Mar 9th 2003.
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
 Ancona,                  P1P  anc ancon
@@ -32,7 +32,7 @@ Genoa,                   x3P  gen
 Gulf of Naples,          w0.  gon
 Herzegovina,             T0.  her herze
 Hungary,                 A1.  hun hunga
-Ionian Sea,              w0.  ion is
+Ionian Sea,              w0.  ion is ios
 Istria,                  V0.  ist istri
 Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
@@ -137,7 +137,7 @@ ion-xc: otr las dur bot pal gon/cc mes
 ion-cc: gon
 ist-mv: cro dal
 ist-xc: uas cro/nc cro/sc dal
-low-xc: uas dal her rag alb dur ion otr bar aqu anc
+las-xc: uas dal her rag alb dur ion otr bar aqu anc
 luc-mv: mod bol pst psa
 luc-xc: mod psa egl
 man-mv: cre bre ver fer bol mod par
@@ -285,4 +285,3 @@ Storms:   2     3     4     5     6     7     8     9    10    11    12
 # Ordinary, Citizens, Mercenary, Professional
 
 -1
-
