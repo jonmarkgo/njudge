@@ -117,8 +117,8 @@ static void CalculateNewOwners(void)
                 if (unit[u].type == 'G') {
                         ncown[p] = unit[u].owner;
                         if (pr[unit[u].loc].unit == 0 || 
-			    unit[pr[unit[u].loc].gunit].owner == 0 ||
-			    unit[pr[unit[u].loc].gunit].owner == unit[u].owner) {
+			    unit[pr[unit[u].loc].unit].owner == 0 ||
+			    unit[pr[unit[u].loc].unit].owner == unit[u].owner) {
 				/* Province is owned by city owner if no-one in province or
 				   provice unit is owned by same power */
                                 npown[p] = unit[u].owner;
