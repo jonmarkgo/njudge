@@ -209,8 +209,9 @@ remap: cmap
 #	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
 #	fi; 
 
-upgrade: dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
+upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
 	 remap pdip rdip summary deddump delgame flock ign flist magic
+	@make -f Datamake
 	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 	install ${INSFLAGS} summary ${INSTALLDIR}/summary
