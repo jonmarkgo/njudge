@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2000/11/14 14:27:37  miller
+ * Added blockage handling (where a wing unit doesn't caputure a SC but blockades it, rendering it unbuildable for both parties)
+ *
  * Revision 1.2  1998/03/01 12:54:16  davidn
  * Second fix to allow w and x to be power letters.
  * Fix was needed in two places, and was originally only put in one.
@@ -159,6 +162,14 @@ int po_init(void)
 				fprintf(rfp, "cmap ptab read error, %d. %s\n", i, line);
 				return E_FATAL;
 			}
+		 	if ((i = fread(stab, sizeof(stab), 1, ifp)) != 1) {
+                                fprintf(rfp, "cmap stab read error, %d. %s\n", i, line);
+                                return E_FATAL;
+                        }
+			if ((i = fread(permitted_units, sizeof(permitted_units), 1, ifp)) != 1) {
+                                fprintf(rfp, "cmap permitted_units read error, %d. %s\n", i, line);
+                                return E_FATAL;
+                        }
 		}
 		fclose(ifp);
 
