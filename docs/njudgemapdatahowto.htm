@@ -18,6 +18,10 @@
   <tr>
     <td width="50%" style="border-left-width: 1; border-right-style: solid; border-right-width: 1; border-top-width: 1; border-bottom-width: 1">
     <a href="#Introduction">Introduction</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Why do I need this">Why do I need this ?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is a map-file">What is the map file</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is the seed-file">What is the seed 
+    file</a> (<a href="#Appendix 2. Seed file examples.">appendix 2</a>)<br>
     <a href="#Structure of the map file">Structure of the map file</a><br>
     <a href="#The additional options">The additional options</a><br>
     <a href="#The province data list">The province data list</a><br>
@@ -34,11 +38,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#The summary center list">The summary center list</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Diplomacy only options">Diplomacy only 
-    options</a><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#Supply center restrictions -- HongKong provinces">SC 
-    restrictions--HongKong prvs</a></td>
+    options</a></td>
     <td width="50%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#Supply center restrictions -- HongKong provinces">SC 
+    restrictions--HongKong prvs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#Movement control -- gateway provinces">Movement control--gateway 
     prvs</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Railways">
@@ -49,7 +53,7 @@
     <a href="#The summary province list">The summary province list</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#The disaster tables">The disaster tables</a> (<a href="#Appendix 1. Machiavelli disaster table samples.">appendix 
-    1</a>)<br>
+    2</a>)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#The variable income list">The variable income list</a><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Unit limits">
@@ -64,26 +68,52 @@
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="#Only fleet can move through land province">
     Only fleet can move through land prv</a><br>
     <a href="#Revision history">Revision history</a><br>
-    <a href="#Thanks">Thanks</a></td>
+    <a href="#Thanks">Thanks</a><br>
+&nbsp;</td>
   </tr>
 </table>
   </center>
 </div>
 <h2><a name="Introduction">Introduction</a></h2>
-<p>This &quot;how-to&quot; is meant to help players create a correct map.[variant name] 
-file for any new variants they create for the Diplomacy Judge (n-judge).&nbsp; I 
+<p>The current version of this document includes all (bar any errors) options 
+supported by nJudge software version 1.5.x.</p>
+<h4><a name="Why do I need this">Why do I need this</a> ?</h4>
+<p>This &quot;how-to&quot; is meant to help Diplomacy and Machiavelli players create a correct map file for  variants they create for the Diplomacy Judge (n-judge).&nbsp; I 
 wrote this because I got frustrated of not being able to find any concise and 
 correct documentation on how to do this.&nbsp; 
 <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/docs/njudgemapdatahowto.htm">The latest version of this file</a> 
 should always be in the njudge CVS repository at <a href="http://www.njudge.org">www.njudge.org</a>.</p>
-<p>Also see the Christophe Courtois documentation on 
+<p>To submit a new variant for play/playtesting you contact the judge-keeper and 
+send him a map-file <i>and</i> a seed-file.</p>
+<h4><a name="What is a map-file">What is a map-file</a></h4>
+<p>The map file ('map.&lt;variant name&gt;') is used to define the area 
+characteristics for the nJudge software. Such as home country definition, 
+official name and abbreviations, whether it is land or sea and much more. For 
+Machiavelli you also define incomes and disasters.</p>
+<h4><a name="What is the seed-file">What is the seed-file</a></h4>
+<p>The seed-file ('seed.&lt;variant_name&gt;') defines in what areas any units are 
+present and the current area ownerships, as those may differ from the home 
+countries even at start. It has been separated from the map file as the same map 
+file may be used for different start setups.</p>
+<p>The seed file structure is in short:<br>
+&lt;season&gt;&lt;start year&gt;&lt;phase&gt;<br>
+&lt;power letter&gt;&lt;:|m&gt;' '&lt;unit letter&gt;' '&lt;full province name or 
+abbreviation as defined in the map file&gt;<br>
+-1<br>
+&lt;supply center and ownership* and other data at 
+game start <i>in map file area order</i>&gt;<br>
+-1</p>
+<p>Where ' ' = space character and text within &lt;&gt; is to be replaced by the data. 
+The &lt;&gt; are not part of the file format. [] is optional. See
+<a href="#Appendix 2. Seed file examples.">Appendix 2</a> for some seed file 
+samples.<br>
+*The so called null ownership/contested record. </p>
+<p>For a complete description of this see Christophe Courtois documentation for 
+judge-keepers on 
 <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/docs/VariantsHOWTO.html">how to create 
-a new variant</a>, with the  
-needed 'seed.&lt;variant_name&gt;' (which contains the setup data) and 'report.&lt;variant_name&gt;' 
-(which contains a default welcome text) files and other needed files and changes 
+and add 
+a new variant</a> 
 to the nJudge.</p>
-<p>The current version of this document includes all (bar any errors) options 
-supported by nJudge software version 1.5.x.</p>
 <h2><a name="Structure of the map file">Structure of the map file</a></h2>
 <p>The map file must be named 'map.&lt;variant_name&gt;' (without the quotes of course).</p>
 <p>The map data file is divided in three parts. Each of which is terminated by a
@@ -583,7 +613,7 @@ alb bud vie tri gal<br>
 element of chance (and complexity) to the game. These are: famine and plague. <i>In
 the n-judge implementation one additional disaster has been added:</i> storms. 
 Sample tables have been added in
-Appendix A. Note that it is not necessary to include all provinces in a disaster 
+<a href="#Appendix 1. Machiavelli disaster table samples.">Appendix 1</a>. Note that it is not necessary to include all provinces in a disaster 
 table or any select province only once...</p>
 <p>The tables are ignored in Basic Machiavelli.</p>
 <p>Tech note 1: Use of the tables are governed by specific flags. Nevertheless
@@ -1257,12 +1287,62 @@ con-xc: bul/sc bul/ec bla ank smy aeg<br>
     <td width="45">-----</td>
   </tr>
 </table>
-<p>&nbsp;</p>
+<h2><a name="Appendix 2. Seed file examples.">Appendix 2. Seed file examples.</a></h2>
+<h4>SC ownership defined by unit start positions.</h4>
+<p>S1901M<br>
+A: A Budapest<br>
+E: F London<br>
+-1<br>
+-1</p>
+<p>Notice the absence of data between the -1's.</p>
+<h4>SC ownership defined in seed file.</h4>
+<p>In this case the game starts with the builds (nothing is owned), thus there 
+is only the SC ownership data.</p>
+<p>F1900B<br>
+-1<br>
+....A....BC..DEF..GH.I....J...K..LN.PQ.RST...U.V..W.X.YZ0..1234.56.... 78.9..<br>
+-1</p>
+<p>In this case F(rance) starts with 5 units but does only own 4 SC's (which 
+also happen to be the home SC's).</p>
+<p>S1425M<br>
+B: A Dijon<br>
+B: A Flanders<br>
+B: A Luxembourg<br>
+B: F Holland<br>
+E: A Calais<br>
+E: A Guyenne<br>
+E: A Normandy<br>
+E: F English Channel<br>
+E: F London<br>
+F: A Dauphine<br>
+F: A Orleanais<br>
+F: A Paris<br>
+F: A Toulouse<br>
+F: A Provence<br>
+-1<br>
+........E...FEB.B.EB..E.B..E..FF.......F.<br>
+-1</p>
+<h4>Complex ownership data sample (from Machiavelli variant)</h4>
+<p>F1498A<br>
+Am A Austria<br>
+Fm A Mil<br>
+&amp;m G Sav<br>
+-1<br>
+N:XAAAAAABBBBBBCCCCCCCDDEEFFFFGGHHIILLMMMMMMNOPPPPPPPPPPPPRRRSSSSSSSSTTTTTTUULV 
+n:Xlnqruvaaeooraaaoorrauaaeloreueuosouaaeiooataaaaaeiiiioraooaaaailpwirruuyprae 
+n:Xbcuesiryrlseprrmreolrssrorinlrnntwcnrsldnprdlrtvraossnogmmllrveaoiveenrrpbgn 
+O:.TP.LAFF.VPTV.A...&amp;.VT...L.VF.TA.V.&amp;&amp;FAF&amp;&amp;F.VA.P&amp;P.&amp;LL.F&amp;PP.FA&amp;&amp;.PAP&amp;VT&amp;A.P.V 
+C:.TP.LAFF.VPTV.A...&amp;.VT...L.VF.TA.V.&amp;&amp;FAF&amp;&amp;F.VA.P&amp;P.&amp;LL.F&amp;PP.FA&amp;&amp;.PAP&amp;VT&amp;A.P.V 
+H:.TP.LAF..VPTV.A.....VT...L.V..TA.V...FA.....VA.P.P..LL.F.PP..A...PAP.VT.A.P.V 
+F:00000000000000000000000000000000000000000000000000000000000000000000000000000<br>
+-1<br>
+-1</p>
 <p><i><a name="Revision history">Revision history</a><br>
 </i>v. 1.00,&nbsp; June 25th by Sergio Lidsell.<br>
 v. 1.00b,&nbsp; October 20th by Sergio Lidsell. Minor corrections and additions.<br>
-v. 1.5, July 29th by Sergio Lidsell. Added Machiavelli disaster table samples. 
-Added ref. to the variant how to. Some content corrections and added an index. Changed 
+v. 1.5, July 29th by Sergio Lidsell. Added index, Machiavelli disaster table and 
+seed file samples. 
+Added seed file info and ref. to the 'variant how to'. Very minor content corrections. Changed 
 the version 
 number to make it correspond to the nJudge version.</p>
 <p><i><a name="Thanks">Thanks</a><br>
