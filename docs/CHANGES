@@ -1,3 +1,16 @@
+
+1.1.1 (17th May 2002)
+Blind games also set to quiet
+Blind games don't inform GAMES_OPENER
+Allow nopress signalling in Mach games
+Fix subject lines for absence requests
+fixed phase length, so it's no longer hard coded for responses
+partial fix for unusable builds, players with only unusable builds
+   will no longer be flagged as having orders due, however players
+   with some usable builds will need to waive any unusable builds,
+   also, if one or more players have unusable builds, but no
+   player has usable builds, the build phase will process after
+   a short delay
 (7th May)
  - Checked in info.colonial with new colonial rules (forgotten for 1.1.0)
 (23rd April)
