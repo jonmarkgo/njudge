@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                      3 March, 2003
+Greetings from the Diplomacy* Adjudicator!!                     28th July, 2003
 Press.
 
 The Judge software includes a mechanism for sending press messages to other
@@ -213,12 +213,12 @@ message) Italy could issue:
    -Ferdinand
    SIGNOFF
 
-Russia would get the message with a header of "Message to Russia in gamename:".  Of course this trick wouldn't work if the game was White press
-since Italy's name would be in the header.  If it was White/Grey Italy would
-have to throw in the "GREY" keyword to get the effect, but even then (or if
-the game was Grey/White) it wouldn't quite be the same since if Germany
-really meant to be so obnoxious why wouldn't he just send the messages
-out as white press?
+Russia would get the message with a header of "Message to Russia in gamename:".
+Of course this trick wouldn't work if the game was White press since Italy's 
+name would be in the header.  If it was White/Grey Italy would have to throw in
+ the "GREY" keyword to get the effect, but even then (or if the game was 
+Grey/White) it wouldn't quite be the same since if Germany really meant to be
+ so obnoxious why wouldn't he just send the messages out as white press?
 
 Press to the Master only is always allowed, no matter what the press settings
 are, so that requests for deadline extensions, or any other message needing
