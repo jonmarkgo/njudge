@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.66  2004/10/23 22:43:28  millis
+ * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+ *
  * Revision 1.65  2004/10/13 00:23:45  alange
  * Added newline to end of Congrats line so dip.footer would start on a new line.
  *
@@ -1594,7 +1597,7 @@ int process(void)
 		                fprintf(ofp, ", ");
                                 fprintf(dfp, ", ");
                                 fprintf(gfp, ", ");
-			    } else if ( vic_count + 1 >= victor) {
+			    } else if ( vic_count > 0 && vic_count + 1 >= victor) {
 				fprintf(ofp, " and ");
 				fprintf(dfp, " and ");
 	                        fprintf(gfp, " and ");

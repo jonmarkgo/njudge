@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.33  2004/10/23 22:43:30  millis
+  ** Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+  **
   ** Revision 1.32  2004/08/03 21:55:07  millis
   ** Fix Bug 349 and 352
   **
@@ -261,13 +264,15 @@ int ownership(int new_flag, int *status)
 		broadcast = 1;
 	}
 
+        for (i = 0; i < MAXPLAYERS; i++)
+            player_centres[i] = 0;
+
+        for (i = 1; i <= NPOWER; i++)
+            power_won[i] = 0;
+
+
        /* Ok, now see if a player has met the allied win conditions */
         if (!victor && dipent.x3flags & X3F_ALLIEDWIN) {
-            for (i = 0; i < MAXPLAYERS; i++)
-                 player_centres[i] = 0;
-
-	     for (i = 1; i <= NPOWER; i++)
-	        power_won[i] = 0;
 
             for (i = 0; i < NPOWER+1; i++) {
                 for (p = 0; p < dipent.n; p++) {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2004/04/04 15:15:01  millis
+ * Fix bug 193 (add approval mechanism to allow moves)
+ *
  * Revision 1.24  2003/07/26 12:45:57  millis
  * Fix Bug 203
  *
@@ -473,6 +476,8 @@ int victory(void)
 	 numwin,		/* number of player matching the criteria */
 	 winner = 0;		/* Last player which matched the criteria */
 
+	victor = 0; /* no-one has won yet! */
+
 	for (pl = 1; pl <= NPOWER; pl++) {
 		if (dipent.pl[pl] == 'x')
 			continue;
@@ -527,7 +532,7 @@ int victory(void)
 	}
 	if (numwin == 1) {
 		fprintf(rfp, "(* VICTORY!! *) by %s\n", powers[winner]);
-		victor = winner;
+		victors[victor++] = winner;
 		return 1;
 	}
 	return 0;
