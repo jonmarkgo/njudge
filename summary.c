@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/07/15 09:20:27  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.4  2001/07/01 23:19:29  miller
  * Add storm table
  *
@@ -641,6 +644,16 @@ int main(int argc, char **argv)
 			fputs(line, ifp);
 		fclose(tfp);
 	}
+	/*
+	 * Concession (if any) goes here
+	 */
+
+	sprintf(line, "%s%s/conc",GAME_DIR,dipent.name);
+	if ((tfp = fopen(line, "r"))) {
+                while (fgets(line, sizeof(line), tfp))
+                        fputs(line, ifp); 
+                fclose(tfp);
+        }
 	/*
 	 *  Comments if any are next.
 	 */
