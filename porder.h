@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added values for blockades and transformations
+ *
  * Revision 1.1  1998/02/28 17:51:14  david
  * Initial revision
  *
@@ -84,6 +87,9 @@ extern struct units {
 	/*   list of possible retreats.               */
 	unsigned char *rcoast;	/* For retreats, the coast to which the unit  */
 	/* may retreat.                               */
+	short unit_prov;	/* province of supported/convoyed unit        */
+	unsigned char unit_coast; /* cost of supported/convoyed unit         */
+
 } unit[MAXUNIT];
 
 extern char *mtype[];
