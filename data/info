@@ -173,7 +173,17 @@ where the list is a sequence of the power identifier letters.  To give a set
 of powers equal weighting, enclose them in parenthesis or square brackets.
 Thus: "SET PREFERENCE f[ergti]a" would indicate that you really want France
 and really don't want Austria, but you don't care about which of the others
-you are assigned if you can't have France.
+you are assigned if you can't have France.  If your preference list is empty,
+the Judge will assume you don't care at all, and you will probably get
+assigned a power that no one else wants.  However, if the game listing (or
+your GM) says that your game is set to permit random assignments, then you
+have another option:
+
+    SET PREFERENCE *
+
+This will give you a purely random power, *before* considering any other
+player's preference list.  This is *not* the same thing as having an empty
+preference list!
 
 To take over a power that has become abandoned, you merely sign on with:
 
