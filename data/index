@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                15th Oct 2001
+Greetings from the Diplomacy* Adjudicator!!                25th Feb 2002
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
@@ -485,6 +485,11 @@ mod/aft SET MN|MNC [NUMBER] number
 any/aft SET MODERATE
         Changes a game from unmoderated to moderated.
 
+mod/mac*SET [NO]MONEY
+	Disables/enables money in Machiavelli games. Without money,
+	Machiavelli is similar to normal Diplomacy, where you need to own
+	one city for each unit built.
+
 mod/aft SET MOVE|RETREAT|ADJUST CLOCK|MIN|NEXT|GRACE|DELAY|DAYS value       
         To change the deadline calculation.  See file 'deadlines'.
 
@@ -689,6 +694,10 @@ any/pre SIGNON ? password
 
 any/pre SIGNON ?xxxx password [variant] 
         To enter a particular game that is forming.
+
+mod/mac*SET [NO]STORM[S]
+	Disables/enables storms. Works as per plague, except causes fleets
+	at sea to be eliminated randomly (in a storm).
 
 any/pre SUMMARY name
         To get an historical summary of the specified game indicating who
