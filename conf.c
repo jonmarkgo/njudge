@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/01/13 22:38:51  millis
+ * merged in from ustv
+ *
  * Revision 1.9  2002/12/22 02:00:34  millis
  * Added DIE_STORMS setting for new random seed for storms
  *
@@ -140,8 +143,6 @@ int conf_init(void)
 	conf_set("CREATE_DEDICATION", "-10");
 	conf_set("SPECIAL_PW", "default");
 	conf_set("SYSLOG_FLAG", "0");
-	conf_set("STATS_FLAG", "0");
-	conf_set("STATS_DIR", "./stats");
 	conf_set("AUTO_MASTER","no");
 	conf_set("TIME_TOLERANCE", "60");  /* Time drift before detecting warp */
 	conf_set("WARP_FILE", "./dip.warp");
