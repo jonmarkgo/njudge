@@ -9,6 +9,7 @@ if [ "$1" = "configure" ]; then
   `chown -R judge:judge /home/judge`;
   perl -pi -e 's!\.\./!\./!g;' /home/judge/dip.conf || true
   mv /home/judge/root-forward /home/judge/.forward || true
+  perl -pi -e 's/root/judge/g;' /home/judge/smail || true
 fi
 
 #DEBHELPER#
