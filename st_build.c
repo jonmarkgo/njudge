@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.12  2002/05/17 11:34:26  miller
+   ** Fixed small bug for CheckOwnedOK() returning bad value
+   **
    ** Revision 1.11  2002/05/11 09:15:34  greg
    ** Minor bug fixes
    ** - fixed subjectline for absence requests
@@ -141,7 +144,7 @@ void init_build(void)
 			if (pr[i].owner == p && pr[i].blockaded == 0)
 				nu[p]++;
 		for (i = 1; i <= nunit; i++)
-			if (unit[i].owner == p)
+			if (unit[i].owner == p && !gateway(unit[i].loc))
 				nu[p]--;
 		if (nu[p] < 0)
 			nu[p]--;
