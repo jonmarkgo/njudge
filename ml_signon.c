@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.35  2003/12/25 06:43:54  nzmb
+ * Fixed bug #102 and another small problem in the SET START processing
+ * code.
+ *
  * Revision 1.34  2003/10/12 05:02:11  nzmb
  * Fixed bug #212 (players in NMR games get warned when another player, who had
  * been in CD, returns to take control of his power).
