@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.35  2004/01/02 10:00:16  millis
+# no message
+#
 # Revision 1.34  2003/11/18 14:42:00  millis
 # Added manual.htm (Russell Blau's DJUM)
 #
@@ -272,18 +275,23 @@ dirs:
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	$(mkinstalldirs) ${DESTDIR}$(datadir)
 
-upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA} dirs remap
+upgrade: upgrade-progs upgrade-data remap
+	
+
+upgrade-strip: upgrade-progs-strip upgrade-data remap
+	
+
+upgrade-progs: defaults.h ${bin_PROGRAMS} dirs
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
-	@for i in ${dist_data_DATA}; \
-	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir); \
-	done;
 
-upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA} dirs remap
+upgrade-progs-strip: defaults.h ${bin_PROGRAMS} dirs
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} -s $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
+
+upgrade-data: ${dist_data_DATA} dirs
 	@for i in ${dist_data_DATA}; \
 	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
 	done;
