@@ -145,6 +145,10 @@ any/any IAMALSO address
 		  are the same person without having to resubmit a complete form.
 		  The address specified must be one that was registered previously.
 
+any/any*INFOPLAYER address
+	Prints out the current dedication and plyrdata info for the given 
+	e-mail address.
+
 any/pre LIST [FULL|name]
         If no optional name or keyword is specified a short list of the
         current games is generated.  If the FULL keyword is specified
@@ -191,6 +195,12 @@ any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
 
 mod/aft*PROMOTE address
 	To promote the observer with the specified address to also be a master.
+
+adm/pre*RECORD userid plyrdata_field value SPECIAL_PW
+        Adjusts the given user's plyrdata record field given by field to a
+        new value givden by value. Fields are 1 for ontime, 2 for total, 3
+	for start, 4 for resignations, and 5 for tookovers. The SPECIAL_PW
+	is defined in dip.conf
 
 any/any REGISTER ... END  
         To register yourself.  See file 'form'.
