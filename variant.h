@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Specify for each variant if it is a homeCentre, OneCentre or AnyCentre game.
+ * This makes it clearer for the player (who will see this always in a game listing) as well as removing specific tests in the code. Plus now any variant uses this only as a default - a game setup can change this if required/wanted.
+ *
  * Revision 1.1  1998/02/28 17:51:14  david
  * Initial revision
  *
@@ -45,6 +49,8 @@
 #ifndef _VARIANT_H
 #define _VARIANT_H
 
+int GetMaxCountryStrlen(void); /* Set to make name of a country string */
+
 /*
  *  Declarations & Definitions
  */
@@ -76,19 +82,26 @@ enum {
 	V_h31,			/* 21 Hundred Years War Diplomacy    */
 	V_h32,			/* 22 Hundred Years War Diplomacy    */
 	V_classical,		/* 23 Classical Medit. Diplomacy     */
-/** ADD NEW VARIANTS ABOVE THIS LINE! **/
+	V_empire,		/* 24 Empire version		     */
+	V_african2,		/* 25 African2			     */
+	V_wraparound2,		/* 26 2nd version of wraparound	     */
+	V_shift_around,		/* 27 Shift around verison	     */
+	V_layered,		/* 28 Layered			     */
+        V_sailho_crowded,       /* 29 SailHo crowded                 */
+	V_sailho,		/* 30 SailHo			     */
+	/** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
 
 /** UPDATE DEFINES AS NECESSARY BELOW **/
 #define NVAROPTS       4	/* Number of variant options (blind/gunboat/shorthand/a/f) */
 #define MAX_POWERS    36	/* Max. powers in a single game (letters+digits) */
-#define LPOWER         9	/* Length of the longest power name              */
+#define LPOWER        24	/* Length of the longest power name              */
 
-#define WILD_PLAYER   92	/* First non-player player ordinal               */
-#define AUTONOMOUS    93	/* Non-player ordinal                            */
-#define OBSERVER      94	/* Non-player ordinal                            */
-#define MASTER        95	/* Last Non-player ordinal                       */
+#define WILD_PLAYER  256  /* First non-player player ordinal               */
+#define AUTONOMOUS   257  /* Non-player ordinal                            */
+#define OBSERVER     258  /* Non-player ordinal                            */
+#define MASTER       259  /* Last Non-player ordinal                       */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
@@ -124,6 +137,13 @@ enum {
     case V_h31:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_h32:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_classical:   dipent.np =  5; dipent.vp =  18; dipent.xflags |= XF_BUILD_ANYCENTRES; break;         \
+    case V_empire:	dipent.np = 10; dipent.vp = 29; break; \
+    case V_african2:	dipent.np = 6; dipent.vp = 19; break; \
+    case V_wraparound2:	dipent.np = 7; dipent.vp = 19; break; \
+    case V_shift_around: dipent.np = 7; dipent.vp = 18; break; \
+    case V_layered: 	dipent.np = 7; dipent.vp = 35; break; \
+    case V_sailho:	dipent.np = 4; dipent.vp = 9; break; \
+    case V_sailho_crowded: dipent.np = 6; dipent.vp = 10; break; \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
