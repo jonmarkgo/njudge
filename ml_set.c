@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/05/10 08:33:25  greg
+ * added subjectlines
+ *
  * Revision 1.3  2001/04/15 21:21:22  miller
  * Add SET_(NO)ATTACKTRANS flag settings
  *
@@ -2251,6 +2254,7 @@ void mail_setp(char *s)
                         }
 			break;
 
+/*** MLM 15/5/2001 disabled prior to proper Mach implementation
 		case SET_MACH2:
                         CheckMach();
                         fprintf(rfp, "Mach2 flag not yet supported!\n\n");
@@ -2291,10 +2295,9 @@ void mail_setp(char *s)
                         }
 
                         break;
-
+*****/
                 case SET_FORT:
                         CheckMach();
-                        fprintf(rfp, "Forts flag not yet supported!\n\n");
                         if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Forts flag!\n\n",
                                     dipent.name);
@@ -2307,7 +2310,6 @@ void mail_setp(char *s)
 
                 case SET_NOFORT:
                         CheckMach();
-                        fprintf(rfp, "Forts flag not yet supported!\n\n");
                         if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to clear Forts flag!\n\n",
                                     dipent.name);
@@ -2825,18 +2827,17 @@ char * SetSubkey(int act, char *s)
 {
 
         static char *subkeys[] =
-        { "", 
-         "home", "home centres", "home centers", "homecenters", "homecentres",
+        { "",
+         "home centres", "home centers", "homecenters", "homecentres",
          "home centre", "home center", "homecenter", "homecentre",
-         "any centres", "any centers", "anycenters", "anycentres",
+         "home", "any centres", "any centers", "anycenters", "anycentres",
          "any centre", "any center", "anycenter", "anycentre",
-         "one", "one centres", "one centers", "onecenters", "onecentres",
+         "one centres", "one centers", "onecenters", "onecentres",
          "one centre", "one center", "onecenter", "onecentre",
-         "any where", "anywhere",
-         "no", "none", "never"
+         "one", "any where", "anywhere",
+         "none", "never", "no"
         };
 
-     
         static char subaction[] =
         { 'x', 
          TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME,
@@ -2895,12 +2896,12 @@ char * SetSubkey(int act, char *s)
 
 void ShowTransformSettings(FILE* rfp)
 {
-	fprintf(rfp,"Current tansform setting: ");
-        switch (dipent.xflags & (XF_TRANS_MOVE | XF_TRANS_BUILD))
+        fprintf(rfp,"Current tansform setting:");
+        if (dipent.xflags & (XF_TRANS_MOVE | XF_TRANS_BUILD))
             {
-               case XF_TRANS_BUILD:
-                    fprintf(rfp,"Build:");
-		    switch( dipent.xflags & (XF_TRANS_BANYW))
+               if (dipent.xflags & XF_TRANS_BUILD) {
+                    fprintf(rfp," Build:");
+                    switch( dipent.xflags & (XF_TRANS_BANYW))
                     {
                         case XF_TRANS_BANYW:
                             fprintf(rfp,"Anywhere");
@@ -2919,10 +2920,10 @@ void ShowTransformSettings(FILE* rfp)
                             break;
                     }
 
-                    break;
+                }
 
-                case XF_TRANS_MOVE:
-                    fprintf(rfp, "Move:");
+                if (dipent.xflags &  XF_TRANS_MOVE) {
+                    fprintf(rfp, " Move:");
 
                     switch( dipent.xflags & (XF_TRANS_MANYW))
                     {
@@ -2942,20 +2943,20 @@ void ShowTransformSettings(FILE* rfp)
                             fprintf(rfp,"HomeCentre");
                             break;
                     }
-		    if (dipent.xflags & XF_NOATTACK_TRANS )
-		    {
-			fprintf(rfp, ", fail on dislodge only");
-		    }
-		    else
-			fprintf(rfp, ", fail on unsupported attacks");
+                    if (dipent.xflags & XF_NOATTACK_TRANS )
+                    {
+                        fprintf(rfp, " (if not attacked)");
+                    }
+                    else
+                        fprintf(rfp, " (if not dislodged)");
 
-		    break;
+                }
 
-                case 0:
-                    fprintf(rfp,"Never");
+            }
+            else
+                fprintf(rfp,"Never");
 
-	}
-	fprintf(rfp,"\n");
+        fprintf(rfp,".\n");
 
 }
 
