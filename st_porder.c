@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.26  2004/06/15 23:48:37  millis
+  ** Bug 297: fix a problem with detecting intimate victory
+  **
   ** Revision 1.25  2004/06/08 08:02:03  millis
   ** Bug 297: Fix so that only real, alive players can win
   **
@@ -432,7 +435,7 @@ static int OnlyOneSurvivor()
    /* See if only one player has survive */
     int i, win = 0, pow = 0;
 
-    for (i = 0; i < dipent.np && win < 2; i++) {
+    for (i = 0; i < dipent.n && win < 2; i++) {
         if (!(dipent.players[i].status & SF_DEAD) && dipent.players[i].controlling_power == 0 &&
 	    dipent.players[i].power < WILD_PLAYER) {
 	    win++;
@@ -461,7 +464,7 @@ static int AnotherPlayersHC( int u, int possible_victor[MAXPLAYERS] )
 	    player_index = FindPower(power(pr[unit[u].loc].type));
 	    owner_index = FindPower(unit[u].owner);
 	    if (player_index != owner_index &&
-                player_index >= 0 && player_index < dipent.np) {
+                player_index >= 0 && player_index < dipent.n) {
 	        /* If the the unit and home centres are both a real players
                  * and the province's owner is not dead, it is a match */
                 if (dipent.players[player_index].controlling_power == 0 &&
@@ -485,7 +488,7 @@ int FindMaximum(int possible_victor[MAXPLAYERS], int limit)
     int win = 0, count = 0;
     int maxval = 0;
 
-    for (i = 0; i < dipent.np; i++) {
+    for (i = 0; i < dipent.n; i++) {
         if (possible_victor[i] > maxval) {
            win = dipent.players[i].power;
 	   maxval = min(limit, possible_victor[i]);
@@ -496,7 +499,7 @@ int FindMaximum(int possible_victor[MAXPLAYERS], int limit)
     if (count > 1) {
 
        /* More than one possible winner, so zap all other entries */
-       for (i = 0; i < dipent.np; i++) {
+       for (i = 0; i < dipent.n; i++) {
 	    if (possible_victor[i] < maxval) {
 	        possible_victor[i] = 0;
 	    } else {
@@ -517,7 +520,7 @@ static int FindRichest(int possible_victor[MAXPLAYERS])
     int win = 0, count = 0;
     int maxval = 0;
 
-    for (i = 0; i < dipent.np; i++) {
+    for (i = 0; i < dipent.n; i++) {
         if (ducats[i].treasury == maxval && maxval != 0) {
 	    count++;
 	} else if (ducats[i].treasury > maxval) {
