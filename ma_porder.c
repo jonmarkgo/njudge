@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2002/12/23 01:43:30  millis
+ * Really fixed Bug 69 (incorrect change)
+ *
  * Revision 1.18  2002/12/22 02:05:46  millis
  * Fixed bug 56 and 70
  *
@@ -123,8 +126,8 @@ static void next_phase(int power)
 	if (dipent.phase[0] == 'F') {
 		/* Check victory conditions */
 		/* Init build phase */
-		fam_plag(FAMINE);
 		fam_plag(STORM);  /* Storms occur at the end of fall phase */
+		fam_plag(FAMINE);
 		if (!(dipent.xflags & XF_NOMONEY))
 		    income(1);
 		if (!(dipent.xflags & XF_NOMONEY))
