@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2003/01/14 13:56:46  millis
+ * Updated with ustv merged changed
+ *
  * Revision 1.8  2002/08/27 22:27:56  millis
  * Updated for automake/autoconf functionality
  *
@@ -83,7 +86,7 @@ void UpdateBlockades()
                                 /* only non-retreating, existing  units */
                                 if (
 //				    pr[unit[u].loc].type == 'x' &&
-				    unit[u].type == 'W' && 
+				    (unit[u].type == 'W' ) && 
 				    unit[u].owner != pr[unit[u].loc].owner) {
 					i = FindPower(pr[unit[u].loc].owner);
                                        	++dipent.players[i].centres_blockaded;
@@ -154,6 +157,7 @@ int po_init(void)
 			pr[i].gunit = 0;
 			pr[i].blockaded = 0;
 			pr[i].flags &= PF_CONSTANT;
+			pr[i].unit_held = 1;  /* Default, has a held unit, replaced later */
 		}
 	} else {
 
@@ -194,6 +198,7 @@ int po_init(void)
 			pr[i].home = n;
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
+			pr[i].unit_held = 1;
 			pr[i].order_index =0;
 			if (pr[i].type == 'r' || pr[i].type == 'g' )
 			    pr[i].move = NULL;
@@ -322,7 +327,7 @@ void po_chkmov(void)
 int gamein(void)
 {
 
-	int i = 0, j, p1, c1;
+	int i = 0, j, p1, p, c1;
 	int index, counter;
 	char c, phase[15], *s, *t;
 	char buffer[1024];
@@ -387,6 +392,8 @@ int gamein(void)
 			unit[nunit].coast = MV;
 		else if (c == 'T')
 			unit[nunit].coast = MV;
+		else if (c == 'R')
+                        unit[nunit].coast = MV;
 		else {
 			fprintf(rfp, "Invalid type %c for unit %d.\n", c, nunit);
 			err++;
@@ -603,6 +610,16 @@ int gamein(void)
 					break;
 
 					/*
+                                         *  S: Unit held state, '1' if unit held from last turn
+					 *  			'0' if didn't or was empty
+                                         */
+
+                                case 'S':
+                                        for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+                                                pr[i].unit_held = *t == '0' ? 0 : 1;
+                                        break;
+
+					/*
 					 *  N: Comment, province name.  Note: OCHF must follow N.
 					 */
 
@@ -672,8 +689,31 @@ int gamein(void)
       
         UpdateBlockades();
 
+        if (!strcmp(dipent.seq, "001"))
+          if (dipent.x2flags & X2F_NEUTRALS)  {
+           /* We've got Neutrals so set them up */
+            for (p = 1; p <= npr; p++) {
+                if (pr[p].type == 'x' && !pr[p].unit) {
+                   unit[++nunit].type = 'A';
+		   unit[nunit].stype = 'x';
+                   unit[nunit].owner = NEUTRAL;
+                   unit[nunit].loc = p;
+		   unit[nunit].exists = 1; 
+		   unit[nunit].railway_index = -1;
+                   unit[nunit].order = 'h';
+		   unit[nunit].status = ':';
+		   pr[p].unit = nunit;
+                }
+            }
+          }
 	CreateDummyRailwayUnits();
 	CreateDummyGatewayUnits(); 
+	
+	for (p = 1; p <= npr; p++) {
+	    if (!pr[p].unit) 
+		pr[p].unit_held = 0;  /* if no units, can't be same unit holding! */
+	}
+
 	return err;
 }
 
@@ -686,7 +726,7 @@ int gameout(void)
 	int i, j, n, p, u;
 	int nu[AUTONOMOUS + 1], np[AUTONOMOUS + 1];
 	char ns[80], n1[80], n2[80], n3[80], n4[80], os[80], o1[80], cs[80], c1[80],
-	 hs[80], fs[80];
+	 hs[80], fs[80], uh[80];
 
 	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
 	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
@@ -791,16 +831,23 @@ int gameout(void)
 		if (n3[n] == '\0' ) {
                         n3[n] = n4[n] = ' '; 
                 }
+		if (n4[n] == '\0' )
+			n4[n] = ' ';
 
 		os[n] = dipent.pl[pr[p].owner];
 		o1[n] = dipent.pl[npown[p]];
 		cs[n] = dipent.pl[pr[p].cown];
 		c1[n] = dipent.pl[ncown[p]];
 		hs[n] = dipent.pl[pr[p].home];
+		if (pr[p].type == 'x' && !pr[p].home)
+			hs[n] = 'x';
+
 		fs[n] = ((pr[p].flags & 0x3F00) >> 8) + '0';
+		uh[n] = pr[p].unit_held == 1 ? '1' : '0';
+
 		if (n++ == 78 - 2 || p == npr) {
 			ns[n] = n1[n] = n2[n] = n3[n] = n4[n] = os[n] = o1[n] =
-			    cs[n] = c1[n] = hs[n] = fs[n] = '\0';
+			    cs[n] = c1[n] = hs[n] = fs[n] = uh[n] = '\0';
 			fprintf(ifp, "N:%s\nn:%s\nn:%s\nn:%s\nn:%s\nO:%s\n", ns, n1, n2, n3, n4, os);
 			if (dipent.flags & F_MACH) {
 				fprintf(ifp, "C:%s\nH:%s\nF:%s\n", cs, hs, fs);
@@ -808,9 +855,14 @@ int gameout(void)
 					fprintf(ifp, "o:%s\nc:%s\n", o1, c1);
 				}
 			}
-			if (dipent.x2flags & X2F_MORE_HOMES) {
+			if (dipent.x2flags & X2F_MORE_HOMES ||
+			    dipent.x2flags & X2F_HOMETRANSFER) {
 				 fprintf(ifp, "H:%s\n",hs);
 			}
+			if (dipent.x2flags & X2F_HOMETRANSFER) {
+				fprintf(ifp, "S:%s\n", uh);
+			}
+
 			n = 0;
 		}
 	}
