@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.20  2002/04/12 01:26:41  miller
+# Better attempt for HOME directory
+#
 # Revision 1.19  2002/02/18 20:18:14  miller
 # Include document subdirectory
 #
@@ -104,28 +107,35 @@ SRCS = 	assign.c \
 		variant.c \
 		version.c
 
-EXTRAS = cmap.c summary.c bgreet.c deddump.c delgame.c \
-         flock.c fmtwho.c ign.c pdip.c recdump.c rdip.c
- 
+EXTRAS = size_check.c cmap.c summary.c deddump.c delgame.c \
+	 ascii_to_ded.c ded_to_ascii.c flock.c fmtwho.c ign.c pdip.c recdump.c \
+	 rdip.c zpblind.c zparseb.c
+
 OBJS = $(SRCS:%.c=%.o)
 
 FILES=	${SRCDIR}/Makefile ${SRCDIR}/Makefile.version ${SRCDIR}/README ${SRCDIR}/dip.template \
 	${SRCDIR}/*.h ${SRCDIR}/*.c ${SRCDIR}/makedata ${SRCDIR}/newvers \
 	${SRCDIR}/diprun ${SRCDIR}/smail ${SRCDIR}/dipclean ${SRCDIR}/atrun \
-        ${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
+	${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
 	${SRCDIR}/data/* ${SRCDIR}/starter.flist \
 	${SRCDIR}/rundipmap ${SRCDIR}/docs/* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
 	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base
+
+SIZE_FILE= ${DESTDIR}/.size.dat
 
 .SUFFIXES: .c .o .h
 
 .c.o:
 	${CC} ${CFLAGS} ${INCPATH} -c $*.c
 
-all:	dip rdip pdip cmap summary bgreet deddump delgame flock fmtwho ign
+all:    dip rdip pdip size_check cmap summary deddump delgame flock \
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind
 
 dip: ${OBJS}
 	${CC} ${LDFLAGS} -o dip ${OBJS} ${LIBS}
+
+size_check: size_check.o
+	${CC} ${LDFLAGS} -o size_check size_check.o ${LIBS}
 
 cmap: jm.o cmap.o lib.o bailout.o conf.o strdup.o variant.o hashtable.o global.o diplog.o
 	${CC} ${LDFLAGS} -o cmap jm.o cmap.o lib.o bailout.o conf.o strdup.o diplog.o \
@@ -135,9 +145,6 @@ summary: summary.o dipent.o diplog.o jm.o lib.o params.o po_get.o bailout.o conf
 	${CC} ${LDFLAGS} -o summary summary.o dipent.o diplog.o jm.o lib.o hashtable.o \
 						params.o po_get.o bailout.o conf.o strdup.o variant.o \
 						global.o ${LIBS}
-
-bgreet: bgreet.o
-	${CC} ${LDFLAGS} -o bgreet bgreet.o ${LIBS}
 
 deddump: deddump.o conf.o strdup.o hashtable.o global.o
 	${CC} ${LDFLAGS} -o deddump deddump.o conf.o strdup.o hashtable.o global.o ${LIBS}
@@ -151,6 +158,12 @@ delgame: delgame.o
 flock: flock.o
 	${CC} ${LDFLAGS} -o flock flock.o ${LIBS}
 
+ascii_to_ded: ascii_to_ded.o
+	${CC} ${LDFLAGS} -o ascii_to_ded ascii_to_ded.o ${LIBS}
+
+ded_to_ascii: ded_to_ascii.o
+	${CC} ${LDFLAGS} -o ded_to_ascii ded_to_ascii.o ${LIBS}
+
 fmtwho: fmtwho.o
 	${CC} ${LDFLAGS} -o fmtwho fmtwho.o ${LIBS}
 
@@ -162,6 +175,10 @@ pdip: pdip.o
 
 rdip: rdip.o diplog.o bailout.o conf.o strdup.o hashtable.o global.o
 	${CC} ${LDFLAGS} -o rdip rdip.o diplog.o bailout.o conf.o strdup.o hashtable.o global.o ${LIBS}
+
+zpblind: zpblind.o zparseb.o
+	${CC} ${LDFLAGS} -o zpblind zpblind.o zparseb.o ${LIBS}
+
 
 defaults.inc:
 	@echo "Generating defaults.inc file from base version."
@@ -175,18 +192,19 @@ Datamake: data/*
 install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flist \
 	 ${INSTALLDIR}/diprun ${INSTALLDIR}/smail ${INSTALLDIR}/dipclean ${INSTALLDIR}/atrun \
 	 ${INSTALLDIR}/rundipmap ${INSTALLDIR}/runlistmap ${INSTALLDIR}/newlogs cmap \
-	 summary bgreet deddump delgame flock fmtwho ign pdip rdip recdump magic \
-	 defaults.inc
+	 summary deddump delgame flock fmtwho ign pdip rdip recdump magic \
+	 defaults.inc ascii_to_ded ded_to_ascii zpblind
 	@if [ -f ${INSTALLDIR}/dip.master ]; then \
 	    echo; echo "Error: ${INSTALLDIR}/dip.master exists." ;echo; \
 	    echo "Cannot install over existing judge."; \
 	    echo "Perhaps you meant to do 'make upgrade'."; echo; echo; \
 	    exit 1; \
 	fi;
+	-rm -f ${SIZE_FILE}
+	./size_check ${SIZE_FILE}
 	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 	${INSTALLCMD} ${INSFLAGS} summary ${INSTALLDIR}/summary
-	${INSTALLCMD} ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
 	${INSTALLCMD} ${INSFLAGS} deddump ${INSTALLDIR}/deddump
 	${INSTALLCMD} ${INSFLAGS} delgame ${INSTALLDIR}/delgame
 	${INSTALLCMD} ${INSFLAGS} flock ${INSTALLDIR}/flock
@@ -195,6 +213,9 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	${INSTALLCMD} ${INSFLAGS} pdip ${INSTALLDIR}/pdip
 	${INSTALLCMD} ${INSFLAGS} rdip ${INSTALLDIR}/rdip
 	${INSTALLCMD} ${INSFLAGS} recdump ${INSTALLDIR}/recdump
+	${INSTALLCMD} ${INSFLAGS) zpblind ${INSTALLDIR}/zpblind
+	${INSTALLCMD} ${INSFLAGS} ascii_to_ded ${INSTALLDIR}/ascii_to_ded
+	${INSTALLCMD} ${INSFLAGS} ded_to_ascii ${INSTALLDIR}/ded_to_ascii
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 		ln -f -s ${INSTALLDIR}/rdip ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/dip ${DESTDIR}; \
@@ -205,7 +226,6 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 		ln -f -s ${INSTALLDIR}/fmtwho ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/ign ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/pdip ${DESTDIR}; \
-		ln -f -s ${INSTALLDIR}/bgreet ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/delgame ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/atrun ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/smail ${DESTDIR}; \
@@ -245,18 +265,21 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	@echo "To start the judge, rename ${HOME}/../${USER}/forward to .forward"
 	@echo
 
+
 remap: cmap
-	@make -f Datamake                                                                                 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
+	@make -f Datamake
+	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
 #	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 #	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
 #	fi; 
 
-upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
-	 remap pdip rdip summary deddump recdump delgame flock ign flist magic
+upgrade: Datamake dip diprun dipclean rundipmap runlistmap fmtwho \
+	 remap pdip rdip summary deddump recdump delgame flock ign flist magic \
+	 ascii_to_ded ded_to_ascii zpblind
 	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 	${INSTALLCMD} ${INSFLAGS} summary ${INSTALLDIR}/summary
-	${INSTALLCMD} ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
+	${INSTALLCMD} ${INSFLAGS} zpblind ${INSTALLDIR}/zpblind
 	${INSTALLCMD} ${INSFLAGS} deddump ${INSTALLDIR}/deddump
 	${INSTALLCMD} ${INSFLAGS} delgame ${INSTALLDIR}/delgame
 	${INSTALLCMD} ${INSFLAGS} flock ${INSTALLDIR}/flock
@@ -265,6 +288,9 @@ upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
 	${INSTALLCMD} ${INSFLAGS} pdip ${INSTALLDIR}/pdip
 	${INSTALLCMD} ${INSFLAGS} rdip ${INSTALLDIR}/rdip
 	${INSTALLCMD} ${INSFLAGS} recdump ${INSTALLDIR}/recdump
+	${INSTALLCMD} ${INSFLAGS} ascii_to_ded ${INSTALLDIR}/ascii_to_ded
+	${INSTALLCMD} ${INSFLAGS} ded_to_ascii ${INSTALLDIR}/ded_to_ascii
+
 magic:
 	@if [ -f .magic.h ]; then \
 		cat .magic.h  | grep DIE_MAGIC | cut -d' ' -f3 >  ${DESTDIR}/.magic.dat; \
@@ -418,9 +444,9 @@ list:
 
 clean: 
 	rm -f a.out core dip Datamake *.o *~
-	rm -f cmap bgreet fmtwho pdip rdip summary
+	rm -f cmap fmtwho pdip rdip summary
 	rm -f deddump delgame flock ign makedep eddep recdump
-	
+	rm -f zpblind ascii_to_ded ded_to_ascii	
 lclint:
 	lint ${SRCS}
 lint: 
@@ -520,19 +546,23 @@ users.o: Makefile Makefile.defines users.c dip.h conf.h port.h variant.h mail.h 
  plyrdata.h
 variant.o: Makefile Makefile.defines variant.c dip.h conf.h port.h variant.h
 version.o: Makefile Makefile.defines Makefile.version version.c dip.h conf.h port.h variant.h functions.h
+size_check.o: Makefile Makefile.defines size_check.c
 cmap.o: Makefile Makefile.defines cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
  mach.h
 summary.o: Makefile Makefile.defines summary.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h diplog.h
-bgreet.o: Makefile Makefile.defines bgreet.c dip.h conf.h port.h variant.h functions.h
 deddump.o: Makefile Makefile.defines deddump.c dip.h conf.h port.h variant.h
 delgame.o: Makefile Makefile.defines delgame.c port.h dip.h conf.h variant.h
+ascii_to_ded.o: Makefile Makefile.defines ascii_to_ded.c dip.h conf.h port.h variant.h
+ded_to_ascii.o: Makefile Makefile.defines ded_to_ascii.c dip.h conf.h port.h variant.h
 flock.o: Makefile Makefile.defines flock.c port.h
 fmtwho.o: Makefile Makefile.defines fmtwho.c functions.h dip.h conf.h port.h variant.h
 ign.o: Makefile Makefile.defines ign.c
 pdip.o: Makefile Makefile.defines pdip.c
 recdump.o: Makefile Makefile.defines recdump.c plyrdata.h
 rdip.o: Makefile Makefile.defines rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
+zpblind.o: Makefile Makefile.defines zpblind.c zparseb.h zmacro.h
+zparseb.o: Makefile Makefile.defines zparseb.c zparseb.h zmacro.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above
