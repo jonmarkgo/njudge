@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/07/01 23:19:29  miller
+ * Added predict and eject commands
+ *
  * Revision 1.4  2001/05/11 07:18:02  greg
  * added subjectlines and allowed "signoff"
  * even if there's no valid "signon"
@@ -2079,7 +2082,7 @@ void mail_reply(int err)
 
 		/* TODO make the ./smail configurable */
 		/* done ;-) */
-		sprintf(line, "%s %s 'Re: %s %s' '%s'", SMAIL_CMD, rfile, jline, subject, raddr);
+		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag]" : "", jline, subject, raddr);
 		if ((i = execute(line))) {
 			/* TODO, why not just have execute() write it's errors to the log */
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, raddr);
@@ -2285,7 +2288,7 @@ void send_press(void)
 		   message should be sent */
 		if (broadcast_master_only && dipent.players[i].power == MASTER ) {
 			sprintf(line, "%s %s '%s' '%s'",
-				SMAIL_CMD, bfile, subjectline, baddr);
+				SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
 
                      if ((j = execute(line))) {
                             fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
