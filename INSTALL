@@ -59,6 +59,9 @@ SOURCE INSTALL
      may give a few harmless errors (when it tries to strip scripts) but you 
      can ignore them.
 
+     If you just want to rebuild the map files (because e.g. you added a new 
+     variant,) type 'make remap'.
+
 
   5. You can remove the program binaries and object files from the
      source code directory by typing `make clean'.  To also remove the

@@ -218,6 +218,9 @@ magic:
 		rm -f .magic.h; \
 	fi;
 
+remap: ${DESTDIR}${datadir}
+	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
+
 install: install-check install-am
 
 install-check:
