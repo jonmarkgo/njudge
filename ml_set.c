@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.22  2002/05/11 09:15:33  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.21  2002/04/18 04:44:32  greg
  * Added the following commands:
  * - unstart
@@ -679,6 +690,10 @@ void mail_setp(char *s)
 #define PRV_NOSECRET	  'm'
 #define SET_NOTVARIANT    154
 #define PRV_NOTVARIANT    'm'
+#define SET_MUSTORDER	  155
+#define PRV_MUSTORDER	  'm'
+#define SET_NOMUSTORDER   156
+#define PRV_NOMUSTORDER   'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -810,6 +825,7 @@ void mail_setp(char *s)
 	 "storms", "storm",
 	 "nostorms", "nostorm", "no storms", "no storm",
 	 "prflist", "prfboth", "prfrand",
+	 "mustorder", "nomustorder",
 	 "secret",
 	 "nosecret", "no secret"
          "not variant", "notvariant"
@@ -951,6 +967,7 @@ void mail_setp(char *s)
 	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
 /*	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, */
 	SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
+	SET_MUSTORDER, SET_NOMUSTORDER,
 	SET_SECRET,
 	SET_NOSECRET, SET_NOSECRET,
 	SET_NOTVARIANT, SET_NOTVARIANT
@@ -1091,6 +1108,8 @@ void mail_setp(char *s)
 	PRV_STORM, PRV_STORM,
 	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM,
 	PRV_PREFLIST, PRV_PREFBOTH, PRV_PREFRAND,
+	PRV_MUSTORDER, PRV_MUSTORDER, PRV_NOMUSTORDER,
+	PRV_NOMUSTORDER, PRV_NOMUSTORDER,
 	PRV_SECRET,
 	PRV_NOSECRET, PRV_NOSECRET,
         PRV_NOTVARIANT, PRV_NOTVARIANT
@@ -3341,6 +3360,19 @@ void mail_setp(char *s)
 
 		case SET_NOSECRET:
 			SETX2FLAGS(0, X2F_SECRET);
+			broad_params = 1;
+			break;
+
+		case SET_MUSTORDER:
+			SETX2FLAGS(X2F_MUSTORDER, X2F_MUSTORDER);
+			fprintf(rfp,"Must_order flag set.\n");
+			broad_params = 1;
+			break;
+
+		case SET_NOMUSTORDER:
+			fprintf(log_fp,"executing 3374.\n");
+			fprintf(rfp,"Players now need not have orders submitted to send press.\n");
+			SETX2FLAGS(0, X2F_MUSTORDER);
 			broad_params = 1;
 			break;
 

@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.5  2002/04/06 17:14:08  nzmb
+ *
+ * Changed ml_press.c so that press from late players isn't blocked when the game is over (again)!
+ *
  * Revision 1.4  2002/03/14 03:12:26  nzmb
  *
  * Added fix to ml_press.c to prevent people from getting warning messages (of if nno late press is on being prohibited from) sending press when the game is over.
@@ -44,6 +48,7 @@
  *      23 May 1994 C.Marcus,Jr. Correct parsing of press options.
  *      27 Nov 1999 M. Miller	 Prohibit partial press from late players 
  *	07 Dec 1999 M. Miller	 parse_power doesn't allow duplicates
+ *	01 Jun 2002 T. Miller    Support for must_order flag
  */
 
 #include <stdlib.h>
@@ -463,10 +468,20 @@ void mail_press(char *s, int need_opts)
 		}
 	}
 
-
-/* OK, let's see if press from late powers is allowed */
-	if (!(dipent.phase[6] == 'X')) 
+/* Have we submitted orders yet? */
+	if (!(dipent.phase[6] == 'X'))
 	{
+		if((!(dipent.players[player].status & SF_MOVED)) && (dipent.players[player].status & SF_MOVE) && (dipent.x2flags & X2F_MUSTORDER))
+		{
+			if(!((count == 1) && (power(part_list[0]) == MASTER)))
+			{
+				/* don't want to send this ... */
+				fprintf(rfp,"Game %s does not allow press from players who have not sent complete orders.\n", dipent.name);
+				bad_cmd = 1;
+			}
+		}
+		/* OK, let's see if press from late powers is allowed */
+
 		if (WAITING(dipent.players[player].status)) {
 			/* it is not, let us see if this power is late and not pressing to master */
 		    if (!((count == 1) && (power(part_list[0]) == MASTER))) {

@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                25th Feb 2002
+Greetings from the Diplomacy* Adjudicator!!               4th June 2002
 index.
 
 (Note: New commands for this judge version are marked with an '!'.
@@ -173,7 +173,7 @@ any/pre MAP * [n]
 	The LIST output supplied must *not* have any characters added to
 	the beginning of the line. e.g: The comment (">") character.
 	(This command may be disabled)
-        
+
 adm/pre NOCONTROL
         Prevents broadcast message from actually being sent.  For debugging.
 
@@ -335,6 +335,10 @@ mod/aft SET DEDICATION level
         rating equal or greater than the indicated level.  The indicated
 	level can not be higher than the Moderator's current dedication
 	rating.  See file 'deadlines'.
+
+mod/aft!SET [NO]MUSTORDER
+	Sets and unsets the mustorder flag. If this flag is set, players
+	must have valid orders submitted before sending press.
 
 mod/aft!SET ONTIMERAT level
 	Restricts access to the game to those people with an ontime ratio

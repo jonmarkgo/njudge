@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/05/14 23:34:00  miller
+ * Added some more flags and globals
+ *
  * Revision 1.13  2002/05/11 09:15:31  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -220,6 +223,7 @@
 #define X2F_SETUP_USED		0x200 /* Set when setup has been used once */
 #define X2F_BLIND_NOCENTRES	0x400 /* In blind, don't even want to see centres! */
 #define X2F_NO_TREASURY		0x800  /* In Mach, don't show treasury	*/
+#define X2F_MUSTORDER		0x1000  /* don't allow press (except to m) unless orders are in */
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)

@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.12  2002/04/18 04:44:34  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.11  2002/04/15 12:55:45  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -159,6 +173,7 @@ void params(FILE * fp)
 	char temp1[50];		/* Temp number buffer */
 	char *temp;		/* Pointer to buffer to be freed */
 	int first_flag;		/* say if first entry in list */
+	int press_rest = 0;	/* any press restrictions? */
 	/* Write information for move, retreat, and adjustment phases (deadlines,
 	   processing days, etc.).  */
 
@@ -400,9 +415,6 @@ void params(FILE * fp)
 	if (dipent.xflags & XF_MANUALSTART) {
 		strcatf(line, "ManualStart",&first_flag);
 	}
-	if (dipent.xflags & XF_NOLATEPRESS) {
-                strcatf(line, "NoLatePress",&first_flag);
-        }
 	
 	if (!(dipent.flags & F_MACH)) {
 	    if (dipent.xflags & XF_ANYDISBAND) {
@@ -543,6 +555,22 @@ void params(FILE * fp)
 
 	strcat(line, ".");
 	print_params(fp, line);
+
+	sprintf(line, "    Press Restrictions: ");
+	if(dipent.xflags & XF_NOLATEPRESS)
+	{
+		press_rest = 1;
+		strcat(line, "No late press");
+	}
+	if(dipent.x2flags & X2F_MUSTORDER)
+	{
+		if(press_rest == 1) strcat(line, ", ");
+		press_rest = 1;
+		strcat(line,"Valid orders required to send press");
+	}
+
+	if(press_rest == 1)
+		print_params(fp, line);
 
 	/* EP and Miller/Boardman numbers; number of centres needed for win
 	 * (these are short enough not to need print_params(), so print them
