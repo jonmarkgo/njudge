@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.33  2004/07/09 17:57:04  millis
+** Restored disabled code for multi-province units checks
+**
 ** Revision 1.32  2004/07/09 04:07:13  nzmb
 ** Major convoy changes -- the convoy field in the unit struct now is a
 ** list of provinces being convoyed through, not a list of units. This
@@ -133,10 +136,15 @@
 */
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>  /* for UCHAR_MAX */
 
 #include "functions.h"
 #include "dip.h"
 #include "porder.h"
+
+#if NPROV > UCHAR_MAX
+#error "NPROV can be at most UCHAR_MAX (255 on most systems)"
+#endif
 
 #define INVALID_ORDER(p1,u)  errmsg("Invalid order for the %s %s %s.\n", \
                  utype(unit[u].type), \
@@ -269,7 +277,7 @@ static int NoValidConvoyingFleet(char *s, int u)
      * *s is now an entry into the province table, not the unit table.
      */
     int ret_code = 1;
-    int p = (*s) - 1;
+    int p = *s;
     int u1;
 
     pr[p].order_index = 1; /* order_index updated in GetUnitIndex() */
@@ -277,7 +285,7 @@ static int NoValidConvoyingFleet(char *s, int u)
     do {
 
         if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
-           (unit[u1].dest != unit[u].dest && unit[u1].dest != (*(s + 1) - 1)) ) {
+           (unit[u1].dest != unit[u].dest && unit[u1].dest != (*(s + 1))) ) {
 	    /* Unit found but is doing something else */
         } else {
             /* Unit found and IS convoying/airlifting this one! */
@@ -805,12 +813,8 @@ int movein(char **s, int p)
 
 					/*
 					 * Tim Miller: convoy rewrite.
-					 * I **think** the + 1 is necessary to avoid getting the 0 province.
-					 * We are protected from overflow since
-					 * NPROV is at most 200 and unsigned char
-					 * is guaranteed to hold from 0-255. 
 					 */
-					heap[hp++] = p2 + 1;
+					heap[hp++] = p2;
 
 					unit[i].loc = p2;
 					if (railway(p2)) railway_flag = 1;
@@ -1212,7 +1216,7 @@ static void DoMoves( void)
                         } else if (unit[u].order == 'm' && unit[u].convoy != NULL) {
                                 for (s = unit[u].convoy; *s; s++) {
 					if (NoValidConvoyingFleet(s, u)) {
-                                            if (pr[(*s) - 1].type != 'r') {
+                                            if (pr[*s].type != 'r') {
                                                 /* only disallow if not a railway unit involved */
                                                 result[u] = NO_CONVOY;
                                                 support[u] = supval(u) - 1;
@@ -1311,7 +1315,7 @@ static void DoMoves( void)
 					 * province table, so get the actual ordinal
 					 * of the convoying unit (cunit).
 					 */
-					int cunit = pr[(*s) - 1].unit; 
+					int cunit = pr[*s].unit; 
 
                                         if (cunit == u) {
                                                 for (u3 = 1; u3 <= nunit; u3++) {
@@ -1348,7 +1352,7 @@ static void DoMoves( void)
                          && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
 /* XII.5: You can't cut support of attacks against your convoy */
                                 for (s = unit[u].convoy; s != NULL && *s; s++)
-                                        if (unit[u2].unit == pr[(*s) - 1].unit)
+                                        if (unit[u2].unit == pr[*s].unit)
                                                 goto nextp2b;
                                 if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
 				    result[u2] = CUT;
@@ -1363,7 +1367,7 @@ static void DoMoves( void)
                                 continue;
                         if (unit[u].order == 'c' && result[u2 = unit[u].unit] == MAYBE_NO_CONVOY) {
                                 for (s = unit[u2].convoy; s != NULL && *s; s++) {
-                                        if (pr[(*s) - 1].unit == u) {
+                                        if (pr[*s].unit == u) {
                                                 for (u3 = 1; u3 <= nunit; u3++) {
                                                        if (unit[u3].owner <= 0)
                                                                 continue;
@@ -1430,7 +1434,7 @@ static void DoMoves( void)
                                  && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
 /* XII.5: You can't cut support of attacks against your convoy */
                                         for (s = unit[u].convoy; s != NULL && *s; s++)
-                                                if (unit[u2].unit == pr[(*s) - 1].unit)
+                                                if (unit[u2].unit == pr[*s].unit)
                                                         goto nextp2c;
 					if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
                                             result[u2] = CUT;
@@ -1946,14 +1950,13 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 					 * Tim Miller: convoy clean-up -- the convoy
 					 * list now has provinces, not units.
 					 */
-
 					while(*s) {
 						/*
 						 * unum holds the unit ordinal of the unit
 						 * in the province we convoy through, or 0
 						 * if no unit.
 						 */
-						int unum = pr[(*s) - 1].unit; 
+						int unum = pr[*s].unit; 
 
 						/*
 						 * If this game is not blind, we can warn
@@ -1967,7 +1970,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 								result[u] = BAD_CONVOY;
 							}
 						}
-						fprintf(rfp, " -> %s", pr[(*s) - 1].name);
+						fprintf(rfp, " -> %s", pr[*s].name);
 						s++;
 					}
 				}
@@ -2095,7 +2098,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
                                 fprintf(rfp, " (%s)", mtype[unit[u].coast]);
 		    if ((s = unit[u].convoy)) {
                         while (*s) {
-                            fprintf(rfp, " -> %s", pr[(*s) - 1].name);
+                            fprintf(rfp, " -> %s", pr[*s].name);
 			    s++;
                         }
                     }
