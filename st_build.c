@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.30  2004/06/27 01:50:22  millis
+   ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
+   ** and correct turns not processing, plus more information printed.
+   **
    ** Revision 1.29  2004/05/23 22:48:12  millis
    ** Fix for Intimate, show default disbands for controlled powers
    **
@@ -498,12 +502,12 @@ int buildin(char **s, int p)
 	    if (p == PowerControlledBy(p2))
 	        p = p2; /* Yes, so become that power */
 	}
-	if (order == 'x' && !(dipent.xflags & XF_ALTBUILD))
+	if (order == 'x' && !(dipent.xflags & XF_ANYDISBAND))
 		order = nu[p] >= 0 ? 'b' : 'r';
 
 	if (!(dipent.xflags & XF_ANYDISBAND))
-	if ((order == 'b' && (nu[p] <= 0  && !(dipent.xflags & XF_ALTBUILD) )) ||
-	    (order == 'w' && (nu[p] <= 0  && !(dipent.xflags & XF_ALTBUILD) )) ||
+	if ((order == 'b' && (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND) )) ||
+	    (order == 'w' && (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND) )) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
@@ -598,13 +602,13 @@ int buildin(char **s, int p)
 			pr[unit[u].loc].unit = 0;
 		} else {
 			nu[p]--;
-			if (dipent.xflags & XF_ALTBUILD) {
+			if (dipent.xflags & XF_ANYDISBAND) {
 			    if (nu[p] == 1) nu[p] = -2;
 			}
 			u = ++nunit;
 		}
 
-		if (dipent.xflags & XF_ALTBUILD) {
+		if (dipent.xflags & XF_ANYDISBAND) {
 		    /* A Dirty fix that seems to do the trick */
 		    if (!u ) {
 		        nu[p]--;
@@ -695,7 +699,7 @@ int buildin(char **s, int p)
 		    }
 		}
 		else {
-		    if (dipent.xflags & XF_ALTBUILD) {
+		    if (dipent.xflags & XF_ANYDISBAND) {
 		    nu[p]++;
 		    if (nu[p] == -1)
 		        nu[p] = 2;  /* Funny threshold, value always avoids +/-1 */
