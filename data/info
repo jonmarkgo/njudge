@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 January 20, 1993.
+Greetings from the Diplomacy* Adjudicator!!                 May 25, 2000
 
 To communicate with the Diplomacy Adjudicator you should send it a mail
 message in the following format:
@@ -99,7 +99,24 @@ supported nonstandard variants are:
     Crowded:     Eleven players occupy all 35 centers at game start.
     Machiavelli: Uses money to support units and/or bribe others' units.
     Fleet_Rome:  Italy starts with a fleet rather than an army in Rome.
+    Shift_right: 
+    shift_left:
+    Rootz:
+    Aberration:  A nine-player variant on a modified map.
+    Wraparound:
+    Chromatic:
+    Milan:       Italy is slightly redesigned and has a new home centre (Milan).
+    Asia:
+    Modern:      Based in modern Europe, with 11 powers.
+    Colonial:
+    H31:	A three-player variant
+    H32:	A slight variation on H31
+
     Gunboat:     The identities of the other players are kept secret.
+    Blind:	 The positions of the other players' units are hidden.
+    Wings:	 A third unit, the wing, can be used. 
+    Shorthand:	 A special type of code for sending press messages.
+
 
 Be sure to read the info file for these variants before signing on.  The
 Machiavelli variant is more complex than standard Diplomacy and has its
@@ -177,10 +194,6 @@ get a copy of this message and an alarm message will also be sent to
 the judge's administrator.
 
 Thank you for your cooperation.
-
-Orders and other commands for the automated server should be sent to
-"judge@morrolan.eff.org".  Question, comments and suggestions intended 
-for a human should be sent to "judge-request@morrolan.eff.org".
 
 -----
 
