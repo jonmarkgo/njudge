@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2003/05/10 00:46:15  millis
+ * Bug 140 fix, display 'orders' when orders and 'results' when results
+ *
  * Revision 1.5  2002/12/28 00:09:29  millis
  * Fixed bug 79, not showing special type on retreats
  *
@@ -180,7 +183,7 @@ void ma_retreatout(int pt)
 			if (unit[u].status == 'r') {
 				if (unit[u].order == 'm') {
 					if (unit[u].bloc && (u2 = pr[unit[u].bloc].unit) &&
-					    unit[u2].type == 'F' && !allies[unit[u2].owner][unit[u].owner]) {
+					    unit[u2].type == 'F' && !allies[unit[u2].owner][unit[u].owner] && unit[u2].status != 'r') {
 						unit[u].status = 'b';
 					} else if ((u2 = pr[unit[u].dest].unit)) {
 						if (unit[u2].status == 'r')
