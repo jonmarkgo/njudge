@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.5  2001/06/24 06:12:35  nzmb
+ * Added dipent variables (dedapplied, orded, rrded) for use in new dedication
+ * and deadline features.
+ *
  * Revision 1.4  2001/05/07 04:55:17  greg
  * added subjectline
  *
@@ -121,8 +125,7 @@
 #define XF_BLANKPRESS	0x800   /* Allow blank press to be sent             */
 #define XF_NOMINORPRESS 0x1000  /* Do not allow press in minor phases       */
 #define XF_MACH2	0x2000  /* Machiavelli Version 2		    */
-#define XF_MACH1        0x4000  /* Machiavelli Version 1 (original)         */
-#define XF_MACH3	(XF_MACH2 | XF_MACH1) /* Some to be defined variant */
+#define XF_STORMS       0x4000  /* Machiavelli storms (plauge for seas)     */
 #define XF_TRANS1       0x8000  /* Transform flags 1                        */
 #define XF_TRANS2      0x10000 /* Transform flag 2                          */
 #define XF_TRANS_MANYC  XF_TRANS1 /* Transform on any centre	            */
@@ -134,12 +137,21 @@
 #define XF_TRANS3     0x100000 /* Transform flag 3 */
 #define XF_TRANS4     0x200000 /* Transform flag 4 */
 #define XF_TRANS_BANYC XF_TRANS3 /* Build transform on any centre */
-#define XF_TRANS_BONEC XF_TRANS4 /* Build transform any if one hoem owned */
+#define XF_TRANS_BONEC XF_TRANS4 /* Build transform any if one home owned */
 #define XF_TRANS_BANYW (XF_TRANS3 | XF_TRANS4) /* Build transf. anywhere */
 #define XF_NORESUME	0x400000 /* Only master can resume game */
 #define XF_AUTODISBAND	0x800000 /* There is no retreats */
 #define XF_ANYDISBAND	0x1000000 /* Can disband any unit in a build phase */
 #define XF_NOATTACK_TRANS  0x2000000 /* An attacked unit fails transformations  */
+#define XF_COASTAL_CONVOYS  0x4000000 /* Convoys allowed by fleets on coasts */
+#define XF_PROV_DUALITY 0x8000000 /* Provinces can be both land and water  */
+
+/* Mach2 flags, currently combined into one flag, XF_MACH2 */
+#define XF_GCONVERT_ANYTIME     XF_MACH2  /* Can retreat to a garrison anytime */
+#define XF_NOLIFT_SIEGE         XF_MACH2  /* No need to use a 'lift siege' order*/
+#define XF_LIMIT_TYPES          XF_MACH2  /* Certain countries have unit limits */
+#define XF_NO_MIXED_CONTROL     XF_MACH2  /* Cannot own province if city is not empty */
+#define XF_CITY_ONLY_VICTORY    XF_MACH2  /* Only need to win cities for victory */
 
 typedef struct Sequence {
 	int clock;		/* Time of day for orders to be due             */
@@ -270,5 +282,6 @@ extern int vflg;		/* -v: verbose, issue all error messages        */
 extern int xflg;		/* -x: no incoming mail on stdin                */
 extern char *inname;		/* Filename to use for input			*/
 extern int control;
+extern int predict;		/* =1 when predicting a turn			*/
 
 #endif				/* _DIP_H */
