@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Extracted out judge-specific (i.e. site poliy) seetings to
+   ** defaults.inc
+   **
    ** Revision 1.1  1998/02/28 17:51:14  david
    ** Initial revision
    **
@@ -30,4 +34,7 @@
 #include "dip.h"
 #include "defaults.inc"
 
+#ifndef D_X2FLAGS
+#define D_X2FLAGS 0
+#endif
 #endif

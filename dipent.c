@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2003/06/20 00:21:02  millis
+ * Tried to fix it correctly!
+ *
  * Revision 1.17  2003/06/19 23:43:18  millis
  * Added a repeat test flag.
  *
@@ -440,7 +443,7 @@ void newdipent(char *name, int variant)
 	dipent.level = D_LEVEL;
 	dipent.flags = D_FLAGS;
 	dipent.xflags = D_XFLAGS;
-	dipent.x2flags = 0;
+	dipent.x2flags = D_X2FLAGS;
 	dipent.dedicate = D_DEDICATE;
 	dipent.variant = variant;
 	SETNP(variant);
