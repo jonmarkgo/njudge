@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/10/20 12:11:14  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.5.2.1  2001/10/20 00:52:49  dedo
  * Remvoe compile warnings
  *
@@ -72,9 +75,9 @@ int phase(char *s)
                 dipent.pr_valid++;
         }
 
-#ifdef notdef
+#ifdef notdef 
 	fprintf(log_fp, "Phase: Comparing %s and %s", dipent.phase, s);
-#endif				/* notdef */
+#endif 				/* notdef */
 	s1 = *dipent.phase == 'S' ? 0 : *dipent.phase == 'U' ? 1 : 2;
 	y1 = atoi((dipent.phase) + 1);
 	p1 = (i = dipent.phase[5]) == 'M' ? 1 : i == 'R' ? 2 : 3;
@@ -88,9 +91,9 @@ int phase(char *s)
 	} else if (i == 'F' || i == 'W') {
 		s2 = 2;
 	}
-	while (*t && !(*t == '1' || *t == '2'))
+	while (*t && !(isdigit(*t)))
 		t++;
-	if (!*t || (y2 = atoi(t)) < 1000 || y1 + 5 < y2)
+	if (!*t || ((y2 = atoi(t)) < 0 /*1000*/ || y1 + 5 < y2))
 		y2 = -1;
 
 	while (isdigit(*t))
