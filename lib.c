@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.7  2001/07/01 23:19:29  miller
+ * Add InformCustodians func
+ *
  * Revision 1.6  2001/06/24 05:35:03  nzmb
  * Reset dipent.dedapplied to 0 when new deadline is calculated.
  *
@@ -1083,7 +1086,7 @@ void InformCustodians( char *game_name, char *text, int variant, int is_gunboat)
            sprintf(line, text,
                 SMAIL_CMD, "dip.temp", "BNC", game_name, BN_CUSTODIAN);                   
    execute(line);
-   sprintf(guardian_string, "%s_CUSTODIAN", variants[variant]);
+   sprintf(guardian_string, "CUSTODIAN_%s", variants[variant]);
    variant_guardian = config(guardian_string);
 
    if (variant_guardian) {
