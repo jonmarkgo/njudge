@@ -1,4 +1,7 @@
-1.0.3-pre 
+1.0.3 (1st April 2002)
+Next release version with small bug-fixes 
+(25th March 2002)
+ - Fixed Machivalli bug for ownership in ma_porder.c
 (20th March 2002)
  - Corrected Classical to be a ONECENTRE game in variant.h
 (10th March 2002)
