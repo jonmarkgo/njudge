@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.24  2003/05/04 05:33:20  jaldhar
+# Rolled back to automake 1.6/autoconf 2.50
+#
 # Revision 1.23  2003/04/30 00:02:00  millis
 # Added use of dip.footer
 #
@@ -239,7 +242,7 @@ upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
 	@for i in ${dist_data_DATA}; \
-	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
+	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir); \
 	done;
 
 upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}

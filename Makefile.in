@@ -1170,7 +1170,7 @@ upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
 	@for i in ${dist_data_DATA}; \
-	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
+	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir); \
 	done;
 
 upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
