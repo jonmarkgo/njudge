@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.19  2002/05/11 09:15:32  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.18  2002/05/04 02:06:18  nzmb
  * Added code to display the time left until the deadline and grace at the
  * bottom of their reply whenever a player signs on.
@@ -2339,7 +2350,7 @@ void mail_reply(int err)
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, s);
 		}
 	}
-	if (*raddr != '*' && address_not_in_list(s, raddr) && !Dflg) {
+	if (*raddr != '*' && address_not_in_list(raddr,s) && !Dflg) {
 
 		/* TODO make the ./smail configurable */
 		/* done ;-) */
