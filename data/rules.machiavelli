@@ -230,14 +230,15 @@ Clarification of the effects of conversion:
      d) Converting into a province occupied by a lesser force
           1) if the lesser force is not besiegeing.
           2) if the lesser force is issuing its *first* besiege order. 
-          3) if being supported to constitute a larger force.
 
 2) Unsuccessful conversions
      a) Trying to garrison into a city *in rebellion*.
      b) Converting into a province attacked by an equal or superior force.
      c) Converting into a province occupied by an equal or superior force.
      d) Converting into a province occupied by a lesser force if the lesser 
-        force is issuing its *second* besiege order (unless 1d3 is valid).
+        force is issuing its *second* besiege order (but the besieged unit
+        may of course support another unit to enter the province and 
+        dislodge the besieger).
 
 Machiavelli 2 note: conversions are treated as attacks. Thus Points 1d2 and 
 2d above are not applicable and only the strengths of the units count. 
