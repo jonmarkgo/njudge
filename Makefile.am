@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.21  2003/03/29 17:55:20  christ
+# Added InstallationHOWTO.* in Makefike.*.
+#
 # Revision 1.20  2003/03/22 09:22:57  millis
 # Added plyrdata.c to ascii2rec sources
 #
@@ -203,6 +206,8 @@ dist_data_DATA=	data/*
 
 dist_doc_DATA=	docs/InstallationHOWTO.txt \
 		docs/InstallationHOWTO.html \
+		docs/VariantsHOWTO.txt \
+		docs/VariantsHOWTO.html \
 		docs/README.bailout \
 		docs/README.flags \
 		docs/README.flist \
