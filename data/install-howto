@@ -1,0 +1,1010 @@
+Install-HOWTO for the Diplomacy judge
+
+v.1.0.1.2
+
+Christophe Courtois ( christophe@courtois.cc )
+- 1.0.1.x : February 2002
+- 1.0.0.0-2 : January 2002
+- 0.8.9.2 : August 2001
+- 0.8.9 : July 2001
+- 0.0 - 0.8.7 : February/March 2001
+
+0. Last version
+
+This file deals with installing a clean standard version of njudge v 1.0.0.
+There are good chances it will work for following versions.
+
+Anyway, the last version of this file can be obtained:
+ - by sending a mail with 'get install-howto' in the body to
+alex@courtois.cc (permanent address)
+or alex@christophecourtois.org (real address)
+ - or (if my box is one more time down) by looking on the web
+at http://www.courtois.cc/alex/install-howto
+
+1. Introduction
+
+1.1 Why?
+
+Once upon a time, a young man decided to install a Diplomacy judge on
+his Linux box. He wanted to learn C, improve his Unix administration
+knowledge, code some new variants, and say to his friends on the mailing
+list 'Look! I have a judge!'.
+
+This is a story of stupid mistakes, problematic compilation, crashing
+code, lost mails, strange behaviour, and friendly help from the Friends
+Who Know (thanks Philippe and the other JKs!).
+
+As he wanted the others not to suffer as much as he did, as he wanted to
+contribute to the Diplomacy community, as he couldn't do anything else
+than writing documentation, he wrote the present Install-HOWTO.
+
+It is a compilation of what I have read in the READMEs, in the judge
+code, on the judge-maint mailing-list, in the mail from Philippe, of
+what I have learned myself by installing the judge thrice (0.8.6-FROG,
+0.8.7, 0.8.9, 1.0.0). I hope I haven't made any mistake... Comments, advice,
+corrections [including spelling and grammar, I'm not a native English
+speaker] are welcomed!
+
+This guide is focused on the installation on Linux, but should be okay
+for most Unices. If you know of some platform-specific installation
+problems, please ask me to add it there.
+
+1.2 Configuration
+
+The present HOWTO comes from my experience in installing the judge ALEX
+on my Linux box.
+
+Computer: Pentium 75
+OS:       Linux Debian 2.2 (potato)
+Judge:    njudge 1.0.0
+Compiled from the tar.gz source, then patched.
+
+2 Before compiling
+
+2.1 Material, learning and paperwork
+
+Before installing the judge there are a few things you need to do :
+
+ - Find a box (a 486 is enough, such a powerful machine didn't even
+exist when the first version of the judge was written), install Linux on
+it (any distribution is good-enough) or possibly an other flavour of Unix:
+all you need is a command line and basic common utilities; but the
+last versions of the judge are often running and maintained on Linux. In
+the past, many judges were running on SunOS or Irix.
+ There were some problems installing the judge on Solaris. It doesn't
+compile on MacOS X. It seems these problems should not resist to motivated
+people with experience.
+ There was some discussion on a Win32 port. Maybe is it possible to
+use Cygwin to run a judge.
+
+ - Connect it *permanently* on the Internet through modem, xDSL, T1, cable...
+(although a judge should perfectly work only for local users, or could
+work with an intermittent connection if the deadlines are long enough).
+
+ - Learn the basis of system administration (users, access rights,
+shell, basic commands, compiling).
+
+ - Begin to learn C. It is not necessary to install the judge (I'm
+currently learning it!), but it is to search efficiently for bugs or
+modify the source.
+
+ - Decide what you will do with that judge: experimentation? private for
+friends? candidate for the biggest running judge? just for fun?
+
+ - Decide what name you'll give to your judge. Theoretically, it should
+begin by the ISO code of the country it is in. FROG is in France, ALEX
+should have been in Albania, USEF is in the United States and so on.
+
+ - Not necessary for a private judge: Send a mail to Nicholas Fitzpatrick
+( nfitz@sentex.net ) to tell him that you want to open a judge
+and ask him to bless its name and add it in its list of judges
+( http://www.sentex.ca/~nfitz/judge.codes )
+
+ - If you want your judge to go more or less public and Nicholas is okay
+with the name, you can add it on the Dippouch Judge Registration Form
+to make it easier for people to register on your judge:
+http://devel.diplom.org/DipPouch/Email/registration.html.
+
+ - Subscribe to the judge-keepers mailing-list (send a mail to
+majordomo@diplom.org with 'help' in the body). It is actually a judge
+maintenance mailing list. The JKs just happen to all be there.
+
+
+2.2 Judge user
+
+ - Create an account for the judge on your box. The judge must have its
+own e-mail address. The name of the account may be anything as long as
+it does NOT contain a '-'. It is often judge@... You can create aliases
+to redirect judge@... on any other account. For ALEX, the user is 'alex'
+and 'judge' is redirected on it.
+ NB: To write to the judge from the Internet, you need a valid domain
+(like foo.com, toto.fr, bar.edu), which can be obtained only with a
+permanent IP. If the box has no permanent IP address (like most personal
+computers on xDSL or cable), it is possible to use dynamic DNS (for
+example dyndns.org) to have an address anybody on the net can write to.
+
+ - Log out and log yourself as the judge user.
+
+ - Verify that the commands rm, cat, date, echo, at, atrm are ready to
+use without any directory indication. They must be in directories of
+$PATH. If you use bash as often on Linux, you may need to modify .bashrc
+and/or .profile.
+
+ - As the judge uses the csh shell (and not bash as often on Linux), put
+in the .cshrc file in the home directory the line : setenv PATH
+/usr/bin:/usr/local/bin:/usr/bin/X11:/home/alex/dip:/home/alex:/bin:~:.
+
+
+2.3 Getting the source code
+
+ - Download the source of the judge from the net :
+   * http://www.njudge.org should indicate which is the last official
+judge version available.
+  A CVS snapshot is available too. It is a tarball generated every day
+from the CVS tree. It is the most current (and unstable!) judge.
+
+  Other sources where you can search in case of a problem on njudge.org:
+   * ftp.ugcs.caltech.edu/pub/diplomacy/Sources/ (official)
+   * ftp.diplom.org/pub/diplomacy/Sources/ (backup)
+
+ - An anonymous CVS access is not available. But you can browse the
+CVS tree through the links at the end of the page at http://www.njudge.org.
+
+ - The official judge is distributed as a source code tarball called
+njudge-1.X.Y.tar.gz, where X and Y change with time.
+.tar, .tar.bz2, .tar.Z files are also available.
+Please ignore njudge-0.8.X and dipsrc-9XXX files, they are out of date.
+There are some myths on a Debian package, which is outdated anyway.
+
+ - All the example hear deal with njudge-1.0.0.tar.gz.
+
+ - Create a directory and move the archive there
+
+  mkdir njudge-1.0.0
+  mv njudge-1.0.0.tar.gz njudge-1.0.0/
+
+ - Uncompress it in its directory:
+
+    cd njudge-1.0.0
+    tar xzvf njudge-1.0.0.tar.gz
+
+ All the files will be extracted in the njudge-1.0.0 directory.
+(NB: Following versions of the judge could extract files cleanly in a directory).
+
+Personally, I have created a 'source' symbolic link which points to the
+real source directory.  This is the SRCDIR of the configuration files.
+
+    cd ~
+    ln -s njudge-1.0.0 source
+
+ - Don't delete the tar.gz file, it will be a backup if the following
+modifications fail. Move it elsewhere, in ~/archives for example.
+
+ - Browse the files you have obtained. You can read the README.* or docs/README.*
+files now, even if you don't understand everything now. (Some of them are clearly
+out-of-date).
+
+ - Create a new directory in the judge's home for the compiled judge. It
+will contain binaries, judge configuration files, games, maps... The
+directory is often called 'dip'. This directory is called DESTDIR in the
+configuration files.
+
+ For ALEX :
+
+    mkdir /home/alex/dip
+
+ (This may be useless as the installation process should create the
+directory; but it can't hurt.)
+
+2.5 Permissions and configuration files
+
+ - The judge is an old program, and there is no clean ./configure to
+generate automagically the Makefile. You must modify it yourself and
+even sometimes patch the source code (although it doesn't seen necessary
+anymore since 0.8.7). Some configuration files must be modified. All of
+them are clean text files that you can edit with vi, emacs, nedit or
+whatever your favorite Unix editor is.
+
+ Go into the source directory and :
+
+ - Verify permissions and change them if necessary to be able
+to write to the files (necessary for 1.0.0!):
+
+  chmod -R u+w *
+
+ - Only the judge should be able to read its own files, suppress any
+other access for others:
+
+  chmod -R go= *
+
+ - dip.conf contains all parameters not hard-coded before compilation.
+
+ You must modify all needed variables, especially:
+   * JUDGE_CODE (code of the judge),
+   * SPECIAL_PW (password for the judge-keeper),
+   * OURSELVES (the Unix user name of the judge; it is used to
+avoid mail loops),
+   * GAMES_MASTER (your email address or an alias on it,
+NOT the judge address !!).
+
+ Default values for other parameters are usually okay. You may need to
+comment out some of them to change them.
+
+ Be careful with HALL_KEEPER, GAMES_OPENER and other mail variables, that
+must be commented out if you're not running a public stable judge with
+real games. Don't change variables like XFORWARD, KEEPOUT... if you
+don't know what you're really doing.
+
+2.5 The Makefile :
+
+ - You don't need to edit Makefile directly, only the configuration
+files Makefile.defines and Makefile.version.
+
+ - Copy Makefile.defines.base to Makefile.defines
+
+ - In Makefile.defines, modify DESTDIR to point to your compiled
+binaries directory, and SRCDIR to the source directory (the one where
+the Makefile is). INSTDIR is used when multiple judges are running with
+the same data. USER is the user name of the judge ('alex' for me,
+'judge' for others...).  Change JVERSION to the version number of your
+judge in case you have not the vanilla judge, or if you plan to modify
+it, and each time you recompile. LOGEDIT is your editor. CC is the
+compiler. Normally it must not be changed. Don't change the other
+options if you don't really know what you're doing. This is the
+beginning of my Makefile.defines for ALEX:
+
+USER=alex
+DESTDIR=/home/alex/dip
+SRCDIR=.
+INSTALLDIR=${DESTDIR}
+INCPATH=
+LOGEDIT= vi +
+CC=gcc
+
+ - HEAD and MAIL are the locations of the two programs mail and head.
+Please verify that they exist there (to quickly find a program called
+toto, enter 'whereis toto'). On my Debian, the default locations were
+wrong! Some symbolic links between the real location and the desired
+location can resolve the problem too.
+
+
+ - The following targets exist in the makefile, with their use
+(from Millis Miller, oct 2001):
+
+all:            Rebuild all programs
+dip:            Rebuild dip program
+cmap:           Rebuild cmap program
+summary:        Rebuild summary program
+bgreet:         Rebuild bgreet program (obsolete, used to send
+                "Happy birthday" to registered players)
+deddump:        Rebuild dedump program
+delgame:        Rebuild delgame program (to erase permanentely a game)
+flock:          Rebuild flock program (used for locking of dip.log)
+fmtwho:         Rebuild fmtwho program
+ign:            rebuild ign program
+pdip:           Rebuild pdip program (no longer used?)
+rdip:           Rebuild rdip program
+Datamake:       Rebuild the data files
+install:        build and install a judge (Note: this will DELETE
+                any existing judge data files, so do NOT use on an
+                existing judge installation)
+remap:          Force binary map files to be regenerated if required
+upgrade:        Rebuild all the programs and install them in correct
+                directory (used principally for updating a running
+                judge)
+flist:          Rebuild the help file "flist"
+dist:           Build an update distribution (calls tarZ, targz and tarbz2)
+tarZ:           Build a tar.Z file of judge files for updates
+targz:          Build a tar.gz file of judge files for updates
+tarbz2:         Build a tar.bz2 files of judge files for updates
+tar:            Build a tar file of judge files for updates
+loglink:        Links DESTDIR/data/log to SRCDIR/.log/log
+more:           Copy every useful file to one big file called "morefil"
+list:           Beatify all useful files to one big file called "listing"
+clean:          Remove all output files
+lclint:         Run "lclint" on all source files
+lint:           Run "lint" on all source files
+depend:         Update Makefile itself automatically for source dependcies.
+
+2.6 smail script
+
+'smail' is the script which builds the messages and sends them.
+
+ - You MUST change the FROM line: replace teste_judge by the REAL name
+of your computer. The real address of ALEX id alex@christophecourtois.org,
+so for example :
+
+ setenv FROM christophecourtois.org
+
+ - The judge uses dip.msg as as a header for all messages.
+If you want to use a footer, you will have to create a file named
+dip.footer, and add it in the parameters of cat on the 10th line :
+
+ cat dip.msg $1 dip.footer
+
+ - As many mail senders exist, the script may have to be changed.
+
+ - I've copied there two versions:
+
+This is my smail on ALEX (seems to work okay with exim as a mail
+sender; contains only above modifications):
+
+#!/bin/csh
+# /bin/sh  (Note: /bin/sh fails to work if N files are open)
+#
+#  Invoked as smail file subject address
+#
+setenv FROM christophecourtois.org
+date >>mail.log
+echo "===== mail sent to $3/$2" >>mail.log
+/bin/head -10 $1 >>mail.log
+cat dip.msg $1 dip.footer > dip.reply1
+/bin/mail -s "$2" <dip.reply1 $3
+rm -f dip.reply1
+rm -f dip.xfail
+
+ Greg Greenman had some problem on USTX with the mails headers with
+sendmail. This is his smail script which solves the problems:
+
+     #!/bin/csh
+     # /bin/sh  (Note: /bin/sh fails to work if N files are open)
+     #
+     #  Invoked as smail file subject address
+     #
+     # parameters
+     # $1 - name of the file containing the message body
+     # $2 - subject
+     # $3 - e-mail address
+     date >>mail.log
+     echo "===== mail sent to $3/$2" >>mail.log
+     /usr/bin/head -10 $1 >>mail.log
+     cat > /tmp/dip.reply << _EOF_
+     Subject: $2
+     From: USTX Diplomacy Judge <judge@spencersoft.com>
+     To: $3
+
+      _EOF_
+      cat dip.msg $1 dip.footer >> /tmp/dip.reply
+      /usr/sbin/sendmail -f judge@spencersoft.com </tmp/dip.reply $3
+     rm -f /tmp/dip.reply
+     rm -f dip.xfail
+
+2.7 sendmail problems
+
+ Some people had problems with some sendmail configuration (especially
+with Red hat Linux). If you use smrsh, place a symbolic link to rdip
+in the /etc/smrsh/ dir. Also make sure only the owner has write
+permission to the .forward file.
+
+ (Briefly, smrsh limits programs to be in  a  single  directory,
+by  default  /usr/lib/sendmail.d/bin/  allowing the system administrator
+to choose the set of acceptable commands)
+
+2.8 atrun script
+
+ 'atrun' is responsible for putting the 'diprun' script in the 'at'
+queue. 'at' is a system command to schedule launch of programs. 'diprun'
+will itself launch the 'rdip' program.
+
+ NB: If you schedule any jobs as the judge user using at, they will
+be deleted the next time that the Judge receives an e-mail.
+
+ There are three version for Solaris, Linux (see below) and MIPS. Activate
+the version which suits your system.
+
+ A problem is that some Linux version of atq (3.1.8 on ALEX,
+rather old (Debian 2.2)) doesn't tell you the command  which each entry
+will run at the given time, so there is no way to delete the rdip entry
+but not the dipclean entry. So the way to get around this in some
+Linux system, is to put one on one queue, and one on another queue,
+and then search  by queue. This is the script working on ALEX:
+
+     #! /bin/csh
+     #
+     #  Invoked as: atrun norm time month day
+     #          or: atrun dorm time month day
+     #
+     if ("$1" == "dorm") then
+       atrm `atq | awk '{print $1}'` >& /dev/null
+     endif
+
+     at -q b -f diprun $2 $3 $4
+     rm -f dip.xfail
+
+2.9 defaults.inc: changing default paramters
+
+ - Only if you want to change default parameters of games:
+copy defaults.inc.base as defaults.inc, check in this new file that
+you don't want to change anything (these are judge default parameters
+that can't be change without recompiling the judge).
+ If you don't create a custom defaults.inc, the compilation process will
+do it for you.
+
+
+2.10 Patches
+
+ No known last-minute patch to add to the official 1.0.0 version. (Stable
+version are not so much fun anymore ;-)
+
+
+
+
+3. Compiling
+
+ - It should be easy and painless. Enter on the command line:
+
+        make clean
+        make all
+        make install  #(new judge only !!)
+
+  The last line copies everything that the judge needs into the DESTDIR
+directory. On a running judge, use 'make upgrade' (see below).
+
+ - Following warnings must not scare you. Just ignore them:
+
+(this one may already have disappeared in 1.0.0)
+po_get.c: In function `get_amount':
+po_get.c:150: warning: overflow in implicit constant conversion
+
+(this one happens when INSTDIR and DESTDIR are the same; they can
+be translated in your computer's default language)
+Makefile:241: warning: overriding commands for target
+`/home/alex/dip/data'
+Makefile:235: warning: ignoring old commands for target
+`/home/alex/dip/data'
+Makefile:244: warning: overriding commands for target `/home/alex/dip'
+Makefile:224: warning: ignoring old commands for target `/home/alex/dip'
+
+ - Total compilation time: it depends of your CPU, of course. On my old
+P75 with 24 Mb memory, it lasts less than 5 minutes.
+
+ - Compilation ends with a message telling you to modify dip.conf
+and other files, and to activate the judge by renaming forward as .forward.
+
+4. Post-compiling
+
+4.1 dip.* files
+
+ - Go to the dip directory
+
+ - Verify the existence of the following files. If they are not there,
+create them using the 'touch' command. They contain the games data:
+        - dip.master (should already exist with a game named 'control' ;
+you may log into the game and edit dip.master to promote yourself as
+master, in order to receive some administrative mail from the judge)
+        - dip.whois
+        - dip.addr
+
+ - Create or fill in the following files:
+        - dip.msg : each message sent by the judge to players begins
+with the content of this file. Put welcome messages there, address of
+the judge keeper... May be empty.
+        - dip.footer : each message ends by the content of this file
+(optional, see 'smail' script above). May be empty.
+        - ALLOW.map (if you want to allow use of the map command to
+produce .ps maps of a game)
+        - ALLOW.map-star (if you want to allow use of the 'map *'
+command to produce .ps maps of a game based on a LIST output).  [Do
+these options really work nowadays?]
+
+4.2 dipclean
+
+ - Open the 'dipclean' script and change any path that doesn't match
+your system (especially the first line).
+
+ - It is now uselless to run it for a first install.
+
+4.3 .forward
+
+ In the home directory of the judge, a file '.forward' must be created.
+It is normally enough to rename the 'forward' file (no leading point) in
+the home directory. It will redirect automagically all the incoming mails
+to the judge program. It must contain one line (there is no leading space
+and a comma at the beginning). For example:
+
+        ,"| /home/alex/dip/rdip -b -d /home/alex/dip "
+
+ (for a judge in /home/alex, with binaries in /home/alex/dip ; change it
+according to your needs, but the Makefile normally makes it for you).
+
+ Some judges (FROG for example) don't use this file and call procmail
+to make some processing instead of or before lauching the judge program
+(mainly logging).
+
+4.4 dip.control date problems
+
+ The dip.control file is generated from the Makefile, and according
+to the configuration of your system, it can be faulty. Check that:
+ - it does not contain AM or PM
+ - that months are Jan, Feb, Mar, Apr, May, Jul, Aug, Sep, Oct, Noc, Dec,
+and nothing else (see source file jm.c). If your computer is not
+English-speaking, and does not put a capital at the beginning, it will
+bail out.
+
+ This is for example a valid file:
+
+control   001       S1801MX   1 1 1 0 2 18 7
+Process    Mon Jan 06 14:05:45 2003
+Start      Sun Jan 06 14:05:45 2002
+
+
+4.5 Ready ?
+
+ At this point, the judge should be ready to run.
+
+
+5. What are these files?
+
+5.1 Binaries
+
+ - rdip : Its purpose is to read in mail and copy it to a file
+for later processing, it is invoked by incoming mail.
+
+ - dip  : Main file. Invoked by rdip.
+
+ - pdip : Reads a mail file and pass each message to dip. Used when the
+judge has bailed out and mail has stacked up in the spool queue.
+
+ - flock : It must be used when you modify more or less anything in the
+dip directory. Lock the judge by entering 'flock dip.log'. It will
+remind you every 5 minutes on your console that the judge is locked.
+To unlock the judge, just execute 'flock'.
+
+ - bgreet : Seems to be a program to find the anniversary of players
+[Not in use anymore on most judges; I'm not even sure it still works.]
+
+ - deddump : Dump/load the binary dedication file to/from a text file.
+
+ - delgame : Used to delete a game (even an active game!)
+
+ - ign : Used to process bounced mail. See README.ignore.
+
+ - fmtwho : Used for the maintenance of the user base.
+See README.fixids
+
+ - cmap : Responsible for generation of compiled map files from
+textual map files.
+
+ - summary : Creates the summary of a game.
+
+5.2 Shell scripts
+
+ - diprun : This is the script which is called by 'at' and launches rdip
+
+ - dipclean : This is a csh script that cleans old log files. It
+will put itself onto the at queue for subsequent runs on Saturdays at
+2pm. This script relies on the flock program. Launch it once after the
+installation.
+
+ - smail : Shell script which creates and launch the mails to the
+players. See above.
+
+ - atrun : Shell script which puts the judge in the 'at' queue to awaken
+it when needed. (NB : If you put a deadline in the very near future
+(less than one hour for example), don't expect the judge to awaken exactly
+at this time. You can check the next time the judge will wake up by
+looking the at queue with the command 'atq').
+
+ - newlogs : Shell scripts which compress old dip.log, dip.rlog,
+mail.log files into compressed *.Z files. (You can use 'uncompress'
+to extract them).
+
+5.3 Parameter and data files
+
+(See content for more information)
+
+ - dip.conf : All parameters on the judge which can be changed
+without recompiling the judge.
+
+ - dip.master : It contains all the information on the games:
+parameters, players...
+
+ - dip.whois :  This is a database containing the registration
+information for the people who have registered with the adjudicator.
+
+ - dip.addr : This file associates a user number and siteid with an
+email address and vice versa. Each user may have multiple email
+addresses.
+
+ - dip.msg, dip.footer : Messages at the end and at the beginning of
+each mail sent by the judge. Verify that they are used in smail.
+
+ - dip.nocreate :  If you add this file, game creation is disabled.
+When someone tries to create a game, the content of this file is sent
+back to them, so please put there the reason why game creation is not
+allowed.
+
+ - dip.ded : binary file where dedication are stored.
+
+ - dip.dedicate (binary dedication database)
+
+5.4 Maps and 'data' directory
+
+ - map.n         : Compiled data files, one for each variant.
+ - map.<variant_name> : Real map source files
+ - data/info     : Help file sent to players
+ - data/seed.n   : Initial position of units on the map
+ - data/report.n : Initial position report in a game. (You can put
+any other information, text or joke there!!)
+ - data/*        : Other files that can get by the players by
+the 'get' command (help files...)
+
+5.5 Games
+
+ - Dxxx/ : All the data of the game xxx is stored in this
+directory.
+
+ - Dxxx/Gnnn : File for turn nnn of the game xxx.
+
+ - Dxxx/Mnnn : This is the current set of moves for game xxx. Only the
+highest numbered file is necessary unless you have a rollback. The
+dipclean script will remove movement files that have not been accessed
+for more than 90 days.
+
+ - Dxxx/Pnnn : The P files contain the pending orders for a particular
+turn. Only the highest numbered file is necessary. Most of these files
+will be zero length because people don't usually send their orders in
+ahead of time.
+
+ - Dxxx/Tnnn : These files are temporary files that can be cleaned up
+if they are found left lying around. The dipclean script will get rid of
+them eventually.
+
+ - Dxxx/archive : This is the archive of broadcasts and game information
+that an observer would see for any given game.  This information can be
+retrieved with the the HISTORY command.
+
+ - Dxxx/info : Information about the game, which can be set with the SET
+COMMENT command. This information is shown in the summary, and in the
+full list.
+
+ - Dxxx/summary : The summary, as seen by a player in the game.
+
+ - Dxxx/msummary : The summary, as seen by a master of the game.
+
+ - Dxxx/start : The date and time when the game started (the point when
+the countries were assigned). This is used in the summary.
+
+ - Dxxx/draw : Contains the date and time when the game ended, and the
+result. This is used in the summary. If this file has been created, it
+will be deleted if another turn processes.
+
+5.6 Log files
+
+ - install.log : Logs all variant map files compiled with cmap.
+
+ - dip.log : This is an interlock file that keeps two dips from running
+at the same time. In addition, all received mail is written to this file
+to allow reconstruction should some drastic event occur.  The dipclean
+script will move this file to dip.log.0 once per week to keep it from
+getting out of hand. Before editing dip.master or any of the other
+databases that the adjudicator maintains you should lock this file to
+shut it out. The flock program can be used to do this interlocking. This
+is the first place to go and look when a problem occurs. This file can
+become huge!
+
+ - dip.rlog : Logs the activity of rdip.
+
+ - mail.log : This logs all the mails sent by the judge.
+
+ - dip.ignore : Bounce mail is written to this file. See README.ignore.
+
+ - dip.log.xxx.Z : Compressed archives of the same files.
+
+ - stats : Statistics directory (if enabled by STATS_FLAG=1 in
+dip.conf). See README.statitics
+
+5.7 Temporary files
+
+ - dip.incoming : File containing the last mail received or processed.
+ - dip.lock1, dip.lock2 : Used internally by flock.
+ - dip.broadcast.xxxx
+ - dip.mbroadcast.xxxx
+ - dip.control
+ - dip.xcontrol
+ - dip.xfail: If it exists, the judge bails out (used to check 
+if smail works.)
+ - dip.tmast: temporay backup file of dip.master.
+ - dip.reply
+ - dip.result
+ - dip.temp   : Used for mail construction.
+
+5.8 Files created or left behind by a crashed judge:
+
+ - zforward : See README.bailout. After a judge crash, .forward is
+renamed to zforward, and the judge won't accept to run.
+
+5.9 Other files
+
+ - xforward : When healing a dead judge, zforward must be renamed to
+xforward. See README.bailout.
+
+ - text.ded (generated by deddump), recdump, plyrdata, text.rc :
+(From Tim Miller:) My recdump program (for viewing the new plyrdata records)
+creates a file called text.rec, which is similar (recdump also allows
+the JK to modify the binary plyrdata file, but that's covered in the
+README.plyrdata I put in with my changes).
+
+ - /var/spool/mail/<user_name> : System spool file where the mail for
+the judge is stacked when the .forward file is not there. (The exact
+path may change according to your system and distribution).
+
+6. Testing the judge, first game
+
+6.1 Manual basic testing
+
+ - If you have configured everything, the judge should be able to
+answer. If nay of the following tests fails, see 'Troubleshooting',
+and check that everything above is OK.
+
+ - From your normal account, with any mail agent you want, send him
+a mail with only 'version' in the body. It should answer very quickly
+(if the machine is not overloaded and if there is no network problem)
+with its version number (probably 1.0.0 if you are dealing with the
+standard judge).
+
+ - Ask him the help files : 'get package', 'get index' , 'get info'
+
+ - Register as a new player. In case you had forgotten the syntax :
+
+REGISTER
+Name: Maréchal Joffre
+Country:France
+Site:Verdun
+Email:joffre@armee_francaise.mil.fr
+Age: 142
+Phone:0123456789
+END
+
+ - Then, verify in dip.addr and dip.whois that
+you are registered.
+
+ - Create a new game. Take a script for a standard game (let's call it
+'test'), and send him. For example :
+
+create ?test password standard
+set list
+set dedication -666
+set access anysite
+set level any
+set comment FIRST GAME !!!!!!
+set press white/grey
+set partial
+set observer no
+set all press
+set rated
+set noreveal
+set DIAS
+set NONMR
+set move delay 0.01
+set adjust delay 0
+set retreat delay 0
+
+  Don't set it 'private' or 'nolist'. Don't become master now
+(NB: Some judges (FROG) automatically promote you as the master of the
+game, see parameter AUTO_MASTER above), or use another e-mail account.
+
+ - Send another message to the judge : 'list'. Then 'list full'. Then
+'list test'. The judge should answer you and give you the game
+parameters.
+
+ - Now the funny part : send:
+
+  signon ?test password
+  set players 1
+
+ As you're the only player, and not the master, the game should begin
+at this moment. You can enter orders the way you want, you are all
+players at the same time ! You will receive a lot of mail saying
+that the game is starting.
+
+ - You don't need to be the master. You can always act as a master
+in the game by sending mail as the judge keeper :
+ signon @test SPECIAL_PW  (where SPECIAL_PW is the one defined in dip.conf)
+
+ - Check press (grey, white...) by sending mail between powers.
+
+ - Now let's test the deadline system : send a deadline in a few
+minutes, check that the grace date is postponed, and wait for the
+players to fall late or abandon. You can always raise your dedication
+back with 'adjust <user_id> <increase>' later (anyway, JKs are not
+supposed to play real games on their own judge :-)
+
+ - Move everything, make convoys (now, you can freely make a Lvn-Syr
+convoy :-). Try phase orders. Try the proxys.
+
+ - Check that dedication evolves when you give orders.
+
+ - Verify that 'process' and 'rollback' do function. If you want
+the game to finish normally and quickly, change the parameters to
+NoDIAS, make a quick draw.
+
+ - Check variants too! A h32 (Hundred) could be quicker to check the
+full commands than a standard.
+
+6.2 Automatic judge tester
+
+Max Loewenthal wants to make an automatic judge tester. It is still in
+development. You can check the status of the project in the web:
+http://www.xs4all.nl/~zapata/diplomacy/JudgeTester.html
+
+
+7. Troubleshooting
+
+These are some problems and solutions:
+
+ - Nothings happen when sending something to the judge and in dip.log,
+the judge complains he didn't find rm, date, echo... and other commands:
+This is a PATH problem. Be careful : The script juges csh as a
+shell, and not bash as often. Check '.cshrc' in the home directory.
+Check that mail and head are in the locations defined in
+Makefile.defines (to avoid a reinstallation, add symbolic links).
+
+ - Judges makes a bailout: The judge can send to the judgekeeper a
+message saying 'Bailout executed'. It means that the judge died. It has
+crashed. .forward was renamed to zforward. To solve the problem without
+losing some mails, you must follow the instructions in README.bailout.
+
+ - The judge complains that 'dip.input' exists : you didn't clean this
+file after a previous crash. See README.bailout if you don't want to
+lose what it contains.
+
+ - The judge crashes at the first time, in dipent.c: Check that the dip.master
+file was not generated with a bad format in dip.control (see 4.4).
+
+ - The judge crashes when you try a new variant : look in install.log
+what variants are installed. Check that all files (source and compiled)
+are there.
+
+ - For other problems, read all the log files, the answer must be there.
+dip.log contains what came to the judge and the actions it tried to to,
+mail.log contains all mails sent. At the very beginning, you have to
+check the existence of all files (including dip.master, dip.whois...)
+And don't forget to read README.bailout.
+
+
+8. Other customization
+
+ - You can change the text in dip.msg and dip.footer anyway you want,
+these are just files added at the beginning or the end of mails sent by
+the judge.
+
+ - The report.* files in ~/dip/data are the beginning positions sent to
+the judge when a game begins. They're just text and you can change
+whatever you want there and add silly comments. (Be careful not to
+break software like Dipchief or web observers...)
+
+9. Backup
+
+ As far as I know and have experimented, the easiest way to backup the
+judge is to make a big archive of it and put it anywhere else where it
+is safe. Usually the judge doesn't use any file outside its home
+directory. For example :
+
+  tar czvf /backup-directory/judge-archive.tgz /home/alex/*
+
+ You can copy it uncompressed on another drive (this example copies
+only newer files):
+
+ cp -upR /home/alex/* /backup-directory/
+
+ Anyway, the backup must be made as often as possible (put in your
+crontab).
+
+
+10. Upgrading and patching a judge
+
+10.1 Locking the judge
+
+ - Let's suppose that you want to modify the source code of the judge
+with a patch found on judge-maint. (This example suppose that you have a
+symlink 'source' pointing to the real 1.0.0 tree).
+
+ - Lock the judge: enter 'flock dip.log' in the 'dip' directory.
+
+10.2 Archiving
+
+ - Copy the 'dip' directory and archive it. For example:
+        cp -R dip dip.backup
+
+ - Create a new source directory to be sure
+        cp -R njudge-1.0.0 njudge-1.0.0-patch1
+
+ - Make the 'source' symlink to point to the new directory.
+        rm source
+        ln -s /home/alex/njudge-1.0.0-patch1 source
+
+10.3 Makefile variables
+
+ - IMPORTANT :Go in the source directory and modify the JVERSION
+variable in Makefile.version
+
+ For example:         JVERSION=v1.0.0-john_patches
+
+ You don't have to do it if you downloaded the Makefile.version from
+an 'official' source (for example the daily CVS tarball).
+ This variable indicates the version of the judge. You must modify it
+if you have changed the source code, and only if you have changed it.
+It is used by the 'version' command (through mail).
+ It is useful for others to know precisely what your
+judge can do, which known bugs he has and so on. For example,
+http://gem.win.co.nz/judge/judgevers.html contains versions of
+public running judges.
+
+ - The SRCDIR variable must only be changed if you don't use a
+symlink.
+
+10.4 Patching or upgrading source code
+
+ - Modify the .c code, or apply a patch (this way for example:
+patch summary.c patch-bug160701 ), or download the last CVS version
+if you have an account on devel.diplom.org.
+
+ - Or download a whole new source code tarball in a *new* source directory,
+copy the defaults.inc from your current judge into the new source directory,
+and compile from there. Don't forget to read the install-howto of this
+new version to be sure that the important configuration files to move across
+both versions are the same (judge mainteners try to do it).
+ - dip.conf is the configuration file, stored in the judge directory,
+and will not be overwritten. Please check that the new version doesn't contain
+new parameters.
+
+ - Add any new file that the judge would need (variants...).
+ Be very careful of including files of the form foo.[0-9x] in the data
+directory. The tools that maintain the flist handle them in a different
+way, which can produce some really weird results.
+
+10.5 Recompiling and installation
+
+ - Recompile and reinstall:
+        make clean
+        make all
+        make upgrade
+
+(NB: if you make a mistake and type 'make install', it will fail but
+you won't break anything. It was not the case before 0.8.10 :-)
+
+10.6 Relaunching the judge
+
+ - Run 'dipclean' (especially after upgrading)
+
+ - Go into the 'dip' directory, unlock the judge ('flock') and
+test it!
+
+11.Misc
+
+11.1 The author
+
+ The author is 27 years old, writes SQL all day long for big
+corporations to eat, and is trying to learn C and PHP (The most difficult
+part is to find some time for it...)
+
+ Many parts of this Howto are cut-and-pasted from README files, from
+source code, from mails of the judge-maint mailing list.
+
+11.2 Thanks
+
+ Thanks to Philippe Lalande, JK of Frog, who was soooooo patient with
+all my questions on the judge, and the members of the judge-maint
+mailing-list.
+
+11.3 Copyright and boring stuff:
+
+ Permission is granted to make and distribute copies of this text
+provided the copyright notice and this permission notice are preserved
+on all copies.
+ Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+derived work is distributed under the terms of a permission notice
+identical to this one. Translations fall under the category of
+"modified versions".
+ Warranty: None. Nothing. Nada. Rien. Que dalle. Nitchevo. Nichts. Do
+everything at your own risk. Remember this is a sum-up of a non-native
+English speaker on a subject he recently discovered.
+ Redistribution is allowed and encouraged; however, it is strongly
+recommended that the redistributor contact the author before the
+redistribution, in the interest of keeping things up-to-date (you could
+send me a copy of the thing you're making while you're at it).
+ Translators are also advised to contact the author before translating
+(no translation known for the moment).
+
