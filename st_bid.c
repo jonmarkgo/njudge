@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.2  2004/06/05 09:00:30  millis
+   ** Bug 297 : problems with calculating effective bids fixed
+   **
    ** Revision 1.1  2004/05/22 08:50:14  millis
    ** Bug 297: Add Intimate Diplomacy
    **
@@ -316,13 +319,16 @@ void bidout(int pt)
 
                 for (i = 0; i < dipent.n; i++) {
                     if (dipent.players[i].power == p1 &&
-                        dipent.players[i].controlling_power != 0 && 
-			bids[p][p1] > 0) {
+                        (dipent.players[i].controlling_power != 0 || (dipent.x2flags & X2F_SECRET))&& 
+			bids[p][p1] >= 0) {
 
 	                fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
 			    putc(' ', rfp);
-		        fprintf(rfp, "Bid for control of %s is %d.",
+			if (bids[p][p1] == 0 && !predict && !processing)
+		             fprintf(rfp, "No bid made for %s.",  powers[p1]);
+			else 
+			    fprintf(rfp, "Bid for control of %s is %d.",
 		                powers[p1], bids[p][p1]);
 
 			if (processing || predict) {
@@ -342,7 +348,11 @@ void bidout(int pt)
             fprintf(rfp, "%s: ", powers[p]);
             for (i = strlen(powers[p]); i < LPOWER; i++)
                  putc(' ', rfp);
-            fprintf(rfp,"Bid total = %d.", bid_total);
+            fprintf(rfp,"Bid total = %d", bid_total);
+	    if (!processing && !predict)
+	        fprintf(rfp, " from treasury of %d.\n", ducats[p].treasury);
+	    else
+		fprintf(rfp, ".\n");
 	    if (bid_total > ducats[p].treasury && p == pt) 
 	        fprintf(rfp, " (*Warning: Bids exceed treasury total*)");
 	    fprintf(rfp,"\n\n");

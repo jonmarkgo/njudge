@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.8  2003/08/10 00:57:39  millis
+   ** Fix bug 214
+   **
    ** Revision 1.7  2003/05/10 00:46:15  millis
    ** Bug 140 fix, display 'orders' when orders and 'results' when results
    **
@@ -146,7 +149,8 @@ int retreatin(char **s, int pt)
 	}
 	for (u = 1; u <= nunit; u++)
 		if (unit[u].loc == p1 && (unit[u].owner == pt ||
-				(unit[u].status == 'r' && pt == MASTER)))
+		    (dipent.flags & F_INTIMATE && (unit[u].controller == pt))
+				|| (unit[u].status == 'r' && pt == MASTER)))
 			break;
 
 	if (u > nunit) {
@@ -261,7 +265,7 @@ void retreatout(int pt)
 		    u_value = (unit[u].dcoast == HX || unit[u].dcoast == LX)
 				 ? 0.5 : 1;
 		    u2_value =  (unit[u2].dcoast == HX || unit[u2].dcoast == LX) 
-                                 ? 0.5 : 1;
+			    ? 0.5 : 1;
 		    if (u_value > u2_value) 
 			unit[u].status = 'r';  /* cancel bounce */
 		    else if (u2_value > u_value)
@@ -290,7 +294,8 @@ void retreatout(int pt)
 	for (u = 1; u <= nunit; u++) {
 		if (unit[u].status != ':' &&
 		    !gateway(unit[u].loc) && !railway(unit[u].loc) &&
-		    (pt == (p = unit[u].owner) || pt == MASTER || processing)) {
+		    (pt == (p = unit[u].owner) || pt == MASTER || processing ||
+		     (dipent.flags & F_INTIMATE && (unit[u].controller == pt)))) {
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
 				putc(' ', rfp);

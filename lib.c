@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.24  2004/05/22 09:20:20  millis
+	 * Bug 297: Add Intimate Diplomacy
+	 *
 	 * Revision 1.23  2004/05/13 00:17:19  millis
 	 * Don't send emails to NOBODY (Bug 306)
 	 *
@@ -1489,8 +1492,8 @@ void MailOut(char *out_line, char *address)
    char *ptr;
    static char lline[256];
 
-   while ( ptr = GetAddressPart(count++, address)) {
-        if (*ptr != '*' && !strcmp(NOBODY, ptr)) {
+   while ( (ptr = GetAddressPart(count++, address))) {
+        if (*ptr != '*' && 0 != strcmp(NOBODY, ptr)) {
            sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
            execute(lline);
 	}
@@ -1535,3 +1538,35 @@ void PrintTwoColTable( char * title, char *power_col, char *other_col ) {
 
 }
 
+/* Add a player address to the ban list */
+void AutoBanPlayer(char *gname, char *addr)
+{
+
+   FILE *ban_fptr;
+   char *ptr;
+   int count = 0;
+   time_t now;
+   static char last_game[sizeof(dipent.name)] = {'\0'};
+
+   ban_fptr = fopen( "players.DENY", "a");
+
+   if (ban_fptr == (FILE *) NULL) 
+	bailout(E_FATAL);
+
+   if (!strcmp(last_game, gname)) {
+	strcpy(last_game, gname);
+	time(&now);
+	fprintf(ban_fptr, 
+	        "\n#Autoban added player from game %s on %s", 
+	        gname, 
+		ctime(&now));
+   }
+
+   while ( (ptr = GetAddressPart(count++, addr))) {
+        if (*ptr != '*' && !strcmp(NOBODY, ptr)) {
+           fprintf(ban_fptr, "=%s", ptr);
+        }
+   }
+
+   fclose(ban_fptr);
+}

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.11  2004/05/22 08:56:53  millis
+   ** Bug 297: Add Intimate Diplomacy
+   **
    ** Revision 1.10  2003/07/28 14:23:09  millis
    ** Fix bug 205
    **
@@ -284,6 +287,12 @@ void mail_listit(void)
 			    && (!signedon || dipent.players[player].power != MASTER)
 			    && ((signedon && player != i)
 			|| strcasecmp(raddr, dipent.players[i].address)))
+				if (dipent.flags & F_INTIMATE && dipent.players[i].controlling_power !=0 && !(dipent.x2flags & X2F_SECRET)) {
+				 sprintf(line, "%s\n", line);
+				} else if (IS_DUPLEX(dipent) && !(dipent.x2flags & X2F_SECRET)) {
+				    /* TODO, work out how to show player's numeral index */
+				    sprintf(line, "%s %s\n", line, someone);
+				} else
 				sprintf(line, "%s %s\n", line, someone);
 /*				fprintf(rfp, " %s\n", someone); */
 			else
