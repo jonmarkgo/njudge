@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2002/08/27 23:56:09  millis
+ * Added better victory display (fixing Mach victory bug)
+ *
  * Revision 1.26  2002/08/27 22:27:49  millis
  * Updated for automake/autoconf functionality
  *
@@ -824,7 +827,7 @@ void CheckRemindPlayer(int player, long one_quarter)
 /***********************************************************************/
 int process(void)
 {
-	int i, n, v;
+	int i, n;
 /*	int latecnt = 0;*/
 	int dedtest; /* Buffer variable for dipent.dedapplied. */
 	time_t now, then;
