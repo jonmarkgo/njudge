@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.22  2002/04/12 18:20:50  miller
+# Fixed small error
+#
 # Revision 1.21  2002/04/12 12:10:01  miller
 # Added blind and check executables, removed bgreet
 #
@@ -196,7 +199,7 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	 ${INSTALLDIR}/diprun ${INSTALLDIR}/smail ${INSTALLDIR}/dipclean ${INSTALLDIR}/atrun \
 	 ${INSTALLDIR}/rundipmap ${INSTALLDIR}/runlistmap ${INSTALLDIR}/newlogs cmap \
 	 summary deddump delgame flock fmtwho ign pdip rdip recdump magic \
-	 defaults.inc ascii_to_ded ded_to_ascii zpblind
+	 size_check defaults.inc ascii_to_ded ded_to_ascii zpblind
 	@if [ -f ${INSTALLDIR}/dip.master ]; then \
 	    echo; echo "Error: ${INSTALLDIR}/dip.master exists." ;echo; \
 	    echo "Cannot install over existing judge."; \
@@ -278,7 +281,7 @@ remap: cmap
 
 upgrade: Datamake dip diprun dipclean rundipmap runlistmap fmtwho \
 	 remap pdip rdip summary deddump recdump delgame flock ign flist magic \
-	 ascii_to_ded ded_to_ascii zpblind
+	 size_check ascii_to_ded ded_to_ascii zpblind
 	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 	${INSTALLCMD} ${INSFLAGS} summary ${INSTALLDIR}/summary
