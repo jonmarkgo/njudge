@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.5  2004/05/22 08:51:02  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
+ * Revision 1.4  2004/04/04 15:15:04  millis
+ * Fix bug 193 (add approval mechanism to allow moves)
+ *
  * Revision 1.3  2002/08/27 22:27:56  millis
  * Updated for automake/autoconf functionality
  *
@@ -64,8 +70,8 @@ int porder(char c, int player, int listflg)
 		more_orders = 0;
 
 		if (dipent.flags & F_MACH) {
-			ma_process_input(power, dipent.phase[5]);
-			ma_process_output(power, dipent.phase[5]);
+			ma_process_input(power, dipent.phase[5], player);
+			ma_process_output(power, dipent.phase[5], player);
 		} else {
 			process_input(power, dipent.phase[5]);
 			process_output(power, dipent.phase[5]);
