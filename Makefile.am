@@ -3,6 +3,10 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.17  2003/03/05 02:42:08  nzmb
+# Added ascii2rec which will convert a text plyrdata record dump (generated
+# by recdump) into a binary plyrdata file.
+#
 # Revision 1.16  2003/02/26 16:57:24  millis
 # Removed README.statistics and added README.timezone
 #
@@ -36,7 +40,8 @@ LN_S=@LN_S@
 PERL=@PERL@
 
 bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump lenlimit
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump lenlimit \
+        ascii2rec
 
 bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
 
