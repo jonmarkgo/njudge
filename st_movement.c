@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.23  2004/01/11 01:02:29  millis
+** Fix bug 265, so that convoys work in high seas.
+**
 ** Revision 1.22  2003/07/27 15:50:07  millis
 ** Fix bug 204
 **
@@ -1626,6 +1629,11 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 		unit[u].status = ':';
 		result[u] = new_result[u];
             }	
+	    /* Bug 273, reset fail and contest arrays */
+	    for (p = 1; p <= npr; p++) {
+	        contest[p] = 0;
+		fail[p] = 0;
+	    }
 	
 	    DoMoves();  /** Recalculate moves after railway failure included **/
 	
