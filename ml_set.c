@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.64  2004/08/01 18:28:58  millis
+ * Fix Bug 345 and 346
+ *
  * Revision 1.63  2004/07/26 23:17:24  millis
  * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
  * All other uses of date function stay unaltered.
@@ -2519,6 +2522,7 @@ void mail_setp(char *s)
 				fprintf(rfp, "Set Centers %d: It already was!\n", i);
 			} else {
 				dipent.vp = i;
+			        dipent.avp = DEFAULT_AVP(dipent);
 				fprintf(rfp, "Winning Centers for game '%s' set to %d.\n", dipent.name,
 					dipent.vp);
 				pprintf(cfp, "%s%s as %s in '%s' set the winning centers to %d.\n",
@@ -2528,6 +2532,8 @@ void mail_setp(char *s)
 				fprintf(bfp, "%s as %s in '%s' set the winning centers to %d.\n",
 					xaddr, PRINT_POWER,
 					dipent.name, dipent.vp);
+				if (IS_DUPLEX(dipent) && !(dipent.flags & F_INTIMATE) && !(dipent.x3flags & X3F_NOALLIEDWIN))
+				    fprintf(bfp, "%s as %s in '%s' set the allied win centers to %d.\n", dipent.avp);	
 				broadcast = 1;
 				sprintf(subjectline, "%s:%s - %s Winning Centers Changed to %d",
 					JUDGE_CODE, dipent.name, dipent.phase, dipent.vp);

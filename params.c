@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.44  2004/07/27 23:12:12  millis
+ * Bug 344, show special Intimate winning conditions
+ *
  * Revision 1.43  2004/07/26 22:32:49  millis
  * Small change to show Duplex vs number of powers actually playing
  *
@@ -797,7 +800,9 @@ void params(FILE * fp)
 	    fprintf(fp, "  Win by capturing 1 power's home centres, or all draw at %d centres.\n", dipent.vp);
         else if (dipent.flags & F_INTIMATE)
 	    fprintf(fp, "  Win by being first to capture opponent home centre with own unit.\n");
-	else
+	else if (IS_DUPLEX(dipent) && !(dipent.x3flags & X3F_NOALLIEDWIN))
+	    fprintf(fp, "  Winning Centers: %d, Allied Win: %d.\n", dipent.vp, dipent.avp);
+	eles
             fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
 
 	/* No of centres added. DAN. */

@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.50  2004/07/25 16:13:43  millis
+ * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+ * return in duplex) and Bug 206 (allow takeover of unknown abandoned
+ * countries)
+ *
  * Revision 1.49  2004/07/04 03:33:38  millis
  * Added Portage and irregular flags
  *
@@ -360,6 +365,7 @@
 #define X2F_IRREGULAR		0x20000000 /* Game settings were changed in play */
 #define X2F_PORTAGE		0x40000000 /* Game has armies able to convoy */
 
+#defibe X3F_NOALLIEDWIN	0x1 /* If set, duplex game cannot end with an allied win */
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
@@ -468,6 +474,7 @@ struct dipent {
 	int np;			/* Number of powers for this variant            */
 	int powers;		/* Number of active powers for this variant     */
 	int vp;			/* Number of victory points required            */
+	int avp;		/* Number of victory points for an allied win   */
 	char *pl;		/* Power significant letter                     */
 	Player players[MAXPLAYERS];	/* The players involved in the game     */
 	int no_of_players;	/* The number of players in the game            */
@@ -477,6 +484,9 @@ struct dipent {
 	int has_multi_unit_provs; /* !0 if has multi-unit provinces, else 0     */
 	int extra_centres;	/* !0 if X2F_INITIAL_CENTRES set */
 };
+
+/* Following calculates the allied win vp, as being an extra third of VP, rounded up */
+#define DEFAULT_AVP(dipent) (dipent.vp + (dipent.vp / 3) + (dipent.vp % 3 == 0 ? 0 : 1))
 
 #define IS_DUPLEX(dipent) (dipent.np != dipent.no_of_players)
 #define MAXUSER 8000

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2004/07/25 16:07:16  millis
+ * Bug 151, allow less powers than variant default.
+ *
  * Revision 1.22  2004/05/22 09:01:45  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -231,8 +234,10 @@ int getdipent(FILE * fp)
 	dipent.flags = old_flags;
 	dipent.has_natives = GetNativeIndex();
 
-	if (tempvp != 0)
+	if (tempvp != 0) {
 		dipent.vp = tempvp;
+		dipent.avp = DEFAULT_AVP(dipent);
+	}
 
 	if (dipent.powers == 0)
 		dipent.powers = dipent.np;
