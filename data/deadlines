@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                 25 February, 2003
 Deadlines.
 
 Unless otherwise specified, orders will be processed on the following
@@ -96,7 +96,7 @@ days:   Specifies which days of the week are valid for the setting of
         the general rule that adjudicator commands are not case-sensitive!!
 
 These parameters can be changed with the set command.  In moderated games
-only the master or moderator can use these commands.  For example:
+only a Master can use these commands.  For example:
 
         SET MOVES NEXT 48.0 DELAY 1.0
         SET BUILDS DELAY 1.0
@@ -104,7 +104,8 @@ only the master or moderator can use these commands.  For example:
 These commands will (a) set the default move deadline to (at least) 48 hours
 after the previous phase was processed, and (b) require a one-hour delay
 after the last player submits (timely) move and build orders before the turn
-can be processed.
+can be processed.  These commands will not change the deadlines for the
+currently pending phase.
 
 In addition, the following commands can be used to affect the current
 phase only:
@@ -115,20 +116,66 @@ phase only:
    SET WAIT            (Per user, specifies that orders should not be
    SET NOWAIT          (or should be processed before the deadline.
 
-The dates in the above commands can be any combination of the three
-letter abbreviation for the month, a day of the month, or hour:minute. 
-Examples:  "2 Jan" (default deadline time, usually 23:30, assumed), 
-"Jul 6 11:00", "20:20" (today's date assumed).  Other formats may work, but
-are not guaranteed and not recommended.  (And, in case you are wondering,
-issuing "SET DEADLINE 2 Jan" in December will correctly set the deadline
-in the next year.)  Note, all times are based on the time zone of the
-adjudicator.
-
 If SET START is used with a date later than the current deadline, the
 deadline will automatically be reset to the specified date.  Likewise, if
 SET DEADLINE is used to extend the deadline into the future, the grace period
 will automatically be extended to the appropriate interval after the new
-deadline.
+deadline.  The reverse is not true, however; if the deadline is moved to an
+earlier date, the grace period will not automatically change.
+
+HOW THE JUDGE INTERPRETS DATES:
+
+The Judge recognizes only a limited set of abbreviations for dates.  The 
+following describes the default Judge behavior; however, if you are using a
+Judge that has been modified for non-English commands, you should check
+whether the Judgekeeper has changed the date abbreviations.
+
+Dates may include one or more of the following elements:
+
+*   A day of the week, which must be one of these three-letter abbreviations:
+    "sun" "mon" "tue" "wed" "thu" "fri" "sat"
+
+*   A month, which must be one of these three-letter abbreviations:
+    "jan" "feb" "mar" "apr" "may" "jun" "jul" "aug" "sep" "oct" "nov" "dec"
+
+*   A day of the month (a number from 1 to 31, inclusive)
+
+*   A four-digit year
+
+*   A numeric time using the 24-hour clock format "hh:mm" 
+
+Case is not significant, and the "" marks are not part of the recognized
+abbreviations.  In general, these elements may appear in any order, so
+"SET DEADLINE Jun 15" and "SET DEADLINE 15 Jun" are equally valid; in fact,
+even "SET DEADLINE Jun 23:30 15" will work.
+
+If the day of the week is used, then the month and numeric day may not be used.
+The day of the week is converted into the next date (after the current date)
+that falls on that day of the week.  So, if today is a Tuesday, 
+"SET DEADLINE Tue" will set the deadline one week from today.
+
+If no year is specified, the current year is assumed *unless* the month 
+specified is earlier than the current month and is no more than six months 
+away; in that case, the following year will be assumed.  So, if it is currently
+December, "SET DEADLINE 10 Jan" will advance the deadline to the next year; but
+if it is currently February, the same command will return an error message.
+
+If a day number but no month is specified, the next date with that day number
+will be used.  If today is June 1, then "SET DEADLINE 15" will advance the
+deadline to June 15.  If today is June 20, however, the same command will
+advance the deadline to July 15.
+
+If a month but no day is specified, the first day of the month will be
+assumed, unless it is the current month, in which case the current day will
+be assumed.  
+
+If no month, day, or year is specified, the current day is assumed.
+
+If no time is specified, the "clock" setting for the currently pending phase 
+is assumed (if the "clock" setting is -1, then 23:30 is assumed).
+
+All times are based on the time zone of the adjudicator.
+
 
 Any SET command except for SET PASSWORD, SET WAIT and SET NOWAIT will
 generate a message that will be sent to all people involved in the game
@@ -143,15 +190,16 @@ movement orders are received for the same unit, the most recent one
 received will override the earlier one.  Attempting to build or remove
 too many units during the adjustment phase will cause the earliest
 received build/remove requests to be ignored.  Thus you can send in
-preliminary movement orders immediately and then send in revised orders
-after you change your mind from diplomatic talks.  Beware, though, that
+preliminary movement or adjustment orders immediately and then send in revised
+orders after you change your mind from diplomatic talks.  Beware, though, that
 if everyone gets their orders in before the deadline, the orders may be
-processed before you have a chance to get your revised orders in.  If
-you toss a "set wait" command into your orders, you can avoid having
+processed before you have a chance to get your revised orders in.  
+
+If you include a "SET WAIT" command with your orders, you can avoid having
 your orders processed before the deadline.  When you've decided that
-your orders are final, you can send in a message with a 'set nowait'
+your orders are final, you can send in a message with a "SET NOWAIT"
 command to allow the orders to be processed as soon as the delay period
-expires and everyone else has their orders in.  Remember that "set WAIT" is
+expires and everyone else has their orders in.  Remember that "SET WAIT" is
 cleared when the orders are processed, so you have to explicitly set it again
 (if you want it) for each phase.
 
@@ -159,8 +207,8 @@ If the reply mail to any order indicates that there was an error or you have
 a unit that you did not supply an order for or you didn't explicitly specify
 all your builds, remove or retreats, the flag indicating that your orders
 have been received will not be set.  Note that all builds must be specified
-or explicitly "waived" before the adjudicator will consider your build
-orders complete unless it is impossible to build all units (eg: five
+or explicitly WAIVEd before the adjudicator will consider your build
+orders complete, unless it is impossible to build all units (eg: five
 supply centers taken in a single year or no vacant home centers).  An
 error free set of orders will be required to set the "has submitted
 orders" status.  If no error free orders have been received by the time

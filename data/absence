@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                 25 February, 2003
 absence.
 
 An attempt to remove the greatest burden from moderators: that of 
@@ -27,12 +27,13 @@ The following commands are available to signed-on players and Masters:
      you choose the last option.)
 
      Start_date and end_date may use any of the date/time formats accepted
-     for the "SET DEADLINE" command.  See file 'deadlines'.  If no time is
-     specified, it defaults to the Move Clock setting for the current game
-     (i.e., the standard deadline time for move phases).  Safe formats
-     include "MMM dd" and "dd MMM" -- for example, "SET ABSENCE Nov 23 TO 1 Dec"
-     should work fine.  Generally, the Judge only recognizes three-letter
-     English abbreviations for months.
+     for the "SET DEADLINE" command.  Get file 'deadlines' and see the section
+     "HOW THE JUDGE INTERPRETS DATES".  Here's the short version:  The Judge
+     only recognizes English three-letter month abbreviations and numeric
+     dates, in either order -- for example, "SET ABSENCE Nov 23 TO 1 Dec"
+     should work fine.  If no time is specified, it defaults to the Move Clock 
+     setting for the current game (i.e., the standard deadline time for move 
+     phases). 
 
      Odd results may sometimes occur if an absence is requested to begin or
      end on a day on which the Judge does not allow deadlines to fall.  So,
