@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.6  2004/07/08 22:20:47  millis
+   ** Bug 91: small changes to improve status handling and show only
+   ** real player information to master
+   **
    ** Revision 1.5  2004/05/22 08:51:47  millis
    ** Bug 297: Add Intimate Diplomacy
    **
@@ -34,6 +38,7 @@
 #include <string.h>
 #include "dip.h"
 #include "variant.h"
+#include "functions.h"
 
 void mast_rpt(int current_power, int line_up)
 {
