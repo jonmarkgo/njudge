@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.36  2003/05/03 23:08:41  millis
+ * Fixed bug 99 (resigned players still receiving messages)
+ * Now resigned players will only receive the termination messages.
+ *
  * Revision 1.35  2003/02/17 16:39:27  millis
  * Fix bug 81, to call at for year too
  *
@@ -697,7 +701,6 @@ void master(void)
                                         "%s %s 'Diplomacy time-warp: %s' '%s'",
                                          SMAIL_CMD, WARP_FILE, dipent.name, dipent.players[i].address);
                                 execute(line);
-                                while (*s++);
 			      }
   
 			    }
@@ -1483,9 +1486,7 @@ int process(void)
 			fprintf(rfp, "The deadline for orders will be %s.\n",
 				ptime(&dipent.deadline));
 			if (dipent.phase[5] == 'B' && 
-				((dipent.xflags & XF_TRANS_BUILD) || 
-				 (dipent.xflags & XF_ANYDISBAND) ||
-				 (dipent.x2flags & X2F_MORE_HOMES))) {
+				 (dipent.x2flags & X2F_MORE_HOMES)) {
 			    /* A build phase in a transform game means that all can transform */
 			    /* OR when any player can disband */
 			    /* OR game allows home centre assignments */
@@ -1554,11 +1555,6 @@ int process(void)
 			    /* Ooops, it's a blind variant */
 			    /* Special routine to work out what to tell who */
 			    inform_party_of_blind_turn(i, phase,"dip.result");
-			}
-			/* If a build transfer, set a wait for all players playing */
-			if ((dipent.phase[5] == 'B') && !(dipent.players[i].status & SF_DEAD)
-			  && (dipent.xflags & XF_TRANS_BANYW)) {
-				dipent.players[i].status |= SF_WAIT;
 			}
 		}
 
