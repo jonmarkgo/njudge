@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.43  2003/05/12 23:23:46  millis
+ * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
+ *
  * Revision 1.42  2003/05/03 23:08:42  millis
  * Fixed bug 99 (resigned players still receiving messages)
  * Now resigned players will only receive the termination messages.
@@ -205,6 +208,9 @@ static int InsertDummyPlayers( void );
 
 /* Comment this out if you don't want the MAP command */
 #define MAP_COMMAND
+
+/* set the max. infoplayer requests per e-mail here */
+#define INFOPLAYER_MAX 100
 
 #define FROM      	1
 #define GET       	2
@@ -491,6 +497,7 @@ int mail(void)
 	char x[30];
 	PLYRDATA_RECORD record;
 	time_t now2;
+	static unsigned int no_of_infop = 0;
 
 	someone = "someone@somewhere";
 
@@ -1365,6 +1372,9 @@ int mail(void)
 					break;
 
 				case INFOPLAYER:
+					no_of_infop++;
+					if(no_of_infop > INFOPLAYER_MAX)
+						break;
 					command++;
 					if(!msg_header_done)
 						msg_header(rfp);
@@ -2121,6 +2131,9 @@ int mail(void)
 				break;
 
 				case INFOPLAYER:
+					no_of_infop++;
+                                        if(no_of_infop > INFOPLAYER_MAX)
+                                                break;
 					fprintf(rfp,"Dedication request info on %s\n", s);
 					switch(send_dedication(s))
 					{
