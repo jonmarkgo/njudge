@@ -1,0 +1,249 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>How To Make A Floc</TITLE>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<I><FONT SIZE=2><P>Last Updated: 9<SUP>th</SUP> July 2003</P>
+</I></FONT><B><FONT SIZE=4><P ALIGN="CENTER"></P>
+<P ALIGN="CENTER">How To Make A Floc.Net Map</P>
+
+</FONT><P>Introduction</P>
+
+</B><FONT SIZE=3><P>Constructing a &quot;proper&quot; map for floc.net is a true test of commitment to your variant. Yes, you can create a &quot;work in progress&quot; map with the mapper software relatively quickly, but if you really want to show your variant off to its best advantage, you need to put in the tedious, maddening grind involved in making a map which actually looks like a map for floc.net.</P>
+
+<P>This is a &quot;how to&quot; guide to this most annoying of processes. It assumes a certain level of IT literacy. Unfortunately the actual technical skills required to construct a map from scratch are arcane: hands up all those who possess a working knowledge of both the Python programming language and the Postscript imaging/printing language? I have to say immediately that this select group does not include me. However, I have fathomed out enough to be able to tell you what to change, starting from a working skeleton, to reliably turn out a map that looks like a map.</P>
+
+<P>Before you start, let me advise you to read through these instructions right to the end, and then decide if you really want the job. Enough health warnings. On with the instructions</FONT>.</P>
+
+<B><P>Before You Begin</P>
+
+</B><FONT SIZE=3><P>You will need the following:</P>
+
+
+<UL>
+<LI>a drawing, either hard- or soft-copy of your intended map</LI>
+<LI>the Python language installing on your computer (try </FONT><A HREF="http://www.python.org/"><FONT SIZE=3>www.python.org</FONT></A><FONT SIZE=3> for the appropriate download)</LI>
+<LI>a copy of a Postscript viewer such as GSView (try </FONT><A HREF="http://www.ghostscript.com/"><FONT SIZE=3>www.ghostscript.com</FONT></A><FONT SIZE=3>) </LI>
+<LI>some sort of text editor</LI>
+<LI>a copy of dpmap.py, this being the Python program used on floc.net to actually generate the maps. I have posted a copy of the current source here (</FONT><A HREF="dpmap.py.txt"><FONT SIZE=3>dpmap.py</FONT></A><FONT SIZE=3>). Python is an interpreted language, so as long as you save this source into a file called &quot;dpmap.py&quot; you will be fine. Alain Tesio who created and maintains floc.net has also provided the following </FONT><A HREF="http://www.floc.net/cgi-bin/viewcvs.cgi/*checkout*/mapit/dpmap.py?rev=HEAD&amp;only_with_tag=MAIN&amp;content-type=text/x-python"><FONT SIZE=3>link</FONT></A><FONT SIZE=3>, which guarantees you are viewing the very latest source code. </LI>
+<LI>a few judge output listings from your variant (at least 1 spring and 1 fall move). Unless you are very lucky of course, you will not have these available. The best way around this is to edit listings from another variant, substituting your own province names in the &quot;move&quot; parts of the listing, and your own SC abbreviations in the &quot;ownership of supply centres&quot; parts of the listing (see later for more information)</LI>
+<LI>a room to locate your computer in from which your family cannot hear you swearing</LI></UL>
+
+</FONT>
+<B><P>Basics</P>
+</B><FONT SIZE=2>
+</FONT><FONT SIZE=3><P>A floc.net map consist of two files. These are called</P>
+
+<P>variantname.info</P>
+<P>variantname.cmap.ps</P>
+
+<P>I am going to use my own variant Rum1 (if you would like to show your support or gratitude for these instructions, please sign up for one of the games on USTV) as the skeleton and examples throughout this guide. Following the above, the map for Rum1 consists of the files:</P>
+
+</FONT><FONT SIZE=2><P></FONT><A HREF="rum1.info.txt"><FONT SIZE=3>rum1.info</FONT></A><FONT SIZE=3> </P>
+</FONT><FONT SIZE=2><P></FONT><A HREF="rum1.cmap.txt"><FONT SIZE=3>rum1.cmap.ps</FONT></A></P>
+<FONT SIZE=3>
+<P>which you can browse here. A good place to start would be to copy the contents of these two files into your own two files named accordingly. Please note that I have truncated the .cmap.ps file by omitting a lot of the province drawing so that it is sufficiently compact to use as a guide skeleton.</P>
+
+<P>A quick glance into the contents of the files will reveal that the .info file is fairly simple: it consists, admittedly with a rather weird structure, of a list of power names used in your variant, followed by a list of (x,y) coordinates, 3-letter province abbreviations, and full province names. I will explain more about this later, but begin by remembering that the (x,y) coordinates are the coordinates on your map where the floc software will write the 3-letter abbrevations on to your map, and then directly above them draw the fleet or army symbols.</P>
+
+<P>The .cmap.ps file is much more horrible, and contains most of the actual &quot;map drawing&quot;. Prior to the real map shapes, however, is a lot of skeleton information used to draw armies, fleets, credits and so on. Again, I will explain this file in more detail. Suffice at this stage to note that this file is written in Postscript. More information is available at </FONT><A HREF="http://www.adobe.com/products/postscript/"><FONT SIZE=3>http://www.adobe.com/products/postscript/</FONT></A></P>
+<FONT SIZE=3>
+<P>Throughout these instructions, I will refer to sections of the .cmap.ps file. I have added comments to it to help you find your way around. A comment in Postscript is any text preceded by a ‘%’ sign. I have therefore added comments in the following format:</P>
+
+<P>% Chris Jones, how to make a floc.net map, comment #nn</P>
+<P>% This comment identifies the comment structure used in the file</P>
+
+<P>You should be able to search through the .cmap.ps skeleton, find the comment formatted as above, and then the relevant section of code, which you will generally need to modify, will usually appear directly below it.</P>
+
+<P>The dpmap.py programme takes the output listing from the judge, and sort of &quot;passes it through&quot; these two files to generate a .PS file as output. It uses the following syntax:</P>
+
+<P>python dpmap.py variantnamepath &lt;inputfile &gt;outputfile</P>
+
+<P>In the case of my rum1 variant game nutmeg running on judge USTV, I have saved the judge output into a file called nutmeg.txt, and placed the rum1.info and rum1.cmap.ps files in a directory called \flocrum. The syntax of the dpmap command is therefore:</P>
+
+<P>python dpmap.py \flocrum\rum1  &lt;nutmeg.txt  &gt;nutmeg.ps</P>
+
+<P>The final output, nutmeg.ps contains both the &quot;last move&quot; and &quot;current position&quot; files normally available on the judge, one on each of two pages, and can be viewed with GSView. </P>
+
+<P>Ignore any strange warning messages about &quot;DSC&quot;, as these are suppressed by floc.net; unfortunately you cannot, of course, ignore any real error messages. GSView, as you will probably discover, is not a piece of software which prides itself on easy-to-understand error messages…</P>
+
+<P>Having set all of this up, there are five basic stages to making your map. It tends to be necessary in practice to carry out the last four stages simultaneously, but I have tried to make four steps out of it here.</P>
+
+<P>Step 0 – define a coordinate system</P>
+<P>Step 1 – amend the .cmap.ps skeleton to deal with the powers and colours for your variant</P>
+<P>Step 2 – add the supply centres to this skeleton</P>
+<P>Step 3 – add the province drawing to this skeleton</P>
+<P>Step 4 – create the .info file</P>
+
+<P>Before you embark on steps 1 or 2, please make sure you have read as far as step 3, since this is the really really tedious bit. In practice at home I have created some software to handle some of the tiresome drawing, but it is very idiosyncratic and variant dependent. I am more than willing to enter correspondence about it (email address at the end), but in reality I suggest you construct something which will suit your own way of working.</P>
+
+</FONT><B><P>Step 0 – defining a coordinate system</P>
+
+</B><FONT SIZE=3><P>Floc.net maps are drawn using a standard (x,y) coordinate system, where x is the horizontal coordinate, and y the vertical. Position (0,0) is in the <I>bottom left hand </I>corner of the map. Unless you are fluent in Postscript, it is easiest to stick to the default scaling used in the skeletons. This means a y-axis which is around 700 units tall, and an x-axis in proportion. </P>
+
+<P>Look for comment #01, &quot;Coordinate Boundary Definition&quot; in the .cmap.ps file. The following two lines define the minimum and maximum x and y coordinate on your map. Elsewhere in the code, a bounding box is drawn as a rectangle around your map using these minimum and maximum figures, and then the other text which normally appears, such as name, phase, unit positions and supply centre ownership positioned relative to this bounding box.</P>
+
+<P>Edit the definitions of maxx, minx, maxy, miny to suit. Their starting values for the rum1 variant are maxx = 1152, maxy = 752 and so on.</P>
+
+<P>Although Postscript lets you use virtually any actual paper/page size you want, floc.net assumes a sheet of Landscape A4 and a squareish map tending to be wider than it is tall. If your map is tall and thin you are probably going to have a complex fight with Postscript scaling (and you’re on your own with that…).</P>
+
+<P>Steps 2 through 4 will rely on this (x,y) coordinate system to define the locations of everything else: supply centre locations, province names, province boundaries.</P>
+
+<P>Immediately preceding comment #01 you will see the credit text, inside brackets (like this). I believe we need to retain the Avalon Hill or Hasbro credit as part of the &quot;deal&quot; to retain their support/tolerance for the PBEM hobby, so don’t wipe that bit. </P>
+
+</FONT><B><P>Step 1 – Colours and Powers</P>
+
+</B><FONT SIZE=3><P>Next stage is to look for comment #11, &quot;list of country letters&quot;. Hopefully self evident what to do with this. Simply include each power unique letter i.e. Z as would be used in PRESS TO Z, in brackets in the list.  It is important to retain the initial (?), and to pay attention to the order. The position in the list is used elsewhere as an ordinal (i.e. the 4<SUP>th</SUP> power in the list will end up represented by number 4 – the initial (?) is power number zero).</P>
+
+<P>If you scroll down from comment #11, you will see a list of predefined colours, using either setgray (which says how white/black a colour is) or setrgbcolor which uses the standard RGB colour scheme.  Instead of the more normal numbers in the range 0-255 for representing intensity, it uses fractions, so a setting 0.25 is equivalent to 64 in the 0-255 scheme.</P>
+
+<P>You can add any other colours you might want to use here, using the same syntax e.g.</P>
+
+<P>/LoudTurquoise { 0.25 0.75 0.75 setrgbcolor } bind def</P>
+
+<P>and can then refer to LoudTurquoise elsewhere in the file. (The / means I am the start of a definition, and the def means the end of the same definition in Postscript). Note that Postscript is <I>cAse senSiTive</I>.</P>
+
+<P>Those provided as standard – red, yellow and so forth – are those generally used in the existing floc.net maps. I have tended to find that they are good for the power colours, with softer colours used for the actual map behind them.</P>
+
+<P>A little further down, you will come to comment #12, &quot;country colours&quot;, where the colours used for each unit are defined. Each power has two colours. First we have the colour its units will be shaded, so England has red units in my example file. Then the colour that will be drawn around the boundary of the unit and also will be used to draw the power letter in the middle of the unit: England is white in my example. The colours used here need to be from those defined below comment #11 as explained above.</P>
+
+<P>Moving on down a few lines, we have comment #13, &quot;country definitions&quot;. Here the connection is made between the judge output listing and the powers and colours you have already defined in #11 and #12 above.</P>
+
+<P>It looks self-evident, but it isn’t. Firstly, you have to be very careful that the countries defined here <I>exactly</I> match their judge output listing spellings. I have wasted a lot of time with one variant because I had defined /BALKANS where the judge was using &quot;Balkan&quot;. Make sure you use capital letters.</P>
+
+<P>Secondly, make sure the ordinal numbers match the ordering and ordinals when you set up the list of country letters in #11 above. In my example file, ‘H’ for Holland is the third letter in the /Countries list of letters, and so the definition of /HOLLAND in this section needs to have the ordinal value 3 within the {}. Get this wrong and your units will have the wrong power letter in them.</P>
+
+<P>Thirdly, in the line immediately beneath you will find</P>
+
+<P>/Offsets 11 array def</P>
+
+<P>The value in here (11 in my example file) needs to be equal to the number of powers in your variant+1. (Strictly, it needs to be equal to the number of country letters defined in comment #11 above, +1).</P>
+
+<P>OK, so far so good, your units should look right. The next part is to make sure your map provinces colour themselves correctly.</P>
+
+<P>Comment #14, &quot;province colours&quot; begins this process. Lots more RGB colour definitions. You can give the colours any names you want here, although again remember that they are case sensitive. My rum1 variant has different colours for provinces in each continent, so I have defined colours like NthAmCol. It also has two kinds of sea provinces, high seas and low seas, so I defined colours LowSeaCol and HighSeaCol. Whatever other colours you use, you should find that the RGB colour used for LowSeaCol works well for sea spaces in general.</P>
+
+<P>These are all used in the section following comment #15, &quot;province fill macros&quot;. Here you define each possible kind(=colour) of province you will use. The definitions are all the same, except for the actual colour. So for example if you look at the definition of /LowSea you will see the appearance of LowSeaCol within it and so on.</P>
+
+<P>You need to create as many of these as you have colours of provinces to deal with. They all have the same structure, and there is no particular need to be tidy and remove any you don’t use later. The Coastcolour which appears within them all is actually the colour that will be used for the province boundaries. Of course you can change this too, but I haven’t yet found the need to do so.</P>
+
+<P>Finally (and don’t forget you haven’t done any of the hard stuff yet!), you need to deal with the colours supply centres will turn when they are owned. Look for comment #16, &quot;supply centre colours&quot;.</P>
+
+<P>As usual it looks straightforward, but it isn’t completely so. Again the spelling of the powername must be <I>exactly</I> as in the judge listing. And irritatingly for those of us with English as a first language, the spelling &quot;center&quot; must be used in place of &quot;centre&quot;. So be very careful to set up a definition /BALKANCENTER and not /BALKAN<B>S</B>CENT<B>RE </B>in this area for example. Unless you have a very good reason, your colours here will tend to correspond with those you have already used for the units.</P>
+
+<P>Also it is essential to retain the /UNOWNEDCENTER definition, and I would tend to hang on to the /NEUTRALCENTER one too unless you are pretty sure what you are about.</P>
+
+</FONT><B><P>Step 2 – Supply Centres</P>
+</B><FONT SIZE=2>
+</FONT><FONT SIZE=3><P>The next step is to add the supply centre dots. Happily this is one of the easy steps.</P>
+
+<P>Head for comment #21, &quot;supply centre dots&quot;. Beneath this you will find a list of the coordinates of each supply centre in the format:</P>
+
+<P>/XYZ {x y} def</P>
+
+<P>XYZ is the three-letter abbreviation for this supply centre province</P>
+<P>x is the x coordinate of the dot on the map</P>
+<P>y is the y coordinate of the dot on the map</P>
+
+<P>So you just add a line for each of the centres you have in your variant, stating name and location. There is no need to preserve the alphabetic ordering that the rum1 example uses.</P>
+
+<P>Having listed all your centres and locations, you now need to list them again! Head for comment #22, &quot;Draw the centres&quot;. Underneath you will see a macro called &quot;docenters&quot;. It starts with a default colour, Brown. To avoid weird results, make sure this colour is the same as that used in the definition of /UNOWNEDCENTER in comment #16 above.</P>
+
+<P>Then there is the same list of supply centres, followed by the word &quot;supply&quot; which is the macro which draws the actual dot. Make sure you have the same list of centres here as you had for comment #21!</P>
+
+<P>Lastly, you may find, depending on the shape and size of your map that you want to change the size of the supply centre dot. Some way earlier in the file, comment #23 &quot;Draw the SC dot&quot; shows where this is set up.</P>
+
+<P>The line &quot;0 0 2 0 360 arc&quot; is the Postscript definition of a circle. You could substitute other shapes here. More likely however is that you might want to change the size, by increasing the value ‘2’, which represents the radius of the circle, to some other larger number.</P>
+
+<P>OK, time to draw a deep breath before proceeding on to…</P>
+
+</FONT><B><P>Step 3 – Provinces</P>
+
+</B><FONT SIZE=3><P>Look for comment #31, &quot;Draw the provinces&quot;. Inside a macro definition called &quot;part1&quot; you will find the drawing-the-map part of the file, which is where most of the hard work in this task lies.</P>
+
+<P>Postscript is based on defining a &quot;path&quot;, and then stating properties for that path. The province drawing structure mirrors this. It consists of a series of statements defining the province border, followed by a &quot;now do this with it&quot; command which will be one of the province colour definitions you set up in #15 above. If you refer back to these, you will see that these describe the colour of the province boundary (normally something called Coastcolour), the inside of the province; one of the colours you will have defined such as NthAmCol in the rum1 file; and finally an instruction to make the path a closed polygon and fill(=colour) it in.</P>
+
+<P>You have already set up the definitions in #15, so this section consists of describing the boundary path for each province and then which province colour definition to use.</P>
+
+<P>Each path consists of moving a notional &quot;cursor&quot; to starting coordinates, using the</P>
+
+<P>x y gm </P>
+
+<P>command, followed by moving that cursor around the boundary, point by point, using the</P>
+
+<P>x y lin</P>
+
+<P>command. It doesn’t matter if you go around clockwise or anticlockwise, but you do need to keep to a defined sequence. Make sure you don’t repeat the start point at the end, as this will confuse Postscript when it tries to close the polygon you have defined.</P>
+
+<P>As a simple example, a square province located in the bottom left-hand corner of your map might be defined by</P>
+
+<P>0 0 gm                 % put the cursor in the bottom lh corner</P>
+<P>0 100 lin              % head north</P>
+<P>70 100 lin            % head east</P>
+<P>70 0 line               % head south</P>
+<P>greenprovince     % finish it off by heading back to start again, draw the lines &amp; fill it in green</P>
+
+<P>And there you go. You just need to repeat this for all your provinces (ha ha!). Of course it is possible to use arcs, bezier curves and any other exotica provided by Postscript pathing in place of the simple straight lines. Help yourself. But in general it is possible to succeed in making a really quite good looking map using only straight lines.</P>
+
+<P>Take note of the bit at the end as well. You really do need those final lines &quot;lastborder&quot; and &quot;} def&quot; at the bottom of the file.</P>
+
+<P>A useful trick, (provided to me by Gregory Greenman), is that you can temporarily add the line</P>
+
+<P>DrawMap</P>
+
+<P>on its own at the end of your .map.ps file. This will cause the map to draw itself when viewed through GSView or similar, without you having the bother of parsing it via listings and dpmap.py at this stage in producing it. You will see the borders and supply centres, but no province names (or units obviously), which is useful in giving you a chance to get it to look right i.e. only fight one battle at once - with GSView error messages, without simultaneously fighting a python.</P>
+
+<P>As I mentioned earlier, I have written various nasty programs to make this task easier for myself, the most useful being a piece of inelegant VB/Access (neither of which I really understand) which acts as a recording plotter over a .BMP map produced using more friendly software than Postscript/floc.net.  While I’m happy to discuss them, I repeat my urging to you to find a way of doing this yourself that suits you best. My strongly recommended method is called a &quot;teenager&quot; which will be prepared to plot province boundaries in exchange for a significant supplement to its pocket-money.</P>
+
+</FONT><B><P>Step 4 – the .info file</P>
+
+</B><FONT SIZE=3><P>If you survived that task, you will be glad to know that creating the .info file is much more straightforward.</P>
+
+<P>The .info file is a rather weird object. It consists of a list of powers, then a separator line</P>
+
+<P>-1</P>
+
+<P>then a list of locations where units would be displayed in each province. You can include comments, which are lines preceded by a hash ‘#’ character.</P>
+
+<P>To create it you first need to list your powers (again). Make sure they are the same powers you used in Step 1 earlier! This is particularly important because dpmap.py uses the power list in the .info file to validate parts of the .cmap.ps file.  Unlike the .cmap.ps file, the .info is (mostly) not case sensitive, although I would recommend you continue to assume that it is.</P>
+
+<P>Then put in the separator line. In fact, any line starting with a minus-sign will do, but by convention ‘-1’ is used in all files and I would suggest you follow the convention for future compatibility.</P>
+
+<P>Finally, there is a list of all the province, in the form:</P>
+
+<P>x  y  |ABC|---|Full province name</P>
+
+<P>x y are coordinates whose purpose I will explain below.</P>
+<P>ABC is the three letter abbrevation for the province.</P>
+<P>The purpose of the |---|  is lost in the mists of time, but you need to retain it as a delimiter in all the lines.</P>
+<P>The Full province name must <I>exactly</I> match the name which will appear in the judge output listing. Although it may be a strange way to go about things, the process that the dpmap.py code goes through is to match the province names in the judge output listing with the Full province name in the .info file in order to decide where to draw the units. The abbrevation ABC is <I>not</I> used for this purpose, and actually can be different from the real province abbrevation if you can think of a reason perverse enough to justify making it different.</P>
+
+<P>The x y coordinates describe roughly where the centre-base of the army or fleet symbol will be if there is one in that province. Whether there is a unit or not, <I>underneath</I> where the unit symbol either is or where it would have been, the abbrevation ABC is then written on to the map. It is important to understand this: there is no way to separate the unit drawing location from the province text ABC. (Actually you can, but you need to fiddle with the DrawName and Unitoffset definitions in the .cmap.ps file, which I honestly don’t recommend unless you have a strong need to do so).</P>
+
+<P>Lastly you need to create separate entries for any provinces with coasts. You need to do this even if you do not wish the fleets to appear in a different location, because dpmap.py will treat ‘Leningrad (north coast)’ as a different province from ‘Leningrad’ for the purpose of drawing units. If you look in the rum1.info file, you will see examples for California or Canton.</P>
+
+<P>As a final point, Alain Tesio mentioned to me that you can add extra lines into this file to deal with any provinces which might have variant spellings in the judge listings.</P>
+</FONT><B>
+<P>Conclusion</P>
+
+</B><FONT SIZE=3><P>And there you have it. Actually apart from step 3 for which there seem to be rather few short cuts available, it isn’t quite as painful to do as it sounds when spelt out like step by step like this. And actually in my experience, nothing brings your variant to life quite like seeing it running on its own bespoke map.</P>
+
+<P>I hope you find this guide useful. I like variants, but so many of them are marred by eye-straining maps. It is my hope that if this guide contributes to players’ experience of variants, then more players will be prepared to sign up for them.</P>
+
+<P>I’d like to thank Millis Miller (JK of USTV, DEDO and several others) for persuading me to write this after he’d brought my Rum variant to life on USTV, Alain Tesio (www.floc.net superhero) for publishing the link to this guide, correcting several errors, and pointing out various improvements, and Gregory Greenman (JK of USTX) for some useful tips.</P>
+
+<P>Feedback is more than welcome. While I have given my email address below, the way I really like to get feedback is via Press to M, preferably in a game of my own variant Rum (look for vacancies on judge USTV)…</P>
+
+<P>Happy mapping!</P>
+
+<P>Chris Jones</P>
+<P>chrmir@ntlworld.com</P>
+
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>Copyright 2003, Chris Jones</P>
+</FONT></BODY>
+</HTML>

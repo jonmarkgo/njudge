@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org">
+<title>Making Mapit Maps</title>
+<link rel="stylesheet" type="text/css" href="../../jsnell.css">
+</head>
+<body>
+<div class="sec"><a name="making_mapit_maps_">
+<h3 class="sec">Making Mapit Maps</h3>
+
+<p>Every few months I get asked for instructions/help on making
+maps for either Alain Tesio's excellent <a href=
+"http://www.floc.net/">floc.net</a> online Diplomacy mapper. This
+page is an attempt at properly documenting the neccessary steps,
+and thereby reducing the times I need to re-explain this to
+different people.</p>
+
+<div class="ssec"><a name="pre-requisites">
+<h4 class="ssec">Pre-requisites</h4>
+
+<p>Before you start, you should have access to the following
+software and files:</p>
+
+<ul>
+<li>
+<p>A vector drawing program which is able to save files as EPS
+(encapsulated postscript). Preferably tidy and compact EPS, but
+that's rather unlikely these days. I use <a href=
+"http://www.xfig.org/">xfig</a>, but it's definitely an acquired
+taste. Unfortunately I can't recommend any good drawing programs
+for Windows/MacOS.</p>
+</li>
+
+<li>
+<p>A copy of Mapit, the mapping program used by (at least) floc.net
+and <a href="http://www.floc.net/dpjudge/">DPJudge</a>. You can use
+either the <a href="ftp://ftp.onesite.org/pub/mapit.tar.gz">C
+version</a> or the <a href=
+"http://devel.diplom.org/manus/mapit/dpmap.py">Python
+version</a>.</p>
+</li>
+
+<li>
+<p>Copies of the Mapit files produced by David Norman's MapMaker.
+Specifically, you'll need the .cmap.ps and .info files. The version
+of MapMaker that does this isn't publically available, so if you've
+just created the variant from ground up with MapMaker, you'll need
+to send David you MapMaker map, and he'll send you the neccessary
+Mapit files. Otherwise you can get the files used on floc.net from
+the <a href=
+"http://www.floc.net/cgi-bin/viewcvs.cgi/mapit/maps/">CVS
+repository</a>.</p>
+
+<p><b>Please check that the files are truly up to date</b>. These
+instructions will not work with old maps produced by MapMaker.
+Currently the best way to determine whether the map is new enough
+is to look for the string MapWindowHeight in it.</p>
+</li>
+
+<li>A PostScript viewer, for example <a href=
+"http://www.cs.wisc.edu/~ghost/gsview/index.htm">GSView</a>.</li>
+</ul>
+</div>
+
+<div class="ssec"><a name="working_with_mapit_">
+<h4 class="ssec">Working with Mapit</h4>
+
+<p>Before making any other changes, you should get Mapit working
+with the current maps. How this is accomplished depends on your
+operating system, the version of Mapit you're using, and on where
+it's installed. For example, with dpmap.py a command line like this
+would produce the map as postscript into the file output.ps:</p>
+
+<pre>
+$ python dpmap.py <b>./Maharajah1</b> &lt; <b>maharajah.results</b> &gt; output.ps
+</pre>
+</div>
+
+<div class="ssec"><a name="drawing_the_map_">
+<h4 class="ssec">Drawing the map</h4>
+
+<p>You should now draw a map for the variant using the vector
+drawing program mentioned before. Please follow these
+guidelines:</p>
+
+<ul>
+<li>
+<p>Do not draw supply centers or province names; they're added by
+Mapit.</p>
+</li>
+
+<li>
+<p>Use a light blue for seas and white for land (to stay consistent
+with the current maps on floc.net).</p>
+</li>
+
+<li>
+<p>You need to fit the province name, the unit, and possibly a
+supply center into the province. If the map contains any small
+provinces, you might want to make them larger even at the cost of
+geographical accuracy.</p>
+</li>
+
+<li>
+<p>Avoid drawing too many details. This will increase the file
+size, and make the map harder to read when scaled to a small bitmap
+image.</p>
+</li>
+</ul>
+
+<p>For example, <a href="maha1.eps">here</a> is the EPS version of
+the map for Maharajah's Diplomacy.</p>
+</div>
+
+<div class="ssec"><a name="modifying_the_mapit_map_">
+<h4 class="ssec">Modifying the Mapit map</h4>
+
+<p>If you're unsure of some of what some of the following parts
+mean, you might want to compare the original <a href=
+"orig.Maharajah1.cmap.ps">.cmap.ps</a> and <a href=
+"orig.Maharajah1.info">.info</a> files to the <a href=
+"Maharajah1.cmap.ps">.cmap.ps</a> and <a href=
+"Maharajah1.info">.info</a> files that resulted from following
+these instructions. If that doesn't help, I'll be happy to answer
+any questions you have.</p>
+
+<p>After you update any files, you'll need to rerun Mapit for the
+changes to take effect in the output postscript file. Some
+PostScript viewers won't notice all changes that happen to a file
+that's modified. Zooming in/out should force it to reread all of
+the information.</p>
+
+<ul>
+<li>
+<p>Remove the PostScript functions starting with "Part_", and
+replace the calls to those functions in "DrawMap" with a single
+call to "doeps".</p>
+</li>
+
+<li>
+<p>Remove everything from function "postmap", except the call to
+"grestore".</p>
+</li>
+
+<li>
+<p>Add <a href="epsembed.txt">these lines</a> after the "postmap"
+function.</p>
+</li>
+
+<li>
+<p>Add the contents of your EPS file between the "%%BeginDocument"
+and "%%EndDocument" lines.</p>
+</li>
+
+<li>
+<p>Your EPS file should contain a %%BoundingBox:-header, which
+basically describes its dimensions. Usually it'll be something
+like:</p>
+
+<pre>
+%%BoundingBox: 0 0 1042 1047
+</pre>
+
+<p>Modify the definitions of Bottom, Left, Top and Right to match
+these values (in the same order). E.g. for the above bounding box
+you should have these values:</p>
+
+<pre>
+/Top 1042 def 
+ /Left 0 def 
+ /Right 1047 def 
+ /Bottom 0 def
+</pre>
+</li>
+
+<li>
+<p>The MapMaker template contains some code to automatically detect
+whether it should produce a landscape or portrait map. If the map
+now appears rotated 90 degrees (as happens to me 75% of the time),
+you'll need to modify the line:</p>
+
+<pre>
+/PortraitFlag deltah deltav lt def % <b>...</b>
+</pre>
+
+<p>to:</p>
+
+<pre>
+/PortraitFlag false def
+</pre>
+</li>
+
+<li>
+<p>If the map is mirrored along the X or Y axis, swap the values of
+Left/Right or Top/Bottom.</p>
+</li>
+
+<li>
+<p>If the map has the wrong aspect ratio, modify the definitions of
+MapWindowHeight and MapWindowWidth.</p>
+</li>
+
+<li>
+<p>Now follows the most tedious part of the process. You'll need to
+modify province coordinates in the .info file. Luckily, your
+PostScript viewer should be able to show the correct coordinates
+when you view the EPS file. Just move the pointer to a province,
+and replace the values for the province in the .info file with
+those reported by the viewer. The unit will appear right above the
+pointer and the name of the province right below it.</p>
+
+<img src="gv.png" alt="GV"></li>
+
+<li>
+<p>At this point everything but supply centers should be working
+correctly.</p>
+
+<p>The coordinates of the supply center dots are defined near the
+end of the file. The coordinate system used is the same as the one
+used in the .info file, but shifted a bit downwards. This means
+that you can give them a dot the same coordinates as the ones given
+in the .info file form, and the dot will appear right below the
+name of the province.</p>
+</li>
+</ul>
+</div>
+
+<div class="ssec"><a name="that's_it_">
+<h4 class="ssec">That's it</h4>
+
+<p>Your map should now be perfect. If something is still wrong, you
+can email me the files, and I'll be happy to take a look at
+them.</p>
+</div>
+</div>
+
+<div class="footer">
+<hr>
+<a href="http://www.iki.fi/jsnell/" target="_top">Juho
+Snellman</a>, &lt;jsnell@iki.fi&gt;.
+</body>
+</html>
+
