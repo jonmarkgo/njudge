@@ -537,7 +537,7 @@ Delay
 
 If you are the last to enter moves, you'll have this many hours to change
 your mind before the judge processes, unless someone has asked the judge to
-wait for the deadline (set wait).  Typically, you get 30 minutes (0.5 hours).
+wait for the deadline (SET WAIT).  Typically, you get 30 minutes (0.5 hours).
  
 Days
 

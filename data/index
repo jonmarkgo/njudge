@@ -1,7 +1,7 @@
 Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
 index.
 
-(Note: Current as of njudge version 1.3.2.
+(Note: Current as of njudge version 1.3.1.
        New commands for judge version 1.3.0 and later are marked with an '!'.
        Still to be implemented ones are marked with a '+'.)
 
@@ -59,8 +59,8 @@ ply/    BROADCAST [options]
         message may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF',
         or the end of the (incoming) mail message.  The adjudicator will send
         as press any text that it encounters until it reaches a line
-        containing only one of these three keywords; in particular, it
-        *should* ignore any orders or other command keywords appearing in the
+        containing only one of these three keywords.  In particular, it
+        will ignore any orders or other command keywords appearing in the
         text of press, but to play it safe, you may wish to put a ">" or
         other character in front of such material.  See file 'press'.
 
@@ -68,17 +68,21 @@ ply/    CLEAR
         To clear any pending orders entered with the PHASE command.  (Note:
         there is no way to clear orders entered for the current phase.)
 
-any/bgs CREATE ?name password [variant] [GUNBOAT]
+any/bgs CREATE ?name password [variant] [option [option ...]]
         To create a new game on the Judge.  This command will fail, of
         course, if the game "name" already exists, or if the Judge is not
-        allowing creation of new games.  The game will be Standard unless the
-        "variant" and/or GUNBOAT options are specified.  See file 'master'.
+        allowing creation of new games.  The game will be Standard unless a
+        variant and/or options are specified. The "variant" and "option"
+        specifications for this command are the same as those accepted by the
+        "SET VARIANT" command, below. See file 'master' for more detail on
+        creating games.
 
 mod/    EJECT power|email
         A moderator-only command to resign a particular power.  This can be
         done at any time by the moderator.  The moderator MUST use this form
         to resign himself.  If an email address is specified, the command
-        will work to resign observers too.
+        will work to resign observers too.  The "EJECT power" form will not
+        work if more than one person is signed on to the specified power.
 
 ply/    ENDBROADCAST|ENDPRESS
         Terminate a Press or Broadcast message.  Note that either form of
@@ -157,21 +161,25 @@ ply/    LIST
         for the currently signed on game.
 
 any/    MAP name [n]
+        [Deprecated: this command is disabled by default on new Judges,
+        although it can be enabled by the Judgekeeper.  It may not be
+        supported in future versions.]
+
         Send a postscript map of the current status of the game.  Not all
         variants are supported.  The "n" option sends the file in plain
         postscript format instead of uuencoded, compressed ps format.
-        (This command may be disabled)
+        
         Rather than use this command, you can obtain maps of any game in
         multiple formats from Alain Tésio's outstanding "Diplomacy tools" 
         site, http://www.floc.net/
 
 any/    MAP * [n]
+        [Deprecated: see previous entry.]
         This command must prefix a LIST output from any judge and will
         produce a map based on that output.  The "*" is real and is not
         replaced.  The "n" option is as above.
         The LIST output supplied must *not* have any characters added to
         the beginning of the line.  e.g: The comment (">") character.
-        (This command may be disabled)
 
 adm/    NOCONTROL
         Prevents broadcast message from actually being sent.  For debugging.
@@ -231,7 +239,7 @@ ply/    RESUME
         RESUME" command.
 
 mod/    ROLLBACK turn
-        Rolls the game back to the previously processed turn.  See file
+        Rolls the game back to a previously processed turn.  See file
         'master'.
 
 any/    SEND [ME] file

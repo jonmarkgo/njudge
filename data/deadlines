@@ -2,7 +2,9 @@ Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
 Deadlines.
 
 Unless otherwise specified, orders will be processed on the following
-schedule:
+schedule.  These default settings may be changed by the Judgekeeper, and may
+be further changed for individual games by the Moderator, or by any player in
+an unmoderated game.
 
 Move    clock 1410 min 12.00 next  71.00 grace 167.00 delay 0.50 days -MTWTF-
 Retreat clock   -1 min  0.00 next  23.00 grace  71.00 delay 0.50 days -MTWTF-
@@ -12,7 +14,8 @@ The parameters are as follows:
 
 clock:  If non-negative, indicates the minutes past midnight to which the
         new deadline will be set.  1410 is eleven thirty pm.  If negative,
-        this parameter is ignored.
+        this parameter is ignored, and the new deadline is set at exactly
+        "next" hours after the time the previous phase was processed.
 
 min:    Indicates the minimum number of hours that can elapse between the
         previous phase and the new phase.  Thus, in the above example,
@@ -40,7 +43,9 @@ next:   Indicates the number of hours after the previous phase is
         if the moderator manually extends the current deadline for two weeks
         to allow for a player absence, but then the turn is processed because
         the absent player was nice enough to submit orders before he left,
-        the next deadline will still be approximately two weeks away).
+        the next deadline will still be approximately two weeks away).  The
+        only exception to this is if the moderator manually resets the
+        deadline to an earlier time.
 
 grace:  Indicates the number of hours the adjudicator will wait after the
         deadline expires if not everyone has gotten their orders in yet. 
@@ -48,8 +53,8 @@ grace:  Indicates the number of hours the adjudicator will wait after the
         deadline is allowed.  When the deadline comes up, a reminder message
         will be sent to everyone who hasn't gotten their orders in and a
         notice will be sent to the other players and observers in the
-        game indicating who is late.  The reminder will then be sent
-        to the late parties every day.
+        game indicating who is late.  Another reminder will be sent to
+        the late parties, and a notice to all other participants, every day.
 
         If the game is set "NoNMR" (the default), the Judge will wait
         for orders until the end of the grace period.  Then, a notice will
@@ -115,7 +120,8 @@ letter abbreviation for the month, a day of the month, or hour:minute.
 Examples:  "2 Jan" (default deadline time, usually 23:30, assumed), 
 "Jul 6 11:00", "20:20" (today's date assumed).  Other formats may work, but
 are not guaranteed and not recommended.  (And, in case you are wondering,
-issuing "SET DEADLINE 2 Jan" in December will correctly set the deadline in the next year.)  Note, all times are based on the time zone of the
+issuing "SET DEADLINE 2 Jan" in December will correctly set the deadline
+in the next year.)  Note, all times are based on the time zone of the
 adjudicator.
 
 If SET START is used with a date later than the current deadline, the

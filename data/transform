@@ -25,8 +25,8 @@ SET TRANSFORM <when>:<where> [<when>:<where>]
         NONE
 
 "CENTRE" and "CENTER" are interchangeable (and optional).  Note that "ANY" is
-assumed to be an abbreviation for "ANYCENTRE", so "ANYWHERE" must be spelled out
-in full if used.
+assumed to be an abbreviation for "ANYCENTRE", so "ANYWHERE" must be spelled
+out in full if used.
 
 Warnings:
 
@@ -86,8 +86,9 @@ ANY CENTRE:   Transformations are allowed during the specified phase in any
               centre.
 
 ANYWHERE:     Transformations are allowed during the specified phase in any
-              land province (units can never transform at sea).  However, wings
-              that are blockading may not transform during a build phase.
+              land province (units can never transform at sea).  However,
+              wings that are blockading may not transform during a build
+              phase.
 
 NONE:         No transformations are allowed during the specified phase.
 
@@ -98,7 +99,7 @@ for moves:
 [<unit>] <location> TRANSFORMS TO <unit> [<coast>]
 
 for build phases:
-TRANSFORM [<unit>] <location> [<coast>] TO <unit>
+TRANSFORM <unit> <location> [<coast>] TO <unit>
 
 The abbreviation 'TRAFO' can be used for both of these forms, but otherwise
 cannot be further shortened (to avoid confusion with the 'transport'
