@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/09/14 08:25:13  millis
+ * Fix bug 225
+ *
  * Revision 1.21  2003/07/15 22:47:06  millis
  * Fix Bug 185 (call smail for each email individually)
  *
@@ -186,7 +189,7 @@ void init_build(void);
 void buildout_td(int pt);
 void buildout(int pt);
 int build_syntaxcheck(char *s, int precheck, char *out_string);
-int ExtraCentres( void );
+int ExtraCentres( int power );
 
 /* defined in st_setup.c */
 int setupin(char **s, int p);

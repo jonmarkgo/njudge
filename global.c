@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.12  2003/05/14 07:59:17  nzmb
+ * Fixed bug #122 -- splits dip.reply into part created before and after
+ * the GM issues a "become" command.
+ *
  * Revision 1.11  2003/05/13 10:59:09  millis
  * Correctly set bailout flag to initial 0 value
  *
@@ -72,6 +76,8 @@ int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list          */
 int stab[12 - 1][12 - 1];       /* Machiavelli storm  province list          */
 struct p_unit permitted_units[MAXPLAYERS]; /* Mach list of permitted unit types	     */
 struct p_money initial_money;   /* Mach set of initial money */
+
+struct extra_centre extra_centres[MAXPLAYERS]; /* list of extra units for certain powers */
 
 /* from porder.c, probably from some header file before that, i didn't
  * keep very good track -- nw Sun Oct  5 07:00:38 GMT 1997

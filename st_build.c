@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.26  2003/07/24 23:00:43  millis
+   ** Fix bug 202
+   **
    ** Revision 1.25  2003/05/14 07:59:24  millis
    ** Antoher build problem resolved (all builds were rejected).
    **
@@ -122,7 +125,44 @@
                     (p1 >= 'A' && p1 <= 'Z'))
 
 
-int ExtraCentres(void) 
+int one_owned[NPOWER + 1];
+static int ExtraYearCentres(void);
+
+int ExtraCentres(int power)
+{
+    int ret_val = ExtraYearCentres();
+    int i;
+    int found = 0;
+
+/* As can be called externally, make sure one_owned is correct */
+    one_owned[power] = 0;
+    for (i = 1; i <= npr; i++) {
+        if (pr[i].owner == power &&
+        ((pr[i].type == dipent.pl[power]) || dipent.xflags & XF_BUILD_ANYCENTRES) &&
+          pr[i].blockaded == 0 ) { /* Was doing something here, no more! */
+           if (pr[i].owner == power && pr[i].type == dipent.pl[power]) {
+               one_owned[power]++;
+	   }
+        }
+    }
+
+    if (dipent.x2flags & X2F_EXTRA_HC) {
+	    for (i = 0; i < MAXPLAYERS && 
+			!found && 
+			extra_centres[i].power_letter != '\0'; i++) {
+                if (pletter[dipent.variant][power] == extra_centres[i].power_letter) {
+		    found++;
+		    if (one_owned[power])
+			ret_val += extra_centres[i].count;
+		}
+	   
+	    }
+    }
+
+    return ret_val;
+}
+
+static int ExtraYearCentres(void) 
 {
     int current_year;
     int first_year;
@@ -168,7 +208,6 @@ int CountCentres( int p )
 
 
 static int nu[NPOWER + 1], lu[NPOWER + 1];
-int one_owned[NPOWER + 1];
 /* See if passed location is in conditions to be built on */
 int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
 {
@@ -237,10 +276,10 @@ void init_build(void)
 		    PossibleHomeCentre(pletter[dipent.variant][pr[p].home]))
 		    pr[p].type = pletter[dipent.variant][pr[p].home];
 		
-		one_owned[p] = 0;
 		nu[p] = 0;
 		lu[p] = 0;
-		nu[p] += ExtraCentres();
+		
+		nu[p] += ExtraCentres(p);
 		
 		for (i = 1; i <= npr; i++) {
 		    if (gateway(i)) continue; /* Gateways don't count */
@@ -264,15 +303,6 @@ void init_build(void)
 		if (nu[p] > 0)
 			nu[p]++;
 
-		for (i = 1; i <= npr; i++) {
-			if (pr[i].owner == p && 
-			    ((pr[i].type == dipent.pl[p]) || dipent.xflags & XF_BUILD_ANYCENTRES) && 
-			    pr[i].blockaded == 0 )
-				/* Was doing something here, no more! */
-			if (pr[i].owner == p && pr[i].type == dipent.pl[p]) { 
-				one_owned[p]++;
-			}
-		}
 	}
 }
 
@@ -967,7 +997,7 @@ void buildout(int pt)
 		    if (p_index >= dipent.n) continue; /* Not a valid power */
                     counting_centres = dipent.players[p_index].centers -
                                        dipent.players[p_index].centres_blockaded;
-                    u_diff[p] = num_units[p] - counting_centres - ExtraCentres();
+                    u_diff[p] = num_units[p] - counting_centres - ExtraCentres(p);
 
 		    if (u_diff[p] < 0) {
 			fprintf(rfp, "%s: ", powers[p]);
@@ -981,7 +1011,7 @@ void buildout(int pt)
 			}
 			if (!(dipent.xflags & XF_ANYDISBAND)) {
 			    if (i > npr ) {
-				i = nu[p] - 1 + ExtraCentres();
+				i = nu[p] - 1 + ExtraCentres(p);
 				if (processing)
 				    fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
 				else

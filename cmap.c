@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2003/12/28 00:00:40  millis
+ * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
+ *
  * Revision 1.11  2003/07/30 12:15:12  millis
  * Fix bug 208
  *
@@ -83,11 +86,15 @@ int main(int argc, char *argv[])
 	short prov[NPROV];
 	char *typetext;
 	int power_index;
+	int extra_centre;
 	char unit_list[MAX_UNIT_TYPES][200]; /* to be safe only! */
 	char power_name[20];
 	char *s;
 	char temp_line[100];
 	int money;
+
+	extra_centres[0].power_letter = '\0';  /* Zero the array */
+	permitted_units[0].power_letter = '\0';  /* Zero this array too */
 
 	switch (argc) {
 	case 1:
@@ -747,8 +754,22 @@ int main(int argc, char *argv[])
 
 
 			case 'E': /* Extra Unit(s) */
-				fprintf(stderr, "Extra units not yet implemented!");
-				break;
+                                power_index = 0;
+                                while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+                                    if (sscanf(line, "%s %d",
+                                                power_name,
+                                                &extra_centre) != 2 ){
+                                      fprintf(stderr, "Bad extra unit line: %s ", line);
+                                      err++;
+                                    } else {
+                                       strncpy(&extra_centres[power_index].power_letter,
+                                               power_name, 1);
+				       extra_centres[power_index].count = extra_centre;
+				    }
+                                       power_index++;
+                                }
+                                break;
+
                                          
 			/*
 			 * Comments.
@@ -794,6 +815,9 @@ int main(int argc, char *argv[])
 				fwrite(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp);
 			}
 			fwrite(heap, sizeof(unsigned char), hp, ifp);
+
+			fwrite(extra_centres, sizeof(extra_centres), 1, ifp ); /* Write extra units table */
+
 			if (nv) {
 				fwrite(vincome, nv, sizeof(vincome[0]), ifp);
 				fwrite(ftab, sizeof(ftab), 1, ifp);

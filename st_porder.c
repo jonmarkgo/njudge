@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.20  2004/01/02 08:43:36  nzmb
+  ** Fix bug #219 -- advance to the build phase when a game ends in a solo.
+  **
   ** Revision 1.19  2003/05/16 22:45:42  millis
   ** Fix bug 156 (ownership() was having winning condition incorrectly reset)
   **
@@ -167,7 +170,7 @@ int ownership(void)
 				np[i]++;
 
 		}
-		np[i] += ExtraCentres();
+		np[i] += ExtraCentres(p);
 
 		if (!p)
 			continue;

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2003/12/06 11:32:52  millis
+ * Fix bug 254 (can only broadcast once per game in touch press games)
+ *
  * Revision 1.13  2003/11/09 18:17:57  millis
  * Fix bug 246
  *
@@ -220,6 +223,12 @@ int po_init(void)
 			fprintf(rfp, "cmap heap read error, %d of %d, %s.\n", i, hp, line);
 			return E_FATAL;
 		}
+
+		if ((i = fread(extra_centres, sizeof(extra_centres), 1, ifp)) != 1) {
+		        fprintf(rfp, "cmap extra_centres read error, %ds. %s.\n", i, line);
+		        return E_FATAL;
+	        }
+
 		if (nv > MAXVINC) {
 			fprintf(rfp, "Maximum variable income exceeded.\n");
 			return E_FATAL;

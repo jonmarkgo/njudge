@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.36  2003/12/29 17:59:53  millis
+ * Work for Bug 91 (keep duplex powers together)
+ *
  * Revision 1.35  2003/12/28 00:00:41  millis
  * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
  *
@@ -599,8 +602,8 @@ void params(FILE * fp)
                 strcatf(line, "AutoCreate", &first_flag);
         }
 
-	if (dipent.x2flags & X2F_EXTRA_UNITS ) {
-		strcatf(line, "ExtraUnits", &first_flag);
+	if (dipent.x2flags & X2F_EXTRA_HC ) {
+		strcatf(line, "ExtraHomeCentres", &first_flag);
 	}
 
 	if (dipent.flags & F_BLIND) {

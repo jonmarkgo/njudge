@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.40  2004/01/02 10:00:15  millis
+ * no message
+ *
  * Revision 1.39  2003/12/29 17:59:53  millis
  * Work for Bug 91 (keep duplex powers together)
  *
@@ -322,7 +325,7 @@
 #define X2F_AUTOCREATE		0x200000 /* When game ends, start another one */
 #define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 #define X2F_TOUCHPRESS		0x800000 /* Powers can only press to neighbours */
-#define X2F_EXTRA_UNITS		0x1000000 /* Game has extra unit(s) according to map file */
+#define X2F_EXTRA_HC	        0x1000000 /* Game has extra home centre(s) according to map file */
 
 
 /* Define for X2F flags for params.c to display */
@@ -487,5 +490,6 @@ extern int victor;              /* Set to power index if there is a game winner 
 extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       */
 
 extern int GM_Became;		/* set to 1 if GM issued become */
+
 
 #endif				/* _DIP_H */
