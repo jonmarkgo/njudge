@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.34  2003/02/17 09:29:28  millis
+ * Changed setenv() to putenv() to work on Sun platforms
+ *
  * Revision 1.33  2003/02/05 23:53:44  millis
  * Removed dipstats files.
  * Also added in new JUDGE_TZ variable, to specify timezone
@@ -730,8 +733,8 @@ void master(void)
 	s = ctime(&next_time);
 	if (!strncmp(s + 11, "14:00", 5))
 		s[15] = '1';	/* Prevent 2pm schedules */
-	sprintf(line, "%s %s %2.2s%2.2s %6.6s", ATRUN_CMD,
-		Aflg ? "norm" : "dorm", s + 11, s + 14, s + 4);
+	sprintf(line, "%s %s %2.2s%2.2s %6.6s %4.4s", ATRUN_CMD,
+		Aflg ? "norm" : "dorm", s + 11, s + 14, s + 4, s + 20);
 	if (!aflg)
 		execute(line);
 

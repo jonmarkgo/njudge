@@ -4,8 +4,8 @@
 #  executed. This is how the Judge automatically sends e-mails to all players
 #  when a deadline falls.
 #
-#  Invoked as: atrun norm time month day
-#          or: atrun dorm time month day
+#  Invoked as: atrun norm time month day year
+#          or: atrun dorm time month day year
 #
 #  The first form is used when dip is invoked with the -A switch and the 
 #  second is used when invoked without it.
@@ -44,5 +44,5 @@ endif
 # Schedule an execution of the Judge on the next deadline and let dip know 
 # that the script executed successfully.
 
-at $2 $3 $4 -f diprun
+at $2 $3 $4 $5 -f diprun
 rm -f dip.xfail
