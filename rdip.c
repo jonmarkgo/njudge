@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2003/03/25 23:35:33  millis
+ * Comment out "Exit" line, as meses up on exim installations
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Passing of config_dir setting to dip, use of syslogging
  *
@@ -18,6 +21,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "functions.h"
 #include "diplog.h"
@@ -62,6 +66,32 @@ static struct stat sbuf;
 
 static int Aflg, xflg, bflg;
 int Dflg;
+
+/* Will retry the lock several times before giving up */
+int retry_lockfd(int n, int m)
+{
+#define MAX_RETRIES 5
+#define SLEEP_WAIT 30
+/* Following error is the dreaded 'Resource temporarily unavailable' */
+#define TEMPORARY_ERROR 11 
+    int attempt=0;
+    int ret;
+    char errtext[50];
+
+    do
+    {
+	attempt++;
+        ret = lockfd(n, m);
+	if (errno == TEMPORARY_ERROR) {
+	   sprintf(errtext,"retrying %d", attempt); 
+	   perror(errtext);
+	   sleep(SLEEP_WAIT);
+	}
+    }
+    while (ret && errno == TEMPORARY_ERROR && attempt < MAX_RETRIES);
+
+    return ret;
+}
 
 int main(int argc, char **argv)
 {
@@ -198,7 +228,7 @@ int main(int argc, char **argv)
 		perror(LOCK2);
 		exit(1);
 	}
-	if (lockfd(fd2, 1)) {
+	if (retry_lockfd(fd2, 1)) {
 		perror(LOCK2);
 		exit(1);
 	}
