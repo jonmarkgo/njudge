@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030914;12320000">
+	<META NAME="CHANGED" CONTENT="20030914;22421200">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -24,7 +24,7 @@
 	</STYLE>
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<P ALIGN=CENTER STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; font-weight: medium; page-break-after: avoid">
+<P CLASS="western" ALIGN=CENTER STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; font-weight: medium; page-break-after: avoid">
 <FONT FACE="Albany, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt">Description
 of mail format of Diplomacy electronic Judges</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
@@ -36,24 +36,22 @@ September 2003 : first draft
 </P>
 <H1 CLASS="western">Introduction</H1>
 <P CLASS="western">This document describes the output format of <I>the
-njude Diplomacy adjudicator.</I></P>
-<P CLASS="western"><FONT COLOR="#ff0000"><I><FONT FACE="Arial, sans-serif">WARNING
-: </FONT></I>This is work in progress; please report any mistake,
-incoherence, gap...</FONT></P>
+njudge Diplomacy adjudicator.</I></P>
+<P CLASS="western"><FONT COLOR="#ff0000"><I>WARNING : </I>This is
+work in progress; please report any mistake, incoherence, gap...</FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
 <OL>
 	<LI><H1 CLASS="western">Goals and conventions</H1>
 </OL>
 <OL>
-	<LI><P CLASS="western"><SPAN STYLE="font-style: normal">Describe the
-	current mail format to make compatibility between th</SPAN>e judge
-	and the tools which use its output easier.</P>
+	<LI><P CLASS="western">Describe the current mail format to make
+	compatibility between the judge and the tools which use its output
+	easier.</P>
 	<LI><P CLASS="western">Help the next versions of the judge to be
 	fully compatible with the previous versions (compatibility mode).</P>
 	<LI><P CLASS="western">Describe the enhancements to this format in
 	the new versions of njudge or other judges.</P>
-	<P CLASS="western"></P>
 </OL>
 <P CLASS="western">If not specified otherwise, all information there
 is given for all judges and must be accepted by all clients.</P>
@@ -128,21 +126,21 @@ with the same provisions as the header.</P>
 	njudge code.</P>
 </OL>
 <UL>
-	<LI><P CLASS="western">Each line begins by twice two dots  (<FONT FACE="Courier New">::</FONT>),
+	<LI><P CLASS="western">Each line begins by twice two dots (<FONT FACE="Courier New">::</FONT>),
 	followed by a blank space.</P>
 	<LI><P CLASS="western">First line :</P>
 	<UL>
-		<LI><P CLASS="western"> '<FONT FACE="Courier New">Judge: </FONT>'
-		[7 characters, space included]</P>
-		<LI><P CLASS="western">The code of the judge [4 letters]  [<FONT COLOR="#ff0000">TO
+		<LI><P CLASS="western">'<FONT FACE="Courier New">Judge: </FONT>' [7
+		characters, space included]</P>
+		<LI><P CLASS="western">The code of the judge [4 letters] [<FONT COLOR="#ff0000">TO
 		SOLVE : Why only 4 letters ? Does not seem hardcoded anyway. Always
 		uppercase ??</FONT>], 
 		</P>
 		<LI><P CLASS="western">Followed by two spaces.</P>
 		<LI><P CLASS="western">Only if the player is signed onto a game:</P>
 		<UL>
-			<LI><P CLASS="western"> '<FONT FACE="Courier New">Game: </FONT>'
-			[6 characters, space included]</P>
+			<LI><P CLASS="western">'<FONT FACE="Courier New">Game: </FONT>' [6
+			characters, space included]</P>
 			<LI><P CLASS="western">The name of the current game, with the
 			first letter uppercase.</P>
 			<LI><P CLASS="western">Followed by two spaces.</P>
@@ -163,7 +161,7 @@ with the same provisions as the header.</P>
 	onto a game: 
 	</P>
 	<UL>
-		<LI><P CLASS="western"> '<FONT FACE="Courier New">Deadline: </FONT>'
+		<LI><P CLASS="western">'<FONT FACE="Courier New">Deadline: </FONT>'
 		[10 characters, space included]</P>
 		<LI><P CLASS="western">Phase of the game [<FONT COLOR="#ff0000">TO
 		SOLVE: see exact format and allowe length</FONT>]</P>
@@ -184,7 +182,8 @@ with the same provisions as the header.</P>
 				<LI><P CLASS="western">Day number (2 digits with leading zero if
 				necessary)</P>
 				<LI><P CLASS="western">Year (4 digits)</P>
-				<LI><P CLASS="western">Time/minutes/seconds (as HH:MM:SS)</P>
+				<LI><P CLASS="western">Time/minutes/seconds (as HH:MM:SS, with
+				hours from 00 to 24)</P>
 				<LI><P CLASS="western">Timezone of the judge location (+ ou &ndash;
 				and 4 digits)</P>
 			</UL>
@@ -201,15 +200,15 @@ with the same provisions as the header.</P>
 <P CLASS="western"><BR><BR>
 </P>
 <P CLASS="western">Examples :</P>
-<PRE>:: Judge: FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat
-:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 &nbsp;
+<PRE>:: Judge: FROG Game: S1b6p2 Variant: Standard Gunboat
+:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 
 
-:: Judge: FROG &nbsp;Game: S3b7p1 &nbsp;Variant: Standard Gunboat
-:: Deadline: F1906B Thu Sep 04 2003 23:30:00 +0200 &nbsp;
+:: Judge: FROG Game: S3b7p1 Variant: Standard Gunboat
+:: Deadline: F1906B Thu Sep 04 2003 23:30:00 +0200 
 :: Map: <A HREF="http://frog.born2play.org/~observer/cartes.php3?Partie=s3b7p1">http://frog.born2play.org/~observer/cartes.php3?Partie=s3b7p1</A>
 
-:: Judge: ALEX &nbsp;Game: Test &nbsp;Variant: Standard
-:: Deadline: S1901M Fri May 09 2003 23:30:00 +0200 &nbsp;</PRE><P CLASS="western">
+:: Judge: ALEX Game: Test Variant: Standard
+:: Deadline: S1901M Fri May 09 2003 23:30:00 +0200 </PRE><P CLASS="western">
 <BR><BR>
 </P>
 <P CLASS="western"><BR><BR>
@@ -219,11 +218,18 @@ with the same provisions as the header.</P>
 </OL>
 <P CLASS="western"><BR><BR>
 </P>
+<P CLASS="western">This is the mail that a player receives when he
+successfully subscribed to a game. 
+</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT COLOR="#ff0000">To contniue : (add cases
+when game beginning ; )</FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
 <P CLASS="western">Example (header and footer suppressed) :</P>
-<PRE>:: Judge: FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat
-:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 &nbsp;
+<PRE>:: Judge: FROG Game: S1b6p2 Variant: Standard Gunboat
+:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 
 
 You've been selected to play a power in game 's1b6p2'.
 You'll be notified when 6 more players sign on.
