@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.12  2003/02/28 20:16:47  nzmb
+ * Changed the name of resignation ratio to CD ratio, to avoid confusion with
+ * Doug Massey's DRR.
+ *
  * Revision 1.11  2002/11/24 23:22:23  millis
  * Removed unused function "checklist"
  *
@@ -490,6 +494,18 @@ int iamalso(char *addr, char *oldaddr)
 	char *s, line[200];
 	FILE *fp1, *fp2;
 
+	/* do some basic checking of addr (if it has a , or ; or : the 
+	   user may be trying to register more than 1 address */
+	if(strchr(oldaddr,':') || strchr(oldaddr,',') || strchr(oldaddr,';'))
+	{
+		s = strchr(oldaddr,'\n');
+		if(s)
+			*s = '\0';
+		fprintf(rfp,"IAmAlso: bad address '%s'.\n", oldaddr);
+		fprintf(rfp,"It looks like you may be trying to IAmAlso your address to more than 1 existing addresses.\n");
+		return 1;
+	}
+
 	if (!(fp1 = fopen("dip.addr", "r"))) {
 		perror("address");
 		bailout(1);
@@ -500,6 +516,9 @@ int iamalso(char *addr, char *oldaddr)
 	}
 	userid = 0;
 	while (fgets(line, sizeof(line), fp1)) {
+		s = strchr(line, '\n');
+		if(s)
+			*s = '\0';
 		s = strchr(line, '=');
 		if (s && !strcasecmp(s + 1, addr)) {
 			fprintf(rfp, "IamAlso ignored, %s already registered.\n", addr);
@@ -510,7 +529,7 @@ int iamalso(char *addr, char *oldaddr)
 		}
 		if (s && cmpaddr(s + 1, oldaddr))
 			sscanf(line + 1, "%d %d %d", &userid, &siteid, &level);
-		fputs(line, fp2);
+		fprintf(fp2, "%s\n", line);
 	}
 
 	if (!userid) {
