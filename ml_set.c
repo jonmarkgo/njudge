@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.54  2004/05/20 02:21:31  russblau
+ * Fixed Bug 308 (Error parsing powerlist in SET APPROVE command)
+ *
  * Revision 1.53  2004/04/04 15:15:01  millis
  * Fix bug 193 (add approval mechanism to allow moves)
  *
@@ -378,70 +381,83 @@ void CheckForGameStart()
 #define CATF_NORMAL 0
 #define CATF_INVERSE 1
 
-int CheckAndToggleFlag( int *flag,   /* dipent.flags or dipent.xflags */
-			    int flag_mask,  /* F_MASK or XF_MASK */
-			    char *flag_name,  /* name of mask for user to see */
-			    int set_on,       /* == 1 if set on, 0 if set off */
-			    char *warn_text , /* Text to show when flag is changed */
-			    int inverted_logic /*set to 1 if flag is negative logic, i.e. On = No... */
-			)
+int CheckAndToggleFlag(
+        int *flag,         /* dipent.flags or dipent.xflags */
+        int flag_mask,     /* F_MASK or XF_MASK */
+        char *flag_name,   /* name of mask for user to see */
+        int set_on,        /* == 1 if set on, 0 if set off */
+        char *warn_text,   /* Text to show when flag is changed */
+        int inverted_logic /* set to 1 if flag is negative logic, i.e. On = No... */
+    )
 {
-	char *op_text; /* Either set or cleared */
-	char *no_text;   /*Either no or nothing */
-	int setting = 0; /* returns 1 if flag whas changed, else 0 */
+    char *op_text;   /* Either set or cleared */
+    char *no_text;   /* Either no or nothing */
+    int setting = 0; /* returns 1 if flag whas changed, else 0 */
+
 #define CLEARED_TEXT "cleared"
 #define SET_TEXT "set"
 
-	if (set_on == CATF_SETON) {
-	   if (*flag & flag_mask) {
-                fprintf(rfp, "Game '%s' is already %s.\n", dipent.name, flag_name);
-           } else {
-                *flag |= flag_mask;
-                fprintf(rfp, warn_text);
-		if (inverted_logic == CATF_INVERSE) {
-		   op_text = CLEARED_TEXT;
-		} else {
-		   op_text = SET_TEXT;
-		}
-                pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
-			xaddr, powers[dipent.players[player].power], dipent.name, op_text, flag_name);
-                /* WAS mfprintf  1/95 BLR */
-                fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n", xaddr, PRINT_POWER, dipent.name,
-			op_text, flag_name);
-                fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n", raddr, PRINT_POWER, dipent.name, 
-			op_text, flag_name);
-                fprintf(mbfp, warn_text);
-		broadcast = 1;
-		setting = 1;
-	   }
-	}
-	else {
-	    if (!(*flag & flag_mask)) {
-		if (inverted_logic==CATF_INVERSE) {
-		    no_text = ""; 
-		} else { 
-		  no_text = "No";
-		}
-                fprintf(rfp, "Game '%s' is already %s%s.\n", dipent.name, no_text, flag_name);
-             } else {
-		if (inverted_logic==CATF_INVERSE) {
-		   op_text = SET_TEXT;
-                } else {
-                   op_text = CLEARED_TEXT;
-                }
-                *flag &= ~flag_mask;
-                fprintf(rfp, warn_text);
-                pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
-                        xaddr, powers[dipent.players[player].power], dipent.name, op_text, flag_name);
-               /* WAS mfprintf  1/95 BLR */
-               fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n", xaddr, PRINT_POWER, dipent.name, op_text, flag_name);
-               fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n", raddr, PRINT_POWER, dipent.name, op_text, flag_name);
-               fprintf(mbfp, warn_text);
-		broadcast = 1;
-		setting = 1;
-	    }
-       }
-       return setting;
+    if (set_on) {
+        if (*flag & flag_mask) {
+            if (inverted_logic) {
+                no_text = "No"; 
+            } else { 
+                no_text = "";
+            }
+            fprintf(rfp, "Game '%s' is already %s%s.\n",
+                    dipent.name, no_text, flag_name);
+        } else {
+            *flag |= flag_mask;
+            fprintf(rfp, warn_text);
+            if (inverted_logic) {
+                op_text = CLEARED_TEXT;
+            } else {
+                op_text = SET_TEXT;
+            }
+            pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+                    xaddr, powers[dipent.players[player].power], dipent.name,
+                    op_text, flag_name);
+            /* WAS mfprintf  1/95 BLR */
+            fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n",
+                    xaddr, PRINT_POWER, dipent.name, op_text, flag_name);
+            fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n",
+                    raddr, PRINT_POWER, dipent.name, op_text, flag_name);
+            fprintf(mbfp, warn_text);
+            broadcast = 1;
+            setting = 1;
+        }
+    }
+    else {
+        if (!(*flag & flag_mask)) {
+            if (inverted_logic) {
+                no_text = ""; 
+            } else { 
+                no_text = "No";
+            }
+            fprintf(rfp, "Game '%s' is already %s%s.\n",
+                    dipent.name, no_text, flag_name);
+        } else {
+            if (inverted_logic) {
+                op_text = SET_TEXT;
+            } else {
+                op_text = CLEARED_TEXT;
+            }
+            *flag &= ~flag_mask;
+            fprintf(rfp, warn_text);
+            pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+                    xaddr, powers[dipent.players[player].power], dipent.name,
+                    op_text, flag_name);
+            /* WAS mfprintf  1/95 BLR */
+            fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n",
+                    xaddr, PRINT_POWER, dipent.name, op_text, flag_name);
+            fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n",
+                    raddr, PRINT_POWER, dipent.name, op_text, flag_name);
+            fprintf(mbfp, warn_text);
+            broadcast = 1;
+            setting = 1;
+        }
+    }
+    return setting;
 }
 
 /*
