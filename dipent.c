@@ -1,6 +1,10 @@
 
 /*
  * $Log$
+ * Revision 1.5  2001/06/24 05:30:29  nzmb
+ * Added read/write capability for new dipent variables (dedapplied, orded,
+ * rrded) used in the plyrdata and new deadline systems.
+ *
  * Revision 1.4  2001/05/26 11:20:34  miller
  * Do not notify time-warp for shifts < 1 minute
  *
@@ -74,7 +78,7 @@ int getdipent(FILE * fp)
  *  Read the next game entry from the master file.
  */
 
-	int i, j, tempvp, tempplayers;
+	int i, j, temp, tempvp, tempplayers;
 	int tempcentres;
 	time_t now;
 	unsigned char line[1000];
@@ -84,11 +88,12 @@ int getdipent(FILE * fp)
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%d", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
-		   &dipent.xflags, &dipent.max_absence_delay);
+		   &dipent.xflags, &dipent.max_absence_delay,
+		   &temp);
 
 	if (i == 7) {
 		dipent.flags = F_NONMR;
@@ -118,7 +123,13 @@ int getdipent(FILE * fp)
 		i = 12;
 	}
 
-	if (i != 12) {
+        if (i == 12) {
+                if (dipent.variant == V_machiavelli)
+                    dipent.xflags |= XF_COASTAL_CONVOYS;
+                i = 13;
+        }
+
+	if (i != 13) {
 		fprintf(stderr, "Bad header in master file (returned %d).\n%s\n", i ,line);
 		bailout(E_FATAL);
 	}
@@ -287,12 +298,14 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d\n", 
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %d\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
 		dipent.no_of_players, dipent.xflags,
-		dipent.max_absence_delay);
+		dipent.max_absence_delay,
+                0 /* This 0 indicates version 0.8.9 onwards */);
+
 	if (dipent.process)
 		fprintf(fp, "Process   %24.24s (%ld)\n",
 			ctime(&dipent.process), dipent.process);
