@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.66  2004/09/13 23:03:45  millis
+ * Further changes for Bug 363
+ *
  * Revision 1.65  2004/09/03 13:30:18  millis
  * Added use of AlliedWin value.
  *
@@ -2877,11 +2880,14 @@ void mail_setp(char *s)
 			CheckPress();
                         CheckAndToggleFlag(&dipent.x2flags,  X2F_TOUCHPRESS, "TouchPress", CATF_SETON,
                                                "Players can now only send one broadcast per turn and press with adjacent powers.\n",CATF_NORMAL, CATF_NOSTART);
+		break;
 
                 case SET_NOTOUCHPRESS:
 			CheckPress();
                         CheckAndToggleFlag(&dipent.x2flags,  X2F_TOUCHPRESS, "TouchPress", CATF_SETOFF,
                                                "Players can now send unlimited press.\n",CATF_NORMAL, CATF_NOSTART);
+		
+		break;
 
 		case SET_CAPTUREWIN:
                         CheckNoMach();
@@ -3035,6 +3041,8 @@ CATF_SETOFF,
                         CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CoastalConvoy", CATF_SETON,
                                            "Coastal convoys will now be permitted.\n",
                                             CATF_NORMAL, CATF_NOSTART);
+		break;
+
 
                 case SET_NOCOASTALCONVOY:
                         CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CoastalConvoy", CATF_SETOFF,
@@ -3047,11 +3055,13 @@ CATF_SETOFF,
                         CheckAndToggleFlag(&dipent.xflags,  XF_PROV_DUALITY, "Duality", CATF_SETON,
                                            "Some map specific provinces may now work with dual land and water behaviour.\n",
                                             CATF_NORMAL, CATF_NOSTART);
+		break;
  
                 case SET_NODUALITY:
                         CheckAndToggleFlag(&dipent.xflags,  XF_PROV_DUALITY, "Duality", CATF_SETOFF,
                                            "All map provinces now only have one behaviour.\n",
                                             CATF_NORMAL, CATF_NOSTART);
+		break;
 
 		case SET_HONGKONG:
 			CheckNoMach();
