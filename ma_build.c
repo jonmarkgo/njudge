@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.10  2003/05/10 00:46:15  millis
+ * Bug 140 fix, display 'orders' when orders and 'results' when results
+ *
  * Revision 1.9  2003/05/03 23:33:49  millis
  * Fix bug 150 (NO_GARRISONS flag)
  *
@@ -349,6 +352,7 @@ void ma_buildout(int pt)
 						err++;
 					}
 				}
+				fprintf(rfp,".");
 				unit[u].status = ':';
 
 			} else if (unit[u].status == 'd') {
@@ -363,7 +367,7 @@ void ma_buildout(int pt)
 
 				if ((processing || predict) && is_sieged(unit[u].loc)) {
 					remove_siege(unit[u].loc);
-					fprintf(rfp, " (siege lifted)\n");
+					fprintf(rfp, " (siege lifted).\n");
 				} else {
 					fprintf(rfp, ".\n");
 				}
