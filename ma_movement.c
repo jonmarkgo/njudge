@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/10/19 21:39:16  millis
+ * Fixed Bug 21: Mach2 games allowing Armies in Venice
+ *
  * Revision 1.8  2002/05/14 23:05:49  miller
  * Allow signalling convoys in Mach2 games
  *
@@ -50,6 +53,7 @@
 static int result[MAXUNIT];
 static int support[MAXUNIT];
 static int supportvalue[MAXUNIT];
+
 
 /*
  * Input processing of the regular movement orders
@@ -544,11 +548,11 @@ int ma_moveout(int pt)
 		supportvalue[u] = supval(u);
 
 		/*
-		   **  You get an extra support moving into a rebelling province
+		   **  You get an extra support moving/converting into a rebelling province
 		   **  as long as no one else is trying it at the same time.
 		 */
 
-		if (unit[u].order == 'm' &&
+		if ((unit[u].order == 'm' || (unit[u].order == 'v' && unit[u].type == 'G')) &&
 		    pr[p = unit[u].dest].owner != unit[u].owner &&
 		    has_rebellion(p)) {
 			for (u2 = 1; u2 <= nunit; u2++) {
