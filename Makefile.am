@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.29  2003/07/23 05:05:09  jaldhar
+# Remake map on upgrades (Closes bug 175) and some rearrangement of targets.
+#
 # Revision 1.28  2003/07/19 13:13:57  millis
 # Bug 196, remove pdip
 #
@@ -325,12 +328,12 @@ install-data-hook: dirs flist magic
 	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 
-# smail.in and dipclean.in are  already automatically included as are 
-# top-level docs like COPYING etc.
+# smail.in, dip.conf.in, and dipclean.in are  already automatically included as
+# are top-level docs like COPYING etc.
 distclean-local:
 	-rm -rf autom4te.cache
 
-EXTRA_DIST= config.h.in defaults.inc.in dip.conf dip.template starter.flist \
+EXTRA_DIST= config.h.in defaults.inc.in dip.template starter.flist \
 	debian njudge.spec $(man_MANS) $(bin_SCRIPTS)
 
 CLEANFILES=flist.info flist
