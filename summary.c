@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -24,6 +27,7 @@
 #include "mach.h"
 #include "conf.h"
 #include "functions.h"
+#include "diplog.h"
 
 static int variant = 0;		/* The currently loaded variant */
 
@@ -63,7 +67,7 @@ static int outn[sizeof(outc)];
 FILE *mfp;			/* Master File pointer */
 int gflg = 0;			/* Nonzero indicates gunboat mode */
 int mflg = 0;			/* Nonzero indicates master mode */
-
+int bflg = 0;			/* Nonzero indicates blind mode  */
 int main(int argc, char **argv)
 {
 
@@ -75,22 +79,12 @@ int main(int argc, char **argv)
 	int nprov, cs, ce, ncity, lname = 0, turn, years = 0;
 	int ix[60], sy, gotent;
 	char string[30], *s, *t, *name;
-
-
-	/*
-	 * read in the configuration, first from config file,
-	 * finally from the command line
-	 * TODO: fold in command line processing for configuration
-	 * variables with regular argument processing.
-	 */
-	conf_init();
-	conf_readfile(CONFIG_FILE);
-	conf_cmdline(argc, argv);
+        char exe_name[100];
+	int lflg=0;
 
 	variant = 1;
 	name = NULL;
 	log_fp = stderr;
-	mfp = fopen("dip.master", "r");
 	gotent = 0;
 
 	for (i = 1; i < argc; i++) {
@@ -103,10 +97,7 @@ int main(int argc, char **argv)
 					break;
 
 				case 'l':
-					if (!(log_fp = fopen(LOG_FILE, "a"))) {
-						fprintf(stderr, "sum: Unable to open log file.\n");
-						exit(1);
-					}
+					lflg++;
 					break;
 
 				case 'm':
@@ -117,6 +108,29 @@ int main(int argc, char **argv)
 				case 'q':
 					qflg++;
 					break;
+	
+				 case 'b':
+                                        bflg++;
+                                        break;
+
+				case 'C':
+                                  if (*++s)
+                                        CONFIG_DIR = s;
+                                  else if (++i < argc)
+                                        CONFIG_DIR = argv[i];
+                                  else {
+                                        fprintf(stderr, "Directory must follow C option.\n");
+                                        goto usage;
+                                  }
+                                  i++;
+                                  s = " ";
+                                break;
+
+
+				case 'c':
+					/* ignore 'c' options */
+					break;
+
 
 				case 'v':
 					if (isdigit(*(s + 1))) {
@@ -146,11 +160,37 @@ int main(int argc, char **argv)
 		}
 	}
 
+       /*
+         * read in the configuration, first from config file,
+         * finally from the command line
+         * TODO: fold in command line processing for configuration
+         * variables with regular argument processing.
+         */
+        conf_init();
+        conf_readfile(CONFIG_DIR, CONFIG_FILE);
+        conf_cmdline(argc, argv);
+
+        if (lflg) {
+	    if (!(log_fp = fopen(LOG_FILE, "a"))) {
+                    fprintf(stderr, "sum: Unable to open log file.\n");
+                    exit(1);
+	    }
+        }
+
+        mfp = fopen(MASTER_FILE, "r");
+        sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
+
+        OPENDIPLOG(exe_name);
+        DIPINFO("Started summary");
+
+
 	/*
 	 *  We only want to generate the master summary if the gunboat flag
 	 *  is enabled.  Otherwise the master can look at the regular players'
-	 *  summary.  This assumes we aren't supporting blind variants yet.
+	 *  summary.  
 	 */
+
+	if (mflg) bflg = 0; /* Master is never blind! */
 
 	if (mflg && gflg) {
 		gflg = 0;
@@ -164,13 +204,18 @@ int main(int argc, char **argv)
 	}
 	if (!name) {
 	      usage:
-		fprintf(log_fp, "sum: Usage: %s [-glv#] game\n", argv[0]);
-		fprintf(log_fp, "    m: Master, don't hide identities in msummary");
+		fprintf(log_fp, "sum: Usage: %s [-c<CONFIG>=<value>] [-C<directory>] [-mbglv#] game\n", argv[0]);
+		fprintf(log_fp, "    -c<CONFIG>=<value>: Set <CONFIG> setting to <value>.\n");
+                fprintf(log_fp, "    C: Set directory for dip.conf file.\n");
+		fprintf(log_fp, "    m: Master, don't hide identities in msummary\n");
+	        fprintf(log_fp, "    b: Blind game, limits output\n");
 		fprintf(log_fp, "    g: Gunboat, hide identities.\n");
 		fprintf(log_fp, "    l: Send errors to log file.\n");
 		fprintf(log_fp, "    v: Specify alternate variant.\n");
 		exit(1);
 	}
+
+
 	/*
 	 *  Spin through the Gxxx files to find variant 
 	 */
@@ -184,7 +229,7 @@ int main(int argc, char **argv)
 			break;
 		fclose(ifp);
 	}
-	if (turn == 2) {
+	if (turn <= 2) {
 		fprintf(log_fp, "sum: Attempt to obtain summary before 1st turn: %s\n", name);
 		exit(1);
 	}
@@ -221,6 +266,7 @@ int main(int argc, char **argv)
 		fprintf(log_fp, "sum: Unable to allocate heap.\n");
 		return E_FATAL;
 	}
+
 	for (i = 1; i <= npr; i++) {
 		if (fread(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp) != CMAP_SIZE) {
 			fprintf(log_fp, "sum: cmap read error city = %d, %s.\n", i, line);
@@ -230,7 +276,7 @@ int main(int argc, char **argv)
 		pr[i].move = (unsigned char *) &heap[cmap[CMAP_MOVE]];
 		pr[i].type = cmap[CMAP_TYPE];
 		pr[i].flags = cmap[CMAP_FLAG];
-		n = pr[i].type == 'l' ? 0 : power(pr[i].type);
+		n = islower(pr[i].type) ? 0 : power(pr[i].type);
 		pr[i].owner = n;
 		pr[i].cown = n;
 		pr[i].home = n;
@@ -275,6 +321,7 @@ int main(int argc, char **argv)
 			variants[variant]);
 		exit(0);
 	}
+
 	if (nprov > NPROV) {
 		fprintf(log_fp, "sum: Too many prov records: %d of %d.\n", nprov, NPROV);
 		exit(1);
@@ -595,7 +642,9 @@ int main(int argc, char **argv)
 	 *  Next we take care of the supply center ownership.
 	 */
 
-	for (cs = 0; cs < nprov; cs += CPL) {
+	/* Only display this section if not blind or for master */
+
+	if (!bflg) for (cs = 0; cs < nprov; cs += CPL) {
 		ce = nprov < cs + CPL ? nprov : cs + CPL;
 
 		if (dipent.flags & F_MACH) {
@@ -652,7 +701,7 @@ int main(int argc, char **argv)
 	 *  Similarly the city ownerships.
 	 */
 
-	for (cs = 0; cs < ncity; cs += CPL) {
+	if (!bflg) for (cs = 0; cs < ncity; cs += CPL) {
 		ce = ncity < cs + CPL ? ncity : cs + CPL;
 
 		fprintf(ifp, "\n\nHistorical City Summary%s\n", cs ? " (cont)" : "");
@@ -719,7 +768,7 @@ int main(int argc, char **argv)
 			fprintf(ifp, "%-10.10s", powers[p]);
 			j = 0;
 			for (i = 0; i < YPL && i + sy < years; i++) {
-				if (player[ix[i + sy]][p] != player[ix[j + sy]][p]) {
+				if (!qflg && player[ix[i + sy]][p] != player[ix[j + sy]][p]) {
 					if (player[ix[j + sy]][p]) {
 						fprintf(ifp, "\\%*s%s\n%*s", 4 * (YPL - i) - 1 + 2, "",
 							names[player[ix[j + sy]][p]], 10 + 4 * i, "");
@@ -731,7 +780,11 @@ int main(int argc, char **argv)
 				m = centers[ix[i + sy]][p];
 				n = (ix[i + sy] == turn - 1) || (dipent.flags & F_MACH) ?
 				    m : units[ix[i + sy] + 1][p];
-				fprintf(ifp, "%3d%c", m, outc[m - n]);
+				if (!bflg) {
+					fprintf(ifp, "%3d%c", m, outc[m - n]);
+				} else {
+					fprintf(ifp, "%3d ", m);
+				}
 				outn[m - n]++;
 				sqrs[i] += m * m;
 			}
@@ -749,14 +802,15 @@ int main(int argc, char **argv)
 
 	}
 
-	for (i = 1; i < sizeof(outc); i++) {
-		if (outn[i]) {
-			fprintf(ifp, "%c = %d unused build%s.\n", outc[i], i, i == 1 ? "" : "s");
+	if (!bflg) {
+		for (i = 1; i < sizeof(outc); i++) {
+			if (outn[i]) {
+				fprintf(ifp, "%c = %d unused build%s.\n", outc[i], i, i == 1 ? "" : "s");
+			}
 		}
 	}
-
 	/*
-	 *  Next we take care of the rest of the crap...
+	 *  Next we take care of the rest of the info...
 	 */
 
 	if (!(dipent.flags & F_MACH)) {
@@ -764,6 +818,5 @@ int main(int argc, char **argv)
 		fprintf(ifp, "number of players.  It is a measure of how far the game has progressed.\n");
 	}
 	fclose(ifp);
-
 	return 0;
 }
