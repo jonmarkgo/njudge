@@ -1,16 +1,15 @@
-The following bugs were outstanding as of 1.5.0
+The following bugs were outstanding as of 1.5.1
 
 --------------------
 
-
 131   maj   P3   All   millis@faztek.org   REOP     Judge sometime hangs-up with empty dip.input file     
-91   nor   P3   All   judge-maint@diplom.org   NEW     Keep duplexed powers together    
+215   maj   P3   All   judgekeeper@braincells.com   NEW     when doing an upgrade from 1.2.0, some map files are not ...     
+91   nor   P3   All   judge-maint@diplom.org   NEW     Keep duplexed powers together     
 117   nor   P3   All   judge-maint@diplom.org   ASSI     Can't turn off Transformation options     
-149   nor   P3   All   MachFix@yahoogroups.com   NEW     Allow Mach games to be conceeded    
-163   nor   P3   All   millis@faztek.org   NEW     File error messages not getting reported to queue owner     
-168   nor   P3   All   millis@faztek.org   NEW     Add email reporting for vgr/vg queues     
-169   nor   P3   All   millis@faztek.org   NEW     Check validity of contact information     
-186   nor   P3   All   judge-maint@diplom.org   NEW     Must order does not allow press when should    
+149   nor   P3   All   MachFix@yahoogroups.com   NEW     Allow Mach games to be conceeded     
+186   nor   P3   All   judge-maint@diplom.org   NEW     Must order does not allow press when should     
+212   nor   P3   All   judge-maint@diplom.org   NEW     Announce when abandoned player has returned to NMR game     
+217   nor   P3   All   judge-maint@diplom.org   NEW     Judge bailout canbe caused with bad from: address     
 31   min   P3   All   judge-maint@diplom.org   NEW     Deadline warnings occur after game has terminated     
 35   min   P3   All   judge-maint@diplom.org   NEW     Player with unusable builds must waive     
 40   min   P3   All   MachFix@yahoogroups.com   ASSI     Sort out summary report spacing     
@@ -27,10 +26,12 @@ The following bugs were outstanding as of 1.5.0
 128   min   P3   All   judge-maint@diplom.org   NEW     press to none     
 132   min   P3   All   judge-maint@diplom.org   NEW     Deadline falls during "set absence" period     
 145   min   P3   All   judge-maint@diplom.org   NEW     Change "problem generating summary" error     
+135   min   P3   All   judge-maint@diplom.org   REOP     auto-advance deadline only when all players replaced     
 177   min   P3   All   millis@faztek.org   NEW     Summer-time alterations not working     
 183   min   P3   All   judge-maint@diplom.org   NEW     Build order "a edi" rejected when phased.     
 188   min   P3   All   judge-maint@diplom.org   NEW     Wrong email title in rejected absence request     
 200   min   P3   All   judge-maint@diplom.org   NEW     set absence and press shows for master     
-158   tri   P3   All   judge-maint@diplom.org   NEW     Deadline reminder timing is off
+158   tri   P3   All   judge-maint@diplom.org   NEW     Deadline reminder timing is off     
+211   tri   P3   All   judge-maint@diplom.org   NEW     x2flags shown as blank
 
-29 Bugs total.
+31 Bugs total.
