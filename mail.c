@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.59  2003/11/09 18:59:42  millis
+ * Fix bug 145
+ *
  * Revision 1.58  2003/09/14 00:18:28  millis
  * Fix bug 223
  *
@@ -750,7 +753,8 @@ int mail(void)
 				case RESENT:	/*  Resent-From: */
 					if (i == RESENT)
 						got_resent++;
-					mail_getaddr(s, raddr);
+					if (mail_getaddr(s, raddr))
+                                                return E_WARN; /* Ignore email from bad address */
 					if (!is_allowed(GLOBAL_PLAYER)) {
 					    if (!is_disallowed(GLOBAL_PLAYER)) {
                                                 fprintf(rfp, "You are not an allowed player on this judge.\n");
