@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "config.h"
 #include "dip.h"
 #include "functions.h"
 
@@ -17,7 +18,7 @@ void version(FILE * rfp)
 	muser = MAXUSER;
 	mgames = MAXGAMES;
 
-	fprintf(rfp, "Current version is njudge %s\n\n", JVERSION);
+	fprintf(rfp, "Current version is %s %s\n\n", PACKAGE, VERSION);
 	fprintf(rfp, "%d users registered, maximum is %d\n", nded, muser);
 	fprintf(rfp, "%d games running, maximum is %d\n", ngames, mgames);
 	fprintf(rfp,"\n");
