@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.16  2003/02/26 16:57:24  millis
+# Removed README.statistics and added README.timezone
+#
 # Revision 1.15  2003/02/17 12:41:40  millis
 # Fixed Bug 108, make lines >=1024 terminate in '\n'
 #
@@ -112,6 +115,8 @@ dip_SOURCES=	assign.c \
 		defaults.h
 
 ascii_to_ded_SOURCES=	ascii_to_ded.c
+
+ascii2rec_SOURCES=   ascii2rec.c
 
 cmap_SOURCES=	cmap.c \
 		jm.c \
