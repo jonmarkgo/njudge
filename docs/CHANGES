@@ -1,3 +1,28 @@
+(28th August 2002)
+Fixed a small mach bug in ma_porder.c
+(27th August 2002)
+Fixed a mach Victory bug. Also:
+
+        * New build system using GNU autotools.
+
+        * Added judge(6) man page (woefully incomplete.) Added
+        README.hackers and revamped INSTALL to reflect new build system.
+
+        * version.c: removed hardcoded string 'njudge'.  We get the
+        package name and version from autoconf now.
+
+        * strdup.c: Replaced this GPL licensed file with OpenBSDs'
+        implementation
+
+        * makeflist: new script used during install process to create
+        flist file.  Fixed a couple of invalid entries in starter.flist
+
+        * smail: program locations now inserted by autoconf
+
+        * newlogs: changed to use gzip by default.
+
+        * Added Debian package infrastructure
+
 (9th August 2002)
 Changed ml_signon.c to detect if same person is signing on after resigning
 (23rd July)
