@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.11  2002/12/28 00:02:54  millis
+  ** Fixed bug 77, adding wrap_char() function
+  **
   ** Revision 1.10  2002/12/16 23:19:04  nzmb
   ** Fixed bug that was causing the victor in games to be reported incorrectly. Also fixed a typo in ma_porder.c.
   **
@@ -121,8 +124,23 @@ int ownership(void)
 				}
 				while (*s)
 					s++;
+				if (dipent.x2flags & X2F_MORE_HOMES) {
+				    /* As homes can be variable, show them as per Mach */
+                                    if (pr[n].home == i && i != 0) {
+                                        *s++ = '*';
+                                    }
+                                    if ((pr[n].type >= 'A' && pr[n].type <= 'Z') || 
+					(pr[n].type >= '0' && pr[n].type <= '9')) {
+                                        sprintf(s, "(%c)", pletter[dipent.variant][pr[n].home]);
+                                       while (*s) s++;
+                                    }
+				}
 			}
+			if (pr[n].type == 'x' && !pr[n].owner && isNativePower(i) )
+				np[i]++;
+
 		}
+		np[i] += ExtraCentres();
 
 		if (!p)
 			continue;
@@ -209,6 +227,7 @@ int ownership(void)
 		}
 
 		p = strlen(powers[i]) + 1;
+	if (np[i] != 0 || nu[i] != 0) {
 		fprintf(rfp, "%s:", powers[i]);
 		while (p++ < GetMaxCountryStrlen() )
 			putc(' ', rfp);
@@ -218,7 +237,7 @@ int ownership(void)
 			nu[i], nu[i] == 1 ? ": " : "s:",
 			np[i] >= nu[i] ? "Builds " : "Removes",
 			l, l == 1 ? "" : "s");
-		if (np[i] >= maxcen) {
+		if (np[i] >= maxcen && !isNativePower(i)) {
 			/* Can't handle draws just yet - see above */
 			if ((numwin == 1) /* || (dipent.flags & SF_DRAW) */ ) {
 				fprintf(rfp, "%s  (* VICTORY!! *)\n", l == 1 ? " " : "");
@@ -248,12 +267,22 @@ int ownership(void)
 			} else
 				putc('\n', rfp);
 		}
+	    }
 	}
 
 	/* Build transform and anydisband games always have build phase */
 	if (dipent.xflags & XF_ALTBUILD)
 	    if (statusval == 0)
 		statusval = 1;
+
+	/* games with chooseable home centres have if a power needs centres */
+	if (dipent.x2flags & X2F_MORE_HOMES) {
+		statusval = 1;  
+	/* Temporary: should do some work by seeing if any homes still left
+           to declare for players alive */
+	/* Raised in Bug 104 */
+	}
+
 	return statusval;
 }
 
