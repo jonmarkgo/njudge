@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.37  2004/01/04 11:34:35  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.36  2003/12/29 17:59:53  millis
  * Work for Bug 91 (keep duplex powers together)
  *
@@ -289,14 +292,20 @@ void params(FILE * fp)
 	sprintf(line, "  Variant:  %s", (temp = strcap(variants[dipent.variant])));
 	free(temp);
 
+
+	/*  Flag information.  */
 	if (dipent.flags & F_GUNBOAT) {
 		strcat(line, ", Gunboat");
 	}
 	if (dipent.flags & F_BLIND) {
 		strcat(line, ", Blind");
 	}
-	if (dipent.np != dipent.no_of_players) {
+	if (IS_DUPLEX(dipent)) {
 	        strcat(line, ", Duplex");
+		if (!(dipent.x2flags & X2F_SECRET)) {
+		    sprintf(temp1," %d/%d", dipent.no_of_players,dipent.np);
+		    strcat(line,temp1);
+		}
 	}
 	if (!(dipent.flags & F_MACH)) {
 	    if (dipent.flags & F_AFRULES) {
@@ -309,13 +318,8 @@ void params(FILE * fp)
 		strcat(line, ", Wings");
  	    }
 	}	
-	if (dipent.np != dipent.no_of_players) {
-		strcat(line, ", Duplex");
-	}
 	strcat(line, ".");
 	print_params(fp, line);
-
-	/*  Flag information.  */
 
 	sprintf(line, "    Flags:  ");
 	if (dipent.flags & F_NONMR) {
