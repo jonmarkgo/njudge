@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.57  2004/07/25 16:13:42  millis
+ * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+ * return in duplex) and Bug 206 (allow takeover of unknown abandoned
+ * countries)
+ *
  * Revision 1.56  2004/07/12 09:46:14  millis
  * Bug 226: ON reflection, 3 day reminders for paused games seems right
  * (as if less, players would get most annoyed!).
@@ -592,7 +597,7 @@ void init(int argc, char **argv)
 				    fprintf(stderr, "Date-time must follow T option.\n");
 				    goto usage;
 			        }
-				if (mail_date(&datetime, &dip_time, 1, stderr)) {
+				if (mail_date(&datetime, &dip_time, 1, stderr, 0)) {
 				    fprintf(stderr, "Invalid date-time %s specified.\n", datetime);
 				    goto usage;
 			        }

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.62  2004/07/25 16:07:15  millis
+ * Bug 151, allow less powers than variant default.
+ *
  * Revision 1.61  2004/07/13 00:14:11  millis
  * Allow Transformation to be switched off (Bug 117)
  *
@@ -1295,7 +1298,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_DEADLINE:
-			if (mail_date(&s, &dates, 0, rfp))
+			if (mail_date(&s, &dates, 0, rfp, 0))
 				fprintf(rfp, "%sInvalid deadline date specified.\n\n", t);
 			else {
 				sequence *seq;
@@ -1342,7 +1345,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_GRACE:
-			if (mail_date(&s, &dates, 0, rfp))
+			if (mail_date(&s, &dates, 0, rfp, 0))
 				fprintf(rfp, "%sInvalid grace date specified.\n\n", t);
 			else if (dates < dipent.deadline) {
 				fprintf(rfp, "%sGrace date cannot be earlier than deadline.\n\n", t);
@@ -1505,7 +1508,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_START:
-			if (mail_date(&s, &dates, 0, rfp))
+			if (mail_date(&s, &dates, 0, rfp, 0))
 				fprintf(rfp, "%sInvalid start date specified.\n\n", t);
 			else {
 				sequence *seq; 
@@ -3223,7 +3226,7 @@ CATF_SETOFF,
 			}
 		/* Look to see if date has a <dates> TO <datee> construct */
 			break_date_into_two(s, ss, se );
-			if (mail_date(&ss, &dates, 0, rfp)) {
+			if (mail_date(&ss, &dates, 0, rfp, DT_ABS_START)) {
 				fprintf(rfp, "%sInvalid absence start date specified.\n\n", t);
 				s = "";
 				break;
@@ -3233,7 +3236,7 @@ CATF_SETOFF,
 				s = "";
 				break;
 			}
-			if (!*se || mail_date(&se, &datee, 0, rfp)) {
+			if (!*se || mail_date(&se, &datee, 0, rfp, DT_ABS_END)) {
 				fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
 				datee = dates + (24l * 60l *60l );
 			}
@@ -3341,7 +3344,7 @@ CATF_SETOFF,
 				break;
 			}
 
-			if (mail_date(&s, &dates, 0, rfp)) {
+			if (mail_date(&s, &dates, 0, rfp, 0)) {
 				fprintf(rfp, "%sInvalid absence cancel date specified.\n\n", t);
 				s = "";
 				break;

@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.29  2004/07/25 16:13:43  millis
+ * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+ * return in duplex) and Bug 206 (allow takeover of unknown abandoned
+ * countries)
+ *
  * Revision 1.28  2004/07/04 03:25:24  millis
  * Fix bug 328, implement Portage variant
  *
@@ -257,7 +262,9 @@ void ma_ownership(void);
 void mfprintf(FILE * the_file, char *fmt,...);
 
 /* defined in ml_date.c */
-int mail_date(char **p, long *date, int past, FILE * rfp);
+#define DT_ABS_START 1
+#define DT_ABS_END 2
+int mail_date(char **p, long *date, int past, FILE * rfp, int date_type);
 
 /* defined in machlib.c */
 int has_fortress(int prov);

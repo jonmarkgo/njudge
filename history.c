@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/08/27 22:27:50  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.8  2002/05/11 09:15:32  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -252,7 +255,7 @@ int history(char *line, int power_type)
 			break;
 
 		case 'f':
-			if (mail_date(&s, &from, 1, rfp)) {
+			if (mail_date(&s, &from, 1, rfp, 0)) {
 				if ((!msg_header_done) && (!signedon))
 					msg_header(rfp);
 				fprintf(rfp, "history %s", line);
@@ -262,7 +265,7 @@ int history(char *line, int power_type)
 			break;
 
 		case 't':
-			if (mail_date(&s, &to, 1, rfp)) {
+			if (mail_date(&s, &to, 1, rfp, 0)) {
 				if ((!msg_header_done) && (!signedon))
 					msg_header(rfp);
 				fprintf(rfp, "history %s", line);

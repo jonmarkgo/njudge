@@ -1,6 +1,10 @@
 
 /*
    ** $Log$
+   ** Revision 1.5  2004/07/04 03:49:40  alange
+   ** Bug 323. Rewrite date calculation logic to take advantage of mktime().
+   ** Semantics may be slightly different in evaluating ambiguous dates.
+   **
    ** Revision 1.4  2003/09/09 18:51:31  jaldhar
    ** Got rid of port.h and replaced with some extra configure checks.  The
    ** include strings.h was not carried over because it is commented out and
@@ -42,6 +46,7 @@
 
 #include "config.h"
 #include "dip.h"
+#include "functions.h"
 
 char *lookfor();
 
@@ -49,7 +54,7 @@ char *lookfor();
 
 /***************************************************************************/
 
-int mail_date(char **p, long *date, int past, FILE * rfp)
+int mail_date(char **p, long *date, int past, FILE * rfp, int date_type)
 {
 
 /*
@@ -133,11 +138,26 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 
 	}
 
-	/* Want this not to default to 23:30
-	 * fix by Tim Miller on inspiration from Eugene Hung
-	 */
-	switch(dipent.phase[5])
+
+	switch (date_type)
 	{
+	    case DT_ABS_START:
+		clockhours = 0;
+		clockmins = 0;
+		break;
+
+	    case DT_ABS_END:
+		clockhours = 23;
+		clockmins = 59;
+		break;
+
+	    default:
+		
+	    /* Want this not to default to 23:30
+	     * fix by Tim Miller on inspiration from Eugene Hung
+	     */
+	    switch(dipent.phase[5])
+	    {
 		case 'M':
 			clockhours = dipent.movement.clock;
 			clockmins = dipent.movement.clock % 60;
@@ -153,14 +173,15 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 		default:
 			/* oh oh */
 			clockhours = clockmins = -1;
-	}
+	    }
 
-	if(clockhours >= 0)
+	    if(clockhours >= 0)
 		clockhours /= 60;
-	else
-	{
+	    else
+	    {
 		clockhours = 23;
 		clockmins = 30;
+	    }
 	}	
 
 	time(&t2);
