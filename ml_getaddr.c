@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -145,7 +148,7 @@ int mail_getaddr(char *s, char *addr)
 		fprintf(log_fp, "Ignoring mail from funny address.\n");
 
 		bang = 0;
-		while (fgets(line, sizeof(line), stdin)) {
+		while (fgets(line, sizeof(line), inp)) {
 			fputs(line, log_fp);
 			fputs(line, ifp);
 			if (!strcmp(line, "Subject: Returned mail: Return receipt\n"))
