@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.40  2004/08/18 09:58:59  millis
+# Change name of document to njudgeMapFileHOWTO
+#
 # Revision 1.39  2004/08/17 14:53:25  jaldhar
 # Removed GNUism in date command for better portability.  Fixes bug 351.
 #
@@ -359,7 +362,7 @@ install-data-hook: dirs flist magic
 	${LN_S} -f ../dip.whois ${DESTDIR}${datadir}/whois
 	$(mkinstalldirs) ${DESTDIR}${bindir}/Dcontrol
 	@echo "control   001       S1801MX   1 1 1 0 2 18 7" > ${DESTDIR}${bindir}/dip.master
-	@echo "Process   " `LC_TIME=C date '+%a %b %d %X '` `date '+%Y' | awk '{print1+$1}'` >> ${DESTDIR}${bindir}/dip.master
+	@echo "Process   " `LC_TIME=C date '+%a %b %d %X '` `date '+%Y' | awk '{print 1+$$1}'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "Start     " `LC_TIME=C date '+%a %b %d %X %Y'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "-" >> ${DESTDIR}${bindir}/dip.master
 	@echo "\"| ${bindir}/rdip -b -d ${bindir} \"" > ${DESTDIR}${bindir}/${USER}-forward
