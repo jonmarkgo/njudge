@@ -313,7 +313,7 @@ int main (int argc, char* argv[], char** envp)
  signal(SIGUSR1, faultHandler);
  signal(SIGALRM, faultHandler);
  signal(SIGSEGV, faultHandler);
- signal(SIGCLD, SIG_IGN);
+ /*signal(SIGCLD, SIG_IGN);*/
 #endif
 
 #ifdef DEBUG_AUTOCOUNTRY
