@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/02/22 23:25:17  miller
+ * Fixed bug
+ *
  * Revision 1.3  2001/02/03 10:36:16  miller
  * fixed blind crashing bug
  *
@@ -633,9 +636,13 @@ void CheckRemindPlayer( int player, long one_quarter)
     }
 
     msg_header(rfp);
-    porder('T', player, 0); /* Call this to send copy of player's actual orders */
+    porder('M', player, 0); /* Call this to send copy of player's actual orders */
     fprintf(rfp,"\n\nThere is less than %d hour%sto the deadline", num_hours, pchar);
-    fprintf(rfp," and you\nhave not placed complete and valid moves.\n");
+    if ((dipent.players[player].status) &  SF_PART) {
+	fprintf(rfp, " but you\nneed to clear your error status with a valid message.\n");
+    } else {
+        fprintf(rfp," and you\nhave not yet placed complete and valid moves.\n");
+    }
     fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
     fclose(rfp);
 
