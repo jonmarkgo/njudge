@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  1998/03/01 12:52:19  davidn
+ * Correction to sort routine added
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -33,6 +36,10 @@
  *  ?? ??? 1987 Ken Lowe     He wrote it
  *  16 Oct 1996 Nathan W.    See below
  *  31 Dec 1996 David Norman Changes for dipent.no_of_players 
+ *  18 Nov 1999 Millis Miller Prevent ? signons to terminated but unstarted game
+ *  02 Dec 1999 Millis Miller Reset deadlines to sensible values on player takeover
+ *  03 Dec 1999 Millis Miller Chose different seed/report files if blind/wings
+ *
  */
 
 /*
@@ -52,9 +59,9 @@
 #include "dip.h"
 #include "mail.h"
 #include "ml_signon.h"
-#include ".magic.h"
 #include "variant.h"
 #include "functions.h"
+#include "dipstats.h"
 
 char *generic_names[] =
 {"b*", "c*", "d*", "e*", "f*", "g*",
@@ -64,6 +71,36 @@ char *generic_names[] =
  "a*"};
 
 #define ADMINISTRATOR	'@'
+
+/*
+ * Open a data file, based on variant setting
+ */
+
+FILE *OpenDataFile(char *line, char *type)
+{
+
+ FILE *fp;
+
+ if ((dipent.flags & F_BLIND ) && (dipent.xflags & F_WINGS)) {
+     sprintf(line, "data/%s_bw.%d", type, dipent.variant);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
+ }
+
+ if (dipent.flags & F_WINGS) {
+     sprintf(line, "data/%s_w.%d", type, dipent.variant);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
+ }
+
+ if (dipent.flags & F_BLIND) {
+     sprintf(line, "data/%s_b.%d", type, dipent.variant);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
+ }
+
+  sprintf(line, "data/%s.%d", type, dipent.variant);
+  fp = fopen(line,"r");
+  if (fp == NULL) fprintf(stderr, "igame: Error opening %s file %s.\n", type, line);
+  return fp;
+}
 
 /***************************************************************************/
 
@@ -228,8 +265,10 @@ int mail_signon(char *s)
 			newdipent(&name[1], variant);
 			dipent.variant = variant;
 			dipent.flags |= flags;
+			/* MLM disabled as no longer needed 
 			if (dipent.flags & F_GUNBOAT)
-				dipent.flags |= F_NOPARTIAL;
+				dipent.flags |= F_NOPARTIAL; 
+			*/
 		} else {
 			if (!msg_header_done)
 				msg_header(rfp);
@@ -271,10 +310,16 @@ int mail_signon(char *s)
 	if (name[0] == '?') {
 
 		/*
-		 * Sign this fellow up.
+		 * Reject signon if game is marked to be terminated.
 		 */
-
-		if (dipent.seq[0] != 'x') {
+                if (dipent.phase[6]=='X') {
+		    fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
+		    return E_WARN;
+                }
+		/*
+                 * Sign this fellow up.
+                 */
+		else if (dipent.seq[0] != 'x') {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Game '%s' is already in progress.\n", &name[1]);
@@ -310,8 +355,15 @@ int mail_signon(char *s)
 			} else {
 				fprintf(rfp, "No preference list has been established.\n");
 			}
+			StatLog(STAT_GAME, "%s\n", &name[1]);
 			return 0;
 		}
+		if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {
+                    /* Game is already full, waiting manual start?, so reject signon */
+                    fprintf(rfp,"Game '%s' is already full: no new players allowed.\n", &name[1]);
+                    return E_WARN;
+                }
+
 		if (!*raddr) {
 			if (!msg_header_done)
 				msg_header(rfp);
@@ -334,6 +386,7 @@ int mail_signon(char *s)
 		dipent.players[n].centers = 0;
 		dipent.players[n].userid = userid;
 		dipent.players[n].siteid = siteid;
+		dipent.players[n].late_count = 0; /* initialise late count */
 		*dipent.players[n].pref = '\0';
 		strcpy(dipent.players[n].address, raddr);
 		strcpy(dipent.players[n].password, password);
@@ -353,12 +406,31 @@ int mail_signon(char *s)
 			powers[power(name[0])], dipent.name);
 
 		if (name[0] == '?' && ++dipent.seq[1] == '0' + dipent.no_of_players) {
+		 /* Game is startable, lets see if starting is allowed */
+		    if (!(dipent.xflags & XF_MANUALSTART) ) {
 			if (dipent.seq[2] == 'x')
 				generic++;
 			strcpy(dipent.seq, "001");
 			starting++;
+		    } else {
+			/* Tell all players waiting for master to start game */
+		        fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
+                                powers[power(name[0])], dipent.name);
+                        fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
+                                powers[power(name[0])], dipent.name);
+			fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
+			mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
+			broad_signon = 1;
+		        if (dipent.n != 1) {
+                                pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
+                                        NowString(), xaddr,
+                                    powers[power(name[0])], dipent.name);
+                                pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s"); pprintf(cfp, ".\n\n");
+                                pcontrol++;
+			}
+		    }
 		} else {
-			if (dipent.seq[0] == 'x') {
+			if (dipent.seq[0] == 'x' && dipent.phase[6] != 'X' ) {
 				n = dipent.no_of_players - (dipent.seq[1] - '0');
 				fprintf(rfp, "You'll be notified when %d more player%s sign%s on.\n",
 				n, n == 1 ? "" : "s", n == 1 ? "s" : "");
@@ -385,7 +457,7 @@ int mail_signon(char *s)
 				pcontrol++;
 			}
 		}
-
+		StatLog(STAT_GAME, "%s\n",&name[1]);
 		return 0;
 
 	} else {
@@ -397,13 +469,18 @@ int mail_signon(char *s)
 		userid = siteid = 0;
 		n = power(name[0]);
 		for (i = 0; i < dipent.n; i++) {
-			if (name[0] == ADMINISTRATOR && !strcasecmp(raddr, GAMES_MASTER)) {
+			if (name[0] == ADMINISTRATOR && 
+				(!strcasecmp(raddr, GAMES_MASTER) ||
+				!strcmp(SPECIAL_PW, password))) {
 				n = MASTER;
 				i = dipent.n;
 				dipent.players[i].power = n;
 				strcpy(dipent.players[i].password, password);
 				strcpy(dipent.players[i].address, GAMES_MASTER);
 				dipent.players[i].userid = 0;
+				i_am_really_jk = 1;
+			} else {
+				i_am_really_jk = 0;
 			}
 			if (dipent.players[i].power != n)
 				continue;
@@ -472,13 +549,18 @@ int mail_signon(char *s)
 				strcpy(dipent.players[i].password, password);
 				dipent.players[i].userid = userid;
 				dipent.players[i].siteid = siteid;
+				dipent.players[i].late_count = 0;  /* reset old late_count */
 				player = i;
 				signedon = 1;
 				listflg = 0;
+				/* Reset the user's waiting flags */
+				dipent.players[i].status &= ~(SF_LATE | SF_REMIND);
+				dipent.players[i].status |= SF_WAIT;  
 
 				if (!msg_header_done)
 					msg_header(rfp);
 				fprintf(rfp, "Take over of abandoned %s allowed.\n\n", powers[n]);
+				fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
 				time(&now);
 				if (dipent.deadline < now + 24 * 60 * 24 && dipent.phase[5] == 'M'
 				    && !(dipent.flags & F_MODERATE)) {
@@ -501,25 +583,23 @@ int mail_signon(char *s)
 					xaddr, powers[n], dipent.name);
 
 				time(&now);
+				
+				/* bump up takeover in accordance with phase settings */
+				/* TBD: bump up only if no other abandoned country */
+				deadline( (sequence * ) NULL, 1);
 
-				if (dipent.deadline < now + 24 * 60 * 60) {
-					dipent.deadline = now + 24 * 60 * 60;
 					fprintf(rfp, "Deadline for '%s' advanced to %s.\n",
 						dipent.name, ptime(&dipent.deadline));
 					mfprintf(bfp, "Deadline for '%s' advanced to %s.\n",
 						 dipent.name, ptime(&dipent.deadline));
 					fprintf(cfp, "%sDeadline for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.deadline));
-				}
-				if (dipent.grace < now + 48 * 60 * 60) {
-					dipent.grace = now + 48 * 60 * 60;
-					fprintf(rfp, "Grace period for '%s' advanced to %s.\n",
+					fprintf(rfp, "Grace period for '%s' advanced to %s.\n\n",
 						dipent.name, ptime(&dipent.grace));
-					mfprintf(bfp, "Grace period for '%s' advanced to %s.\n",
+					mfprintf(bfp, "Grace period for '%s' advanced to %s.\n\n",
 						 dipent.name, ptime(&dipent.grace));
 					pprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.grace));
-				}
 				break;
 			}
 		}
@@ -575,15 +655,30 @@ int mail_signon(char *s)
 			}
 		}
 
-		if (dipent.seq[0] == 'x') {
+		if (dipent.seq[0] == 'x' && dipent.phase[6] != 'X') {
 			signedon = -1;
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Game '%s' hasn't started up yet.\n", dipent.name);
 			fprintf(rfp, "You'll be notified when %d more people sign on.\n",
 			   dipent.no_of_players - (dipent.seq[1] - '0'));
+			if (n== MASTER) {
+			        /* It is the master, show him the current preferences */
+				ShowPreferences(rfp);
+			}
+			StatLog(STAT_GAME,"%s\n", &name[1]);
 			return 0;
 		}
+		/* Show any requested absences */
+		if  (dipent.seq[0] != 'x' && dipent.phase[6] != 'X') {
+			display_absence(n, rfp);
+		}
+
+		/* Don't allw signon on unstarted but terminated game */
+		if (dipent.phase[6]=='X' && dipent.seq[0] == 'x') {
+                    fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
+                    return E_WARN;
+                }
 		if (dipent.phase[6] == 'X') {
 			if (!msg_header_done)
 				msg_header(rfp);
@@ -615,6 +710,7 @@ int mail_signon(char *s)
 		}
 		fputs("X-marker\n", ofp);
 	}
+	StatLog(STAT_GAME, "%s\n", &name[1]);
 	return 0;
 }
 
@@ -863,7 +959,10 @@ void mail_igame(void)
 			dipent.players[i].power = j;
 		}
 		if (dipent.players[i].power < WILD_PLAYER)
-			dipent.players[i].status = SF_MOVE;
+		    /* If not a blankboard game, or already in a build phase
+		       players can move */
+		    if (!(dipent.xflags & XF_BLANKBOARD) || dipent.phase[5] == 'B')
+			    dipent.players[i].status = SF_MOVE;
 	}
 
 	/* While we haven't assigned all the players. Only happens if a
@@ -993,13 +1092,14 @@ void mail_igame(void)
 		fprintf(stderr, "igame: Error opening game file %s.\n", line);
 		bailout(E_FATAL);
 	}
-	sprintf(line, "data/seed.%d", dipent.variant);
-	if ((tfp = fopen(line, "r")) == NULL) {
-		fprintf(stderr, "igame: Error opening seed file %s.\n", line);
+	if ((tfp = OpenDataFile(line, "seed")) == NULL){
 		bailout(E_FATAL);
 	}
 	while (fgets(line, sizeof(line), tfp))
-		fputs(line, ofp);
+	{
+	    if (!(dipent.xflags & XF_BLANKBOARD) || line[1] != ':') 
+		    fputs(line, ofp);
+	}
 	fclose(tfp);
 	fclose(ofp);
 
@@ -1022,6 +1122,8 @@ void mail_igame(void)
 		fprintf(ofp, "You have been selected as %s in game '%s' of Diplomacy.",
 			powers[dipent.players[i].power], dipent.name);
 		fprintf(ofp, "\n\nThe following players are in this game:\n");
+		/* TODO: reorder the powers alphabetically to avoid people knowing
+	           that first person signing on got first power etc */
 		for (j = 0; j < dipent.n; j++) {
 			if (dipent.players[j].power < 0)
 				continue;
@@ -1034,21 +1136,25 @@ void mail_igame(void)
 			   && dipent.players[i].power != MASTER ? someone
 				: dipent.players[j].address);
 		}
-		sprintf(line, "data/report.%d", dipent.variant);
-		if ((tfp = fopen(line, "r")) == NULL) {
-			fprintf(stderr, "igame: Error opening data/report file %s.\n", line);
-			bailout(E_FATAL);
+		if (dipent.xflags & XF_BLANKBOARD) {
+			if ((tfp = fopen("data/report.blank","r")) == NULL) {
+                                bailout(E_FATAL);
+                        } 
+		} else {
+			if ((tfp = OpenDataFile(line, "report")) == NULL) {
+				bailout(E_FATAL);
+			}
 		}
 		while (fgets(line, sizeof(line), tfp))
 			fputs(line, ofp);
-		fprintf(ofp, "The deadline for the first movement orders is %s.\n",
+		fprintf(ofp, "The deadline for the first orders is %s.\n",
 			ptime(&dipent.deadline));
 		fclose(ofp);
 		fclose(tfp);
 
 		if (i != dipent.n) {
-			sprintf(line, "./smail dip.temp 'Diplomacy game %s starting' '%s'",
-				dipent.name, dipent.players[i].address);
+			sprintf(line, "%s dip.temp 'Diplomacy game %s starting' '%s'",
+				SMAIL_CMD, dipent.name, dipent.players[i].address);
 			if (execute(line)) {
 				fprintf(stderr, "igame: Error sending mail to %s.\n",
 					dipent.players[i].address);
@@ -1092,6 +1198,8 @@ void mail_igame(void)
 	}
 	msg_header(ofp);
 	fprintf(ofp, "Press:   ");
+	/* TODO: Redefine this for new press settings, where can have observer 
+	   but no player press */
 	switch (dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) {
 	case (F_NOWHITE | F_GREY | F_DEFWHITE):
 		fprintf(ofp, "Undefined");
@@ -1175,11 +1283,11 @@ void mail_igame(void)
 
 	{
 		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-			sprintf(line, "./smail dip.temp 'MNC: Game %s starting' '%s'",
-				dipent.name, MN_CUSTODIAN);
+			sprintf(line, "%s dip.temp 'MNC: Game %s starting' '%s'",
+				SMAIL_CMD, dipent.name, MN_CUSTODIAN);
 		else
-			sprintf(line, "./smail dip.temp 'BNC: Game %s starting' '%s'",
-				dipent.name, BN_CUSTODIAN);
+			sprintf(line, "%s dip.temp 'BNC: Game %s starting' '%s'",
+				SMAIL_CMD, dipent.name, BN_CUSTODIAN);
 	}
 	execute(line);
 
