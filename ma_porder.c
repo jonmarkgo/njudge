@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2003/07/14 22:33:41  millis
+ * Fix bug 194 (not counting last province)
+ *
  * Revision 1.22  2003/05/05 23:30:20  millis
  * One & too many!
  *
@@ -654,6 +657,10 @@ void income(int mindie)
 	for (i = 1; i < WILD_PLAYER; i++) {
 		if (dipent.pl[i] == 'x')
 			continue;
+		if (FindPower(i) >= dipent.n)
+		    continue;
+		if (dipent.players[FindPower(i)].status & SF_DEAD)
+		    continue;
 		n = winc[i] + pinc[i] + cinc[i] + vinc[i];
 		ducats[i].treasury += n;
 		fprintf(rfp, "%-12.12s%5d%9d%7d%10d%9d%10d\n", powers[i],

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.6  2003/01/05 00:06:43  millis
+   ** Fix bug 90
+   **
    ** Revision 1.5  2002/02/25 13:44:10  miller
    ** Fixed country ownership bug
    **
@@ -57,6 +60,11 @@ void balance(int pt, int next, int listflg)
 	for (p = 1; p < WILD_PLAYER; p++) {
 		if (dipent.pl[p] == 'x')
 			continue;
+                if (FindPower(p) >= dipent.n)
+                    continue;
+                if (dipent.players[FindPower(p)].status & SF_DEAD)
+                    continue;
+
 		if (p == pt || pt == MASTER || processing || listflg) {
 			fprintf(rfp, "%-10.10s%5dd", powers[p], ducats[p].treasury);
 			if (ducats[p].interest[0] == -1) {
