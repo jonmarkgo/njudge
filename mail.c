@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2002/05/17 11:36:52  miller
+ * Parameters for address_not_in_list() incorrectly reverserd
+ *
  * Revision 1.19  2002/05/11 09:15:32  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -396,7 +399,6 @@ int mail(void)
 	char *whotext;
 	char x[30];
 	PLYRDATA_RECORD record;
-	FILE *xfp;
 	time_t now2;
 
 	someone = "someone@somewhere";
