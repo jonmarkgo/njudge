@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.6  2001/10/20 12:11:14  miller
+   ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+   **
    ** Revision 1.5.2.1  2001/10/20 00:52:49  dedo
    ** Remvoe compile warnings
    **
@@ -596,7 +599,7 @@ void buildout(int pt)
 				putc(' ', rfp);
 			for (i = 1; i <= npr; i++) {
 				if (pr[i].owner == p && !pr[i].unit &&
-				    (pr[i].type == dipent.pl[p] || (pr[i].type == 'x' &&
+				    (pr[i].type == dipent.pl[p] || (centre(i) &&
 				     (dipent.xflags & XF_BUILD_ANYCENTRES))))
 					break;
 			}

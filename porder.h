@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/10/20 12:11:14  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.5.2.1  2001/10/15 00:15:04  ustv
  * Added handling for 2nd type field, comments and Colonial settings
  *
@@ -63,6 +66,9 @@
 #define bribe(c)        (c == 'b' || c == 'd' || c == 'g')
 #define water(p)	(pr[p].type == 'w' || pr[p].type == 'v')
 #define water2(p)	(water(p) || pr[p].type2 == 'w')
+#define centre(p)       ((pr[p].type == 'x') || (pr[p].type >= 'A' && pr[p].type <= 'Z') || (pr[p].type >= '0' && pr[p].type <= '9'))
+#define railway(p)      (pr[p].type == 'r')
+#define gateway(p)      (pr[p].type == 'g')
 
 extern int cmap[CMAP_SIZE];
 
