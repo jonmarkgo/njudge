@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2002/12/22 02:13:25  millis
+ * Fixed bugs 54, 67 & 69
+ *
  * Revision 1.11  2002/12/04 23:33:14  millis
  * Fixed Bug 47 (incorrect ownership change for proxied orders)
  *
@@ -106,12 +109,6 @@ int ma_movein(char **s, int p)
 		return E_WARN;
 	}
 	if (p != unit[u].owner && p != MASTER) {
-		if (!(dipent.flags & (F_PROXY))) {
-                        errmsg("%s doesn't own the %s %s %s.\n", powers[p], utype(c),
-                         mov_type(p1, u), pr[p1].name);
-                        errmsg("Game %s does not allow proxy orders.\n", dipent.name);
-                        return E_WARN;
-                }
 		for (u2 = 1; u2 <= nunit; u2++) {
 			if (unit[u2].owner == p && unit[u2].proxy == u)
 				break;

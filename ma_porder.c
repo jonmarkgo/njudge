@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2002/12/22 02:05:46  millis
+ * Fixed bug 56 and 70
+ *
  * Revision 1.17  2002/12/16 23:19:03  nzmb
  * Fixed bug that was causing the victor in games to be reported incorrectly. Also fixed a typo in ma_porder.c.
  *
@@ -155,6 +158,8 @@ static void CalculateNewOwners(void)
          for (u = 1; u <= nunit; u++) {
                 if (unit[u].owner <= 0)
                         continue;
+		if (unit[u].proxy > 0)
+			continue;
                 p = unit[u].loc;
                 if (water(p))
                         continue;
@@ -216,6 +221,8 @@ static void newowner(void)
 	   for (u = 1; u <= nunit; u++) {
 	       if (unit[u].owner <= 0)
                         continue;
+		if (unit[u].proxy > 0)
+			continue;  /* Don't count proxied orders */
 	       if (unit[u].type == 'G') {
 	          pr[unit[u].loc].gunit = u;
 	       } else {
@@ -494,7 +501,7 @@ int victory(void)
 		dipent.vp = maxcen + 1;
 		fprintf(rfp, "\nWinning Centers changed to %d to avoid a draw.\n\n",
 			dipent.vp);
-		fprintf(bfp, "\nIf you want a draw then vote for it.\n");
+		fprintf(bfp, "\nIf you want a draw than vote for it.\n");
 		broadcast = 1;
 	}
 	if (numwin == 1) {
