@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 
 # $Log$
+# Revision 1.1  2004/01/18 00:56:41  millis
+# First version
+#
 
 use strict;
 use File::Copy;
@@ -62,10 +65,12 @@ system ("cat $dir/smail.out >> $heredir/$output");
 		copy($output,$baseline);
 	}
 
-	$stat += cmpfiles($output,$baseline);
+	$stat += system("diff $output $baseline");
+#	cmpfiles($output,$baseline);
 }
 
 #restore old smail
+system ("chmod +w $dir/smail");
 system ("cp -p $dir/smail.old $dir/smail");
 exit($stat);
 
