@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.7  2003/05/10 00:46:15  millis
+   ** Bug 140 fix, display 'orders' when orders and 'results' when results
+   **
    ** Revision 1.6  2003/01/18 14:31:39  millis
    ** Implements half-strength retreats from USTV (for 1900 variant)
    **
@@ -235,7 +238,8 @@ void retreatout(int pt)
 					if (unit[u].bloc && (u2 = pr[unit[u].bloc].unit) &&
 					    unit[u2].type == 'F') {
 						unit[u].status = 'b';
-					} else if ((u2 = pr[unit[u].dest].unit)) {
+					} else if (!IsMultiProvince(unit[u].dest) &&
+						   (u2 = pr[unit[u].dest].unit)) {
 						if (unit[u2].status == 'r')
 							unit[u2].status = 'd';
 						unit[u].status = 'd';
