@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.34  2003/10/12 05:02:11  nzmb
+ * Fixed bug #212 (players in NMR games get warned when another player, who had
+ * been in CD, returns to take control of his power).
+ *
  * Revision 1.33  2003/08/27 12:04:57  millis
  * Fix bug 222
  *
@@ -1399,7 +1403,6 @@ void mail_igame(void)
 	seq.grace = dipent.movement.grace;
 	seq.delay = dipent.movement.delay * 2;
 	strcpy(seq.days, dipent.movement.days);
-	dipent.deadline = 0;
 	deadline(&seq, 1);
 
 	/*

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.51  2003/08/27 12:04:56  millis
+ * Fix bug 222
+ *
  * Revision 1.50  2003/08/26 23:54:32  millis
  * Fix bug 188
  *
@@ -1395,16 +1398,13 @@ void mail_setp(char *s)
 			if (mail_date(&s, &dates, 0, rfp))
 				fprintf(rfp, "%sInvalid start date specified.\n\n", t);
 			else {
-				sequence *seq;	/* Local scope variable because of cut&paste. */
-				/*  To be redone right in judge reorg. */
-
+				sequence *seq; 
 				seq = dipent.phase[5] == 'M' ? &dipent.movement :
 				    dipent.phase[5] == 'R' ? &dipent.retreat :
 				    dipent.phase[5] == 'B' ? &dipent.builds :
 				    &dipent.movement;
 				dipent.start = dates;
 				fprintf(rfp, "Earliest start date set to %s.\n", ptime(&dates));
-				/* WAS mfprintf  1/95 BLR */
 				fprintf(bfp, "%s as %s set the earliest start date\n",
 					xaddr, PRINT_POWER);
 				fprintf(mbfp, "%s as %s set the earliest start date\n",
@@ -1416,7 +1416,7 @@ void mail_setp(char *s)
 					mfprintf(bfp, "Deadline set to %s.\n", ptime(&dates));
 				}
 				if (dipent.grace < dipent.deadline) {
-					dipent.grace = dipent.deadline + 48 * 60 * 60;
+					dipent.grace = dipent.deadline + seq->grace * 60 * 60;
 					if (dipent.flags & F_GRACEDAYS) {
 						for (k = 0; k < 8; k++) {
 							tm = localtime(&dipent.grace);
