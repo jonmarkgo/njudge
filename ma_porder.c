@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2002/02/25 11:51:51  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.3.2.1  2001/10/19 23:37:29  dema
  * Added handling for NoMoney games
  *
@@ -154,11 +157,17 @@ static void newowner(void)
 	int someone_eliminated = 0;
 
 	/* 
-	   ** Update the pr[].gunit info
-	   for (u = 1; u <= nunit; u++)
-	   if (unit[u].type == 'G')
-	   pr[unit[u].loc].gunit = u;
+	   ** Update the pr[].gunit and unit info
 	 */
+
+	   for (u = 1; u <= nunit; u++)
+	   if (unit[u].owner <= 0)
+                        continue;
+	   if (unit[u].type == 'G')
+	      pr[unit[u].loc].gunit = u;
+	   else
+	      pr[unit[u].loc].unit = u;
+
 
 	/*
 	   **  Compute the new owner based on what units are around.
