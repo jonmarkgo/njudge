@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.52  2003/07/17 00:04:00  millis
+ * *** empty log message ***
+ *
  * Revision 1.51  2003/07/15 22:47:07  millis
  * Fix Bug 185 (call smail for each email individually)
  *
@@ -231,8 +234,6 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 
 static int InsertDummyPlayers( void );
 
-/* Comment this out if you don't want the MAP command */
-#define MAP_COMMAND
 
 /* set the max. infoplayer requests per e-mail here */
 #define INFOPLAYER_MAX 100
@@ -903,182 +904,15 @@ int mail(void)
 					}
 					break;
 
-/****************  RV  **********************************************
-     MAP command added by Russell Vincent (vincent@cc.und.ac.za)
-              December 1992
-*********************************************************************/
-#ifdef MAP_COMMAND
-
-				case MAP:	/* Send a map of this game */
-
-					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
-					listflg++;
-					t = name;
-					while (isspace(*s))
-						s++;
-					while (*s && !isspace(*s))
-						*t++ = tolower(*s++);
-					*t = '\0';
-
-					while (isspace(*s))
-						s++;
-					uuenc = tolower(*s++);
-					if (*name == '*') {
-						if (!(tfp = fopen("ALLOW.map-star", "r"))) {
-							fprintf(rfp, "The 'map *' command is not supported on this judge\n");
-						} else {
-							fclose(tfp);
-							sprintf(rdcom, "%s", RUNLISTMAP_CMD);
-							if (uuenc == 'n')
-								strcat(rdcom, "n ");
-							else
-								strcat(rdcom, "u ");
-
-							tfp = fopen("map.list", "w");
-							rewind(tfp);
-							while (fgets(line, sizeof(line), inp)) {
-								fputs(line, tfp);
-							}
-							fclose(tfp);
-
-							execute(rdcom);
-
-							if ((tfp = fopen("map.out", "r"))) {
-								fclose(tfp);
-								sprintf(line, "map.out 'Diplomacy map request'");
-								MailOut(line, raddr);
-								fprintf(rfp, "\nMap request sent.\n");
-								if (uuenc != 'n') {
-									fprintf(rfp, "\nThe file is sent in a UUencoded unix compressed format.\n");
-									fprintf(rfp, "To extract the map, use:\n");
-									fprintf(rfp, "   uudecode <filename\n   uncompress filename\n\n");
-									fprintf(rfp, "If you want the map sent in normal ps format, use a <n> on the\n");
-									fprintf(rfp, "end of the <map> command: e.g: map * n\n");
-								}
-							} else {
-								fprintf(rfp, "\nWas not able to create a map \n");
-							}
-							skipping++;
-						}
-						break;
-					}
-					if (!(tfp = fopen("ALLOW.map", "r"))) {
-						fprintf(rfp, "Map command not supported on this judge\n");
-						break;
-					}
-					fclose(tfp);
-
-					if (!*name) {
-						fprintf(rfp, "\nUse 'map name' to retrieve a postscript ");
-						fprintf(rfp, "map of the game positions.\n");
-						break;
-					}
-					if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
-						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
-						return E_FATAL;
-					}
-					/*  Search for this entry in the master file. */
-
-					while ((not_eof = getdipent(mfp))) {
-						if ((!*name && !(dipent.flags & F_NOLIST))
-						    || !strcmp(dipent.name, name)) {
-							if (dipent.seq[0] == 'x') {
-								fprintf(rfp, "\nGame '%s' has not started yet - no map produced.\n", name);
-								break;
-							}
-							if (!((dipent.variant == V_STANDARD)
-							      || (dipent.variant == V_youngstown)
-							      || (dipent.variant == V_loeb9)
-							      || (dipent.variant == V_chaos)
-							      || (dipent.variant == V_1898)
-							      || (dipent.variant == V_fleet_rome))) {
-								fprintf(rfp, "\nCannot produce maps for %s games.\n", variants[dipent.variant]);
-								break;
-							}
-							tfp = rfp;
-							rfp = fopen("map.list", "w");
-							mail_listit();
-							if (*name && dipent.seq[0] != 'x'
-							    && strcmp(dipent.name, "control")) {
-								porder('T', -1, listflg);
-							}
-							if(signedon)
-							{
-								now2=time(NULL);   
-                						if(now2 < dipent.deadline)
-									fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-        	        					if(now2 < dipent.grace)
-                	        					fprintf(rfp, "\nTime to grace period expiration: %s.\n", timeleft(&dipent.grace));
-							}
-							fclose(rfp);
-							rfp = tfp;
-							sprintf(rdcom, "%s", RUNDIPMAP_CMD);
-							if (uuenc == 'n')
-								strcat(rdcom, "n ");
-							else
-								strcat(rdcom, "u ");
-							if (dipent.variant == V_youngstown)
-								strcat(rdcom, "-y ");
-							if (dipent.variant == V_loeb9)
-								strcat(rdcom, "-l ");
-							if (dipent.variant == V_chaos)
-								strcat(rdcom, "-c ");
-							execute(rdcom);
-							if ((tfp = fopen("map.out", "r"))) {
-								fclose(tfp);
-								sprintf(line, "map.out 'Diplomacy map for %s'", name);
-								MailOut(line, raddr);
-								fprintf(rfp, "\nMap of game '%s' sent.\n", name);
-								if (uuenc != 'n') {
-									fprintf(rfp, "\nThe file is sent in a UUencoded unix compressed format.\n");
-									fprintf(rfp, "To extract the map, use:\n");
-									fprintf(rfp, "   uudecode <filename\n   uncompress filename\n\n");
-									fprintf(rfp, "If you want the map sent in normal ps format, use a <n> on the\n");
-									fprintf(rfp, "end of the <map> command: e.g: map <gamename> n\n");
-								}
-							} else {
-								fprintf(rfp, "\nWas not able to create a map for game '%s'\n", name);
-							}
-
-							if (*name)
-								break;
-							if (l)
-								fprintf(rfp, "\n");
-						}
-					}
-					fclose(mfp);
-
-					if (!not_eof) {
-						if (*name)
-							fprintf(rfp, "\nThere is no game '%s' active.\n", name);
-						else if (!l) {
-							fprintf(rfp, "\nUse 'list name' or 'list full' for more ");
-							fprintf(rfp, "information on these games.\n");
-							fprintf(rfp, "Press options are: WGPF\n");
-							fprintf(rfp, "    where: W = White press allowed\n");
-							fprintf(rfp, "           G = Grey press allowed\n");
-							fprintf(rfp, "           P = Partial press allowed\n");
-							fprintf(rfp, "           F = Fake press allowed\n");
-							fprintf(rfp, "           - = Option not allowed\n");
-						}
-					}
-					break;
-
-#else
-
 				case MAP:	/* Map is unavailable */
 
 					command++;
 					if (!msg_header_done)
 						msg_header(rfp);
-					fprintf(rfp, "\nThe map command is unavailable.");
+					fprintf(rfp, "\nThe map command is no longer suppoered.");
 					break;
 
-#endif
 
-/**************************************************************/
 
 				case LIST:	/* List out the status of this game */
 					command++;
