@@ -1,40 +1,40 @@
-The following bugs were outstanding as of 1.5.4
+The following bugs were outstanding as of 1.6.0
 
 --------------------
-
-ID   Sev   Pri   Plt   Owner   State   Result   Summary
-131  maj   P3   All   millis@faztek.org   REOP     Judge sometime hangs-up with empty dip.input file
-215 maj P3 All judgekeeper@braincells.com ASSI when doing an upgrade from 1.2.0, some map files are not ...
-91 nor P3 All judge-maint@diplom.org ASSI Keep duplexed powers together
-117 nor P3 All judge-maint@diplom.org ASSI Can't turn off Transformation options
-149 nor P3 All MachFix@yahoogroups.com NEW Allow Mach games to be conceeded
-186 nor P3 All judge-maint@diplom.org NEW Must order does not allow press when should
-218 nor P3 All judge-maint@diplom.org NEW Set command(s) followed by 'become' do not work
-219 nor P3 All judge-maint@diplom.org NEW Wrong phase name in output of terminated game
-226 nor P3 All judge-maint@diplom.org ASSI Pause command has some quirks
-233 nor P3 All judge-maint@diplom.org ASSI Player cannot resume abandoned position in a multiplex game
-238 nor P3 All judge-maint@diplom.org NEW Colonial: Verbose Suez Canal warnings
-252 nor P3 All MachFix@yahoogroups.com NEW Build results out of sequence
-253 nor P3 All judge-maint@diplom.org NEW signons with password=«judge» don't work
-35 min P3 All judge-maint@diplom.org NEW Player with unusable builds must waive
-40 min P3 All MachFix@yahoogroups.com ASSI Sort out summary report spacing
-100 min P3 All judge-maint@diplom.org NEW Wrong person sent termination
-102 min P3 All tim@gem.win.co.nz ASSI Setting game start date does NOT affect the first turn
-103 min P3 All judge-maint@diplom.org NEW Summary incorrect
-104 min P3 All judge-maint@diplom.org NEW Only prompt for adjustments if homes still need to be dec...
-109 min P3 All judge-maint@diplom.org ASSI Better errors & documentation on Build transform
-123 min P3 All judge-maint@diplom.org NEW SET ALLOW|DENY MASTER works when it shouldn't
-128 min P3 All judge-maint@diplom.org NEW press to none
-132 min P3 All judge-maint@diplom.org NEW Deadline falls during "set absence" period
-135 min P3 All judge-maint@diplom.org REOP auto-advance deadline only when all players replaced
-177 min P3 All millis@faztek.org NEW Summer-time alterations not working
-200 min P3 All judge-maint@diplom.org NEW set absence and press shows for master
-221 min P3 All judge-maint@diplom.org NEW set [no]show does nothing
-227 min P3 All judge-maint@diplom.org NEW Implement NoBlankPress functionality
-235 min P3 All judge-maint@diplom.org NEW Version command prints out the results twice
-239 min P3 All judge-maint@diplom.org NEW Whogame does not work with multiple emails
-243 min P3 All judge-maint@diplom.org NEW Wrong email title sent
-247 min P3 All judge-maint@diplom.org NEW Extra dots shown in a 'secret', duplex game late warning
-255 tri P3 All MachFix@yahoogroups.com NEW '.' in wrong place for maintain with coast
-
-33 bugs found. 
+ID  	 Sev  	 Pri  	 Plt  	 Owner  	 State  	 Result  	 Summary
+131 	maj 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
+215 	maj 	P3 	All 	judgekeeper@braincells.com 	ASSI 		when doing an upgrade from 1.2.0, some map files are not ...
+278 	maj 	P3 	All 	judge-maint@diplom.org 	NEW 		Spam crashed the judge
+91 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Keep duplexed powers together
+117 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Can't turn off Transformation options
+149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
+186 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Must order does not allow press when should
+218 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Set command(s) followed by 'become' do not work
+226 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Pause command has some quirks
+233 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Player cannot resume abandoned position in a multiplex game
+238 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Colonial: Verbose Suez Canal warnings
+239 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Whogame does not work with multiple emails
+252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
+253 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		signons with password=«judge» don't work
+256 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Abandoned player can't signon due to low dedication
+257 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Masters not warned on deadline shift after bailout recovery
+259 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline advanced for no apparent reason
+269 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		unstart not working for Machiavelli games
+35 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player with unusable builds must waive
+40 	min 	P3 	All 	MachFix@yahoogroups.com 	ASSI 		Sort out summary report spacing
+100 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Wrong person sent termination
+103 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Summary incorrect
+104 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Only prompt for adjustments if homes still need to be dec...
+109 	min 	P3 	All 	judge-maint@diplom.org 	ASSI 		Better errors & documentation on Build transform
+123 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		SET ALLOW|DENY MASTER works when it shouldn't
+128 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		press to none
+132 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline falls during "set absence" period
+177 	min 	P3 	All 	millis@faztek.org 	NEW 		Summer-time alterations not working
+200 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set absence and press shows for master
+221 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set [no]show does nothing
+227 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Implement NoBlankPress functionality
+243 	min 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Wrong email title sent
+247 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Extra dots shown in a 'secret', duplex game late warning
+266 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Send summary to HallKeeper if game changes to Reveal
+255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
+35 bugs found. 
