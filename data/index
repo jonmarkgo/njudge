@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     10 Aug, 2003
+Greetings from the Diplomacy* Adjudicator!!                     03 Sep, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -11,8 +11,6 @@ A number in {curly braces} near the right margin following a command indicates
 the earliest Judge version in which the command was implemented.  If no number
 is listed, then the command is believed to work on all Judge versions
 currently in use, although this has not been verified.
-
-Commands marked {future} are not yet implemented.
 
 Each command is preceded by a code that indicates who can execute the command
 and (where applicable) additional restrictions on when the command can be
@@ -225,8 +223,8 @@ any/    OBSERVE name password
 mod/	PAUSE							      {1.5.0}
 	To suspend a game. Players can still press, but moves will be blocked.
 	No game processing or deadline expiration will occur. Periodic messages 
-	will be sent to remind of the pause state. To resume the game, the master
-	should issue the 'resume' command.
+	will be sent to remind of the pause state. To resume the game, the 
+	master should issue the 'resume' command.
 
 ply/    PHASE season year phase
         To specify that any following orders should be held until the
@@ -332,11 +330,11 @@ adm/    SET ALLOW PLAYER|MASTER [-]address
 mod/bgs SET ANY CENTRE[S]|CENTER[S]                                    {0.8.9}
         Allows a power to build in any owned centre during a build phase.
 
-mod/bgs+SET ANY DISBAND                                               {future}
+mod/bgs SET ANY DISBAND                                                {1.4.0}
         Allow powers to disband any unit during a build phase (and thus
-        gaining the option to rebuild on a buildable centre if desired).  A
-        'wait' is set for all active players during the build phase.  Opposite
-        of "SET NORMAL DISBAND", see below.
+        gaining the option to rebuild on a buildable centre if desired).  
+	Players must order for every unit (use 'maintain' for units that are
+	to be kept).  Opposite of "SET NORMAL DISBAND", see below.
 
 mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
         Disables/enables optional assassination rules.
@@ -631,14 +629,14 @@ mod/    SET NORMAL PRESS
         been used.
 
 mod/    SET OBSERVER ANY [PRESS]
-        Permits observers and alternates to submit press with the same
-        restrictions as regular players.
+        Permits observers to submit press with the same restrictions as regular
+	players.
 
 mod/    SET OBSERVER NO [PRESS]
-        Disallows press from observers and alternates.
+        Disallows press from observers.
 
 mod/    SET OBSERVER WHITE [PRESS]
-        Disallows observers and alternates from submitting grey press.
+        Disallows observers from submitting grey press.
 
 mod/bgs SET ONE CENTRE[S]|CENTER[S]                                    {0.8.9}
         Allow a power to build in any owned centre during a build phase, as
@@ -676,7 +674,7 @@ mod/bgs SET PLAYERS number
         to play multiple powers.  Get file 'info.duplex' for more information
         and an example.
 
-mod/   !SET [NO] POSTAL PRESS                                          {1.2.0}
+mod/    SET [NO] POSTAL PRESS                                          {1.2.0}
         Turns postal press on/off.  Postal press is press published with the
         results of the turn.  See command "POSTAL PRESS" for more details.
 
@@ -818,7 +816,7 @@ mod/    SET [NO] STRICT WAIT
         be allowed to set wait.  If NOSTRICTWAIT is set (default), any
         currently active player can set wait.
 
-mod/	   SET [NO] TOUCH PRESS						{1.5.1}
+mod/	SET [NO] TOUCH PRESS						{1.5.1}
 	Enables/Disables Touch Press. When enabled, players can only send
 	one broadcast message per turn, and can only send partial press to
 	players with whom they are touching (defiend as a legal Wing move).
@@ -903,7 +901,7 @@ any/    SIGN ON pname password
 any/    SIGN ON ? password
         To enter the next available game that is forming.
 
-any/    SIGN ON ?name password [variant] [options]
+any/bgs SIGN ON ?name password [variant] [options]
         To enter a particular game that is forming.  The "variant" and
         "options" specifications are required if, and only if, these options
         were used in the CREATE or SET VARIANT command.  See "SET VARIANT".
@@ -949,16 +947,16 @@ any/pre WHO GAME name [FULL]
         Retrieves WHOIS information for all players associated with game
         "name".  If the game is gunboat this command can only be used by the
         moderator (and only after he signs on).  The optional "FULL" argument
-        will return information for observers and alternates as well, while
-        the default only returns information for the players and the
-        moderator.  See also "WHOIS" below.
+        will return information for observers as well, while the default only
+	returns information for the players and the moderator.  See also 
+	"WHOIS" below.
 
 ply/    WHO GAME [FULL]
         Retrieves WHOIS information for all players associated with the
         currently signed on game.  If the game is gunboat, only the moderator
         can use this command.  The optional "FULL" argument will return
-        information for observers and alternates as well, while the default
-        only returns information for the players and the moderator.  See also
+        information for observers as well, while the default only returns 
+	information for the players and the moderator.  See also
         "WHOIS" below.
 
 any/    WHO IS user [user ...]
