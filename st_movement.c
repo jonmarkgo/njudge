@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.36  2004/12/04 20:47:17  millis
+** Fixed Bug 387, support being incorrectly voided.
+**
 ** Revision 1.35  2004/11/24 12:29:31  millis
 ** Fix Bug 385 (Portage game hangs judge and coasts not working correctly)
 **
@@ -293,7 +296,7 @@ static int NoValidConvoyingFleet(char *s, int u)
      * *s is now an entry into the province table, not the unit table.
      */
     int ret_code = 1;
-    int p = *s;
+    int p = (unsigned char) *s;
     int u1;
 
     pr[p].order_index = 1; /* order_index updated in GetUnitIndex() */
