@@ -13,8 +13,8 @@ SOURCE INSTALL
    your system.
 
   1. Create a system user account (i.e. 'judge') and its home directory 
-     (i.e. /home/judge)  It is ok to lock the password for this account
-     as you should never need to login as this user.
+     (i.e. /home/judge)  It is recommended to lock the password for this 
+     account as you should never need to login as this user.
 
   2. `cd' to the directory containing the package's source code and type
      `./configure' to configure the package for your system.  If you're
@@ -22,18 +22,20 @@ SOURCE INSTALL
      `sh ./configure' instead to prevent `csh' from trying to execute
      `configure' itself.
 
-     By default it will set up the judge in /home/judge as user judge.
-     If you chose a different user and directory in step 1, you can 
-     give the configure script flags to override the defaults.  The flags
-     are:
+     By default it will set up the judge in /home/judge as user judge with 
+     an email address of judge@localhost.
+     If you chose a different user and directory in step 1, or if judge 
+     email should come from a different domain, you can give the configure 
+     script flags to override the defaults.  The flags are:
 
      --with-dir=DIR
      --with-user=NAME
+     --with-domain=DOMAIN
 
      for example to set up the judge in /home/jaldhar/dip as user 
-     jaldhar. you would do:
+     jaldhar and email judge@braincells.com, you would do:
 
-     ./configure --with-dir=/home/jaldhar/dip --with-user=jaldhar
+     ./configure --with-dir=/home/jaldhar/dip --with-user=jaldhar --with-domain=braincells.com
 
      There are many other flags you can give (type './configure --help' 
      for a full list) but these are the main ones you're likely to use.

@@ -4,7 +4,7 @@
 #
 #  Invoked as smail file subject address
 #
-setenv FROM @USER@
+setenv FROM @USER@@@DOMAIN@
 # FROM=u.washington.edu export FROM
 date >>mail.log
 echo "===== mail sent to $3/$2" >>mail.log

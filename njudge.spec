@@ -53,5 +53,6 @@ rm -rf $RPM_BUILD_ROOT
 %config /home/judge/dip.addr
 %config /home/judge/dip.whois
 %config /home/judge/dip.blist
+%config /home/judge/smail
 /home/judge
 /usr/share
