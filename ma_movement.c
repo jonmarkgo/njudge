@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Many fixes
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -129,6 +132,12 @@ int ma_movein(char **s, int p)
 			*s += 9;
 		break;
 
+	case 'd':
+                if (!(dipent.xflags & XF_MOVEDISBAND)) {
+                    errmsg("This game does not allow disband orders in movement phases.");
+                    return E_WARN;
+                }
+                break;
 
 	case 'c':
 	case 's':
@@ -923,6 +932,14 @@ int ma_moveout(int pt)
 			      nextp5:;
 			}
 		} while (bounce);
+/* Pass 5aa: Disband requested disband units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'd') {
+                            result[u] = 0; /* Disbands never fail */
+                        }
+                }
 
 /*  Pass 5a: flag dislodgements */
 
@@ -1014,9 +1031,14 @@ int ma_moveout(int pt)
 				fprintf(rfp, " HOLD");
 				break;
 
-			case 'l':
-				fprintf(rfp, " LIFT SIEGE");
-				break;
+			case 'd':
+                                fprintf(rfp, " DISBAND");
+                                 unit[u].owner = 0;
+                                break;
+
+                       case 'l':
+                                fprintf(rfp, " LIFT SIEGE");
+                                break;
 
 			case 'm':
 				if ((s = unit[u].convoy)) {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Many mach fixes
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -110,6 +113,7 @@ int expin(char **s, int p)
 		errmsg("Cannot submit expense as master.  Use 'become' command.\n");
 		return E_WARN;
 	}
+
 	switch (c) {
 	case 'a':		/* Ally with power, power, power... */
 	case 'u':		/* unally with power, power, power... */
@@ -128,6 +132,10 @@ int expin(char **s, int p)
 		break;
 
 	case 'b':		/* Borrow amount for 1/2 year(s) */
+		if ((dipent.xflags & XF_NOMONEY)) {
+			errmsg("Game %s does not allow money.\n", dipent.name);
+			return E_WARN;
+		}
 		if (NO_LOANS) {
 			errmsg("Game %s does not allow bank loans.\n", dipent.name);
 			return E_WARN;
@@ -170,6 +178,10 @@ int expin(char **s, int p)
 		break;
 
 	case 'e':		/* Expense 1-4: type prov/unit/power */
+                if ((dipent.xflags & XF_NOMONEY)) {
+                        errmsg("Game %s does not allow money.\n", dipent.name);
+                        return E_WARN;
+                }
 
 		while (isspace(**s))
 			s++;
@@ -335,6 +347,10 @@ int expin(char **s, int p)
 
 
 	case 'p':		/* Pay amount|chit to power */
+                if ((dipent.xflags & XF_NOMONEY)) {
+                        errmsg("Game %s does not allow money.\n", dipent.name);
+                        return E_WARN;
+                }
 		*s = get_amount(*s, &p1);
 		if (p1 < 0) {
 			/* If a power is specified it is a chit transfer */

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Mach2 settings and other fixes
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -444,11 +447,11 @@ void income(int mindie)
 			}
 			/*
 			   ** My explanation of the rules is:
-			   ** In case of famine the income is lost.
+			   ** In case of famine iwithout a garrison, the income is lost.
 			   ** If a city is fortified, its income is lost if the city is in rebellion
 			   ** if it is not fortified, the income depends on the province rebellion.
 			 */
-			if (!is_infected(p))
+			if (!is_infected(p) || has_garrison(p))
 				if ((has_fortcity(p) && !has_crebellion(p)) ||
 				    (!has_fortcity(p) && !has_prebellion(p))) {
 /*              fprintf(rfp,"City income of %s (%d) -> %s\n", */
@@ -518,6 +521,8 @@ void ma_process_input(int pt, char phase)
 	memset(borrow, 0, sizeof(borrow));
 	memset(expense, 0, sizeof(expense));
 
+	ma_init_build_basic();
+
 	do {
 		if (preprocess(&s, &p))
 			continue;
@@ -527,7 +532,10 @@ void ma_process_input(int pt, char phase)
 
 			switch (phase) {
 			case 'B':
-				status = ma_buildin(&s, p);
+				if (dipent.xflags & XF_NOMONEY) 
+				    status = ma_buildin_basic(&s, p);
+				else
+				    status = ma_buildin(&s, p);
 				break;
 			case 'M':	/* 
 					   ** Return with positive value if this line does not
@@ -561,7 +569,10 @@ int ma_process_output(int pt, char phase)
 		dipent.phase[5] = 'B';
 
 	case 'B':		/* Adjustments */
-		ma_buildout(pt);
+		if (dipent.xflags & XF_NOMONEY)
+		    ma_buildout_basic(pt);
+		else
+		    ma_buildout(pt);
 		if (processing) {
 			balance(pt, 1, 0);
 			next_year();
