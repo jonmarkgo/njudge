@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.7  2001/07/15 09:16:14  greg
+ * added support for game directories in a sub directory
+ * ci -u ml_list.c
+ *
  * Revision 1.6  2001/07/14 07:40:17  greg
  * minor bug fix & put "[Error Flag]" in subjectline when appropriate
  *
@@ -173,6 +177,52 @@ static int cvalue[] =
 extern char *generic_names[];
 
 static int address_not_in_list(char *reply_address, char *players_addresses);
+
+/* Resign passed player */
+void ResignPlayer( int resign_index)
+{
+    if (any_broadcast && broad_part) {
+        send_press();
+        open_press();
+    }
+    if (!strcmp(dipent.players[player].address, "*")) {
+        fprintf(rfp, "You are no longer a player in this game.\nYou may not resign again!\n\n");
+        return;
+    }
+
+    dipent.players[resign_index].status |= SF_RESIGN;
+    fprintf(rfp, "%s has resigned from game '%s'.\n\n",
+        powers[dipent.players[resign_index].power], dipent.name);
+    /* WAS mfprintf  1/95 BLR */
+    sprintf(subjectline,
+            "%s:%s - %s Resignation: %c",
+            JUDGE_CODE,
+            dipent.name,
+            dipent.phase,
+            dipent.pl[dipent.players[player].power]);
+
+    fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
+       ((dipent.flags & F_GUNBOAT) &&
+        (dipent.players[resign_index].power != MASTER))
+        ? someone
+        : dipent.players[resign_index].address,
+        powers[dipent.players[resign_index].power], dipent.name);
+
+    fprintf(mbfp, "%s has resigned %s\nas %s in game '%s'.\n\n", raddr,
+        dipent.players[resign_index].address,
+        powers[dipent.players[resign_index].power], dipent.name);
+
+
+    broad_signon = 1;
+    if (dipent.players[resign_index].power != OBSERVER) {
+        pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
+                NowString(),
+                powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
+                dipent.players[resign_index].units, dipent.players[resign_index].centers);
+        pcontrol++;
+    }
+    strcpy(dipent.players[resign_index].password, GOING_PWD);
+ }
 
 /*
  * Try to resign passed power (Master command)
@@ -1145,6 +1195,7 @@ int mail(void)
                                                         break;
  
                                                 }
+						ResignPlayer(resign_index);
  
                                         } else {
 					    fprintf(rfp, "Only Master can use the 'eject' command.\n\n");
@@ -1161,57 +1212,9 @@ int mail(void)
 						return(E_WARN);
 					
 					} else {
-					    resign_index = player;
-					    if (any_broadcast && broad_part) {
-						send_press();
-						open_press();
-					    }
-					    if (!strcmp(dipent.players[player].address, "*")) {
-						fprintf(rfp, "You are no longer a player in this game.\nYou may not resign again!\n\n");
-						break;
-					    }
+					    ResignPlayer(player);
 					}
-					    dipent.players[resign_index].status |= SF_RESIGN;
-					    fprintf(rfp, "%s has resigned from game '%s'.\n\n",
-						powers[dipent.players[resign_index].power], dipent.name);
-					    /* WAS mfprintf  1/95 BLR */
-					sprintf(subjectline, "%s:%s - %s Resignation: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[dipent.players[player].power]);
-
-					fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
-					   ((dipent.flags & F_GUNBOAT) &&
-					    (dipent.players[resign_index].power != MASTER))
-						? someone
-					: dipent.players[resign_index].address,
-						powers[dipent.players[resign_index].power], dipent.name);
-					fprintf(mbfp, "%s has resigned %s\nas %s in game '%s'.\n\n", raddr,
-					  dipent.players[resign_index].address,
-						powers[dipent.players[resign_index].power], dipent.name);
-					broad_signon = 1;
-					if (dipent.players[resign_index].power != OBSERVER) {
-						pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
-							NowString(),
-							powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
-							dipent.players[resign_index].units, dipent.players[resign_index].centers);
-						pcontrol++;
-					}
-					/* strcpy(dipent.players[resign_index].address, "*"); */
-					strcpy(dipent.players[resign_index].password, GOING_PWD); 
-					/* Code moved to enda of function  mlm 05/Dec/99 
-					dipent.players[resign_index].status |= SF_ABAND;
-					if (dipent.players[resign_index].power == WILD_PLAYER)
-						dipent.seq[1]--;
-					if (dipent.players[resign_index].power >= WILD_PLAYER) {
-						dipent.players[resign_index].power = -1;
-					}
-					dipent.players[resign_index].siteid = 0;
-					*/
 					break;
-
-					/*
-					 * If there is any accumulated press already, send it
-					 * out before we start the new 'press ...' or
-					 * 'broadcast' command.
-					 */
 
 				case PRESS:
 				case BROADCAST:
@@ -2356,3 +2359,4 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 
 	return result;
 }
+
