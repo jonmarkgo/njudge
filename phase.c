@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -19,6 +22,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "dip.h"
 #include "porder.h"
@@ -38,10 +42,20 @@ int phase(char *s)
 	 *     2: A future retreat phase
 	 *     3: A future adjustment phase
 	 */
-
-	char *t = s;
+	char ss[100]; // Use 'ss' as 's' gets overwritten by gamein() call
+	char *t;
+	
 	int i, j;
 	int s1, s2 = -999999, y1, y2 = -999999, p1, p2 = -999999;
+	strcpy(ss,s);
+        t = ss;
+
+        if (!dipent.pr_valid) {
+                /* pr[] must be filled to run this code */
+                po_init();
+                gamein();
+                dipent.pr_valid++;
+        }
 
 #ifdef notdef
 	fprintf(log_fp, "Phase: Comparing %s and %s", dipent.phase, s);
@@ -50,7 +64,8 @@ int phase(char *s)
 	y1 = atoi((dipent.phase) + 1);
 	p1 = (i = dipent.phase[5]) == 'M' ? 1 : i == 'R' ? 2 : 3;
 
-	if ((i = toupper(*s)) == 'S' || i == 'U') {
+	i = toupper(ss[0]);
+	if (i == 'S' || i == 'U') {
 		s2 = 0;
 		if (dipent.flags & F_MACH && (i == 'U' || !strncasecmp(s, "summer", 6))) {
 			s2 = 1;
@@ -77,16 +92,19 @@ int phase(char *s)
 			s2 = 2;
 	}
 	if (s2 < 0)
-		fprintf(rfp, "Unrecognized season: phase %s\n", s);
+		fprintf(rfp, "Unrecognized season: phase %s\n", ss);
 
 	if (y2 < 0)
-		fprintf(rfp, "Invalid year: phase %s\n", s);
+		fprintf(rfp, "Invalid year: phase %s\n", ss);
 
 	if (p2 < 0)
-		fprintf(rfp, "Unrecognized phase: phase %s\n", s);
+		fprintf(rfp, "Unrecognized phase: phase %s\n", ss);
 
-	if ((i = (y2 * 100 + s2 * 10 + p2) - (y1 * 100 + s1 * 10 + p1)) >= 0)
-		j = i;
+	i =  ((y2 * 100 + s2 * 10 + p2) - (y1 * 100 + s1 * 10 + p1));
+	if (i > 0 ) 
+		j = p2;
+	else if (i == 0) 
+		j = 0;
 	else
 		j = -1;
 
@@ -171,11 +189,12 @@ void phase_pending(void)
 
 				case WAIT:
 					if (!skip) {
-						if (dipent.flags & F_STRWAIT)
+						if (dipent.flags & F_STRWAIT) {
 							if (dipent.players[n].status & SF_MOVE)
 								dipent.players[n].status |= SF_WAIT;
 							else
 								dipent.players[n].status |= SF_WAIT;
+						}
 						continue;
 					}
 					break;
@@ -200,8 +219,8 @@ void phase_pending(void)
 			fclose(tfp);
 			rfp = fopen("dip.reply", "w");
 			if (porder('T', n, 0) == E_FATAL) {
-				sprintf(line, "./smail dip.reply 'Pending orders error' '%s'",
-					GAMES_MASTER);
+				sprintf(line, "%s dip.reply 'Pending orders error' '%s'",
+					SMAIL_CMD, GAMES_MASTER);
 			} else {
 
 				dipent.players[n].status |= SF_PART;
@@ -213,8 +232,8 @@ void phase_pending(void)
 				}
 
 				rename(Tfile, Mfile);
-				sprintf(line, "./smail dip.reply 'Diplomacy pending orders %s %s' '%s'",
-					dipent.name, dipent.phase, dipent.players[n].address);
+				sprintf(line, "%s dip.reply 'Diplomacy pending orders %s %s' '%s'",
+					SMAIL_CMD, dipent.name, dipent.phase, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;
 				dipent.players[n].status &= ~(SF_ABAND | SF_CD);
@@ -228,8 +247,8 @@ void phase_pending(void)
 	fclose(ifp);
 
 }
-
-void phase_syntax(int phase, char *s)
+#define CHECKFORIF 1
+int phase_syntax(int phase, char *s)
 {
 	/*
 	 *  Do a preliminary syntax check on the given order.  We're just trying
@@ -237,5 +256,27 @@ void phase_syntax(int phase, char *s)
 	 *  to process his order in the future phase.
 	 */
 
-	return;			/*  Heck, I don't know!!  Looks good to me. */
+	switch (phase) {
+		case 1:
+			if (!(dipent.flags & F_MACH) ){
+			     if (move_syntaxcheck(s,CHECKFORIF, NULL)) return E_WARN;
+				else return 0;
+			}
+			break;	
+		case 2:
+			if (!(dipent.flags & F_MACH)) {
+                             if (retreat_syntaxcheck(s,CHECKFORIF, NULL)) return E_WARN;
+                                else return 0;
+			}
+			break;
+		case 3:
+			if (!(dipent.flags & F_MACH)){
+                             if (build_syntaxcheck(s,CHECKFORIF, NULL)) return E_WARN;
+                                else return 0;
+			}
+			break;
+		default:
+	}
+
+	return 0;			/*  Heck, I don't know!!  Looks good to me. */
 }
