@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2002/08/27 23:56:10  millis
+ * Added better victory display (fixing Mach victory bug)
+ *
  * Revision 1.16  2002/07/16 18:14:21  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -233,6 +236,7 @@
 #define X2F_NO_TREASURY		0x800  /* In Mach, don't show treasury	*/
 #define X2F_MUSTORDER		0x1000  /* don't allow press (except to m) unless orders are in */
 #define X2F_POSTALPRESS		0x2000  /* allow szine style press (published w/ moves) */
+#define X2F_FORT_GARRISON	0x4000 /* When set, all forts start with garrisons */
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)

@@ -64,8 +64,28 @@
 
 static void next_phase(int);
 static void newowner(void);
+static void CreateFortGarrisons(void);
 
 /************************************************************************/
+
+
+/* Create an autonomous garrison in all forts, if no garrison unit there */
+static void CreateFortGarrisons( void )
+{
+
+    int p;
+
+    for (p=1; p <= npr; p++) {
+	if (has_fortress(p) && pr[p].gunit == 0 && !pr[p].owner) {
+	    unit[++nunit].loc = p;
+	    pr[p].gunit = nunit;
+	    unit[nunit].type = 'G';
+	    unit[nunit].stype = 'x';
+	    unit[nunit].owner = AUTONOMOUS;
+	}
+    }
+
+}
 
 static void next_phase(int power)
 {
@@ -129,8 +149,6 @@ static void CalculateNewOwners(void)
          for (u = 1; u <= nunit; u++) {
                 if (unit[u].owner <= 0)
                         continue;
-		if (!unit[u].exists)
-			continue;
                 p = unit[u].loc;
                 if (water(p))
                         continue;
@@ -669,6 +687,8 @@ int ma_process_output(int pt, char phase)
 	switch (phase) {
 	case 'A':		/* Initial Machiavelli phase */
 		income(2);
+		if (dipent.x2flags & X2F_FORT_GARRISON) 
+		   CreateFortGarrisons();
 		dipent.phase[5] = 'B';
 
 	case 'B':		/* Adjustments */
