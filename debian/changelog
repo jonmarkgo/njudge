@@ -1,3 +1,9 @@
+njudge (1:1.5.2-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Jaldhar H. Vyas <judgekeeper@braincells.com>  Thu,  9 Oct 2003 15:23:17 -0400
+
 njudge (1:1.5.0-1) unstable; urgency=low
 
   * New upstream version.
