@@ -17,6 +17,9 @@
 # Process this file with automake to produce Makefile.in
 #
 # $Log$
+# Revision 1.34  2003/11/18 14:42:00  millis
+# Added manual.htm (Russell Blau's DJUM)
+#
 # Revision 1.33  2003/09/09 18:51:22  jaldhar
 # Got rid of port.h and replaced with some extra configure checks.  The
 # include strings.h was not carried over because it is commented out and

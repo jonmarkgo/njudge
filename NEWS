@@ -1,4 +1,4 @@
-The following bugs were fixed in 1.5.3
+The following bugs were fixed in 1.5.4
 
 (ordered by Severity)
 
@@ -7,9 +7,14 @@ The following bugs were fixed in 1.5.3
 
 
 ID   Sev   Pri   Plt   Owner   State   Result   Summary
-224 tri P3 All MachFix@yahoogroups.com RESO FIXE Missing '.' on build turn result lines
-212 nor P3 All tim@gem.win.co.nz RESO FIXE Announce when abandoned player has returned to NMR game
-240 maj P3 All tim@gem.win.co.nz RESO FIXE Prevent registration cross-linking
-241 min P3 All tim@gem.win.co.nz RESO FIXE Iamalso to accept only one email
+217  maj   P3   All   judge-maint@diplom.org   RESO   FIXE   Judge bailout can be caused with bad from: address
+249 maj P3 All MachFix@yahoogroups.com RESO FIXE Unit disbanded while under siege does not clear siege flag
+250 maj P3 All judge-maint@diplom.org RESO FIXE blank address line in dip.addr is possible
+245 nor P3 All millis@faztek.org RESO FIXE Summary missing off provinces
+246 nor P3 All millis@faztek.org RESO FIXE MachHo summaries not working
+254 nor P3 All judge-maint@diplom.org RESO FIXE Touch press: can only broadcast once per game!
+145 min P3 All judge-maint@diplom.org RESO FIXE Change "problem generating summary" error
+183 min P3 All judge-maint@diplom.org RESO FIXE Build order "a edi" rejected when phased.
+248 min P3 All judge-maint@diplom.org RESO FIXE '_' not allowed in power names
 
-4 bugs found. 
+9 bugs found. 
