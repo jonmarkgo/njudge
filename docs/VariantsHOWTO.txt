@@ -1,0 +1,76 @@
+(This is the text version of the VariantsHOWTO; the reference versions is the HTML one)
+
+                 Creating variants for the Diplomacy judge
+
+                                   v.0.1
+              [1]Christophe Courtois (christophe@courtois.cc)
+
+                             [2]1. Introduction
+     _________________________________________________________________
+
+                                1.Introduction
+
+1.1 History
+
+   - 0.1 : Mar 2003
+
+1.2 Last version
+
+   This is a guide which aims to help people creating variants for the
+   Diplomacy judge alone.
+   The reference version is the HTML version. The text should be
+   automatically generated against the HTML.
+   Anyway, the last version of this file should always be in the last CVS
+   snapshot of the judge at [3]http://www.njudge.org/.
+
+1.3 Why?
+
+                              7. Automatic tests
+
+   None known. David Norman may have some.
+
+                              8. Troubleshooting
+
+   These are some problems and solutions:
+
+   * *
+
+                                    12.Misc
+
+12.1 The author
+
+   The author is 28 years old, writes SQL all day long for big
+   corporations to eat and pay the mortgage, and is trying to learn Java,
+   C and PHP (The most difficult part is to find some time for it...)
+
+12.2 Thanks
+
+   Many parts of this HowTo are cut-and-pasted from source code and mails
+   of the judge-maint mailing list.
+
+12.3 Copyright and boring stuff
+
+   Permission is granted to make and distribute copies of this text
+   provided the copyright notice and this permission notice are preserved
+   on all copies.
+   Permission is granted to copy and distribute modified versions of this
+   manual under the conditions for verbatim copying, provided that the
+   derived work is distributed under the terms of a permission notice
+   identical to this one. Translations fall under the category of
+   "modified versions".
+   Warranty: None. Nothing. Nada. Rien. Que dalle. Nitchevo. Nichts. Do
+   everything at your own risk. Remember this is a sum-up of a non-native
+   English speaker on a subject he recently discovered.
+   Redistribution is allowed and encouraged; however, it is strongly
+   recommended that the redistributor contact the author before the
+   redistribution, in the interest of keeping things up-to-date (you
+   could send me a copy of the thing you're making while you're at it).
+   Translators are also advised to contact the author before translating
+   (no translation known for the moment).
+     _________________________________________________________________
+
+References
+
+   1. mailto:christophe@courtois.cc
+   2. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#1
+   3. http://www.njudge.org/

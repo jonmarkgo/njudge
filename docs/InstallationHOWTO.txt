@@ -988,9 +988,9 @@ atrun script
 
    - Anyway, you must copy the defaults.inc from your current judge into
    the new source directory, and compile from there. Don't forget to read
-   the INSTALL and InstallationHOWTO files of this new version to be sure
-   that the important configuration files to move across both versions
-   are the same (judge maintainers try to do it).
+   the INSTALL and InstallationHOWTO.html files of this new version to be
+   sure that the important configuration files to move across both
+   versions are the same (judge maintainers try to do it).
 
    - dip.conf is the configuration file, stored in the judge directory,
    and will not be overwritten. Please check that the new version doesn't
