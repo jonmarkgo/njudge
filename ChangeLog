@@ -1,3 +1,57 @@
+2004-08-05 14:11  millis
+
+	* NEWS, BUGS, configure.ac, njudge.spec: Update for 1.7.1 release
+
+2004-08-03 14:57  millis
+
+	* dip.c: Fix Bug 347 (games incorrectly process when NoNMR and
+	  abandoned playerss) Fix Bug 350 (too many powers shown as
+	  abandoned in Intimate)
+
+2004-08-03 14:55  millis
+
+	* st_porder.c, ml_signon.c: Fix Bug 349 and 352
+
+2004-08-03 14:52  millis
+
+	* mail.c: Fix Bug 326 (allow Intimate to rollback to first turn)
+
+2004-08-03 08:26  millis
+
+	* AUTHORS: New contributors
+
+2004-08-02 08:56  russblau
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: Add new
+	  commands defined in version 1.7.0 (SET PORTAGE and SET POWERS).
+
+2004-08-01 11:31  machmstr
+
+	* data/seed.eai: This seed is not complete.  Seed file for the AH
+	  official Mach2 scenarios 6 published in The General.
+
+2004-08-01 11:30  machmstr
+
+	* data/: seed.este, seed.fotl, seed.pa, seed.pamt, seed.ttr: Seed
+	  files for the AH official Mach2 scenarios 5-8 published in The
+	  General.
+
+2004-08-01 11:29  machmstr
+
+	* data/: info.mach2_eai, info.mach2_fotl, info.mach2_pa,
+	  info.mach2_pamt, info.mach2_ttr, info.mach_este, map.mach2_eai,
+	  map.mach2_fotl, map.mach2_pa, map.mach2_pamt, map.mach2_ttr,
+	  map.mach_este: The AH official Mach2 scenario 5-8 published in
+	  The General.
+
+2004-08-01 11:28  millis
+
+	* ml_set.c: Fix Bug 345 and 346
+
+2004-07-31 16:30  njudge
+
+	* ChangeLog: Autobuild njudge_1_7_0
+
 2004-07-31 16:00  millis
 
 	* configure.ac, njudge.spec: Updated to 1.7.0
