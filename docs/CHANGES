@@ -1,3 +1,18 @@
+1.1.0 (19th April 2002)
+
+(18th April 2002)
+Added the following commands:
+- unstart
+- set secret
+- set [prflist|prfrand|prfboth]
+
+Fixed Set Absence so that "to" is not case sensitive
+
+Fixed Quiet games so that new players are announced
+before the game starts
+
+Fixed ascii_to_ded.c so thatit no longer generates an
+error when compiled
 (15th April 2002)
  - Many changes from USTV, inluding blind, railways/hongkong/gateways
    and initial setup option
