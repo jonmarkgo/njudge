@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!          May 13, 2004
+Greetings from the Diplomacy* Adjudicator!!          July 27, 2004
 info.dipmach
 
 
@@ -110,11 +110,23 @@ b) Machiavelli notes
 9) Unit availability for Machiavelli2
    England, France, Germany and Russia can build any type of unit
    Austria: no elite professional AGF; only bribe/maintain citizens militia
-      and mercenary F units.
+      F units.
    Italy: no elite professional AGF.
    Turkey: no elite professional AGF; no citizens militia F; only 
-      bribe/maintain mercenary F units.
-
+      mercenary F units available.
+   
+   Fleet limits are based on the fleet availability about 1914, as those 
+   figures were easy to find.  The only diffrence with 1901 is that 
+   everybody had less units.  But relative strengths were about the same.  
+   Turkey had essentially no fleet, and the elite mercenary is available 
+   only for game balance.  As Italy and Austria had less fleet units than 
+   EFGR, I choose to simulate this by removing elite professional 
+   availability for them.
+   
+   Army sizes, i.e. SC availability are kept as in Standard Diplomacy, 
+   although I slightly penalized AIT in Mach2 by removing access to the 
+   elite professinal army/garrison unit.
+ 
 
 Setup
 
@@ -145,3 +157,4 @@ v2, August 15th 2003.  Garrisons added. Variable income changes.
 v2b,November 16th 2003.  Clarification on StP and F/G conversion.  Added 
     short explanation of nosummer and nogarrison flags.  By Sergio Lidsell.
 v2c,May 13th 2004. Correction of Russian VI. By SL.
+v2.1,July 27th 2004. Additional notes re. the scenario construction. By SL.
