@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2003/07/26 12:45:57  millis
+ * Fix Bug 203
+ *
  * Revision 1.23  2003/07/14 22:33:41  millis
  * Fix bug 194 (not counting last province)
  *
@@ -671,7 +674,7 @@ void income(int mindie)
 
 }
 
-void ma_process_input(int pt, char phase)
+void ma_process_input(int pt, char phase, int player)
 {
 	char *s;
 	int u, p;
@@ -692,6 +695,10 @@ void ma_process_input(int pt, char phase)
 			while (*s == ' ')
 				s++;
 
+			if (player >= 0 && (dipent.players[player].status & SF_NOT_APPROVED)) {
+                            status = 1;
+                            fprintf(rfp, "You are not approved to make moves: please contact the Master.\n\n");
+                        } else
 			switch (phase) {
 			case 'B':
 				if (dipent.xflags & XF_NOMONEY) 

@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.52  2003/12/25 06:43:53  nzmb
+ * Fixed bug #102 and another small problem in the SET START processing
+ * code.
+ *
  * Revision 1.51  2003/08/27 12:04:56  millis
  * Fix bug 222
  *
@@ -263,6 +267,7 @@ extern int avalue[], lvalue[], naccess, nlevel;
 void ChangeTransform( char *s);
 void ShowTransformSettings(FILE* rfp);
 char * SetSubkey(int act, char *s);
+static int  SetApprovalState(int type, char *part_list, int part_list_count);
 
 #define SETFLAGS(set,mask) dipent.flags = (dipent.flags & ~(mask)) | (set)
 
@@ -498,6 +503,10 @@ void mail_setp(char *s)
 	char *ss = ss1;
 	char *se = se1;
 	char stat_text[20];
+
+	static char part_list[sizeof(broad_list)];  /* Temporary store for powers */
+	int part_list_count = 0;
+	int bad_cmd = 0;
 
 #define SET_ADD		1
 #define PRV_ADD		'a'
@@ -845,6 +854,15 @@ void mail_setp(char *s)
 #define PRV_TOUCHPRESS     'm'
 #define SET_NOTOUCHPRESS 172
 #define PRV_NOTOUCHPRESS 'm'
+#define SET_APPROVAL	  173
+#define PRV_APPROVAL	  'm'
+#define SET_NOAPPROVAL	  174
+#define PRV_NOAPPROVAL	  'm'
+#define SET_APPROVED	  175
+#define PRV_APPROVED	  'm'
+#define SET_NOTAPPROVED	  176
+#define PRV_NOTAPPROVED   'm'
+
 
 /***********************************************************************
  * Note:  in keys below, a blank space indicates that whitespace is    *
@@ -954,7 +972,9 @@ void mail_setp(char *s)
 	    "neutrals", "no neutrals",
 	    "capture win", "no capture win", 
 	    "auto create", "no auto create",
-	    "touch press", "no touch press"
+	    "touch press", "no touch press",
+	    "approval", "no approval",
+	    "approved", "approve", "not approved", "not approve"
 	};
 
 	static unsigned char action[] = {
@@ -1045,7 +1065,9 @@ void mail_setp(char *s)
 	    SET_CAPTUREWIN,
 	    SET_NOCAPTUREWIN ,
 	    SET_AUTOCREATE, SET_NOAUTOCREATE,
-	    SET_TOUCHPRESS, SET_NOTOUCHPRESS
+	    SET_TOUCHPRESS, SET_NOTOUCHPRESS,
+	    SET_APPROVAL, SET_NOAPPROVAL,
+	    SET_APPROVED, SET_APPROVED, SET_NOTAPPROVED, SET_NOTAPPROVED
 	};
 
 	static char privs[] = {
@@ -1134,7 +1156,10 @@ void mail_setp(char *s)
 	    PRV_SUMMER, PRV_NOSUMMER, PRV_GARRISONS, PRV_NOGARRISONS,
 	    PRV_NEUTRALS, PRV_NONEUTRALS, PRV_CAPTUREWIN, PRV_NOCAPTUREWIN,
 	    PRV_AUTOCREATE, PRV_NOAUTOCREATE,
-	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS
+	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS,
+            PRV_APPROVAL, PRV_NOAPPROVAL,
+            PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED
+
 	};
 
 	chk24nmr = 0;
@@ -2524,6 +2549,7 @@ void mail_setp(char *s)
 					xaddr, PRINT_POWER,
 				      dipent.name, dipent.no_of_players);
 				CheckForGameStart();
+				broadcast = 1;
 
 			}
 			break;
@@ -2563,6 +2589,35 @@ void mail_setp(char *s)
                                 broadcast = 1;
                         }
                         break;
+
+                case SET_APPROVAL:
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_APPROVAL, "Approval", CATF_SETON,
+                                           "Master must now approve new players to allow them to move.\n",
+					   CATF_NORMAL);
+                        break;
+
+                case SET_NOAPPROVAL:
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_APPROVAL, "Approval", CATF_SETOFF,
+                                           "No master approval now required for new players to make their moves.\n",
+					   CATF_NORMAL);
+                        break;
+
+		case SET_NOTAPPROVED:
+		case SET_APPROVED:
+		        if (dipent.seq[0] == 'x') {
+			    fprintf(rfp, "Game '%s' has not yet started: cannot change player(s) approval state!\n",
+				    dipent.name);
+			} else {
+			    bad_cmd = parse_powers(&s, part_list, sizeof(part_list),
+                                                        &part_list_count,0);
+			    if (bad_cmd) {
+				fprintf(rfp, "One or more bad powers in list: '%s' - command rejected!\n", part_list);
+			    } else {
+			        broadcast = SetApprovalState(action[i], part_list, part_list_count);
+			    }
+			}
+			break;
+
 
 		case SET_STRCONVOY:
 			CheckNoMach();
@@ -3849,5 +3904,81 @@ void ShowTransformSettings(FILE* rfp)
         fprintf(rfp,".\n");
 
 }
+/* Inform players of master's decision regarding approval */
+int SetApprovalState(int type, char *part_list, int part_list_count)
+{
+    int i,j;
+    int changed;
+    char *text, *explain, *op_text;
+    FILE *fptr;
+    char *filename = "dip.approve";
+    static char tline[1024];
+    int was_changed = 0;
 
+    /* First, create the file to be written to. */
+    fptr = fopen(filename, "w");
+    if (fptr == NULL) {
+	fprintf(stderr, "sas: cannot write to %s.\n",
+                                      filename);
+        bailout(E_FATAL);
+    }
+    msg_header(fptr);
+    if (type == SET_APPROVED) {
+        text = "approved";
+	explain = "You may now make moves for all of your units.\n\n";
+    } else {
+        text = "not approved";
+	explain = "You cannot now make moves for any units.\nContact the master if you wish to contest this.\n\n";
+    } 
+    fprintf(fptr, "%s as Master has now %s your making moves.\n", raddr, text);
+    fprintf(fptr, explain);
+    fclose(fptr);
+
+    for (i = 0; i < dipent.np; i++) {
+        for (j = 0; j < part_list_count; j++) {
+	    if (part_list[j] != 'M' && part_list[j] != 'O' && 
+	        (dipent.players[i].power == power(part_list[j]))) {
+		changed = 0;
+
+		if (type == SET_APPROVED) {
+		    if (dipent.players[i].status & SF_NOT_APPROVED) {
+		        dipent.players[i].status &= ~SF_NOT_APPROVED;
+			changed = 1;
+		    }
+		} else {
+		    if (!(dipent.players[i].status & SF_NOT_APPROVED)) {
+		        dipent.players[i].status |= SF_NOT_APPROVED;
+		 	changed = 1;
+		    }
+		}
+		if (changed) {
+
+		    sprintf(tline, "%s %s '%s:%s - %s Player moves %s' '%s'",
+                                SMAIL_CMD, filename, 
+				JUDGE_CODE, dipent.name, dipent.phase, text, dipent.players[i].address);
+
+                        if (execute(tline)) {
+                                fprintf(stderr, "sas: Error sending mail to %s.\n",
+                                        dipent.players[i].address);
+                                bailout(E_FATAL);
+                        }
+
+			was_changed = 1;
+			op_text = "%s%s as %s in '%s' has %s %s to make moves.\n";
+			pprintf(cfp, op_text, NowString(),
+                        xaddr, powers[dipent.players[player].power], dipent.name, text, 
+			powers[dipent.players[i].power]);
+                        fprintf(bfp, op_text, "", xaddr, PRINT_POWER, dipent.name, text,
+                        powers[dipent.players[i].power]);
+
+                        fprintf(mbfp, op_text, "", raddr, PRINT_POWER, dipent.name, text,
+                        powers[dipent.players[i].power]);
+
+			fprintf(rfp, "%s is now %s to make moves.\n", powers[dipent.players[i].power], text); 
+		}
+	    }
+	}
+    }
+    return was_changed;
+}
 /***************************************************************************/

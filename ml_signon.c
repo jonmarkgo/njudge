@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.36  2004/02/14 23:11:16  millis
+ * Forced ocmmit, no changes
+ *
  * Revision 1.35  2003/12/25 06:43:54  nzmb
  * Fixed bug #102 and another small problem in the SET START processing
  * code.
@@ -523,6 +526,8 @@ int mail_signon(char *s)
 		dipent.players[n].userid = userid;
 		dipent.players[n].siteid = siteid;
 		dipent.players[n].late_count = 0; /* initialise late count */
+		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
+		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
 		*dipent.players[n].pref = '\0';
 		strcpy(dipent.players[n].address, raddr);
 		strcpy(dipent.players[n].password, password);
@@ -743,6 +748,9 @@ int mail_signon(char *s)
 				/* Reset the user's waiting flags */
 				dipent.players[i].status &= ~(SF_LATE | SF_REMIND);
 				dipent.players[i].status |= SF_WAIT;  
+                		if ((dipent.x2flags & X2F_APPROVAL) && (dipent.players[n].power <= WILD_PLAYER))
+                    		    dipent.players[n].status |= SF_NOT_APPROVED;  /* New player needs approval */
+				
 
 				if (!msg_header_done)
 					msg_header(rfp);

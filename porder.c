@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2002/08/27 22:27:56  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.2  2001/07/15 09:20:00  greg
  * added support for game directories in a sub directory
  *
@@ -61,10 +64,10 @@ int porder(char c, int player, int listflg)
 		more_orders = 0;
 
 		if (dipent.flags & F_MACH) {
-			ma_process_input(power, dipent.phase[5]);
+			ma_process_input(power, dipent.phase[5], player);
 			ma_process_output(power, dipent.phase[5]);
 		} else {
-			process_input(power, dipent.phase[5]);
+			process_input(power, dipent.phase[5], player);
 			process_output(power, dipent.phase[5]);
 		}
 

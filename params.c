@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.38  2004/02/14 23:31:15  millis
+ * Display duplex ratio (if not secret)
+ *
  * Revision 1.37  2004/01/04 11:34:35  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -609,6 +612,10 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_EXTRA_HC ) {
 		strcatf(line, "ExtraHomeCentres", &first_flag);
 	}
+
+	if (dipent.x2flags & X2F_APPROVAL ) {
+                strcatf(line, "Approval", &first_flag);
+        }
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {

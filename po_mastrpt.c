@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2003/05/02 22:16:57  millis
+   ** Remove moves from non-players (stops Chaos games with lots of junk lines)
+   **
    ** Revision 1.2  2003/01/14 13:56:46  millis
    ** Updated with ustv merged changed
    **
@@ -91,6 +94,12 @@ void mast_rpt(int current_power, int line_up)
 				tmp = 1;
 				fprintf(rfp, " WAIT");
 			};
+			if (dipent.players[cnt].status & SF_NOT_APPROVED) {
+			        if (tmp)
+                                        fprintf(rfp, ",");
+                                tmp = 1;
+                                fprintf(rfp, " Not Approved");
+			}
 			fprintf(rfp, ".");
 		};
 	};
