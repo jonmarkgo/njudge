@@ -35,6 +35,7 @@ binary-arch:	checkroot build
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+	@echo After installing this package, you must edit /home/judge/dip.conf
 
 define checkdir
 	test -f debian/rules
