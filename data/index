@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     18 Jul, 2003
+Greetings from the Diplomacy* Adjudicator!!                     19 Jul, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -222,6 +222,12 @@ any/    OBSERVE name password
         To become an observer.  This command is equivalent to "SIGNON oname
         password".
 
+mod/	PAUSE							      {1.5.0}
+	To suspend a game. Players can still press, but moves will be blocked.
+	No game processing or deadline expiration will occur. Periodic messages 
+	will be sent to remind of the pause state. To resume the game, the master
+	should issue the 'resume' command.
+
 ply/    PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.  Get file 'syntax'.
@@ -267,7 +273,7 @@ ply/    RESIGN
         cannot RESIGN.  See command "EJECT".
 
 ply/    RESUME
-        To restart a completed or terminated game.  The "SET [NO]RESUME"
+        To restart a paused, completed or terminated game.  The "SET [NO]RESUME"
         command (below) determines whether this command will be accepted from
         any player, or only from a Master.
 
