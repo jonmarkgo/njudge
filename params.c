@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/07/16 18:14:23  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.13  2002/06/11 16:26:20  nzmb
  *
  * Added set [no]mustorder to require players to submit avalid set of orders
@@ -26,7 +29,7 @@
  * Various updates for Machiavelli bug fixes
  *
  * Revision 1.9  2001/10/20 12:11:14  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.8.2.2  2001/10/20 00:52:20  dedo
  * Correctedcompile error
@@ -478,10 +481,27 @@ void params(FILE * fp)
         sprintf(line, "  x2Flags:  ");
 	first_flag = 1;
 	if (dipent.x2flags & X2F_SECRET)
-                strcatf(line, "Secret.", &first_flag);
+                strcatf(line, "Secret", &first_flag);
 
-	if (!first_flag)
-		print_params(fp, line);
+	if (dipent.x2flags & X2F_MORE_HOMES) {
+		sprintf(temp1,"NumHome: %d", dipent.num_homes);
+		strcatf(line, temp1, &first_flag);
+	}
+
+	if (dipent.flags & F_BLIND) {
+	    if (dipent.x2flags & X2F_BLIND_NO_CENTRES) {
+                strcatf(line, "NoBlindCentres", &first_flag);
+            } else {
+                strcatf(line, "BlindCentres", &first_flag);
+            } 
+	}
+	
+	if (!first_flag) 
+		strcat(line,".");
+
+	if ((dipent.x2flags & (X2F_PRINT_OPTIONS)))
+	    print_params(fp, line);
+	
 
 	/*  Press information.  */
 
@@ -539,8 +559,6 @@ void params(FILE * fp)
 
 	if(dipent.x2flags & X2F_POSTALPRESS)
 		strcat(line,", postal style press");
-	else
-		strcat(line,", no postal style press");
 
 	switch (dipent.flags & (F_OBWHITE | F_OBNONE)) {
                 case (F_OBWHITE | F_OBNONE):
@@ -600,12 +618,12 @@ void params(FILE * fp)
 
 	fprintf(fp, "  Power Assignments: ");
 	if (dipent.x2flags & X2F_PREFRANDONLY) {
-		fprintf(fp, "Assigned Randomly Only\n");
+		fprintf(fp, "Assigned Randomly Only.\n");
 	} else {
 		if (dipent.x2flags & X2F_PREFRANDALLOW) {
-			fprintf(fp, "By Preference List or Randomly\n");
+			fprintf(fp, "By Preference List or Randomly.\n");
 		} else {
-			fprintf(fp, "By Preference List Only\n");
+			fprintf(fp, "By Preference List Only.\n");
 		}
 	}
 
