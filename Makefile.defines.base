@@ -1,0 +1,43 @@
+#Installation-specific Makefile settings
+#
+#The following line defines the account name to be used for the judge
+USER=judge
+
+#The next entry defines where the judge code is to be installed
+DESTDIR= /home/judge
+
+#This entry says where the executables will be installed
+#if != DESTDIR, links will be made in DESTDIR to here
+INSTALLDIR=${DESTDIR}
+
+
+#The line indicates where the source code resides (normally need not be changed)
+SRCDIR=.
+
+#The following options are machine-specific and may need to be 
+#adjusted for your particular UNIX flavour. 
+INCPATH=
+LOGEDIT= vi +
+CC=gcc
+
+# locations of some support programs
+#These two values are OK for Linux at least
+HEAD=/bin/head
+MAIL=/bin/mail
+
+#The following set of options work for Linux
+# Non-test options.  Comment out if testing with GDB.
+#CFLAGS= -pipe -O -Wall -DJVERSION=\"$(JVERSION)\"
+#Uncomment this line if using gdb
+CFLAGS= -Wall -ggdb -DJVERSION=\"$(JVERSION)\"
+LDFLAGS=
+INSFLAGS= -c -s -m 755
+LIBS= -lm
+
+#These options are beleived to be substitutes for a Solaris platform
+# Test options.  Comment (#) out if NOT testing with GDB.
+#CFLAGS= -gstabs -DSOLARIS
+#LDFLAGS= -gstabs  -DSOLARIS
+#INSFLAGS= -c -m 755
+#LIBS=
+

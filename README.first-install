@@ -1,0 +1,14 @@
+
+After newly installing the judge software, you MUST do the following first
+before compiling:
+
+ - Copy Makefile.defines.base to Makefile.defines. Then edit, changing the
+   following variables for your system reality:
+	USER (must equal the user account that will use the jugde
+	DESTDIR (where the datafiles will be installed)
+	INSTALLDIR (where the executables wil lbe installed, commonly 
+	as DESTDIR)
+
+On subsequent (update) installs, this file will not be over-written.
+
+- Millis Miller 13th Nov 2000
