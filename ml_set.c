@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2002/12/28 00:52:19  millis
+ * Proper fix to CR 17
+ *
  * Revision 1.27  2002/12/28 00:42:54  millis
  * Implement bug 17, noBcentres option (to hide others centres in blind)
  *
@@ -2972,7 +2975,7 @@ void mail_setp(char *s)
                             fprintf(rfp, "Game '%s' has already started: not allowed to change BlindCentres flag!\n\n",
                                     dipent.name);
                         } else {
-                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_CENTRES, "BlindCentres", CATF_SETON,
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_CENTRES, "BCentres", CATF_SETON,
                                                "Blind game will show ALL owned centres.\n",CATF_NORMAL);
                         }
                         break;
@@ -2983,7 +2986,7 @@ void mail_setp(char *s)
                             fprintf(rfp, "Game '%s' has already started: not allowed to change BlindCentres flag!\n\n",
                                     dipent.name);
                         } else {
-                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_CENTRES, "BlindCentres", CATF_SETOFF,
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_BLIND_CENTRES, "BCentres", CATF_SETOFF,
                                                "Blind game will show only power's owned centres.\n",CATF_NORMAL);
                         }
                         break;
