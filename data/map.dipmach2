@@ -1,4 +1,4 @@
-#Dipmach variant by Sergio Lidsell,          Vers. 2b.  Nov 16th 2003
+#Dipmach variant by Sergio Lidsell,          Vers. 2c. July 27th 2004
 #Major city incomes corrected. Alb and Naf changed from x to l
 #Variable incomes changed. Correction of abbreviation in plague table
 Switzerland,           l0. swi switz
@@ -280,12 +280,12 @@ Storms:   2     3     4     5     6     7     8     9    10    11    12
 # Ordinary, Citizens, Mercenary, Professional
 
 Limits for Units Types:
-   A xxx. xrr. xxx.
+   A xxx. xrx. xxx.
    E xxxx xxxx xxxx
    F xxxx xxxx xxxx
    G xxxx xxxx xxxx
    I xxx. xxx. xxx.
    R xxxx xxxx xxxx
-   T xxx. x.r. xxx.
+   T xxx. x.x. xxx.
 #end of limit (this line is compulsory!)
 -1
