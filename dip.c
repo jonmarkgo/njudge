@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.52  2004/06/27 01:50:21  millis
+ * Futher Intimate fixes (Bug 297) specifically to allow phased orders
+ * and correct turns not processing, plus more information printed.
+ *
  * Revision 1.51  2004/05/23 15:53:40  millis
  * Restored inadvertently deleted 1.49 and 1.48 changes.
  *
@@ -907,6 +911,9 @@ void CheckRemindPlayer(int player, long one_quarter)
     if (!WAITING(dipent.players[player].status) ) return; /* Not waiting for a move */
 
     if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
+
+    if (dipent.players[player].controlling_power != 0) return; /* only players */
+
     num_hours = (int)  (one_quarter / (60 * 60));
     num_hours++;
     if (num_hours != 1) 
@@ -1023,11 +1030,11 @@ int process(void)
 			if (dipent.players[i].power < 0)
 				continue;
 
-			if (now < dipent.deadline && (dipent.players[i].status & SF_WAIT)) {
+			if (now < dipent.deadline && (dipent.players[RealPlayerIndex(i)].status & SF_WAIT)) {
 				dipent.process = dipent.deadline;
 				return 0;
 			}
-			if (WAITING(dipent.players[i].status)) {
+			if (WAITING(dipent.players[RealPlayerIndex(i)].status)) {
 				if (now < dipent.deadline) {
 					dipent.process = dipent.deadline;
 					return 0;
@@ -1036,9 +1043,9 @@ int process(void)
 				while ((then = dipent.process - 24 * 60 * 60) > now)
 					dipent.process = then;
 
-				if (dipent.players[i].status & SF_PART &&
+				if (dipent.players[RealPlayerIndex(i)].status & SF_PART &&
 				  now >= dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60)) {
-					dipent.players[i].status |= SF_MOVED;
+					dipent.players[RealPlayerIndex(i)].status |= SF_MOVED;
 				} else {
 					if (!n++) {
 						if (Dflg) {
@@ -1077,20 +1084,20 @@ int process(void)
 						dipent.name, powers[dipent.players[i].power]);
 
 
-					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
+					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[RealPlayerIndex(i)].power]);
 
-					if (!(dipent.players[i].status & SF_LATE)) {
-					    dipent.players[i].status |= SF_LATE;
-					    dipent.players[i].late_count++; /* bump up the late count */
+					if (!(dipent.players[RealPlayerIndex(i)].status & SF_LATE)) {
+					    dipent.players[RealPlayerIndex(i)].status |= SF_LATE;
+					    dipent.players[RealPlayerIndex(i)].late_count++; /* bump up the late count */
 					}
 					if (dipent.xflags & XF_LATECOUNT) {
 						if (!(dipent.x2flags & X2F_SECRET))
 							fprintf(lfp, ": %d time%s late",
-								dipent.players[i].late_count,
-								dipent.players[i].late_count == 1 ? "" : "s" );
+								dipent.players[RealPlayerIndex(i)].late_count,
+								dipent.players[RealPlayerIndex(i)].late_count == 1 ? "" : "s" );
 						fprintf(mlfp, ": %d time%s late",
-							dipent.players[i].late_count,
-							dipent.players[i].late_count == 1 ? "" : "s" );
+							dipent.players[RealPlayerIndex(i)].late_count,
+							dipent.players[RealPlayerIndex(i)].late_count == 1 ? "" : "s" );
 					}
 					fprintf(lfp,".\n");
 					fprintf(mlfp,".\n");
@@ -1154,11 +1161,12 @@ int process(void)
 				if (dipent.players[i].power < 0)
 					continue;
 
-				if ((w = WAITING(dipent.players[i].status)) || n) {
+				if ((w = WAITING(dipent.players[RealPlayerIndex(i)].status)) || n) {
 					if (w && n == -1) {
 						if (!(dipent.players[i].status & SF_ABAND)) {
 							dipent.players[i].status |= SF_ABAND;
-							if (!(dipent.flags & F_NORATE)) {
+							if (!(dipent.flags & F_NORATE) &&
+							    dipent.players[i].controlling_power == 0) {
 								ded[dipent.players[i].userid].r += D_ABANDON;
 								put_data(dipent.players[i].userid,resigned);
 								fprintf(log_fp, dedfmt, D_ABANDON, dipent.players[i].userid,
@@ -1171,17 +1179,19 @@ int process(void)
 							dipent.players[i].units, dipent.players[i].centers);
 						pcontrol++;
 					}
+					if (dipent.players[i].controlling_power == 0) {
 #ifdef NORMDED
-					if (!(dipent.flags & F_NORATE)) {
+					    if (!(dipent.flags & F_NORATE)) {
 						d = n == 1 ?
 						    (!w && (dipent.players[i].status & SF_MOVE) ? D_ONTIME : 0)
 						    : (w ? D_LATE : 0);
 						ded[dipent.players[i].userid].r += d;
 						fprintf(log_fp, dedfmt, d, dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
-					}
-					if(n == 1 && dipent.dedapplied == 0 && (!(dipent.flags & F_NORATE)))
-					{
+					    }
+
+					    if(n == 1 && dipent.dedapplied == 0 && (!(dipent.flags & F_NORATE)))
+					    {
 						if(w)
 						{
 							put_data(dipent.players[i].userid,total);
@@ -1192,11 +1202,11 @@ int process(void)
 							put_data(dipent.players[i].userid,total);
 						}
 						dedtest = 1;
-					}
+					    }
 #else
-					d = 0;
-					if(dipent.dedapplied == 0 && n == 1)
-					{
+					    d = 0;
+					    if(dipent.dedapplied == 0 && n == 1)
+					    {
 						if(dipent.players[i].status & SF_MOVE)
 						{
 							if(w)
@@ -1215,10 +1225,12 @@ int process(void)
 						ded[dipent.players[i].userid].r += d;
 						fprintf(log_fp,dedfmt,d,dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
+					    }
 					}
 #endif
 					if (*(dipent.players[i].address) != '*' &&
-					    !(dipent.players[i].status & SF_RESIGN)) {
+					    !(dipent.players[i].status & SF_RESIGN) &&
+					    dipent.players[i].controlling_power == 0) {
 						if (dipent.players[i].power == MASTER) {
 							sprintf(line, "dip.mlate '%s:%s - %s Late Notice: %s'",
 								JUDGE_CODE, dipent.name, dipent.phase, late);
@@ -1658,6 +1670,7 @@ int process(void)
 		phase_pending();
 		deadline((sequence *) NULL, 0);
 	}
+	
 	return 0;		/* reached ? */
 }
 /***********************************************************************/
