@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/01/13 22:29:48  millis
+ * Merged from ustv
+ *
  * Revision 1.9  2002/05/14 23:16:24  miller
  * Added 'h' province type and new_owner value for units
  *
@@ -81,6 +84,9 @@
 #define centre(p)       ((pr[p].type == 'x') || (pr[p].type >= 'A' && pr[p].type <= 'Z') || (pr[p].type >= '0' && pr[p].type <= '9'))
 #define railway(p)      (pr[p].type == 'r')
 #define gateway(p)      (pr[p].type == 'g')
+
+#define NATIVE_POWER '+'
+#define isNativePower(p) (pletter[dipent.variant][p] == NATIVE_POWER)
 
 extern int cmap[CMAP_SIZE];
 
