@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<TITLE></TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Win32)">
+	<META NAME="CREATED" CONTENT="20040303;13240377">
+	<META NAME="CHANGED" CONTENT="20040303;14481286">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1>Guide to Working on Njudge</H1>
+<P>This document is designed to be used as a guide for developers
+working on the Njudge project.</P>
+<P>It is designed to be read by those whoare already familiar with
+the scope of the project, and are assumed to have relevant knowledge
+('C' language) in any standard platform (i.e. Windows or *nix).</P>
+<P>A general description of the njudge project can be found <A HREF="http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html">here.</A></P>
+<H2>CVS</H2>
+<P>This is the versioning system (Concurrent Versioning System) that
+is used to store the njudge code. For those unfamiliar with this tool
+the following <A HREF="http://www.cvshome.org/docs/manual/">link</A>
+can be consulted to see the manual.</P>
+<H3>Setup</H3>
+<P>A specific guide to working with CVS can be found <A HREF="http://devel.diplom.org/~njudge/Njudge_CVS_HowTo.html">here</A>.</P>
+<H3>Browsing</H3>
+<P>You can see the current state of the CVS repository graphically,
+using the CVSWeb tool, <A HREF="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi">here</A>.</P>
+<H3>Checkout and Checkins</H3>
+<P>Files are normally checked out in the standard CVS sense, i.e. Not
+reserved. When ready to checkin, it is the responsibility of the
+person doing the chekin to ensure that the version is correct, and
+not overwritting any changes that a previous person may have made in
+the meantime. Though CVS should normally detect and warn for these
+situations, this is not always guanrenteed and said warnings can be
+ignored.</P>
+<P>Files should only be checked in that are compile (and preferably
+link) clean, neither giving errors nor warnings. They should be
+expected to work, and not be functionally incorrect, such that a
+system built with the latest files should work.</P>
+<H3>Branching and Tagging</H3>
+<P>All work done in CVS should normally take place in the main
+branch. Files versions are tagged for each release that they are used
+in (see Releases section below). 
+</P>
+<P>Branches (which in CVS are a type of tag) should only be used for
+interim functionality, that is not currently to be generally
+released, but it is important to save in CVS (for example, a new
+functionality that seems to work but might create problems elsewhere
+that are not fully investigated yet). 
+</P>
+<H2>Bugzilla Bug-reporting</H2>
+<P>The <A HREF="http://www.bugzilla.org/">Bugzilla</A> tool is used
+to control the reporting of Bugs. A web interface is <A HREF="http://devel.diplom.org/~njudge/cgi-bin/bugzilla/index.cgi">provided</A>
+that allows bugs to be reported and controlled.</P>
+<H3>Classification</H3>
+<P>For njudge, only certain products should have bugs reported
+against them. These, and their associated components, are clearly
+documented in the Bugzilla setup itself. (Other products exist for
+different usages).</P>
+<P>Bugs can have on eof a number of serverities. Though the term
+'bug' is used, it actually refers to any change, be it a true defect
+or an enhancement request. The following types of bugs exist:</P>
+<TABLE WIDTH=100% BORDER=1 CELLPADDING=4 CELLSPACING=3>
+	<COL WIDTH=43*>
+	<COL WIDTH=213*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=17%>
+				<P>Type</P>
+			</TH>
+			<TH WIDTH=83%>
+				<P>Description</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Blocker</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>A problem that prevents the software from being even being
+				built. An absolute 'must-fix'.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Critical</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>A problem that causes severe problems (such as the judge
+				crashing). Must be fixed before the next release.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Major</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>A problem whereby the judge can make bad ajudications, pass
+				incorrect information to players, breach gunboat etc. Should be
+				fixed for the next version, unless a good reason exists.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Normal</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>A problem that is normally visibile, but can be lived with,
+				either by ignoring the situaiton or using a known work-around.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Minor</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>A problem that rarely occurs, or is not apparent to other
+				players.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Trivial</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>Typically simple spelling mistakes or text formatting output
+				only.</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=17%>
+				<P>Enhancement</P>
+			</TD>
+			<TD WIDTH=83%>
+				<P>Anything that is not a 'defect' or problem, but a change.</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P><BR><BR>
+</P>
+<H3>Lifecycle</H3>
+<H3>How to report</H3>
+<H2>Development Platforms</H2>
+<H3>Devel.diplom</H3>
+<H3>Linux</H3>
+<H4>Koppix Installation</H4>
+<H4>Others</H4>
+<H3>Windows</H3>
+<H4>Cygwin</H4>
+<H2>Development</H2>
+<H3>Builds</H3>
+<H4>automake/autoconf</H4>
+<H3>Editing</H3>
+<H4>Ide &ndash; antja</H4>
+<H4>vi</H4>
+<H3>Debugging</H3>
+<H4>ddd</H4>
+<H2>Testing</H2>
+<H3>Test script environment</H3>
+<H3>One-off</H3>
+<H2>Releases</H2>
+<H3>Procedures</H3>
+<H3>Files</H3>
+<H3>Versioning- 
+</H3>
+<H4>cvs2log</H4>
+<P>Millis Miller<BR>3<SUP>rd</SUP> March 2004</P>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>
