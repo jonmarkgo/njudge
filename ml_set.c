@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2002/07/16 18:14:22  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.23  2002/06/11 16:26:19  nzmb
  *
  * Added set [no]mustorder to require players to submit avalid set of orders
@@ -834,11 +837,11 @@ void mail_setp(char *s)
 	 "storms", "storm",
 	 "nostorms", "nostorm", "no storms", "no storm",
 	 "prflist", "prfboth", "prfrand",
-	 "mustorder", "nomustorder",
-	 "secret",
+	 "mustorder", "must order", "nomustorder", "no mustorder",
+	 "no must order", "secret",
 	 "nosecret", "no secret",
          "not variant", "notvariant",
-	 "postalpress", "nopostalpress"
+	 "postalpress", "nopostalpress", "no postalpress"
  	};
 
 
@@ -976,11 +979,11 @@ void mail_setp(char *s)
 	SET_STORM, SET_STORM,
 	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
 	SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
-	SET_MUSTORDER, SET_NOMUSTORDER,
-	SET_SECRET,
+	SET_MUSTORDER, SET_MUSTORDER, SET_NOMUSTORDER,
+	SET_NOMUSTORDER, SET_NOMUSTORDER, SET_SECRET,
 	SET_NOSECRET, SET_NOSECRET,
 	SET_NOTVARIANT, SET_NOTVARIANT,
-	SET_POSTALPRESS, SET_NOPOSTALPRESS
+	SET_POSTALPRESS, SET_NOPOSTALPRESS, SET_NOPOSTALPRESS
     };
 
 
@@ -1123,7 +1126,7 @@ void mail_setp(char *s)
 	PRV_SECRET,
 	PRV_NOSECRET, PRV_NOSECRET,
         PRV_NOTVARIANT, PRV_NOTVARIANT,
-	PRV_POSTALPRESS, PRV_NOPOSTALPRESS
+	PRV_POSTALPRESS, PRV_NOPOSTALPRESS, PRV_NOPOSTALPRESS
 	};
 
 	chk24nmr = 0;
