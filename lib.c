@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.12  2002/12/28 00:02:54  millis
+	 * Fixed bug 77, adding wrap_char() function
+	 *
 	 * Revision 1.11  2002/08/27 22:27:52  millis
 	 * Updated for automake/autoconf functionality
 	 *
@@ -619,11 +622,11 @@ char *mov_type( int prov_index, int unit_index)
 
 	if (unit_type == 'W' )  {
 		strcpy(line, "over");
-		if (prov_type =='w' || prov_type == 'v' ) {
+		if (water(prov_index) ) {
 			strcat(line, " the");
 		}
 	} else {
-		if (prov_type == 'w' || prov_type == 'v') {
+		if (water(prov_index) ) {
 			strcpy(line, "in the");
 		} else {
 			strcpy(line, "in");
@@ -924,7 +927,7 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
 
                 if (dipent.players[i].status & SF_PROCESS) {
                         temp = now - 1 * HRS2SECS;
-                        dipent.players[i].status &= ~SF_PROCESS;
+                        dipent.players[i].status &= (~SF_PROCESS & ~SF_TURNGO);
                 }
                 if (dipent.players[i].status & SF_WAIT && now < dipent.deadline) {
                         temp = dipent.deadline;
@@ -1289,4 +1292,68 @@ int AllowedGatewayRetreat( int u, int p)
 	}
     }
     return 1;  /* not on a gateway, so ok to retreat */
+}
+
+/* See if natives in gaem, return their index if so, else 0 */
+int GetNativeIndex()
+{
+   int i;
+
+   for (i=1; i < AUTONOMOUS; i++)
+	if (pletter[dipent.variant][i] == NATIVE_POWER)
+	    return i;
+
+  return 0;  /* No native power found */
+
+}
+
+/* See if game has multi-unit provinces */
+int CheckForMultiUnitProvinces()
+{
+    int i;
+
+    for (i = 1; i <= npr; i++) 
+	if (highsea(i)) 
+	     return !0;
+
+    return 0;
+}
+
+/* See if province concerned is a multi-unit province */
+int IsMultiProvince(int p)
+{
+    if (!dipent.has_multi_unit_provs) return 0;
+
+    if (highsea(p))
+	return !0;
+
+    return 0;
+}
+
+/* return the 'n'th unit in a multi-unit province */
+int GetUnitIndex(int p, int power)
+{
+    int u;
+    int index = 0; /* 'n'th unit found in this province */
+    int *nordinal = &pr[p].order_index;
+    int first_unit = pr[p].unit;
+	
+    if (!IsMultiProvince(p))
+        return pr[p].unit;  /* Normal province, return first unit */
+
+    for (u=1; u <= nunit; u++) {
+        if (unit[u].loc == p) {
+            if (unit[u].owner == power || power == MASTER) {
+		first_unit = u; /* remember first unit for this person */
+	        if (index == *nordinal) {
+		    (*nordinal)++; /* Found requested unit, next time is n+1 */
+		    return u;
+		}
+		index++;  /* now looking for next unit */
+	    }
+	}
+    }
+
+    *nordinal = 0;  /* not found requested unit, so reset ordinal */
+    return first_unit;  /* wrapped round to first unit in province */
 }
