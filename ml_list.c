@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.13  2004/07/07 23:20:45  millis
+   ** Bug 332: Do not reveal player move status in a secret game
+   **
    ** Revision 1.12  2004/06/09 22:05:08  millis
    ** More fixes for Bug 297, Intimate Diplomacy
    **
@@ -390,8 +393,8 @@ void mail_listbrief(void)
 	if ((i = (int) dipent.movement.next) < 72)
 		fprintf(rfp, ", %d hrs", i);
 
-	if (dipent.access == A_ANY)
-		fprintf(rfp, ", Any-site");
+	if (dipent.access == A_DIFF)
+		fprintf(rfp, ", Different-site");
 
 	if (dipent.access == A_SAME)
 		fprintf(rfp, ", Same-site");
