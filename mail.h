@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:51:14  david
+   ** Initial revision
+   **
    ** Revision 1.2  1996/11/05 23:11:36  rpaar
    ** USIT changes to fix minor bugs
    **
@@ -30,12 +33,16 @@ extern int more_orders;
 extern int control;
 
 int signedon;			/* Nonzero if player signed on                  */
+int i_am_really_master;		/* Non-zero if really a master signed on	*/
+int i_am_really_jk;		/* Non-zero if really a jk signed on		*/
 int starting;			/* Nonzero if quorum has been reached           */
 int player;			/* Player ordinal if signon processed           */
 int generic;			/* Nonzero if new generic game needed           */
 int listflg;			/* Non zero if a list command was processed     */
 int broadcast;			/* Non zero to send a press message out         */
+int broadcast_master_only;	/* Non-zero if a master-only message to send    */
 int broad_part;			/* Non zero if some don't get it                */
+int broadcast_absence_adjust;   /* Non-zero if a requested absence is activated */
 char broad_list[MAX_POWERS + 1];
 			/* List of power letters who get message...     */
 int broad_allbut;		/* ... or don't, as the case may be             */
@@ -53,6 +60,8 @@ char *xaddr;			/* Address that gets announced to other people  */
 char *someone;			/* Generic address for gunboat games            */
 char *somepower;		/* Generic power name for gunboat games         */
 char name[20];			/* Signon name: pname, p=power, name=game       */
+int master_press;		/* Set to 1 if press is also to master, else 0  */
+int master_only_press;		/* Set to 1 if press only for master's eyes     */
 
 char Mfile[20];			/* Movement orders file name                    */
 char Tfile[20];			/* Temporary movement orders file name          */
@@ -68,6 +77,10 @@ FILE *mail_tfp;			/* Temporary file pointer                       */
 char mail_bfile[20];		/* Name of broadcast file                       */
 char mail_mbfile[20];		/* Name of master broadcast file                */
 char *mail_rfile;		/* Name of reply file                           */
+
+/* Following two used to signal when a power is resigning and is resigned */
+#define GOING_PWD "-going-"
+#define GONE_PWD "-gone-"
 
 /*
    **  Temporary set of defines to make it easy to split the monster mail.c
