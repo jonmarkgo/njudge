@@ -1,5 +1,19 @@
 /*
    ** $Log$
+   ** Revision 1.2  2002/04/18 04:44:30  greg
+   ** Added the following commands:
+   ** - unstart
+   ** - set secret
+   ** - set [prflist|prfrand|prfboth]
+   **
+   ** Fixed Set Absence so that "to" is not case sensitive
+   **
+   ** Fixed Quiet games so that new players are announced
+   ** before the game starts
+   **
+   ** Fixed ascii_to_ded.c so thatit no longer generates an
+   ** error when compiled
+   **
    ** Revision 1.1  2002/04/11 23:49:00  miller
    ** First draft.
    **
@@ -27,6 +41,11 @@ int main()
    printf("Reading from ded.txt, "),
 
    ind = fopen("ded.txt", "r");
+   if (!ind) {
+     fprintf(stderr, "Error opening ded.txt\n");
+     return 1;
+   }
+  
    fscanf(ind, "%d\n", &nded);
 
    printf("Converting %d records\n", nded);
