@@ -317,6 +317,16 @@ mod/aft SET DEDICATION level
 	level can not be higher than the Moderator's current dedication
 	rating.  See file 'deadlines'.
 
+mod/aft SET ONTIMERAT level
+	Restricts access to the game to those people with an ontime ratio
+	equal then or greater than the indicated level. The indicated
+	level can not be higher than the moderator's.
+
+mod/aft SET RESRAT level
+	Restricts access to the game to those people with a resignation
+	ratio lower than or equal to the indicated level. The indicated
+	level can not be lower than the moderator's.
+
 mod/aft SET [NO]DIAS
         Disables/enables requirement that all draws must include all
         survivors. See file 'draws'.
