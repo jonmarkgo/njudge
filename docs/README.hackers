@@ -7,7 +7,9 @@ The judge uses the GNU Autotools (automake, autoconf) as its build system.
 automake and autoconf are pretty much standard on Unixlike systems these 
 days but if your vendor does not provide them, you can download them from 
 ftp://ftp.gnu.org/pub/gnu/ You will need at least version 2.50 of 
-autoconf and 1.6 of automake. 
+autoconf and 1.6 of automake (available on devel.diplom.org if you have 
+an account there; don't forget to commit configure, aclocal.m4 and Makefile.am 
+into the CVS if you modify Makefile.am).
 
 The "Goat Book" is a good reference for understanding how they work.  See 
 http://sources.redhat.com/autobook/ for the online version and ordering 
