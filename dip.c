@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2003/07/17 22:59:29  millis
+ * Bug 185
+ *
  * Revision 1.40  2003/06/29 21:37:40  nzmb
  * Made EOG draw entries broadcasted at the end of the game.
  *
@@ -847,7 +850,7 @@ void CheckRemindPlayer(int player, long one_quarter)
 
     if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
     num_hours = (int)  (one_quarter / (60 * 60));
-    if (num_hours < 1) num_hours = 1;
+    num_hours++;
     if (num_hours != 1) 
 	pchar = "s ";
     else
@@ -857,19 +860,6 @@ void CheckRemindPlayer(int player, long one_quarter)
 	 perror(temp_file);
          exit(E_FATAL);
     }
-
-	if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
-	num_hours = (int)  (one_quarter / (60 * 60));
-	if (num_hours < 1) num_hours = 1;
-	if (num_hours != 1)
-		pchar = "s ";
-	else
-		pchar = " ";
-
-	if ((rfp = fopen(temp_file, "w")) == NULL) {
-		perror(temp_file);
-		exit(E_FATAL);
-	}
 
 	msg_header(rfp);
 
