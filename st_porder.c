@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.25  2004/06/08 08:02:03  millis
+  ** Bug 297: Fix so that only real, alive players can win
+  **
   ** Revision 1.24  2004/05/22 10:28:45  millis
   ** Restored 1.22 version changes mistakenly deleted
   **
@@ -556,9 +559,11 @@ int CheckIntimateVictory()
     for (u = 1; u <= nunit; u++) {
 	v = AnotherPlayersHC(u, possible_victor);
 	if (v) {
-	    victor = v;
-	    occupied++;
-	    if (occupied > 1) victor = 0;
+            if (victor <= 0) {
+                victor = v;
+                occupied++;
+            } else if (victor != v)
+                occupied++; /* Only mark if a different person is also a victor */
 	}
     }
 
