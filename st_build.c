@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.32  2004/07/25 16:13:44  millis
+   ** Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+   ** return in duplex) and Bug 206 (allow takeover of unknown abandoned
+   ** countries)
+   **
    ** Revision 1.31  2004/07/13 00:29:26  millis
    ** Fix bug 339, allowing build transform games to permit players changing
    ** mind about builds without allowing too many.
@@ -510,8 +515,10 @@ int buildin(char **s, int p)
 		order = nu[p] >= 0 ? 'b' : 'r';
 
 	if (!(dipent.xflags & XF_ANYDISBAND))
+	/* Do not check for waive condition if a duplex (non-intimate) game 
+	 * This will be checked later in the waive code itself (Bug 366) */
 	if ((order == 'b' && (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND) )) ||
-	    (order == 'w' && (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND) )) ||
+	    (!(IS_DUPLEX(dipent) && !(dipent.flags & F_INTIMATE)) && order == 'w' && (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND) )) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
@@ -598,6 +605,13 @@ int buildin(char **s, int p)
 		       return E_WARN;
 		   } else
 		   p = pow;  /* Become the power that you want to waive for */
+		   /* Bug 366, check if power does have builds to waive! */
+		   if (nu[p] <= 0  && !(dipent.xflags & XF_ANYDISBAND))
+		    {
+		        errmsg("%s is not permitted to build any units.\n",
+		               powers[p]);
+		        return E_WARN;
+		    }
 		}
 
 		if ((u = pr[p1].unit)) {
