@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2003/01/07 23:41:36  millis
+ * Fix bug 93
+ *
  * Revision 1.26  2003/01/05 11:16:01  millis
  * Fixed bug 75, also make NOBROAD flag work correctly (at last!)
  *
@@ -199,6 +202,7 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define PAUSE		44
 #define COND            45      /* -- Tamas -- 2002-06-11 -- */
 #define POSTALPRESS	46
+#define FORCE_BEGIN	47
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -237,7 +241,7 @@ static int pvalue[] =
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
- "set", "sign off", "resign", "withdraw",
+ "setup", "sign off", "resign", "withdraw",
  "broadcast", "press", "phase", "clear",
  "register", "i am also",
  "who game", "who is#", "who#",
@@ -247,13 +251,14 @@ static char *commands[] =
  "process", "roll back", "map",
  "promote", "predict",
  "eject", "record", "infoplayer", "unstart",
- "setup", "suspend", "postalpress", 
+ "set", "pause", "suspend", "postalpress", 
+ "force begin", 
  "if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
 {0, LIST, HELP, GET, GET, GET,
- SET, SIGNOFF, RESIGN, RESIGN,
+ SETUP, SIGNOFF, RESIGN, RESIGN,
  BROADCAST, PRESS, PHASE, CLEAR,
  REGISTER, IAMALSO,
  WHOGAME, WHOIS, WHOIS,
@@ -263,7 +268,8 @@ static int cvalue[] =
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
  EJECT, RECORD, INFOPLAYER, UNSTART,
- SETUP, PAUSE, POSTALPRESS,
+ SETUP, PAUSE, , PAUSE, POSTALPRESS,
+ FORCE_BEGIN,
  COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
@@ -1508,7 +1514,26 @@ int mail(void)
                                         fprintf(rfp, "Only the master can pause this game.\n\n");
                                                 break;;
                                     }
+				    if (GAME_SETUP) {
+				        fprintf(rfp, "Game '%s' is in setup mode: no need to pause.  ", dipent.name);
+                                                break;
+                                    }
+
                                     dipent.phase[6] = 'P';
+
+                                       fprintf(rfp, "You have paused game '%s'.\n", dipent.name);
+
+                                        pprintf(cfp, "%s%s as %s has paused game '%s'.\n", NowString(),
+                                                xaddr, powers[dipent.players[player].power], dipent.name);
+
+                                        /* WAS mfprintf  1/95 BLR */
+                                        fprintf(bfp, "%s as %s has paused game '%s'.\n",
+                                                xaddr, powers[dipent.players[player].power], dipent.name);
+                                        fprintf(mbfp, "%s as %s has paused game '%s'.\n",
+                                                raddr, powers[dipent.players[player].power], dipent.name);
+
+                                        sprintf(subjectline, "%s:%s - %s Game Paused", JUDGE_CODE, dipent.name, dipent.phase);
+
                                     break;
 
                                 case SETUP:
@@ -1517,7 +1542,22 @@ int mail(void)
                                         fprintf(rfp, "Only the master can go to setup mode.\n\n");
                                         break;
                                     }
+				
                                     dipent.phase[6] = 'S';
+
+                                       fprintf(rfp, "You have entered setup mode for game '%s'.\n", dipent.name);
+
+                                        pprintf(cfp, "%s%s as %s has entered setup mode for game '%s'.\n", NowString(),
+                                                xaddr, powers[dipent.players[player].power], dipent.name);
+
+                                        /* WAS mfprintf  1/95 BLR */
+                                        fprintf(bfp, "%s as %s has entered setup mode for game '%s'.\n",
+                                                xaddr, powers[dipent.players[player].power], dipent.name);
+                                        fprintf(mbfp, "%s as %s has entered setup mode for game '%s'.\n",
+                                                raddr, powers[dipent.players[player].power], dipent.name);
+
+                                        sprintf(subjectline, "%s:%s - %s Game in Setup", JUDGE_CODE, dipent.name, dipent.phase);
+
                                     break;
 
 				case TERMINATE:
@@ -2107,6 +2147,52 @@ int mail(void)
                                         }
 /*---------------------------------------------  Tamas End  ---*/
 
+				case FORCE_BEGIN:
+					if (dipent.players[player].power != MASTER) {
+                                                fprintf(rfp, "Only the master can use the force begin command.\n\n");
+                                                break;
+                                        }
+                                        if (dipent.seq[0] != 'x') {
+                                                fprintf(rfp, "The game has already started!\n\n");
+                                                break;
+                                        }
+					sprintf(subjectline, "%s:%s - %s Forced Begin", JUDGE_CODE, dipent.name, dipent.phase);
+
+                                        fprintf(rfp, "Game '%s' has been forced to start.\n\n", dipent.name);
+                                        mfprintf(bfp, "Game '%s' has been forced to start %s.\n\n", dipent.name, raddr);
+                                        broadcast = 1;
+
+					/* Somehow, need to insert dummy abandoned players */
+					/* TODO !!! */
+					/* Use NOBODY define to get string for nobody */
+
+					/* Now iset the flags that will start the game */
+					if (dipent.seq[2] == 'x')
+                                		generic++;
+              				strcpy(dipent.seq, "001");
+              				starting++;
+
+					break;
+
+/*-------------------------------------------------------------*
+ 
+ *--  Modified by Tamas  --------------  2002-06-11  ----------*
+ 
+ *-------------------------------------------------------------*/
+ 
+                 case COND:
+ 
+                     if (dipent.flags & F_BLIND) {
+ 
+                      fprintf(rfp, "Conditionals are not supported in blind variant. ");
+ 
+                      fprintf(rfp, "Rejected: %s\n", line);
+ 
+                      break;
+ 
+                     }
+ 
+ /*---------------------------------------------  Tamas End  ---*/
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
 						if (read_phase == 0) {
