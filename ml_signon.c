@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/07/23 00:11:43  millis
+ * Bug 192
+ *
  * Revision 1.30  2003/07/22 23:45:22  millis
  * Bug 135
  *
@@ -741,16 +744,17 @@ int mail_signon(char *s)
 
 				time(&now);
 			
-				for (i = 0; i < dipent.n; i++) {
-                            	    if (dipent.players[i].power < 0)
+				for (j = 0; j < dipent.n; j++) {
+                            	    if (dipent.players[j].power < 0 || i == j)
                                         continue;
 
-				    if(dipent.players[i].status & (SF_CD | SF_ABAND | SF_MOVE)) {
+				    if((dipent.players[j].status & (SF_CD | SF_ABAND)) && dipent.players[j].centers) {
+
 				        one_abandoned++;
 				    }
 				}	
 				
-				if (!one_abandoned) {
+				if (!one_abandoned) { 
 				    /* bump up takeover in accordance with phase settings */
 				    /* but only if no other countries abandoned */
 				    deadline( (sequence * ) NULL, 1);
@@ -774,14 +778,14 @@ int mail_signon(char *s)
 						dipent.name, ptime(&dipent.grace));
 
 			
-				    for (i = 0; i < dipent.n; i++) {
-                                        if (dipent.players[i].power < 0)
+				    for (j = 0; j < dipent.n; j++) {
+                                        if (dipent.players[j].power < 0)
                                             continue;
 
-                                        if(!(dipent.players[i].status & SF_DEAD)) {
-					    if (dipent.players[i].status & SF_MOVE ||
+                                        if(!(dipent.players[j].status & SF_DEAD)) {
+					    if (dipent.players[j].status & SF_MOVE ||
 						!DIPENT_NO_PRESS)
-				            dipent.players[i].status |= SF_WAIT;
+				            dipent.players[j].status |= SF_WAIT;
 				        }
 				    }
 				}
