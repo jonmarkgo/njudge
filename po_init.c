@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2003/09/14 08:03:05  millis
+ * Do not flag some errors in Mach data (just ignore them)
+ *
  * Revision 1.11  2003/05/03 23:33:50  millis
  * Fix bug 150 (NO_GARRISONS flag)
  *
@@ -739,6 +742,9 @@ int gameout(void)
 	int nu[AUTONOMOUS + 1], np[AUTONOMOUS + 1];
 	char ns[80], n1[80], n2[80], n3[80], n4[80], os[80], o1[80], cs[80], c1[80],
 	 hs[80], fs[80], uh[80];
+#define MAX_OUTPOWER 10
+        /* Outpower will allow powers with spaces in names to be used */
+	char out_power[MAX_OUTPOWER];
 
 	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
 	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
@@ -946,11 +952,19 @@ int gameout(void)
 			dipent.players[u].units = 0;
 			dipent.players[u].centers = 0;
 		}
+
 		/* In any case, reset the Late and Remind flags */
 		dipent.players[u].status &=  ~(SF_LATE | SF_REMIND);
 		if ((0 < p && p <= NPOWER)
 		|| (p == MASTER && (dipent.flags & F_MODERATE) && !i++)) {
-			fprintf(ifp, "%-9.9s %4x %2d %2d %3d %5d %4d %s %4d %2d\n", powers[p],
+		        strncpy(out_power, powers[p], MAX_OUTPOWER - 1);
+                        out_power[MAX_OUTPOWER-1] = '\0';
+		        for (i=0; out_power[i] != '\0' && i < MAX_OUTPOWER; i++) {
+		            /* Substitute space with '_' to prevent crash on fscanf */
+			     if (out_power[i] == ' ') out_power[i] = '_';
+		        }
+
+			fprintf(ifp, "%-9.9s %4x %2d %2d %3d %5d %4d %s %4d %2d\n", out_power,
 			dipent.players[u].status, dipent.players[u].units,
 				dipent.players[u].centers, dipent.players[u].userid,
 				dipent.players[u].siteid, ded[dipent.players[u].userid].r,
