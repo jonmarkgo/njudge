@@ -1,5 +1,9 @@
   /*
   ** $Log$
+  ** Revision 1.28  2004/06/27 01:50:23  millis
+  ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
+  ** and correct turns not processing, plus more information printed.
+  **
   ** Revision 1.27  2004/06/15 23:50:29  millis
   ** Bug 297: fixed problem with using dipent.np and not dipent.n
   **
@@ -131,7 +135,7 @@ static int HongKongCheck(int, int);
 int ownership(int new_flag)
 {
 	int nu[NPOWER + 1], np[NPOWER + 1], i, ii, j, n, l, p, u, maxcen,
-	 tmpi, numwin;
+	 tmpi, numwin, win = 0;
 	int statusval;
 	int p_count;
 	static int p_list[NPOWER+1];
@@ -338,7 +342,7 @@ int ownership(int new_flag)
 
 	/* OK, let's print out the controllers of each power */
 
-	if (IS_DUPLEX(dipent) && !(dipent.xflags & X2F_SECRET)) {
+	if (IS_DUPLEX(dipent) && !(dipent.x2flags & X2F_SECRET)) {
 	    /* Some kind of mis-match game! */
 	   putc('\n', rfp);
 	   PrintTwoColTable("Power Control", "Power", "Controlled By");
@@ -413,7 +417,22 @@ int ownership(int new_flag)
 	       fprintf(rfp, ".\n");
 	           
 	   }
-        }
+
+	    /* OK, see if someone has won by eliminating other players */
+	    for (i = 0; i < NPOWER+1 && win < 2; i++) {
+	        j = FindPower(i);
+	        if (j >= dipent.n) continue; /* Not a valid power */
+	        if (dipent.players[j].power >= WILD_PLAYER || 
+	            dipent.players[j].controlling_power !=0 ) continue;
+
+	        if (np[i] > 0) {
+	            win++;
+		    statusval = i;
+	        }
+	    }
+	    if (win > 1) statusval = 0;
+	    if (win == 0) statusval = -1;  /* All players eliminated! */
+	}
 	return statusval;
 }
 
@@ -433,27 +452,6 @@ void CheckCaptureWin(int *status)
 
 
 }
-static int OnlyOneSurvivor()
-{
-   /* See if only one player has survive */
-    int i, win = 0, pow = 0;
-
-    for (i = 0; i < dipent.n && win < 2; i++) {
-        if (!(dipent.players[i].status & SF_DEAD) && dipent.players[i].controlling_power == 0 &&
-	    dipent.players[i].power < WILD_PLAYER) {
-	    win++;
-	    pow = i;
-	}
-    }
-
-     if (win == 1)
-	return pow;
-    else if (win == 0)
-	return -1; /* no body left alive! */
-     else
-	return 0;  /* No-body won yet */
-}
-
 static int AnotherPlayersHC( int u, int possible_victor[MAXPLAYERS] )
 {
     /* See if unit is occupying another players HC */
@@ -556,11 +554,6 @@ int CheckIntimateVictory()
     for (i=0; i < MAXPLAYERS; i++)
 	possible_victor[i] = 0;
 
-    victor = OnlyOneSurvivor();
-
-    if (victor != 0)
-	return victor;
-
 
     for (u = 1; u <= nunit; u++) {
 	v = AnotherPlayersHC(u, possible_victor);
@@ -612,10 +605,13 @@ static void next_phase(void)
 		/* Init build phase or advance to the next spring */
 		newowner();
 		status = ownership(1);
-		if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
+		if (dipent.flags & F_INTIMATE) {
+		    if (status != 0) victor = status;
+		} else if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
 		    CheckCaptureWin(&status);
 
-		if (status < 0 && !(dipent.flags & F_INTIMATE)) {	/* VICTORY */
+		if ((status < 0 && !(dipent.flags & F_INTIMATE)) ||
+		    (status !=0 && (dipent.flags & F_INTIMATE))) {	/* VICTORY */
 			dipent.phase[6] = 'X';
 			/* fix bug 219 -- increment the phase even if the game
 			 * is over, just in case somebody resumes it.
@@ -671,6 +667,9 @@ void process_input(int pt, char phase, int player)
 	do {
 		if (preprocess(&s, &p))
 			continue;
+
+		p = dipent.players[RealPlayerIndex(FindPower(p))].power;  /* Find real controlling power index */
+
 		while (!eol) {
 			while (*s == ' ')
 				s++;
@@ -711,6 +710,9 @@ void process_input(int pt, char phase, int player)
 int process_output(int pt, char phase)
 {
 	int retreats;
+
+	if (pt > 0 && pt < WILD_PLAYER)
+	    pt = dipent.players[RealPlayerIndex(FindPower(pt))].power;  /* Find real controlling power index */
 
 	if (pt != MASTER && GAME_PAUSED) {
 	    return E_WARN;
