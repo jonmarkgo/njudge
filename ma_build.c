@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.7  2003/01/05 11:18:10  millis
+ * Fixed bug 87
+ *
  * Revision 1.6  2002/10/19 21:39:15  millis
  * Fixed Bug 21: Mach2 games allowing Armies in Venice
  *
@@ -42,7 +45,8 @@
 
 int ma_buildin(char **s, int p)
 {
-	char type, stype, order, *t;
+	char type, stype, order;
+	unsigned char *t;
 	int u, u1, p1, c1;
 
 	*s = get_order(*s, &order);
