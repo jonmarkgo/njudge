@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2004/05/22 09:08:15  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.15  2004/04/04 15:58:38  millis
  * Fixed bug 285 (inform extra custodians of game start)
  *
@@ -137,6 +140,11 @@ int chkdraw(char *to_check)
 			errcnt++;
 			continue;
 		}
+		if (dipent.flags & F_INTIMATE && (dipent.players[j].controlling_power != 0)) {
+		        fprintf(rfp, "%c: non-playing power cannot be included in draw\n", to_check[i]);
+			errcnt++;
+			continue;
+		}
 		if (dipent.players[j].power == OBSERVER) {
 			fprintf(rfp, "Observers may not participate in draws.\n");
 			errcnt++;
@@ -201,11 +209,20 @@ int chkconc(char *to_check)
                         errcnt++;
                         continue;
                 }
+
+        if (dipent.flags & F_INTIMATE && (dipent.players[j].controlling_power != 0)) {
+                   fprintf(rfp, "%c: non-playing power cannot have concession\n", to_check[i]);
+	           errcnt++;
+	           continue;
+											                      }
+
+
 	if (strlen(to_check) > 1) {
 	        fprintf(rfp, "You may not concede to more than 1 player!\n");
                 errcnt++;  
 		}
 	}
+
 
 	/* Now here's the tricky part -- we only want the player to be able
 	** to concede the game to the largest power.
@@ -218,7 +235,8 @@ int chkconc(char *to_check)
 		if(dipent.players[i].power == dipent.players[j].power)
 			continue;
 		
-		if(dipent.players[j].centers <= dipent.players[i].centers)
+		if(dipent.players[j].centers <= dipent.players[i].centers &&
+		   !(dipent.flags & F_INTIMATE))
 		{
                         fprintf(rfp, "%s has at least as many centers as %s. You may only concede to the largest power on the board.\n",
                             powers[dipent.players[i].power],
@@ -271,7 +289,8 @@ int process_draw(void)
 			continue;
 
 		if (dipent.players[i].units > 0 &&
-		    dipent.players[i].power != -1)
+		    dipent.players[i].power != -1 && !(dipent.flags & F_INTIMATE &&
+			dipent.players[i].controlling_power == 0))
 			survivors[j++] = dipent.pl[dipent.players[i].power];
 	}
 	survivors[j] = '\0';
@@ -466,14 +485,23 @@ int process_conc(void)
 	{
 		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
 			continue;
-		if(largest == -1)
+		if(largest == -1 && !(dipent.flags & F_INTIMATE))
 		{
 			largest = i;
 			continue;
 		}
-		if(dipent.players[i].centers > dipent.players[largest].centers)
+		if (dipent.flags & F_INTIMATE) {
+		    /* In Intimate, use the preference chosen */
+		    if (dipent.players[i].status & SF_CONC) {
+		        largest = FindPower(power(dipent.players[i].pref[0]));
+		    }
+		} else {
+ 		    if(dipent.players[i].centers > dipent.players[largest].centers)
 			largest = i;
+		}
 	}
+
+	if (largest == -1) return 0;  /* No one in conditions to concede */
 
 	for(i = 0; i < dipent.n; i++)
 	{
@@ -481,9 +509,20 @@ int process_conc(void)
 		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
 			continue;
 
-		if(dipent.players[i].centers > 0 &&
+		if (dipent.flags & F_INTIMATE) {
+		    if (dipent.players[i].controlling_power == 0 &&
+		        dipent.players[i].centers > 0) {
+	                if (!(dipent.players[i].status & SF_CONC) ||
+			    (FindPower(power(dipent.players[i].pref[0])) != largest)) {
+				return 0;
+			}
+		    }
+		} else {
+			
+		    if(dipent.players[i].centers > 0 &&
 			!(dipent.players[i].status & SF_CONC))
 				return 0;
+		}
 	}
 	/* OK, if we're this far, we have a concession. This next set of 
 	   code is ripped, with some modifications, from process_draw */
