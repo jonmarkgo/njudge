@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.20  2003/02/28 20:16:45  nzmb
+ * Changed the name of resignation ratio to CD ratio, to avoid confusion with
+ * Doug Massey's DRR.
+ *
  * Revision 1.19  2003/02/17 14:33:32  millis
  * fixed bug 6, detected returning player
  *
@@ -1187,7 +1191,7 @@ void mail_igame(void)
 		    /* If not a blankboard game, or already in a build phase
 		       players can move */
 		    if (!(dipent.xflags & XF_BLANKBOARD) || dipent.phase[5] == 'B')
-			    dipent.players[i].status = SF_MOVE;
+			    dipent.players[i].status =| SF_MOVE;
 	}
 
 	/* While we haven't assigned all the players. Only happens if a

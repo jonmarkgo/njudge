@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.39  2003/04/27 14:47:35  millis
+ * Fix bug 141 (unintentional FORCE BEGIN)
+ *
  * Revision 1.38  2003/03/31 08:19:51  nzmb
  * Fix to previous fix, should be two dashes, space, and newline counts as
  * signoff.
@@ -187,6 +190,8 @@ static char temp[40];		/* Temporary file name				*/
 static char rdcom[256];		/* Temp file for executing rundipmap		*/
 static int press_number = 0;	/* Number for distinct press filenames 		*/
 static int errorflag = 0;	/* Is the error flag set?			*/
+
+static int InsertDummyPlayers( void );
 
 /* Comment this out if you don't want the MAP command */
 #define MAP_COMMAND
@@ -2189,21 +2194,22 @@ int mail(void)
                                                 fprintf(rfp, "The game has already started!\n\n");
                                                 break;
                                         }
-					sprintf(subjectline, "%s:%s - %s Forced Begin", JUDGE_CODE, dipent.name, dipent.phase);
+					if (InsertDummyPlayers()) {
+                                            sprintf(subjectline, "%s:%s - %s Forced Begin",JUDGE_CODE, dipent.name, dipent.phase);
 
-                                        fprintf(rfp, "Game '%s' has been forced to start.\n\n", dipent.name);
-                                        mfprintf(bfp, "Game '%s' has been forced to start %s.\n\n", dipent.name, raddr);
-                                        broadcast = 1;
+                                            fprintf(rfp, "Game '%s' has been forced to start.\n\n", dipent.name);
+                                            mfprintf(bfp, "Game '%s' has been forced to start by %s.\n\n", dipent.name, raddr);
+                                            broadcast = 1;
 
-					/* Somehow, need to insert dummy abandoned players */
-					/* TODO !!! */
-					/* Use NOBODY define to get string for nobody */
+                                        /* Now set the flags that will start the game */
+                                            if (dipent.seq[2] == 'x')
+                                                generic++;
+                                            strcpy(dipent.seq, "001");
+                                            starting++;
+                                        } else {
+                                        fprintf(rfp, "Game has too many observers/players already to be force started!\n\n");
+                                        }
 
-					/* Now iset the flags that will start the game */
-					if (dipent.seq[2] == 'x')
-                                		generic++;
-              				strcpy(dipent.seq, "001");
-              				starting++;
 
 					break;
 
@@ -2846,5 +2852,35 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 	return result;
 }
 
+
+static int InsertDummyPlayers()
+{
+    int i;
+    int players = 0;
+
+    /* First, let's count the players that we have */
+
+    for (i = 0; i < MAXPLAYERS && dipent.players[i].power > 0; i++)
+        if (dipent.players[i].power == WILD_PLAYER)
+            players++;
+
+    /* See if enough space to insert dummy players */
+    if (i + (dipent.np - players) >= MAXPLAYERS && (dipent.np - players) > 0)
+        return 0;
+
+    if (players < dipent.np) {
+        /* OK, we are missing players, so let's add the right number of dummy ones */
+        while (players != dipent.np && i < MAXPLAYERS ) {
+            dipent.players[i].power = WILD_PLAYER;
+            dipent.players[i].userid = 0;
+            strcpy(dipent.players[i].address,NULL_EMAIL);
+            dipent.players[i].status = SF_ABAND;
+            players++;
+            dipent.n++;
+            i++;
+        }
+    }
+    return 1;  /* Dummy players inserted ok */
+}
 
 
