@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.3  2003/02/17 15:39:21  millis
+ * bug 10, prevent overlapping absences
+ * Also improve text output for absences.
+ *
  * Revision 1.2  2002/05/04 02:06:18  nzmb
  * Added code to display the time left until the deadline and grace at the
  * bottom of their reply whenever a player signs on.
@@ -141,7 +145,9 @@ char *timeleft(time_t *deadline)
 	diff = diff - (minutes*60);
 	seconds = diff; /* yes this is unnecessary, but it makes to code readable :-) */
 
-	sprintf(text,"%d days, %d hours, %d minutes, and %d seconds", days, hours, minutes, seconds);
+	sprintf(text,"%d day%s, %d hour%s, %d minute%s, and %d second%s",
+		days, days == 1 ? "" : "s", hours, hours == 1 ? "" : "s",
+		minutes, minutes == 1 ? "" : "s", seconds, seconds == 1 ? "" : "s");
 	return text;
 }
 
