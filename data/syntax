@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                      17 June, 2003
+Greetings from the Diplomacy* Adjudicator!!                      07 Dec, 2003
 Syntax.
 
 The format of your diplomacy orders depends on the phase of the game:
@@ -34,6 +34,7 @@ Adjustment orders:
 <transform> <type> <s-prov>
 <waive>
 
+
 Where:
 
 <type>       = "army", "a", "fleet", "f", "wing", "w" or <empty>.
@@ -64,6 +65,10 @@ Where:
 	   fleet in Brest, "Transform F Brest" will not do anything.
 	   "Transform A Brest" will transform the fleet into an army (if that
 	   is allowed by the current game settings).
+
+	   When orders are submitted in advance for a future adjustment phase
+	   (see SUBMITTING ORDERS IN ADVANCE below) the <build> or <remove>
+	   qualifiers cannot be <empty>.
 
 Province names can be abbreviated or can be spelled out.  Valid abbreviations
 can be found in the 'map' file for the variant you are playing (use the
