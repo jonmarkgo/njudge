@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.32  2003/08/10 15:27:52  millis
+ * Fix bug 25 (Add TouchPress)
+ *
  * Revision 1.31  2003/07/14 22:52:27  millis
  * Fix bug 187
  *
@@ -582,11 +585,6 @@ void params(FILE * fp)
                 strcatf(line, "AutoCreate", &first_flag);
         }
 
-	if (dipent.x2flags & X2F_TOUCHPRESS) {
-		strcatf(line, "TouchPress", &first_flag);
-	}
-
-
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {
                 strcatf(line, "BCentres", &first_flag);
@@ -686,22 +684,31 @@ void params(FILE * fp)
 	strcat(line, ".");
 	print_params(fp, line);
 
+	first_flag = 1;
 	sprintf(line, "    Press Restrictions: ");
+		
+	/* Note, you MUST change dip.h to add new flags to X2F_PRESS_OPTIONS definitions
+	 * Otherwise, they may not appear */	
+		
+	if (dipent.x2flags & X2F_TOUCHPRESS) {
+		strcatf(line, "TouchPress", &first_flag);
+	}
 	if(dipent.xflags & XF_NOLATEPRESS)
 	{
-		press_rest = 1;
-		strcat(line, "No late press");
+		strcatf(line, "No late press", &first_flag);
 	}
 	if(dipent.x2flags & X2F_MUSTORDER)
 	{
-		if(press_rest == 1) strcat(line, ", ");
-		press_rest = 1;
-		strcat(line,"Valid orders required to send press");
+		strcatf(line,"Valid orders required to send press", &first_flag);
 	}
+	/* Did you remember to alter X2F_PRESS_OPTIONS in dip.h ??? */
 
-	if(press_rest == 1)
-		strcat(line, ".");
-		print_params(fp, line);
+	if (!first_flag) 
+		strcat(line,".");
+
+	if ((dipent.x2flags & (X2F_PRESS_OPTIONS)))
+	    print_params(fp, line);
+	
 
 	/* EP and Miller/Boardman numbers; number of centres needed for win
 	 * (these are short enough not to need print_params(), so print them
