@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.2  2001/02/03 10:41:04  miller
+   ** fix blind bug
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **

@@ -1,6 +1,10 @@
 
 /*
    ** $Log$
+   ** Revision 1.3  2001/02/03 10:40:00  miller
+   ** Fix blind bug
+   ** Now no show of others results
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Added move syntax checker
    ** Allow wing units to be used

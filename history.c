@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/02/03 10:36:16  miller
+ * properly hide history in blind game
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Restrict history for blind games (so that players cannot find out more than they should!)
  *
