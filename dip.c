@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.37  2003/05/12 02:37:17  millis
+ * Removed superfluos SF_WAIT for transform games
+ * Also deleted incorrect use of uninitilized variable
+ *
  * Revision 1.36  2003/05/03 23:08:41  millis
  * Fixed bug 99 (resigned players still receiving messages)
  * Now resigned players will only receive the termination messages.
@@ -909,7 +913,6 @@ int process(void)
 	char ppline[200];
 	char title_text[150];
 	char phase[sizeof(dipent.phase)];
-	int process_set; /* Set to 1 if process has been set */
 	static char *dedfmt = "Adding %d to user %d's dedication to yield %d.\n";
 	char late[51];
 	struct stat ppinfo;
@@ -1330,14 +1333,6 @@ int process(void)
 		 * See if manual processing is enabled, and block if so
                  */
 		if (dipent.xflags & XF_MANUALPROC) {
-			process_set = 0;
-			/* See if anyone has requested processing */
-			for (i = 0; i < dipent.n && !process_set; i++) {
-				if (dipent.players[i].power < 0)
-					continue;
-					if (dipent.players[i].status & SF_TURNGO)
-						process_set = 1;
-			}
 			if (!process_set) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
 				if (!Dflg) fclose (rfp);

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2003/01/14 13:51:36  millis
+ * Merges from USTV
+ *
  * Revision 1.7  2002/08/27 23:56:10  millis
  * Added better victory display (fixing Mach victory bug)
  *
@@ -124,3 +127,6 @@ int predict = 0; 		/* =1 to predict a move for master */
 
 int canbuild = 1;		/* can the power being reminded to move build? */
 int victor = 0;			/* Set to index of power when there is a victor */
+
+int process_set; /* Set to 1 if process command has been set */
+

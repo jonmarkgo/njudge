@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2003/05/09 11:09:57  millis
+ * Added display of Mach2 flag
+ *
  * Revision 1.25  2003/05/06 01:51:49  millis
  * Maks out Mach flags in X2F display
  *
@@ -424,5 +427,7 @@ extern int predict;		/* =1 when predicting a turn			*/
 extern int canbuild;	/* can a player build? (used when being reminded to move */
 
 extern int victor;             /* Set to power index if there is a game winner  */
+
+extern int process_set; /* Set to 1 if process has been set */
 
 #endif				/* _DIP_H */

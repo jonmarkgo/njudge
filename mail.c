@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.42  2003/05/03 23:08:42  millis
+ * Fixed bug 99 (resigned players still receiving messages)
+ * Now resigned players will only receive the termination messages.
+ *
  * Revision 1.41  2003/04/28 22:35:39  millis
  * Fixed missing define
  *
@@ -741,6 +745,7 @@ int mail(void)
 
 				case SIGNON:	/* signon name password */
 					command++;
+					process_set = 0;  /* No valid process command yet */
 
 					/*
 					 *  Open the master file and a new copy.
@@ -1947,6 +1952,8 @@ int mail(void)
 					dipent.players[0].status |= SF_PROCESS | SF_TURNGO;
 					fprintf(rfp, "Phase %s of '%s' will be processed immediately.\n\n",
 					      dipent.phase, dipent.name);
+
+					process_set = 1; /* Can do a process */
 					break;
 
 				case ROLLBACK:
