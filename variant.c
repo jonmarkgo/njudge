@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.21  2004/08/23 16:42:14  millis
+ * Add space for Initiamte variant specifier
+ *
  * Revision 1.20  2004/08/23 13:27:45  millis
  * Removed extra Norway definition
  *
@@ -211,7 +214,7 @@ int vvalue[] =
 	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
         F_SHORTHAND,		/* Shorthand press option          */
 	F_WINGS    ,   		/* Wings (for modern) variant      */
-	F_INITMATE		/* Intimate			   */
+	F_INTIMATE		/* Intimate			   */
 	/* F_AFRULES  */        /* Army/Fleet Rules variant        */
 };
 
