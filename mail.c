@@ -126,7 +126,8 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define PROMOTE   37
 #define PREDICT 38
 #define EJECT   39
-
+#define RECORD  40
+#define INFOPLAYER	41
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -141,7 +142,8 @@ static char *prelim[] =
  "nocontrol", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fixid",
- "map", "signoff" /* , "ded game#", "dedicate#", "ded#" */ };
+ "map", "signoff", "record", "infoplayer" /* , "ded game#", "dedicate#",
+	"ded#" */ };
 
 static int pvalue[] =
 {0, LIST, HELP, FROM,
@@ -156,7 +158,7 @@ static int pvalue[] =
  NOCONTROL, ADJUST,
  VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
- MAP, SIGNOFF /* , DEDGAME, DEDICATE, DEDICATE */ };
+ MAP, SIGNOFF, RECORD, INFOPLAYER /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
@@ -169,7 +171,7 @@ static char *commands[] =
  "terminate", "resume", "become",
  "process", "roll back", "map",
  "promote", "predict",
- "eject"
+ "eject", "record", "infoplayer"
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -183,7 +185,7 @@ static int cvalue[] =
  TERMINATE, RESUME, BECOME,
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
- EJECT
+ EJECT, RECORD, INFOPLAYER
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
@@ -346,7 +348,9 @@ int mail(void)
 	int resign_index;
 	char uuenc;
 	char *whotext;
-
+	char x[30];
+	PLYRDATA_RECORD record;
+	
 	someone = "someone@somewhere";
 
 	starting = msg_header_done = 0;
@@ -1109,6 +1113,97 @@ int mail(void)
 					}
 					break;
 
+				case RECORD:
+					command++;
+					if(!msg_header_done)
+						msg_header(rfp);
+					if(sscanf(s, "%d %d %d %30s", &i, &j, &k, x) != 4)
+					{
+						fprintf(rfp, "Bad record command %s.\n", s);			
+					}
+					else
+					{
+						if(strcmp(x,SPECIAL_PW) != 0)
+						{
+							fprintf(rfp, "The record command may only be used by an administrator.\n");
+						}
+						else if(i < 0 || i > nded)
+						{
+							fprintf(rfp, "Bad userid # %d.\n", i);
+						}
+						else if(j < 1 || j > 5)
+						{
+							fprintf(rfp,"Bad record mod. type %d.\n", j);
+							fprintf(rfp,"Use 1: ontime, 2:total, 3: start, 4: resigned, 5: tookover.\n");
+						}
+						else
+						{
+							/* open the record; if it doesn't exist, create it */
+							if(get_plyrdata_record(i, &record) < 1)
+								memset(&record, 0, sizeof(PLYRDATA_RECORD));
+
+							/* everything looks OK, so process the request */
+							switch(j)
+							{
+								case 1: n = record.ontime; 
+									record.ontime = k;
+									break;
+								case 2: n = record.total; 
+									record.total = k;
+									break;
+								case 3: n = record.started; 
+									record.started = k; 
+									break;
+								case 4: n = record.resigned; 
+									record.resigned = k;
+									break;
+								default: n = record.tookover; 
+									 record.tookover = k;
+							}
+							put_plyrdata_record(i, &record);
+							fprintf(rfp,"User %d's plyrdata field %d adjusted to %d.\n", i, j, k);				
+							fprintf(xfp,"%s adjusted %d's plyrdata field %d from %d to %d.\n",
+								raddr, i, j, n, k);			
+						}
+					}
+					break;
+
+				case INFOPLAYER:
+					command++;
+					if(!msg_header_done)
+						msg_header(rfp);
+					fprintf(rfp,"Dedication request info on %s\n", s);
+					switch(send_dedication(s))
+					{
+						case 0:
+						case E_WARN:
+							break;
+						default:
+							fprintf(stderr,"send_dedication error on %s.\n", s);
+							fprintf(rfp,"Request not sucessfully processed.\n");
+					}
+					break;
+/*					if(sscanf(s,"%d", &i) != 1)
+					{
+						fprintf(rfp, "Bad user ID in info command: Inform %s\n",s);
+					} else {
+						if(i < 0 || i > nded)
+						{
+							fprintf(rfp,"Invalid user ID #%d\n", i);
+						}
+						else
+						{
+							fprintf(rfp,"Information for user #%d\n",i);
+							fprintf(rfp,"Current dedication is: %d\n", ded[i].r);
+							fprintf(rfp,"Number of turns ontime: %lu\n", get_data(i,ontime));
+							fprintf(rfp,"Total turns played: %lu\n", get_data(i,total));
+							fprintf(rfp,"Games started: %lu\n", get_data(i,started));
+							fprintf(rfp,"Abandoned positions taken over: %lu\n", get_data(i,tookover));
+							fprintf(rfp,"Positions abandoned / resigned: %lu\n", get_data(i,resigned));	
+						}
+					}
+				break; */
+
 				case SIGNOFF:
 					skipping++;
 					break;
@@ -1750,8 +1845,22 @@ int mail(void)
                                                                    dipent.pl[dipent.players[player].power], line);
 					    }
 					} else fprintf(rfp,"Cannot phase when not signed on.\n\n");
-					
-				        break;
+				break;
+
+				case INFOPLAYER:
+					fprintf(rfp,"Dedication request info on %s\n", s);
+					switch(send_dedication(s))
+					{
+						case 0:
+						case E_WARN:
+							/* all is well */
+							break;
+						default:		
+							/* something is wrong*/
+							fprintf(rfp,"Request not sucessfully processed.\n");		
+							fprintf(stderr,"send_dedication error on %s.\n", s);
+					}
+					break;
 				
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
@@ -2026,8 +2135,8 @@ void mail_reply(int err)
 		if (!strncmp(subject, "[You are late!] ", 16))
 			shiftleft(16);
 
-		if (!strncmp(subject, JUDGE_CODE, strlen(JUDGE_CODE))) {
-			shiftleft(strlen(JUDGE_CODE));
+		if (!strncmp(subject, JUDGE_CODE, 4)) {
+			shiftleft(4);
 
 			if (signedon) {
 				if (!strncmp(subject, ":", 1)) {

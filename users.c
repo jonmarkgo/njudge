@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/15 09:20:56  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.5  2001/06/24 06:08:18  nzmb
  * Added code so players may now see their plyrdata records via the "get
  * dedication" command.
@@ -663,35 +666,36 @@ int send_dedication(char *raddr)
 		if (!msg_header_done)
 			msg_header(rfp);
 		fprintf(rfp,
-		   "Your address %s is not registered with the judge.\n",
+		   "The address %s is not registered with the judge.\n",
 			raddr);
 		fprintf(rfp,
 			"Use a 'get form' request for information on registering.\n");
 		return E_WARN;
 	}
-	fprintf(rfp, "Your current dedication is: %d\n\n", ded[userid].r);
-	fprintf(rfp, "You have submitted %lu turns ontime\n",get_data(userid,ontime));
-	fprintf(rfp, "Out of a total of %lu.\n\n",get_data(userid,total));
-	fprintf(rfp, "You've started %lu new games and taken over %lu abandoned positions.\n",
+	fprintf(rfp, "User ID: %d\n\n", userid);
+	fprintf(rfp, "Current dedication: %d\n", ded[userid].r);
+	fprintf(rfp, "Turns ontime: %lu\n",get_data(userid,ontime));
+	fprintf(rfp, "Turns total: %lu.\n",get_data(userid,total));
+	fprintf(rfp, "Games started: %lu\nPositions taken over: %lu\n",
 		get_data(userid,started),get_data(userid,tookover));
-	fprintf(rfp, "You've resigned from %lu games.\n",get_data(userid,resigned));
+	fprintf(rfp, "Resignations %lu\n",get_data(userid,resigned));
 	if(get_data(userid,total) == 0)
 	{
-		fprintf(rfp, "You've played 0 turns; you have a perfect timeliness record.\n");
+		fprintf(rfp, "Played 0 turns; a perfect timeliness record.\n");
 	}
 	else
 	{
 		orat = 1.0 * get_data(userid,ontime)/get_data(userid,total);
-		fprintf(rfp, "Your ontime ratio is %.3f.\n", orat);
+		fprintf(rfp, "Ontime ratio: %.3f.\n", orat);
 	}
 	if(get_data(userid,started) == 0 && get_data(userid,tookover) == 0)
 	{
-		fprintf(rfp, "You haven't started any games; you have a perfect resignation record.\n");
+		fprintf(rfp, "No started games; perfect resignation record.\n\n");
 	}
 	else
 	{
 		rrat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
-		fprintf(rfp, "Your resignation record is %.3f.\n", rrat);
+		fprintf(rfp, "Resignation ratio: %.3f.\n\n", rrat);
 	}
 	/* TODO i'm not sure what to return here, was no return at all -- nw */
 	return 0;

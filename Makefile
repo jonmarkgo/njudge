@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.15  2001/10/20 12:11:10  miller
+# Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+#
 # Revision 1.14.2.2  2001/10/20 00:51:07  dedo
 # Added INSTALLCMD default
 #
@@ -30,7 +33,7 @@ INSTALLCMD=install
 include Makefile.defines
 
 #set the judge version
-JVERSION=0.8.11-pre
+JVERSION=1.0.0
 
 # Programs, Sources, and Objects.
 
