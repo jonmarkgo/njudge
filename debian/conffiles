@@ -1,0 +1,7 @@
+/etc/cron.weekly/njudge
+/home/judge/dip.conf
+/home/judge/dip.msg
+/home/judge/dip.master
+/home/judge/dip.addr
+/home/judge/dip.whois
+/home/judge/dip.blist

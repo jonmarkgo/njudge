@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+
+build:
+	dh_testdir
+	./configure --mandir=/usr/share/man --with-dir=/home/judge \
+	  --with-user=root
+	make 
+	touch build
+
+clean:
+	dh_testdir
+	-rm -f build
+	-make distclean
+	-rm -f `find . -name "*~"`
+	-rm -rf debian/tmp debian/files* core debian/substvars
+	dh_clean
+
+binary-arch:	checkroot build
+	dh_testdir
+	dh_clean
+	dh_installdirs
+	make install DESTDIR=`pwd`/debian/tmp docdir=/usr/share/doc/njudge \
+		mandir=/usr/share/man
+	dh_installdocs
+	dh_installcron
+	dh_installchangelogs
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+define checkdir
+	test -f debian/rules
+endef
+
+# Below here is fairly generic really
+
+binary:		binary-indep binary-arch
+
+.PHONY: binary binary-arch binary-indep clean checkroot

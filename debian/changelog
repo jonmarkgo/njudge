@@ -1,0 +1,104 @@
+njudge (1.2.0-2) unstable; urgency=low
+
+  * Fixed typos in postinst
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Mon, 12 Aug 2002 17:24:36 -0400
+
+njudge (1.2.0-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sun, 11 Aug 2002 22:53:21 -0400
+
+njudge (1.1.1-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sun, 26 May 2002 21:39:49 -0400
+
+njudge (0.8.7-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Thu, 22 Feb 2001 23:43:53 -0500
+
+njudge (0.8.6-2) unstable; urgency=low
+
+  * The definition of $from in smail.pl was split over two lines which
+    confused the postinst.  Now fixed.
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Fri, 11 Dec 1998 10:08:02 -0500
+
+njudge (0.8.6-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Wed,  9 Dec 1998 10:59:42 -0500
+
+njudge (0.8.5-6) unstable; urgency=low
+
+  * Made version number look a little prettier
+  * Fixed ign so it uses system path to mail(1) instead of hardcoding
+    /usr/ucb/mail 
+  * Made changes to runlistmap, rundipmap, and newlogs to support mapit 
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sat, 14 Nov 1998 23:39:15 -0500
+
+njudge (0.8.5-5) unstable; urgency=low
+
+  * Corrected error in postinst
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Thu, 12 Nov 1998 22:21:21 -0500
+
+njudge (0.8.5-4) unstable; urgency=low
+
+  * version command now reports Debian package revision number
+  * changed newlogs to use gzip instead of compress and change ownership
+    of logs to judges userid instead of root 
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Tue, 10 Nov 1998 10:38:06 -0500
+
+njudge (0.8.5-3) unstable; urgency=low
+
+  * Added dependency on c-shell, mail-transport-agent, fixed small packaging 
+    bugs.
+  * changed GAMES_OPENER, HALL_KEEPER, BN_CUSTODIAN, and MN_CUSTODIAN
+    values in dip.conf to point to new ugcs.caltech.edu mailing lists 
+  * Removed -s option from invocation of at(1) in bgreet.c because Debian
+    at doesn't have it.
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Tue,  3 Nov 1998 09:38:07 -0500
+
+njudge (0.8.5-2) unstable; urgency=low
+
+  * cmap was inadvertantly left out.  Now it's back in. 
+  * removed dipclean and added its functionality to cron.weekly
+  * Fixed an error in postinst 
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Thu, 12 Feb 1998 23:49:39 -0500
+
+njudge (0.8.5-1) unstable; urgency=low
+
+  * New upstream version 
+  * Setup weekly cron job for newlogs and bgreet
+  * Fixed typo in spelling of Eastern Mediterranean in data/map.modern 
+  * Now uses debhelper 
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Thu, 12 Feb 1998 00:36:44 -0500
+
+njudge (0.8.4-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Sun, 16 Nov 1997 01:58:01 -0500
+
+njudge (0.8.3-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Jaldhar H. Vyas <jaldhar@braincells.com>  Mon, 27 Oct 1997 22:23:41 -0500
+
+Local variables:
+mode: debian-changelog
+add-log-mailing-address: "jaldhar@braincells.com"
+End:
