@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.2  1997/02/16 20:43:18  davidn
  * Additions to dipent structure and associated code, to allow duplex variants.
  * Command is "set players n".
@@ -25,6 +28,10 @@
  *  ?? Jan 1995 BLR          See comment below
  *  29 Dec 1996 David Norman Setting of dipent.no_of_players
  *  17 Mar 1997 N Wagner     replaced unlink(2) with remove(3)
+ *  17 Nov 1999 M. Miller    Added CheckForGameStart() to start if
+ *                           we have a quorum if variant changed
+                             Also disallow set password!=alphanum
+ *  25 Nov 1999 M. Miller    Added SET [nø]LATECOUNT parameter 
  */
 
 /*
@@ -44,21 +51,215 @@
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
+#include "dipstats.h"
+#include "diplog.h"
 
 extern char *accesses[], *levels[];
 extern int avalue[], lvalue[], naccess, nlevel;
 
+void ChangeTransform( char *s);
+void ShowTransformSettings(FILE* rfp);
+char * SetSubkey(int act, char *s);
+
 #define SETFLAGS(set,mask) dipent.flags = (dipent.flags & ~(mask)) | (set)
+
+#define CheckMach() if (!(dipent.flags & F_MACH)) fprintf(rfp, "Game '%s' is not Machiavelli, option is useless.\n\n", dipent.name);
+
+#define CheckNoMach() if ((dipent.flags & F_MACH)) fprintf(rfp, "Game '%s' is Machiavelli, option is useless.\n\n", dipent.name); 
+
+#define CheckPress() if (!HasPress(dipent)) fprintf(rfp, "Game '%s' has no press enabled,  option is useless.\n\n", dipent.name); 
+
+#define CheckWings() if (!(dipent.flags & F_WINGS)) fprintf(rfp, "Game '%s' has no wings, option is useless.\n\n", dipent.name);
+
+/***** Show the curent preference settings 
+** Note: Caller DID check this is the master calling this routine?!
+**
+*/
+
+void ShowPreferences(FILE *out_fptr)
+{
+	int i;
+	int one_found = 0;
+
+        for (i=0; i < dipent.n; i++)
+        {
+          if (dipent.players[i].power == WILD_PLAYER) {
+	    one_found++;
+	    if (one_found == 1 ) fprintf(out_fptr," Preference lists are now:\n");
+            fprintf(out_fptr,
+                "%s has set '%s'.\n",
+                 dipent.players[i].address,
+                 dipent.players[i].pref);
+	  }
+       }
+       if (one_found > 0) fprintf(out_fptr,"\n");
+}
+
+
 /***************************************************************************/
+/***
+ *** See if we are ready to start game or not yet, and start it if we are
+ ***
+ */
+
+void CheckForGameStart()
+{
+    int i,n;
+
+    if (dipent.seq[0] != 'x') return; /* can't start already started game */
+    for (i = n = 0; i < dipent.n; i++) {
+        if (dipent.players[i].power == WILD_PLAYER) {
+         if (n < dipent.no_of_players) {
+             n++;
+             } else {
+                 dipent.players[i].power = OBSERVER;
+             }
+         }
+    }
+
+    if (n == dipent.no_of_players) {
+          /*mail_igame();*/
+	  if (!(dipent.xflags & XF_MANUALSTART) ) {
+	     /* Following will signal game is ready to start */
+	      if (dipent.seq[2] == 'x')
+                                generic++;
+              strcpy(dipent.seq, "001");
+	      starting++;
+	} else {
+	    fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
+            mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
+        }
+     broadcast = 1;
+     }
+}
+
+#define CATF_SETON 1
+#define CATF_SETOFF 0
+#define CATF_NORMAL 0
+#define CATF_INVERSE 1
+
+int CheckAndToggleFlag( int *flag,   /* dipent.flags or dipent.xflags */
+			    int flag_mask,  /* F_MASK or XF_MASK */
+			    char *flag_name,  /* name of mask for user to see */
+			    int set_on,       /* == 1 if set on, 0 if set off */
+			    char *warn_text , /* Text to show when flag is changed */
+			    int inverted_logic /*set to 1 if flag is negative logic, i.e. On = No... */
+			)
+{
+	char *op_text; /* Either set or cleared */
+	char *no_text;   /*Either no or nothing */
+	int setting = 0; /* returns 1 if flag whas changed, else 0 */
+#define CLEARED_TEXT "cleared"
+#define SET_TEXT "set"
+
+	if (set_on == CATF_SETON) {
+	   if (*flag & flag_mask) {
+                fprintf(rfp, "Game '%s' is already %s.\n", dipent.name, flag_name);
+           } else {
+                *flag |= flag_mask;
+                fprintf(rfp, warn_text);
+		if (inverted_logic == CATF_INVERSE) {
+		   op_text = CLEARED_TEXT;
+		} else {
+		   op_text = SET_TEXT;
+		}
+                pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+		        xaddr, powers[dipent.players[player].power], dipent.name, op_text, flag_name);
+                /* WAS mfprintf  1/95 BLR */
+                fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n", xaddr, PRINT_POWER, dipent.name,
+			op_text, flag_name);
+                fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n", raddr, PRINT_POWER, dipent.name, 
+			op_text, flag_name);
+                fprintf(mbfp, warn_text);
+		broadcast = 1;
+		setting = 1;
+	   }
+	}
+	else {
+	    if (!(*flag & flag_mask)) {
+		if (inverted_logic==CATF_INVERSE) {
+		    no_text = ""; 
+		} else { 
+		  no_text = "No";
+		}
+                fprintf(rfp, "Game '%s' is already %s%s.\n", dipent.name, no_text, flag_name);
+             } else {
+		if (inverted_logic) {
+		   op_text = SET_TEXT;
+                } else {
+                   op_text = CLEARED_TEXT;
+                }
+                *flag &= ~flag_mask;
+                fprintf(rfp, warn_text);
+                pprintf(cfp, "%s%s as %s in '%s' cleared the %s flag.\n", NowString(),
+                        xaddr, powers[dipent.players[player].power], dipent.name, flag_name);
+               /* WAS mfprintf  1/95 BLR */
+               fprintf(bfp, "%s as %s in '%s' cleared the %s flag.\n", xaddr, PRINT_POWER, dipent.name, flag_name);
+               fprintf(mbfp, "%s as %s in '%s' cleared the %s flag.\n", raddr, PRINT_POWER, dipent.name, flag_name);
+               fprintf(mbfp, warn_text);
+		broadcast = 1;
+		setting = 1;
+	    }
+       }
+       return setting;
+}
+
+/*
+ * The following function will determine if delay is
+ * automatically permissible or not
+ *
+ * It will round up the requested delay to a day before comparing
+ *
+ */
+
+#define TOO_BIG (-1)
+#define JUST_RIGHT (0)
+
+int absence_delay(int max_delay, long delay_period)
+{
+    int delay_days;
+
+    delay_days = delay_period / (24 * 60 * 60 );
+    delay_days += 1;  /* add on a day */
+
+    if (delay_days <= max_delay )
+        return JUST_RIGHT;
+    else
+	return TOO_BIG; 
+
+}
+
+/* This function is supposed to separate two dates into two strings */
+/* If only one date string is found, the second one is blanked */
+
+void break_date_into_two( char * instring, char *s1, char *s2)
+{
+	char *t;
+	strcpy(s1, instring);
+	*s2 = '\0';
+
+	t = strstr(s1,"to");
+	if (t) {
+	    /* Remove the "to" component" */
+	    *t++ = '\0';
+	    while (!isdigit(*t) && t) t++;	
+	    strcpy(s2, t);
+	}
+}
 
 void mail_setp(char *s)
 {
 
-	int i, k, chk24nmr, n;
-	char c, *t, *temp;
+	int i, k, chk24nmr;
+        int passOK;  /* used to see if password string is alright on setpass */
+	char c, *t, *temp,*s1;
 	sequence seq;
-	long dates;
+	long dates, datee;
 	struct tm *tm, *localtime();
+	char ss1[150],se1[150];
+	char *ss = ss1;
+	char *se = se1;
+	char stat_text[20];
 
 #define SET_ADD		1
 #define PRV_ADD		'a'
@@ -167,7 +368,7 @@ void mail_setp(char *s)
 #define SET_SPECIAL	53
 #define PRV_SPECIAL	'm'
 #define SET_ALLPRESS	54
-#define PRV_ALLPRESS	'm'
+#define PRV_ALLPRESS	'a'
 #define SET_NOALLPRESS	55
 #define PRV_NOALLPRESS	'a'
 #define SET_COMMENT	56
@@ -220,11 +421,94 @@ void mail_setp(char *s)
 #define PRV_NOSTRWAIT	'm'
 #define SET_NO_PLAYERS  80
 #define PRV_NO_PLAYERS  'm'
+#define SET_LATECOUNT   81
+#define PRV_LATECOUNT   'm'
+#define SET_NOLATECOUNT 82
+#define PRV_NOLATECOUNT 'm'
+#define SET_STRCONVOY	83
+#define PRV_STRCONVOY   'm'
+#define SET_NOSTRCONVOY 84
+#define PRV_NOSTRCONVOY 'm'
+#define SET_LATEPRESS	85
+#define PRV_LATEPRESS	'm'
+#define SET_NOLATEPRESS 86
+#define PRV_NOLATEPRESS 'm'
+#define SET_MANPROC  87
+#define PRV_MANPROC 'm'
+#define SET_NOMANPROC 88
+#define PRV_NOMANPROC 'm'
+#define SET_MANSTART 89
+#define PRV_MANSTART 'm'
+#define SET_NOMANSTART 90
+#define PRV_NOMANSTART 'm'
+#define SET_TRANSFORM   91
+#define PRV_TRANSFORM	'm'
+#define SET_NOTRANSFORM 92
+#define PRV_NOTRANSFORM 'm'
+#define SET_XFLAG	93
+#define PRV_XFLAG	'm'
+#define SET_ANYCENTRE   94
+#define PRV_ANYCENTRE   'm'
+#define SET_HOMECENTRE  95
+#define PRV_HOMECENTRE  'm'
+#define SET_RESUME	96
+#define PRV_RESUME	'm'
+#define SET_NORESUME	97
+#define PRV_NORESUME	'm'
+#define SET_WATCHALL 	98
+#define PRV_WATCHALL	'm'
+#define SET_NOWATCHALL  99
+#define PRV_NOWATCHALL 'm'
+#define SET_ABSENCE    100
+#define PRV_ABSENCE	'a'
+#define SET_NOABSENCE	101
+#define PRV_NOABSENCE   'a'
+#define SET_MAXABSENCE  102
+#define PRV_MAXABSENCE  'm'
+#define SET_ONECENTRE   103
+#define PRV_ONECENTRE   'm'
+#define SET_NORMBROAD	104
+#define PRV_NORMBROAD   'a'
+#define SET_NONORMBROAD 105
+#define PRV_NONORMBROAD 'a'
+#define SET_BLANKPRESS	106
+#define PRV_BLANKPRESS	'm'
+#define SET_NOBLANKPRESS 107
+#define PRV_NOBLANKPRESS 'm'
+#define SET_MINORPRESS  108
+#define PRV_MINORPRESS 'm'
+#define SET_NOMINORPRESS 109
+#define PRV_NOMINORPRESS 'm'
+#define SET_MACH2	110
+#define PRV_MACH2	'm'
+#define SET_MACH1       111
+#define PRV_MACH1       'm'
+#define SET_MACH3       112
+#define PRV_MACH3       'm'
+#define SET_AIRLIFT     113
+#define PRV_AIRLIFT     'm'
+#define SET_NOAIRLIFT   114
+#define PRV_NOAIRLIFT   'm'
+#define SET_BLANKBOARD  115
+#define PRV_BLANKBOARD   'm'
+#define SET_FORT	116
+#define PRV_FORT	'm'
+#define SET_NOFORT	117
+#define PRV_NOFORT      'm'
+#define SET_AUTODISBAND	118
+#define PRV_AUTODISBAND	'm'
+#define SET_NOAUTODISBAND 119
+#define PRV_NOAUTODISBAND 'm'
+/* NOTE: 120 CANNOT be used: it is the 'unassigned' value */
+#define SET_ANYDISBAND 121
+#define PRV_ANYDISBAND 'm'
+#define SET_NORMALDISBAND 122
+#define PRV_NORMALDISBAND 'm'
 
 
 	static char *keys[] =
 	{"", ",", "press",
-	 "address", "a#", "password#", "pw#", "p#",
+	 "address", "ad#", "password#", "pw#", "p#",
 	 "wait", "w#", "no wait", "now#",
 	 "preference", "pref",
 	 "moves", "builds", "adjusts", "retreats",
@@ -280,7 +564,58 @@ void mail_setp(char *s)
 	 "deny master", "deny masters", "master deny", "masters deny",
 	 "strict wait", "strictwait",
 	 "no strict wait", "nostrictwait",
-	 "players"};
+	 "players",
+         "latecount", "late count",
+	 "no latecount", "nolatecount", "no late count",
+	 "strict convoy", "strictconvoy",
+	 "no strict convoy", "nostrictconvoy", "no strictconvoy",
+	 "latepress", "late press",
+	 "no late press", "no latepress", "nolatepress",
+	 "manual process", "manproc", "manualprocess",
+	 "no manual process", "no manualprocess", "no manproc", "nomanproc", "nomanualprocess", "no man proc",
+	 "autoprocess", "auto process", "autoproc", "auto proc",
+	 "manual start", "manualstart", "man start", "manstart",
+	 "no manual start", "nomanualstart", "no manualstart", "no man start", "no manstart", "nomanstart",
+	 "autostart", "auto start",
+	 "transform", "trafo", 
+	 "no transform", "notransform", "notrafo", "no trafo",
+	 "xflag", "xflags",
+	 "any centres", "any centre", "any centers", "any center",
+	 "anycentres", "anycentre", "anycenters", "anycenter", 
+	 "home centres", "home centre", "home centers", "home center",
+	 "homecentres", "homecentre", "homecenters", "homecenter",
+	 "watch all press", "watch allpress",
+	 "no watch all press", "nowatch all press", "no watch all press", "nowatch allpress",
+	 "holidays", "holiday", "vacations", "vacation", "absence",
+	 "noholidays", "no holidays", "no holiday", "noholiday",
+	 "novacations", "no vacations", "no vacation", "novacation",
+	 "no absence", "noabsence",
+	 "max absence", "maxabsence", 
+	 "max vacations", "maxvacations",
+	 "max holidays", "maxholidays",
+	 "one centre", "onecentre", "one center", "onecenter",
+	 "normal broadcast", "normalbroadcast",
+	 "no normal broadcast", "nonormal broadcast", "nonormalbroadcast",
+	 "blank press", "blankpress",
+	 "no blank press", "noblankpress", "no blankpress",
+	 "minor press", "minorpress",
+	 "no minor press", "nominor press", "nominorpress",
+	 "mach2", "machiavelli2", "mach-2", "machiavelli-2",
+	 "mach1", "machiavelli1", "mach-1", "machiavelli-1",
+	 "mach3", "machiavelli3", "mach-3", "machiavelli-3",
+	 "airlifts", "airlift", "air lifts", "air lift",
+	 "noairlifts", "noairlift", "no air lifts", "no air lift",
+	 "blank board", "blankboard", "enpty board", "emptyboard",
+	 "fortresses", "fortress", "forts", "fort",
+	 "no fortresses", "no fortress", "nofortresses", "nofortress",
+	 "no forts", "no fort", "noforts", "nofort",
+	 "resume",
+	 "no resume", "noresume",
+	 "auto disband", "autodisband",
+	 "no auto disband", "noautodisband", "no autodisband",
+	 "any disband", "anydisband",
+	 "normal disband", "normaldisband"
+	};
 
 
 	static char action[] =
@@ -341,7 +676,63 @@ void mail_setp(char *s)
 	 SET_MASTERDENY, SET_MASTERDENY, SET_MASTERDENY, SET_MASTERDENY,
 	 SET_STRWAIT, SET_STRWAIT,
 	 SET_NOSTRWAIT, SET_NOSTRWAIT,
-	 SET_NO_PLAYERS};
+	 SET_NO_PLAYERS,
+	 SET_LATECOUNT, SET_LATECOUNT,
+	 SET_NOLATECOUNT, SET_NOLATECOUNT, SET_NOLATECOUNT,
+	 SET_STRCONVOY, SET_STRCONVOY,
+	 SET_NOSTRCONVOY, SET_NOSTRCONVOY, SET_NOSTRCONVOY,
+	 SET_LATEPRESS, SET_LATEPRESS,
+	 SET_NOLATEPRESS, SET_NOLATEPRESS, SET_NOLATEPRESS,
+	 SET_MANPROC, SET_MANPROC, SET_MANPROC,
+	 SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC,
+	 SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC, SET_NOMANPROC, 
+	 SET_MANSTART, SET_MANSTART, SET_MANSTART, SET_MANSTART,
+	 SET_NOMANSTART, SET_NOMANSTART, SET_NOMANSTART, SET_NOMANSTART, SET_NOMANSTART, SET_NOMANSTART,
+	 SET_NOMANSTART, SET_NOMANSTART,
+	 SET_TRANSFORM, SET_TRANSFORM,
+	 SET_NOTRANSFORM, SET_NOTRANSFORM, SET_NOTRANSFORM, SET_NOTRANSFORM,
+         SET_XFLAG, SET_XFLAG,
+	 SET_ANYCENTRE, SET_ANYCENTRE,
+	 SET_ANYCENTRE, SET_ANYCENTRE,
+	 SET_ANYCENTRE, SET_ANYCENTRE,
+	 SET_ANYCENTRE, SET_ANYCENTRE,
+	 SET_HOMECENTRE, SET_HOMECENTRE,
+	 SET_HOMECENTRE, SET_HOMECENTRE,
+	 SET_HOMECENTRE, SET_HOMECENTRE,
+	 SET_HOMECENTRE, SET_HOMECENTRE,
+	 SET_WATCHALL, SET_WATCHALL,
+	 SET_NOWATCHALL, SET_NOWATCHALL, SET_NOWATCHALL, SET_NOWATCHALL,
+	 SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, 
+         SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,
+	 SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,
+	 SET_NOABSENCE, SET_NOABSENCE,
+	 SET_MAXABSENCE, SET_MAXABSENCE,
+	 SET_MAXABSENCE, SET_MAXABSENCE,
+	 SET_MAXABSENCE, SET_MAXABSENCE,
+	 SET_ONECENTRE, SET_ONECENTRE, SET_ONECENTRE, SET_ONECENTRE,
+	 SET_NORMBROAD, SET_NORMBROAD, 
+	 SET_NONORMBROAD, SET_NONORMBROAD, SET_NONORMBROAD ,
+	 SET_BLANKPRESS, SET_BLANKPRESS,
+	 SET_NOBLANKPRESS, SET_NOBLANKPRESS, SET_NOBLANKPRESS,
+	 SET_MINORPRESS, SET_MINORPRESS,
+	 SET_NOMINORPRESS, SET_NOMINORPRESS, SET_NOMINORPRESS,
+         SET_MACH2, SET_MACH2, SET_MACH2, SET_MACH2,
+         SET_MACH1, SET_MACH1, SET_MACH1, SET_MACH1,
+         SET_MACH3, SET_MACH3, SET_MACH3, SET_MACH3,
+         SET_AIRLIFT, SET_AIRLIFT, SET_AIRLIFT, SET_AIRLIFT,
+	 SET_NOAIRLIFT, SET_NOAIRLIFT, SET_NOAIRLIFT, SET_NOAIRLIFT,
+	 SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD,
+	 SET_FORT, SET_FORT, SET_FORT, SET_FORT,
+	 SET_NOFORT, SET_NOFORT, SET_NOFORT, SET_NOFORT,
+	SET_NOFORT, SET_NOFORT, SET_NOFORT, SET_NOFORT,
+	SET_RESUME,
+	SET_NORESUME, SET_NORESUME,
+	SET_AUTODISBAND, SET_AUTODISBAND,
+	SET_NOAUTODISBAND, SET_NOAUTODISBAND, SET_NOAUTODISBAND,
+	SET_ANYDISBAND, SET_ANYDISBAND,
+        SET_NORMALDISBAND, SET_NORMALDISBAND
+
+    };
 
 
 	static char privs[] =
@@ -402,12 +793,71 @@ void mail_setp(char *s)
 	 PRV_MASTERDENY, PRV_MASTERDENY, PRV_MASTERDENY, PRV_MASTERDENY,
 	 PRV_STRWAIT, PRV_STRWAIT,
 	 PRV_NOSTRWAIT, PRV_NOSTRWAIT,
-	 PRV_NO_PLAYERS};
+	 PRV_NO_PLAYERS,
+	 PRV_LATECOUNT, PRV_LATECOUNT,
+	 PRV_NOLATECOUNT, PRV_NOLATECOUNT, PRV_NOLATECOUNT,
+	 PRV_STRCONVOY, PRV_STRCONVOY,
+	 PRV_NOSTRCONVOY, PRV_NOSTRCONVOY, PRV_NOSTRCONVOY,
+	 PRV_LATEPRESS, PRV_LATEPRESS,
+	 PRV_NOLATEPRESS, PRV_NOLATEPRESS, PRV_NOLATEPRESS,
+	 PRV_MANPROC, PRV_MANPROC, PRV_MANPROC,
+         PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC,
+         PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC, PRV_NOMANPROC, 
+	 PRV_MANSTART, PRV_MANSTART, PRV_MANSTART, PRV_MANSTART,
+         PRV_NOMANSTART, PRV_NOMANSTART, PRV_NOMANSTART, PRV_NOMANSTART, PRV_NOMANSTART, PRV_NOMANSTART,
+         PRV_NOMANSTART, PRV_NOMANSTART, 
+	 PRV_TRANSFORM, PRV_TRANSFORM,
+         PRV_NOTRANSFORM, PRV_NOTRANSFORM, PRV_NOTRANSFORM, PRV_NOTRANSFORM,
+ 	 PRV_XFLAG, PRV_XFLAG,
+	 PRV_ANYCENTRE, PRV_ANYCENTRE,
+	 PRV_ANYCENTRE, PRV_ANYCENTRE,
+	 PRV_ANYCENTRE, PRV_ANYCENTRE,
+	 PRV_ANYCENTRE, PRV_ANYCENTRE,
+	 PRV_HOMECENTRE, PRV_HOMECENTRE,
+	 PRV_HOMECENTRE, PRV_HOMECENTRE,
+	 PRV_HOMECENTRE, PRV_HOMECENTRE,
+	 PRV_HOMECENTRE, PRV_HOMECENTRE,
+	 PRV_WATCHALL, PRV_WATCHALL,
+	 PRV_NOWATCHALL, PRV_NOWATCHALL, PRV_NOWATCHALL, PRV_NOWATCHALL,
+	 PRV_ABSENCE, PRV_ABSENCE, PRV_ABSENCE, PRV_ABSENCE, PRV_ABSENCE,
+	 PRV_NOABSENCE, PRV_NOABSENCE, PRV_NOABSENCE, PRV_NOABSENCE,
+	 PRV_NOABSENCE, PRV_NOABSENCE, PRV_NOABSENCE, PRV_NOABSENCE,
+ 	 PRV_NOABSENCE, PRV_NOABSENCE,
+	 PRV_MAXABSENCE, PRV_MAXABSENCE,
+	 PRV_MAXABSENCE, PRV_MAXABSENCE,
+ 	 PRV_MAXABSENCE, PRV_MAXABSENCE,
+	 PRV_ONECENTRE, PRV_ONECENTRE, PRV_ONECENTRE, PRV_ONECENTRE,
+         PRV_NORMBROAD, PRV_NORMBROAD,
+         PRV_NONORMBROAD, PRV_NONORMBROAD, PRV_NONORMBROAD,
+         PRV_BLANKPRESS, PRV_BLANKPRESS,
+         PRV_NOBLANKPRESS, PRV_NOBLANKPRESS, PRV_NOBLANKPRESS,
+         PRV_MINORPRESS, PRV_MINORPRESS,
+         PRV_NOMINORPRESS, PRV_NOMINORPRESS, PRV_NOMINORPRESS,
+	 PRV_MACH2, PRV_MACH2, PRV_MACH2,
+         PRV_MACH1, PRV_MACH1, PRV_MACH1, PRV_MACH1,
+         PRV_MACH3, PRV_MACH3, PRV_MACH3, PRV_MACH3,
+         PRV_AIRLIFT, PRV_AIRLIFT, PRV_AIRLIFT, PRV_AIRLIFT,
+         PRV_NOAIRLIFT, PRV_NOAIRLIFT, PRV_NOAIRLIFT, PRV_NOAIRLIFT,
+	 PRV_BLANKBOARD, PRV_BLANKBOARD, PRV_BLANKBOARD, PRV_BLANKBOARD,
+	 PRV_FORT, PRV_FORT, PRV_FORT, PRV_FORT,
+	 PRV_NOFORT, PRV_NOFORT, PRV_NOFORT, PRV_NOFORT,
+	 PRV_NOFORT, PRV_NOFORT, PRV_NOFORT, PRV_NOFORT,
+        PRV_RESUME,
+        PRV_NORESUME, PRV_NORESUME,
+        PRV_AUTODISBAND, PRV_AUTODISBAND,
+        PRV_NOAUTODISBAND, PRV_NOAUTODISBAND, PRV_NOAUTODISBAND,
+	PRV_ANYDISBAND, PRV_ANYDISBAND,
+        PRV_NORMALDISBAND, PRV_NORMALDISBAND
 
+};
 
 	chk24nmr = 0;
 	while (*s) {
 		s = lookfor(t = s, keys, nentry(keys), &i);
+		sprintf(stat_text, "%3.3d %s", action[i], dipent.name);
+		StatLog(STAT_COMMAND,"%s\n", stat_text);
+		DIPDEBUG(stat_text);
+
 		if (privs[i] == 'm' && !PRIVOK) {
 			fprintf(rfp, "> set %s\n", t);
 			fprintf(rfp, "Sorry, game '%s' is moderated.  ", dipent.name);
@@ -491,6 +941,9 @@ void mail_setp(char *s)
 				}
 				fprintf(rfp, "\n");
 				mfprintf(bfp, "\n");
+				/* Reset the SF_REMINDER flags for all players */
+				for ( i = 0; i < dipent.n; i++)
+				    dipent.players[i].status &= ~SF_REMIND;	
 			}
 			s = "";
 			break;
@@ -498,7 +951,9 @@ void mail_setp(char *s)
 		case SET_GRACE:
 			if (mail_date(&s, &dates, 0, rfp))
 				fprintf(rfp, "%sInvalid grace date specified.\n\n", t);
-			else {
+			else if (dates < dipent.deadline) {
+				fprintf(rfp, "%sGrace date cannot be earlier than deadline.\n\n", t);
+			} else {
 				dipent.grace = dates;
 				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 				/* WAS mfprintf  1/95 BLR */
@@ -537,18 +992,27 @@ void mail_setp(char *s)
 		case SET_PW:
 			/* Get a pointer to the players password */
 			t = dipent.players[player].password;
-
+			s1 = s;
 			/* Copy the password from the input line */
-			while (*s && !isspace(*s)) {
-				*t++ = isupper(c = *s++) ? tolower(c) : c;
+                        passOK = 1;
+			while (*s1 && !isspace(*s1) ) {
+                               if (!isalnum(*s1)) passOK =0; /*alphanum passwords only! */ 
+				s1++;
 			}
 
 			/* If no characters have been copied */
-			if (t == dipent.players[player].password) {
+			if (s1 == s ) { 
 				/* Insult player */
-				fprintf(rfp, "Its bozos like you who give RTers a bad name.\n\n");
+				fprintf(rfp, "Try to put in a non-blank password.\n\n");
+			} else if (passOK == 0)
+                        {
+				fprintf(rfp, "Password can only be alpha-numeric characters.\n\n");
+				s = s1; /* to skip whole password line */
 			} else {
 				/* Terminate the player and confirm change */
+				while (*s && !isspace(*s)) {
+                                   *t++ = isupper(c = *s++) ? tolower(c) : c;
+                        	 }
 				*t++ = '\0';
 				fprintf(rfp, "Password set.\n\n");
 			}
@@ -578,6 +1042,10 @@ void mail_setp(char *s)
 				} else {
 					fprintf(rfp, "Preference list '%s' set.\n", t);
 					strcpy(dipent.players[player].pref, t);
+					fprintf(mbfp,"Player %s changed preference list.\n\n",raddr);
+
+					ShowPreferences(mbfp);
+					broadcast_master_only = 1;  /* Only master(s) are told of this */
 				}
 			}
 			break;
@@ -780,6 +1248,7 @@ void mail_setp(char *s)
 					xaddr, PRINT_POWER, dipent.name);
 				fprintf(mbfp, "%s as %s in '%s' cleared the NoList flag.\n",
 					raddr, PRINT_POWER, dipent.name);
+				broadcast = 1;
 			} else {
 				fprintf(rfp, "Game '%s' is already set List.\n", dipent.name);
 			}
@@ -798,6 +1267,7 @@ void mail_setp(char *s)
 					raddr, PRINT_POWER, dipent.name);
 				mfprintf(bfp, "The game will not be listed in the standard catalogue ");
 				mfprintf(bfp, "of available games.\n\n");
+				broadcast = 1;
 			}
 			break;
 
@@ -1027,6 +1497,8 @@ void mail_setp(char *s)
 					xaddr = someone;
 				}
 				broad_params = 1;
+				dipent.no_of_players = dipent.np; /* reset no of players */
+				CheckForGameStart(); /*see if we have quorum */
 			}
 			break;
 
@@ -1035,6 +1507,12 @@ void mail_setp(char *s)
 			sscanf(s, "%x", &dipent.flags);
 			fprintf(rfp, "Flag word set to %x.\n", dipent.flags);
 			break;
+
+		case SET_XFLAG:
+                        fprintf(rfp, "xFlag word used2b %x.\n", dipent.xflags);
+                        sscanf(s, "%x", &dipent.xflags);
+                        fprintf(rfp, "Flag word set to %x.\n", dipent.xflags);
+                        break;
 
 		case SET_WHITE:
 			SETFLAGS(0, F_GREY | F_NOWHITE | F_DEFWHITE);
@@ -1058,31 +1536,27 @@ void mail_setp(char *s)
 
 		case SET_NOPRESS:
 			SETFLAGS(F_NOWHITE, F_GREY | F_NOWHITE | F_DEFWHITE);
-			broad_params = 1;
-			break;
-
-		case SET_OBANY:
-			SETFLAGS(0, F_OBNONE | F_OBWHITE);
-			broad_params = 1;
-			break;
-
+	/* Intentionally left blank for fall-thru */
 		case SET_OBNONE:
 			SETFLAGS(F_OBNONE, F_OBNONE | F_OBWHITE);
 			broad_params = 1;
 			break;
 
+		case SET_NOPART:
+			SETFLAGS(F_NOPARTIAL, F_NOPARTIAL);
+	/* Intentionally left blank for fall-thru */
 		case SET_OBWHITE:
 			SETFLAGS(F_OBWHITE, F_OBNONE | F_OBWHITE);
 			broad_params = 1;
 			break;
 
-		case SET_NOPART:
-			SETFLAGS(F_NOPARTIAL, F_NOPARTIAL);
-			broad_params = 1;
-			break;
-
 		case SET_PART:
 			SETFLAGS(0, F_NOPARTIAL);
+			/* if there's no broadcast, set it */
+			if (dipent.flags & F_NOWHITE) SETFLAGS(0, F_NOWHITE);
+	/* Intentionally left blank for fall-thru */
+		case SET_OBANY:
+			SETFLAGS(0, F_OBNONE | F_OBWHITE);
 			broad_params = 1;
 			break;
 
@@ -1137,90 +1611,133 @@ void mail_setp(char *s)
 			break;
 
 		case SET_NODICE:
+			CheckMach();
 			SETFLAGS(F_NODICE | F_NOFAMINE | F_NOPLAGUE | F_NOLOANS | F_NOASSASS,
 				 F_NODICE | F_NOFAMINE | F_NOPLAGUE | F_NOLOANS | F_NOASSASS);
 			broad_params = 1;
 			break;
 
 		case SET_DICE:
+			CheckMach();
 			SETFLAGS(0, F_NODICE);
 			broad_params = 1;
 			break;
 
 		case SET_NOFAMINE:
-			SETFLAGS(F_NOFAMINE, F_NOFAMINE);
+			CheckMach();
+                        SETFLAGS(F_NOFAMINE, F_NOFAMINE);
 			broad_params = 1;
 			break;
 
 		case SET_FAMINE:
-			SETFLAGS(0, F_NOFAMINE | F_NODICE);
+			CheckMach();
+                        SETFLAGS(0, F_NOFAMINE | F_NODICE);
 			broad_params = 1;
 			break;
 
 		case SET_NOPLAGUE:
-			SETFLAGS(F_NOPLAGUE, F_NOPLAGUE);
+			CheckMach();
+                        SETFLAGS(F_NOPLAGUE, F_NOPLAGUE);
 			broad_params = 1;
 			break;
 
 		case SET_PLAGUE:
-			SETFLAGS(0, F_NOPLAGUE | F_NODICE);
+			CheckMach();
+                        SETFLAGS(0, F_NOPLAGUE | F_NODICE);
 			broad_params = 1;
 			break;
 
 		case SET_NOLOANS:
-			SETFLAGS(F_NOLOANS, F_NOLOANS);
+			CheckMach();
+                        SETFLAGS(F_NOLOANS, F_NOLOANS);
 			broad_params = 1;
 			break;
 
 		case SET_LOANS:
-			SETFLAGS(0, F_NOLOANS | F_NODICE);
+			CheckMach();
+                        SETFLAGS(0, F_NOLOANS | F_NODICE);
 			broad_params = 1;
 			break;
 
 		case SET_NOASSASS:
-			SETFLAGS(F_NOASSASS, F_NOASSASS);
+			CheckMach();
+                        SETFLAGS(F_NOASSASS, F_NOASSASS);
 			broad_params = 1;
 			break;
 
 		case SET_ASSASS:
-			SETFLAGS(0, F_NOASSASS | F_NODICE);
+			CheckMach();
+                        SETFLAGS(0, F_NOASSASS | F_NODICE);
 			broad_params = 1;
 			break;
 
 		case SET_NOADJ:
-			SETFLAGS(F_NOADJ, F_NOADJ);
+			CheckMach();
+                        SETFLAGS(F_NOADJ, F_NOADJ);
 			broad_params = 1;
 			break;
 
 		case SET_ADJ:
-			SETFLAGS(0, F_NOADJ);
+			CheckMach();
+                        SETFLAGS(0, F_NOADJ);
 			broad_params = 1;
 			break;
 
 		case SET_NOSPECIAL:
-			SETFLAGS(F_NOSPECIAL, F_NOSPECIAL);
+			CheckMach();
+                        SETFLAGS(F_NOSPECIAL, F_NOSPECIAL);
 			broad_params = 1;
 			break;
 
 		case SET_SPECIAL:
-			SETFLAGS(0, F_NOSPECIAL);
+			CheckMach();
+                        SETFLAGS(0, F_NOSPECIAL);
 			broad_params = 1;
 			break;
 
 		case SET_ALLPRESS:
-			if (dipent.players[player].power != MASTER) {
-				fprintf(rfp, "Sorry, only the master can request all press.\n");
-				break;
+			CheckPress();
+			if (!(dipent.xflags & XF_WATCHPRESS)) {
+				if (dipent.players[player].power != MASTER) {
+					fprintf(rfp, "Sorry, only the master can request all press in game '%s'.\n", 
+						dipent.name);
+					break;
+				}
+			} else {
+				if (dipent.players[player].power != MASTER && dipent.players[player].power != OBSERVER ) {
+				fprintf(rfp, "Sorry, players cannot request all press.\n");
+					break;
+				}
 			}
 			dipent.players[player].status |= SF_PRESS;
 			fprintf(rfp, "You will now receive all the partial press.  Be sure ");
 			fprintf(rfp, "to pay attention to\nnot leak any information thus ");
-			fprintf(rfp, "gained to your other players.\n");
+			fprintf(rfp, "gained to any of the players.\n");
+			if (dipent.players[player].power != MASTER) {
+			    /* Let everyone know this person is watching press */
+                                fprintf(bfp, "%s is now watching all press sent (including partial).\n",
+                                        xaddr);
+                                fprintf(mbfp, "%s is now watching all press sent (including partial).\n",
+                                        raddr);
+                            broadcast = 1;
+
+			}
 			break;
 
 		case SET_NOALLPRESS:
+			CheckPress();
 			dipent.players[player].status &= ~SF_PRESS;
 			fprintf(rfp, "You will now receive only the normal amount of press.\n");
+			if (dipent.players[player].power != MASTER) {
+                            /* Let everyone know this person is not watching press */
+                                fprintf(bfp, "%s is no longer watching all press sent.\n",
+                                        xaddr);
+                                fprintf(mbfp, "%s is no longer watching all press sent.\n",
+                                        raddr);
+                            broadcast = 1;
+
+                        }
+\
 			break;
 
 		case SET_EPNUM:
@@ -1330,7 +1847,7 @@ void mail_setp(char *s)
 					bailout(1);
 				}
 				fprintf(rfp, "----- Full comment set:\n");
-				for (n = skipping = 0; fgets(line, sizeof(line), stdin); n++) {
+				for (n = skipping = 0; fgets(line, sizeof(line), inp); n++) {
 					fputs(line, log_fp);
 					for (t = line; isspace(*t); t++);
 					if (!strncasecmp(t, "signoff", 7)) {
@@ -1442,37 +1959,37 @@ void mail_setp(char *s)
 			process_allowdeny(&s, "players.DENY");
 			break;
 
-		case SET_STRWAIT:
-			if (dipent.flags & F_STRWAIT) {
-				fprintf(rfp, "Game '%s' is already StrictWait.\n", dipent.name);
+		case SET_LATECOUNT:
+			if (dipent.xflags & XF_LATECOUNT) {
+				fprintf(rfp, "Game '%s' is already showing Late Counters.\n", dipent.name);
 			} else {
-				dipent.flags |= F_STRWAIT;
-				fprintf(rfp, "Only players with moves required can set WAIT.\n");
-				pprintf(cfp, "%s%s as %s in '%s' set the StrictWait flag.\n",
+				dipent.xflags |= XF_LATECOUNT;
+				fprintf(rfp, "All players will now be shown with their Late Counter.\n");
+				pprintf(cfp, "%s%s as %s in '%s' set the LateCount flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
-				fprintf(bfp, "%s as %s in '%s' set the StrictWait flag.\n",
+				fprintf(bfp, "%s as %s in '%s' set the LateCount flag.\n",
 					xaddr, PRINT_POWER, dipent.name);
-				fprintf(mbfp, "%s as %s in '%s' set the StrictWait flag.\n",
+				fprintf(mbfp, "%s as %s in '%s' set the LateCount flag.\n",
 					raddr, PRINT_POWER, dipent.name);
 				broadcast = 1;
 			}
 			break;
 
-		case SET_NOSTRWAIT:
-			if (!(dipent.flags & F_STRWAIT)) {
-				fprintf(rfp, "Game '%s' is already NoStrictWait.\n", dipent.name);
+		case SET_NOLATECOUNT:
+			if (!(dipent.xflags & XF_LATECOUNT)) {
+				fprintf(rfp, "Game '%s' is already not showing Late Counters.\n", dipent.name);
 			} else {
-				dipent.flags &= ~F_STRWAIT;
-				fprintf(rfp, "Any player can set WAIT.\n");
-				pprintf(cfp, "%s%s as %s in '%s' cleared the StrictWait flag.\n",
+				dipent.xflags &= ~XF_LATECOUNT;
+				fprintf(rfp, "No player will now be shown with their Late Counter.\n");
+				pprintf(cfp, "%s%s as %s in '%s' cleared the LateCount flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
-				fprintf(bfp, "%s as %s in '%s' cleared the StrictWait flag.\n",
+				fprintf(bfp, "%s as %s in '%s' cleared the LateCount flag.\n",
 					xaddr, PRINT_POWER, dipent.name);
-				fprintf(mbfp, "%s as %s in '%s' cleared the StrictWait flag.\n",
+				fprintf(mbfp, "%s as %s in '%s' cleared the LateCount flag.\n",
 					raddr, PRINT_POWER, dipent.name);
 				broadcast = 1;
 			}
@@ -1499,22 +2016,612 @@ void mail_setp(char *s)
 				fprintf(bfp, "%s as %s in '%s' set the number of players to %d.\n",
 					xaddr, PRINT_POWER,
 				      dipent.name, dipent.no_of_players);
-				for (i = n = 0; i < dipent.n; i++) {
-					if (dipent.players[i].power == WILD_PLAYER) {
-						if (n < dipent.no_of_players) {
-							n++;
-						} else {
-							dipent.players[i].power = OBSERVER;
-						}
-					}
-				}
+				CheckForGameStart();
 
-				if (n == dipent.no_of_players) {
-					mail_igame();
-				}
-				broadcast = 1;
 			}
 			break;
+
+		case SET_STRWAIT:
+                        if (dipent.flags & F_STRWAIT) {
+                                fprintf(rfp, "Game '%s' is already StrictWait.\n", dipent.name);
+                        } else {
+                                dipent.flags |= F_STRWAIT;
+                                fprintf(rfp, "Only players with moves required can set WAIT.\n");
+                                pprintf(cfp, "%s%s as %s in '%s' set the StrictWait flag.\n",
+                                        NowString(),
+                                        xaddr, powers[dipent.players[player].power], dipent.name);
+                                /* WAS mfprintf  1/95 BLR */
+                                fprintf(bfp, "%s as %s in '%s' set the StrictWait flag.\n",
+                                        xaddr, PRINT_POWER, dipent.name);
+                                fprintf(mbfp, "%s as %s in '%s' set the StrictWait flag.\n",
+                                        raddr, PRINT_POWER, dipent.name);
+                                broadcast = 1;
+                        }
+                        break;
+
+                case SET_NOSTRWAIT:
+                        if (!(dipent.flags & F_STRWAIT)) {
+                                fprintf(rfp, "Game '%s' is already NoStrictWait.\n", dipent.name);
+                        } else {
+                                dipent.flags &= ~F_STRWAIT;
+                                fprintf(rfp, "Any player can set WAIT.\n");
+                                pprintf(cfp, "%s%s as %s in '%s' cleared the StrictWait flag.\n",
+                                        NowString(),
+                                        xaddr, powers[dipent.players[player].power], dipent.name);
+                                /* WAS mfprintf  1/95 BLR */
+                                fprintf(bfp, "%s as %s in '%s' cleared the StrictWait flag.\n",
+                                        xaddr, PRINT_POWER, dipent.name);
+                                fprintf(mbfp, "%s as %s in '%s' cleared the StrictWait flag.\n",
+                                        raddr, PRINT_POWER, dipent.name);
+                                broadcast = 1;
+                        }
+                        break;
+		
+  		case SET_STRCONVOY:
+			CheckNoMach();
+			CheckAndToggleFlag(&dipent.xflags,  XF_STRCONVOY, "StrictConvoy", CATF_SETON,
+                                              "Only plausible convoys will now be accepted.\n",CATF_NORMAL);
+                        break;
+
+		case SET_NOSTRCONVOY:
+                        CheckNoMach();
+			CheckAndToggleFlag(&dipent.xflags,  XF_STRCONVOY, "StrictConvoy", CATF_SETOFF,
+                                               "Impossible convoys will now be accepted.\n",CATF_NORMAL);
+                        break;
+
+                case SET_RESUME:
+                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "NoResume", CATF_SETOFF,
+                                               "Resume can now be performed by any player.\n",CATF_INVERSE);
+                        break;
+
+                case SET_NORESUME:
+                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "NoResume", CATF_SETON,
+                                               "Resume can now only be performed by moderators.\n",CATF_INVERSE);
+                        break;
+
+                case SET_AUTODISBAND:
+                       if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change AutoDisband flag!\n\n",
+                                    dipent.name);
+                        } else { 
+                        CheckAndToggleFlag(&dipent.xflags,  XF_AUTODISBAND, "AutoDisband", CATF_SETON,
+                                               "No retreats are allowed: will be made into automatic disbands.\n",CATF_NORMAL);
+                        }
+			break;
+
+                case SET_NOAUTODISBAND:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change AutoDisband flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.xflags,  XF_AUTODISBAND, "AutoDisband", CATF_SETOFF,
+                                               "Retreats will now be allowed (when possible).\n",CATF_NORMAL);
+                        }
+			break;
+
+		case SET_ANYDISBAND:
+			fprintf(rfp,"Sorry, the AnyDisband feature isnot yet implemented.\n");
+			/*			
+			CheckNoMach();
+                       if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set AnyDisband flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.xflags,  XF_ANYDISBAND, "AnyDisband", CATF_SETON,
+                                               "Disbands can now be mae in a build phase of ANY unit.\n",CATF_NORMAL);
+                        }
+			*/
+                        break;
+
+                case SET_NORMALDISBAND:
+			CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set NormalDisband flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.xflags,  XF_ANYDISBAND, "NormalDisband", CATF_SETON,
+                                               ".\n",CATF_INVERSE);
+                        }
+                        break;
+
+		 case SET_LATEPRESS:
+			CheckPress();
+			CheckAndToggleFlag(&dipent.xflags,  XF_NOLATEPRESS, "LatePress", CATF_SETOFF,
+                                           "Press will be permitted from late countries.\n",
+					   CATF_INVERSE);
+			break;
+
+                case SET_NOLATEPRESS:
+                        CheckPress();
+			CheckAndToggleFlag(&dipent.xflags,  XF_NOLATEPRESS, "LatePress", CATF_SETON,
+					   "Press will NOT be allowed from late countries.\n",
+					    CATF_INVERSE);
+			break;
+
+		case SET_BLANKPRESS:
+                        CheckPress();
+                        CheckAndToggleFlag(&dipent.xflags,  XF_BLANKPRESS, "BlankPress", CATF_SETON,
+                                           "Blank Press messages can now be sent.\n",
+                                           CATF_NORMAL);
+                        break;
+
+                case SET_NOBLANKPRESS:
+                        CheckPress();
+                        CheckAndToggleFlag(&dipent.xflags,  XF_BLANKPRESS, "BlankPress", CATF_SETOFF,
+                                           "No blank press messages will be permitted.\n",
+                                            CATF_NORMAL);
+                        break;
+
+		case SET_MINORPRESS:
+			CheckPress();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change MinorPress flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        	CheckAndToggleFlag(&dipent.xflags,  XF_NOMINORPRESS, "MinorPress", CATF_SETOFF,
+                                           "Press will be permitted during retreat & build phases.\n",
+                                           CATF_INVERSE);
+			}
+                        break;
+
+                case SET_NOMINORPRESS:
+                        CheckPress();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change MinorPress flag!\n\n",
+                                    dipent.name);
+                        } else {
+				CheckAndToggleFlag(&dipent.xflags,  XF_NOMINORPRESS, "MinorPress", CATF_SETON,
+                                           "Press will NOT be permitted during retreat & build phases.\n",
+                                            CATF_INVERSE);
+                        }
+			break;
+
+		case SET_MACH2:
+                        CheckMach();
+                        fprintf(rfp, "Mach2 flag not yet supported!\n\n");
+			if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Mach2 flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_MACH2, "Mach2", CATF_SETON,
+                                           "Machiavelli will now be played according to 2nd Edition rules.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_MACH1:
+                        CheckMach();
+                        fprintf(rfp, "Mach1 flag not yet supported!\n\n");
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Mach1 flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_MACH1, "Mach1", CATF_SETON,
+                                           "Machiavelli will now be played according to original 1st Edition rules.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_MACH3:
+                        CheckMach();
+			fprintf(rfp, "Mach3 flag not yet supported!\n\n");
+
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Mach3 flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_MACH3, "Mach3", CATF_SETON,
+                                           "Machiavelli will now be played according to Special(?) rules.\n",
+                                            CATF_NORMAL);
+                        }
+
+                        break;
+
+                case SET_FORT:
+                        CheckMach();
+                        fprintf(rfp, "Forts flag not yet supported!\n\n");
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Forts flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_FORT, "Forts", CATF_SETON,
+                                           "Machiavelli will now be played with fortresses.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOFORT:
+                        CheckMach();
+                        fprintf(rfp, "Forts flag not yet supported!\n\n");
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear Forts flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_FORT, "Forts", CATF_SETOFF,
+                                           "Machiavelli will now be played with NO fortresses.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+/*
+                case SET_AIRLIFT:
+                        CheckNoMach();
+			CheckWings();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Airlifts flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_AIRLIFTS, "Airlifts", CATF_SETON,
+                                           "Airlifts will now be allowed.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOAIRLIFT:
+                        CheckNoMach();
+			CheckWings();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear Airlifts flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_AIRLIFTS, "Airlifts", CATF_SETOFF,
+                                           "No airlifts are now permitted.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+*/
+		case SET_BLANKBOARD:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set BlankBoard flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_BLANKBOARD, "BlankBoard", CATF_SETON,
+                                           "Game will now start in a build phase with no units placed.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+
+		case SET_MANSTART:
+                        if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: no point in setting ManualStart flag!\n\n",
+				    dipent.name);
+			} else {
+			    CheckAndToggleFlag(&dipent.xflags,  XF_MANUALSTART, "ManualStart", CATF_SETON,
+                                              "Moderator will now have to manually start the game.\n",CATF_NORMAL);
+                        }
+			break;
+
+                case SET_NOMANSTART:
+                        if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: no point in clearing ManualStart flag!\n\n",
+				    dipent.name);
+                        } else {
+				CheckAndToggleFlag(&dipent.xflags,  XF_MANUALSTART, "ManualStart", CATF_SETOFF,
+                                               "The game will now automatically start when a quorum exists.\n",CATF_NORMAL);
+				CheckForGameStart(); /* OK, see if we can start game already */
+                        }
+			break;
+               
+                case SET_MANPROC:
+                        CheckAndToggleFlag(&dipent.xflags,  XF_MANUALPROC, "ManualProcess", CATF_SETON,
+                                              "Moderator will now have to manually start turn processing for every turn.\n",CATF_NORMAL);
+                        break;
+
+                case SET_NOMANPROC:
+                        if (CheckAndToggleFlag(&dipent.xflags,  XF_MANUALPROC, "ManualProcess", CATF_SETOFF,
+                                               "Turn processing will now be automatic.\n",CATF_NORMAL)) {
+				if (dipent.seq[0] != 'x' ) deadline( ( sequence *) NULL, 0); /* See if time to do a turn */
+			}
+                        break;
+
+        	case SET_TRANSFORM:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change Transform settings!\n\n",
+                                    dipent.name);
+                        } else  {
+			    ChangeTransform(s);
+			    pprintf(cfp, "%s%s as %s in '%s' changed transform settings.\n", NowString(),
+                        xaddr, powers[dipent.players[player].power], dipent.name);
+                        fprintf(bfp, "%s as %s in '%s' changed transform settings.\n", xaddr, PRINT_POWER, dipent.name);
+			ShowTransformSettings(bfp);
+                        fprintf(mbfp, "%s as %s in '%s' changed transform settings.\n", raddr, PRINT_POWER, dipent.name);
+			ShowTransformSettings(mbfp);
+			ShowTransformSettings(rfp);
+                        }
+			*s = '\0';
+			break;
+
+                case SET_NOTRANSFORM:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to disable Transform settings!\n\n",
+                                    dipent.name);
+                        } else {
+                            ChangeTransform("no"); /* User wants no transformations */
+                        }
+			    pprintf(cfp, "%s%s as %s in '%s' disabled transformations.\n", NowString(),
+                        xaddr, powers[dipent.players[player].power], dipent.name);
+                        fprintf(bfp, "%s as %s in '%s' disabled transformations.\n", xaddr, PRINT_POWER, dipent.name);
+                        ShowTransformSettings(bfp);
+                        fprintf(mbfp, "%s as %s in '%s'  disabled transformations.\n", raddr, PRINT_POWER, dipent.name);
+			*s = '\0';
+                        break;
+
+
+
+		case SET_ANYCENTRE:
+                        CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set AnyCentres!\n\n",
+				    dipent.name);
+                        } else {
+				if (CheckAndToggleFlag(&dipent.xflags,  XF_BUILD_ANYCENTRES, "AnyCentres", CATF_SETON,
+                                              "Powers can now build on any vacant owned centre.\n",CATF_NORMAL))
+				{
+				    dipent.xflags &= ~XF_BUILD_ONECENTRE;
+				    dipent.xflags |= XF_BUILD_ANYCENTRES;
+				}
+			}
+                        break;
+
+                case SET_HOMECENTRE:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set HomeCentres!\n\n",
+				    dipent.name);
+                        } else {
+				CheckAndToggleFlag(&dipent.xflags,  XF_BUILD_ANYCENTRES, "HomeCentres", CATF_SETOFF,
+                                               "Powers can only build on vacant owned home centres.\n",CATF_INVERSE);
+                        }
+			break;
+ 		
+		case SET_ONECENTRE:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set OneCentre!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_BUILD_ONECENTRE, "OneCentre", CATF_SETON,
+                                              "Powers can now build on any vacant owned centre\nproviding they own at least one home centre.\n",
+						   CATF_NORMAL);
+                        }
+                        break;
+
+
+		 case SET_WATCHALL:
+			CheckPress();
+			if (CheckAndToggleFlag(&dipent.xflags, XF_WATCHPRESS, "WatchPress", CATF_SETON,
+						"Observers can now set all press.\n", CATF_NORMAL)) {
+				/* 
+				 * See if observer press is allowed 
+				 */
+				if (!(dipent.flags & F_OBNONE)) {
+					fprintf(rfp,"\n.WARNING: Game '%s' has a possible security hole by allowing ",
+						dipent.name);
+					fprintf(rfp,"observers to see all press as well as sending press.\n");
+					fprintf(rfp,"Be sure you know what you are doing!\n\n");
+				}
+			}
+			break;
+
+		case SET_NOWATCHALL:
+			CheckPress();
+                        if (CheckAndToggleFlag(&dipent.xflags, XF_WATCHPRESS, "WatchPress", CATF_SETOFF,
+                                                "Only master can now set all press.\n", CATF_NORMAL)) {
+                                /*
+                                 * See if observer press is allowed
+                                 */
+				fprintf(bfp,"Any observers with 'set all press' no longer have this set.\n");
+				for (i = 0; i < dipent.n; i++) {
+					if (dipent.players[i].power == OBSERVER) {
+						dipent.players[i].status &= ~SF_PRESS;
+					}
+				}
+                        }
+                        break;
+
+		case SET_ABSENCE:
+                        if (dipent.phase[6] == 'X' ) {
+                                fprintf(rfp,"Game is already terminated - no point!");
+                                s = "";
+                                break;
+                        }
+                        if (dipent.players[player].power == OBSERVER) {
+                                fprintf(rfp, "Observers cannot request a game delay.\n\n");
+                                s = "";
+                                break;
+                        }
+                        if (dipent.players[player].absence_count >=MAX_ABSENCES ) {
+                                fprintf(rfp, "Maximum number of absences already reached.\n");
+                                fprintf(rfp,"You must remove some absences first.\n\n");
+                                s = "";
+                                break;
+                        }
+                        if (dipent.players[player].power != MASTER &&
+                            dipent.players[player].status & SF_DEAD) {
+                                fprintf(rfp,"Sorry, only active players are allowed to request an absence.\n\n");
+                                s = "";
+                                break;
+                        }
+		/* Look to see if date has a <dates> TO <datee> construct */
+                        break_date_into_two(s, ss, se );
+			if (mail_date(&ss, &dates, 0, rfp)) {
+                                fprintf(rfp, "%sInvalid absence start date specified.\n\n", t);
+                                s = "";
+                                break;
+                        } else {
+                                if (mail_date(&se, &datee, 0, rfp)) {
+                                        fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
+                                        datee = dates + (24l * 60l *60l );
+                                }
+                                if ( datee <= dates) datee = dates + (24l * 60l *60l );
+
+                                if (datee <= dates ) {
+                                    fprintf(rfp,
+                                            "Absence end date \n%s is not after absence start date \n",
+					    ptime(&dates));
+				    fprintf(rfp,"%s.\n\n", ptime(&datee));
+                                    s="";
+                                    break;
+                                }
+                                if (datee < time(NULL)) {
+                                    fprintf(rfp,"Absence end date has already passed - request ignored.\n\n");
+                                    s = "";
+                                break;
+                                }
+                                if (!i_am_really_master &&
+				    dipent.players[player].power != MASTER &&
+				    absence_delay(dipent.max_absence_delay, datee-dates) == TOO_BIG) {
+                                        fprintf(rfp, "Requested absence delay is too large. \nRequest forwarded to master to approve.\n\n");
+                                        fprintf(mbfp,
+                                                "%s as %s requested absence between \n%s",
+                                                raddr, PRINT_POWER, ptime(&dates));
+
+                                        fprintf(mbfp," to \n%s.\n\n", ptime(&datee));
+                                        fprintf(mbfp,"A master must approve this as it exceeds game limit of %d.\n\n",
+                                                dipent.max_absence_delay);
+                                        broadcast_master_only = 1;
+                                        s="";
+                                        break;
+                                }
+                                for (i=0; i < MAX_ABSENCES &&
+                                              dipent.players[player].absence_start[i] != 0; i++) ;
+                                if (dipent.players[player].absence_start[i] == 0) {
+                                        dipent.players[player].absence_start[i] = dates;
+                                        dipent.players[player].absence_end[i] = datee;
+                                        dipent.players[player].absence_count++;
+                                         fprintf(rfp, "Absence requested from %s to\n",
+						ptime(&dates));
+					fprintf(rfp,"%s.\n\n", ptime(&datee));
+                                        fprintf(mbfp, "%s as %s requested absence from %s to\n",
+					raddr, PRINT_POWER, ptime(&dates));
+					fprintf(mbfp,"%s.\n\n",
+                                                ptime(&datee));
+                                        broadcast_master_only = 1;
+                                }
+                                else
+                                {
+                                        fprintf(rfp, "Too many absences requested.\n\n");
+                                        s = "";
+                                        break;
+                                }
+                        }
+                        s="";
+                        break;
+
+		case SET_NOABSENCE:
+		        if (dipent.phase[6] == 'X' ) {
+				fprintf(rfp,"Game is already terminated - no point!");
+				s = "";
+				break;
+			}	
+			if (dipent.players[player].power == OBSERVER) {
+				fprintf(rfp, "Observers cannot request a game delay.\n\n");
+				s = "";
+				break;
+			}
+			if (dipent.players[player].absence_count <= 0 ) {
+				fprintf(rfp, "No absences previously requested - command ignored.\n\n");
+				s = "";
+				break;
+                        }
+			if (dipent.players[player].power != MASTER && 
+			    dipent.players[player].status & SF_DEAD) {
+				fprintf(rfp,"Sorry, only active players can have absences to cancel.\n\n");
+				s = "";
+				break;
+			}
+
+			if (mail_date(&s, &dates, 0, rfp)) {
+                                fprintf(rfp, "%sInvalid absence cancel date specified.\n\n", t);
+				s = "";
+				break;
+                        } else {
+				k = 0;
+				for (i=0; i < MAX_ABSENCES; i++) { 
+				    if (dipent.players[player].absence_start[i] <= dates &&
+				        dipent.players[player].absence_end[i] >=  dates) {
+                                         k++;
+					 fprintf(rfp, "Absence cancelled from \n%s",
+						 ptime(&dipent.players[player].absence_start[i]));
+					 fprintf(rfp," to \n%s.\n\n", 
+						ptime(&dipent.players[player].absence_end[i]));
+                                        fprintf(mbfp, "%s as %s cancelled absence from \n%s",
+						raddr, PRINT_POWER,
+                                                ptime(&dipent.players[player].absence_start[i]));
+					fprintf(mbfp, " to \n%s.\n\n",
+						ptime(&dipent.players[player].absence_end[i]));
+					dipent.players[player].absence_start[i] = 0;
+                                        dipent.players[player].absence_end[i] = 0;
+                                        dipent.players[player].absence_count--;
+                                        broadcast_master_only = 1;
+					s = "";
+					break;
+				    }
+                        	}
+				if (!k) {
+				        fprintf(rfp,"No absence found for requested date.\n");
+				}
+			}
+			s="";
+                        break;
+	
+		case SET_MAXABSENCE:
+#define LOW_MAXABSENCE (0)
+#define HIGH_MAXABSENCE (31)
+
+			 i = atoi(s);
+                        while (isdigit(*s) || *s == '-' || *s == '+')
+                                s++;
+			if (i < LOW_MAXABSENCE || i > HIGH_MAXABSENCE ) 
+			{
+			    fprintf(rfp, "Invalid maximum absence %d. Must be between %d and %d",
+				    i, LOW_MAXABSENCE, HIGH_MAXABSENCE);
+			} else if (i == dipent.max_absence_delay) {
+			    fprintf(rfp, "No point: max absence is already set to %d",i);
+			} else {
+ 			        dipent.max_absence_delay = i;
+                                fprintf(rfp, "Max absence for game '%s' set to %d.\n", 
+					dipent.name,
+                                        dipent.max_absence_delay);
+                                pprintf(cfp, "%s%s as %s in '%s' set the\nmax absence to %d.\n",
+                                        NowString(),
+                                        xaddr, powers[dipent.players[player].power],
+                                        dipent.name, dipent.max_absence_delay);
+                                /* WAS mfprintf  1/95 BLR */
+                                fprintf(bfp, "%s as %s in '%s' set the\nmax absence to %d.\n",
+                                        xaddr, PRINT_POWER, dipent.name, dipent.max_absence_delay);
+                                fprintf(mbfp, "%s as %s in '%s' set the\nmax absence to %d.\n",
+                                        raddr, PRINT_POWER, dipent.name, dipent.max_absence_delay);
+                                broadcast = 1;
+			}
+			break;
+
+		case SET_NORMBROAD:
+                        CheckPress();
+			CheckAndToggleFlag(&dipent.players[player].status,  
+					SF_NOBROAD, "NoBroadcasts", CATF_SETOFF,
+					"Player will now receive all broadcast press messages.\n",
+                                                   CATF_NORMAL);
+                        break;
+
+		case SET_NONORMBROAD:
+			CheckPress();
+                        if (dipent.players[player].power != MASTER && 
+			    dipent.players[player].power != OBSERVER ) {
+				fprintf(rfp, "This option is not allowed for players.\n\n");
+				break;
+			}
+			CheckAndToggleFlag(&dipent.players[player].status,   
+                                        SF_NOBROAD, "NoBroadcasts", CATF_SETON,
+                                        "Player will not now receive ANY broadcast press messages.\n",
+                                                   CATF_NORMAL);
+                        break;
+
+
 
 		default:
 			fprintf(rfp, "Invalid command: set %s\n", t);
@@ -1567,5 +2674,207 @@ void process_allowdeny(char **info, char *basename)
 	*info = s;
 }
 
+/*
+ * Alter the transformation settings as requested
+ * Return 0 if failure, !0 if ok
+ */
+
+void ChangeTransform( char *s)
+{
+
+	int i;
+	char *t;
+/* First set up the various types of changes possible */
+#define TSET_NOOP	0
+#define TSET_BUILD	1
+#define TSET_MOVE	2
+#define TSET_ANYWHERE	3
+#define TSET_HOME	4
+#define TSET_ONEC	5
+#define TSET_ANYC	6
+#define TSET_NONE	7
+#define TSET_SUBKEY	8
+
+        static char *keys[] =
+        {"", ",", ":", 
+	 "builds", "build",
+	 "moves", "move",
+	 "none", "no", "never"
+	};
+
+	static char action[] = 
+	{ 'x', TSET_NOOP, TSET_SUBKEY, 
+	 TSET_BUILD, TSET_BUILD,
+	 TSET_MOVE, TSET_MOVE
+	};
+
+	int last_type = TSET_BUILD;
+
+	while (*s)
+	{
+		s = lookfor(t = s, keys, nentry(keys), &i);
+		switch (action[i])
+		{
+
+		case TSET_NOOP:  /* No command, wait for another one */
+		    break;
+
+		case TSET_BUILD:
+		    dipent.xflags |= XF_TRANS_BUILD;
+		    last_type = TSET_BUILD;
+		    break;
+
+		case TSET_MOVE:
+		    dipent.xflags |= XF_TRANS_MOVE;
+		    last_type = TSET_MOVE;
+		    break;
+
+		case TSET_NONE:
+		    dipent.xflags &= ~(XF_TRANS_MOVE | XF_TRANS_BUILD);
+		    break;
+
+		case TSET_SUBKEY:
+		     s = SetSubkey(last_type,s);
+		     break;
+
+		default:
+		    fprintf(rfp, "Invalid transform command: %s\n", t);
+                        return;
+		}
+	    while (*s && isspace(*s))
+                        s++;
+	}
+}
+
+char * SetSubkey(int act, char *s)
+{
+
+        static char *subkeys[] =
+        { "", 
+         "home", "home centres", "home centers", "homecenters", "homecentres",
+         "home centre", "home center", "homecenter", "homecentre",
+         "any centres", "any centers", "anycenters", "anycentres",
+         "any centre", "any center", "anycenter", "anycentre",
+         "one", "one centres", "one centers", "onecenters", "onecentres",
+         "one centre", "one center", "onecenter", "onecentre",
+         "any where", "anywhere",
+         "no", "none", "never"
+        };
+
+     
+        static char subaction[] =
+        { 'x', 
+         TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME,
+         TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC,
+         TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC,
+         TSET_ANYWHERE, TSET_ANYWHERE,
+         TSET_NONE, TSET_NONE, TSET_NONE
+        };
+	char *t;
+	int i;
+
+    s = lookfor(t = s, subkeys, nentry(subkeys), &i);
+    switch (subaction[i])
+  
+    {
+                case TSET_HOME:
+		    if (act == TSET_MOVE) {
+                    	dipent.xflags &= ~(XF_TRANS_MANYC | XF_TRANS_MONEC);
+		    } else {
+			dipent.xflags &= ~(XF_TRANS_BANYC | XF_TRANS_BONEC);
+		    }
+                    break;
+
+                case TSET_ONEC:
+		    if (act == TSET_MOVE) {
+                    dipent.xflags |= XF_TRANS_MONEC;
+                    dipent.xflags &= ~XF_TRANS_MANYC;
+		    } else {
+		        dipent.xflags |= XF_TRANS_BONEC;
+                        dipent.xflags &= ~XF_TRANS_BANYC;
+		    }
+                    break;
+
+                case TSET_ANYC:
+		    if (act == TSET_MOVE) {
+                    dipent.xflags |= XF_TRANS_MANYC;
+                    dipent.xflags &= ~XF_TRANS_MONEC;
+                    } else {
+			dipent.xflags |= XF_TRANS_BANYC;
+                        dipent.xflags &= ~XF_TRANS_BONEC;
+		    }break;
+
+                case TSET_ANYWHERE:
+		    if (act == TSET_MOVE) {
+                     dipent.xflags |= (XF_TRANS_MANYC | XF_TRANS_MONEC);
+		    } else { 
+			dipent.xflags |= (XF_TRANS_BANYC | XF_TRANS_BONEC);
+		    }
+                     break;
+
+              default:
+                    fprintf(rfp, "Invalid transform qualifier: %s\n", t);
+	}
+	return s;
+}
+
+void ShowTransformSettings(FILE* rfp)
+{
+	fprintf(rfp,"Current tansform setting: ");
+        switch (dipent.xflags & (XF_TRANS_MOVE | XF_TRANS_BUILD))
+            {
+               case XF_TRANS_BUILD:
+                    fprintf(rfp,"Build:");
+		    switch( dipent.xflags & (XF_TRANS_BANYW))
+                    {
+                        case XF_TRANS_BANYW:
+                            fprintf(rfp,"Anywhere");
+                            break;
+
+                        case XF_TRANS_BONEC:
+                            fprintf(rfp,"OneCentre");
+                            break;
+
+                        case XF_TRANS_BANYC:
+                            fprintf(rfp,"AnyCentre");
+                            break;
+
+                        default:
+                            fprintf(rfp,"HomeCentre");
+                            break;
+                    }
+
+                    break;
+
+                case XF_TRANS_MOVE:
+                    fprintf(rfp, "Move:");
+
+                    switch( dipent.xflags & (XF_TRANS_MANYW))
+                    {
+                        case XF_TRANS_MANYW:
+                            fprintf(rfp,"Anywhere");
+                            break;
+
+                        case XF_TRANS_MONEC:
+                            fprintf(rfp,"OneCentre");
+                            break;
+
+                        case XF_TRANS_MANYC:
+                            fprintf(rfp,"AnyCentre");
+                            break;
+
+                        default:
+                            fprintf(rfp,"HomeCentre");
+                            break;
+                    }
+		    break;
+
+                case 0:
+                    fprintf(rfp,"Never");
+
+	}
+	fprintf(rfp,"\n");
+
+}
 
 /***************************************************************************/
