@@ -1,13 +1,14 @@
-/*
- * $Log$
+/* zpblind.c
+   - Diplomacy Blind Parsing - main program - Version 0.7
  */
 
 /*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Jan 2002
- * to be included in njudge package.
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Dec 2002
+ * included in njudge package.
  */
 
-#define DEBUG
+#define yZPBLIND_VERSION "v0.7"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,8 +71,10 @@ int go (IoOptions* ioPtr)
    sprintf(myTempFilename,"%s/%s","/tmp","zbXXXXXX");
    ioPtr->tempFilename = mktemp( myTempFilename );
 
+#ifdef DEBUG_VERBOSE
    printf("CREATED TEMPORARY FILE: [%s|%s]\n",ioPtr->tempFilename,myTempFilename);
-   
+#endif
+
    ASSERTION(ioPtr->tempFilename!=nil && ioPtr->tempFilename[0]!=0,"tempFilename not alloc'd");
    fTemp = ioPtr->fTemp = fopen(ioPtr->tempFilename,"wt");
    if ( fTemp==nil ) {
@@ -169,7 +172,7 @@ int go (IoOptions* ioPtr)
  else
    fprintf(fDebug,"No next phase [%s]<==\n",lStr.s[lStr.theLastIdx]);
 #endif
- 
+
  error = ParseInput(&lStr,ioPtr);
 
 #ifdef DEBUG_VERBOSE
@@ -179,7 +182,7 @@ int go (IoOptions* ioPtr)
  // Blinded/hidden by ? and @ will not go to the output file
  for (iter=1; error==0 && iter<=lStr.size; iter++) {
      bool isEmpty;
-     
+
      str = lStr.s[iter];
      aChr = str[0];
      isEmpty = aChr==0;
@@ -187,17 +190,14 @@ int go (IoOptions* ioPtr)
      switch ( aChr ) {
      case '?':
      case '@':
-#ifdef DEBUG_VERBOSE
-	 printf("!%03u %s!\n",iter,str);
-#endif
-	 break;
+         break;
      default:
 	 // Avoid printing out two consecutive empty lines
 	 if ( isEmpty ) {
 	     nEmptyLines++;
 	     if ( nEmptyLines>=2 ) {
 #ifdef DEBUG_OUTPUT
-		 printf("Avoid empty line. (%u)\n",nEmptyLines);
+		 printf("[%u]:Avoid empty line. (%u)\n",iter,nEmptyLines);
 #endif
 		 continue;
 	     }
@@ -209,7 +209,7 @@ int go (IoOptions* ioPtr)
 	 break;
      }
  }
- 
+
  ArrayDelete(&lStr);
 
  return error;
@@ -233,6 +233,50 @@ int OpenFileInput (IoOptions* ioPtr, char* str)
  ioPtr->inputFilename = str;
  return 0;
 }
+
+/* --------------------------------------------------------
+   Debug-only functions
+*/
+#ifdef DEBUG_AUTOCOUNTRY
+const char* tblCountryNonAdjective[9]={
+  nil,
+  "Austria",
+  "England",
+  "France",
+  "Germany",
+  "Italy",
+  "Russia",
+  "Turkey",
+  nil
+};
+
+const char* tblCountryAdjective[9]={
+  nil,
+  "Austrian",
+  "English",
+  "French",
+  "German",
+  "Italian",
+  "Russian",
+  "Turkish",
+  nil
+};
+
+const char* GetCountryAdjectiveFromCountry (char* aCountryStr)
+{
+ const char* tblCountry;
+ unsigned short iter;
+
+ for (iter=1;
+      (tblCountry = tblCountryNonAdjective[iter])!=nil;
+      iter++) {
+   if ( strcmp(aCountryStr,tblCountry)==0 )
+     return tblCountryAdjective[iter];
+ }
+ return nil;
+}
+#endif //DEBUG_AUTOCOUNTRY
+
 /* --------------------------------------------------------
    Main program
 */
@@ -260,6 +304,8 @@ int main (int argc, char* argv[], char** envp)
  optIO.fOut = stdout;
  optIO.doPreParsing = true;
  optIO.doDeleteTempFile = true;
+ // Variant specifics
+ optIO.doPreParsing = false;
 
 #ifdef yLINUX
  signal(SIGINT, faultHandler);
@@ -270,9 +316,13 @@ int main (int argc, char* argv[], char** envp)
  signal(SIGCLD, SIG_IGN);
 #endif
 
+#ifdef DEBUG_AUTOCOUNTRY
+ n++;
+#endif
+
  // Parse args
  if ( n<2 ) {
-     printf("zpblind - Parse input and generate output of 'blind' variant - v0.3\n\
+     printf("zpblind - Parse input and generate output of 'blind' variant - %s\n\
 \n\
 Usage:\n\
   zpblind [options] <power-noun> <power-adjective> [inputFile]\n\
@@ -282,10 +332,12 @@ where\n\
   <power-adjective> is power's possesive adjective.\n\
 \n\
 Options are:\n\
- -i=InputFile
- -o=OutputFile\n\
- -t=TemporaryFile\n\
-");
+ -i=InputFile             Choose input file\n\
+ -o=OutputFile            Choose output file\n\
+ -t=TemporaryFile         Choose specific temporary file (not needed)\n\
+ -v=HideAll               Variant is hide all centres\n\
+\n",yZPBLIND_VERSION);
+
 #ifdef yLINUX
      printf("yLINUX defined.\n");
 #else
@@ -299,6 +351,10 @@ Options are:\n\
 
  for (i=1, argCount=0; i<=n; i++) {
      str = argv[i];
+#ifdef DEBUG_AUTOCOUNTRY
+     if ( str==nil )
+       str = (char*)GetCountryAdjectiveFromCountry( optIO.powerName );
+#endif
      ASSERTION(str!=nil,"str!=nil");
      hasDash = str[0]=='-';
      hasEqual = hasDash && str[2]=='=';
@@ -308,68 +364,76 @@ Options are:\n\
 	 ASSERTION(str!=nil && str[0]!=0,"str!=nil && str[0]!=0");
      }
      if ( hasEqual ) {
-	 ASSERTION(str!=nil && str[0]!=0,"str!=nil && str[0]!=0");
-	 switch ( chr ) {
-	 case 'i':
-	     if ( OpenFileInput(&optIO,str)!=0 )
-		 return 1;
-	     break;
-	 case 'o':
-	     optIO.doUseFileOut = true;
-	     //
-	     optIO.fOut = fopen(str,"wt");
-	     if ( optIO.fOut==nil ) {
-		 fprintf(stderr,"Cannot rewrite file %s\n",str);
-		 return 1;
-	     }
-	     fclose( optIO.fOut );
-#ifdef DEBUG
-	     fprintf(fDebug,"Using output file %s\n",str);
-#endif
-	     optIO.outputFilename = str;
-	     remove( str );
-	     optIO.fOut = fopen(str,"wt");
-	     break;
-	 case 't':
-	     optIO.fTemp = fopen(str,"wt");
-	     if ( optIO.fTemp==nil ) {
-		 fprintf(stderr,"Cannot use/write temporary file %s\n",str);
-		 return 1;
-	     }
-	     fclose( optIO.fTemp );
-	     optIO.tempFilename = str;
-	     remove( str );
-	     optIO.fTemp = fopen(optIO.tempFilename,"wt");
-	     ASSERTION(optIO.fTemp!=nil,"optIO.fTemp!=nil");
-	     optIO.doDeleteTempFile = false;
-	     break;
-	 default:
-	     fprintf(stderr,"Bad option '%c'\n",chr);
-	     break;
+       ASSERTION(str!=nil && str[0]!=0,"str!=nil && str[0]!=0");
+       switch ( chr ) {
+       case 'i':
+	 if ( OpenFileInput(&optIO,str)!=0 )
+	   return 1;
+	 break;
+       case 'v':
+	 if ( strcmp(str,"HideAll")==0 || strcmp(str,"hide")==0 ) {
+	   optIO.varHideAllCentre = true;
 	 }
+	 else {
+	   fprintf(stderr,"Invalid variant specified with -v: %s\n",str);
+	 }
+	 break;
+       case 'o':
+	 optIO.doUseFileOut = true;
+	 //
+	 optIO.fOut = fopen(str,"wt");
+	 if ( optIO.fOut==nil ) {
+	   fprintf(stderr,"Cannot rewrite file %s\n",str);
+	   return 1;
+	 }
+	 fclose( optIO.fOut );
+#ifdef DEBUG
+	 fprintf(fDebug,"Using output file %s\n",str);
+#endif
+	 optIO.outputFilename = str;
+	 remove( str );
+	 optIO.fOut = fopen(str,"wt");
+	 break;
+       case 't':
+	 optIO.fTemp = fopen(str,"wt");
+	 if ( optIO.fTemp==nil ) {
+	   fprintf(stderr,"Cannot use/write temporary file %s\n",str);
+	   return 1;
+	 }
+	 fclose( optIO.fTemp );
+	 optIO.tempFilename = str;
+	 remove( str );
+	 optIO.fTemp = fopen(optIO.tempFilename,"wt");
+	 ASSERTION(optIO.fTemp!=nil,"optIO.fTemp!=nil");
+	 optIO.doDeleteTempFile = false;
+	 break;
+       default:
+	 fprintf(stderr,"Bad option '%c'\n",chr);
+	 break;
+       }
      }
      else {
-	 argCount++;
-	 switch ( argCount ) {
-	 case 1:
-	     optIO.powerName = str;
-	     break;
-	 case 2:
-	     optIO.powerAdj = str;
-	     break;
-	 case 3:
-	     if ( optIO.doUseFileIn ) {
-		 fprintf(stderr,"Too many arguments.\n(Input file already specified!)\n");
-		 return 1;
-	     }
-	     if ( OpenFileInput(&optIO,str)!=0 ) {
-		 return 1;
-	     }
-	     break;
-	 default:
-	     fprintf(stderr,"Too many arguments.\n");
-	     return 1;
+       argCount++;
+       switch ( argCount ) {
+       case 1:
+	 optIO.powerName = str;
+	 break;
+       case 2:
+	 optIO.powerAdj = str;
+	 break;
+       case 3:
+	 if ( optIO.doUseFileIn ) {
+	   fprintf(stderr,"Too many arguments.\n(Input file already specified!)\n");
+	   return 1;
 	 }
+	 if ( OpenFileInput(&optIO,str)!=0 ) {
+	   return 1;
+	 }
+	 break;
+       default:
+	 fprintf(stderr,"Too many arguments.\n");
+	 return 1;
+       }
      }
  }
 
