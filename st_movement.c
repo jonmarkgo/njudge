@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.17  2003/02/09 23:07:45  millis
+** Fixed blind game reports showing unrequested support of unit to itself
+**
 ** Revision 1.16  2003/01/18 14:36:05  millis
 ** Merged in USTV changes, basically:
 ** Native Units
@@ -100,6 +103,16 @@ int convoyable(int p)
 	      ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 == 'w')));
 }
 
+int dual_province(int p)
+{
+	return ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 != pr[p].type));
+}
+
+int dual_land(int p)
+{
+	return dual_province(p) && pr[p].type != 'w';
+}
+
 
 extern int one_owned[];
 int StrictConvoy(int p_index)
@@ -108,7 +121,6 @@ int StrictConvoy(int p_index)
 	
 	return 0; /* Invalid so disallow */
 }
- 
 /*
 * General purpose move checker routine.
 * Will see if a move is syntactically correct only
@@ -286,6 +298,10 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 		 errmsg("This game does not allow wings.\n");
 			return E_WARN;
 		}
+		if (c== 'R' && !(dipent.x2flags & X2F_ARTILLERY)) {
+                 errmsg("This game does not allow artillery.\n");
+                        return E_WARN;
+                }
 		if (c == 'F') {
 		    sprintf(temp_text,"%s %s", pr[p1].name, s);
 		    get_prov(temp_text, &p2, &c1);
@@ -319,7 +335,7 @@ int movein(char **s, int p)
 /* Read movement in from input file. */
 	char c, order;
 	unsigned char *t;
-	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl, igw=-1, irw=-1;
+	int i, j, p1, p2, p3, u, u1, u2, u3, c1, c2, c3, bl, igw=-1, irw=-1;
 	int railway_flag = 0;
 	unsigned char *bp;
 	char temp_text[256];
@@ -498,12 +514,21 @@ int movein(char **s, int p)
                 }
 		c1 = 0;
 		if (!gateway(p1) && (order == 's' &&
-		 (!valid_move(u, p2, &c1, &bl) || c1 == MX))) {
+		 (!valid_artillery_move(u, p2, &c1, &bl) || c1 == MX))) {
 			errmsg("The %s %s %s can't get to %s%s to support.\n",
 			 utype(unit[u].type),
 			 mov_type(p1, u), pr[p1].name,
 			 water(p2) ? "the " : "", pr[p2].name);
 			return E_WARN;
+		}
+		if (unit[u].type == 'R' && order == 's' && !valid_move(u, p2, &c1, &bl)) {
+		    /* Artillery is giving a support over two spaces 
+		     * Check that it is supporting an attack */
+		    if (c != 'm') {
+			errmsg("Artillery can only support %s to attack.\n",
+			       pr[p2].name);
+			return E_WARN;
+		    }
 		}
 		if (dipent.phase[0] == 'F' && pr[p1].type == 'v' && unit[u].type != 'W') {
 			errmsg("Invalid order for fall in the %s.\n", pr[p1].name);
@@ -778,6 +803,12 @@ int movein(char **s, int p)
 			pr[p3].name, pr[p1].name);
 		    return E_WARN;
 		}
+		if (water(p3)) {
+		    errmsg("%s is not a land province for disembarking to.\n",
+			pr[p3].name);
+		    return E_WARN;
+		};
+
 		p2=p3; c2=c3;
 		break;
 
@@ -833,6 +864,7 @@ int movein(char **s, int p)
 #define BLOCKED  8
 #define BAD_CONVOY 9
 #define BAD_AIRLIFT 10
+#define DISRUPTED 11
 #define DISLODGED 32    /* added on, used as bit mask */
 #define MAYBE_NO_CONVOY 33      /* no message */
         static char *results[] =
@@ -848,7 +880,8 @@ int movein(char **s, int p)
 /* "siege required", */
          "blocked",
          "WARN: check convoy",
-	 "WARN: check airlift" };
+	 "WARN: check airlift",
+	 "disrupted" };
 
 static int result[MAXUNIT];
 static float support[MAXUNIT];
@@ -916,6 +949,9 @@ static void DoMoves( void)
                 if (unit[u].order == 's' && 
 		    IsMultiProvince(unit[unit[u].unit].loc))
 		    result[u] = VOID;
+
+		if (unit[u].type == 'R' && unit[u].order == 'm')
+		    support[u] = -1;  /* Moving artillery unit has no value in attacks */
 	}
 	
 
@@ -927,7 +963,7 @@ static void DoMoves( void)
                                 if (unit[u2 = unit[u].unit].order == 'm') {
                                         if (unit[u2].dest == unit[u].dest &&
                                          (unit[u2].dcoast == unit[u].dcoast || unit[u2].dcoast <= XC)) {
-                                                if (!result[u2] && unit[u].type != ' ')
+                                                if (!result[u2] && unit[u].type != ' ' && unit[u2].type != 'R')
                                                         support[u2] += supval(u);
                                         } else {
                                                 result[u] = VOID;
@@ -991,7 +1027,8 @@ static void DoMoves( void)
                          && unit[u2].order == 's' && !result[u2]
                          && unit[u2].dest != unit[u].loc        /* X */
                          && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
-			     if (unit[u].dcoast != LX && unit[u].dcoast != HX) {
+			     if (unit[u].dcoast != LX && unit[u].dcoast != HX &&
+				!IsMultiProvince(unit[u2].loc)) {
                                 result[u2] = CUT;
                                 support[unit[u2].unit] -= supval(u2);
 			     }
@@ -1008,7 +1045,8 @@ static void DoMoves( void)
                                  && unit[u2].order == 's' && !result[u2]
                                  && unit[u2].dest != unit[u].loc        /* X */
                                  && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
-				    if (unit[u].dcoast != LX && unit[u].dcoast != HX) {
+				    if (unit[u].dcoast != LX && unit[u].dcoast != HX &&
+				    !IsMultiProvince(unit[u2].loc)) {
                                         result[u2] = CUT;
                                         support[unit[u2].unit] -= supval(u2);
 				    }
@@ -1031,6 +1069,14 @@ static void DoMoves( void)
                                                                 result[u2] = MAYBE_NO_CONVOY;
                                                                 goto nextp3a;
                                                         }
+							if ((dipent.x2flags & X2F_RIVERS) && (
+							unit[u3].order == 'm' && !result[u3] &&
+                                                         unit[u3].owner != unit[u].owner &&
+                                                         unit[u3].dest == unit[u].loc && unit[3].type == 'F') &&
+							 dual_land(unit[u].loc)) {
+                                                                result[u2] = MAYBE_NO_CONVOY;
+                                                                goto nextp3a;
+                                                        }
                                                 }
                                                                                           }
                                 }
@@ -1050,7 +1096,7 @@ static void DoMoves( void)
                                 for (s = unit[u].convoy; s != NULL && *s; s++)
                                         if (unit[u2].unit == *s)
                                                 goto nextp2b;
-                                if (unit[u].dcoast != HX) {
+                                if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
 				    result[u2] = CUT;
                                     support[unit[u2].unit] -= supval(u2);
 				}
@@ -1088,6 +1134,31 @@ static void DoMoves( void)
                                                                 goto nextp3b;
                                                         }
                                                 }
+						for (u3 = 1; u3 <= nunit && dipent.x2flags & X2F_RIVERS; u3++) {
+                                                       if (unit[u3].owner <= 0)
+                                                                continue;
+                                                        if (unit[u3].order == 'm' && !result[u3] &&
+                                                         unit[u3].owner != unit[u].owner &&
+                                                         unit[u3].dest == unit[u].loc && unit[u3].type == 'F' &&
+							 dual_land(unit[u].loc)) {
+                                                                for (u4 = 1; u4 <= nunit; u4++) {
+                                                                        if (u4 == u3)
+                                                                                continue;
+                                                                        if (unit[u4].order == 'm' &&
+                                                                         unit[u4].dest == unit[u].loc &&
+                                                                         unit[u4].type == 'F')
+                                                                                break;
+                                                                }
+                                                                if (u4 <= nunit)
+                                                                        continue;
+                                                                if (IsMultiProvince(unit[u].loc))
+                                                                        continue;
+                                                                result[u] = DISRUPTED;
+                                                                result[u2] = NO_CONVOY;
+                                                                goto nextp3b;
+                                                        }
+                                                }
+
                                         }
                                 }
                         }
@@ -1107,7 +1178,7 @@ static void DoMoves( void)
                                         for (s = unit[u].convoy; s != NULL && *s; s++)
                                                 if (unit[u2].unit == *s)
                                                         goto nextp2c;
-					if (unit[u].dcoast != HX) {
+					if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
                                             result[u2] = CUT;
                                             support[unit[u2].unit] -= supval(u2);
 					}
@@ -1162,6 +1233,7 @@ static void DoMoves( void)
                                          &&unit[u2].order == 'm'
                                          && unit[u2].dest == unit[u].loc
                                          && !unit[u2].convoy && !unit[u].convoy)) {     /* XIV.6 */
+					    if (unit[u2].railway_index == -1 || unit[u2].fallback == 0 )
                                                 contest[unit[u].dest]++;
                                         }
                                         p = 0;
@@ -1187,7 +1259,11 @@ static void DoMoves( void)
                                                         && !unit[u2].convoy && !unit[u].convoy)) {      /* XIV.6 */
                                                         if (support[u] - p <= support[u2] - unsupported_native[u2]
                                                          || unit[u].owner == unit[u2].owner) {  /* IX.3 */
-							    if (!IsMultiProvince(unit[u].dest)) {
+							    /* Only bounce if not multi-province or 
+							       a railways with no fallback */
+							    if (!IsMultiProvince(unit[u].dest) && 
+								  (unit[u2].railway_index == -1 ||
+								   unit[u2].fallback == 0)) {
                                                                 bounce++;
                                                                 result[u] = BOUNCE;
                                                                 goto nextp5;
@@ -1199,7 +1275,9 @@ static void DoMoves( void)
                                                 } else if (result[u2]
                                                          && ((support[u] - p < supval(u2))
                                                          || unit[u].owner == unit[u2].owner)) { /* IX.3 */
-						    if (!IsMultiProvince(unit[u].dest)) {
+						    if (!IsMultiProvince(unit[u].dest) &&
+                                                                  (unit[u2].railway_index == -1 ||
+                                                                   unit[u2].fallback == 0)) {
                                                         bounce++;
                                                         result[u] = BOUNCE;
                                                         goto nextp5;
@@ -1251,7 +1329,8 @@ static void DoMoves( void)
                         if ((unit[u].order == 'm') && !result[u]) {
                                 if ((u2 = pr[unit[u].dest].unit) &&
                                 ((unit[u2].order != 'm' && unit[u2].order != 'd') || result[u2])) {
-				    if (!IsMultiProvince(unit[u2].loc)) {
+				    if (!IsMultiProvince(unit[u2].loc) && 
+					(unit[u2].railway_index == -1 || unit[u2].fallback == 0)) {
                                         if (result[u2] < DISLODGED)
                                                 result[u2] += DISLODGED;
                                         unit[u2].status = 'r';
@@ -1304,7 +1383,7 @@ int RailwayMoveCut( int u)
 }
 
 /* Check if railway has a free province to retreat to */
-int HasFreeRWProvince( int u, int *p)
+int HasFreeRWProvince( int u, int *p, int set)
 {
     /* Moves on a railway are blocked if a non-owner unit is on the line,
      * OR a non-owner move to destination will be successful
@@ -1312,7 +1391,7 @@ int HasFreeRWProvince( int u, int *p)
 
     int diff, source_pr, dest_pr, i, u1;
     int irw = unit[u].railway_index;
-    int possible_free;
+    int possible_free, friendly_blocker;
 
     *p = -1;  /* Default, bad value */
     if (irw < 0) return 0;  /* wasting my time! */
@@ -1325,12 +1404,13 @@ int HasFreeRWProvince( int u, int *p)
     possible_free = 1;
     for (i = source_pr; i != dest_pr && possible_free; i=i+diff) {
         if (i==source_pr) continue;  /* No need to look at where I was going to! */
+	friendly_blocker = 0;
         for (u1=1; u1 <= nunit && possible_free; u1++) {
             if (u == u1) continue;  /* Don't look at me! */
             if (((unit[u].owner != unit[u1].owner) &&
                   (unit[u1].loc == rw[irw].pr[i] && 
 		   unit[u1].status == ':' &&
-		   unit[u1].order != 'm')) ||
+		   ((unit[u1].order != 'm' && unit[u1].order != 'd') || (unit[u1].order == 'm' && result[u1])))) ||
                    (unit[u1].dest ==  rw[irw].pr[i] && !result[u1]) ||
 		   (unit[pr[rw[irw].prov_index].unit].dest == rw[irw].pr[i])) {
                 /* OK; we've got a unit either here and not of mtype OR
@@ -1338,8 +1418,16 @@ int HasFreeRWProvince( int u, int *p)
 		  the fake unit went here (indicating a detected cut)  */
                 possible_free = 0;  /* No, it is occupied */
             }
+	    if (possible_free && 
+		unit[u].owner == unit[u1].owner &&
+                unit[u1].loc == rw[irw].pr[i] &&
+                unit[u1].status == ':' &&
+                ((unit[u1].order != 'm' && unit[u1].order != 'd') || (unit[u1].order == 'm' && result[u1]))) {
+		/* If it looks free, but power has a unit still there, mark as blocked by friendly */
+		friendly_blocker = 1;
+	    }
         }
-	if (possible_free) {
+	if (possible_free && !friendly_blocker) {
 	    /* If still free, it is free! save free value */
 	    *p = rw[irw].pr[i];
 	}
@@ -1350,9 +1438,11 @@ int HasFreeRWProvince( int u, int *p)
     	return 0;
     else
     {
-	unit[u].dest = *p;
-	unit[u].status = ':';
-	result[u] = 0;
+	if (set) {
+	    unit[u].dest = *p;
+	    unit[u].status = ':';
+	    result[u] = 0;
+	}
     }
 	return 1;
 }
@@ -1384,6 +1474,7 @@ int moveout(int pt)
 	 ** Flag bogus orders, initialize support.
 	 */
 	for (u = 1; u <= nunit; u++) {
+		unit[u].fallback = 0;  /* Initialise this first */
 		result[u] = 0;
 		/*** Not sure why this was here, but it messed up land-units
 		 giving support to fleets to a costal region
@@ -1487,6 +1578,13 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			}
 		    }
 		}
+		if (unit[u].railway_index >= 0 && (result[u] == BOUNCE || new_result[u] == BOUNCE)) {
+		    /* Set up where railway unit will go to, if possible */
+                        /* Note, this may not be a100% correct thing to do as possibly
+                           the previously-thought vacant province may not still be
+                           but it's the best I can think of at the moment */
+                        HasFreeRWProvince(u, &unit[u].fallback, 0);
+		}
 	    }
 	
 	    /* OK, now reinitialise data arrays before reprocessing */
@@ -1515,6 +1613,18 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			unit[pr[unit[u].dest].unit].type = 'T';
 		}
 	}
+
+/* Pass 6b, update unit_held: if unit moved away, set to zero */
+        for (u = 1; u <= nunit && processing; u++) {
+            if (!result[u]) {
+                switch (unit[u].order)
+                    case 'm':
+                    case 'd':
+                    case 'e':
+                    case 'k':
+                        pr[unit[u].loc].unit_held = 0;
+            }
+        }
 
 /* Pass 6: Process movement, print report */
 	for (p = 0, u = 1; u <= nunit; u++) {
@@ -1583,11 +1693,13 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				if (unit[u].type == ' ') {
 					fprintf(rfp, " HOLD");
 				} else
-			*/	if (unit[u].owner != AUTONOMOUS) {
+			*/	if (unit[u].owner != AUTONOMOUS && unit[u].owner != NEUTRAL) {
 					fprintf(rfp, ", No Order Processed");
 					if (dipent.phase[0] != 'F' || pr[unit[u].loc].type != 'v')
 						more_orders++;
-				}
+				} else 
+				    fprintf(rfp, " HOLD");  /* For neutrals, to hold */
+
 				break;
 			case 'p':
 				fprintf(rfp, " PROXY TO %s", powers[unit[u].unit]);
@@ -1677,7 +1789,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 	if (unit[u].railway_index > - 1 ) {
 	    if (result[u] && !((result[u] % DISLODGED) == BLOCKED)) { 
 		/* OK, unit was not successful and not blocked: need to work out retreat */
-	        if (HasFreeRWProvince(u, &p)) {
+	        if (HasFreeRWProvince(u, &p, 1)) {
 		    if (!rw_print) {
 		        fprintf(rfp, "\n");
 			rw_print = 1;
@@ -1779,6 +1891,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				for (s = pr[unit[u].loc].move; 
 				 (!(dipent.xflags & XF_AUTODISBAND)) &&
 				  (unit[u].owner != dipent.has_natives) &&
+				  (unit[u].owner != NEUTRAL) &&
 				  (p = *s++) ; 
 				 s++) {
 					if (!contest[p] 
