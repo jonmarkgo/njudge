@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     02 Dec, 2003
+Greetings from the Diplomacy* Adjudicator!!                     28 Mar, 2004
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -340,6 +340,20 @@ mod/bgs SET ANY DISBAND                                                {1.4.0}
         for units that are to be kept).  Opposite of "SET NORMAL DISBAND", see
         below.
 
+mod/	SET [NO] APPROVAL					       {1.6.0}
+	Add/remove the requirement for the master to approve new players before
+	they can submit moves. 
+
+	Actual approval is via the 'set approve' command (see below).
+
+mod/	SET [NOT] APPROVE[D] powerlist				       {1.6.0}
+	Disapprove/approve a player from making moves. Disapproved players will
+	have any move orders rejected by the judge. A list of power letters to
+	be processed follows.
+	
+	One use is for foreign-language press games, to allow the master to
+	check first if a new player really can speak the required language.
+ 
 mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
         Disables/enables optional assassination rules.
 
