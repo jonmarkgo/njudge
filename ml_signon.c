@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2003/07/14 23:35:53  millis
+ * Fix bug 179 - do not allow takeover of eliminated players
+ *
  * Revision 1.27  2003/05/24 23:57:15  millis
  * Bug 97, removed Generic Handling code
  *
@@ -658,7 +661,7 @@ int mail_signon(char *s)
 				if (mail_access(i, userid, siteid, level, &j))
 					return E_WARN;
 
-				if (dipent.players[i].flags & SF_DEAD) {
+				if (dipent.players[i].status & SF_DEAD) {
 					fprintf(rfp, "Player is eliminated - takeover not allowed.\n");
 					return E_WARN;
 				}
