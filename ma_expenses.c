@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -29,6 +32,47 @@
 #define NOADJACENT	3
 #define TOO_MANY	4
 
+
+
+/*
+ * See if a province is in rebellion and remove if so
+ * Different checks if unit passed is a garrison
+ */
+
+int CheckAndLiberateRebellion(int u)
+{
+    int p2 = unit[u].loc;
+    int removed = 0;
+
+    if (is_garrison(u))
+    {
+        if (has_crebellion(p2))
+	{
+	    remove_crebellion(p2);
+	    removed = 1;
+	}
+	if (has_rebellion(p2) && pr[p2].unit == 0)
+	{
+            remove_rebellion(p2);
+            removed = 1;
+        }
+    }
+    else
+    {
+
+    	if (has_rebellion(p2)) 
+	{
+	    remove_rebellion(p2);
+	    removed = 1;
+	}
+    }
+
+    if (removed)
+    {
+        fprintf(rfp, "Rebellion in %s liberated.\n", pr[p2].name);
+    }
+    return removed;
+}
 
 /*
  * Input processing of the expenditures, payments, loans, etc.
@@ -208,6 +252,11 @@ int expin(char **s, int p)
 				       autype(unit[u].type), autype(c));
 				return E_WARN;
 			}
+			if (!PermittedMachUnit(p, unit[u].type,
+					       unit[u].stype, PP_BUY)) {
+				errmsg("You are not permitted to buy this unit type.\n");
+				return E_WARN;
+			}
 			break;
 
 		case 'f':	/* famine relief                */
@@ -339,7 +388,7 @@ int expin(char **s, int p)
 					       powers[-p1]);
 					return E_WARN;
 				}
-				*bp = WILD_PLAYER;
+				*bp = (unsigned char) WILD_PLAYER;
 				for (bp = chits[p2]; *bp; bp++);
 				if (bp <= chits[p2] + MAX_CHIT) {
 					*bp++ = -p1;
@@ -397,7 +446,7 @@ void expout(int pt)
 				if (!nl++)
 					putc('\n', rfp);
 				fprintf(rfp, "%s:%*s Pays %d ducat%s to bank.",
-					powers[p], LPOWER - strlen(powers[p]), "", i, i == 1 ? "" : "s");
+					powers[p], (int) (LPOWER - strlen(powers[p])), "", i, i == 1 ? "" : "s");
 				if (i > ducats[p].treasury) {
 					i = ducats[p].treasury;
 					ducats[p].treasury = 0;
@@ -442,7 +491,7 @@ void expout(int pt)
 					if (!nl++)
 						putc('\n', rfp);
 					fprintf(rfp, "%s:%*s Pays %d ducat%s to %s.",
-						powers[p], LPOWER - strlen(powers[p]), "", i, i == 1 ? "" : "s", powers[p1]);
+						powers[p], (int) (LPOWER - strlen(powers[p])), "", i, i == 1 ? "" : "s", powers[p1]);
 
 					for (k = 0; k < 6; k++) {
 						if (ducats[p].loan[k] + ducats[p].interest[k] > 0) {
@@ -482,7 +531,7 @@ void expout(int pt)
 					if (!nl++)
 						putc('\n', rfp);
 					fprintf(rfp, "%s:%*s Borrows %d ducat%s for %d year%s",
-						powers[p], LPOWER - strlen(powers[p]), "", i, i == 1 ? "" : "s",
+						powers[p], (int) (LPOWER - strlen(powers[p])), "", i, i == 1 ? "" : "s",
 						k + 1, k == 0 ? "" : "s");
 					if (ducats[p].interest[0] < 0) {
 						fprintf(rfp, ".  ** Disallowed -- prior default\n");
@@ -495,7 +544,7 @@ void expout(int pt)
 						fprintf(rfp, ".  ** MAX principle is %d ducats\n", MAX_LOAN);
 						i = MAX_LOAN - l;
 						fprintf(rfp, "%s:%*s Borrows %dd for %d year%s",
-							powers[p], LPOWER - strlen(powers[p]), "", i, k + 1, k == 0 ? "" : "s");
+							powers[p], (int) (LPOWER - strlen(powers[p])), "", i, k + 1, k == 0 ? "" : "s");
 					}
 					ducats[p].loan[l = (k == 0 ? 3 : 6)] += i;
 					ducats[p].interest[l] += j = (k == 0 ? (i + 4) / 5 : (i + 1) / 2);
@@ -541,7 +590,7 @@ void expout(int pt)
 				if (!nl++)
 					putc('\n', rfp);
 				fprintf(rfp, "%s:%*s Bank collects %d ducat%s.",
-					powers[p], LPOWER - strlen(powers[p]), "", i, i == 1 ? "" : "s");
+					powers[p], (int) (LPOWER - strlen(powers[p])), "", i, i == 1 ? "" : "s");
 				if (i > ducats[p].treasury) {
 					i = ducats[p].treasury;
 					ducats[p].treasury = 0;
@@ -592,7 +641,8 @@ void expout(int pt)
 					}
 					ducats[p].treasury -= i;
 					/* Isn't this check performed below ? */
-/*          i -= i % 3; */
+					/* No, it is not! MLM 13/6/2001 */
+				          i -= i % 3; /* round expense to nearest 3 */
 					amount[p][j] = i;
 
 					/*
@@ -668,7 +718,7 @@ void expout(int pt)
 					i = expense[p][j].amount;
 					u = expense[p][j].unit;
 					fprintf(rfp, "%s:%*s E%d: %2dd, ",
-						powers[p], LPOWER - strlen(powers[p]), "", j + 1, i);
+						powers[p], (int) (LPOWER - strlen(powers[p])), "", j + 1, i);
 					switch (expense[p][j].type) {
 					case 'a':
 						fprintf(rfp, "Assassinate %s", powers[u]);
@@ -790,10 +840,7 @@ void expout(int pt)
 						if (expense[p][j].type == 'b') {
 							if (!processing && p == pt) {
 								p2 = unit[u].loc;
-								if (has_rebellion(p2)) {
-									fprintf(rfp, "Rebellion in %s liberated.\n", pr[p2].name);
-									remove_rebellion(p2);
-								}
+								CheckAndLiberateRebellion(u);
 								for (u1 = 1; u1 <= nunit; u1++) {
 									if (unit[u1].proxy == u && unit[u1].owner == p) {
 										if (is_garrison(u)) {
@@ -855,8 +902,8 @@ void expout(int pt)
 							j--;
 							continue;
 						}
-						*bp = WILD_PLAYER;
-						if (processing || pt == MASTER) {
+						*bp =  (unsigned char) WILD_PLAYER;
+						if (processing || predict /*MLMMach removed master test || pt == MASTER*/) {
 							die_rolls(DIE_EXPENSE + (p * 10) + j);
 							if (i < (k = die(1, 6))) {
 								fprintf(rfp, "  ** Die is %d, needed <%d, failed\n", k, i + 1);
@@ -879,7 +926,7 @@ void expout(int pt)
 	   **  Pass 4: Execute the successful expenditures.
 	 */
 
-	if (processing || pt == MASTER) {
+	if (processing || predict /* MLMMach removed master test || pt == MASTER*/) {
 		for (p = 1; p < WILD_PLAYER; p++) {
 			if (dipent.pl[p] == 'x')
 				continue;
@@ -889,10 +936,7 @@ void expout(int pt)
 					switch (expense[p][j].type) {
 					case 'b':
 						p2 = unit[u].loc;
-						if (has_rebellion(p2)) {
-							fprintf(rfp, "Rebellion in %s liberated.\n", pr[p2].name);
-							remove_rebellion(p2);
-						}
+						CheckAndLiberateRebellion(u);
 						for (u1 = 1; u1 <= nunit; u1++) {
 							if (unit[u1].proxy == u && unit[u1].owner == p) {
 								if (is_garrison(u)) {
@@ -951,7 +995,9 @@ void expout(int pt)
 						break;
 
 					case 'g':
-						unit[u].owner = AUTONOMOUS;
+							unit[u].owner = (unsigned char) AUTONOMOUS;
+						/* MLMMach bribed order convert to a hold */
+							unit[u].order = 'h';
 						break;
 
 					case 'p':
@@ -970,7 +1016,7 @@ void expout(int pt)
 	   **  Pass 5: Process assassinations.
 	 */
 
-	if (processing || pt == MASTER) {
+	if (processing || predict /* MLMMach remove master test || pt == MASTER*/) {
 		for (p = 1; p < WILD_PLAYER; p++) {
 			if (dipent.pl[p] == 'x' || !assassin[p])
 				continue;
