@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.13  2002/05/11 09:15:31  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.12  2002/04/18 04:44:31  greg
  * Added the following commands:
  * - unstart
@@ -203,6 +214,15 @@
 #define X2F_PREFRANDALLOW	0x8
 #define X2F_PREFRANDONLY	0x10
 #define X2F_SECRET		0x20
+#define X2F_MORE_HOMES		0x40  /* Allow powers to declare more homes up to num_homes */
+#define X2F_BLIND_NO_CENTRES	0x80 /* in Blind, don't display centre summary */
+#define X2F_BURN_BOATS		0x100 /* Native African, burn boats on landing */
+#define X2F_SETUP_USED		0x200 /* Set when setup has been used once */
+#define X2F_BLIND_NOCENTRES	0x400 /* In blind, don't even want to see centres! */
+#define X2F_NO_TREASURY		0x800  /* In Mach, don't show treasury	*/
+
+/* Define for X2F flags for params.c to display */
+#define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
 
 
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
@@ -298,7 +318,9 @@ struct dipent {
 	Player players[MAXPLAYERS];	/* The players involved in the game     */
 	int no_of_players;	/* The number of players in the game            */
 	int max_absence_delay;  /* the maximum number of turns for absences     */
-	/* DAN 903 Line added */
+        int num_homes;		/* Maximum number of configurable homes		*/
+	int has_natives;	/* index of native power, 0 if no natives       */
+	int has_multi_unit_provs; /* !0 if has multi-unit provinces, else 0     */
 };
 
 #define MAXUSER 8000
