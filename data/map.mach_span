@@ -1,5 +1,5 @@
-#Machiavelli 1 Spanish Preponderance
-#Rev. 1c.  Dec 11 2002.
+#Machiavelli 1 Spanish Preponderance Alternate Setup
+#Rev. 1c.  Mar 9th 2003.
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
 Ancona,                  P1P  anc ancon
@@ -32,7 +32,7 @@ Genoa,                   x3P  gen
 Gulf of Naples,          w0.  gon
 Herzegovina,             T0.  her herze
 Hungary,                 T1.  hun hunga
-Ionian Sea,              w0.  ion is
+Ionian Sea,              w0.  ion is ios
 Istria,                  V0.  ist istri
 Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
@@ -61,7 +61,7 @@ Romagna,                 P0f  rom romag
 Rome,                    P2f  rme
 Salerno,                 N0P  sal saler
 Saluzzo,                 F1f  slz saluz
-Sardinia,                A1p  sar sardi
+Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
 Siena,                   x1f  sie sienna sienn
 Slavonia,                x0.  sla slavo  
@@ -235,7 +235,7 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
     12: Trent Herze ----- Bresc ----- ----- ----- Corsi ----- Patri Saluz
 
 Variable Income:  City         dice   1  2  3  4  5  6
-                  Austria       2     1  2  3  3  4  4
+                  Austria       1     1  2  3  3  4  4
                   Florence      1     1  2  3  3  4  5
                   Marseilles    1     1  2  3  4  5  6
                   Genoa         1     1  2  2  3  3  4

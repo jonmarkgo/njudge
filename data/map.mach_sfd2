@@ -1,19 +1,19 @@
-#Machiavelli 1 Struggle for Dominance 2
-#Rev. 1b.  Nov 17 2002.
+#Machiavelli 1 Struggle for Dominance 2 Alternate Setup
+#Rev. 1c. Mar 9th 2003.
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
 Ancona,                  P1P  anc ancon
-Aquila,                  A0f  aqu aquil
+Aquila,                  N0f  aqu aquil
 Arezzo,                  x1f  are arezz
 Austria,                 A1f  aus austr
 Avignon,                 F1f  avi avign
-Bari,                    A1P  bar
+Bari,                    N1P  bar
 Bay of Tunis,            w0.  bot cms cmed cm
 Bergamo,                 V0f  ber berga
 Bologna,                 P1f  bol bolog
 Bosnia,                  T0.  bos bosni
 Brescia,                 V0f  bre bresc
-Capua,                   A0.  cap
+Capua,                   N0.  cap
 Carinthia,               A0.  car carin
 Carniola,                x1.  crn carni  
 Como,                    x0.  com
@@ -32,20 +32,20 @@ Genoa,                   x3P  gen
 Gulf of Naples,          w0.  gon
 Herzegovina,             T0.  her herze
 Hungary,                 T1.  hun hunga
-Ionian Sea,              w0.  ion is
+Ionian Sea,              w0.  ion is ios
 Istria,                  V0.  ist istri
 Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
 Mantua,                  x1f  man mantu
 Marseilles,              F1P  mar marse marseille
-Messina,                 A1P  mes messi
+Messina,                 N1P  mes messi
 Milan,                   x3f  mil
 Modena,                  I1f  mod moden
 Montferrat,              x1f  mon montf
-Naples,                  A2P  nap naple
-Otranto,                 A0.  otr otran
+Naples,                  N2P  nap naple
+Otranto,                 N0.  otr otran
 Padua,                   V1f  pad
-Palermo,                 A1P  pal paler
+Palermo,                 N1P  pal paler
 Parma,                   x0f  par
 Patrimony,               P0f  pat patri
 Pavia,                   I1f  pav
@@ -59,9 +59,9 @@ Provence,                F0.  pro prove
 Ragusa,                  x1P  rag ragus
 Romagna,                 P0f  rom romag
 Rome,                    P2f  rme
-Salerno,                 A0P  sal saler
+Salerno,                 N0P  sal saler
 Saluzzo,                 F1f  slz saluz
-Sardinia,                A1p  sar sardi
+Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
 Siena,                   x1f  sie sienn sienna
 Slavonia,                x0.  sla slavo  
@@ -234,7 +234,6 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
     11: Pianc Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
     12: Trent Herze ----- Bresc ----- ----- ----- Corsi ----- Patri Saluz
 
-#Add Naples if alternate setup is used     Naples        1     1  2  2  3  3  4
 Variable Income:  City         dice   1  2  3  4  5  6
                   Austria       2     1  2  3  3  4  4
                   Florence      1     1  2  3  3  4  5
@@ -244,6 +243,7 @@ Variable Income:  City         dice   1  2  3  4  5  6
                   Rome          1     2  3  3  4  5  6
                   Durazzo       1     1  2  3  4  5  6
                   Venice        2     2  3  3  4  4  5
+                  Naples        1     1  2  2  3  3  4
 # End of Variable Income.
 
 Ownership (city) ordering:
@@ -286,4 +286,3 @@ Storms:   2     3     4     5     6     7     8     9    10    11    12
 # Ordinary, Citizens, Mercenary, Professional
 
 -1
-
