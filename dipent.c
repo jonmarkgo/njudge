@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2003/04/16 04:31:32  millis
+ * Fixed a bug that zapped the x/x2/flags settings on getdipent calls
+ *
  * Revision 1.11  2003/01/13 22:38:51  millis
  * merged in from ustv
  *
@@ -318,6 +321,12 @@ int getdipent(FILE * fp)
 		/* Try to fix the warp by adjusting deadline */
 		/* Rather simplistic, but will do for now */
 		deadline(NULL,1);
+	        
+		 /* Bug 110: Also, shift out the process date by 24 hours if sooner */
+#define PROCESS_SHIFT (24*60*60)
+	        if (dipent.process && (dipent.process < now + PROCESS_SHIFT))
+		    dipent.process += PROCESS_SHIFT;
+
 	    }
         }
 	return 1;
