@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2004/05/22 10:00:48  millis
+ * Restored version 1.4 changes mistakenly lost
+ *
  * Revision 1.5  2004/05/22 08:51:02  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -71,9 +74,9 @@ int porder(char c, int player, int listflg)
 
 		if (dipent.flags & F_MACH) {
 			ma_process_input(power, dipent.phase[5], player);
-			ma_process_output(power, dipent.phase[5], player);
+			ma_process_output(power, dipent.phase[5]);
 		} else {
-			process_input(power, dipent.phase[5]);
+			process_input(power, dipent.phase[5], player);
 			process_output(power, dipent.phase[5]);
 		}
 
