@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.10  2002/11/08 21:59:26  millis
+ * Fixed bug 36, to check if player is really blacklisted or simply trying
+ * on a restricted judge
+ *
  * Revision 1.9  2002/08/27 22:27:58  millis
  * Updated for automake/autoconf functionality
  *
@@ -1201,32 +1205,6 @@ void add_player(char *player_name, char *file, char addflag)
 			}
 		}
 	}
-}
-
-/***************************************************************************
- *
- *  checklist: See if the user is on the blacklist
- */
-
-int checklist(char *addr)
-{
-
-	char *s, line[200];
-	FILE *fp;
-
-	if (!(fp = fopen("dip.blist", "r"))) {
-		perror("address");
-		return 0;
-	}
-	while (fgets(line, sizeof(line), fp)) {
-		s = strchr(line, '=');
-		if (s == 0)
-			continue;
-		if (cmpaddr(s + 1, addr)) {
-			return 1;
-		}
-	}
-	return 0;
 }
 
 /***************************************************************************/
