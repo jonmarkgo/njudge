@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2001/07/10 04:31:24  nzmb
+ * Fixed bug in last upgrade that caused dedpoints to not always be applied.
+ *
  * Revision 1.10  2001/07/08 22:53:25  miller
  * Use define for warp file
  *
@@ -531,7 +534,8 @@ void master(void)
                 if (now < dipent.deadline) {
                     if (one_quarter >= TWO_HOURS && (now > (dipent.deadline - one_quarter))) {
                         for ( i = 0; i < dipent.n; i++) {
-                                CheckRemindPlayer(i, dipent.deadline - now);
+				if (dipent.phase[6] != 'X' ) 
+	                                CheckRemindPlayer(i, dipent.deadline - now);
                         }
                     }
                 }
@@ -653,8 +657,6 @@ void CheckRemindPlayer( int player, long one_quarter)
     char line[150];
     char *pchar;
 
-    if (dipent.phase[6] == 'X') return; /* Don't send out reminders in terminated games. */
-
     if (!WAITING(dipent.players[player].status) ) return; /* Not waiting for a move */
 
     if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
@@ -671,6 +673,39 @@ void CheckRemindPlayer( int player, long one_quarter)
     }
 
     msg_header(rfp);
+
+/*
+ *	code added to fix bug where error messages
+ *	for other players are displayed if there have been
+ *	no intervening signons
+ */
+
+	sprintf(Tfile, "D%s/T%s", dipent.name, dipent.seq);
+	if ((ofp = fopen(Tfile, "w")) == NULL) {
+		fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
+	}
+	sprintf(Mfile, "D%s/M%s", dipent.name, dipent.seq);
+	if ((tfp = fopen(Mfile, "r")) != NULL) {
+		while (fgets(line, sizeof(line), tfp)) {
+			if (!strcmp(line, "X-marker\n"))
+				*line = 'Y';
+			fputs(line, ofp);
+		}
+		fclose(tfp);
+	}
+	fputs("X-marker\n", ofp);
+
+	fclose(ofp);
+
+	if (rename(Tfile, Mfile)) {
+		fprintf(rfp, "Error renaming %s to %s.\n", Tfile, Mfile);
+	}
+
+/*
+ * end added code
+ */
+
+
     porder('M', player, 0); /* Call this to send copy of player's actual orders */
     fprintf(rfp,"\n\nThere is less than %d hour%sto the deadline", num_hours, pchar);
     if ((dipent.players[player].status) &  SF_PART) {
@@ -681,12 +716,8 @@ void CheckRemindPlayer( int player, long one_quarter)
     fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
     fclose(rfp);
 
-    sprintf(line, "%s %s 'Diplomacy %s: %s' '%s'",
-                                                SMAIL_CMD,
-						temp_file,
-                                                "reminder",
-                                                dipent.name,
-                                              dipent.players[player].address);
+    sprintf(line, "%s %s '%s:%s - %s Reminder' '%s'",
+        SMAIL_CMD, temp_file, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[player].address);
 
    dipent.players[player].status |= SF_REMIND;
 
@@ -703,7 +734,8 @@ int process(void)
 	int i, n, v;
 	int dedtest; /* Buffer variable for dipent.dedapplied. */
 	time_t now, then;
-	FILE *dfp, *gfp;
+	FILE *dfp, *gfp,
+	*lfp, *mlfp; /* late file pointers */
 	char line[150];
 	char title_text[150];
 	char phase[sizeof(dipent.phase)];
@@ -713,6 +745,8 @@ int process(void)
 
 	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
 	rfp = NULL;
+	lfp = NULL;
+	mlfp = NULL;
 	time(&now);
 
 	/* Set dedtest equal to dipent.dedapplied. This keeps dipent.dedapplied
@@ -744,18 +778,33 @@ int process(void)
 					dipent.players[i].status |= SF_MOVED;
 				} else {
 					if (!n++) {
-						if (Dflg)
-							rfp = stdout;
-						else if (!rfp && !(rfp = fopen("dip.result", "w"))) {
-							perror("dip_process: dip.result");
-							bailout(1);
-						} else {
-							msg_header(rfp);
+						if (Dflg) {
+							lfp = stdout;
+							mlfp = stdout;
+						}
+						else {
+							if (!(lfp = fopen("dip.late", "w"))) {
+								perror("dip_process: dip.late");
+								bailout(1);
+							} else {
+								msg_header(lfp);
+							}
+							if (!(mlfp = fopen("dip.mlate", "w"))) {
+								perror("dip_process: dip.mlate");
+								bailout(1);
+							} else {
+								msg_header(mlfp);
+							}
 						}
 					}
-					fprintf(rfp, "Diplomacy game '%s' is waiting for %s's orders",
+
+
+					fprintf(lfp, "Diplomacy game '%s' is waiting for %s's orders",
 						dipent.name, dipent.flags & F_QUIET ? "some power"
 						: powers[dipent.players[i].power]);
+					fprintf(mlfp, "Diplomacy game '%s' is waiting for %s's orders",
+						dipent.name, powers[dipent.players[i].power]);
+
 
 					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
 
@@ -764,11 +813,15 @@ int process(void)
 					    dipent.players[i].late_count++; /* bump up the late count */
 					}
 					if (dipent.xflags & XF_LATECOUNT) {
-						fprintf(rfp, ": %d time%s late",
-						dipent.players[i].late_count,
-						dipent.players[i].late_count == 1 ? "" : "s" );
+						fprintf(lfp, ": %d time%s late",
+							dipent.players[i].late_count,
+							dipent.players[i].late_count == 1 ? "" : "s" );
+						fprintf(mlfp, ": %d time%s late",
+							dipent.players[i].late_count,
+							dipent.players[i].late_count == 1 ? "" : "s" );
 					}
-					fprintf(rfp,".\n");
+					fprintf(lfp,".\n");
+					fprintf(mlfp,".\n");
 				}
 			}
 		}
@@ -776,26 +829,42 @@ int process(void)
 		if (n) {
 			late[n] = '\0';
 			then = dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60);
-			fputs(n == 1 ? "\nThis power" : "\nThese powers", rfp);
+
+			fputs(n == 1 ? "\nThis power" : "\nThese powers", lfp);
 			fputs(now < then ? " will be" :
-			      n == 1 ? " is now" : " are now", rfp);
-			fputs(" considered abandoned and free for takeover", rfp);
+			      n == 1 ? " is now" : " are now", lfp);
+			fputs(" considered abandoned and free for takeover", lfp);
+
+			fputs(n == 1 ? "\nThis power" : "\nThese powers", mlfp);
+			fputs(now < then ? " will be" :
+			      n == 1 ? " is now" : " are now", mlfp);
+			fputs(" considered abandoned and free for takeover", mlfp);
+
 			if (now >= then) {
 				if (dipent.flags & F_NONMR) {
-					fputs(".\n", rfp);
+					fputs(".\n", lfp);
+					fputs(".\n", mlfp);
 				} else {
-					fputs(n == 1 ? ".\nIt" : ".\nThey", rfp);
-					fputs(" will be considered in civil disorder if orders are ", rfp);
-					fprintf(rfp, "not received\nby %s.\n", ptime(&dipent.grace));
+					fputs(n == 1 ? ".\nIt" : ".\nThey", lfp);
+					fputs(" will be considered in civil disorder if orders are ", lfp);
+					fprintf(lfp, "not received\nby %s.\n", ptime(&dipent.grace));
+
+					fputs(n == 1 ? ".\nIt" : ".\nThey", mlfp);
+					fputs(" will be considered in civil disorder if orders are ", mlfp);
+					fprintf(mlfp, "not received\nby %s.\n", ptime(&dipent.grace));
 				}
 				n = -1;
 			} else {
-				fprintf(rfp, "\nif orders are not received by %s.\n", ptime(&then));
+				fprintf(lfp, "\nif orders are not received by %s.\n", ptime(&then));
+				fprintf(mlfp, "\nif orders are not received by %s.\n", ptime(&then));
 				n = now < dipent.deadline + 24 * 60 * 60 ? 1 : 0;
 			}
 
-			if (!Dflg)
-				fclose(rfp);
+
+			if (!Dflg) {
+				fclose(lfp);
+				fclose(mlfp);
+			}
 
 			for (i = 0; i < dipent.n; i++) {
 				register int d, w;
@@ -867,15 +936,21 @@ int process(void)
 					}
 #endif
 					if (*(dipent.players[i].address) != '*') {
-						sprintf(line, "%s dip.result '%s%s:%s - %s Late Notice: %s' '%s'",
-							SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
-						execute(line);
+						if (dipent.players[i].power == MASTER) {
+							sprintf(line, "%s dip.mlate '%s:%s - %s Late Notice: %s' '%s'",
+								SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
+							execute(line);
+						} else {
+							sprintf(line, "%s dip.late '%s%s:%s - %s Late Notice: %s' '%s'",
+								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
+							execute(line);
+						}
 					}
 				}
 			}
 			if (n) {
 				sprintf(line, "%s:%s - %s Late Notice: %s", JUDGE_CODE, dipent.name, dipent.phase, late);
-				archive("dip.result", line);
+				archive("dip.late", line);
 			}
 			if (n == -1) {
 				pprintf(cfp, "%sGrace period for '%s' expires %s.\n",
