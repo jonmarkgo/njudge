@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.73  2004/08/03 21:52:45  millis
+ * Fix Bug 326 (allow Intimate to rollback to first turn)
+ *
  * Revision 1.72  2004/07/08 22:20:45  millis
  * Bug 91: small changes to improve status handling and show only
  * real player information to master
@@ -993,7 +996,7 @@ int mail(void)
 
 					command++;
 					msg_header(rfp);
-					fprintf(rfp, "\nThe map command is no longer suppoered.");
+					fprintf(rfp, "\nThe map command is no longer supported.");
 					break;
 
 
