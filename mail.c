@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.37  2003/03/29 11:31:14  nzmb
+ * Made two dashes (--) followed by a newline the moral equivalent of signoff
+ * -- fixes bug #60.
+ *
  * Revision 1.36  2003/03/28 21:30:34  nzmb
  * Added extra newline before grace period display -- resolves bug #121
  *
@@ -249,7 +253,7 @@ static char *prelim[] =
  "no control", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fix id",
- "map", "sign off", "--\n", "record", "info player"
+ "map", "sign off", "-- \n", "record", "info player"
  ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
 	"ded#" */ };
@@ -273,7 +277,7 @@ static int pvalue[] =
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
- "setup", "sign off", "--\n", "resign", "withdraw",
+ "setup", "sign off", "-- \n", "resign", "withdraw",
  "broadcast", "press", "phase", "clear",
  "register", "i am also",
  "who game", "who is#", "who#",
@@ -527,7 +531,7 @@ int mail(void)
 		{
 			if(!strcasecmp(s,"signoff\n") ||
 			   !strcasecmp(s,"sign off\n") ||
-                           !strcasecmp(s,"--\n"))
+                           !strcasecmp(s,"-- \n"))
 				skipping++;
 			else if(!strcasecmp(s,"endpress\n") ||
 			        !strcasecmp(s,"endbroadcast\n"))
@@ -560,7 +564,7 @@ int mail(void)
 		if (broad_read || broad_skip) {
 			if (!strcasecmp(s, "signoff\n") ||
 			    !strcasecmp(s, "sign off\n") ||
-                            !strcasecmp(s, "--\n")) {
+                            !strcasecmp(s, "-- \n")) {
 				skipping++;
 
 				/*
