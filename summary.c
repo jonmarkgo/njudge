@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/07/01 23:19:29  miller
+ * Add storm table
+ *
  * Revision 1.3  2001/03/16 00:06:17  miller
  * Fix 'C' parameter so that next one is not squashed
  *
@@ -231,7 +234,7 @@ int main(int argc, char **argv)
 		/* TODO: 0 flag for printf(3) is not POSIX, once someone confirms that
 		 * '0' is the default pad for integers, the 0 should be gotten rid of
 		 */
-		sprintf(line, "D%s/G%03d", name, turn);
+		sprintf(line, "%s%s/G%03d", GAME_DIR, name, turn);
 		if (!(ifp = fopen(line, "r")))
 			break;
 		fclose(ifp);
@@ -242,7 +245,7 @@ int main(int argc, char **argv)
 	}
 	/* TODO: 0 flag for printf(3) is not POSIX, once someone confirms that
 	 * '0' is the default pad for integers, the 0 should be gotten rid of */
-	sprintf(line, "D%s/G%03d", name, turn - 1);
+	sprintf(line, "%s%s/G%03d", GAME_DIR, name, turn - 1);
 	if ((ifp = fopen(line, "r"))) {
 		/*
 		 *  Skip to dipent
@@ -323,7 +326,7 @@ int main(int argc, char **argv)
 
 	if ((i = fread(&nprov, sizeof(nprov), 1, ifp)) != 1 || nprov == 0) {
 		fclose(ifp);
-		sprintf(line, "D%s/%ssummary", dipent.name, mflg ? "m" : "");
+		sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg ? "m" : "");
 		if (!(ifp = fopen(line, "w"))) {
 			perror(line);
 			exit(1);
@@ -381,7 +384,7 @@ int main(int argc, char **argv)
 
 	for (turn = 1; turn < MAXTURN; turn++) {
 		/* TODO remove non-posix 0 flag */
-		sprintf(line, "D%s/G%03d", dipent.name, turn);
+		sprintf(line, "%s%s/G%03d", GAME_DIR, dipent.name, turn);
 		if (!(ifp = fopen(line, "r")))
 			break;
 
@@ -558,7 +561,7 @@ int main(int argc, char **argv)
 	 *  Oh boy, now we write out the report.  First the player list.
 	 */
 
-	sprintf(line, "D%s/%ssummary", dipent.name, mflg ? "m" : "");
+	sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg ? "m" : "");
 	if (!(ifp = fopen(line, "w"))) {
 		perror(line);
 		exit(1);
@@ -621,7 +624,7 @@ int main(int argc, char **argv)
 	 *  Game start date
 	 */
 
-	sprintf(line, "D%s/start", dipent.name);
+	sprintf(line, "%s%s/start", GAME_DIR, dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		fputs("\n", ifp);
 		while (fgets(line, sizeof(line), tfp))
@@ -632,7 +635,7 @@ int main(int argc, char **argv)
 	 *  Draw if there is one, is next
 	 */
 
-	sprintf(line, "D%s/draw", dipent.name);
+	sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		while (fgets(line, sizeof(line), tfp))
 			fputs(line, ifp);
@@ -642,7 +645,7 @@ int main(int argc, char **argv)
 	 *  Comments if any are next.
 	 */
 
-	sprintf(line, "D%s/info", dipent.name);
+	sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		fputs("\n", ifp);
 		while (fgets(line, sizeof(line), tfp))

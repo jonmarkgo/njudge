@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/07/14 07:25:41  greg
+ * fix "history exclstart" command with new subjectlines
+ *
  * Revision 1.4  2001/02/23 00:19:33  miller
  * un-DOSify
  *
@@ -331,7 +334,7 @@ int history(char *line, int power_type)
 		}
 	}
 
-	sprintf(file, "D%s/archive", name);
+	sprintf(file, "%s%s/archive", GAME_DIR, name);
 	if (stat(file, &sbuf)) {
 		if ((!msg_header_done) && (!signedon))
 			msg_header(rfp);

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -56,6 +59,8 @@ int main(int argc, char *argv[])
 		printf("Game: %s removed.\n", *argv);
 		printf("  To make the removal complete, please type :\n");
 		printf("     rm -rf D%s\n", *argv);
+		printf("  (Change the directory as appropriate - \n");
+		printf("    see dip.conf for the current setting.)\n\n");
 	} else
 		printf("Game: %s not found.\n", *argv);
 

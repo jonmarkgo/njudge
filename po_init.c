@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/07/01 23:19:29  miller
+ * Add storm table and unit limits
+ *
  * Revision 1.3  2000/11/14 14:27:37  miller
  * Added blockage handling (where a wing unit doesn't caputure a SC but blockades it, rendering it unbuildable for both parties)
  *
@@ -230,7 +233,7 @@ int gamein(void)
 
 	/* Read in current position */
 
-	sprintf(line, "D%s/G%s", dipent.name, dipent.seq);
+	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
 	if ((ifp = fopen(line, "r")) == NULL) {
 		fprintf(rfp, "Error opening game position data file %s.\n", line);
 		return E_FATAL;
@@ -579,7 +582,7 @@ int gameout(void)
 	 hs[80], fs[80];
 
 	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
-	sprintf(line, "D%s/G%s", dipent.name, dipent.seq);
+	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
 
 	if ((ifp = fopen(line, "w")) == NULL) {
 		fprintf(rfp, "Error opening game position output data file %s.\n", line);
@@ -757,9 +760,10 @@ int gameout(void)
 	 */
 
 	/* TODO allow for placement into a games subdir */
-	sprintf(line, "D%s/summary", dipent.name);
+	/*   done - greg   :-)   */
+	sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
 	remove(line);
-	sprintf(line, "D%s/msummary", dipent.name);
+	sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 	remove(line);
 	return 0;
 }

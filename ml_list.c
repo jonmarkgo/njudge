@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.5  2001/05/13 17:18:42  greg
+   ** took off ")" at line 224
+   **
    ** Revision 1.4  2001/05/12 07:42:55  greg
    ** minor bug fixes proposed by Mario Becroft & Philippe Lalande
    ** to display zero dedications in listing and problems with
@@ -143,7 +146,7 @@ void mail_listit(void)
 	fprintf(rfp, "\nThe parameters for '%s' are as follows:\n", dipent.name);
 	params(rfp);
 
-	sprintf(line, "D%s/info", dipent.name);
+	sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
 	if ((fp = fopen(line, "r"))) {
 		fputc('\n', rfp);
 		while (fgets(line, sizeof(line), fp))

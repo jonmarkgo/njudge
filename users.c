@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.5  2001/06/24 06:08:18  nzmb
+ * Added code so players may now see their plyrdata records via the "get
+ * dedication" command.
+ *
  * Revision 1.4  2001/05/08 07:47:47  greg
  * minor fix to allow whogame command by players after a gunboat game ends, unless it's noreveal
  *
@@ -964,14 +968,14 @@ int is_allowed(int type_flag)
 			perror("nogame");
 			return 0;
 		}
-		sprintf(fname, "D%s/players", dipent.name);
+		sprintf(fname, "%s%s/players", GAME_DIR, dipent.name);
 		break;
 	case GAME_MASTER:
 		 if (strlen(dipent.name) == 0) {
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "D%s/masters", dipent.name);
+                sprintf(fname, "%s%s/masters", GAME_DIR, dipent.name);
                 break;
 	case GLOBAL_PLAYER:
 	default:

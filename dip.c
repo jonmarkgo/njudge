@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2001/07/14 07:05:17  greg
+ * a few bug fixes & show who's late to GM in quiet games
+ *
  * Revision 1.11  2001/07/10 04:31:24  nzmb
  * Fixed bug in last upgrade that caused dedpoints to not always be applied.
  *
@@ -680,11 +683,11 @@ void CheckRemindPlayer( int player, long one_quarter)
  *	no intervening signons
  */
 
-	sprintf(Tfile, "D%s/T%s", dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
 	if ((ofp = fopen(Tfile, "w")) == NULL) {
 		fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 	}
-	sprintf(Mfile, "D%s/M%s", dipent.name, dipent.seq);
+	sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
 	if ((tfp = fopen(Mfile, "r")) != NULL) {
 		while (fgets(line, sizeof(line), tfp)) {
 			if (!strcmp(line, "X-marker\n"))
@@ -1159,12 +1162,12 @@ int process(void)
 		   **  Remove any draw/win information (for summary) if it exists
 		 */
 
-		sprintf(line, "D%s/draw", dipent.name);
+		sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 		remove(line);
 
 		if (dipent.phase[6] == 'X') {
 
-			sprintf(line, "D%s/draw", dipent.name);
+			sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 			if ((dfp = fopen(line, "w")) == NULL) {
 				fprintf(log_fp, "dip: Error opening draw file.\n");
 				bailout(E_FATAL);
@@ -1241,7 +1244,7 @@ int process(void)
 			 */
 
 			if (dipent.flags & F_GUNBOAT) {
-				sprintf(line, "D%s/msummary", dipent.name);
+				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 				remove(line);
 			}
 			/*  This code, ripped from mail.c, around line 1000, should force
@@ -1259,8 +1262,8 @@ int process(void)
 
 			/*  Mail summary to HALL_KEEPER */
 
-			sprintf(line, "%s D%s/summary 'HoF: Victory in %s' '%s'",
-				SMAIL_CMD, dipent.name, dipent.name, HALL_KEEPER);
+			sprintf(line, "%s %s%s/summary 'HoF: Victory in %s' '%s'",
+				SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
 			execute(line);
 
 		} else {

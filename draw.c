@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/05/08 07:29:27  greg
+ * added subjectline to draws
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added handling of new XF_:FLAGS , and absence data elements in master.dip
  * Used gerenric flags to handle variants (not specificif tests)
@@ -205,7 +208,7 @@ int process_draw(void)
  * Hooray, we've got a draw.
  */
 
-	sprintf(line, "D%s/draw", dipent.name);
+	sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		fprintf(log_fp, "draw: Error opening draw file.\n");
 		bailout(E_FATAL);
@@ -297,7 +300,7 @@ int process_draw(void)
 	 */
 
 	if (dipent.flags & F_GUNBOAT) {
-		sprintf(line, "D%s/msummary", dipent.name);
+		sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 		remove(line);
 	}
 	/* 
@@ -317,8 +320,8 @@ int process_draw(void)
 
 	/*  Mail summary to HALL_KEEPER */
 
-	sprintf(line, "%s D%s/summary 'HoF: Draw in %s' '%s'",
-		SMAIL_CMD, dipent.name, dipent.name, HALL_KEEPER);
+	sprintf(line, "%s %s%s/summary 'HoF: Draw in %s' '%s'",
+		SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
 	execute(line);
 
 	broadcast = 1;

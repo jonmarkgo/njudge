@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  *
@@ -41,7 +44,7 @@ int porder(char c, int player, int listflg)
 
 	if (power < NPOWER + 1 || power == MASTER) {
 
-		sprintf(line, "D%s/%c%s", dipent.name, c, dipent.seq);
+		sprintf(line, "%s%s/%c%s", GAME_DIR, dipent.name, c, dipent.seq);
 		if (!(ifp = fopen(line, "r")))
 			ifp = fopen("/dev/null", "r");
 

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/07/01 23:19:29  miller
+ * typo fix
+ *
  * Revision 1.3  2001/05/09 06:08:50  greg
  * added subjectline
  *
@@ -145,17 +148,17 @@ void phase_pending(void)
 #define WAIT   2
 #define NOWAIT 3
 
-	sprintf(Tfile, "D%s/P%3.3d", dipent.name, atoi(dipent.seq) - 1);
+	sprintf(Tfile, "%s%s/P%3.3d", GAME_DIR, dipent.name, atoi(dipent.seq) - 1);
 	if (!(ifp = fopen(Tfile, "r")))
 		return;
 
-	sprintf(Tfile, "D%s/P%s", dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/P%s", GAME_DIR, dipent.name, dipent.seq);
 	if (!(ofp = fopen(Tfile, "w"))) {
 		perror(Tfile);
 		bailout(1);
 	}
-	sprintf(Tfile, "D%s/T%s", dipent.name, dipent.seq);
-	sprintf(Mfile, "D%s/M%s", dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
 
 	found = 1;
 	for (p = 1; p < WILD_PLAYER; p++) {

@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.7  2001/07/08 22:54:49  miller
+ * Set default correctly for rrded, and add TIME_TOLERANCE usage from dip.conf
+ *
  * Revision 1.6  2001/07/01 23:19:29  miller
  * Default for XF_COASTAL
  *
@@ -363,7 +366,8 @@ void newdipent(char *name, int variant)
 	char dir[50];
 
 	/* TODO allow an arbitrary prefix.  E.g. "games/" */
-	sprintf(dir, "D%s", name);
+	/*   done - greg  :-)  */
+	sprintf(dir, "%s%s", GAME_DIR, name);
 	mkdir(dir, 0777);
 	strncpy(dipent.name, name, sizeof(dipent.name));
 	strcpy(dipent.seq, "x0");

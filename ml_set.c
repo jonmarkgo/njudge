@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2001/07/08 23:00:05  miller
+ * New commands XF_COSTALCONVOY, MOVEDISBAND
+ *
  * Revision 1.8  2001/07/01 23:19:29  miller
  * Add costal convoys
  *
@@ -1939,9 +1942,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "D%s/summary", dipent.name);
+				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
 				remove(line);
-				sprintf(line, "D%s/msummary", dipent.name);
+				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 				remove(line);
 			}
 			break;
@@ -1985,9 +1988,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "D%s/summary", dipent.name);
+				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
 				remove(line);
-				sprintf(line, "D%s/msummary", dipent.name);
+				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 				remove(line);
 			}
 			break;
@@ -2009,7 +2012,7 @@ void mail_setp(char *s)
 				int n, skipping;
 				char line[150];
 
-				sprintf(line, "D%s/info", dipent.name);
+				sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
 				if (!(tfp = fopen(line, "w"))) {
 					perror(line);
 					fprintf(log_fp, "Can't open info file: %s", line);
@@ -2039,9 +2042,9 @@ void mail_setp(char *s)
 				   **  Force the summaries to get the new comment.
 				 */
 
-				sprintf(line, "D%s/summary", dipent.name);
+				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
 				remove(line);
-				sprintf(line, "D%s/msummary", dipent.name);
+				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 				remove(line);
 
 			}
@@ -2928,7 +2931,7 @@ void process_allowdeny(char **info, char *basename)
 	if (!strcmp(dipent.name, "control"))
 		strcpy(line, basename);
 	else
-		sprintf(line, "D%s/%s", dipent.name, basename);
+		sprintf(line, "%s%s/%s", GAME_DIR, dipent.name, basename);
 	add_player(player_name, line, addflag);
 
 	*info = s;
