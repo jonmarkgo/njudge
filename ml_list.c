@@ -1,5 +1,13 @@
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Various changes including:
+   **  - Adjust display for blind games
+   **  - Display Late Count if enabled
+   **  - Display to master who is whatching press
+   **  - Show new flags
+   **  - Different message if game has quota but has XF_MANUALSTART set
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -169,7 +177,7 @@ void mail_listit(void)
 					s = f & SF_PART ? "part" : "late";
 				}
 			}
-			fprintf(rfp, "   %-10.10s %-7.7s", powers[dipent.players[i].power], s);
+			fprintf(rfp, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);
 			if (ok_for_blind && 
 			     (dipent.players[i].units || dipent.players[i].centers)) {
 				ccount = dipent.players[i].centers-dipent.players[i].centres_blockaded;
