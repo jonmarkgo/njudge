@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.26  2004/06/11 21:01:06  alange
+	 * Bug 132: Cleaned up absence and deadline calculation. No more recursion.
+	 *
 	 * Revision 1.25  2004/06/09 22:05:08  millis
 	 * More fixes for Bug 297, Intimate Diplomacy
 	 *
@@ -974,7 +977,7 @@ int deadline(sequence *seq, int new)
 		/* set mailing flag so we can advise an absence adjust */
 		if (ret == 1)
 			broadcast_absence_adjust = 1;
-	    } while (ret == 1 || rec_count < 50);
+	    } while (ret == 1 && rec_count < 50);
 
                 dipent.process = temp;
                 temp += (int) (seq->grace * HRS2SECS);
