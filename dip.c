@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/05/12 06:57:39  greg
+ * added subjectlines
+ *
  * Revision 1.6  2001/04/17 21:30:31  miller
  * Refixed problem with CONFIG_DIR parsing
  *
@@ -452,13 +455,13 @@ void init(int argc, char **argv)
 			nded = 0;
 		else {
 			int i, dedicate[MAXUSER];
-			nded = (read(fd, dedicate, MAXUSER * sizeof(int)) / sizeof(int)) + 1;
-			for (i = 0; i < nded; i++) {
+			nded = read(fd, dedicate, MAXUSER * sizeof(int)) / sizeof(int);
+			for (i = 0; i <= nded; i++) {
 				ded[i].r = dedicate[i];
 			}
 			close(fd);
 	} else {
-		nded = (read(fd, ded, MAXUSER * sizeof(ded[0])) / sizeof(ded[0])) + 1;
+		nded = read(fd, ded, MAXUSER * sizeof(ded[0])) / sizeof(ded[0]);
 		close(fd);
 	}
 
