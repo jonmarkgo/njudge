@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2003/09/14 08:25:13  millis
+ * Fix bug 225
+ *
  * Revision 1.22  2003/08/09 23:05:52  millis
  * Fixed bug 213
  *
@@ -1131,7 +1134,7 @@ int ma_moveout(int pt)
 				if ((u2 = pr[unit[u].dest].unit) &&
 				    ((unit[u2].order != 'm' && unit[u2].order != 'v' && unit[u2].order != 'd') ||
 				     result[u2]) &&
-				     (dipent.xflags & XF_MACH2 || !is_sieged(unit[u2].loc))) {
+				     (dipent.xflags & XF_MACH2 || !(unit[u2].type == 'G' && is_sieged(unit[u2].loc)))) {
 /*                fprintf(rfp, "First part: Dislodge in %s unit %d by %d\n",
  */
 /*                              pr[unit[u2].loc].name, u2, u); */
