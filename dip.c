@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.21  2002/04/18 04:44:30  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.20  2002/04/15 12:55:41  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -684,6 +698,7 @@ void CheckRemindPlayer( int player, long one_quarter)
     char *temp_file = "dip.temp";
     char line[150];
     char *pchar;
+    time_t now;
 
     if(dipent.phase[6] == 'X') return; 
     if (!WAITING(dipent.players[player].status) ) return; /* Not waiting for a move */
@@ -743,6 +758,11 @@ void CheckRemindPlayer( int player, long one_quarter)
         fprintf(rfp," and you\nhave not yet placed complete and valid moves.\n");
     }
     fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
+    now=time(NULL);   
+    if(now < dipent.deadline)
+         fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+    if(now < dipent.grace)
+         fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
     fclose(rfp);
 
     sprintf(line, "%s %s '%s:%s - %s Reminder' '%s'",
@@ -1057,7 +1077,14 @@ int process(void)
 				dipent.name);
 		}
 		if (!Dflg)
+		{
+			now=time(NULL);   
+                	if(now < dipent.deadline)
+                        	fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                	if(now < dipent.grace)
+                 	       fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 			fclose(rfp);
+		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
@@ -1158,8 +1185,17 @@ int process(void)
 				dipent.process = now + 48 * 60 * 60;
 
 				if (!Dflg)
+				{
+					if(signedon)
+					{
+						now=time(NULL);   
+			                if(now < dipent.deadline)
+                        			fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                			if(now < dipent.grace)
+                        			fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+					}
 					fclose(rfp);
-
+				}
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
@@ -1372,8 +1408,17 @@ int process(void)
 		}
 
 		if (!Dflg)
+		{
+			if(signedon)
+			{
+				now=time(NULL);   
+                		if(now < dipent.deadline)
+                        		fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                		if(now < dipent.grace)
+		                        fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+			}
 			fclose(rfp);
-
+		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;

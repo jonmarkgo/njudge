@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.17  2002/04/18 04:44:32  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.16  2002/04/15 12:55:44  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -367,7 +381,8 @@ int mail(void)
 	char *whotext;
 	char x[30];
 	PLYRDATA_RECORD record;
-FILE *xfp;
+	FILE *xfp;
+	time_t now2;
 
 	someone = "someone@somewhere";
 
@@ -771,6 +786,14 @@ FILE *xfp;
 							if (*name && dipent.seq[0] != 'x'
 							    && strcmp(dipent.name, "control")) {
 								porder('T', -1, listflg);
+							}
+							if(signedon)
+							{
+								now2=time(NULL);   
+                						if(now2 < dipent.deadline)
+									fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+        	        					if(now2 < dipent.grace)
+                	        					fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 							}
 							fclose(rfp);
 							rfp = tfp;
@@ -2216,6 +2239,7 @@ void mail_reply(int err)
 	char *s;
 	int i, slen;
 	char jline[50];
+	time_t now;
 
 	if ((err != E_FATAL) && (!junkmail))
 		send_press();
@@ -2228,7 +2252,17 @@ void mail_reply(int err)
 			fputs(line, rfp);
 	}
 	if (!Dflg)
+	{
+		if(signedon)
+		{
+			now=time(NULL);   
+        	        if(now < dipent.deadline)
+                	        fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                	if(now < dipent.grace)
+                        	fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+		}	
 		fclose(rfp);
+	}
 	fclose(ifp);
 
 	if (err == E_FATAL) {
@@ -2282,10 +2316,13 @@ void mail_reply(int err)
 		}
 	}
 
-	if (signedon) {
+	if (signedon) 
+	{
 		s = dipent.players[player].address;
 		sprintf(jline, "%s:%s - %s", JUDGE_CODE, dipent.name, dipent.phase);
-	} else {
+	} 
+	else 
+	{
 		s = raddr;
 		sprintf(jline, "%s", JUDGE_CODE);
 	}

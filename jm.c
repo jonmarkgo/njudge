@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -102,3 +105,26 @@ char *ptime(time_t * time)
 	strftime(text, sizeof(text), "%a %b %d %Y %H:%M:%S %z", lt);
 	return text;
 }
+char *timeleft(time_t *deadline)
+{
+	time_t now, diff;
+	int days;
+	int hours;
+	int minutes;
+	int seconds;
+	static char text[100];
+
+	now = time(NULL);
+	diff = *deadline - now;
+	days = diff/(60*60*24);
+	diff = diff - (days*60*60*24);
+	hours = diff/(60*60);
+	diff = diff - (hours*60*60);
+	minutes = diff/60;
+	diff = diff - (minutes*60);
+	seconds = diff; /* yes this is unnecessary, but it makes to code readable :-) */
+
+	sprintf(text,"%d days, %d hours, %d minutes, and %d seconds", days, hours, minutes, seconds);
+	return text;
+}
+

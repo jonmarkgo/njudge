@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.10  2002/04/18 04:44:31  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.9  2002/04/15 12:55:42  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -105,6 +119,7 @@ int countgames(void);
 /* defined in jm.c */
 int jm(char *p, long *t);
 char *ptime(time_t * t);
+char *timeleft(time_t *deadline);
 
 /* defined in po_errmsg.c */
 void errmsg(char *fmt,...);
