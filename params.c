@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Display of all new additional parameters
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -304,7 +307,7 @@ void params(FILE * fp)
          sprintf(line, "  xFlags:  ");
 	first_flag = 1;
 	if (!(dipent.flags & F_MACH)) {
-	    if (dipent.xflags & XF_BUILD_ONECENTRE) {
+	    if ((dipent.xflags & XF_BUILD_ONECENTRE) == XF_BUILD_ONECENTRE) {
                     strcatf(line, "OneCentre",&first_flag);
             } else {
     		if (dipent.xflags & XF_BUILD_ANYCENTRES) {

@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.3  2000/11/16 20:42:40  miller
+   ** New changes for phased move syntax check, transformations and onecentre/anycentre
+   **
    ** Revision 1.2  1999/02/04 19:10:52  davidn
    ** buildout(). Altered index of mastrpt_pr to fix crashes on USTR.
    ** Array is indexed by unit[].owner, which can be 1 to NPOWER (=around 100 on the
@@ -280,7 +283,7 @@ int buildin(char **s, int p)
 	}
 	switch (order) {
 	case 'b':
-		if (dipent.xflags & XF_BUILD_ONECENTRE && one_owned[p] < 1) {
+		if (((dipent.xflags & XF_BUILD_ONECENTRE) ==  XF_BUILD_ONECENTRE) && one_owned[p] < 1) {
 			errmsg("%s must own at least one home centre to build.\n",
 			       powers[p]);
 			return E_WARN;
