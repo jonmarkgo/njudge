@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.44  2004/02/14 23:15:32  millis
+ * Fixed X2F_PRESS_OPTIONS to use '|' not '&', else shows blank x2flags setting
+ *
  * Revision 1.43  2004/01/05 13:54:51  millis
  * Added extra_centres definition
  *
@@ -380,7 +383,7 @@ typedef struct Sequence {
 
 
 /* This will clear out non-essential status for a new player */
-#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
+#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_RESIGN | SF_CD | SF_ABAND | SF_REMIND | SF_LATE | SF_DRAW);
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
