@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2004/02/18 00:11:06  millis
+ * Fix bug 275, not checking for touch press when game terminated.
+ *
  * Revision 1.9  2003/09/13 22:54:51  millis
  * fix bug 228. Also prohibit press to non-masters while game is paused.
  *
@@ -72,6 +75,7 @@
 #include "mail.h"
 #include "functions.h"
 #include "porder.h"
+extern int errorflag;
 
 /*
  *  Declarations & Definitions
@@ -554,6 +558,7 @@ void mail_press(char *s, int need_opts)
 	if (bad_cmd) {
 		fprintf(rfp, "\nNo press/broadcast message sent, discarding text:\n\n");
 		broad_skip = 1;
+		errorflag++; /* Bug 281, set error flag if press rejected */
 
 /*  If command is valid, write press header to broadcast and/or master's
    broadcast file(s):  first, tell the sender what we're doing.  */

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.66  2004/03/28 10:01:27  millis
+ * Bug 280, add blank line before message
+ *
  * Revision 1.65  2004/03/28 09:52:13  millis
  * Fix bug 282 (reset msg_header_done on closing rfp file)
  *
@@ -278,7 +281,7 @@ static char subject[80];	/* Reply mail subject				*/
 static char line[1024];		/* Temporary line buffer			*/
 static char temp[40];		/* Temporary file name				*/
 static int press_number = 0;	/* Number for distinct press filenames 		*/
-static int errorflag = 0;	/* Is the error flag set?			*/
+int errorflag = 0;	/* Is the error flag set?			*/
 
 static int InsertDummyPlayers( void );
 
