@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2003/01/05 11:16:01  millis
+ * Fixed bug 75, also make NOBROAD flag work correctly (at last!)
+ *
  * Revision 1.25  2002/11/08 21:57:45  millis
  * fix bug 36, so that players not given blackist message if judge is
  * a private one.
@@ -2581,7 +2584,7 @@ void send_press(void)
 					for (s = broad_list; *s; s++)
 						if (power(*s) == dipent.players[i].power)
 							break;
-					if (!(!*s ^ !broad_allbut) && dipent.players[i].power != MASTER)
+					if (!(!*s ^ !broad_allbut))
 						continue;
 				}
 				if (dipent.players[i].power == MASTER) {
