@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.53  2004/04/04 15:15:01  millis
+ * Fix bug 193 (add approval mechanism to allow moves)
+ *
  * Revision 1.52  2003/12/25 06:43:53  nzmb
  * Fixed bug #102 and another small problem in the SET START processing
  * code.
@@ -3918,66 +3921,68 @@ int SetApprovalState(int type, char *part_list, int part_list_count)
     /* First, create the file to be written to. */
     fptr = fopen(filename, "w");
     if (fptr == NULL) {
-	fprintf(stderr, "sas: cannot write to %s.\n",
-                                      filename);
+        fprintf(stderr, "sas: cannot write to %s.\n",
+                filename);
         bailout(E_FATAL);
     }
     msg_header(fptr);
     if (type == SET_APPROVED) {
         text = "approved";
-	explain = "You may now make moves for all of your units.\n\n";
+        explain = "You may now make moves for all of your units.\n\n";
     } else {
         text = "not approved";
-	explain = "You cannot now make moves for any units.\nContact the master if you wish to contest this.\n\n";
+        explain = "You cannot now make moves for any units.\nContact the master if you wish to contest this.\n\n";
     } 
     fprintf(fptr, "%s as Master has now %s your making moves.\n", raddr, text);
     fprintf(fptr, explain);
     fclose(fptr);
 
-    for (i = 0; i < dipent.np; i++) {
+    for (i = 0; i < dipent.n; i++) {
         for (j = 0; j < part_list_count; j++) {
-	    if (part_list[j] != 'M' && part_list[j] != 'O' && 
-	        (dipent.players[i].power == power(part_list[j]))) {
-		changed = 0;
+            if (part_list[j] != 'M' && part_list[j] != 'O' && 
+                    (dipent.players[i].power == power(part_list[j]))) {
+                changed = 0;
 
-		if (type == SET_APPROVED) {
-		    if (dipent.players[i].status & SF_NOT_APPROVED) {
-		        dipent.players[i].status &= ~SF_NOT_APPROVED;
-			changed = 1;
-		    }
-		} else {
-		    if (!(dipent.players[i].status & SF_NOT_APPROVED)) {
-		        dipent.players[i].status |= SF_NOT_APPROVED;
-		 	changed = 1;
-		    }
-		}
-		if (changed) {
+                if (type == SET_APPROVED) {
+                    if (dipent.players[i].status & SF_NOT_APPROVED) {
+                        dipent.players[i].status &= ~SF_NOT_APPROVED;
+                        changed = 1;
+                    }
+                } else {
+                    if (!(dipent.players[i].status & SF_NOT_APPROVED)) {
+                        dipent.players[i].status |= SF_NOT_APPROVED;
+                        changed = 1;
+                    }
+                }
+                if (changed) {
 
-		    sprintf(tline, "%s %s '%s:%s - %s Player moves %s' '%s'",
-                                SMAIL_CMD, filename, 
-				JUDGE_CODE, dipent.name, dipent.phase, text, dipent.players[i].address);
+                    sprintf(tline, "%s %s '%s:%s - %s Player moves %s' '%s'",
+                            SMAIL_CMD, filename, JUDGE_CODE, dipent.name,
+                            dipent.phase, text, dipent.players[i].address);
 
-                        if (execute(tline)) {
-                                fprintf(stderr, "sas: Error sending mail to %s.\n",
-                                        dipent.players[i].address);
-                                bailout(E_FATAL);
-                        }
+                    if (execute(tline)) {
+                        fprintf(stderr, "sas: Error sending mail to %s.\n",
+                                dipent.players[i].address);
+                        bailout(E_FATAL);
+                    }
 
-			was_changed = 1;
-			op_text = "%s%s as %s in '%s' has %s %s to make moves.\n";
-			pprintf(cfp, op_text, NowString(),
-                        xaddr, powers[dipent.players[player].power], dipent.name, text, 
-			powers[dipent.players[i].power]);
-                        fprintf(bfp, op_text, "", xaddr, PRINT_POWER, dipent.name, text,
-                        powers[dipent.players[i].power]);
+                    was_changed = 1;
+                    op_text = "%s%s as %s in '%s' has %s %s to make moves.\n";
+                    pprintf(cfp, op_text, NowString(), xaddr,
+                            powers[dipent.players[player].power], dipent.name,
+                            text, powers[dipent.players[i].power]);
+                    
+                    fprintf(bfp, op_text, "", xaddr, PRINT_POWER, dipent.name,
+                            text, powers[dipent.players[i].power]);
 
-                        fprintf(mbfp, op_text, "", raddr, PRINT_POWER, dipent.name, text,
-                        powers[dipent.players[i].power]);
+                    fprintf(mbfp, op_text, "", raddr, PRINT_POWER, dipent.name,
+                            text, powers[dipent.players[i].power]);
 
-			fprintf(rfp, "%s is now %s to make moves.\n", powers[dipent.players[i].power], text); 
-		}
-	    }
-	}
+                    fprintf(rfp, "%s is now %s to make moves.\n",
+                            powers[dipent.players[i].power], text); 
+                }
+            }
+        }
     }
     return was_changed;
 }
