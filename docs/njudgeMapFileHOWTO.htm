@@ -1,0 +1,1562 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Map File How To</title>
+</head>
+
+<body>
+
+<h1 align="center">How to create a map file for the Diplomacy Judge</h1>
+
+<p align="center">Version 1.7.1, Aug 10th 2004, by Sergio Lidsell</p>
+<div align="center">
+  <center>
+<table border="0" cellpadding="0" cellspacing="10" style="border-collapse: collapse; border-left-style:solid; border-left-width:1; border-right-style:solid; border-right-width:1; border-top-width:1; border-bottom-width:1" bordercolor="#111111" width="580" id="AutoNumber1">
+  <tr>
+    <td width="50%" style="border-left-width: 1; border-right-style: solid; border-right-width: 1; border-top-width: 1; border-bottom-width: 1">
+    <b>
+    <a href="#Introduction">Introduction</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Why do I need this">Why do I need this ?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is a map-file">What is the map file ?</a><br>
+    &nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is the seed-file">What is the seed 
+    file ?</a> (<a href="#Appendix 2. Seed file examples.">appendix 2</a>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is the report-file">What is the report file ?</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#What is the info-file">What is the info file ?</a><br>
+    <b>
+    <a href="#Structure of the map file">Structure of the map file</a></b><br>
+    <a href="#The area definition section">The area definition section</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#The area types">The area types</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="#Convoyability, w, and duality">Convoyability, 
+    'w' and duality</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#The Machiavelli fields">The Machiavelli 
+    fields</a><br>
+    <a href="#The possible moves definition section">The possible moves definition section</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#The move to list">The move modifiers</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Controlled conduits">&quot;Controlled conduits&quot;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#If_youve_made_an_error_!_">If you've made an error !</a><br>
+    <a href="#The additional options">The additional options</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Common options">Common options</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#The summary center list">The summary center list</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Diplomacy only options">Diplomacy only 
+    options</a></td>
+    <td width="50%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#Supply center restrictions -- HongKong provinces">SC 
+    restrictions--HongKong prvs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#Movement control -- gateway provinces">Movement control--gateway 
+    prvs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Railways">
+    Railways</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Machiavelli only options">Machiavelli only 
+    options</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#The summary province list">The summary province list</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#The disaster tables">The disaster tables</a> (<a href="#Appendices">appendix 
+    2</a>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#The variable income list">The variable income list</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Unit limits">
+    Unit limits</a><br>
+	<b><a href="#Structure of the seed file">Structure of the seed file</a></b><br>
+    <b>
+    <a href="#Tips and tricks">Tips and tricks</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Unconquerable province">Unconquerable 
+    province</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Safe havens">&quot;Safe havens&quot;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Siberian training camps">&quot;Siberian training 
+    camps&quot;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Military supremacy">&quot;Military supremacy&quot;</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Only fleet can move through land province">
+    Only fleet can move through land prov</a><br>
+	<b><a href="#Appendices">Appendices</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Machiavelli disaster table samples">Machiavelli 
+	disaster table samples</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="#Power name pairs">nJudge power name pairs</a><br>
+    <b>
+    <a href="#Revision history">Revision history</a> and <a href="#Thanks">Thanks</a></b></td>
+  </tr>
+</table>
+  </center>
+</div>
+<h2><a name="Introduction">Introduction</a></h2>
+<p>The current version of this document includes all (bar any errors) options 
+supported by nJudge software version 1.7.x.</p>
+<h4><a name="Why do I need this">Why do I need this</a> ?</h4>
+<p>This &quot;how-to&quot; is meant to help Diplomacy and Machiavelli players <i>create a correct map 
+and seed file</i> for  variants they create for the Diplomacy Judge (nJudge).&nbsp; I 
+wrote this because I got frustrated of not being able to find any concise and 
+correct documentation on how to do this.&nbsp;
+<a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/docs/HowToDoNjudgeMapFiles.htm">The latest version of this file</a> 
+should always be in the njudge CVS repository at <a href="http://www.njudge.org">www.njudge.org</a>.</p>
+<p>To submit a new variant for play/playtesting you contact the judge-keeper and 
+send him a map-file <i>and</i> a seed-file. You should also submit an info-file <i>and</i> 
+a report-file.</p>
+<p>See also Christophe Courtois documentation for 
+judge-keepers on 
+<a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/docs/VariantsHOWTO.html">how to create 
+and add 
+a new variant</a> 
+to the nJudge.</p>
+<h4><a name="What is a map-file">What is a map-file</a></h4>
+<p>The map file ('map.&lt;variant name&gt;') is used to define the area 
+characteristics for the variant in a format that the nJudge software can read. Such as home country definition, 
+official name and abbreviations, whether it is land or sea and much more. For 
+Machiavelli you also define incomes and disasters.</p>
+<h4><a name="What is the seed-file">What is the seed-file</a></h4>
+<p>The seed-file ('seed.&lt;variant_name&gt;') defines in what areas any units are 
+present and the current area ownerships, as those may differ from the home 
+countries even at start. It has been separated from the map file as the same map 
+file may be used for different start setups.</p>
+<p>The seed file structure is in short:<br>
+&lt;season&gt;&lt;start year&gt;&lt;phase&gt;<br>
+&lt;power letter&gt;&lt;:|m&gt;' '&lt;unit letter&gt;' '&lt;full province name or 
+abbreviation as defined in the map file&gt;<br>
+-1<br>
+&lt;supply center and ownership* and other data at 
+game start <i>in map file area order</i>&gt;<br>
+-1</p>
+<p>Where ' ' = space character and text within &lt;&gt; is to be replaced by the data. 
+The &lt;&gt; are not part of the file format. [] is optional. See
+<a href="#Appendix 2. Seed file examples.">Appendix 2</a> for some seed file 
+samples.<br>
+*The so called null ownership/contested record. </p>
+<h4><a name="What is the report-file">What is the report-file</a></h4>
+<p>The report-file ('report.&lt;variant name&gt;') is a text file with information sent to the 
+players at game start. Usually it contains information about the starting positions of the 
+units. It is not necessary to make the variant work.</p>
+<h4><a name="What is the info-file">What is the info-file</a></h4>
+<p>The info-file ('info.&lt;variant name&gt;') is a text file with information about the 
+variant/scenario for the players. <i>It is strongly recommended that you make such a file 
+available to the players.</i></p>
+<h2><a name="Structure of the map file">Structure of the map file</a></h2>
+<p>The map file must be named 'map.&lt;variant_name&gt;' (without the quotes of course).</p>
+<p>The map data file is divided in three main parts, each of which is terminated by a
+line containing only '-1' (without the quotes). Comments may precede each block.
+Comments must begin with a '#'. The main parts are:</p>
+<ol>
+  <li>The area definition section (here you list province and sea area data)</li>
+  <li>The possible moves definition section (i.e. how you move to and from an area)</li>
+  <li>Definition of additional options (see below)</li>
+</ol>
+<p>Example 1: Map file structure.<br>
+&nbsp;&nbsp;&nbsp; # My comments go here<br>
+&nbsp;&nbsp;&nbsp; Provincename, x pro prov<br>
+&nbsp;&nbsp;&nbsp; -1<br>
+&nbsp;&nbsp;&nbsp; #More comments<br>
+&nbsp;&nbsp;&nbsp; pro-mv: aaa bbb ccc<br>
+&nbsp;&nbsp;&nbsp; -1<br>
+&nbsp;&nbsp;&nbsp; #Comments yet once more<br>
+&nbsp;&nbsp;&nbsp;&lt;Description of additional option x&gt;<br>
+&nbsp;&nbsp; option x data<br>
+&nbsp;&nbsp; #end &lt;text&gt;<br>
+&nbsp;&nbsp;&nbsp;&lt;Description of additional option y&gt;<br>
+&nbsp;&nbsp; option y data<br>
+&nbsp;&nbsp; #end &lt;text&gt;<br>
+&nbsp;&nbsp;&nbsp; -1</p>
+<p><u>Structure of the Diplomacy map data file with all sections</u></p>
+<ol>
+  <li><a href="#The area definition section">The area definition section</a></li>
+  <li><a href="#The possible moves definition section">The possible moves definition 
+	section</a></li>
+  <li><a href="#The summary center list">Summary report SC list definition section</a></li>
+  <li><a href="#Supply center restrictions -- HongKong provinces">Definition of SC restrictions (&quot;Hong-Kong&quot; provinces) 
+	section</a></li>
+  <li><a href="#Movement control -- gateway provinces">Definition of movement control/gateways 
+	section</a></li>
+  <li><a href="#Railways">Definition of railway provinces section</a></li>
+</ol>
+<p><u>Structure of the Machiavelli map data file with all sections</u></p>
+<ol>
+  <li><a href="#The area definition section">The area definition section</a></li>
+  <li><a href="#The possible moves definition section">The possible moves definition 
+	section</a></li>
+  <li><a href="#The disaster tables">Famine table section</a></li>
+  <li><a href="#The disaster tables">Plague table section</a></li>
+  <li><a href="#The variable income list">Variable income list section</a></li>
+  <li><a href="#The summary center list">Summary report SC (i.e. city) list definition 
+	section</a></li>
+  <li><a href="#The summary province list">Summary report province control list definition 
+	section</a></li>
+  <li><a href="#The disaster tables">Storms table section</a> (optional)</li>
+  <li><a href="#Unit limits">Unit limits section</a> (used with machiavelli 2 rules, ignored 
+	in play with classic machiavelli rules)</li>
+</ol>
+<p>Tech note: the differences between the Machiavelli and Diplomacy map files is due to 
+the fact that the nJudge code for Machiavelli and Diplomacy originally was developed 
+separately.</p>
+<h2><a name="The area definition section">The area definition section</a></h2>
+<p>By area all types of provinces and sea areas are intended. The list must contain all valid 
+and unique area names for your scenario. If players use any names not in this list they will raise an error
+in the judge. You must also specify of what type the
+province is and at least one unique abbreviation. Any errors in this list will cause the 
+map file to be rejected.</p>
+<p>You can only specify one unique area name and abbreviation per line. The data format is:</p>
+<p><i>Field order  for Diplomacy games:</i><br>
+&lt;Full area name&gt;','' '&lt;area type&gt;[&lt;convoyability&gt;]'
+'&lt;list of all valid and unique abbreviations&gt;</p>
+<p><i>Field order for Machiavelli games:</i><br>
+&lt;Full area name&gt;','' '&lt;area type&gt;&lt;city income&gt;&lt;city
+type&gt;[&lt;Venice flag&gt;]' '&lt;list of all valid and unique abbreviations&gt;</p>
+<p>Quotes and circumflexes are not part of the format. Empty single quotes, ' ', indicate a
+space character. Note that you can have any number of spaces after the comma,
+but *one only* after the area type letter.&nbsp; Data within square brackets, 
+[], is optional.</p>
+<p>Abbreviations must be separated by one space. A minimum of three letters is recommended, 
+even if the judge accepts two letter combinations. One letter combinations are not allowed.</p>
+<p>The full area name is the name displayed in judge messages, while the
+abbreviations are used by the user for order input.</p>
+<h3><a name="The area types">The area types</a></h3>
+<p>This information is used to define the characteristics of the area. The
+following are available:</p>
+<table border="0" cellspacing="0" width="600" cellpadding="0" style="padding: 1">
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2"><i>Area type</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Explanation</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Used with</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">h</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">water
+      (&quot;high sea&quot;); unlimited number of fleets may be present (yes, no
+      bounces !)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants. From 2003.</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">g</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">gateway, see
+      additional explanation below</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants. From 2001.</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">l</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">land; has no
+      supply centre (this is a lower case L)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">r</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">railway, see
+      additional explanation below</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants. From 2001.</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">v</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">arctic water;
+      becomes &quot;ice-covered&quot; in the fall moves, thus preventing a move
+      in or out of the sea area</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">w</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">water (also see
+      &quot;duality&quot; below)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">x</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">contains a
+      supply centre that is not a home centre</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">0-9, A-L, N, P-Z</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">contains a
+      supply center that is a home centre of the power indicated by the letter
+      or number. (M and O are reserved.)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+</table>
+<p>Example 2. Area list.</p>
+<p><font face="Courier New" size="2">Switzerland,&nbsp;&nbsp; l&nbsp; swi switz
+swiss (a neutral land province).<br>
+Ankara,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T&nbsp; ank ankar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a prov. containing T(urkeys) home SC).<br>
+Belgium,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xw&nbsp; bel belgi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a neutral land prov. containing an SC)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(and that allows coastal convoys).<br>
+Adriatic Sea,&nbsp; w&nbsp; adr adriatic&nbsp;&nbsp;&nbsp; (a sea area).&nbsp;<br>
+Eastern Mediterranean, w eas emed east eastern eastmed ems eme em<br>
+English Channel,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; w eng english channel ech ec</font></p>
+<h4><a name="Convoyability, w, and duality">Convoyability, 'w', and duality</a></h4>
+<p>Usage supported by all Diplomacy variants. The &quot;water&quot; flag can also be used to indicate wether
+a *land* area can be used in a convoy route (a fleet must obviously be present in the 
+area). It is always 'w'.
+The flag can only be used in these combinations: 'lw', 'xw', '&lt;0-9,A-Z&gt;w'.</p>
+<p>Used by e.g. Gibraltar in 1900 variant and Baleares (Mallorca etc) in Acient
+Med variant.</p>
+<p>This feature is controlled by the judge <span style="font-variant: small-caps">DUALITY</span>
+flag. This has nothing to do with the judge <span style="font-variant: small-caps">coastal_convoys</span>
+flag, which is used to enable coastal convoys in all areas allowing coastal movement (see
+<a href="#The possible moves definition section">the possible moves definition</a>). If 
+the <span style="font-variant: small-caps">coastal_convoys</span>
+flag is set the <span style="font-variant: small-caps">DUALITY</span>
+flag setting will be ignored.</p>
+<h4><a name="The Machiavelli fields">The Machiavelli fields</a></h4>
+<p><u>Arguments used in both the Basic and the Advanced game</u></p>
+<p>Allowed area types are 'l', 'w', 'x', '0-9,A-Z' (the 'g', 'r' and 'v' arguments will
+cause an error).</p>
+<p>Tech note: Basic Machiavelli is in practice 3-season Diplomacy (especially
+the Mach2 implementation). Supported from fall 2002.</p>
+<p><u>Arguments only used in the Advanced game</u></p>
+<p>The following arguments must be present in the map file but are ignored
+unless the Advanced game flag is set. Any income and city type following 'w'
+causes an error.</p>
+<p>City income can be set between 0 (no income = no city) and 7 (8-9 are not
+allowed). City incomes from 2-7 indicate the presence of a major city. Notice
+that both fortified/unfortified cities/ports may have an income up to 7. Notice
+also the exceptions below for the fortress city type.</p>
+<table border="0" cellspacing="0" width="600" cellpadding="0" style="padding: 1">
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2"><i>City type</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Explanation</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Notes</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2"><b>.</b></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">unfortified city
+      (this is a dot)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">may not be
+      garrisoned; <i>0<b>.</b> = no city</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">f</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">fortified city</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">may be
+      garrisoned;&nbsp;<font color="#FF0000"> </font><i>0f = fortress</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">p</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">unfortified port
+      city</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">may not be
+      garrisoned; <i> 0p=no city</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">P</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">fortified port
+      city</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">may be
+      garrisoned;&nbsp;<font color="#FF0000"> </font><i>0P=port fortress</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">V</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Venice style
+      port and province</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">From 2002. <b>See
+      below for usage.</b></td>
+  </tr>
+</table>
+<p>The Venice flag, 'V', indicates that the city follows the &quot;Venice
+rules&quot; (see Mach rules).</p>
+<p>Tech note: Venice is hardcoded in the old (and
+buggy) judge software, but is changed to a flag in Millis Millers brand new and
+revised n-judge release. (Also notice that in Mach2 there is no Venice province,
+just a city in a sea area!)</p>
+<p>Example 3. Machiavelli area list.</p>
+<p><font face="Courier New" size="2">Switzerland,&nbsp;&nbsp; l0f&nbsp; swi
+switz swiss (a neutral province with a fortress)<br>
+Adriatic Sea,&nbsp; w0.&nbsp; adr adriatic&nbsp;&nbsp;&nbsp; (a sea area)<br>
+Ankara,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1f&nbsp; ank ankar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a T(urkish) home prov. with a fortified city<br>
+Armenia,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T0.&nbsp; arm armen&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a T(urkish) home prov. with no city)<br>
+Belgium,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x0P&nbsp; bel belgi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a neutral prov. with a port fortress)<br>
+Berlin,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G3f&nbsp; ber berli&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a G(erman) home prov. with a fortified (major) city)<br>
+Brest,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F1P&nbsp; bre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a F(rench) home prov. with a fortified port city)<br>
+Venice,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; V3P<b>V</b> ven venic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(a V(enetian) home prov. with a fortified port (major) city)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+(and the 'Venice' attribute set)</font></p>
+<h2><a name="The possible moves definition section">The possible moves definition section</a></h2>
+<p>After the province list you need to add a list of the valid moves between
+provinces. Here you will define what moves can be done, and between what areas. <i>All provinces must have bidirectional paths. I.e. if province A
+can move to province B then province B must also be able to move to province A.
+Provinces may also be able to only move to themselves. If none of these
+condition are&nbsp; met the map will be rejected by the judge.'</i></p>
+<p>Only one unique area and move type combination per line can be specified. <i>The dataformat is:</i><br>
+&lt;source area&gt;'-'&lt;move type&gt;':'' '&lt;target area&gt;['/'&lt;move modifier&gt;]' '&lt;target 
+area&gt;['/'&lt;move modifier&gt;]...</p>
+<p>Both the source and the target are defined by any valid abbreviation. It is recommended 
+you use the 3-letter abbreviation from the area definition list.</p>
+<table border="0" cellspacing="0" width="600" cellpadding="0" style="padding: 1">
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2"><i>Move type</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Explanation</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Used with</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">cc</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">controlled
+      conduit (similar to gateway)</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Machiavelli, all
+      variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">mv</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">possible army
+      (land) moves</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">xc</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">possible fleet
+      (water) moves, &quot;all&quot; coasts</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">ec, nc, sc, wc</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">possible fleet
+      (water) moves to specified coast, must also be paired with matching
+      province (e.g. bul-ec -&gt; bul/ec).</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants.&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">mx</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">possible move
+      for armies moving with one less support</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants using the Loeb9 rules</td>
+  </tr>
+</table>
+<p>Example 4. Impassable area.</p>
+<p><font face="Courier New" size="2">swi-mv: swi<br>
+Resolution: allowed, but no land move
+      in or out possible</font></p>
+<p><font face="Courier New" size="2">alb-mv: alb rag dur her<br>
+alb-xc: alb<br>
+Resolution: allowed, but no sea move to the coast possible.</font></p>
+<p>Example 5. All moves are possible.</p>
+<p><font face="Courier New" size="2">swi-mv: mun tyr<br>
+mun-mv: swi<br>
+tyr-mv: swi<br>
+Resolution: allowed, swi can
+      move to mun tyr and back.</font></p>
+<p>Example 6. Moves have an error.</p>
+<p><font face="Courier New" size="2">swi-mv: mun tyr<br>
+mun-mv: tyr<br>
+tyr-mv: swi<br>
+Resolution: not allowed, swi can
+      move to mun but not back.</font></p>
+<h3><a name="The move to list">The move modifiers</a></h3>
+<p>There are three modifier groups: coasts, controls and moves. <i>The coast and control modifiers must
+match the corresponding move type. But xc can pair with any of ec, wc, nc, sc. E.g. bul-ec 
+must be paired with bul/ec and so on</i></p>
+<table border="0" cellspacing="0" width="600" cellpadding="0" style="padding: 1">
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2"><i>Modifier</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Explanation</i></td>
+    <td width="458" style="border: 1 solid #808080; padding: 2"><i>Used with</i></td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">ec, nc, sc, wc</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">coast modifier: east, north, 
+    south and westward coast
+      of a province</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy and
+      Machiavelli, all variants</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">cc</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">control modifier: controlled
+      conduit of a province</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Machiavelli, all
+      variants (but see below)</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">hx</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">move modifier: army moves with
+      half value</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants using the 1900 rules</td>
+  </tr>
+  <tr>
+    <td width="70" style="border: 1 solid #808080; padding: 2">lx</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">move modifier: army moves and
+      is convoyed with half value</td>
+    <td width="458" style="border: 1 solid #808080; padding: 2">Diplomacy, all
+      variants using the 1900 rules</td>
+  </tr>
+</table>
+<p>Example 7: Moves list</p>
+<p>swi-mv: swi<br>
+adr-xc: alb apu ven tri ion<br>
+ank-mv: arm con smy<br>
+ank-xc: bla arm con<br>
+bla-xc: rum sev arm ank con bul/ec<br>
+bul-ec: con bla rum<br>
+con-mv: bul ank smy<br>
+con-xc: bul/sc bul/ec bla ank smy aeg<br>
+eng-xc: mao iri wal lon nth bel pic bre</p>
+<h3><a name="Controlled conduits">&quot;Controlled conduits&quot;</a></h3>
+<p>These are used in Machiavelli only to control access between areas. Only
+allowed for fleets. See &quot;<a href="#Movement control -- gateway provinces">Gateways</a>&quot; below for the Diplomacy
+implementation. A conduit area is any ordinary area that has the
+additional move type '-cc' or '/cc' defined for it. To select which area controls
+(the &quot;gatekeeper&quot;) the conduit the following data format is used:</p>
+<p>&lt;source area&gt;'-xc: '&lt;conduit area&gt;/cc &lt;gatekeeper area&gt; &lt;all other 
+areas that can be moved to&gt;<br>
+&lt;conduit area&gt;'-cc: '&lt;all areas that are affected by the conduit&gt;</p>
+<p>Note that it actually does not matter where in the &quot;move to&quot;-list
+the conduit area is defined as long as it is immediately followed by the
+abbreviation of the &quot;gatekeeper&quot; area. (It is not tested if it is
+possible to define multiple gatekeeper areas for the same conduit. E.g.
+ets-xc: <b>psa/cc </b>pio<b> psa/cc </b>pat. Nor if multiple conduits are
+possible for one source area. E.g. ets-xc: psa/cc <b>pio</b> sie/cc <b>pat</b>.)</p>
+<p>Example 8: The <span style="font-variant: small-caps">ETS</span> to <span style="font-variant: small-caps">PSA</span>
+conduit</p>
+<p>ets-xc: psa/cc <b>pio</b> sie pat...&nbsp; =&nbsp; you can not move from <span style="font-variant: small-caps">ETS</span>
+to <span style="font-variant: small-caps">PSA</span> if there is a fleet unit in
+<span style="font-variant: small-caps">PIO</span><br>
+psa-cc: ets&nbsp; =&nbsp; to fulfill the bi-directional moves rule</p>
+<p>Tech note: there is a special 'ally' command in Machiavelli that the controlling power can
+issue to let another power's unit get through. This command differs from the
+gateway rules in as much as that it is not unit specific.</p>
+<h3><a name="If_youve_made_an_error_!_">If you've made an error !</a></h3>
+<p>If you have made an error the judge will throw an error report at compile time (as it 
+checks the map file structure). Should the judge keeper forward this to you, you can use 
+it to understand what the error is. Just keep in mind that the judge software <i>does not 
+warn about naming conflicts</i> (e.g. you have abbreviated, common error, two provinces 
+the same). If that is the case you will just get a generic warning &quot;No movement table for 
+&lt;province_name&gt;&quot; when the judge encounters the <i>duplicate entry</i>.</p>
+<p>The rest of the report is self-explaining as each line will read: 'Can't get back to 
+&lt;provA&gt; from &lt;provB&gt; (coast|land)'.</p>
+<h2><a name="The additional options">The additional options</a></h2>
+<p>In this map section a lot of special information is defined. I have divided
+the following in three sections. The first concerns options common to Diplomacy
+and Machiavelli, the second to those specific for Diplomacy and the third and
+last to those specific for Machiavelli. Each section of options is delimited by 'hardcoded 
+text'...'#end [&lt;hardcoded text&gt;]'. See below for details.</p>
+<h3><a name="Common options">Common options</a></h3>
+<h4><a name="The summary center list">The summary center list</a></h4>
+<p>This is a list of all supply centers (or cities for Machiavelli) that you
+want to appear in the game center/city summary report. Ordering is arbitrary, but by
+convention the most common order is by game power starting home centers and
+&quot;geographically sensible&quot;.</p>
+<p>The province abbreviations used must be valid and unique.</p>
+<p>Example 9:</p>
+<p>Center order for summary report:<br>
+&nbsp; ven rom nap tun edi lon lvp bre par mar por spa bel hol mun kie ber<br>
+&nbsp; den swe nor stp war mos sev con ank smy bul rum gre ser bud vie tri<br>
+#End of center ordering</p>
+<h3><a name="Diplomacy only options">Diplomacy only options</a></h3>
+<h4><a name="Supply center restrictions -- HongKong provinces">Supply center restrictions -- HongKong provinces</a></h4>
+<p>In this section provinces that are owned by a power but cannot be used for
+builds are defined. These provinces are known as Hong Kong provinces, as they
+first appeared as said province in Colonial Diplomacy. To use the 'set hongkong'
+flag must be set.</p>
+<p><i>The data format is:</i> &lt;power-letters&gt;':'' '&lt;province list&gt;</p>
+<p>Example 10:</p>
+<p>Hongkong settings<br>
+&nbsp; C: hk<br>
+&nbsp; RB: someotherprovA someotherprovB<br>
+#end of hongkong setting</p>
+<p>Do notice that the &quot;hong-kong&quot;-rule is in addition to normal rules.
+So if this is the case:<br>
+&nbsp;&nbsp;&nbsp; HongKong&nbsp; E&nbsp; hk (an english supply center) and<br>
+&nbsp;&nbsp;&nbsp; C: hk (hongkong setting for china)<br>
+It means that England may *build in and count* HongKong for builds, but not
+China.</p>
+<p>And if this is the case:<br>
+&nbsp;&nbsp;&nbsp; HongKong&nbsp; C&nbsp; hk (a chinese supply center) and<br>
+&nbsp;&nbsp;&nbsp; C: hk (hongkong setting for china)<br>
+It means that China may *build in* HongKong, but still *not count it* for
+builds.</p>
+<h4><a name="Movement control -- gateway provinces">Movement control -- gateway provinces</a></h4>
+<p>In this section you define provinces that control access to other provinces. What is commonly known as gateways
+and gatekeepers. To use the 'set gateways' flag must be set. This is a two step definition. First you define a gatekeeper
+province in the province list. No moves in or out of this province must be
+possible. Secondly you define the gateway itself in the gateway section.</p>
+<p>The provinces whose movement is controlled must always be defined as a pair,
+and also be able to move to each other.</p>
+<p><i>Notice that the gatekeeper controlling province need not be able to move
+to the provinces between which it controls movement. In the example below you could e.g. 
+exchange Egypt for London: 'sca: lon meds reds'.</i></p>
+<p>Tech note: when you have a unit in the province that confers control of the
+gatekeeper a notional unit is created in the gatekeeper province. To allow any other power 
+to pass, this unit must
+then be ordered to allow passage by its controlling power.&nbsp;</p>
+<p><i>The gateway dataformat is:</i><br>
+&lt;gatekeeper province&gt;':'' '&lt;control giving province&gt;' '&lt;affected
+prov. 1&gt;&lt;affected prov 2&gt;</p>
+<p>Example 11:</p>
+<p>Suez Canal, g sca<br>
+-1<br>
+meds-xc: <b>reds</b> egy con blas ang syr<br>
+reds-xc: eri sud egy <b>meds</b> mec ade goa<br>
+sca-mv: sca<br>
+-1<br>
+Gateway<br>
+&nbsp; sca: egy meds reds<br>
+#end of gateway setting</p>
+<p>Orders are written thus: &lt;unit&gt; SCA S &lt;unit&gt; &lt;prov1&gt; M
+&lt;prov2&gt;.</p>
+<h4><a name="Railways">Railways</a></h4>
+<p>In this section you define provinces through which a railway pass. To use the
+'set railways' flag must be set. This is a two step definition. First you define
+a notional railway province in the province list. No moves in or out of this
+province must be possible. Secondly you define the railway &quot;path&quot; and
+what powers that may use the railway, in the railway section.</p>
+<p>The railway path cannot be circular, but it may of course end adjacent to the
+start province. Each province&nbsp; included in the path must be adjacent to the
+previous province and regular movement must be allowed between them. (Different
+railways can probably intersect. You cannot change railway at an intersection.)</p>
+<p><i>The railway dataformat is:</i><br>
+&lt;railway province&gt;':'' '&lt;power letters&gt;' '&lt;prov. 1&gt;&lt;prov
+2&gt;&lt;prov n+1&gt;</p>
+<p>Example 12:</p>
+<p>Trans Siberian Railway, r tsr<br>
+-1<br>
+tsr-mv: tsr<br>
+-1<br>
+Railway<br>
+&nbsp; tsr: RG mos prm oms kra irk<br>
+#end of railway setting</p>
+<p>Tech note: If an enemy unit enters (or is present in) a railway province,
+then movement along the railway is stopped in the preceeding province. A railway
+province may be used as a gateway province or as a gatekeeper, but movement
+along the railway is not affected by this.</p>
+<p>Orders are written thus: A &lt;prov adj to railway&gt; M TSR M &lt;target
+railway prov&gt;.</p>
+<h3><a name="Machiavelli only options">Machiavelli only options</a></h3>
+<h4><a name="The summary province list">The summary province list</a></h4>
+<p>This is a list of all provinces that you want to appear in the game summary
+report. Ordering is arbitrary, but by convention the most common order is by
+game power starting home provinces and &quot;geographically sensible&quot;.
+(Tech note: province ownership is only relevant in Advanced Machiavelli.)</p>
+<p>The province abbreviations used must be valid and unique.</p>
+<p>Example 13:</p>
+<p>Province order for summary report:<br>
+&nbsp; ven pie tus rom apu nap tun afr edi lon wal liv yor cly por spa bel hol mun
+ruh kie ber pru sil den<br>
+&nbsp; swe nor fin pet liv mos war ukr sev con ank arm syr smy bul rum gre ser
+alb bud vie tri gal boh tyr<br>
+#End of province ordering</p>
+<h4><a name="The disaster tables">The disaster tables</a></h4>
+<p>In Advanced Machiavelli there are two &quot;disaster tables&quot; that add an
+element of chance <i>and</i> complexity to the game. These are: famine and plague. <i>In
+the n-judge implementation one additional disaster has been added:</i> storms. 
+Sample tables have are shown in
+<a href="#Appendices">Appendix 1</a>. <i>Note that it is not necessary to include all provinces in a disaster 
+table or any select province only once...</i></p>
+<p>The tables are ignored in Basic Machiavelli.</p>
+<p>Tech note 1: Use of the tables are governed by specific flags. Nevertheless
+it is recommended that they are always present, but left empty for variants
+where no disasters are used. This to avoid the judge to incidentally crash.</p>
+<p>Tech note 2: The element of chance introduced by the tables has oft been
+&quot;slandered&quot; by Diplomacy purists as giving unfair advantage to some
+player. But due to the dynamics of Advanced Machiavelli it rather introduces an
+element of&nbsp; further complexity as the created disadvantage must be
+countered by better strategy, tactics and diplomacy by the stricken players. The
+disasters also remove most possibilities to create stalemate lines (which anyway
+are very uncommon in Machiavelli).</p>
+<h4><a name="The variable income list">The variable income list</a></h4>
+<p>Advanced Machiavelli uses money to maintain and build units. The income is
+based on revenue from provinces, cities, sea areas and &quot;trade&quot;. The
+variable income list symbolizes this trade income.</p>
+<p>The table defines what province or power generates/receives this income. The
+table is divided in six columns that correspond to a random value between 1 and
+6 that is generated each spring to decide what the income will be.</p>
+<p><i>The field format is:</i><br>
+&lt;recipient (city)&gt;&lt;number of rolls (1d6)&gt;123456&lt;income at the beginning of the game (initial)&gt;</p>
+<p>Example 14:</p>
+<table border="0" cellspacing="0" width="500" cellpadding="0">
+  <tr>
+    <td>Variable Income:</td>
+    <td>City&nbsp;</td>
+    <td>dice&nbsp;</td>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>Initial</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>Vienna</td>
+    <td>1</td>
+    <td>0</td>
+    <td>3</td>
+    <td>4</td>
+    <td>6</td>
+    <td>9</td>
+    <td>9</td>
+    <td>22</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>London</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td>2</td>
+    <td>3</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+  </tr>
+  <tr>
+    <td colspan="10"># End of Variable Income.</td>
+  </tr>
+</table>
+<p>Dice may be any value between 0 and 9. 0 (zero) means you won't get any
+money.<br>
+The value in columns 1-6 may be any value between 0 and 999.<font color="#FF0000"><br>
+</font>The initial value is only used with Mach2 may be any value between 0 and 999 (supported from
+2002). It is calculated thus:<br>
+nJudgeInitial=AHInitial-(IncomeAtSetup-MaintenanceAtSetup). Income and 
+maintenance costs at setup are calculated by summing the income from all 
+provinces defined as controlled in the setup and detracting the costs for all 
+units available at setup.</p>
+<p>Tech note: The city mentioned must be a home city province of a country or 
+&quot;free&quot; province (e.g, Genoa) intended to
+receive the income.</p>
+<h4><a name="Unit limits">Unit limits</a></h4>
+<p>In Machiavelli 2 (2nd ed., published 1995) powers cannot build or use all
+unit types available. These restrictions can be coded in the unit limits table.
+(This table is ignored if it is present in the map data file of a Mach1 game.) 
+Are supported from nJudge release 1.2 (2002).</p>
+<p>Example 15:</p>
+<p>#Limits follow following format:<br>
+# &lt;power-letter&gt; &lt;Army x 4chars&gt; &lt;Fleet x 4chars&gt; &lt;garrison
+x 4char&gt;<br>
+#Each char is:<br>
+# 'x' = Unit allowed anytime<br>
+# '.' Unit never allowed<br>
+# 'b' Unit can only be built but not aquired by bribery<br>
+# 'r' Unit can only be aquired by bribery<br>
+#Unit qualifers are in order:<br>
+# Ordinary, Citizens, Mercenary, Professional<br>
+<br>
+Limits for Units Types:<br>
+A xxx. xrr. xxx.<br>
+E xxxx xxxx xxxx<br>
+F xxxx xxxx xxxx<br>
+G xxxb xxxx xxxb<br>
+I xxx. xxx. xxx.<br>
+R xxxx xxxx xxxx<br>
+T xxx. x.r. xxx.<br>
+S x.x. x... x.x.<br>
+#end of limit (this line is compulsory!)</p>
+<h2><a name="Structure of the seed file">Structure of the seed file</a></h2>
+<p>The seed file consists of three main parts: the start year, the start positions and the 
+game status record. <i>The game status record data entries must be in the map file area 
+definition order.</i></p>
+<h3>Diplomacy</h3>
+<p>The game status record can only contain information about supply center ownership data. 
+The only reason to use this is if SC control at game start differs from the map file setup 
+data. E.g. if Austria controls an English home SC at start as in the Shift Right variant. 
+Or if a player starts with more units than he has SC to support them. In this case you 
+must list the map file SC control.</p>
+<p>Diplomacy seed file format:</p>
+<p>&lt;S|F&gt;&lt;year&gt;&lt;M&gt;<br>
+&lt;country letter&gt;':'' '&lt;unit type&gt; &lt;area name&gt;<br>
+-1<br>
+[&lt;country letter|<b>.</b>&gt;&lt;country letter|<b>.</b>&gt;&lt;country letter|<b>.</b>&gt;...]<br>
+-1<br>
+-1</p>
+<p>Example 16. Hundred Diplomacy, F(rance) starts with 5 units but does only own 4 SC's.</p>
+<p><font face="Courier New" size="2">S1425M<br>
+F: A Dauphine<br>
+F: A Orleanais<br>
+F: A Paris<br>
+F: A Toulouse<br>
+F: A Provence<br>
+... and so on<br>
+-1<br>
+........E...FEB.B.EB..E.B..E..FF.......F.<br>
+-1</font></p>
+<p>Example 17. Shift Right variant, Austria starts controlling the english home SC's.</p>
+<p><font face="Courier New" size="2"><span lang="EN-GB">S1901M<br>
+A: A Liverpool<br>
+A: F Edinburgh<br>
+A: F London<br>
+E: A Rome<br>
+... and so on<br>
+-1<br>
+....G.....T..RF...G..A...........TA.AR.ITE.....R....E...I..G.I..F.....EF.I..<br>
+-1</span></font></p>
+<h3>Machiavelli</h3>
+<p>Now things get really complicated. The machiavelli game status record contains 
+information about control, home ownership and events (flags). The only reason to use this 
+is if control at game start differs from the map file setup data (as, e.g. in the Struggle 
+for Dominance II), if the map file cannot express the control setup needed (as, e.g. in 
+Age of Communes) of or if some specific event has begun at game start (e.g. a siege).</p>
+<p>Machiavelli seed file format:</p>
+<p>&lt;S|U|F&gt;&lt;year&gt;&lt;A&gt;<br>
+&lt;country letter&gt;':'' '&lt;unit type&gt; &lt;area name&gt;<br>
+-1<br>
+N:&lt;first letter in area name&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (this is just a mnemonic 
+device)<br>
+n:&lt;second letter in area name&gt;<br>
+n:&lt;third letter in area name&gt;<br>
+O:&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;...<br>
+[o:&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;...]<br>
+C:&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;...<br>
+[c:&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;...]<br>
+H:&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;[&lt;country letter|<b>.</b>|&amp;&gt;...<br>
+F:&lt;0|...<br>
+-1<br>
+-1</p>
+<p>The initial letter on every line indicate what data goes there:</p>
+<ol>
+	<li>N: and n: are used to indicate what area the other arguments are valid for. As 
+	mentioned above this is a mnemonic device to help the reader of the record.</li>
+	<li>O: = area control (province ownership)</li>
+	<li>C: = city control</li>
+	<li>H: = home area control (same as in the map file)</li>
+	<li>F: = flags, i.e. what event that is current in the area (famine, rebellion etc.)</li>
+	<li>o: and c: are used to indicate pending status changes in an ongoing game</li>
+</ol>
+<p>Example 18.&nbsp; Classic Mach sample.</p>
+<table border="0" width="620" id="table1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="115"><font size="2" face="Courier New">F1492A<br>
+Am A Austria<br>
+Fm G Mil<br>
+&amp;m G Sav<br>
+-1<br>
+N:XAAACCM<br>
+n:Xlqrari<br>
+		n:Xbuepel<br>
+O:.T.LA&amp;F<br>
+C:.T.LA&amp;A<br>
+H:.T.LN..<br>
+		F:0000000<br>
+-1<br>
+-1</font></td>
+		<td width="505"><font size="2" face="Courier New">If you transpose the table into 
+		the horizontal it becomes more obvious what the data is:</font><p>
+		<font face="Courier New" size="2"><u>Nnn OCH F</u><br>
+		XXX ... 0&nbsp; (happens to be in the map file)<br>
+		Alb TTT 0&nbsp; (T home prov. T currently controls prov and city)<br>
+		Aqu ... 0&nbsp; (Neutral prov controlled by none)<br>
+		Are LLL 0&nbsp; (L home etc.<br>
+		Cap AAN 0&nbsp; (N home, but A controls prov and city)<br>
+		Cre &amp;&amp;. 0&nbsp; (Neutral garrison controls area)<br>
+		Mil FA. 0&nbsp; (Home of none. F unit in prov, A garrison in city)<br>
+		and so on.</font></td>
+	</tr>
+</table>
+<p>&nbsp;</p>
+<h2><a name="Tips and tricks">Tips and tricks</a></h2>
+<p>Some useful tricks with the file format follow below.</p>
+<h4><a name="Unconquerable province">Unconquerable province</a></h4>
+<p>This could be useful in primarily Machiavelli to ensure income to a power
+(but would also ensure survival to a&nbsp; power in an adjacency game if it was
+set as part of a home province, so set it preferrably as a controlled non-hc
+province). It is also used for signalling purposes in NoPress games.</p>
+<p>Example 19: swi-mv: swi</p>
+<h4><a name="Safe havens">&quot;Safe havens&quot;</a> / 
+<a name="Siberian training camps">&quot;Siberian training camps&quot;</a> /
+<a name="Military supremacy">&quot;Military supremacy&quot;</a></h4>
+<p>By creating a gateway to a province that is only accessible through the
+&quot;gatekeeper&quot;, you can effectively block access to a province. An
+interesting option would be to place a home SC behind this gatekeeper (think
+about those pesky russians or huns that just throw out new armies).&nbsp;</p>
+<p>Example 20: &quot;Safe Haven&quot;.</p>
+<p>Arabia SC can only be accessed through
+Syria, but Arabia controls the access. This could easily be blocked though.</p>
+<p>Arabia, T ara<br>
+Syria, l syr<br>
+Onlyoasis, g oas<br>
+Stpgate, g sgt<br>
+Livoniagate, g lgt<br>
+Warsawgate, g wgt<br>
+Ukrainagate, g ugt<br>
+Krimgate, g kgt<br>
+- - - - - - - - - - - - - - - - - - - - -<br>
+ara-mv: syr<br>
+syr-mv: ara arm smy<br>
+oas-mv: oas<br>
+- - - - - - - - - - - - - - - - - - - - -<br>
+Gateway<br>
+&nbsp; oas: ara ara syr<br>
+#end of gateway setting</p>
+<p>Example 21: &quot;Siberian training camp&quot;.</p>
+<p>Moscow can be accessed through
+Stp, Liv, Ukr, War, Sev, but gateways control all accesses. This lets Moscow
+easily slip out a unit, but will be very difficult to block.</p>
+<p>Gateway<br>
+&nbsp; sgt: mos mos stp<br>
+&nbsp; lgt: mos mos liv<br>
+&nbsp; wgt: mos mos war<br>
+&nbsp; ugt: mos mos ukr<br>
+&nbsp; kgt: mos mos sev<br>
+#end of gateway setting</p>
+<p>Example 22: &quot;Military Supremacy&quot;.</p>
+<p>A superpower controls some
+canals/passes in/out of your country because of its military supremacy. Notice
+that the controlling province, London, is not adjacent to the gateway, Suez
+Canal, in this case.</p>
+<p>Gateway<br>
+&nbsp; sca: lon meds reds<br>
+#end of gateway setting</p>
+<h4><a name="Only fleet can move through land province">Only fleet can move 
+through land province</a></h4>
+<p>This is achieved by only defining moves for fleets.</p>
+<p>Example23. Only fleets can move past Constantinople</p>
+<p>ank-xc: arm con<br>
+bul-xc: con...<br>
+con-xc: bul/sc bul/ec bla ank smy aeg<br>
+&nbsp;&nbsp; and no con-mv is defined.</p>
+<p>Example24. Only fleets can move past Albania</p>
+<p>alb-mv: alb<br>
+alb-xc: alb rag dur</p>
+<h2><a name="Appendices">Appendices</a></h2>
+<h3><a name="Machiavelli disaster table samples">1. Machiavelli disaster table samples</a></h3>
+<h4>Famine sample</h4>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber2">
+  <tr>
+    <td width="45">Famine:</td>
+    <td width="45">2</td>
+    <td width="45">3</td>
+    <td width="45">4</td>
+    <td width="45">5</td>
+    <td width="45">6</td>
+    <td width="45">7</td>
+    <td width="45">8</td>
+    <td width="45">9</td>
+    <td width="45">10</td>
+    <td width="45">11</td>
+    <td width="45">12</td>
+  </tr>
+  <tr>
+    <td width="45">2:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Prove</td>
+    <td width="45">Patri</td>
+    <td width="45">Moden</td>
+    <td width="45">-----</td>
+    <td width="45">Corsi</td>
+    <td width="45">Ancon</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">3:</td>
+    <td width="45">-----</td>
+    <td width="45">Piomb</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Tunis</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Paler</td>
+  </tr>
+  <tr>
+    <td width="45">4:</td>
+    <td width="45">Perug</td>
+    <td width="45">-----</td>
+    <td width="45">Otran</td>
+    <td width="45">Padua</td>
+    <td width="45">Swiss</td>
+    <td width="45">Cremo</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Herze</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">5:</td>
+    <td width="45">Friul</td>
+    <td width="45">-----</td>
+    <td width="45">Bolog</td>
+    <td width="45">Saler</td>
+    <td width="45">Veron</td>
+    <td width="45">Austr</td>
+    <td width="45">Milan</td>
+    <td width="45">Siena</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Duraz</td>
+  </tr>
+  <tr>
+    <td width="45">6:</td>
+    <td width="45">Marse</td>
+    <td width="45">Ragus</td>
+    <td width="45">-----</td>
+    <td width="45">Carin</td>
+    <td width="45">Berga</td>
+    <td width="45">Pisto</td>
+    <td width="45">Spole</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Hunga</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">7:</td>
+    <td width="45">-----</td>
+    <td width="45">Bari</td>
+    <td width="45">Slavo</td>
+    <td width="45">Montf</td>
+    <td width="45">Urbin</td>
+    <td width="45">Forno</td>
+    <td width="45">-----</td>
+    <td width="45">Como</td>
+    <td width="45">Trent</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">8:</td>
+    <td width="45">Ferra</td>
+    <td width="45">-----</td>
+    <td width="45">Rome</td>
+    <td width="45">Pavia</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Arezz</td>
+    <td width="45">-----</td>
+    <td width="45">Saluz</td>
+    <td width="45">Alban</td>
+    <td width="45">Genoa</td>
+  </tr>
+  <tr>
+    <td width="45">9:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Croat</td>
+    <td width="45">-----</td>
+    <td width="45">Flore</td>
+    <td width="45">Turin</td>
+    <td width="45">Mantu</td>
+    <td width="45">Capua</td>
+    <td width="45">Trevi</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">10:</td>
+    <td width="45">Savoy</td>
+    <td width="45">-----</td>
+    <td width="45">Sardi</td>
+    <td width="45">-----</td>
+    <td width="45">Parma</td>
+    <td width="45">Bosni</td>
+    <td width="45">Tyrol</td>
+    <td width="45">-----</td>
+    <td width="45">Naple</td>
+    <td width="45">-----</td>
+    <td width="45">Dalma</td>
+  </tr>
+  <tr>
+    <td width="45">11:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Venic</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Carni</td>
+    <td width="45">-----</td>
+    <td width="45">Messi</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">12:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Pisa</td>
+    <td width="45">Aquil</td>
+    <td width="45">Avign</td>
+    <td width="45">Lucca</td>
+    <td width="45">-----</td>
+    <td width="45">Istri</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+</table>
+<h4>Plague sample</h4>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber3">
+  <tr>
+    <td width="45">Plague:</td>
+    <td width="45">2</td>
+    <td width="45">3</td>
+    <td width="45">4</td>
+    <td width="45">5</td>
+    <td width="45">6</td>
+    <td width="45">7</td>
+    <td width="45">8</td>
+    <td width="45">9</td>
+    <td width="45">10</td>
+    <td width="45">11</td>
+    <td width="45">12</td>
+  </tr>
+  <tr>
+    <td width="45">2:</td>
+    <td width="45">-----</td>
+    <td width="45">Swiss</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Carni</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Montf</td>
+    <td width="45">Capua</td>
+  </tr>
+  <tr>
+    <td width="45">3:</td>
+    <td width="45">Ragus</td>
+    <td width="45">Bosni</td>
+    <td width="45">Slavo</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Croat</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Bari</td>
+    <td width="45">Tyrol</td>
+  </tr>
+  <tr>
+    <td width="45">4:</td>
+    <td width="45">Savoy</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Friul</td>
+    <td width="45">-----</td>
+    <td width="45">Rome</td>
+    <td width="45">-----</td>
+    <td width="45">Marse</td>
+    <td width="45">Pavia</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">5:</td>
+    <td width="45">-----</td>
+    <td width="45">Saler</td>
+    <td width="45">Veron</td>
+    <td width="45">-----</td>
+    <td width="45">Dalma</td>
+    <td width="45">Lucca</td>
+    <td width="45">Bolog</td>
+    <td width="45">Carin</td>
+    <td width="45">Prove</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">6:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Turin</td>
+    <td width="45">Siena</td>
+    <td width="45">Messi</td>
+    <td width="45">Padua</td>
+    <td width="45">Austr</td>
+    <td width="45">Ferra</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">7:</td>
+    <td width="45">Paler</td>
+    <td width="45">-----</td>
+    <td width="45">Genoa</td>
+    <td width="45">Alban</td>
+    <td width="45">Pisa</td>
+    <td width="45">Tunis</td>
+    <td width="45">Avign</td>
+    <td width="45">Milan</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Sardi</td>
+  </tr>
+  <tr>
+    <td width="45">8:</td>
+    <td width="45">Duraz</td>
+    <td width="45">-----</td>
+    <td width="45">Naple</td>
+    <td width="45">Moden</td>
+    <td width="45">Perug</td>
+    <td width="45">Cremo</td>
+    <td width="45">Venic</td>
+    <td width="45">Flore</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">9:</td>
+    <td width="45">-----</td>
+    <td width="45">Berga</td>
+    <td width="45">Ancon</td>
+    <td width="45">Parma</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Mantu</td>
+    <td width="45">Istri</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">10:</td>
+    <td width="45">Piomb</td>
+    <td width="45">Hunga</td>
+    <td width="45">-----</td>
+    <td width="45">Urbin</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Trevi</td>
+    <td width="45">-----</td>
+    <td width="45">Como</td>
+  </tr>
+  <tr>
+    <td width="45">11:</td>
+    <td width="45">Arezz</td>
+    <td width="45">Forno</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Otran</td>
+    <td width="45">-----</td>
+    <td width="45">Aquil</td>
+    <td width="45">Spole</td>
+  </tr>
+  <tr>
+    <td width="45">12:</td>
+    <td width="45">Trent</td>
+    <td width="45">Herze</td>
+    <td width="45">-----</td>
+    <td width="45">Pisto</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">Corsi</td>
+    <td width="45">-----</td>
+    <td width="45">Patri</td>
+    <td width="45">Saluz</td>
+  </tr>
+</table>
+<h4>Storms sample</h4>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber4">
+  <tr>
+    <td width="45">Storms:</td>
+    <td width="45">2</td>
+    <td width="45">3</td>
+    <td width="45">4</td>
+    <td width="45">5</td>
+    <td width="45">6</td>
+    <td width="45">7</td>
+    <td width="45">8</td>
+    <td width="45">9</td>
+    <td width="45">10</td>
+    <td width="45">11</td>
+    <td width="45">12</td>
+  </tr>
+  <tr>
+    <td width="45">2:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">3:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">las</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">tyn</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">4:</td>
+    <td width="45">-----</td>
+    <td width="45">cms</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">uas</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">5:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">6:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">7:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">wme</td>
+  </tr>
+  <tr>
+    <td width="45">8:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">9:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">10:</td>
+    <td width="45">-----</td>
+    <td width="45">lig</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">gon</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">11:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">gol</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">ion</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+  <tr>
+    <td width="45">12:</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+    <td width="45">-----</td>
+  </tr>
+</table>
+<h3><a name="Power name pairs">2. Power name pairs available as of nJudge version 1.7.2</a></h3>
+<p>As it is unnecessary to &quot;re-invent the wheel&quot;, here follows a listing of all official 
+power names and their corresponding adjectives hardcoded into the nJudge 
+software (currently the 'variant.c' file).</p>
+<p><i>The following names are reserved and cannot be used in a variant or scenario: 
+Neutral, Autonomous, Observer and Master.</i></p>
+<h4>Good and useful power names</h4>
+<table border="0" width="580" id="table2">
+	<tr>
+		<td width="280"><font face="Courier New" size="2">Aragon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		Aragonese<br>
+		Austria&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Austrian<br>
+		Balkan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balkan<br>
+		BC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; British 
+		Columbian<br>
+		Belgium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Belgian<br>
+		Britain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; British<br>
+		Bulgaria&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bulgarian<br>
+		Burgundy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Burgundian<br>
+		Byzantium&nbsp;&nbsp;&nbsp;&nbsp; Byzantine<br>
+		California&nbsp;&nbsp;&nbsp; Californian<br>
+		Carthage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Carthaginian<br>
+		China&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Chinese<br>
+		Cuba&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cuban<br>
+		Cyprus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cypriotic<br>
+		Denmark&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Danish<br>
+		Egypt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Egyptian<br>
+		Eire&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Irish<br>
+		Empire&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Imperial<br>
+		England&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; English<br>
+		Este&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Estensian<br>
+		Ethiopia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ethiopian<br>
+		Florence&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Florentine<br>
+		Florida&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Floridian<br>
+		France&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; French<br>
+		Genoa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Genoese<br>
+		Germany&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; German<br>
+		Greece&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Greek<br>
+		Holland&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dutch<br>
+		Hungary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Hungarian<br>
+		India&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indian<br>
+		Indonesia&nbsp;&nbsp;&nbsp;&nbsp; Indonesian<br>
+		Israel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Israelite<br>
+		Italy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Italian<br>
+		Ivory-Coast&nbsp;&nbsp; Ivory-Coastish<br>
+		Japan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Japanese<br>
+		Libya&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Libyan<br>
+		Lombardy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lombard</font></td>
+		<td width="280"><font face="Courier New" size="2">Macedon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		Macedonian<br>
+		Mexico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mexican<br>
+		Milan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Milanese<br>
+		Mongols&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mongol<br>
+		Naples&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Neapolitan<br>
+		NewYork&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; New Yorker<br>
+		Norman&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Norman<br>
+		Norway&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Norwegian<br>
+		Papacy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Papal<br>
+		Persia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Persian<br>
+		Peru&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Peruvian<br>
+		Pisa&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pisan<br>
+		Poland&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Polish<br>
+		Portugal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Portuguese<br>
+		Provence&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Provencal<br>
+		Quebec&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quebecois<br>
+		Rome&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Roman<br>
+		Rumania&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rumanian<br>
+		Russia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Russian<br>
+		Saudi-Arabia&nbsp; Saudi-Arabian<br>
+		Savoy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sabaud<br>
+		Scaligeri&nbsp;&nbsp;&nbsp;&nbsp; Scaligerian<br>
+		Serbia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Serbian<br>
+		Siberia&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Siberian<br>
+		Sicily&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sicilian<br>
+		South-Africa&nbsp; South-African<br>
+		Spain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Spanish<br>
+		Sweden&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Swedish<br>
+		Syria&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Syrian<br>
+		Texas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Texan<br>
+		Trinacria&nbsp;&nbsp;&nbsp;&nbsp; Trinacrian<br>
+		Tunis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tunisian<br>
+		Turkey&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Turkish<br>
+		Ukraine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ukranian<br>
+		Venice&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Venetian<br>
+		Zaire&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Zairean<br>
+&nbsp;</font></td>
+	</tr>
+</table>
+<p>Geographical and ordinal name pairs: North, Northern; South, Southern; East, Eastern; 
+West, Western; First, First; Second, Second; Third, Third; Fourth, Fourth; Fifth, Fifth.</p>
+<h4>Odd power names</h4>
+<p>The Chromatic variant names: Yellow, Yellow; Dark, Dark; Light, Light; Red, Red; Blue, 
+Blue.</p>
+<p>The Chaos variant powers (noun and adjective are the same): A-Ank, B-Bel, C-Ber, 
+D-Bre... 4-Swe, 5-Tri, 6-Tun, 7-Ven, 8-Vie, 9-War.</p>
+<p>The RootZ variant powers: Austria1, 1Austrian; Austria2 2Austrian; England1, 1English 
+and so on.</p>
+<p>And some more names: Heartland, Heartlander; Lowland, Lowlander; Dissentos, Dissentos.</p>
+<p>&nbsp;</p>
+<p><i><a name="Revision history">Revision history</a><br>
+</i>v. 1.00,&nbsp; June 25th 2002 by Sergio Lidsell.<br>
+v. 1.00b,&nbsp; October 20th 2002 by Sergio Lidsell. Minor corrections and additions.<br>
+v. 1.5, July 29th 2003 by Sergio Lidsell. Added index, Machiavelli disaster table and 
+seed file samples. 
+Added seed file info and ref. to the 'variant how to'. Very minor content corrections. Changed 
+the version 
+number to make it correspond to the nJudge version.<br>
+v. 1.7.1, August 10th 2004 by Sergio Lidsell. Added description of the seed file format and 
+of official power names. 
+Revision of text (clean up, clarifications and syntax). Changed title 
+of document (previously njudgemapfilehowto.htm). Changed 
+the version 
+number to make it correspond to the nJudge version.</p>
+<p><i><a name="Thanks">Thanks</a><br>
+</i>A special thanks to Millis Miller n-judge programming guru, without whose
+help, corrections and clarifications this document would never have been.</p>
+
+</body>
+
+</html>
