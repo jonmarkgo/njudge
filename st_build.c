@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.24  2003/05/12 21:43:04  millis
+   ** Fixed bug that didn't work out correct builds.
+   **
    ** Revision 1.23  2003/05/12 02:38:23  millis
    ** Bug 118 fix, correctly handle transforms for fleets.
    **
@@ -447,8 +450,8 @@ int buildin(char **s, int p)
 		order = nu[p] >= 0 ? 'b' : 'r';
 
 	if (!(dipent.xflags & XF_ANYDISBAND))
-	if ((order == 'b' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) ))) ||
-	    (order == 'w' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) ))) ||
+	if ((order == 'b' && (nu[p] <= 0  && !(dipent.xflags & XF_ALTBUILD) )) ||
+	    (order == 'w' && (nu[p] <= 0  && !(dipent.xflags & XF_ALTBUILD) )) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
