@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2001/10/20 12:11:15  miller
+   ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+   **
    ** Revision 1.3.2.1  2001/10/15 00:28:29  ustv
    ** Added check for HongKong flag
    **
@@ -43,6 +46,8 @@
 static void newowner(void);
 static void next_phase(void);
 static char HongKongCheck(int, int);
+
+#define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type >= '9'))
 
 /***************************************************************************/
 /*  Print out build statistics.  
@@ -131,7 +136,7 @@ int ownership(void)
 		if (np[i] > nu[i]) {
 			for (p = 1; p <= npr; p++) {
 				if (pr[p].owner == i
-				    && (pr[p].type == dipent.pl[i] || pr[p].type == 'x')
+				    && (pr[p].type == dipent.pl[i] || IsCentre(p))
 				    && (!(u = pr[p].unit) || unit[u].loc != p)) {
 					need_order[i]++;
 					if (statusval >= 0)
