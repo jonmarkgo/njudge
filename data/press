@@ -1,15 +1,17 @@
-Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                      3 March, 2003
 Press.
 
 The Judge software includes a mechanism for sending press messages to other
-players in a game of Diplomacy.  The types of press allowed depend on the
-game settings. Press messages can be sent to one or more individual players,
-or can be broadcast to all players and observers.  White press refers to
-messages sent to other players which indicates who it is from.  Grey press is
-sent out anonymously; the sender may sign his own, or someone else's, name to
-it, but the Judge will not verify the source of the message.  In addition,
-the game settings can allow press sent to individual people to be faked to
-appear as a broadcast message to all people or to an alternate set of people.
+players in a game of Diplomacy.  The types of press allowed depend on the game
+settings. Press messages can be sent to one or more individual players, or can
+be broadcast to all players and observers.  White press refers to messages sent
+to other players which indicates who it is from.  Grey press is sent out
+anonymously; the sender may sign his own, or someone else's, name to it, but
+the Judge will not verify the source of the message.  In addition, the game
+settings can allow press sent to individual people to be faked to appear as a
+broadcast message to all people or to an alternate set of people.  Finally,
+Postal Press is delayed until after the results of the current phase have been
+processed (while all other press is sent immediately).
 
 The types of press allowed in a particular game are shown by the LIST
 command.  The keywords are:
@@ -79,14 +81,22 @@ command.  The keywords are:
    Note:  If fake press is allowed in a game, press to the Master will NOT be
    faked, and you will get scolded if you try.
 
+   -------
 
-The "SET" command can be used to change which of these options is
-allowed.  In moderated games only the master can use the set press
-commands.  By default games are "White, Partial Allowed, No Fake".  For example:
+   PostalPress:
+        Players may send delayed (broadcast-only) messages that will not
+        be distributed until after the current phase is processed.  This may
+        be enabled in addition to, or in lieu of, other forms of press.
+
+
+The "SET" command can be used to change which of these options is allowed.  In
+moderated games only a Master can use the SET press commands.  By default,
+games are "White, Partial Allowed, No Fake, No PostalPress".  For example:
 
    SET GREY, PARTIAL FAKES BROADCAST
 
-would mean that all press (except to or from the Master) would appear to be a grey broadcast message, even if it is actually sent to only one player.
+would mean that all press (except to or from the Master) would appear to be a
+grey broadcast message, even if it is actually sent to only one player.
 
 To send messages to other players you can use the "BROADCAST" or "PRESS"
 commands which are almost synonymous:
@@ -117,7 +127,11 @@ input is ignored.  If the message is terminated by "ENDPRESS" or
 allowing normal commands to be mixed with press messages in any order, as
 well as allowing for multiple press messages in a single mail input.
 
-The options available when sending press are:
+The "POSTALPRESS" command is used to send Postal Press.  Currently, no
+options are available for this command.  All Postal Press is sent to all
+players, and the identity of the sender is always revealed.
+
+The options available when sending non-Postal press are:
 
    WHITE | UNANONYMOUS | UNANONYMOUSLY
         The message is sent out with your power and return address

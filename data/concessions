@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                    3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                      3 March, 2003
 Concessions.
 
 
@@ -6,21 +6,17 @@ You may only concede in a DIAS game to the largest power on the board (in
 noDIAS games, you can just set a one way draw). The correct format for the
 command is:
 
-      SET CONC p
+      SET CONCEDE p
 
 where "p" is the initial of the power you wish to concede to. Even though
 you may only concede to the largest power on the board, the Judge requires
 you to specify the power to be sure you really know who you are conceding
 to. To cancel a concession setting, send:
 
-     SET NOCONC
+     SET NOCONCEDE
 
 As with draws, concessions are cleared every time orders are processed, so
 you need to re-set a concession (if you still want it) every phase.
-
-Note that the player command must be written "SET [NO]CONC", and cannot be
-spelled out in full, because the command "SET [NO]CONCESSION" is reserved for
-use by the moderator to enable or disable the concession feature entirely.
 
 
 ===

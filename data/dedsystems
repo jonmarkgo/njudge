@@ -1,4 +1,4 @@
-Greeting from the Diplomacy* Adjudicator                     3 February, 2003
+Greeting from the Diplomacy* Adjudicator                         3 March, 2003
 dedsystems.
 
 The Judge tracks player dedication in three ways. System (1) tracks all games
@@ -15,19 +15,18 @@ being maintained for continuity, is based on a point system, as follows:
    -50 points for becoming abandoned.
   -100 points for missing the grace period and going CD.
 
-There is no penalty for resigning before a deadline, if you submit
-complete orders *before* you resign.  However, you will continue to
-receive the -1 point penalty every day that your power remains
-abandoned after the deadline.  If your power goes CD after you've
-resigned without anyone else taking the power over, you will receive
-the CD penalty as well (this is to discourage you from resigning when
-you're down to a few units which could be used to affect the final
-outcome of the game, but you've just lost interest).  Your dedication
+There is no penalty for resigning before a deadline, if you submit complete
+orders *before* you resign.  However, you will continue to receive the -1 point
+penalty every day that your power remains abandoned after the deadline.  If
+your power goes CD after you've resigned without anyone else taking the power
+over, you will receive the CD penalty as well (this is to discourage you from
+resigning when you're down to a few units which could be used to affect the
+final outcome of the game, but you've just lost interest).  Your dedication
 rating is displayed by the 'LIST' command.
 
-(2) The "ontime ratio" system. In this system players are rated 
-based on what percentage of their total turns they have submitted on
-time. We use the following formula:
+(2) The "ontime ratio" system. In this system players are rated based on what
+percentage of their total turns they have submitted on time. We use the
+following formula:
 
               Turns Submitted Ontime
 Rating  =    ------------------------
@@ -36,35 +35,38 @@ Rating  =    ------------------------
 Therefore each player has a rating between 0.0 and 1.0, with higher rankings
 being better than lower ones. 
 
-(3) The "resignation ratio" system, which compares the number of games a
-player has resigned from to the number he has started. We use the following
-formula:
+(3) The "CD ratio" system, which compares the number of times a player has gone
+into Civil Disorder (i.e., failed to submit complete orders by the end of the
+grace period, regardless of whether the game was NMR or not), to the number of
+games he has started. We use the following formula:
 
-                           Resignations
+                       Times in Civil Disorder 
 Rating =    ----------------------------------------------
             Games started + abandoned positions taken over
 
 Again ratings range from 0.0 to 1.0, but in this case lower ratings (fewer
-resignations) are preferable. 
+resignations) are preferable.   (Actually, a player who is really sloppy
+about deadlines could theoretically achieve a ratio above 1.0, but we won't
+dwell on such an unhappy possibility.)
 
 GMs or others creating games can restrict who is eligible to sign on to the
 game using one or more of the following commands:
 
     SET DEDICATION minimum
-        Anyone whose dedication rating is less than minimum will not be
-        able to join the game.  If this is set to 0 or any positive number,
-        a newly registered player (whose dedication is zero) will be unable
-        to play.  The default value is -10000.
+	Anyone whose dedication rating is less than minimum will not be able to
+	join the game.  If this is set to 0 or any positive number, a newly
+	registered player (whose dedication is zero) will be unable to play.
+	The default value is -10000.
 
     SET ONTIMERAT minimum
-        Anyone whose ontime ratio is less than minimum will not be able to
-        join the game.  This will not affect a newly registered player,
-        since that player by definition has a "perfect" ratio (0/0).
+	Anyone whose ontime ratio is less than minimum will not be able to join
+	the game.  This will not affect a newly registered player, since that
+	player by definition has a "perfect" ratio (0/0).
 
     SET RESRAT maximum
-        Anyone whose resignation ratio is greater than maximum will not be
-        able to join the game. This will not affect a newly registered
-        player, since that player by definition has a "perfect" ratio (0/0).
+	Anyone whose CD ratio is greater than maximum will not be able to join
+	the game. This will not affect a newly registered player, since that
+	player by definition has a "perfect" ratio (0/0).
 
 The ONTIMERAT and RESRAT settings are inoperative unless explicitly set by 
 the moderator.
