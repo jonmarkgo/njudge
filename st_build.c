@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.25  2003/05/14 07:59:24  millis
+   ** Antoher build problem resolved (all builds were rejected).
+   **
    ** Revision 1.24  2003/05/12 21:43:04  millis
    ** Fixed bug that didn't work out correct builds.
    **
@@ -1026,6 +1029,7 @@ void buildout(int pt)
 					utype(unit[u].type),
 					water(unit[u].loc) ? "the " : "",
 					pr[unit[u].loc].name);
+				u_diff[p]--;
 			}
 		}
 	}
