@@ -1,5 +1,9 @@
   /*
   ** $Log$
+  ** Revision 1.12  2003/01/17 23:31:56  millis
+  ** Merged from USTV
+  ** Summary will now show only ALIVE powers
+  **
   ** Revision 1.11  2002/12/28 00:02:54  millis
   ** Fixed bug 77, adding wrap_char() function
   **
@@ -351,11 +355,7 @@ void process_input(int pt, char phase)
 			} else {
 			switch (phase) {
 			case 'B':
-				if (dipent.xflags & XF_ALTBUILD) {
-				    status = buildin_td(&s, p);
-				} else {
-				    status = buildin(&s, p);
-				}
+				status = buildin(&s, p);
 				break;
 			case 'M':
 				status = movein(&s, p);
@@ -388,11 +388,7 @@ int process_output(int pt, char phase)
 	}
 	switch (phase) {
 	case 'B':		/* Adjustments */
-		if (dipent.xflags & XF_ALTBUILD)
-		    buildout_td(pt);
-		else
-		    buildout(pt);
-
+		buildout(pt);
 		if (processing) {
 			next_year();
 		}
