@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2004/06/09 22:05:09  millis
+   ** More fixes for Bug 297, Intimate Diplomacy
+   **
    ** Revision 1.2  2004/06/05 09:00:30  millis
    ** Bug 297 : problems with calculating effective bids fixed
    **
@@ -327,7 +330,7 @@ void bidout(int pt)
 			    putc(' ', rfp);
 			if (bids[p][p1] == 0 && !predict && !processing)
 		             fprintf(rfp, "No bid made for %s.",  powers[p1]);
-			else 
+			else if (bids[p][p1] > 0) 
 			    fprintf(rfp, "Bid for control of %s is %d.",
 		                powers[p1], bids[p][p1]);
 
