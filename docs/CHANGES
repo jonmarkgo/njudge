@@ -1,3 +1,5 @@
+(23rd July)
+Added njudgemapdatahowto.htm to explain map file
 (20th July 2002)
 fixed Mach bug in ma_porder.c that didnt't correctly set province ownership
 to garrisons under all conditions.
