@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  2003/02/17 12:41:41  millis
+ * Fixed Bug 108, make lines >=1024 terminate in '\n'
+ *
  *
  */
 
@@ -36,6 +39,11 @@ int main(int argc, char *argv[])
     filename = argv[1];
 
     fptr = fopen(filename, "r");
+
+    if (!fptr) {
+	printf("File %s not found.\n", filename");
+	return ;
+    }
 
     while (fgets(line, max_size-1, fptr)) {
         if (strlen(line) >= max_size) {
