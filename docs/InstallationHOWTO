@@ -1,8 +1,18 @@
 Installation-HOWTO for the Diplomacy judge
 
-v.1.0.1.6
+v.1.1.1.0   -   Version of this file follows judge versions
+
+QUESITIONS :
+ - Caltech mirror officially out of date ??
+  - tar xzvf exânds in the current directopry !
+  - location of head and mail is NOT okay for Linux, especially
+  with usr/bin in smail !
+ - targets in makefile
+ - update atrun with lines for old
+
 
 Christophe Courtois ( christophe@courtois.cc )
+- 1.1.1.x : May 2002 
 - 1.0.1.x : February 2002
 - 1.0.0.0-2 : January 2002
 - 0.8.9.2 : August 2001
@@ -11,14 +21,14 @@ Christophe Courtois ( christophe@courtois.cc )
 
 0. Last version
 
-This file deals with installing a clean standard version of njudge v 1.0.0.
-There are good chances it will work for following versions.
+This file deals with installing a clean standard version of njudge v 1.1.1
+There are good chances it will work for following versions (especially as the installation process has stabilized recently).
 
 Anyway, the last version of this file can be obtained:
  - by sending a mail with 'get install-howto' in the body to
 alex@courtois.cc (permanent address)
 or alex@christophecourtois.org (real address)
- - or (if my box is one more time down) by looking on the web
+ - or (if my box is down) by looking on the web
 at http://www.courtois.cc/alex/install-howto
 
 1. Introduction
@@ -41,9 +51,9 @@ than writing documentation, he wrote the present Install-HOWTO.
 It is a compilation of what I have read in the READMEs, in the judge
 code, on the judge-maint mailing-list, in the mail from Philippe, of
 what I have learned myself by installing the judge thrice (0.8.6-FROG,
-0.8.7, 0.8.9, 1.0.0). I hope I haven't made any mistake... Comments, advice,
-corrections [including spelling and grammar, I'm not a native English
-speaker] are welcomed!
+0.8.7, 0.8.9, 1.0.0, 1.1.1). I hope I haven't made any mistake... 
+Comments, advice, corrections [including spelling and grammar, I'm 
+not a native English speaker] are welcomed!
 
 This guide is focused on the installation on Linux, but should be okay
 for most Unices. If you know of some platform-specific installation
@@ -56,8 +66,7 @@ on my Linux box.
 
 Computer: Pentium 75
 OS:       Linux Debian 2.2 (potato)
-Judge:    njudge 1.0.0
-Compiled from the tar.gz source, then patched.
+Judge:    njudge 1.1.1 compiled from the tar.gz source.
 
 2 Before compiling
 
@@ -66,27 +75,29 @@ Compiled from the tar.gz source, then patched.
 Before installing the judge there are a few things you need to do :
 
  - Find a box (a 486 is enough, such a powerful machine didn't even
-exist when the first version of the judge was written), install Linux on
-it (any distribution is good-enough) or possibly an other flavour of Unix:
-all you need is a command line and basic common utilities; but the
-last versions of the judge are often running and maintained on Linux. In
-the past, many judges were running on SunOS, HP-UX or Irix, but the judge 
+exist when the first version of the judge was written; the real load 
+will come from your OS ), install Linux on it (any distribution is 
+good-enough) or possibly an other flavour of Unix. All you need is 
+a command line and basic common utilities, but the last versions of 
+the judge are often running and maintained on Linux. In the past, 
+many judges were running on SunOS, HP-UX or Irix, but the judge 
 wasn't recently compiled on it.
- There were some problems installing the judge on Solaris. It doesn't
-compile on MacOS X. It seems these problems should not resist to motivated
-people with experience.
+ There were recently some problems installing the judge on Solaris. 
+It doesn't compile on MacOS X. It seems these problems should not 
+resist to motivated people with experience.
  There was some discussion on a Win32 port. Maybe is it possible to
 use Cygwin to run a judge.
 
- - Connect it *permanently* on the Internet through modem, xDSL, T1, cable...
-(although a judge should perfectly work only for local users, or could
-work with an intermittent connection if the deadlines are long enough).
+ - Connect it *permanently* on the Internet through modem, xDSL, T1,
+cable... (although a disconnected judge should perfectly work only 
+for local users, or could work with an intermittent connection if 
+the deadlines are long enough).
 
  - Learn the basis of system administration (users, access rights,
 shell, basic commands, compiling).
 
  - Begin to learn C. It is not necessary to install the judge (I'm
-currently learning it!), but it is to search efficiently for bugs or
+a living proof of that), but it is to search efficiently for bugs or
 modify the source.
 
  - Decide what you will do with that judge: experimentation? private for
@@ -97,7 +108,7 @@ begin by the ISO code of the country it is in. FROG is in France, ALEX
 should have been in Albania, USEF is in the United States and so on.
 
  - Not necessary for a private judge: Send a mail to Nicholas Fitzpatrick
-( nfitz@sentex.net ) to tell him that you want to open a judge
+( nfitz@sentex.net ) to tell him that you want to open a judge,
 and ask him to bless its name and add it in its list of judges
 ( http://www.sentex.ca/~nfitz/judge.codes )
 
@@ -113,7 +124,7 @@ maintenance mailing list. The JKs just happen to all be there.
  http://www.floc.net/exarch/judgemaint.html
 
 
-2.2 Judge user
+2.2 Judge user: unix level configuration
 
  - Create an account for the judge on your box. The judge must have its
 own e-mail address. The name of the account may be anything as long as
@@ -133,7 +144,7 @@ use without any directory indication. They must be in directories of
 $PATH. If you use bash as often on Linux, you may need to modify .bashrc
 and/or .profile.
 
- - As the judge uses the csh shell (and not bash as often on Linux), put
+ - As the judge uses the csh shell (and not the more popular bash), put
 in the .cshrc file in the home directory the line : setenv PATH
 /usr/bin:/usr/local/bin:/usr/bin/X11:/home/alex/dip:/home/alex:/bin:~:.
 
@@ -142,16 +153,15 @@ in the .cshrc file in the home directory the line : setenv PATH
 
  - Download the source of the judge from the net :
    * http://www.njudge.org should indicate which is the last official
-judge version available.
+judge version available, and give you a link to download it.
   A CVS snapshot is available too. It is a tarball generated every day
-from the CVS tree. It is the most current (and unstable!) judge.
+from the CVS (development) tree. It is the most current (and unstable!) 
+judge. Only for people who know what they are doing. Direct CVS access 
+is possible only with an account on the development computer.
 
   Other sources where you can search in case of a problem on njudge.org:
    * ftp.ugcs.caltech.edu/pub/diplomacy/Sources/ (official)
    * ftp.diplom.org/pub/diplomacy/Sources/ (backup)
-
- - An anonymous CVS access is not available. But you can browse the
-CVS tree through the links at the end of the page at http://www.njudge.org.
 
  - The official judge is distributed as a source code tarball called
 njudge-1.X.Y.tar.gz, where X and Y change with time.
@@ -163,29 +173,31 @@ There are some myths on a Debian package, which is outdated anyway.
 
  - Create a directory and move the archive there
 
-  mkdir njudge-1.0.0
-  mv njudge-1.0.0.tar.gz njudge-1.0.0/
+  mkdir njudge-1.1.1
+  mv njudge-1.1.1.tar.gz njudge-1.1.1/
 
  - Uncompress it in its directory:
 
-    cd njudge-1.0.0
-    tar xzvf njudge-1.0.0.tar.gz
+    cd njudge-1.1.1
+    tar xzvf njudge-1.1.1.tar.gz
 
  All the files will be extracted in the njudge-1.0.0 directory.
-(NB: Following versions of the judge could extract files cleanly in a directory).
+(NB: Following versions of the judge may extract files cleanly in 
+a new directory).
 
 Personally, I have created a 'source' symbolic link which points to the
-real source directory.  This is the SRCDIR of the configuration files.
+real source directory.  (This is the SRCDIR of the configuration files.)
 
     cd ~
     ln -s njudge-1.0.0 source
 
  - Don't delete the tar.gz file, it will be a backup if the following
-modifications fail. Move it elsewhere, in ~/archives for example.
+modifications fail.
 
- - Browse the files you have obtained. You can read the README.* or docs/README.*
-files now, even if you don't understand everything now. (Some of them are clearly
-out-of-date; they are usuelly in docs/archives/).
+ - Browse the files you have obtained. You can read the README.* 
+or docs/README.* files now, even if you don't understand everything 
+now. (Some of them are clearly out-of-date; they are usually in 
+docs/archives/).
 
  - Create a new directory in the judge's home for the compiled judge. It
 will contain binaries, judge configuration files, games, maps... The
@@ -203,16 +215,17 @@ directory; but it can't hurt.)
 
  - The judge is an old program, and there is no clean ./configure to
 generate automagically the Makefile. You must modify it yourself and
-even sometimes patch the source code (although it doesn't seen necessary
+even sometimes patch the source code (although it doesn't seem necessary
 anymore since 0.8.7). Some configuration files must be modified. All of
 them are clean text files that you can edit with vi, emacs, nedit or
-whatever your favorite Unix editor is.
+whatever your favorite editor is.
 
  Go into the source directory and :
 
  - Verify permissions and change them if necessary to be able
-to write to the files (necessary for 1.0.0!):
+to write to the files (necessary for 1.0.0, was already done in 1.1.1):
 
+  cd ~/njudge-1.1.1
   chmod -R u+w *
 
  - Only the judge should be able to read its own files, suppress any
@@ -220,20 +233,21 @@ other access for others:
 
   chmod -R go= *
 
- - dip.conf contains all parameters not hard-coded before compilation.
+ - The configuration file dip.conf contains all parameters not 
+hard-coded before compilation.
 
  You must modify all needed variables, especially:
-   * JUDGE_CODE (code of the judge),
-   * SPECIAL_PW (password for the judge-keeper),
+   * GAMES_MASTER (put your email address or an alias on it,
+NOT the judge address !!).
    * OURSELVES (the Unix user name of the judge; it is used to
 avoid mail loops),
-   * GAMES_MASTER (your email address or an alias on it,
-NOT the judge address !!).
+   * JUDGE_CODE (codename of your judge: ALEX,FROG,USEF...),
+   * SPECIAL_PW (the password for the judge-keeper, keep it for 
+yourself!),
 
- Default values for other parameters are usually okay. You may need to
-comment out some of them to change them.
-
- Be careful with HALL_KEEPER, GAMES_OPENER and other mail variables, that
+ Default values for other parameters are usually okay.  You may 
+need to comment out some of them before changing them.  Be careful 
+with HALL_KEEPER, GAMES_OPENER and other mail variables, that
 must be commented out if you're not running a public stable judge with
 real games. Don't change variables like XFORWARD, KEEPOUT... if you
 don't know what you're really doing.
@@ -267,14 +281,17 @@ CC=gcc
  - HEAD and MAIL are the locations of the two programs mail and head.
 Please verify that they exist there (to quickly find a program called
 toto, enter 'whereis toto'). On my Debian, the default locations were
-wrong! Some symbolic links between the real location and the desired
-location can resolve the problem too.
+wrong (/usr/bin an not /bin)! Some symbolic links between the real 
+location and the desired location can resolve the problem too.
+ Default values should be okay for most Linux system.
 
 
- - The following targets exist in the makefile, with their use
-(from Millis Miller, oct 2001):
+ - The following targets exist in the MaKefile, with their use
+(from Millis Miller, oct 2001 and updated):
 
 all:            Rebuild all programs
+ascii_to_dedi:	?
+ded_to_ascii:	?
 dip:            Rebuild dip program
 cmap:           Rebuild cmap program
 summary:        Rebuild summary program
@@ -297,10 +314,10 @@ upgrade:        Rebuild all the programs and install them in correct
                 judge)
 flist:          Rebuild the help file "flist"
 dist:           Build an update distribution (calls tarZ, targz and tarbz2)
-tarZ:           Build a tar.Z file of judge files for updates
 targz:          Build a tar.gz file of judge files for updates
-tarbz2:         Build a tar.bz2 files of judge files for updates
 tar:            Build a tar file of judge files for updates
+dist1:	?	
+targz1:	?	
 loglink:        Links DESTDIR/data/log to SRCDIR/.log/log
 more:           Copy every useful file to one big file called "morefil"
 list:           Beatify all useful files to one big file called "listing"
@@ -308,14 +325,22 @@ clean:          Remove all output files
 lclint:         Run "lclint" on all source files
 lint:           Run "lint" on all source files
 depend:         Update Makefile itself automatically for source dependcies.
+magic:
+size_check:	?
+zpblind:	?
+
+(Following targets are not used anymore:
+tarZ:           Build a tar.Z file of judge files for updates
+tarbz2:         Build a tar.bz2 files of judge files for updates
+)
 
 2.6 smail script
 
 'smail' is the script which builds the messages and sends them.
 
  - You MUST change the FROM line: replace teste_judge by the REAL name
-of your computer. The real address of ALEX id alex@christophecourtois.org,
-so for example :
+of your computer. For example, the real address of ALEX is 
+alex@christophecourtois.org, so for example :
 
  setenv FROM christophecourtois.org
 
@@ -326,6 +351,9 @@ dip.footer, and add it in the parameters of cat on the 10th line :
  cat dip.msg $1 dip.footer
 
  - As many mail senders exist, the script may have to be changed.
+
+ - Check especially that the path for head and mail is the good one
+(/bin or /usr/bin)
 
  - I've copied there two versions:
 
@@ -375,13 +403,12 @@ sendmail. This is his smail script which solves the problems:
 2.7 sendmail problems
 
  Some people had problems with some sendmail configuration (especially
-with Red hat Linux). If you use smrsh, place a symbolic link to rdip
+with Red Hat Linux). If you use smrsh, place a symbolic link to rdip
 in the /etc/smrsh/ dir. Also make sure only the owner has write
 permission to the .forward file.
-
- (Briefly, smrsh limits programs to be in  a  single  directory,
+ (Briefly, smrsh limits programs to be in a single  directory,
 by  default  /usr/lib/sendmail.d/bin/  allowing the system administrator
-to choose the set of acceptable commands)
+to choose the set of acceptable commands).
 
 2.8 atrun script
 
@@ -392,8 +419,8 @@ will itself launch the 'rdip' program.
  NB: If you schedule any jobs as the judge user using at, they will
 be deleted the next time that the Judge receives an e-mail.
 
- There are three version for Solaris, Linux (see below) and MIPS. Activate
-the version which suits your system.
+ There are three predefined versions in atrun for Solaris, Linux 
+(see below) and MIPS. Activate the version which suits your system.
 
  A problem is that some Linux version of atq (3.1.8 on ALEX,
 rather old (Debian 2.2)) doesn't tell you the command  which each entry
@@ -426,8 +453,8 @@ do it for you.
 
 2.10 Patches
 
- No known last-minute patch to add to the official 1.0.0 version. (Stable
-version are not so much fun anymore ;-)
+ No known last-minute patch to add to the official 1.1.1 version. (Stable
+versions are not so much fun anymore ;-)
 
 
 
@@ -442,6 +469,8 @@ version are not so much fun anymore ;-)
 
   The last line copies everything that the judge needs into the DESTDIR
 directory. On a running judge, use 'make upgrade' (see below).
+  You don't need to be root, and nothing will be installed outside of
+the judge directory.
 
  - Following warnings must not scare you. Just ignore them:
 
@@ -495,7 +524,7 @@ these options really work nowadays?]
  - Open the 'dipclean' script and change any path that doesn't match
 your system (especially the first line).
 
- - It is now uselless to run it for a first install.
+ - It is now useless to run it for a first install.
 
 4.3 .forward
 
@@ -508,13 +537,16 @@ and a comma at the beginning). For example:
         ,"| /home/alex/dip/rdip -b -d /home/alex/dip "
 
  (for a judge in /home/alex, with binaries in /home/alex/dip ; change it
-according to your needs, but the Makefile normally makes it for you).
+according to your needs, but the install process normally makes it for you).
 
  Some judges (FROG for example) don't use this file and call procmail
 to make some processing instead of or before lauching the judge program
-(mainly logging).
+(mainly logging). Ask on the judge-keepers list (especially to Philippe
+Lalande) for more information.
 
 4.4 dip.control date problems
+
+***** TO CHANGE : dip.master a place de dip.control ?
 
  The dip.control file is generated from the Makefile, and according
 to the configuration of your system, it can be faulty. Check that:
