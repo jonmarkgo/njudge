@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  2000/11/14 14:27:37  miller
+ * Initial revision
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -69,7 +72,7 @@ static char *sh_prelim[] =
  "targets","target", 
   "dmz", 
  "not", "!", 
- "provinces","province",
+ "provinces","province", "prov",
  "orders", "order",
   ","
   };
@@ -85,7 +88,7 @@ static int sh_pvalue[] =
  SH_TARGET, SH_TARGET,
  SH_DMZ, 
  SH_NOT, SH_NOT,
- SH_PROVINCE, SH_PROVINCE,
+ SH_PROVINCE, SH_PROVINCE, SH_PROVINCE,
  SH_ORDER, SH_ORDER,
  SH_SEPARATOR
 };
@@ -669,7 +672,7 @@ int ProcessShSegment(char **s, char *rrret_text, int power_list, int prov_list)
 			break;
 
 		case SH_PROVINCE:
-			strcpy(rrret_text, "province");
+			strcpy(rrret_text, "province ");
 			break;
 
 		case SH_SEPARATOR:

@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   June 18th, 2000
+Greetings from the Diplomacy* Adjudicator!!                   April 6th, 2002
 info.Shorthand.
 
 Shorthand is a variant modification allowing only a standardised syntax for
@@ -52,7 +52,7 @@ DRAW = 'draw'
 PEACE = 'peace'
 ALLY = 'ally' | 'alliance'
 TARGET = 'target' | 'targets'
-PROVINCE = 'province' | 'provinces'
+PROVINCE = 'province' | 'provinces' | 'prov'
 ORDER = 'order' | 'orders'
 
 
