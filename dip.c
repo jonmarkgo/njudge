@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.33  2003/02/05 23:53:44  millis
+ * Removed dipstats files.
+ * Also added in new JUDGE_TZ variable, to specify timezone
+ *
  * Revision 1.32  2003/01/13 22:38:51  millis
  * merged in from ustv
  *
@@ -189,6 +193,7 @@ extern int time_warp;  /* Set to 1 if a time-warp was detected */
 int main(int argc, char *argv[])
 {
 	char exe_name[100];
+	char tz_name[50];
 	char *t;	
 	init(argc, argv);
 	
@@ -200,7 +205,8 @@ int main(int argc, char *argv[])
 	t = JUDGE_TZ;
 
 	if (*t) {
-	    setenv("TZ", t, 1);
+	    sprintf(tz_name,"TZ=%s", t);
+	    putenv(tz_name);
 	    tzset();
 	}
 
