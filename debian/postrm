@@ -1,26 +1,9 @@
-#!/usr/bin/perl -w
-use strict;
+#!/bin/sh
+set -e
 
-my $destdir='/home/judge';
-my $arg = "";
-my $answer = "";
+if [ "$1" = "purge" ]; then
+  userdel -r judge || true;
+  rm -rf /home/judge || true;
+fi
 
-$arg = shift;
-if ($arg eq "purge")
-{
-  my @fields = stat($destdir);
-  my $user = (getpwuid($fields[4]));
-  my $group =  scalar(getgrgid($fields[5]));
-  print "Remove user $user, group $group, and $destdir from the system? [y/n]\n";
-  $answer = <stdin>;
-  if ($answer =~ /^[yY]/)
-  {
-    `userdel -r $user`;
-  } 
-  qx/rm -rf $destdir/;
-}
-
-my $temp="set -e\nset -- @ARGV\n" . << 'EOF';
 #DEBHELPER#
-EOF
-system ($temp) / 256 == 0 or die "Problem with debhelper scripts: $!";

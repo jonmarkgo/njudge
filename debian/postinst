@@ -3,62 +3,12 @@ set -e
 
 PATH=/sbin:/usr/sbin:$PATH
 export PATH
-destdir="/home/judge"
-CODE=""
-NAME=""
-ADDRESS=""
-KEEPER=""
 
 if [ "$1" = "configure" ]; then
-  echo "Enter the judge code if you have been assigned one or press Enter if not.";
-  read CODE;
-  if [ -z "$CODE" ]; then
-    CODE="XXXX";
-  fi
-  while [ -z "$NAME" ]; do 
-    echo "Enter the user name of the judge (i.e. judge)";
-    read NAME;
-
-    if [ -n "`id -u $NAME 2> /dev/null`" ]; then
-      echo "That name is already taken.  Are you upgrading an existing judge (Y\\N)";
-      read answer;
-      if [ "$answer" != "Y" -a "$answer" != "y" ]; then
-        NAME="";
-        continue;
-      fi
-    else
-      /usr/sbin/adduser --home $destdir --no-create-home --gecos "$CODE Diplomacy Adjudicator" --disabled-password --quiet $NAME;
-    fi
-  done
-  while [ -z "$ADDRESS" ]; do
-    echo "Enter the email address of the judge (i.e. judge@somewhere.com)";
-    read ADDRESS;
-  done
-  while [ -z "$KEEPER" ]; do
-    echo "Enter the email address of the judge keeper (i.e. judgekeeper@somewhere.com)";
-    read KEEPER;
-  done
-  cp -a $destdir/dip.conf $destdir/dip.conf.bak
-  perlcode=<<EOT
-    if (/^#?GAMES_MASTER/i)
-    {
-      print "GAMES_MASTER=$KEEPER\n";
-    }
-    elsif (/^#?JUDGE_CODE/i)
-    {
-      print "JUDGE_CODE=$CODE\n";
-    }
-    elsif (/^#?OURSELVES/i)
-    {
-      print "OURSELVES=$NAME\n";
-    }
-    else
-    {
-      print $_;
-    };
-EOT
-  perl -ni.bak -e '$perlcode' $destdir/dip.conf 
-  `chown -R $NAME:$NAME $destdir`;
+  /usr/sbin/adduser --home /home/judge --no-create-home --gecos "Diplomacy Adjudicator" --disabled-password --quiet judge || true;
+  `chown -R judge:judge /home/judge`;
+  perl -pi -e 's!\.\./!\./!g;' /home/judge/dip.conf || true
+  mv /home/judge/root-forward /home/judge/.forward || true
 fi
 
 #DEBHELPER#
