@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.53  2004/09/07 13:19:57  millis
+ * Invert sense of ALLIEDWIN flag
+ *
  * Revision 1.52  2004/09/06 22:08:17  millis
  * Bug363 Allow more than one victor
  *
@@ -371,7 +374,7 @@
 #define X2F_IRREGULAR		0x20000000 /* Game settings were changed in play */
 #define X2F_PORTAGE		0x40000000 /* Game has armies able to convoy */
 
-#defibe X3F_ALLIEDWIN	0x1 /* If set, duplex game can end with an allied win */
+#define X3F_ALLIEDWIN	0x1 /* If set, duplex game can end with an allied win */
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
