@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -25,6 +28,8 @@
  *      31 Mar 1994 C.Marcus,Jr. Complete redesign/rewrite.
  *      28 Apr 1994 C.Marcus,Jr. Always include sender's address to Master.
  *      23 May 1994 C.Marcus,Jr. Correct parsing of press options.
+ *      27 Nov 1999 M. Miller	 Prohibit partial press from late players 
+ *	07 Dec 1999 M. Miller	 parse_power doesn't allow duplicates
  */
 
 #include <stdlib.h>
@@ -62,8 +67,6 @@ void mail_press(char *s, int need_opts);
  *  Static Function Declarations
  */
 
-static void list_powers(char *line, char *list);
-static int parse_powers(char **s, char *list, size_t size, int *count);
 static void print_line(FILE * outf, char *line);
 
 /*
@@ -88,10 +91,6 @@ static int values[] =
  FAKEP, FAKEB, NOFAKEB,
  FAKEB, NOFAKEB};
 
-/* TODO what on earth??? are these pragmas doing here */
-
-#pragma title "void mail_press(char *s, int need_opts)"
-#pragma page
 /*******************************************************************************
 NAME:  mail_press
 
@@ -183,6 +182,9 @@ void mail_press(char *s, int need_opts)
 
 /*  Parse the command line options, if any, setting local flags only.  */
 
+	master_press = 0;
+	master_only_press = 0; 
+
 	while (*s != '\0') {
 		s = lookfor(s, options, nentry(options), &i);
 		if (!i) {
@@ -226,7 +228,7 @@ void mail_press(char *s, int need_opts)
 					partial = PARTIAL;
 				}
 				bad_cmd |= parse_powers(&s, part_list, sizeof(part_list),
-							&count);
+							&count,1);
 				break;
 
 			case ALLBUT:
@@ -238,7 +240,7 @@ void mail_press(char *s, int need_opts)
 					partial = ALLBUT;
 				}
 				bad_cmd |= parse_powers(&s, part_list, sizeof(part_list),
-							&count);
+							&count,1);
 				break;
 
 			case FAKEB:
@@ -260,7 +262,7 @@ void mail_press(char *s, int need_opts)
 					fake = FAKEP;
 				}
 				bad_cmd |= parse_powers(&s, fake_list, sizeof(fake_list),
-							&fake_count);
+							&fake_count,1);
 				break;
 
 			case FAKEA:
@@ -272,7 +274,7 @@ void mail_press(char *s, int need_opts)
 					fake = FAKEA;
 				}
 				bad_cmd |= parse_powers(&s, fake_list, sizeof(fake_list),
-							&fake_count);
+							&fake_count,1);
 				break;
 
 			case NOFAKEB:
@@ -300,7 +302,12 @@ void mail_press(char *s, int need_opts)
 /*  Master can send any kind of press he wants, no matter what the settings.  */
 
 	} else if (dipent.players[player].power == MASTER) {
+	master_press = 1;
 		/*  Good command by definition, so don't do any more checking.  */
+	   if (partial == PARTIAL && count == 1) {
+		/* Keep this between master and sender only */
+		master_only_press = 1;
+	   }
 
 /*  Anyone can send to Master (only), no matter what the settings (but it won't
    be grey press, and he better not try to fake it!).  */
@@ -308,16 +315,18 @@ void mail_press(char *s, int need_opts)
 	} else if ((partial == PARTIAL) && (count == 1) &&
 		   (power(part_list[0]) == MASTER)) {
 		color = WHITE;
+		master_press = 1;
+		master_only_press = 1; /* Only for master and sender */
 		if (fake) {
 			fprintf(rfp,
 				"Shame!  Attempting to fake out the Master is not allowed.\n");
 			fake = NONE;
 		}
 /*  Checking for normal (i.e., not from or to Master) press:  first, is press
-   even allowed?  */
+   allowed from non-observers (i.e. players)?  */
 
 	} else {
-		if ((dipent.flags & F_NOWHITE) && !(dipent.flags & F_GREY)) {
+		if ((dipent.flags & F_NOWHITE) && !(dipent.flags & F_GREY) && !is_observer(player)) {
 			fprintf(rfp, "Game '%s' does not allow press.\n", dipent.name);
 			bad_cmd = 1;
 
@@ -325,6 +334,13 @@ void mail_press(char *s, int need_opts)
 
 		} else if ((dipent.flags & F_OBNONE) && is_observer(player)) {
 			fprintf(rfp, "Game '%s' does not allow observer press.\n",
+				dipent.name);
+			bad_cmd = 1;
+
+/* If a minor phase and no minor press allowed, reject it */
+		} else if ((dipent.xflags & XF_NOMINORPRESS) && 
+			    (dipent.phase[5] == 'B' || dipent.phase[5] == 'R')) {
+			fprintf(rfp, "Game '%s' does not allow press in minor phases.\n",
 				dipent.name);
 			bad_cmd = 1;
 
@@ -369,11 +385,19 @@ void mail_press(char *s, int need_opts)
 /*  If this is partial press, is it allowed?  */
 
 			if (partial) {
+			    if (is_observer(player)) {
+				if (dipent.flags & (F_OBNONE | F_OBWHITE )) {
+					fprintf(rfp,"Game '%s' does not allow observer partial press.\n",
+						dipent.name);
+					bad_cmd = 1;
+				}
+			    } else {
 				if (dipent.flags & F_NOPARTIAL) {
 					fprintf(rfp, "Game '%s' does not allow partial press.\n",
 						dipent.name);
 					bad_cmd = 1;
 				}
+			    }
 			}
 /*  If this is a no-fake-broadcast, is it allowed?  */
 
@@ -421,6 +445,30 @@ void mail_press(char *s, int need_opts)
 		}
 	}
 
+
+/* OK, let's see if press from late powers is allowed */
+//	if (partial) 
+	{
+		if (WAITING(dipent.players[player].status)) {
+			/* it is not, let us see if this power is late and not pressing to master */
+		    if (!((count == 1) && (power(part_list[0]) == MASTER))) {
+			/* We are waiting for him, see if messag is only to master */
+			if (time(NULL) > dipent.deadline) { 
+		          if (dipent.xflags & XF_NOLATEPRESS) {
+			  	fprintf(rfp, "Game '%s' does not allow press from late players.\n",
+                                                dipent.name);
+				fprintf(rfp, "You must submit moves for ALL your units before pressing.\n");
+                                bad_cmd = 1;
+			  } else {
+			    /* you can press when late, but it's not really good so... */
+			        fprintf(rfp, 
+				"Note: You are marked as late and should really have\n      corrected this before sending press.\n\n");
+			  }
+			}
+		    }
+		}
+	}
+			
 /*  If command is invalid, discard the following text.  */
 
 	if (bad_cmd) {
@@ -567,8 +615,6 @@ void mail_press(char *s, int need_opts)
 	}
 	return;
 }
-#pragma title "int parse_powers(char **, char *, size_t, int *)"
-#pragma page
 /*******************************************************************************
 NAME:  parse_powers
 
@@ -590,6 +636,7 @@ INTERFACE DEFINITION
     Inputs:
         s    := Pointer to command line, at beginning of power letters list
         size := Size of list array
+	put_output: =1 if to go to rfp, else not.
 
     Outputs:
         s     := Updated pointer, at next character after power letters list
@@ -605,19 +652,23 @@ ALGORITHM
     Endwhile.
 *******************************************************************************/
 
-static int parse_powers(char **s, char *list, size_t size, int *count)
+int parse_powers(char **s, char *list, size_t size, int *count, int put_output)
 {
 /*
  *  Dynamic Data Object Definitions
  */
 	int error = 0;		/* Parsing error occurred? */
 	char *next = list;	/* Place to store next letter */
+	int power_used[MASTER+1];
+        int i;
 /*
  *  End of Definitions
  */
 
 /*  Initialize count and list array, and skip any spaces in command line.  */
 
+	for (i=0; i <= MASTER; i++) power_used[i] = 0;
+	
 	*count = 0;
 	memset((void *) list, (int) '\0', size);
 	while (isspace(**s))
@@ -628,11 +679,15 @@ static int parse_powers(char **s, char *list, size_t size, int *count)
    it, else issue error message.  */
 
 	while (**s && !isspace(**s)) {
+		power_used[power(**s)]++;
 		if (!power(**s)) {
-			fprintf(rfp, "Unknown power specification '%c'.\n", **s);
+			if (put_output) fprintf(rfp, "Unknown power specification '%c'.\n", **s);
 			error = 1;
 		} else if (next >= list + size) {
-			fprintf(rfp, "Too many power specifications.\n");
+			if (put_output) fprintf(rfp, "Too many power specifications.\n");
+			error = 1;
+		} else if (power_used[power(**s)] == 2 ) {
+			if (put_output) fprintf(rfp, "Power '%c' repeated in list. \n", **s);
 			error = 1;
 		} else {
 			*next++ = **s;
@@ -642,8 +697,6 @@ static int parse_powers(char **s, char *list, size_t size, int *count)
 	}
 	return error;
 }
-#pragma title "void list_powers(char *line, char *list)"
-#pragma page
 /*******************************************************************************
 NAME:  list_powers
 
@@ -675,7 +728,7 @@ ALGORITHM
     Endloop.
 *******************************************************************************/
 
-static void list_powers(char *line, char *list)
+void list_powers(char *line, char *list)
 {
 /*
  *  Dynamic Data Object Definitions
@@ -704,8 +757,6 @@ static void list_powers(char *line, char *list)
 	}
 	return;
 }
-#pragma title "void print_line(FILE *outf, char *line)"
-#pragma page
 /*******************************************************************************
 NAME:  print_line
 
@@ -775,3 +826,4 @@ static void print_line(FILE * outf, char *line)
 	fprintf(outf, "%s\n", line);
 	return;
 }
+
