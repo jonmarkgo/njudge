@@ -15,6 +15,8 @@ FILE *cfp;			/* Control file pointer                         */
 FILE *xfp;			/* Control file pointer                         */
 int nded;
 
+char subjectline[80];
+
 struct dedication ded[MAXUSER];
 
 /* from mach.h */
