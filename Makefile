@@ -21,7 +21,7 @@
 include Makefile.defines
 
 #set the judge version
-JVERSION=0.8.8-Beta-1
+JVERSION=0.8.9
 
 # Programs, Sources, and Objects.
 
