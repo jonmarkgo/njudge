@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.46  2003/05/24 23:57:15  millis
+ * Bug 97, removed Generic Handling code
+ *
  * Revision 1.45  2003/05/24 22:55:43  millis
  * Bug 142, allow use of AutoCreate flag
  *
@@ -1282,7 +1285,6 @@ void mail_setp(char *s)
 			} else {
 				dipent.grace = dates;
 				sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
-				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 				/* WAS mfprintf  1/95 BLR */
 				fprintf(bfp, "%s as %s set the grace period\n", xaddr, PRINT_POWER);
