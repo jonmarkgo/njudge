@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030924;22133300">
+	<META NAME="CHANGED" CONTENT="20030924;22570500">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -78,7 +78,7 @@ tool depend on it, please tell me (christophe@courtois.cc).</P>
 			<UL>
 				<LI><P CLASS="western">Press to players</P>
 				<LI><P CLASS="western">Player(s) is/are late or abandoned</P>
-				<LI><P CLASS="western">End of games</P>
+				<LI><P CLASS="western">End of game (draw)</P>
 				<LI><P CLASS="western">Version</P>
 			</UL>
 			<LI><P CLASS="western">Will not be described (probably useless)</P>
@@ -465,6 +465,219 @@ for the first movement orders is Tue Dec 11 2001 23:30:00 +0100.</FONT></FONT></
 </P>
 <OL START=7>
 	<LI><H1 CLASS="western">Movement results</H1>
+	<P CLASS="western"></P>
+</OL>
+<P CLASS="western">This can be rather complicated. The different
+parts are:</P>
+<UL>
+	<UL>
+		<LI><P CLASS="western">The usual message header</P>
+		<LI><P CLASS="western">The movements of this turn (see below)</P>
+		<LI><P CLASS="western">The dislodged units list (only if necessary
+		and this turn was not about retreat orders) (see below)</P>
+		<LI><P CLASS="western">The ownership of supply centers (if there is
+		no dislodged unit are already dealt with) (see below)</P>
+		<LI><P CLASS="western">The next phase and deadline, or the 'game
+		over' message if a solo victory is reached.</P>
+	</UL>
+</UL>
+<P CLASS="western"><BR><BR>
+</P>
+<H2 CLASS="western">Movement turns</H2>
+<UL>
+	<UL>
+		<LI><P CLASS="western">These are separated from the message header
+		by a blank line.</P>
+		<LI><P CLASS="western">The first line indicates what the results
+		are about. Parts are:</P>
+		<UL>
+			<LI><P CLASS="western">&ldquo;Movement results for &ldquo; ,</P>
+			<LI><P CLASS="western">followed by the full-name of the game turn,</P>
+			<LI><P CLASS="western">a dot,</P>
+			<LI><P CLASS="western">a space,</P>
+			<LI><P CLASS="western">between parenthesis: the game name
+			(lowercase), a dot, the number of the turn in the game.</P>
+		</UL>
+		<LI><P CLASS="western">Blank line.</P>
+		<LI><P CLASS="western">For each power:</P>
+		<UL>
+			<LI><P CLASS="western">For each unit that this power posess, a
+			line made from:</P>
+			<UL>
+				<LI><P CLASS="western">Power name (lowercase with uppercase first
+				letter),</P>
+				<LI><P CLASS="western">A colon,</P>
+				<LI><P CLASS="western">A space,</P>
+				<LI><P CLASS="western">The unit name (lowercase with first letter
+				uppercase) (usually Fleet or Army)</P>
+				<LI><P CLASS="western">A space</P>
+				<LI><P CLASS="western">The territory name (lowercase with first
+				letter uppercase)</P>
+				<LI><P CLASS="western">For a non-movemen<SPAN STYLE="font-style: normal">t
+				(if turn was resolved without all orders): </SPAN>
+				</P>
+				<UL>
+					<LI><P CLASS="western"><SPAN STYLE="font-style: normal">A</SPAN>
+					comma, 
+					</P>
+					<LI><P CLASS="western">a space,</P>
+					<LI><P CLASS="western">the words &ldquo;No Order Processed&rdquo;</P>
+				</UL>
+				<LI><P CLASS="western">For a simple movement: 
+				</P>
+				<UL>
+					<LI><P CLASS="western">A space, 
+					</P>
+					<LI><P CLASS="western">the symbol &ldquo;-&gt;&rdquo; (dash and
+					&ldquo;greater than&rdquo;),</P>
+					<LI><P CLASS="western">a space,</P>
+					<LI><P CLASS="western">the destination territory,</P>
+					<LI><P CLASS="western">a dot,</P>
+					<LI><P CLASS="western">If necessary: two spaces, and
+					&ldquo;(*bounce*)&rdquo; or &ldquo;(*bounce, destroyed*)&rdquo;
+					or &ldquo;(*bounce, dislodged*)&rdquo;. <FONT COLOR="#ff0000">TO</FONT>
+					<FONT COLOR="#ff0000">SOLVE : what are Block,destroyed ? See
+					status in ma_movement.c</FONT></P>
+				</UL>
+				<LI><P CLASS="western">For a support:</P>
+				<UL>
+					<LI><P CLASS="western">A space,</P>
+					<LI><P CLASS="western">the word &ldquo;SUPPORT&rdquo;
+					(uppercase)</P>
+					<LI><P CLASS="western">a space,</P>
+					<LI><P CLASS="western">the movement of the supported unit, as
+					described in the previous paragraph, including the last dot</P>
+					<LI><P CLASS="western">followed if necessary by two spaces and
+					&ldquo;(*cut*)&rdquo; or &ldquo;(*cut,dislodged*)&rdquo;</P>
+					<P CLASS="western"></P>
+					<LI><P CLASS="western"><FONT COLOR="#ff0000">TO CONTINUE</FONT></P>
+				</UL>
+				<LI><P CLASS="western">For a hold</P>
+				<LI><P CLASS="western">...<BR><BR><BR>
+				</P>
+			</UL>
+			<P CLASS="western"></P>
+		</UL>
+		<P CLASS="western"></P>
+	</UL>
+</UL>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western">Examples for a turn with dislodged armies:</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Judge:
+FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Deadline:
+F1920M Mon Oct 28 2002 23:30:00 +0100 &nbsp;</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Map:
+http://frog.born2play.org/~observer/cartes.php3?Partie=s1b6p2</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Movement
+results for Fall of 1920. &nbsp;(s1b6p2.086)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Armenia -&gt; Smyrna.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Bohemia -&gt; Silesia. &nbsp;(*bounce, dislodged*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Tyrolia -&gt; Piedmont. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Ionian Sea SUPPORT French Fleet Tunis. &nbsp;(*cut, dislodged*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Smyrna -&gt; Aegean Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Ukraine SUPPORT Army Galicia -&gt; Warsaw.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Sevastopol SUPPORT English Army Moscow.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Galicia -&gt; Warsaw.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Albania SUPPORT Fleet Trieste -&gt; Adriatic Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Trieste -&gt; Adriatic Sea.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Army Moscow SUPPORT Austrian Army Ukraine -&gt; Warsaw. &nbsp;(*void*)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Norway SUPPORT German Fleet St Petersburg (north coast).</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Portugal -&gt; Spain (south coast).</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: Army
+Burgundy SUPPORT German Army Munich.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Tunis SUPPORT Fleet Naples -&gt; Ionian Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet North Atlantic Ocean -&gt; Liverpool.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Adriatic Sea -&gt; Trieste. &nbsp;(*bounce, dislodged*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Western Mediterranean -&gt; Tyrrhenian Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: Army
+Gascony -&gt; Brest.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Naples -&gt; Ionian Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Mid-Atlantic Ocean -&gt; English Channel.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: Army
+Marseilles -&gt; Piedmont. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Kiel SUPPORT Army Munich.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet North Sea -&gt; Denmark.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet St Petersburg (north coast) CONVOY Austrian Army Tyrolia -&gt;
+Switzerland.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet Edinburgh -&gt; Yorkshire.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Belgium -&gt; Ruhr.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Livonia SUPPORT Army Warsaw -&gt; Moscow.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Warsaw -&gt; Moscow. &nbsp;(*bounce, dislodged*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Silesia -&gt; Bohemia.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Munich SUPPORT Army Silesia -&gt; Bohemia.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet English Channel -&gt; North Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Sweden -&gt; Finland.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The
+following units were dislodged:</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The Austrian
+Army in Bohemia can retreat to Galicia or Vienna.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The Austrian
+Fleet in the Ionian Sea can retreat to Apulia or Greece or</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Eastern
+Mediterranean.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The French
+Fleet in the Adriatic Sea can retreat to Apulia or Venice.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The German
+Army in Warsaw can retreat to Silesia or Prussia.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The next
+phase of 's1b6p2' will be Retreats for Fall of 1920.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The deadline
+for orders will be Wed Oct 30 2002 23:30:00 +0100.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<OL START=7>
 	<LI><H1 CLASS="western">Open points</H1>
 </OL>
 <UL>
