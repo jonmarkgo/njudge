@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                     28 April, 2003
+Greetings from the Diplomacy* Adjudicator!!                       12 May, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
-with a brief description.  It is current as of njudge version 1.3.3.
+with a brief description.  It is current as of njudge version 1.4.0.
 
 For information on how to enter Diplomacy orders, get the file 'syntax' (see
 "GET file", below).
@@ -113,7 +113,7 @@ adm/    FIXID siteid site_name
         times 100 as a siteid and must be fixed to some non- even multiple of
         100.
 
-mod/    FORCE BEGIN                                                    {1.3.3}
+mod/    FORCE BEGIN                                                    {1.4.0}
         Forces a game to begin, even if not enough players are signed on. The
         missing players will be filled in by 'dummy players' that are already
         abandoned (to allow real people to signon).
@@ -372,7 +372,7 @@ mod/    SET BN|BNC [NUMBER] number
         (BNC).  Boardman numbers are only assigned to Standard games.  The BNC
         number appears in the game's listing and summary.
 
-ply/    SET [NO] BROADCAST [PRESS]                                     {1.3.3}
+ply/    SET [NO] BROADCAST [PRESS]                                     {1.4.0}
         Disables/enables receiving broadcast press messages.  Only possible
         for observers or moderators.
 
@@ -409,7 +409,7 @@ ply/    SET [NO] CONC[EDE] p                                          {0.8.10}
         draw).  "SET NO CONCEDE" cancels a previous concession.  As with
         draws, concessions are cleared every time orders are processed, so you
         need to re-set a concession (if you still want it) every phase.
-        {Note: must be entered as "SET [NO] CONC" in versions before 1.3.3}
+        {Note: must be entered as "SET [NO] CONC" in versions before 1.4.0}
 
 mod/    SET [NO] CONCESSIONS                                          {0.8.10}
         Disables/enables the concession mechanism (see SET CONCEDE, above) in
