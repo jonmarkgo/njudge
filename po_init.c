@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2004/01/13 18:17:40  millis
+ * Fix Bug 268, don't display Unknown power error on 'x' in assassinate line
+ *
  * Revision 1.15  2004/01/04 11:34:35  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -217,7 +220,8 @@ int po_init(void)
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
 			pr[i].unit_held = 1;
-			pr[i].order_index =0;
+			pr[i].order_index = 0;
+			pr[i].blockaded = 0;
 			if (pr[i].type == 'r' || pr[i].type == 'g' )
 			    pr[i].move = NULL;
 		}
