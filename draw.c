@@ -397,8 +397,7 @@ int process_draw(void)
 		gflg = (dipent.flags & F_GUNBOAT &&
 			(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
 		mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
-		sprintf(line, "%s -C %s -%s%s%slv%d %s", CONFIG_DIR, mflg, gflg,
-			SUMMARY_CMD,
+		sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
 			dipent.flags & F_QUIET ? "q" : "", dipent.variant, dipent.name);
 		system(line);
 	}
@@ -528,8 +527,7 @@ int process_conc(void)
                 gflg = (dipent.flags & F_GUNBOAT &&
                         (dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
                 mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
-                sprintf(line, "%s -C %s -%s%s%slv%d %s", CONFIG_DIR, mflg,gflg,
-                        SUMMARY_CMD,
+                sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg,gflg,
                         dipent.flags & F_QUIET ? "q" : "", dipent.variant,dipent.name);
                 system(line);
 	}

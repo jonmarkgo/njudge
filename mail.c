@@ -4,7 +4,7 @@
  * subjectline tweaks
  *
  * Revision 1.8  2001/07/16 22:53:11  miller
- * Fixed EJECT command (was previously doing nothing!)
+ * Fixed EJECT command (was previosuly doing nothing!)
  *
  * Revision 1.7  2001/07/15 09:16:14  greg
  * added support for game directories in a sub directory
@@ -65,6 +65,7 @@
 #include "conf.h"
 #include "dipstats.h"
 #include "diplog.h"
+#include "plyrdata.h" /* Change Sep 23, 2001 */
 
 static int junkmail = 0;	/* Non zero if no reply to be sent		*/
 static int command = 0;		/* Non zero if some intelligable command found	*/
@@ -211,11 +212,11 @@ void ResignPlayer( int resign_index)
         powers[dipent.players[resign_index].power], dipent.name);
     /* WAS mfprintf  1/95 BLR */
     sprintf(subjectline,
-            "%s:%s - %s Resignation: %s",
+            "%s:%s - %s Resignation: %c",
             JUDGE_CODE,
             dipent.name,
             dipent.phase,
-            powers[dipent.players[resign_index].power]);
+            dipent.pl[dipent.players[player].power]);
 
     fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
        ((dipent.flags & F_GUNBOAT) &&
@@ -1492,9 +1493,6 @@ int mail(void)
                                                         break;
 					}
 					dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
-
-					sprintf(subjectline, "%s:%s - %s Promotion of %s", JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
-
 					fprintf(rfp, "%s is now also a Master for game '%s'.\n",
                                                       dipent.players[i].address, dipent.name);
 					fprintf(bfp," %s is now also a Master for game '%s'.\n",
@@ -1820,10 +1818,15 @@ int mail(void)
 			mail_reply(E_FATAL);
 		}
 		if (*dipent.players[player].address != '*')
+		{
+			if(dipent.players[player].status & (SF_CD | SF_ABAND))
+				put_data(dipent.players[player].userid, tookover);
 			dipent.players[player].status &= ~(SF_CD | SF_ABAND);
-
+		}
 		if (!more_orders)
+		{
 			dipent.players[player].status |= SF_PART;
+		}
 		else
 			dipent.players[player].status &= ~SF_PART;
 
