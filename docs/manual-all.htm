@@ -12,13 +12,13 @@ href="manual.css" /> -->
 <div id="cover">
 <p class="Author">The njudge Diplomacy&trade; Adjudicator<br />
  </p>
-<p class="Title">The Diplomacy Judge User's Manual</p>
+<p class="Title">The Diplomacy Judge User's Manual</p>
 <p class="Author"> <br />
-by Russell M. Blau</p>
-<p class="RightAlignment"> <br />
-Third Edition</p>
+by Russell M. Blau<br />
+</p>
+<p class="RightAlignment">Third Edition (revised)</p>
 <p class="RightAlignment">(njudge version 1.7.<em>x</em>)</p>
-<p class="RightAlignment">July 1, 2004</p>
+<p class="RightAlignment">July 29, 2004</p>
 </div>
 <br />
 <hr size="2" width="100%" align="center"
@@ -55,6 +55,8 @@ Commons License</a>. <!-- /Creative Commons License -->
 </rdf:RDF>
 -->
 </p>
+<p>Cover page image adapted from William R. Shepherd, "Europe at
+the Present Time", <em>The Historical Atlas,</em> 1911.</p>
 <p>The njudge software described in this manual was originally
 authored by Ken Lowe, and is owned by David C. Kovar.
 Redistribution and use in source and binary forms are permitted
@@ -2668,8 +2670,8 @@ power's password to the Master (except on some older versions of
 the Judge software). However, the Master can use the <span
 class="Keywords"><a href="#SET_PASSWORD">SET PASSWORD</a></span>
 command after <span class="Keywords">BECOME</span> to set a new
-password for a player who has
-lost or forgotten theirs. Example:</p>
+password for a player who has lost or forgotten theirs.
+Example:</p>
 <div class="example">
 <p class="example">signon mexample password<br />
 press to X<br />
@@ -3898,6 +3900,48 @@ powers in the game.)</p>
 <table class="commandterm" summary="" border="0" cellspacing="0"
 cellpadding="0" width="100%">
 <tr>
+<td class="commandterm"><a id="SETPORTAGE" name="SETPORTAGE">SET
+PORTAGE</a></td>
+<td class="versioncode">{1.7.0}</td>
+</tr>
+</table>
+<p class="commandexplanation">Disables/enables optional rule
+allowing portages.  A "portage" is basically the opposite of a
+convoy: it allows an army to carry a fleet across a land
+province. You can come to your own conclusion about how realistic
+this would be. It works just like a normal convoy: one or more
+armies can participate to set up a portage chain, and the portage
+will fail if not all armies in the chain are sucessfully ordered.
+The destination province must have its coast specified if it has
+one. For order-writing purposes, write the move as a convoy (that
+is, order the fleet to move through one or more intermediate land
+provinces to its destination, and order each army to "convoy" the
+fleet).</p>
+<table class="commandterm" summary="" border="0" cellspacing="0"
+cellpadding="0" width="100%">
+<tr>
+<td class="commandterm"><a id="SETPOWERS" name="SETPOWERS">SET
+POWERS number</a></td>
+<td class="versioncode">{1.7.0}</td>
+</tr>
+</table>
+<p class="commandexplanation">Sets the number of powers (not
+players) in the game to something less than the normal number for
+the variant being played. The Judge will assign players to the
+specified number of powers using whatever method the moderator
+has specified (preference lists or random assignment). So, for
+example, "<span class="Keywords">SET POWERS</span> 5" in a
+Standard game means that the Judge will stop after assigning five
+powers, and the other two powers will not exist: their units will
+be missing and their centers open for capture as neutral supply
+centers. This is more intended for variants where the number of
+powers can be varied without upsetting game balance. The number
+of players will be adjusted to equal the number of powers, unless
+set to a lower value using the <span class="Keywords"><a
+href="#SETPLAYERS">SET PLAYERS</a></span> command.</p>
+<table class="commandterm" summary="" border="0" cellspacing="0"
+cellpadding="0" width="100%">
+<tr>
 <td class="commandterm"><a id="SETRAILWAYS"
 name="SETRAILWAYS">SET [NO] RAILWAYS</a></td>
 <td class="versioncode">{0.8.11}</td>
@@ -4663,9 +4707,17 @@ PASSWORD</a></td>
 <td class="indexterm"><a href="#SETPLAYERS">SET PLAYERS</a></td>
 <td class="indexref"><a
 href="#generalvariantsettings">9.1</a></td>
+<td class="indexterm"><a href="#SETPORTAGE">SET PORTAGE</a></td>
+<td class="indexref"><a
+href="#generalvariantsettings">9.1</a></td>
+</tr>
+<tr>
 <td class="indexterm"><a href="#SETPOSTALPRESS">SET POSTAL
 PRESS</a></td>
 <td class="indexref"><a href="#presssettings">8.5</a></td>
+<td class="indexterm"><a href="#SETPOWERS">SET POWERS</a></td>
+<td class="indexref"><a
+href="#generalvariantsettings">9.1</a></td>
 </tr>
 <tr>
 <td class="indexterm"><a href="#SETPREFERENCE">SET
