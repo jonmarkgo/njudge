@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                20th February 2001
+Greetings from the Diplomacy* Adjudicator!!                4th April 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
@@ -257,6 +257,10 @@ mod/mac SET [NO]ADJACENCY
 mod/mac SET [NO]ASSASSINATIONS
         Disables/enables optional assassination rules.
 
+mod/aft*SET [NO]ATTACK TRANSFORM
+	Transformations on attacked but not dislodged units will fail/work. 
+	See file 'transform' for more details.
+ 
 mod/aft*SET BLANKBOARD
         Set the game to start in a build phase, with no units, so that players
 	can place a different initial stating unit position.
