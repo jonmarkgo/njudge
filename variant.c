@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2001/10/26 23:20:34  nzmb
+ * put the crowded_1898 variant in (Tim Miller)
+ *
  * Revision 1.7  2001/10/20 12:11:16  miller
  * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
  *
@@ -126,7 +129,7 @@ int vvalue[] =
 	V_crowded_1898,		/* 32 crowded_1898		     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
-	F_BLIND,		/* Blind movement option           */
+	F_BLIND | F_QUIET,	/* Blind movement option           */
         F_SHORTHAND,		/* Shorthand press option          */
 	F_WINGS /* , */		/* Wings (for modern) variant      */
 	/* F_AFRULES  */        /* Army/Fleet Rules variant        */
