@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2003/05/24 21:19:23  millis
+ * Bug fix 130, allow seed.variant and report.variant file names
+ *
  * Revision 1.24  2003/05/05 23:22:45  nzmb
  * Change so that the Judge now looks in GAME_DIR when deciding whether or not
  * a new game is going to duplicate an already used name.
@@ -762,7 +765,7 @@ int mail_signon(char *s)
 			time(&now);
 			ded[dipent.players[player].userid].ls = now;
 		} else {
-			if (n == OBSERVER) {
+			if (n == OBSERVER && !(dipent.phase[6] == 'X' && dipent.seq[0] == 'x')) {
 				j = dipent.seq[0] == 'x' ? '0' + dipent.np - dipent.seq[1] : 0;
 				if (dipent.n < MAXPLAYERS - j) {
 					if (!*raddr) {
