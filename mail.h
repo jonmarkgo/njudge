@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.5  2002/07/16 18:14:22  nzmb
+   ** Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+   **
    ** Revision 1.4  2002/05/11 09:15:33  greg
    ** Minor bug fixes
    ** - fixed subjectline for absence requests
@@ -54,7 +57,6 @@ int i_am_really_master;		/* Non-zero if really a master signed on	*/
 int i_am_really_jk;		/* Non-zero if really a jk signed on		*/
 int starting;			/* Nonzero if quorum has been reached           */
 int player;			/* Player ordinal if signon processed           */
-int generic;			/* Nonzero if new generic game needed           */
 int listflg;			/* Non zero if a list command was processed     */
 int broadcast;			/* Non zero to send a press message out         */
 int broadcast_master_only;	/* Non-zero if a master-only message to send    */

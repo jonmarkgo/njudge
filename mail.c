@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.45  2003/05/14 07:59:18  nzmb
+ * Fixed bug #122 -- splits dip.reply into part created before and after
+ * the GM issues a "become" command.
+ *
  * Revision 1.44  2003/05/13 07:23:58  nzmb
  * Fixed bug #48 by limiting to 100 the number of infoplayer request that can be sent in one e-mail
  *
@@ -339,8 +343,6 @@ static int cvalue[] =
  FORCE_BEGIN,
  COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
-
-extern char *generic_names[];
 
 
 void shiftleft(int dist) {
@@ -2250,8 +2252,6 @@ int mail(void)
                                             broadcast = 1;
 
                                         /* Now set the flags that will start the game */
-                                            if (dipent.seq[2] == 'x')
-                                                generic++;
                                             strcpy(dipent.seq, "001");
                                             starting++;
                                         } else {
@@ -2445,29 +2445,6 @@ int mail(void)
 	if (signedon) {
 		do {
 			putdipent(nfp, 1);
-			if (generic) {
-				char c;
-				for (c = dipent.name[0]; c <= 'z'; c++) {
-					if (generic_names[c - 'a'][1] != '*') {
-						i = dipent.flags;
-						newdipent(generic_names[c - 'a'], V_STANDARD);
-						dipent.seq[2] = 'x';	/* Make this the new generic game */
-						dipent.seq[3] = '\0';
-						if (dipent.players[0].power == MASTER) {
-							dipent.n = 1;
-							dipent.flags = i;
-						}
-						putdipent(nfp, 1);
-						generic = 0;
-						pprintf(cfp, "%sGame '%s' is now waiting for new players.\n", NowString(),
-							dipent.name);
-						break;
-					}
-				}
-				if (c > 'z') {
-					fprintf(xfp, "Out of generic names: '%s'.\n", dipent.name);
-				}
-			}
 		} while (getdipent(mfp));
 		fclose(mfp);
 		ferrck(nfp, 2003);

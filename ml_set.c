@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.45  2003/05/24 22:55:43  millis
+ * Bug 142, allow use of AutoCreate flag
+ *
  * Revision 1.44  2003/05/16 20:37:45  millis
  * Small compile error fix.
  *
@@ -332,8 +335,6 @@ void CheckForGameStart()
           /*mail_igame();*/
 	  if (!(dipent.xflags & XF_MANUALSTART) ) {
 	     /* Following will signal game is ready to start */
-	      if (dipent.seq[2] == 'x')
-                                generic++;
               strcpy(dipent.seq, "001");
 	      starting++;
 	} else {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2003/05/24 23:42:22  millis
+ * Fix bug 32, do not show signon if game terminated
+ *
  * Revision 1.25  2003/05/24 21:19:23  millis
  * Bug fix 130, allow seed.variant and report.variant file names
  *
@@ -146,13 +149,6 @@
 #include "functions.h"
 #include "plyrdata.h"
 #include "porder.h"
-
-char *generic_names[] =
-{"b*", "c*", "d*", "e*", "f*", "g*",
- "h*", "i*", "j*", "k*", "l*", "m*",
- "n*", "o*", "p*", "q*", "r*", "s*",
- "t*", "u*", "v*", "w*", "x*", "y*", "z*",
- "a*"};
 
 #define ADMINISTRATOR	'@'
 
@@ -309,14 +305,6 @@ int mail_signon(char *s)
 		putdipent(nfp, 1);
 	}
 
-	if (!name[1] && dipent.seq[strlen(dipent.seq) - 1] != 'x') {
-		if (!msg_header_done)
-			msg_header(rfp);
-		fprintf(rfp,
-			"Sorry, there are no generic games forming.  Use the 'list' command\n");
-		fprintf(rfp, "to get a list of the names of games that are forming.\n");
-		return E_WARN;
-	}
 	if (!found) {
 		if (name[0] == '?') {
 			struct stat sbuf;
@@ -344,13 +332,6 @@ int mail_signon(char *s)
 				fprintf(rfp,
 					"want to create a new game with this name.  Use the 'list' command\n");
 				fprintf(rfp, "if you want to see which games already exist.\n");
-				return E_WARN;
-			}
-			lookfor(&name[1], generic_names, nentry(generic_names), &i);
-			if (i) {
-				if (!msg_header_done)
-					msg_header(rfp);
-				fprintf(rfp, "Sorry, '%s' is a reserved name.\n", &name[1]);
 				return E_WARN;
 			}
 			/* name[0] = 'D'; */
@@ -387,7 +368,11 @@ int mail_signon(char *s)
 		} else {
 			if (!msg_header_done)
 				msg_header(rfp);
-			fprintf(rfp, "Invalid signon name '%s' given.\n", name);
+			if (create) {
+			    /* Bug 97, give a more useful error message on bad create */
+			    fprintf(rfp, "To create a game, you need an initial '?' character, as in 'CREATE ?%s ...' \n", name);
+			} else 
+			    fprintf(rfp, "Invalid signon name '%s' given.\n", name);
 			return E_WARN;
 		}
 	} else {
@@ -529,8 +514,6 @@ int mail_signon(char *s)
 		if (name[0] == '?' && ++dipent.seq[1] == '0' + dipent.no_of_players) {
 		 /* Game is startable, lets see if starting is allowed */
 		    if (!(dipent.xflags & XF_MANUALSTART) ) {
-			if (dipent.seq[2] == 'x')
-				generic++;
 			strcpy(dipent.seq, "001");
 			starting++;
 		    } else {
