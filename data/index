@@ -704,11 +704,11 @@ mod/    SET PUBLIC
         Equivalent to "SET LIST".
 
 mod/    SET [NO] QUIET
-        Sets (or clears) the "quiet" flag.  This flag prevents announcements about power
-        abandonment, power takeovers and such from being broadcast to the
-        other players or observers.  Its purpose is to prevent information
-        from being disclosed in gunboat games, particularly tournaments where
-        multiple games may lose the same player.
+        Sets (or clears) the "quiet" flag.  This flag prevents announcements
+        about power abandonment, power takeovers and such from being broadcast
+        to the other players or observers.  Its purpose is to prevent
+        information from being disclosed in gunboat games, particularly
+        tournaments where multiple games may lose the same player.
 
 mod/bgs SET [NO] RAILWAYS                                             {0.8.11}
         Disables/enables railways, in a variant that has this option coded
