@@ -113,6 +113,11 @@ adm/    FIXID siteid site_name
         times 100 as a siteid and must be fixed to some non- even multiple of
         100.
 
+mod/	FORCE BEGIN							{1.3.3}
+	Forces a game to begin, even if not enough players are signed on. The
+	missing players will be filled in by 'dummy players' that are already
+	abandoned (to allow real people to signon).
+
 any/    GET file
         To get a particular file.  For a complete list of files, get file
         'flist'.  Get file 'info' for a description of the more important
