@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/05/02 22:29:16  millis
+ * Added support for neutrals and artillery units
+ *
  * Revision 1.9  2003/01/14 13:56:46  millis
  * Updated with ustv merged changed
  *
@@ -449,6 +452,12 @@ int gamein(void)
 			pr[unit[nunit].loc].unit = nunit;
 		}
 
+		if ((dipent.x2flags & X2F_NOGARRISONS) &&
+		    unit[nunit].type == 'G') {
+		    /* Game does not allow garrisons, so remove it */
+		    pr[unit[nunit].loc].gunit = 0;
+		    nunit--;
+		}
 	}
 
 	for (i= nunit+1; i < MAXUNIT; i++) 

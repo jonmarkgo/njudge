@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.39  2003/05/03 14:22:51  millis
+ * Really small change
+ *
  * Revision 1.38  2003/05/03 14:19:33  millis
  * Merged in USTV version, with Neutrals etc.
  *
@@ -3573,7 +3576,7 @@ void mail_setp(char *s)
                                                 "Game now has NO summer turns.\n", CATF_NORMAL);
 			}
                         break;
-/*** To be finished
+
 		case SET_GARRISONS:
 			if (CheckNotStarted(NULL))
                         {
@@ -3589,7 +3592,7 @@ void mail_setp(char *s)
                             CheckAndToggleFlag(&dipent.x2flags, X2F_NOGARRISONS, "NoGarrison", CATF_SETON,                                                "Game now disallows garrisons.\n", CATF_NORMAL);
                         }
                         break;
- ***/
+
 		case SET_PREFLIST:
 			if ((dipent.seq[0] != 'x') && !starting) {
 				fprintf(rfp, "The preference settings cannot be changed after the game has started.\n");

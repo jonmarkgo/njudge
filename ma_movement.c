@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2003/01/13 18:19:41  millis
+ * Merge from ustv
+ *
  * Revision 1.15  2002/12/28 21:25:25  millis
  * Fixed typo
  *
@@ -401,6 +404,10 @@ int ma_movein(char **s, int p)
 
 
 	case 'v':		/* convert */
+		if (dipent.x2flags & X2F_NOGARRISONS) {
+			errmsg("No garrisons allowed in this game, so conversions are illegal.\n");
+			return E_WARN;
+		}
 		*s = get_type(*s, &cc);
 		if (is_garrison(u) && cc == 'x') {
 			if (has_port(p1)) {

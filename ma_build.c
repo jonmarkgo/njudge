@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.8  2003/01/13 18:16:11  millis
+ * Merged from ustv
+ *
  * Revision 1.7  2003/01/05 11:18:10  millis
  * Fixed bug 87
  *
@@ -114,6 +117,10 @@ int ma_buildin(char **s, int p)
 				return E_WARN;
 			}
 		} else if (type == 'G') {
+			if (dipent.x2flags & X2F_NOGARRISONS) {
+			        errmsg("This game does not allow garrisons.\n");
+				return E_WARN;
+			}
 			if (!has_fortcity(p1)) {
 				errmsg("Cannot build a garrison in %s which isn't fortified.\n",
 				       pr[p1].name);
