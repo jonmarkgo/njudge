@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.34  2003/08/18 23:16:43  millis
+ * Refix bug 211
+ *
  * Revision 1.33  2003/08/14 12:46:26  millis
  * Fix bug 211
  *
@@ -586,6 +589,10 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_AUTOCREATE) {
                 strcatf(line, "AutoCreate", &first_flag);
         }
+
+	if (dipent.x2flags & X2F_EXTRA_UNITS ) {
+		strcatf(line, "ExtraUnits", &first_flag);
+	}
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {

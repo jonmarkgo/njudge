@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/07/30 12:15:12  millis
+ * Fix bug 208
+ *
  * Revision 1.10  2003/01/13 22:38:50  millis
  * merged in from ustv
  *
@@ -741,6 +744,11 @@ int main(int argc, char *argv[])
                                            power_name, army_list, fleet_list); */
                                 }
                                 break;
+
+
+			case 'E': /* Extra Unit(s) */
+				fprintf(stderr, "Extra units not yet implemented!");
+				break;
                                          
 			/*
 			 * Comments.

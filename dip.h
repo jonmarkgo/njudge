@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.37  2003/09/09 18:51:28  jaldhar
+ * Got rid of port.h and replaced with some extra configure checks.  The
+ * include strings.h was not carried over because it is commented out and
+ * likely wouldn't work anyway.
+ *
  * Revision 1.36  2003/08/25 14:39:36  millis
  * Fixed bug 220
  *
@@ -306,8 +311,10 @@
 #define X2F_NOGARRISONS		0x100000 /* In Mach, to disable garrisons */
 
 #define X2F_AUTOCREATE		0x200000 /* When game ends, start another one */
-#define X2F_CAPTUREWIN         0x400000 /* Powers win the game by capturing another's HCs */
+#define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 #define X2F_TOUCHPRESS		0x800000 /* Powers can only press to neighbours */
+#define X2F_EXTRA_UNITS		0x1000000 /* Game has extra unit(s) according to map file */
+
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
