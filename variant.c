@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2004/08/07 16:05:42  machmstr
+ * All AH Mach variants added and then some
+ *
  * Revision 1.17  2004/08/07 01:35:00  Sergio Lidsell
  * All AH Mach variants added and then some
 
@@ -270,10 +273,10 @@ char *owners[] =
 	"British Columbian","Californian","Mexican","Floridian","Heartlander","New Yorker",
 	"Peruvian","Quebecois","Texan","Cuban",
 	"Ethiopian","Ivory-Coastish","Libyan","Saudi-Arabian","South-African","Zairean",
-	"Northern","Southern","Eastern","Western","Cyprus","Dissentos",
+	"Northern","Southern","Eastern","Western","Cypriotic","Dissentos",
 	"Syrian","Carthaginian","Macedonian","Roman","Greek",
 	"Belgian", "Bulgarian", "Danish", "Norwegian",
-	"Portugese", "Rumanian", "Serbian", "Swedish", "Tunisian",
+	"Portuguese", "Rumanian", "Serbian", "Swedish", "Tunisian",
         /* mach_aoc +6 */
 	"Scaligerian", "Pisan", "Genoese", "Sabaud", "Trinacrian", "Provencal",
 	/* mach_este +1 */
