@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2002/04/15 12:55:40  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.2.2.2  2001/10/19 23:24:36  dema
  * Added handling for inital money
  *
@@ -517,10 +520,10 @@ int main(int argc, char *argv[])
 				s = rw[nrw].name;
 				while (*t && *t != ':') {
 				    *s = *t;
-				    *s++; *t++;
+				    s++; t++;
 				}
 				*s = '\0';
-				fprintf(stderr,"Adding railway %s\n", s);
+				/* fprintf(stderr,"Adding railway %s\n", s); */
 				get_prov( rw[nrw].name, &p, &m);
                                 if (!p) {
                                     fprintf(stderr,"Railway province not found.\n");
