@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/02/17 12:41:41  millis
+ * Fixed Bug 108, make lines >=1024 terminate in '\n'
+ *
  * Revision 1.12  2003/02/05 23:53:43  millis
  * Removed dipstats files.
  * Also added in new JUDGE_TZ variable, to specify timezone
@@ -106,7 +109,7 @@ int conf_init(void)
 	conf_set("RUNDIPMAP_CMD", "./rundipmap");
 	conf_set("DIP_CMD","./dip");
 	conf_set("ATRUN_CMD","./atrun");
-	conf_set("LENLIMIT_CMD","./lenlimit);
+	conf_set("LENLIMIT_CMD","./lenlimit");
 	conf_set("GAME_DIR","D");
 
 	conf_set("GAMES_MASTER", "judge_request");
