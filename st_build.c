@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.22  2003/05/10 00:46:15  millis
+   ** Bug 140 fix, display 'orders' when orders and 'results' when results
+   **
    ** Revision 1.21  2003/05/04 22:39:45  millis
    ** Fixed build counting in ExtraCentres() game
    **
@@ -97,6 +100,7 @@
  *  03 Dec 1999 Millis Miller  Discount blockaded centres from powers builds
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -154,7 +158,7 @@ int CountCentres( int p )
 }
 
 
-static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
+static int nu[NPOWER + 1], lu[NPOWER + 1];
 int one_owned[NPOWER + 1];
 /* See if passed location is in conditions to be built on */
 int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
@@ -255,7 +259,7 @@ void init_build(void)
 			if (pr[i].owner == p && 
 			    ((pr[i].type == dipent.pl[p]) || dipent.xflags & XF_BUILD_ANYCENTRES) && 
 			    pr[i].blockaded == 0 )
-				cnb[p] = 0;
+				/* Was doing something here, no more! */
 			if (pr[i].owner == p && pr[i].type == dipent.pl[p]) { 
 				one_owned[p]++;
 			}
@@ -399,8 +403,7 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 		break;
 
 	default:
-		fprintf(rfp, "Invalid build order encountered.\n");
-		err++;
+		errmsg("Invalid build order encountered.\n");
 		return E_WARN;
 	}
 	if (out_text != NULL) strcpy(out_string, out_text);
@@ -412,7 +415,7 @@ int buildin(char **s, int p)
 
 	char type, order;
 	unsigned char *t;
-	int i, j, u, p1, c1;
+	int i, j, u=0, p1, c1;
 
 	/*
 	   **  Process lines of the form:
@@ -437,12 +440,12 @@ int buildin(char **s, int p)
 			p = power(pr[p1].type);
 		}
 	}
-	if (order == 'x')
+	if (order == 'x' && !(dipent.xflags & XF_ALTBUILD))
 		order = nu[p] >= 0 ? 'b' : 'r';
 
 	if (!(dipent.xflags & XF_ANYDISBAND))
-	if ((order == 'b' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) && cnb[p] ))) ||
-	    (order == 'w' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) && cnb[p] ))) ||
+	if ((order == 'b' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) ))) ||
+	    (order == 'w' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) ))) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
@@ -650,9 +653,28 @@ int buildin(char **s, int p)
 		break;
 
 	case 't':
-                if (!(dipent.xflags & XF_TRANS_BUILD)) {
+		u = pr[p1].unit; /* Find out what unit is there */
+
+		if (!(dipent.xflags & XF_TRANS_BUILD)) {
                         errmsg("Build transformation is not enabled for this game.\n");
                         return E_WARN;
+                }
+
+	        if (type == 'x') {
+                    errmsg("Unknown unit type to transform to.\n");
+                    return E_WARN;
+                }
+                if (unit[u].type == type && type != 'F') {
+                    errmsg("Error: Unit in %s is already of type %s.\n",
+                    pr[p1].name, Utype(unit[u].type));
+                    return E_WARN;
+                }
+                /* If a fleet, check that coast is different */
+                if (type == 'F' && unit[u].type == 'F') {
+                    if (c1 == unit[u].coast) {
+                        errmsg("Fleet %s already on %s.\n", pr[p1].name, mtype[c1]);
+                        return E_WARN;
+                    }
                 }
 
 		/* OK, let's see if this can be transformed */
@@ -765,8 +787,7 @@ int buildin(char **s, int p)
 
 
 	default:
-		fprintf(rfp, "Invalid build order encountered.\n");
-		err++;
+		errmsg("Invalid build order encountered.\n");
 		return E_WARN;
 	}
 	return 0;
@@ -950,7 +971,7 @@ void buildout(int pt)
 					break;
 			}
 			if (!(dipent.xflags & XF_ANYDISBAND)) {
-			    if (i > npr || (!(dipent.xflags & XF_ALTBUILD) && cnb[p]) ) {
+			    if (i > npr || (!(dipent.xflags & XF_ALTBUILD) ) ) {
 				i = nu[p] - 1 + ExtraCentres();
 				if (processing)
 				    fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
