@@ -1,0 +1,51 @@
+Greetings from the Diplomacy* Adjudicator!!                   8th June, 2000
+Absence.
+
+An attempt to remove the greatest burden from moderators: that of 
+administrating holiday requests.
+
+Now players (and the moderator too) can indicate periods when they will
+not be available and when the game should extend its deadlines automatically.
+
+The concerned player commands are:
+
+    SET ABSENCE start_date [TO end_date]
+    Requests an absence between the date sepcified (or the single day if no
+    end date is given. Neither start_date nor end_date can be before the
+    current date. If end_date is before the current deadline, it will be
+    effectively ignored. If absences are overlaid, they count as separate
+    absences. 
+    
+
+    SET NOABSENCE start_date [TO end_date]
+    Cancel a requested absence period. The period cancelled is one which 
+    includes the specified start_date. The end_date is ignored. The first
+    absence found which includes the specified date is the one cancelled.
+
+Only a maximum of 3 (three) absences can be requested per player. Masters too
+can request absences (with this same limit) but observers cannot.
+Each requested absence will generate an informative message to the master when
+requested, and he will also see the pending future absences every time he sends 
+a message for the game (as per moves). 
+
+If an absence request exceeds the game limit, a message will be sent to the master
+who must manually activate the absencei for it to take effect.
+
+When it is time for the next turn deadline to be calculated, the deadline is 
+increased for each absence requested when at least one of the following 
+conditions is met:
+ - Master requested the absence
+ - Player has a move to make and game is either StrictWait or NoPress
+ - Game has press and is not StrictWait
+ - The game is set to 'quiet' mode.
+
+All absences which become out of date (due to a previous absence activating,
+master manually advancing the deadline or deadline automatically exceeding
+the absence) will be deleted when the next turn is processed.
+
+Note: The deadline will be ajusted to be equal to the last end date requested.
+So, if want some time after your return to consider your move, addd a little
+bit accordingly.    
+-----
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

@@ -1,0 +1,71 @@
+Greetings from the Diplomacy* Adjudicator!!                   30 July, 2000
+transform
+
+Several new options are provided allowing players to transform units under
+restricted circumstances, allowing an ill-chosen fleet to be replaced by
+an army etc. 
+These options are passed following the 'set transform' command, and can
+be passed in any order. They are divided into two categories, 'when' switches 
+and 'where' switches'. Within each category, they are mutually exclusive, hence
+setting one then another will cause the last one received to be activated.
+
+These non-default game settings can be chosen in the following ways:
+
+When switches:
+--------------
+move:
+Transformations are allow in any move phase.
+Any unit ordered to transform that is dislodged has the transformation 
+automatically cancelled. As a transform move works like a hold move, it can 
+however be given support and, if not dislodged, will work. You do not support 
+a transformation, merely support said unit to hold.
+
+build:
+Transformations are allowed in any build phase. 
+As any player can perform this movement in a build phase,
+unless no buildable centres are occupied by a unit of theirs, an automatic
+'wait' is placed on the build phase.
+
+anytime:
+Transformations are allowed in either a move or a build phase.
+
+none:
+Transformations are not allowed in any phase (i.e. no transformations).
+
+Where switches:
+--------------
+home centre:
+Transformations are allowed only for units on a player's home centres.
+
+one centre:
+Transformations are allowed in any centre as long as the player owns at
+least one home centre.
+
+any centre:
+Transformations are allowed in any centre.
+
+anywhere:
+Transformations are allowed in any province. The exceptions to this are
+water spaces, and for wings that are blockading during a build phase.
+
+
+The order syntax is quite simply:
+
+for moves:
+[<unit>] <location> transforms to <unit> [<coast>]
+
+for build phases:
+transform <unit> <location> [<coast>]
+
+The abbreviation 'trafo' can be used for both of these forms, but otherwise 
+cannot be further shortened (to avoid confusion with the 'transport' 
+abbreviations already in existance).
+
+
+Moderator note: You can freely enable/disable these switches before the game 
+starts but NOT once it has begun.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

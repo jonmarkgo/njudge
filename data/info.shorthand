@@ -1,0 +1,80 @@
+Greetings from the Diplomacy* Adjudicator!!                   June 18th, 2000
+info.Shorthand.
+
+Shorthand is a variant modification allowing only a standardised syntax for
+press messages, intended to egt accross the basics of a message between 
+powers, without allowing player personalities/language barriers etc. to 
+come into play.
+
+It is valid for any variant that is played, though it has little effect on 
+no-press games ;-). It remains the same whether the game is a partial press,
+broadcast only, grey press or even fake. Messages sent between players and/or
+observers must conform to the syntax specified below: if not, they will not be
+sent but will be rejected with a brief error message to the originator.
+Messages whose sole destination is the moderator are the only exception, and
+will be transmitted 'cleartext'. (Note that messages which include the moderator
+as one of the destinations must still conform to the syntax rules, to avoid 
+attempts to circumvent press restrictions.)
+
+As with any variant modifier, this can be only added to a game: it cannot
+be removed.
+
+Syntax:
+-------
+
+The valid syntax for shorthand press is as follows:
+[[[<powerlist>] INFORMS ] <powerlist> ] <qualifier> <powerlist> [NOT] <command> 
+
+<powerlist> = One letter abbreviation for power(s) required
+<qualifier> = ACCEPTS |
+              REJECTS |
+              PROPOSES
+<command> = DRAW [<phase>] |
+            PEACE [<phase>] |
+            ALLY [<phase>] [TARGET <powerlist>] |
+            PROVINCE [<phase>] <provlist> |
+            DMZ [<phase>] <provlist> |
+            ORDERS [<phase>] <order-spec>
+
+<provlist> = <prov-name> [',' <provlist>]
+<prov-name> = { any valid province abbreviation text }
+<order-spec> = <phase-valid-order>
+<phase> = 'F'|'S'<year>'M'|'R'|'B' (but not S<year>B)
+<phase-valid-order> = {any order valid for specified phase,
+                       current phase is used if no phase specified}
+
+INFORMS = 'inform' | 'informs'
+ACCEPTS = 'accept' | 'accepts'
+REJECTS = 'reject' | 'rejects'
+PROPOSES = 'propose' | 'proposes'
+NOT = 'not' | '!'
+DRAW = 'draw'
+PEACE = 'peace'
+ALLY = 'ally' | 'alliance'
+TARGET = 'target' | 'targets'
+PROVINCE = 'province' | 'provinces'
+ORDER = 'order' | 'orders'
+
+
+Some examples of valid orders are:
+
+A accepts RT draw
+F rejects G peace
+I proposes R ally target TA
+informs E proposes not F province Belgium
+I informs GF proposes E orders F1901M A Edi - Nth - Nwy
+
+
+Note: 
+ - Messages are case-insensitive
+ - Province list is limited to a maximum of three - excess is ignored.
+ - Orders are checked to see if syntactically correct only
+ - No spaces allowed in phase specification <phase>
+ - A Shorthand no-press game is not forbidden but makes little sense!
+
+
+Millis Miller
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

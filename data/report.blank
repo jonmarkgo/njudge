@@ -1,0 +1,11 @@
+
+Starting position for BlankBoard game.
+
+There are no units on the board.
+
+Each power owns their respective center(s) and may build the unit(s)
+of their choice.
+
+Note: If this variant does not start in a build phase, it will
+      automatically pass through the phases until it is one.
+

@@ -1,0 +1,38 @@
+Greetings from the Diplomacy* Adjudicator!!                   Jan 02, 2000
+Info.Blind.
+
+Any game can be played with the 'blind' variant modifier. This is intended
+to allow for players to only see movements that their units make and a 
+'limited' view around them.
+
+As the exact definition of what a limited view is varies, and to provide 
+somthing that is better than the previous non-solution provided, the following
+occurs when a game is set as blind:
+
+ -  No movement results are sent to players. Instead, they are sent to the 
+    moderator(s) only, and all players/observers are merely informed that a
+    turn occured. The players must be infomed manually by the moderator of the
+    moves that they could see.
+
+ -  The 'list' command will not give details to non-moderators whilest a game is
+    in progress on unit positions.
+
+ - The summary position will not give historic centre progression whilest a 
+    blind game is in progress.
+
+ - No information will be given to players attempting illegal moves to try to 
+   work out where other player's units are (for example a non-blind game would give
+   an error if a support order were offered to a unit that is not in a specified 
+   position).
+
+ - The game will not check proxy orders when blind - impossible orders will be 
+   silently ignored.
+
+Perhaps in the future, a more comprehensive blind implementation will be made!
+Until then, I hope this suffices.
+
+Millis Miller
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.
