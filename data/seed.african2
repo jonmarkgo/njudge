@@ -1,0 +1,21 @@
+S1901M
+A: A Pretoria
+A: F Cape Town
+A: F Port Elizabeth
+E: A Addis Ababa
+E: A Djibouti
+E: F Somalia
+I: A Freetown
+I: A Ouanadougou
+I: F Abidjan
+L: A Bengasi
+L: A Tripoli
+L: F Tunis
+S: A Riyadh
+S: F Damascus
+S: F Mecca
+Z: A Kisangani
+Z: A Lubumbashi
+Z: F Kinshasa
+-1 Null ownership/contested record will initialize from the map data.
+-1
