@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                4th April 2001
+Greetings from the Diplomacy* Adjudicator!!                15th April 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
@@ -236,6 +236,11 @@ mod/aft+SET ANYDISBAND
 	gaining option to rebuild on a buildable centre if desired).
 	A 'wait' is set for all active players during the build phase.
 	Opposite of SET NORMAL DISBAND, see below.
+
+mod/aft*SET [NO]ATTACK TRANSFORM
+	Disallow/allow transformations if a unit suffers an unsupported
+	attck.
+	See file 'transform' for more details about transformation games.
 
 mod/aft*SET AUTOPROC[ESS]
 	Lets the judge automatically process turns when possible. It is 
