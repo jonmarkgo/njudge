@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.14  2001/12/29 20:38:04  nzmb
+ *
+ * Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
+ * stable.
+ *
  * Revision 1.12  2001/10/23 00:39:52  greg
  * Added subjectline for Promote command and fixed subjectline for Eject command to show power ejected - not master.
  *
@@ -2135,8 +2140,8 @@ void mail_reply(int err)
 		if (!strncmp(subject, "[You are late!] ", 16))
 			shiftleft(16);
 
-		if (!strncmp(subject, JUDGE_CODE, 4)) {
-			shiftleft(4);
+		if (!strncmp(subject, JUDGE_CODE, strlen(JUDGE_CODE))) {
+			shiftleft(strlen(JUDGE_CODE));
 
 			if (signedon) {
 				if (!strncmp(subject, ":", 1)) {
