@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/05/16 09:40:05  miller
+ * Blind game also sets quiet flag
+ *
  * Revision 1.8  2001/10/26 23:20:34  nzmb
  * put the crowded_1898 variant in (Tim Miller)
  *
@@ -129,7 +132,7 @@ int vvalue[] =
 	V_crowded_1898,		/* 32 crowded_1898		     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
-	F_BLIND | F_QUIET,	/* Blind movement option           */
+	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
         F_SHORTHAND,		/* Shorthand press option          */
 	F_WINGS /* , */		/* Wings (for modern) variant      */
 	/* F_AFRULES  */        /* Army/Fleet Rules variant        */
