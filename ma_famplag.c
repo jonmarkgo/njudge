@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2002/02/25 11:51:51  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.3.2.1  2001/10/19 23:36:03  dema
  * Added missing include
  *
@@ -39,6 +42,7 @@ void fam_plag(int t)
 	PFTAB(pftab);
 	char *typetext;
 	char Typetext[20];
+	int at_least_one = 0;   /* True if at least one province is struck */
 
 	switch (t)
 	{
@@ -97,7 +101,11 @@ void fam_plag(int t)
 	    (t == FAMINE && !NO_FAMINE) ||
 	    (t == STORM && !NO_STORMS)) {
 
-		die_rolls(DIE_FAMPLAG);
+		if (t == STORM)
+			die_rolls(DIE_STORMS);
+		else
+			die_rolls(DIE_FAMPLAG);
+
 		if (dipent.xflags & XF_MACH2) {
 		    d = die(1,6);
 		    /* Now map to 2d6 settings */
@@ -180,12 +188,20 @@ void fam_plag(int t)
 			fprintf(rfp, "\nProvinces struck: ");
 			s = buf;
 			for (p = 1; p < npr; p++) {
+			        if (t == STORM && !water(p))
+					continue;  /* No storms on land! */
+				if (t!= STORM && water(p))
+					continue;  /* No famine/plauge on water! */
 				if (is_infected(p)) {
 					sprintf(s, "%s%s", s != buf ? ", " : "", pr[p].name);
 					while (*s)
 						s++;
+				    at_least_one = 1;
 				}
 			}
+			if (!at_least_one)
+			    fprintf(rfp,"*None*");
+
 			sprintf(s, ".\n");
 			wrap(rfp, buf, 18, 18);
 
