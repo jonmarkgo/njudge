@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.60  2003/12/07 00:52:08  millis
+ * Fix bug 217
+ *
  * Revision 1.59  2003/11/09 18:59:42  millis
  * Fix bug 145
  *
@@ -2585,6 +2588,8 @@ void mail_reply(int err)
 void msg_header(FILE * fp)
 {
 	char *temp;
+	
+	if (msg_header_done) return: /* Already done, so exit */
 
 	/* The 4-letter Judge code (or "XXXX" if no code assigned yet).  */
 
@@ -2879,4 +2884,3 @@ static int InsertDummyPlayers()
     }
     return 1;  /* Dummy players inserted ok */
 }
-
