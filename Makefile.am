@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.19  2003/03/12 07:44:38  nzmb
+# Fix to try to get ascii2rec.c to link correctly.
+#
 # Revision 1.18  2003/03/05 02:57:54  nzmb
 # Small error in previous commit fixed.
 #
@@ -125,7 +128,7 @@ dip_SOURCES=	assign.c \
 ascii_to_ded_SOURCES=	ascii_to_ded.c \
 			plyrdata.c
 
-ascii2rec_SOURCES=   ascii2rec.c
+ascii2rec_SOURCES=   ascii2rec.c plyrdata.c
 
 cmap_SOURCES=	cmap.c \
 		jm.c \

@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.22  2003/03/21 14:07:14  millis
+# Small bug fix
+#
 # Revision 1.21  2003/03/21 14:02:04  millis
 # Changed spaces to tab
 #
@@ -222,7 +225,7 @@ cmap_SOURCES = cmap.c \
 
 lenlimit_SOURCES = lenlimit.c
 
-ascii2rec_SOURCES = ascii2rec.c
+ascii2rec_SOURCES = ascii2rec.c plyrdata.c
 
 ded_to_ascii_SOURCES = ded_to_ascii.c
 
