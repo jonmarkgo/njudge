@@ -6,7 +6,14 @@ If you want to run the judge so that it uses a different timezone to the
 default for the system, this is easily done using the UNIX environment 
 variable 'TZ'.
 
-If, for example, you wish the judge to run according to British time, add 
+A new variable is added to the judge dip.conf file, JUDGE_TZ.
+This is set according tothe UNIX time variable TZ, with one important change:
+The sign of the difference is inverted (I don't know why, just trust me!)
+
+An example for British timezone would be:
+JUDGE_TZ=GMT0BST
+
+Also, if you wish to have the interactive shell according to British time, add 
 the following line to the judge's .bashrc file (assuming using bash):
 
 export TZ=GMT0BST
@@ -19,7 +26,7 @@ The format is explained in the tzset() man page, but is simply:
 <tz-name><offset><dtz-name> , where:
 
  - <tz-name> is 3+ character name for normal timezone
- - offset is hour offset from Universal time
- - <dtz-name> is 3+ character ame for summer timezone
+ - offset is SIGN INVERTED hour offset from Universal time
+ - <dtz-name> is 3+ character name for summer timezone
 
 Millis Miller, 5th February 2003 
