@@ -32,6 +32,9 @@ char *variants[] =
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
+        "shorthand",		/* Shorthand press option          */
+	"wings" /* , */		/* Wings (for modern)		   */
+	/* "a/f" */		/* AirForces option		   */
 };
 
 int vvalue[] =
@@ -63,6 +66,9 @@ int vvalue[] =
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND,		/* Blind movement option           */
+        F_SHORTHAND,		/* Shorthand press option          */
+	F_WINGS /* , */		/* Wings (for modern) variant      */
+	/* F_AFRULES  */        /* Army/Fleet Rules variant        */
 };
 
 /*  Power names.  */
