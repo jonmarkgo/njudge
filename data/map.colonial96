@@ -1,10 +1,13 @@
 #
-# Colonial variant map file
+# Colonial96 variant map file
 # This is the later (1996) version, with several land bridges
 # - There is a land bridge between Sakhalin and Ota
 # - There is a land bridge between Sakhalin and Vladivostok
 #
 # $Log$
+# Revision 1.2  2002/12/30 12:26:36  millis
+# Corrected colonial96 land-bridges
+#
 # Revision 1.1  2002/12/28 01:18:45  millis
 # Bug 59, add colonial96 variant
 #
@@ -249,7 +252,7 @@ oma-xc: arb/nc arb/sc perg aras
 oms-mv: kra akm ore prm
 ore-mv: bok mos prm oms akm tas
 ota-mv: sak
-ota-xc: soj okhs
+ota-xc: soj okhs sak
 part-mv: seo mac
 part-xc: seo/wc yels mac
 pek-mv: mac sha lan mon
@@ -266,7 +269,7 @@ reds-xc: eri sud egy meds mec ade goa
 rum-mv: con ode
 rum-xc: con ode blas
 sak-mv: vla ota
-sak-xc: okhs
+sak-xc: okhs ota vla
 sar-mv: bor
 sar-xc: bor javs suns suls cels
 scs-xc: ann ton hk can nan ecs for luzs suls suns gos 
@@ -305,7 +308,7 @@ ubur-xc: bob ben ran
 up-xc: for ecs yels kyu kyo okhs mp tok 
 uru-mv: sik kag kir sem kra mon
 vla-mv: seo mac irk sak
-vla-xc: okhs seo/ec soj
+vla-xc: okhs seo/ec soj sak
 wio-xc: sio eio gom cey mad mys aras goa 
 yels-xc: ecs sha mac part seo/wc fus soj kyo up kyu 
 yun-mv: ass sik chu can may ubur
