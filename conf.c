@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -30,9 +33,9 @@ int conf_set(char *var, char *val)
 	 * smail can pick it up.
 	 */
 	if (!strcmp("JUDGE_CODE", var)) {
-		char line[1024];
-		sprintf(line, "%s=%s", var, val);
-		putenv(line);
+		char myline[1024];
+		sprintf(myline, "%s=%s", var, val);
+		putenv(myline);
 	}
 	return pd_ht_stash(&conf_table, var, strdup(val), free);
 }
@@ -57,6 +60,18 @@ int conf_init(void)
 	pd_ht_init(&conf_table, 0, NULL);
 
 	/* defaults follow */
+
+	/* Path for judge to reside in */
+	conf_set("JUDGE_PATH", "/.");
+
+	/* and add default commands */
+	conf_set("SUMMARY_CMD", "./summary");
+	conf_set("SMAIL_CMD", "./smail");
+	conf_set("RUNLISTMAP_CMD", "./runlistmap");
+	conf_set("RUNDIPMAP_CMD", "./rundipmap");
+	conf_set("DIP_CMD","./dip");
+	conf_set("ATRUN_CMD","./atrun");
+
 	conf_set("GAMES_MASTER", "judge_request");
 	/* games_opener is place to send opening moves for statistics */
 	conf_set("GAMES_OPENER", "nobody");
@@ -65,6 +80,7 @@ int conf_init(void)
 	conf_set("HALL_KEEPER", "nobody");
 	conf_set("BN_CUSTODIAN", "nobody");
 	conf_set("MN_CUSTODIAN", "nobody");
+	conf_set("EP_CUSTODIAN","nobody");
 	conf_set("OURSELVES", "judge");
 	conf_set("BITNET_GATEWAY1", "");
 	conf_set("BITNET_GATEWAY2", "");
@@ -86,6 +102,7 @@ int conf_init(void)
 	conf_set("D_CD", "-100");
 	conf_set("MAP_FILE", "data/map");
 	conf_set("MASTER_FILE", "dip.master");
+	conf_set("TMASTER_FILE", "dip.tmast");
 	conf_set("NO_CREATE", "dip.nocreate");
 	conf_set("LOG_FILE", "dip.log");
 	conf_set("CUTOFF_LENGTH", "78");	/* Length of longest print strings */
@@ -94,6 +111,10 @@ int conf_init(void)
 	conf_set("DIE_FAMPLAG", "995816");
 	conf_set("DIE_INCOME", "66144");
 	conf_set("CREATE_DEDICATION", "-10");
+	conf_set("SPECIAL_PW", "default");
+	conf_set("SYSLOG_FLAG", "0");
+	conf_set("STATS_FLAG", "0");
+	conf_set("STATS_DIR", "./stats");
 	return 1;
 }
 
@@ -114,28 +135,32 @@ void conf_usage(void)
 	exit(-2);
 }
 
-void conf_readfile(char *filename)
+void conf_readfile(char *directory, char *fname)
 {
-	char line[255];
+	char myline[255];
+	char filename[255];
 	FILE *conffile;
 	char *tmp;
 
 	fflush(stdout);
 	fflush(stderr);
 
+	sprintf(filename, "%s/%s", directory, fname);
+
 	conffile = fopen(filename, "r");
 	if (conffile == NULL) {
 		perror("unable to open config file");
+		perror(filename);
 		exit(-2);
 	}
-	while (fgets(line, 255, conffile) != NULL) {
+	while (fgets(myline, 255, conffile) != NULL) {
 		/* set the last newline to a null */
-		if ((tmp = strrchr(line, '\n'))) {
-			*tmp = 0;
+		if ((tmp = strrchr(myline, '\n'))) {
+			*tmp = '\0';
 		}
 		/* skip leading whitespace */
-		tmp = line;
-		while (isspace(*tmp)) {
+		tmp = myline;
+		while (isspace((unsigned char) *tmp)) {
 			tmp++;
 		}
 
@@ -175,11 +200,11 @@ static int conf_doline(char *tmp)
 	namlen = strcspn(tmp, " \t=");
 	strncpy(conf_var, tmp, namlen);
 	/* wierd, strncpy doesn't null terminate the string */
-	*(conf_var + namlen) = 0;
+	*(conf_var + namlen) = '\0';
 
 	varloc = strchr(tmp, '=') + 1;
 	/* skip over whitespace at the start of the value */
-	while (isspace(*varloc)) {
+	while (isspace((unsigned char) *varloc)) {
 		varloc++;
 	}
 
