@@ -1,4 +1,6 @@
-#Dipmach variant by Sergio Lidsell,  Vers. 1b August 5th 2003.
+#Dipmach variant by Sergio Lidsell,       Vers. 2.  August 15th 2003.
+#Major city incomes corrected. Alb and Naf changed from x to l
+#Variable incomes changed. Correction of abbreviation in plague table
 Switzerland,           l0. swi switz
 Adriatic Sea,          w0. adr adriatic  
 Aegean Sea,            w0. aeg aegean 
@@ -230,11 +232,11 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
 
 Variable Income:  City          dice   1  2  3  4  5  6 Initial
                   Vienna         1     1  2  2  3  3  4   0
-                  London         2     1  2  3  3  4  5   3
+                  London         2     1  2  2  3  3  4   3
                   Paris          1     2  3  3  4  5  6   1
-                  Berlin         2     1  2  3  3  4  5   3
+                  Berlin         2     1  2  2  3  3  4   3
                   Rome           1     2  3  3  4  4  5   1
-                  Moscow         2     1  2  3  3  4  5   3
+                  Moscow         1     1  2  3  4  5  5   3
                   Constantinople 1     1  2  3  3  4  4   0
                   Spain          1     0  0  0  1  1  1   0
                   Sweden         1     0  0  0  0  1  1   0
@@ -253,7 +255,7 @@ Center (province) order for summary report:
    bohem tyrol afric
 #End of province ordering
 
-#AEG has no storms
+#AEGean has no storms
 Storms:   2     3     4     5     6     7     8     9    10    11    12
      2:  tys  ----- ----- ----- ----- ----- ----- ----- ----- -----  bot 
      3: -----  bla  ----- ----- ----- ----- ----- ----- -----  lyo  -----
