@@ -6,7 +6,7 @@
 #define D_ACCESS         A_ANY  /* A_* */
 #define D_LEVEL          L_ANY  /* L_* */
 #define D_FLAGS          F_NORATE|F_NONMR|F_NOPLAGUE|F_GRACEDAYS|F_NOLIST       /* F_* */
-#define D_XFLAGS         0 /* XF_* */
+#define D_XFLAGS         XF_NORESUME /* XF_* */
 #define D_DEDICATE       -10000
 #define D_MOVE_CLOCK     1410
 #define D_MOVE_MINT      12.0
