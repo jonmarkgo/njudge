@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.3  2001/01/06 18:20:42  davidn
+ * Correction to parsing of players.DENY to only read lines with = at the
+ * start. This stops it reading lines which are commented out.
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Minor changes only
  *
@@ -535,9 +539,14 @@ void whogame(int f)
 	int x;
 
 	if ((dipent.flags & F_GUNBOAT)
-	    && (!signedon || dipent.players[player].power != MASTER))
+	    && (!signedon || dipent.players[player].power != MASTER)
+	    && (dipent.phase[6] != 'X'))
 		fprintf(rfp, "Game '%s' is a gunboat game.\n", dipent.name);
 	else
+		if ((dipent.flags & F_GUNBOAT) && (dipent.flags & F_NOREVEAL)
+		    && (!signedon || dipent.players[player].power != MASTER))
+			fprintf(rfp, "Game '%s' is a gunboat noreveal game.\n", dipent.name);
+		else
 		for (x = 0; x < dipent.n; x++)
 			if (dipent.players[x].power < 0)
 				continue;
