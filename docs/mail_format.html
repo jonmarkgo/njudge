@@ -5,91 +5,262 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030913;21084400">
+	<META NAME="CHANGED" CONTENT="20030914;12293700">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
 		@page { size: 21cm 29.7cm }
 		H1 { margin-bottom: 0.21cm }
-		H1.western { font-family: "Albany", sans-serif; font-size: 16pt }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
 		H1.cjk { font-size: 16pt }
 		H1.ctl { font-size: 16pt }
 		P { margin-bottom: 0.21cm }
-		P.western { font-size: 12pt }
+		P.western { font-family: "Arial", sans-serif; font-size: 12pt; font-weight: medium }
+		H2 { margin-left: 1cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt }
+		H2.cjk { font-size: 16pt }
+		H2.ctl { font-size: 16pt }
 	-->
 	</STYLE>
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H1 CLASS="western" ALIGN=CENTER><FONT FACE="Arial, sans-serif"><FONT SIZE=6>Njudge
-mail format </FONT></FONT>
-</H1>
-<P CLASS="western" ALIGN=CENTER><BR><BR>
+<P ALIGN=CENTER STYLE="margin-top: 0.42cm; margin-bottom: 0.5cm; font-weight: medium; page-break-after: avoid">
+<FONT FACE="Albany, sans-serif"><FONT SIZE=5 STYLE="font-size: 20pt">Description
+of mail format of Diplomacy electronic Judges</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
 </P>
-<P CLASS="western" STYLE="margin-bottom: 0cm"><FONT FACE="Arial, sans-serif">Version
-0.1 Christophe Courtois - 12<SUP>nd</SUP> September 2003 : first
-draft </FONT>
+<P CLASS="western">Version 0.1 Christophe Courtois - 13<SUP>th</SUP>
+September 2003 : first draft 
 </P>
-<H1 CLASS="western"><BR><BR>
-</H1>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Introduction</FONT></H1>
-<P CLASS="western"><FONT FACE="Arial, sans-serif">This document
-describes the output format of <I>the njude Diplomacy adjudicator.</I></FONT></P>
-<P CLASS="western" STYLE="margin-bottom: 0cm"><BR>
+<P CLASS="western"><BR><BR>
 </P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Goals</FONT></H1>
+<H1 CLASS="western">Introduction</H1>
+<P CLASS="western">This document describes the output format of <I>the
+njude Diplomacy adjudicator.</I></P>
+<P CLASS="western"><FONT COLOR="#ff0000"><I><FONT FACE="Arial, sans-serif">WARNING
+: </FONT></I>This is work in progress; please report any mistake,
+incoherence, gap...</FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
 <OL>
-	<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Describe the<I>
-	current mail format to make compatibility be</I>tween the judge and
-	the tools which use its output easier.</FONT></P>
-	<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Help the next
-	version of njudge to be fully compatible with the previous versions
-	(compatibility mode).</FONT></P>
-	<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Describe the
-	enhancements to this format in the new versions of njudge or other
-	judges.</FONT></P>
+	<LI><H1 CLASS="western">Goals and conventions</H1>
+</OL>
+<OL>
+	<LI><P CLASS="western"><SPAN STYLE="font-style: normal">Describe the
+	current mail format to make compatibility between th</SPAN>e judge
+	and the tools which use its output easier.</P>
+	<LI><P CLASS="western">Help the next versions of the judge to be
+	fully compatible with the previous versions (compatibility mode).</P>
+	<LI><P CLASS="western">Describe the enhancements to this format in
+	the new versions of njudge or other judges.</P>
 	<P CLASS="western"></P>
 </OL>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Existing mail
-types</FONT></H1>
-<P CLASS="western"><FONT FACE="Arial, sans-serif">The following mails
-can be sent by the judge:</FONT></P>
+<P CLASS="western">If not specified otherwise, all information there
+is given for all judges and must be accepted by all clients.</P>
+<P CLASS="western"><BR><BR>
+</P>
+<OL START=2>
+	<LI><H1 CLASS="western">Existing mail types</H1>
+</OL>
+<P CLASS="western">The following mails can be sent by the judge:</P>
 <UL>
 	<UL>
 		<UL>
-			<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Press to
-			players</FONT></P>
-			<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Results of
-			turns</FONT></P>
-			<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Players
-			is/are late or abandoned</FONT></P>
-			<LI><P CLASS="western"><FONT FACE="Arial, sans-serif">Version</FONT></P>
+			<LI><P CLASS="western">Power is selected</P>
+			<LI><P CLASS="western">Signons of other players</P>
+			<LI><P CLASS="western">Bad signon</P>
+			<LI><P CLASS="western">Game starts</P>
+			<LI><P CLASS="western">Press to players</P>
+			<LI><P CLASS="western">Results of turns</P>
+			<LI><P CLASS="western">Player(s) is/are late or abandoned</P>
+			<LI><P CLASS="western">Parameters of the game</P>
+			<LI><P CLASS="western">Administrative emails about options change</P>
+			<LI><P CLASS="western">Summary</P>
+			<LI><P CLASS="western">History</P>
+			<LI><P CLASS="western">Version</P>
 		</UL>
 	</UL>
 </UL>
 <P CLASS="western"><BR><BR>
 </P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Press mails</FONT></H1>
+<OL START=3>
+	<LI><H1 CLASS="western">General rules of all mails from the judge</H1>
+</OL>
+<H2 CLASS="western"><FONT SIZE=4>Parts of the mail to use</FONT></H2>
+<P CLASS="western">Technical headers of the email must NOT be used
+for processing. 
+</P>
+<P CLASS="western">Attachments must not be used for mails sent to
+players.</P>
+<P CLASS="western">Only the From:, the Subject:, the body, have some
+meaning and may contain information.</P>
+<H2 CLASS="western">Charset 
+</H2>
+<P CLASS="western">The mail informations are pure text.</P>
+<P CLASS="western">Some judges may sent the mails with a defined
+charset (usually ISO-8859-1 or ISO8859-2) to preserve national
+characters in the player's messages, the header and the footer, but
+the judge itself writes pure ASCII English.</P>
+<P CLASS="western"><FONT COLOR="#ff0000">TO SOLVE : Judges with
+translated messages ???</FONT></P>
+<H2 CLASS="western">Subject</H2>
+<P CLASS="western">The subject of the mail has often changed in
+recent njudges. It must not be taken into account.</P>
+<P CLASS="western"><FONT COLOR="#ff0000">TO SOLVE : Even for turn
+results ???</FONT></P>
+<H2 CLASS="western">Judge header</H2>
+<P CLASS="western">The judge may add a header at the beginning of the
+mail, whose text and size is totally free. It can potentially contain
+some informations which could fool parsers...</P>
+<H2 CLASS="western">Judge footer</H2>
+<P CLASS="western">The judge may add a footer at the end of the mail,
+with the same provisions as the header.</P>
+<P CLASS="western"><BR><BR>
+</P>
+<OL START=4>
+	<LI><H1 CLASS="western">Judge and game identification (message
+	header)</H1>
+	<P CLASS="western">This part is present in many mails (in fact, most
+	that mapping tools need). 
+	</P>
+	<P CLASS="western">This part is managed by the <FONT FACE="Courier, monospace">msg_header</FONT>
+	function in <FONT FACE="Courier, monospace">mail.c</FONT> in the
+	njudge code.</P>
+</OL>
+<UL>
+	<LI><P CLASS="western">Each line begins by twice two dots  (<FONT FACE="Courier New">::</FONT>),
+	followed by a blank space.</P>
+	<LI><P CLASS="western">First line :</P>
+	<UL>
+		<LI><P CLASS="western"> '<FONT FACE="Courier New">Judge: </FONT>'
+		[7 characters, space included]</P>
+		<LI><P CLASS="western">The code of the judge [4 letters]  [<FONT COLOR="#ff0000">TO
+		SOLVE : Why only 4 letters ? Does not seem hardcoded anyway. Always
+		uppercase ??</FONT>], 
+		</P>
+		<LI><P CLASS="western">Followed by two spaces.</P>
+		<LI><P CLASS="western">Only if the player is signed onto a game:</P>
+		<UL>
+			<LI><P CLASS="western"> '<FONT FACE="Courier New">Game: </FONT>'
+			[6 characters, space included]</P>
+			<LI><P CLASS="western">The name of the current game, with the
+			first letter uppercase.</P>
+			<LI><P CLASS="western">Followed by two spaces.</P>
+			<LI><P CLASS="western">'<FONT FACE="Courier New">Variant: </FONT>'
+			[9 characters, space included]</P>
+			<LI><P CLASS="western">First, the variant name ('Standard',
+			'Modern'...), with the first letter uppercase, 
+			</P>
+			<LI><P CLASS="western">followed by a space</P>
+			<LI><P CLASS="western">if available, and by the variant modifier
+			(Gunboat, Blind, AF_Rules, Shorthand, Wings at least 1.0-1.5.x
+			njudge) [<FONT COLOR="#ff0000">TO SOLVE : confirm for &lt;1.0
+			judges</FONT>]</P>
+		</UL>
+		<LI><P CLASS="western">End of first line</P>
+	</UL>
+	<LI><P CLASS="western">Second line (only if the player is signed
+	onto a game: 
+	</P>
+	<UL>
+		<LI><P CLASS="western"> '<FONT FACE="Courier New">Deadline: </FONT>'
+		[10 characters, space included]</P>
+		<LI><P CLASS="western">Phase of the game [<FONT COLOR="#ff0000">TO
+		SOLVE: see exact format and allowe length</FONT>]</P>
+		<LI><P CLASS="western">followed by a space</P>
+		<LI><P CLASS="western">Deadline date as given by the <FONT FACE="Courier New">ptime
+		</FONT>function, in English. 
+		</P>
+		<UL>
+			<LI><P CLASS="western">If the deadline is not yet known (game has
+			not started), it is by default at 00:00:00, Jan. 1<SUP>st</SUP>
+			1970 (judge timezone time)</P>
+			<LI><P CLASS="western">Following fields are separated by a space:</P>
+			<UL>
+				<LI><P CLASS="western">Day of week (3 letters, lowercase with
+				first uppercase)</P>
+				<LI><P CLASS="western">Month (3 letters, lowercase with first
+				uppercase)</P>
+				<LI><P CLASS="western">Day number (2 digits with leading zero if
+				necessary)</P>
+				<LI><P CLASS="western">Year (4 digits)</P>
+				<LI><P CLASS="western">Time/minutes/seconds (as HH:MM:SS)</P>
+				<LI><P CLASS="western">Timezone of the judge location (+ ou &ndash;
+				and 4 digits)</P>
+			</UL>
+		</UL>
+	</UL>
+	<LI><P CLASS="western">Other lines are optional. Known and totally
+	optional uses are:</P>
+	<UL>
+		<LI><P CLASS="western">Map line for a web link (judge FROG)</P>
+		<LI><P CLASS="western"><FONT COLOR="#ff0000">OTHERS?</FONT></P>
+	</UL>
+</UL>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western">Examples :</P>
+<PRE>:: Judge: FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat
+:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 &nbsp;
+
+:: Judge: FROG &nbsp;Game: S3b7p1 &nbsp;Variant: Standard Gunboat
+:: Deadline: F1906B Thu Sep 04 2003 23:30:00 +0200 &nbsp;
+:: Map: <A HREF="http://frog.born2play.org/~observer/cartes.php3?Partie=s3b7p1">http://frog.born2play.org/~observer/cartes.php3?Partie=s3b7p1</A>
+
+:: Judge: ALEX &nbsp;Game: Test &nbsp;Variant: Standard
+:: Deadline: S1901M Fri May 09 2003 23:30:00 +0200 &nbsp;</PRE><P CLASS="western">
+<BR><BR>
+</P>
+<P CLASS="western"><BR><BR>
+</P>
+<OL START=5>
+	<LI><H1 CLASS="western">Power is selected</H1>
+</OL>
 <P CLASS="western"><BR><BR>
 </P>
 <P CLASS="western"><BR><BR>
 </P>
+<P CLASS="western">Example (header and footer suppressed) :</P>
+<PRE>:: Judge: FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat
+:: Deadline: S1901M Thu Jan 01 1970 01:00:00 +0100 &nbsp;
+
+You've been selected to play a power in game 's1b6p2'.
+You'll be notified when 6 more players sign on.
+Game 's1b6p2' now has 1 player.
+
+Preference list 'FTGIEA' set.</PRE><P CLASS="western">
+<BR><BR>
+</P>
+<OL START=6>
+	<LI><H1 CLASS="western">Other mails</H1>
+</OL>
 <P CLASS="western"><BR><BR>
 </P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Other mails</FONT></H1>
+<OL START=7>
+	<LI><H1 CLASS="western">Open points</H1>
+</OL>
+<UL>
+	<LI><P CLASS="western">Footer format ?</P>
+	<LI><P CLASS="western">Always ASCII ???? =&gt; Was charset always
+	ASCII ? 
+	</P>
+	<LI><P CLASS="western">Machiavelli ???</P>
+	<LI><P CLASS="western">DEDO : translated messages ???</P>
+</UL>
+<OL START=8>
+	<LI><H1 CLASS="western">Comments</H1>
+	<LI><H1 CLASS="western">Ideas and suggestions for the future</H1>
+</OL>
 <P CLASS="western"><BR><BR>
 </P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Open points</FONT></H1>
-<P CLASS="western"><BR><BR>
+<OL START=10>
+	<LI><H1 CLASS="western">Boring stuff</H1>
+</OL>
+<P CLASS="western">This document was made by Christophe Courtois and
+is part of the njudge program. 
 </P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Comments</FONT></H1>
-<P CLASS="western"><BR><BR>
-</P>
-<H1 CLASS="western"><FONT FACE="Arial, sans-serif">Boring stuff</FONT></H1>
-<P CLASS="western"><FONT FACE="Arial, sans-serif">This document was
-made by Christophe Courtois and is part of the njudge program. </FONT>
-</P>
-<P CLASS="western"><FONT FACE="Arial, sans-serif">Verbatim and
-explicitly enhanced versions can be freely redistributed.</FONT></P>
+<P CLASS="western">Verbatim and explicitly enhanced versions can be
+freely redistributed.</P>
 <P CLASS="western"><BR><BR>
 </P>
 </BODY>
