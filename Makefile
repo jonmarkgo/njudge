@@ -57,6 +57,7 @@ SRCS = 	assign.c \
 		ml_set.c \
 		ml_signon.c \
 		params.c \
+		plyrdata.c \
 		phase.c \
 		po_condition.c \
 		po_errmsg.c \
@@ -76,7 +77,7 @@ SRCS = 	assign.c \
 		version.c
 
 EXTRAS = cmap.c summary.c bgreet.c deddump.c delgame.c \
-         flock.c fmtwho.c ign.c pdip.c rdip.c
+         flock.c fmtwho.c ign.c pdip.c recdump.c rdip.c
  
 OBJS = $(SRCS:%.c=%.o)
 
@@ -113,6 +114,9 @@ bgreet: bgreet.o
 deddump: deddump.o conf.o strdup.o hashtable.o global.o
 	${CC} ${LDFLAGS} -o deddump deddump.o conf.o strdup.o hashtable.o global.o ${LIBS}
 
+recdump: recdump.o plyrdata.o
+	${CC} ${LDFLAGS} -o recdump recdump.o plyrdata.o ${LIBS}
+
 delgame: delgame.o
 	${CC} ${LDFLAGS} -o delgame delgame.o ${LIBS}
 
@@ -143,7 +147,7 @@ Datamake: data/*
 install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flist \
 	 ${INSTALLDIR}/diprun ${INSTALLDIR}/smail ${INSTALLDIR}/dipclean ${INSTALLDIR}/atrun \
 	 ${INSTALLDIR}/rundipmap ${INSTALLDIR}/runlistmap ${INSTALLDIR}/newlogs cmap \
-	 summary bgreet deddump delgame flock fmtwho ign pdip rdip magic \
+	 summary bgreet deddump delgame flock fmtwho ign pdip rdip recdump magic \
 	 defaults.inc
 	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
@@ -156,11 +160,13 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	install ${INSFLAGS} ign ${INSTALLDIR}/ign
 	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
 	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+	install ${INSFLAGS} recdump ${INSTALLDIR}/recdump
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 		ln -f -s ${INSTALLDIR}/rdip ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/dip ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/summary ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/deddump ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/recdump ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/flock ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/fmtwho ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/ign ${DESTDIR}; \
@@ -172,10 +178,12 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	fi;
 	rm -f data/RCS
 	cp -p data/* ${INSTALLDIR}/data
+#FIXME
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
 	fi; 
 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
+#FIXME
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \  
 	fi;
@@ -205,12 +213,12 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 
 remap: cmap
 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
-#	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
-#	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
-#	fi; 
+	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
+	fi; 
 
 upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
-	 remap pdip rdip summary deddump delgame flock ign flist magic
+	 remap pdip rdip summary deddump recdump delgame flock ign flist magic
 	@make -f Datamake
 	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
@@ -223,6 +231,7 @@ upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
 	install ${INSFLAGS} ign ${INSTALLDIR}/ign
 	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
 	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+	install ${INSFLAGS} recdump ${INSTALLDIR}/recdump
 magic:
 	@if [ -f .magic.h ]; then \
 		cat .magic.h  | grep DIE_MAGIC | cut -d' ' -f3 >  ${DESTDIR}/.magic.dat; \
@@ -395,7 +404,7 @@ list:
 clean: 
 	rm -f a.out core dip Datamake *.o *~
 	rm -f cmap bgreet fmtwho pdip rdip summary
-	rm -f deddump delgame flock ign makedep eddep
+	rm -f deddump delgame flock ign makedep eddep recdump
 	
 lclint:
 	lint ${SRCS}
@@ -463,6 +472,7 @@ ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
  ml_signon.h functions.h dipstats.h
 params.o: params.c dip.h conf.h port.h variant.h functions.h
 phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
+plyrdata.o: plyrdata.c plyrdata.h
 po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
  functions.h porder.h
 po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
@@ -498,6 +508,7 @@ flock.o: flock.c port.h
 fmtwho.o: fmtwho.c functions.h dip.h conf.h port.h variant.h
 ign.o: ign.c
 pdip.o: pdip.c
+recdump.o: recdump.c 
 rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
