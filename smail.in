@@ -4,20 +4,24 @@
 #
 #  Invoked as smail file subject address
 #
+# TODO : detection of charset from the players and of Quoted-printable 
+#
 setenv FROM @USER@@@DOMAIN@
 # FROM=u.washington.edu export FROM
 date >>mail.log
 echo "===== mail sent to $3/$2" >>mail.log
 @HEAD@ -10 $1 >>mail.log
 cat dip.msg $1 > dip.reply1
+# Following command must be sendmail (even exim, postfix or others provide it)
+# as mail does not seem to allow to define headers ourselves
 @_MAIL_@ $3 << EOF
 From: Diplomacy Judge <@USER@@@DOMAIN@>
 To: $3
 Subject: $2
 Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
 Comments: Using sendmail
 Organization: TBD
+X-Mailer: script shell from njudge 
 
 `cat dip.msg $1 dip.footer`
 EOF
