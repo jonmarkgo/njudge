@@ -2,15 +2,6 @@ Installation-HOWTO for the Diplomacy judge
 
 v.1.1.1.0   -   Version of this file follows judge versions
 
-QUESITIONS :
- - Caltech mirror officially out of date ??
-  - tar xzvf exânds in the current directopry !
-  - location of head and mail is NOT okay for Linux, especially
-  with usr/bin in smail !
- - targets in makefile
- - update atrun with lines for old
-
-
 Christophe Courtois ( christophe@courtois.cc )
 - 1.1.1.x : May 2002 
 - 1.0.1.x : February 2002
@@ -152,44 +143,42 @@ in the .cshrc file in the home directory the line : setenv PATH
 2.3 Getting the source code
 
  - Download the source of the judge from the net :
-   * http://www.njudge.org should indicate which is the last official
-judge version available, and give you a link to download it.
+   * http://www.njudge.org is the official download site from Millis Miller
+and should indicate which is the last official judge version available, 
+and give you a link to download it.
   A CVS snapshot is available too. It is a tarball generated every day
 from the CVS (development) tree. It is the most current (and unstable!) 
 judge. Only for people who know what they are doing. Direct CVS access 
 is possible only with an account on the development computer.
 
   Other sources where you can search in case of a problem on njudge.org:
-   * ftp.ugcs.caltech.edu/pub/diplomacy/Sources/ (official)
-   * ftp.diplom.org/pub/diplomacy/Sources/ (backup)
+   * ftp.ugcs.caltech.edu/pub/diplomacy/Sources/ 
+   * ftp.diplom.org/pub/diplomacy/Sources/ 
 
  - The official judge is distributed as a source code tarball called
 njudge-1.X.Y.tar.gz, where X and Y change with time.
-.tar, .tar.bz2, .tar.Z files are also available.
-Please ignore njudge-0.8.X and dipsrc-9XXX files, they are out of date.
-There are some myths on a Debian package, which is outdated anyway.
+Please ignore njudge-0.8.X and dipsrc-9XXX files if you find some, 
+they are out of date.  There are some myths on a Debian package, which 
+is outdated anyway.
 
- - All the example hear deal with njudge-1.0.0.tar.gz.
+ - All the example hear deal with njudge-1.1.1.tar.gz.
 
- - Create a directory and move the archive there
+ - Don't extract he archive directly. First create a directory 
+and move the archive there. Then extract.
 
   mkdir njudge-1.1.1
   mv njudge-1.1.1.tar.gz njudge-1.1.1/
+  cd njudge-1.1.1
+  tar xzvf njudge-1.1.1.tar.gz
 
- - Uncompress it in its directory:
-
-    cd njudge-1.1.1
-    tar xzvf njudge-1.1.1.tar.gz
-
- All the files will be extracted in the njudge-1.0.0 directory.
 (NB: Following versions of the judge may extract files cleanly in 
-a new directory).
+a new directory. That would be a good thing.).
 
 Personally, I have created a 'source' symbolic link which points to the
 real source directory.  (This is the SRCDIR of the configuration files.)
 
     cd ~
-    ln -s njudge-1.0.0 source
+    ln -s njudge-1.1.1 source
 
  - Don't delete the tar.gz file, it will be a backup if the following
 modifications fail.
@@ -290,8 +279,8 @@ location and the desired location can resolve the problem too.
 (from Millis Miller, oct 2001 and updated):
 
 all:            Rebuild all programs
-ascii_to_dedi:	?
-ded_to_ascii:	?
+ascii_to_dedi:  Convert text file ded.txt to dip.ded
+ded_to_ascii:	Convert dip.ded to text file
 dip:            Rebuild dip program
 cmap:           Rebuild cmap program
 summary:        Rebuild summary program
@@ -313,11 +302,11 @@ upgrade:        Rebuild all the programs and install them in correct
                 directory (used principally for updating a running
                 judge)
 flist:          Rebuild the help file "flist"
-dist:           Build an update distribution (calls tarZ, targz and tarbz2)
+dist:           Build an update distribution (calls targz)
 targz:          Build a tar.gz file of judge files for updates
 tar:            Build a tar file of judge files for updates
-dist1:	?	
-targz1:	?	
+dist1:		Build an update distribution (second way)	
+targz1:          Build a tar.gz file of judge files for updates
 loglink:        Links DESTDIR/data/log to SRCDIR/.log/log
 more:           Copy every useful file to one big file called "morefil"
 list:           Beatify all useful files to one big file called "listing"
@@ -325,9 +314,11 @@ clean:          Remove all output files
 lclint:         Run "lclint" on all source files
 lint:           Run "lint" on all source files
 depend:         Update Makefile itself automatically for source dependcies.
-magic:
-size_check:	?
-zpblind:	?
+magic:		Used to generate .magic.dat file (for random seed).
+size_check:	Builds executable that chekcs sizes of char, int
+		and long (to give error if judge ported to a
+		machine with different values for this!)
+zpblind:	Blind post-processor executable.
 
 (Following targets are not used anymore:
 tarZ:           Build a tar.Z file of judge files for updates
@@ -1061,3 +1052,6 @@ send me a copy of the thing you're making while you're at it).
  Translators are also advised to contact the author before translating
 (no translation known for the moment).
 
+
+TODO and FIXME-list:
+- coherence of /bin/mail and /usr/bin/mail
