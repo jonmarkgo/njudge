@@ -9,6 +9,9 @@ before compiling:
 	INSTALLDIR (where the executables wil lbe installed, commonly 
 	as DESTDIR)
 
+ - Copy defaults.inc.base to defaults.inc. Then edit, changing values 
+    as desired for your particular judge
+
 On subsequent (update) installs, this file will not be over-written.
 
-- Millis Miller 13th Nov 2000
+- Millis Miller 22nd Feb 2001
