@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.21  2003/02/18 14:00:46  millis
+ * Added some new type defines
+ *
  * Revision 1.20  2003/01/13 17:39:24  millis
  * Merge from ustv branch
  *
@@ -250,7 +253,9 @@
 #define X2F_HOMETRANSFER        0x10000 /* Centre becomes your home if occupied 1 full year */
 #define X2F_CAVALRY             0x20000 /* Units that can move two spaces per turn */
 #define X2F_ARTILLERY           0x40000 /* Units that can support from two spaces away */
-
+#define X2F_NOSUMMER		0x80000 /* In Mach, to disable the summer turn */
+#define X2F_SUMMER		0x80000 /* In non-Mach, to enable a summer turn */
+#define X2F_NOGARRISONS		0x100000 /* In Mach, to disable garrisons */
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
