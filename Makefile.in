@@ -17,6 +17,9 @@
 # Process this file with automake to produce Makefile.in
 #
 # $Log$
+# Revision 1.25  2003/05/11 16:15:16  millis
+# Fixed bug 153 (make not upgrading data files correctly)
+#
 # Revision 1.24  2003/05/04 05:33:20  jaldhar
 # Rolled back to automake 1.6/autoconf 2.50
 #
