@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -14,6 +17,7 @@
 #include <unistd.h>
 
 #include "functions.h"
+#include "diplog.h"
 
 /* 
  *  The purpose of rdip is to read in mail and copy it to a file for 
@@ -50,6 +54,7 @@
 #define E_WARN  -1
 
 char line[1024];
+char line1[1024];
 static struct stat sbuf;
 
 static int Aflg, xflg, bflg;
@@ -64,9 +69,18 @@ int main(int argc, char **argv)
 	FILE *fp, *pfp;
 	long now;
 	int dipstat;
-
+	char temp_text[50];
 	nice(10);
 
+/*	conf_init();*/  /* to get path for dip exe */
+/*	conf_readfile(CONFIG_FILE);
+*/
+
+/*
+	sprintf(temp_text,"%s-%s", JUDGE_CODE, "rdip");
+ 	OPENDIPLOG(temp_text);
+        DIPINFO("Started rdip");
+*/	
 	for (i = 1; i < argc; i++) {
 		if (*argv[i] == '-') {
 			for (s = argv[i] + 1; *s; s++) {
@@ -85,6 +99,7 @@ int main(int argc, char **argv)
 							perror(argv[i]);
 							exit(1);
 						}
+						CONFIG_DIR = argv[i];
 					} else {
 						fprintf(stderr, "-d option must specify directory.\n");
 						exit(1);
@@ -106,6 +121,14 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+      conf_init();  /* to get path for dip exe */
+      conf_readfile(CONFIG_DIR, CONFIG_FILE);
+
+        sprintf(temp_text,"%s-%s", JUDGE_CODE, "rdip");
+        OPENDIPLOG(temp_text);
+        DIPINFO("Started rdip");
+
 
 	Dflg = 0;
 
@@ -213,7 +236,8 @@ int main(int argc, char **argv)
 				pclose(pfp);
 				pfp = NULL;
 			}
-			if (!(pfp = popen("./dip -q", "w"))) {
+			sprintf(line1,"%s -C %s -q", DIP_CMD, CONFIG_DIR);
+			if (!(pfp = popen(line1, "w"))) {
 				perror("popen");
 				exit(1);
 			}
@@ -271,7 +295,7 @@ int main(int argc, char **argv)
 	time(&now);
 	printf("%12.12s: Processing master file.\n", ctime(&now) + 4);
 
-	sprintf(line, "./dip -%sx", Aflg ? "A" : "");
+	sprintf(line, "%s -C %s -%sx ", DIP_CMD, CONFIG_DIR, Aflg ? "A" : "");
 	if (!(pfp = popen(line, "r"))) {
 		perror("popen");
 		exit(1);
