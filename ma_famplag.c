@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Added Storms
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -63,7 +66,7 @@ void fam_plag(int t)
 				fprintf(rfp, "%s %s%s in %s eliminated by %s.\n",
 					owners[unit[u].owner],
 				Stype(unit[u].stype), Utype(unit[u].type), 
-					pr[p].name, typetext);
+					pr[p].name, "famine");
 				unit[u].owner = 0;
 				remove_siege(unit[u].loc);
 			}
