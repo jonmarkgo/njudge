@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.40  2003/05/03 23:33:50  millis
+ * Fix bug 150 (NO_GARRISONS flag)
+ *
  * Revision 1.39  2003/05/03 14:22:51  millis
  * Really small change
  *
@@ -2821,7 +2824,7 @@ void mail_setp(char *s)
                                     dipent.name);
                         } else {
                         CheckAndToggleFlag(&dipent.xflags,  XF_ANYDISBAND, "NormalDisband", CATF_SETON,
-                                               ".\n",CATF_INVERSE);
+                                               "Disbands can now only be made in a build phase if short of units.\n",CATF_INVERSE);
                         }
                         break;
 
