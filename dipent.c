@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.4  2001/05/26 11:20:34  miller
+ * Do not notify time-warp for shifts < 1 minute
+ *
  * Revision 1.3  2001/01/05 22:27:53  miller
  * Fix to test using '==' not '='
  * (made all games erroneously of Chaos variant when upgrading from older dip.master format.
@@ -33,6 +36,9 @@
  * against killing dip.master added 
  * 26 Nov 1999 Millis Miller Added player late_count to payer structure
  *                           Also added use of xflags structure.
+ * 26 May 2001 Mario Becroft Added code for dipent.orded,dipent.rrded, 
+ *	       Tim Miller    and dipent.dedapplied, all part of the new
+ *			     dedication systems.
  */
 
 #include <fcntl.h>
@@ -192,6 +198,17 @@ int getdipent(FILE * fp)
 			gettime(line, &dipent.start);
 			break;
 
+		case 'Y':
+			dipent.dedapplied = strtol( &(line[22]), NULL, 10);
+			break;
+		case 'O':
+			sscanf( &(line[16]),"%f", &dipent.orded);
+			break;
+
+		case 'T':
+			sscanf( &(line[26]),"%f", &dipent.rrded);
+			break;
+
 		case '_':
 			if (dipent.n > 0) {
 				line[strlen(line) - 1] = '\0';
@@ -288,6 +305,10 @@ void putdipent(FILE * fp, int dopw)
 	if (dipent.grace)
 		fprintf(fp, "Grace     %24.24s (%ld)\n",
 			ctime(&dipent.grace), dipent.grace);
+	fprintf(fp, "Ontime rat. min %.3f\n",dipent.orded);
+        fprintf(fp, "T = resignation ratio max %.3f\n",dipent.rrded);
+        fprintf (fp,"Yet_Applied_deadline? %d\n",
+                                                dipent.dedapplied);
 	if (*dipent.comment)
 		fprintf(fp, "Comment   %s\n", dipent.comment);
 	if (*dipent.epnum)
@@ -357,6 +378,9 @@ void newdipent(char *name, int variant)
 	dipent.builds.delay = D_BUILDS_DELAY;
 	strcpy(dipent.builds.days, D_BUILDS_DAYS);
 	dipent.n = 0;
+	dipent.orded = 0.000;
+	dipent.rrded = 1.000;
+	dipent.dedapplied = 0;
 	dipent.no_of_players = dipent.np;
 	dipent.max_absence_delay = D_MAX_ABSENCE_DELAY;
 }
