@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.26  2004/05/22 08:51:46  millis
+** Bug 297: Add Intimate Diplomacy
+**
 ** Revision 1.24  2004/02/14 23:19:36  millis
 ** Fix so that blocked gateway movement doesn't contest movement (so that space
 ** can be considered for retreats)
@@ -1654,6 +1657,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 						unit[u].dest = unit[u2].dest;
 						unit[u].dcoast = unit[u2].dcoast;
 						unit[u].convoy = unit[u2].convoy;
+						unit[u].unit_prov = unit[u2].unit_prov;
+						unit[u].controller = unit[u2].controller;
 						unit[u2].owner = 0;
 					}
 				}
