@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.35  2003/02/17 16:39:27  millis
+ * Fix bug 81, to call at for year too
+ *
  * Revision 1.34  2003/02/17 09:29:28  millis
  * Changed setenv() to putenv() to work on Sun platforms
  *
@@ -309,13 +312,15 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
 
         system(line);
 
-       sprintf(line, "%s %s '%s:%s - %s Blind Results' '%s'",
+       if (!(dipent.players[player_index].status & SF_RESIGN)) {
+           sprintf(line, "%s %s '%s:%s - %s Blind Results' '%s'",
                 SMAIL_CMD, out_file, JUDGE_CODE, dipent.name, turn_text,
                 dipent.players[player_index].address);
 
-        if (*(dipent.players[player_index].address) != '*' && !Dflg) {
+           if (*(dipent.players[player_index].address) != '*' && !Dflg) {
                                 execute(line);
-        }
+           }
+	}
 }
 
 
@@ -686,7 +691,8 @@ void master(void)
                            for (i = 0; i < dipent.n; i++) {
                             if (dipent.players[i].power < 0)
                                 continue;
-			    if (dipent.players[i].power == MASTER) {
+			    if (dipent.players[i].power == MASTER && 
+				!(dipent.players[i].status & SF_RESIGN)) {
                                 sprintf(line,
                                         "%s %s 'Diplomacy time-warp: %s' '%s'",
                                          SMAIL_CMD, WARP_FILE, dipent.name, dipent.players[i].address);
@@ -878,7 +884,8 @@ void CheckRemindPlayer(int player, long one_quarter)
 
 	dipent.players[player].status |= SF_REMIND;
 
-	if (*(dipent.players[player].address) != '*') {
+	if (*(dipent.players[player].address) != '*' &&
+	    !(dipent.players[player].status & SF_RESIGN)) {
 		execute(line);
 		sprintf(line,"Move reminder send to %s in game %s", dipent.players[player].address, dipent.name);
 		DIPINFO(line);
@@ -1127,7 +1134,8 @@ int process(void)
 							ded[dipent.players[i].userid].r);
 					}
 #endif
-					if (*(dipent.players[i].address) != '*') {
+					if (*(dipent.players[i].address) != '*' &&
+					    !(dipent.players[i].status & SF_RESIGN)) {
 						if (dipent.players[i].power == MASTER) {
 							sprintf(line, "%s dip.mlate '%s:%s - %s Late Notice: %s' '%s'",
 								SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
@@ -1191,7 +1199,8 @@ int process(void)
 			if (dipent.players[i].power < 0)
 				continue;
 
-			if (*(dipent.players[i].address) != '*') {
+			if (*(dipent.players[i].address) != '*' &&
+			    !(dipent.players[i].status & SF_RESIGN)) {
 				sprintf(line, "%s dip.result '%s' '%s'", SMAIL_CMD, subjectline, dipent.players[i].address);
 				execute(line);
 			}
@@ -1301,7 +1310,8 @@ int process(void)
 					if (dipent.players[i].power < 0)
 						continue;
 
-					if (*(dipent.players[i].address) != '*' && !Dflg) {
+					if (*(dipent.players[i].address) != '*' && !Dflg &&
+					    !(dipent.players[i].status & SF_RESIGN)) {
 						sprintf(line, "%s dip.result '%s:%s - %s Waiting for Replacements: %s' '%s'",
 							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase,
 							(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
@@ -1334,7 +1344,8 @@ int process(void)
 					sprintf(line, "%s dip.result '%s:%s - %s Turn Waiting' '%s'",
 					  SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
 
-					if (*(dipent.players[i].address) != '*')
+					if (*(dipent.players[i].address) != '*' &&
+					    !(dipent.players[i].status & SF_RESIGN))
 						execute(line);
 				}
 				dipent.process = now + 24 *60 *60;  /* Remind each day */
@@ -1530,7 +1541,8 @@ int process(void)
 	        		SMAIL_CMD, GAME_DIR, dipent.name, phase,
 				JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
 
-			if (*(dipent.players[i].address) != '*' && !Dflg) 
+			if (*(dipent.players[i].address) != '*' && !Dflg &&
+					    !(dipent.players[i].status & SF_RESIGN)) 
 			{
 			    if(!(dipent.flags & F_BLIND) || dipent.players[i].power == MASTER)
 				execute(line);

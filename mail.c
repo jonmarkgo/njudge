@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2003/04/28 22:35:39  millis
+ * Fixed missing define
+ *
  * Revision 1.40  2003/04/27 15:45:03  millis
  * Fixed Bug 5 (allowing game to be Force begun without all players)
  *
@@ -2715,7 +2718,8 @@ void send_press(void)
 					if (!(!*s ^ !broad_allbut))
 						continue;
 				}
-				if (dipent.players[i].power == MASTER) {
+				if (dipent.players[i].power == MASTER && 
+				    !(dipent.players[i].status & SF_RESIGN)) {
 					broadcast_master_only = 0; /* We're sending to master anyway */
 					sprintf(line, "%s %s '%s' '%s'",
 						SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
@@ -2732,7 +2736,8 @@ void send_press(void)
 					sprintf(line, "%s %s '%s' '%s'",
 						SMAIL_CMD, bfile, subjectline, dipent.players[i].address);
 
-				    if ((j = execute(line))) {
+				    if (!(dipent.players[i].status & SF_RESIGN) &&
+					(j = execute(line))) {
                                         fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
                                            j, dipent.players[i].address);
                                     }
@@ -2787,7 +2792,8 @@ void send_press(void)
 		}
 		/* Let's also take advantage and see if a master-only
 		   message should be sent */
-		if (broadcast_master_only && dipent.players[i].power == MASTER ) {
+		if (broadcast_master_only && dipent.players[i].power == MASTER &&
+		    !(dipent.players[i].status & SF_RESIGN)) {
 			sprintf(line, "%s %s '%s' '%s'",
 				SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
 
