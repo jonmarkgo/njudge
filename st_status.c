@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.3  2001/02/23 00:19:33  miller
+   ** un-DOSify
+   **
    ** Revision 1.2  2001/02/03 10:41:04  miller
    ** fix blind bug
    **
@@ -126,11 +129,13 @@ void status(int pt)
 
 	putc('\n', rfp);
 
-	if (dipent.flags & F_MACH) {
-		balance(pt, 0, 1);
-		ma_ownership();
-	} else
-		ownership();
+        if (!not_ok_as_blind) {
+          if (dipent.flags & F_MACH) {
+                balance(pt, 0, 1);
+                ma_ownership();
+          } else
+                ownership();
+        }
 
 	putc('\n', rfp);
 	putc('\n', rfp);
