@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2004/08/23 13:27:45  millis
+ * Removed extra Norway definition
+ *
  * Revision 1.18  2004/08/07 16:05:44  machmstr
  * All AH Mach variants added and then some
  *
@@ -163,7 +166,7 @@ enum {
 };
 
 /** UPDATE DEFINES AS NECESSARY BELOW **/
-#define NVAROPTS       4	/* Number of variant options (blind/gunboat/shorthand/a/f) */
+#define NVAROPTS       5	/* Number of variant options (blind/gunboat/shorthand/wings/intimate) */
 #define MAX_POWERS    36	/* Max. powers in a single game (letters+digits) */
 #define LPOWER        24	/* Length of the longest power name              */
 

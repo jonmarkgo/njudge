@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2004/08/23 13:27:45  millis
+ * Removed extra Norway definition
+ *
  * Revision 1.19  2004/08/09 20:15:10  machmstr
  * While I am at it: Lowland had Lowland as adjective, corrected to 'Lowlander'.
  *
@@ -144,7 +147,8 @@ char *variants[] =
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
         "shorthand",		/* Shorthand press option          */
-	"wings" /* , */		/* Wings (for modern)		   */
+	"wings"    ,   		/* Wings (for modern)		   */
+	"intimate"		/* Intimate			   */
 	/* "a/f" */		/* AirForces option		   */
 };
 
@@ -206,7 +210,8 @@ int vvalue[] =
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
         F_SHORTHAND,		/* Shorthand press option          */
-	F_WINGS /* , */		/* Wings (for modern) variant      */
+	F_WINGS    ,   		/* Wings (for modern) variant      */
+	F_INITMATE		/* Intimate			   */
 	/* F_AFRULES  */        /* Army/Fleet Rules variant        */
 };
 
