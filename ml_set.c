@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2002/02/25 11:51:52  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.17  2001/11/11 21:16:21  greg
  * Subjectline Fixes
  *  - New player signons will no longer show "Preference Change"
@@ -903,7 +906,7 @@ void mail_setp(char *s)
 	SET_RAILWAY, SET_RAILWAY,
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
 	SET_STORM, SET_STORM,
-	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM
+	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY
     };
 
