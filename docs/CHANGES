@@ -1,4 +1,5 @@
-
+1.0.3-pre (5th March 2002) :
+ - Corrected problem in summary.c (preventing Machiavelli summaries)
 
 1.0.2 (25th February 2002) :
  - Added in new Mach fixes (correct Venice problem, assorted fixes)
