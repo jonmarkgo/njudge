@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.19  2003/05/02 21:39:33  millis
+   ** Added handling of assumed home centres
+   **
    ** Revision 1.18  2003/02/09 23:07:09  millis
    ** Corrected order of GetUnit() call
    ** Also removed superfluous blank line on order output
@@ -926,7 +929,7 @@ void buildout(int pt)
 		    if (p_index >= dipent.n) continue; /* Not a valid power */
                     counting_centres = dipent.players[p_index].centers -
                                        dipent.players[p_index].centres_blockaded;
-                    u_diff[p] = num_units[p] - counting_centres;
+                    u_diff[p] = num_units[p] - counting_centres - ExtraCentres();
 
 		    if (u_diff[p] < 0) {
 			fprintf(rfp, "%s: ", powers[p]);
@@ -940,7 +943,7 @@ void buildout(int pt)
 			}
 			if (!(dipent.xflags & XF_ANYDISBAND)) {
 			    if (i > npr || (!(dipent.xflags & XF_ALTBUILD) && cnb[p]) ) {
-				i = nu[p] - 1;
+				i = nu[p] - 1 + ExtraCentres();
 				if (processing)
 				    fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
 				else
