@@ -1,6 +1,8 @@
-2002-08-29  Jaldhar H Vyas  <judgekeeper@braincells.com>
+2002-08-30  Jaldhar H Vyas  <judgekeeper@braincells.com>
 
 	* Merged stuff from docs/CHANGES into this file.
+
+	* More build cleanup.
 
 2002-08-28  Millis L. Miller <millis@faztek.org>
 

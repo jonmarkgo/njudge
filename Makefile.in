@@ -286,8 +286,7 @@ bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) pdip$(EXEEXT) \
 	size_check$(EXEEXT) cmap$(EXEEXT) summary$(EXEEXT) \
 	deddump$(EXEEXT) delgame$(EXEEXT) flock$(EXEEXT) \
 	fmtwho$(EXEEXT) ign$(EXEEXT) ded_to_ascii$(EXEEXT) \
-	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) \
-	recdump$(EXEEXT)
+	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) recdump$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
 am_ascii_to_ded_OBJECTS = ascii_to_ded.$(OBJEXT)
@@ -403,17 +402,16 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/ascii_to_ded.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/assign.Po ./$(DEPDIR)/bailout.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/cmap.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ded_to_ascii.Po ./$(DEPDIR)/deddump.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/delgame.Po ./$(DEPDIR)/dip.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dipent.Po ./$(DEPDIR)/diplog.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dipstats.Po ./$(DEPDIR)/draw.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/flock.Po ./$(DEPDIR)/fmtwho.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/global.Po ./$(DEPDIR)/hashtable.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/history.Po ./$(DEPDIR)/ign.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/jm.Po ./$(DEPDIR)/lib.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ma_build.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/cmap.Po ./$(DEPDIR)/common.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/conf.Po ./$(DEPDIR)/ded_to_ascii.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/deddump.Po ./$(DEPDIR)/delgame.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/dip.Po ./$(DEPDIR)/dipent.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/diplog.Po ./$(DEPDIR)/dipstats.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/draw.Po ./$(DEPDIR)/flock.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/fmtwho.Po ./$(DEPDIR)/global.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/hashtable.Po ./$(DEPDIR)/history.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/ign.Po ./$(DEPDIR)/jm.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/lib.Po ./$(DEPDIR)/ma_build.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ma_build_basic.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ma_expenses.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ma_famplag.Po \
