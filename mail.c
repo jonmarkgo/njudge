@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.21  2002/05/31 22:55:33  nzmb
+ *
+ * Fixed bug in mail.c that was causing the judge to do a segmentation fault
+ * when trying to write to the xcontrol file.
+ *
  * Revision 1.20  2002/05/17 11:36:52  miller
  * Parameters for address_not_in_list() incorrectly reverserd
  *
@@ -174,6 +179,7 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define UNSTART		42
 #define SETUP		43
 #define PAUSE		44
+#define COND            45      /* -- Tamas -- 2002-06-11 -- */
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -189,6 +195,7 @@ static char *prelim[] =
  "version", "history",
  "who game#", "who is#", "who#", "fixid",
  "map", "signoff", "record", "infoplayer"
+ ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
 	"ded#" */ };
 
@@ -205,7 +212,9 @@ static int pvalue[] =
  NOCONTROL, ADJUST,
  VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
- MAP, SIGNOFF, RECORD, INFOPLAYER /* , DEDGAME, DEDICATE, DEDICATE */ };
+ MAP, SIGNOFF, RECORD, INFOPLAYER 
+ , COND, COND, COND                   /* -- Tamas -- 2002-06-11 -- */
+ /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
@@ -220,6 +229,7 @@ static char *commands[] =
  "promote", "predict",
  "eject", "record", "infoplayer", "unstart",
  "setup", "suspend" 
+ ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -235,6 +245,7 @@ static int cvalue[] =
  PROMOTE, PREDICT,
  EJECT, RECORD, INFOPLAYER, UNSTART,
  SETUP, PAUSE
+ ,COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
@@ -2009,6 +2020,16 @@ int mail(void)
 					remove(x);
 
 					break;
+/*-------------------------------------------------------------*
+ *--  Modified by Tamas  --------------  2002-06-11  ----------*
+ *-------------------------------------------------------------*/
+				case COND:
+                                        if (dipent.flags & F_BLIND) {
+                                          fprintf(rfp, "Conditionals are not supported in blind variant. ");
+                                          fprintf(rfp, "Rejected: %s\n", line);
+                                          break;
+                                        }
+/*---------------------------------------------  Tamas End  ---*/
 
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
