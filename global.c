@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/05/13 00:07:26  millis
+ * Bug 110, move on process deadline by 24 hours on bailout recovery
+ *
  * Revision 1.9  2003/05/12 23:23:46  millis
  * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
  *
@@ -133,4 +136,4 @@ int victor = 0;			/* Set to index of power when there is a victor */
 
 int process_set; 		/* Set to 1 if process command has been set */
 
-int bailout_recovery = 1;       /* Set to 1 if recovering from a bail-out	*/
+int bailout_recovery = 0;       /* Set to 1 if recovering from a bail-out	*/
