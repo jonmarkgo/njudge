@@ -302,6 +302,11 @@ mod/aft SET CENTERS number
 	players have. If a draw is acceptable then a vote is required
 	using the SET DRAW command.
 
+mod/aft*SET [NO]COASTAL CONVOYS
+	Disables/enables fleets in coastal provinces from participatin in
+	a convoy. Default enabled for Machiavelli games, disabled for all
+	other variants.
+
 mod/aft SET COMMENT text
 	Sets the comment that appears in the brief listing format.  The
 	text string should be under 60 characters in length.
@@ -398,22 +403,10 @@ mod/mac SET [NO]LOANS
         Disables/enables optional rules allowing players to borrow money
         from the bank.
 
-mod/mac+SET MACH[-]1
-mod/mac+SET MACHIAVELLI[-]1
-        Enables original rules for a Machiavelli game. Can only be set
-        before game starts. See rules.mach1 for details.
+mod/aft+SET[NO]MACH2
+	Disables/Enables Machiavelli 2nd Edition (1995) rules.
 
-mod/mac+SET MACH[-]2
-mod/mac+SET MACHIAVELLI[-]2
-        Enables 2nd Edition rules for a Machiavelli game. Can only be set
-        before game starts. See rules.mach2 for details.
-
-mod/mac+SET MACH[-]3
-mod/mac+SET MACHIAVELLI[-]3
-	Enables Special rules for a Machiavelli game. Can only be set
-	before game starts. See rules.mach3 for details.
-
-mod/aft*SET [NO]MANUALPROCESS
+aft*SET [NO]MANUALPROCESS
 	Disables/enables the requirement that the turn will only occur 
 	when the master executes the 'PROCESS' command.
 
