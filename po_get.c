@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2003/11/09 18:35:37  millis
+ * Fix bug 248 (allow '_' in country names)
+ *
  * Revision 1.6  2003/05/02 22:22:59  millis
  * Added artillery/cannon strings
  *
@@ -60,7 +63,9 @@ char *get_action(char *l, char *a)
 	static char *words[] =
 	{"0",
 	 "trafo to", "trafo", "transform to", "transforms to", "transforms", "transform", "tr#",
-	 "besieges", "besiege", "sieges", "siege", "b#",
+	 "besieges", "besiege", "sieges", "siege", 
+	 "beseiges", "beseige", "seiges", "seige",  /* for the dyslexic! */
+	 "b#",
 	 "convoys", "convoy", "transports", "transport", "t",
 	 "fast ferry", "ferry", "ff", "f",
 	 "disbands", "disband",
@@ -85,6 +90,7 @@ char *get_action(char *l, char *a)
 	{'x',
 	  't', 't', 't', 't', 't', 't', 't',
 	  'b', 'b', 'b', 'b', 'b',
+	  'b', 'b', 'b', 'b',
 	 'c', 'c', 'c', 'c', 'c',
 	 'c', 'c', 'c', 'c',
 	 'd', 'd',
