@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2002/04/23 11:08:35  miller
+ * Spelling change "Svmebody" -> "Somebody"
+ *
  * Revision 1.11  2002/04/18 04:44:34  greg
  * Added the following commands:
  * - unstart
@@ -554,7 +557,7 @@ int main(int argc, char **argv)
 					p = MASTER;
 				if (p) {
 					n++;
-					j = sscanf(line, "%s %d %d %d %d %d %d %s", string, &i,
+					j = sscanf(line, "%s %x %d %d %d %d %d %s", string, &i,
 						   &units[turn][p], &centers[turn][p], &player[turn][p], &i, &i, addr);
 
 					if (j != 8) {
