@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.60  2004/08/03 21:57:04  millis
+ * Fix Bug 347 (games incorrectly process when NoNMR and abandoned playerss)
+ * Fix Bug 350 (too many powers shown as abandoned in Intimate)
+ *
  * Revision 1.59  2004/07/27 23:07:17  millis
  * Bug 343 (say how many missing players) and Bug 247 (extra dots in secret
  * game late warning)
@@ -1405,26 +1409,25 @@ int process(void)
 
 				if ((dipent.players[RealPlayerIndex(i)].status &
 				     (SF_MOVE | SF_MOVED | SF_PART)) == SF_MOVE) {
-				    /* If intimate, only show real players abandoned */
-				    if (! !(dipent.flags & F_INTIMATE && dipent.players[i].controlling_power == 0)) {
-					if (!(dipent.x2flags & X2F_SECRET)) {
-						fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
-						fprintf(rfp, "to take over the abandoned %s.\n",
-						  dipent.flags & F_QUIET ? "power" :
-						  powers[dipent.players[i].power]);
-					}
-					pprintf(cfp, "%sDiplomacy game '%s' is waiting for someone ", NowString(), dipent.name);
-					pprintf(cfp, "to take over the abandoned\n");
-					pprintf(cfp, "%s with %d of %d units on the board (%s).\n",
-						powers[dipent.players[i].power], dipent.players[i].units,
-						dipent.players[i].centers, dipent.phase);
+					/* If intimate, only show real players abandoned */
+					if (!((dipent.flags & F_INTIMATE) && dipent.players[i].controlling_power == 0)) {
+						if (!(dipent.x2flags & X2F_SECRET)) {
+							fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
+							fprintf(rfp, "to take over the abandoned %s.\n",
+						  	  dipent.flags & F_QUIET ? "power" :
+						  	  powers[dipent.players[i].power]);
+						}
+						pprintf(cfp, "%sDiplomacy game '%s' is waiting for someone ", NowString(), dipent.name);
+						pprintf(cfp, "to take over the abandoned\n");
+						pprintf(cfp, "%s with %d of %d units on the board (%s).\n",
+							powers[dipent.players[i].power], dipent.players[i].units,
+							dipent.players[i].centers, dipent.phase);
 
-					if (!(dipent.x2flags & X2F_SECRET) || n == 0) {
-
-					    late[n] = (dipent.flags & F_QUIET || dipent.x2flags & X2F_SECRET ? '?' : dipent.pl[dipent.players[i].power]);
-					    n++;
+						if (!(dipent.x2flags & X2F_SECRET) || n == 0) {
+							late[n] = (dipent.flags & F_QUIET || dipent.x2flags & X2F_SECRET ? '?' : dipent.pl[dipent.players[i].power]);
+							n++;
+						}
 					}
-				    }
 				}
 			}
 
@@ -1434,46 +1437,50 @@ int process(void)
 			    dipent.process = now + 48 * 60 * 60;
 
 			    /* Only send warnings if two days since last one */
+			    /* Tim Miller: This code does not work
+			       it makes it so that no message is sent out
+			       when the grace period is exceeded...
 			    if (dipent.wait < now) {
+		 	    */
 
-				late[n] = '\0';
+			    late[n] = '\0';
 
-				if (dipent.x2flags & X2F_SECRET) {
-					fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
-					fprintf(rfp, "to take over the abandoned power(s).\n");
-				}
+			    if (dipent.x2flags & X2F_SECRET) {
+				fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
+				fprintf(rfp, "to take over the abandoned power(s).\n");
+			    }
 
-				dipent.wait = dipent.process;
+			    dipent.wait = dipent.process;
 
-				if (!Dflg)
+			    if (!Dflg)
+			    {
+				if(signedon && (dipent.phase[6] != 'X'))
 				{
-					if(signedon && (dipent.phase[6] != 'X'))
-					{
-						now=time(NULL);   
-			                	if(now < dipent.deadline)
-                        				fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-                				if(now < dipent.grace)
-                        				fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
-					}
-					fclose(rfp);
-				        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
+					now=time(NULL);   
+			               	if(now < dipent.deadline)
+                        			fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                			if(now < dipent.grace)
+                        			fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 				}
-				for (i = 0; i < dipent.n; i++) {
-					if (dipent.players[i].power < 0)
-						continue;
+				fclose(rfp);
+			        msg_header_done = 0;  /* Bug 282, header will need to be redone */
 
-					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' && !Dflg &&
-					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
-					    RealPlayerIndex(i) == i) {
-						sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
-							JUDGE_CODE, dipent.name, dipent.phase,
-							(dipent.flags & F_NOLIST) ? "NoList" : "",
-							(dipent.x2flags & X2F_SECRET) ? "?" : late);
-						MailOut(line, dipent.players[i].address);
-					}
+			    }
+			    for (i = 0; i < dipent.n; i++) {
+				if (dipent.players[i].power < 0)
+					continue;
+
+				if (*(dipent.players[RealPlayerIndex(i)].address) != '*' && !Dflg &&
+				    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
+				    RealPlayerIndex(i) == i) {
+					sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
+						JUDGE_CODE, dipent.name, dipent.phase,
+						(dipent.flags & F_NOLIST) ? "NoList" : "",
+						(dipent.x2flags & X2F_SECRET) ? "?" : late);
+					MailOut(line, dipent.players[i].address);
 				}
 			    }
+			    /* } TM -- end commenting out of bad code */
 			    dipent.dedapplied = dedtest;
 			    return 0; /* Bug 347, always return even if no warnings are sent! */
 			}
