@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.8  2002/08/27 22:27:54  millis
+   ** Updated for automake/autoconf functionality
+   **
    ** Revision 1.7  2002/04/18 04:44:32  greg
    ** Added the following commands:
    ** - unstart
@@ -442,9 +445,12 @@ void mail_listbrief(void)
 	if (dipent.phase[6] != 'X' && dipent.seq[0] == 'x') {
 		n = dipent.np - (dipent.seq[1] - '0');
 		if (n == 0) fprintf(rfp, "%21.21sFormed: waiting to be started.\n","");
-		else 
-		fprintf(rfp, "%21.21sForming: %d%s player%s needed.\n", "",
-		    n, n == dipent.np ? "" : " more", n == 1 ? "" : "s");
+		else if (dipent.x2flags & X2F_SECRET) {
+		    fprintf(rfp, "%21.21sForming: more players needed.\n", "" );
+		} else {
+		     fprintf(rfp, "%21.21sForming: %d%s player%s needed.\n", "",
+		        n, n == dipent.np ? "" : " more", n == 1 ? "" : "s");
+		}
 	} else if (dipent.phase[6] != 'X') {
 		n = 0;
 		for (i = 0; i < dipent.n; i++) {

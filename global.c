@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/08/27 23:56:10  millis
+ * Added better victory display (fixing Mach victory bug)
+ *
  * Revision 1.6  2002/05/11 09:15:31  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -12,7 +15,7 @@
  *    a short delay
  *
  * Revision 1.5  2001/10/20 12:11:11  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.4.2.2  2001/10/19 23:33:42  dema
  * Added initial_money + CVS header
@@ -66,7 +69,7 @@ struct province pr[NPROV + 1];
 int npr;			/* Actual number of provinces                 */
 struct units unit[MAXUNIT];
 char *mtype[] =
-{"land", "landx", "coast", "north coast",
+{"land", "landx", "landh", "landl", "coast", "north coast",
  "east coast", "west coast", "south coast", "conditional"};
 char line[1024];
 unsigned char *heap;

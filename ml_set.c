@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2002/12/28 01:00:57  millis
+ * Small text change
+ *
  * Revision 1.28  2002/12/28 00:52:19  millis
  * Proper fix to CR 17
  *
@@ -198,7 +201,7 @@ char * SetSubkey(int act, char *s);
 
 #define CheckNoMach2() if ((dipent.xflags & XF_MACH2)) fprintf(rfp, "Game '%s' is Machiavelli2, option is useless.\n\n", dipent.name);
 
-#define CheckPress() if (!HasPress(dipent)) fprintf(rfp, "Game '%s' has no press enabled,  option is useless.\n\n", dipent.name); 
+#define CheckPress() if (!HasPress(dipent)) fprintf(rfp, "Game '%s' has no press enabled, option is useless.\n\n", dipent.name); 
 
 #define CheckWings() if (!(dipent.flags & F_WINGS)) fprintf(rfp, "Game '%s' has no wings, option is useless.\n\n", dipent.name);
 
@@ -1992,6 +1995,7 @@ void mail_setp(char *s)
 				else
 					dipent.variant = vvalue[i];
 				SETNP(dipent.variant);
+				dipent.has_natives = GetNativeIndex();
 				if (dipent.flags & F_GUNBOAT &&
 				dipent.players[player].power != MASTER) {
 					xaddr = someone;

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2002/08/27 22:27:55  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.13  2002/07/16 18:14:23  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -1164,7 +1167,7 @@ void mail_igame(void)
 	 * "set players" command has been entered.
 	 */
 
-	while (assigned < dipent.np) {
+	while (assigned < dipent.np && number_of_players != 0) {
 		/* Blank out all the taken preferences in the copy of the
 		 * preference array.
 		 */
