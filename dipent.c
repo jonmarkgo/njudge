@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2003/05/14 19:01:22  millis
+ * Don't adjust mach files in 'A' season on bailout
+ *
  * Revision 1.14  2003/05/13 00:07:26  millis
  * Bug 110, move on process deadline by 24 hours on bailout recovery
  *
@@ -321,23 +324,23 @@ int getdipent(FILE * fp)
 		} else {
 			notifies = "*";
 		}
-		if (bailout_recovery) {
-		    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
-                        execute(line);
-		    DIPNOTICE("Bailout recovery detected.");
-		}
-	} else {
-	    /* Non control game, check for a time-warp or bailout recovery set */
-	    if ((time_warp || bailout_recovery) && dipent.phase[5] != 'A') {
-		/* Try to fix the warp/recovery by adjusting deadline */
-		/* Rather simplistic, but will do for now */
-		deadline(NULL,1);
-	        
-		 /* Bug 110: Also, shift out the process date by 24 hours if sooner */
-#define PROCESS_SHIFT (24*60*60)
-	        if (dipent.process && (dipent.process < now + PROCESS_SHIFT))
-		    dipent.process += PROCESS_SHIFT;
+		/* Non control game, check for a time-warp or bailout recovery set */
+                if ((time_warp || bailout_recovery) && dipent.phase[5] != 'A') {
+                /* Try to fix the warp/recovery by adjusting deadline */
+                /* Rather simplistic, but will do for now */
+                    deadline(NULL,1);
 
+                 /* Bug 110: Also, shift out the process date by 24 hours if sooner */
+#define PROCESS_SHIFT (24*60*60)
+                    if (dipent.process && (dipent.process < now + PROCESS_SHIFT))
+                        dipent.process += PROCESS_SHIFT;
+	       } 
+
+	} else {
+	    if (bailout_recovery) {
+                    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
+                        execute(line);
+                    DIPNOTICE("Bailout recovery detected.");
 	    }
         }
 	return 1;
