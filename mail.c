@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.33  2003/03/07 21:24:08  russblau
+ * Editorial changes.
+ *
  * Revision 1.32  2003/02/17 12:41:41  millis
  * Fixed Bug 108, make lines >=1024 terminate in '\n'
  *
@@ -2312,7 +2315,7 @@ int mail(void)
 						fprintf(rfp, " so orders will not be ");
 						fprintf(rfp, "processed\nbefore %s.\n\n", ptime(&dipent.deadline));
 					} else {
-						fprintf(rfp,".");
+						fprintf(rfp,".\n\n");
 					}
 				}
 			}
