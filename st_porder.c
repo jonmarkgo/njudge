@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.13  2003/01/18 23:48:21  millis
+  ** Don't call temporary USTV functions
+  **
   ** Revision 1.12  2003/01/17 23:31:56  millis
   ** Merged from USTV
   ** Summary will now show only ALIVE powers
@@ -128,7 +131,7 @@ int ownership(void)
 				}
 				while (*s)
 					s++;
-				if (dipent.x2flags & X2F_MORE_HOMES) {
+				if (dipent.x2flags & (X2F_MORE_HOMES || X2F_HOMETRANSFER)) {
 				    /* As homes can be variable, show them as per Mach */
                                     if (pr[n].home == i && i != 0) {
                                         *s++ = '*';
