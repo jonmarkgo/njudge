@@ -19,9 +19,12 @@
 </head>
 <body>
 
+<!--  Please do not edit this text with anything else than an SCII editor -
+I want this code to stay clean and W3C compliants. Thanks - Christophe -->
+
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.3.2.8
+<p align=center>v.1.5.1.0
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
 <table align=center width="80%" summary="Summary"><tr valign=top><td>
@@ -57,7 +60,7 @@
 <br><a href="#5.5">5.5 dip.control date problems</a>
 <br><a href="#5.6">5.6 Ready?</a>
 <br><a href="#5.7">5.7 Customise e-mails from the judge</a>
-</td><td><small>
+</small></td><td><small>
 <br><a href="#6">6 What are these files?</a>
 <br><a href="#6.1">6.1 Documentation</a>
 <br><a href="#6.2">6.2 Binaries</a>
@@ -96,6 +99,7 @@
 
 <h2><a name="1.1">1.1 History</a></h2>
 
+<p>- 1.5.1.0 : August 2003
 <p>- 1.3.2.x : March-May 2003
 <br>- 1.3.0-pre : December 2002
 <br>- 1.1.1.x : May 2002
@@ -110,8 +114,8 @@
 <p> This is an installation guide which aims to be more complete and
 newbie-friendly than the INSTALL file.
 
-<p> This file deals with installing a clean standard version of njudge v 1.3.2.
-It probably works with 1.4.0.  There are good chances it will work for following
+<p> This file deals with installing a clean standard version of njudge v 1.5.1.
+There are good chances it will work for following
 versions (especially as the installation process has stabilized recently).
 
 <p>The version number of this file follows judge versions.
@@ -138,8 +142,8 @@ than writing documentation, he wrote the present installation guide.
 <p> It is a compilation of what I have read in the judge files and code, on the
 judge-maint mailing-list, of what I have learned myself by installing the judge
 (versions: 0.8.6-FROG, 0.8.7, 0.8.9, 1.0.0,
-1.1.1, 1.3.0-pre, 1.3.2). Comments, advice, corrections [including spelling and
-grammar, I'm not a native English speaker] are <a href="christophe@courtois.cc">welcomed</a> (in
+1.1.1, 1.3.0-pre, 1.3.2, 1.5.1). Comments, advice, corrections [including spelling and
+grammar, I'm not a native English speaker] are <a href="mailto:christophe+insthowto@courtois.cc">welcomed</a> (in
 French, English or German)!
 
 <p> This guide is focused on the installation on Linux, but should be okay for most Unices.
@@ -151,8 +155,8 @@ If you know of some platform-specific installation problems, please ask me to ad
 
 <table summary="Config">
 <tr><td>Computer: <td>Pentium 75</tr>
-<tr><td>OS:       <td>Linux Debian 3.0 (woody)</tr>
-<tr><td>Judge:    <td>njudge 1.3.2 compiled from source</tr>
+<tr><td>OS:       <td>Linux Debian 3.0 (woody) (+ tools from Debian Sarge)</tr>
+<tr><td>Judge:    <td>njudge 1.5.1 compiled from source</tr>
 </table>
 
 
@@ -175,6 +179,14 @@ currently on Solaris, Linux-x86 (different distributions), and Linux-alpha (Debi
 on MacOS&nbsp;X); I don't know if some judges use these systems.
 <br> There was some discussion on a Win32 port. Maybe is it possible to
 use <a href="http://www.cygwin.org/">Cygwin</a> to run a judge on Windows.
+
+<p>- As development tools, you'll need gcc, and to be on the safe side at least
+version 2.50 of autoconf and 1.7 of automake.  If your system/distribution does
+not have it, you can get them on <a href="http://www.gnu.org/">GNU.org</a>.
+<br>(If you have a Debian Woody,
+you'll have to install the <tt>autoconf</tt> and <tt>automake1.7</tt> package from
+the <i>testing</i> distribution).
+<br> If these tools are too old, you can obtain some very strange compilation bugs.
 
 <p>- Connect it permanently on the Internet through modem, xDSL, T1,
 cable... (although a disconnected judge should perfectly work only
@@ -230,11 +242,11 @@ is possible only with an account on the development computer.
    * ftp.diplom.org/pub/diplomacy/Sources/
 
 <p>- The official judge is distributed as a source code tarball called
-njudge-1.X.Y.tar.gz, where X and Y change with time.  Current version is 1.3.2. Please ignore
+njudge-1.X.Y.tar.gz, where X and Y change with time.  Current version is 1.5.1. Please ignore
 njudge-0.8.X and dipsrc-9XXX files if you find some, they are out of date.
 
 <p>- If you're lucky enough to work with a Debian Linux, you have a
-package available at Braincells:
+package by <a href="http://www.braincells.com/jaldhar/">Jaldhar H. Vyas</a> available at Braincells:
 <a href="http://src.braincells.com/debian/woody/njudge/">http://src.braincells.com/debian/woody/njudge/</a>
 <br> See below (section 4.) how to install it.  You can skip the
 Unix configuration and the compilation below.  Your judge will use the
@@ -270,18 +282,18 @@ put the judge binary directories in the <tt>.cshrc</tt> file.  For example:
 
 <br><tt>setenv PATH /usr/bin:/usr/local/bin:/home/alex/dip:/home/alex:/bin:~:.</tt>
 
-<p>- All the examples here deal with <tt>njudge-1.3.2.tar.gz</tt>.
+<p>- All the examples here deal with <tt>njudge-1.5.1.tar.gz</tt>.
 
 <p>- Extract the archive:
 
-<p><tt>tar xzvf njudge-1.3.2.tar.gz</tt>
+<p><tt>tar xzvf njudge-1.5.1.tar.gz</tt>
 
-<p> The file is extracted into a new directory called <tt>njudge-1.3.2</tt>.
+<p> The file is extracted into a new directory called <tt>njudge-1.5.1</tt>.
 As I have many versions of the judge on my hard disk, I have created
 a 'source' symbolic link which points to the real current source directory.
 
 <p><tt>    cd ~
-<br>    ln -s njudge-1.3.2 source</tt>
+<br>    ln -s njudge-1.5.1 source</tt>
 
 <p>- Browse the files you have obtained.  You can read the README.* or docs/README.* files now,
 even if you don't understand everything now.  (Some of them are clearly out-of-date;
@@ -296,8 +308,8 @@ directory is often called '<tt>dip</tt>'.
 <p><tt>    mkdir /home/alex/dip</tt>
 
 <p> This may be useless as the installation process should create the
-directory; but it can't hurt.  Note that some people like to install
-the binaries directly under /home/judge.
+directory; but it can't hurt.  Note that many people like to install
+the binaries directly under <tt>/home/judge</tt>.
 
 
 <h2><a name="2.4">2.4 Configure before compilation</a></h2>
@@ -340,9 +352,11 @@ is not easy to find by the script.  Although every MTA (Exim, Postfix, Qmail, Se
 seems to provide a compatibility mode, it is sometimes not easy to find, and often not in the
 <tt>$PATH</tt>.  If the <tt>./.configure</tt> fails by telling you it didn't find
 <tt>sendmail</tt>, search for it yourself with <tt>find / -name sendmail -print</tt>,
-and add another parameter to the script: <tt>--with-sendmail=/path_where_sednmail_id</tt>.
+and add another parameter to the script: <tt>--with-sendmail=/path_where_sendmail_is</tt>.
 Thank you for <a href="mailto:judge-maint@devel.diplom.org">telling us</a> this unknown path,
-it will be added in the script in the next version </p>
+it will be added in the script in the next version </p>.  If the <tt>./configure</tt> finds it,
+but the compilation fails by not finding it itself, upgrade to <tt>automake 1.7</tt> and begin
+from a fresh tarball again (anyway, I had to do that).
 
 <p>- (This should not be necessary on new judges) Verify permissions
 and change them if necessary to be able to write to the files.
@@ -398,7 +412,7 @@ modified anymore (as in the good old times).
 <p>'<tt>smail</tt>' is the script which builds the messages and sends them. This script
 is created during the compilation.  There is a <tt>smail.in</tt> script which
 contains the default lines.  (Change only <tt>smail.in</tt>, as <tt>smail</tt> is
-destroyed when recompiling).
+destroyed when launching <tt>./configure</tt>).
 
 <p>- You should not change the <tt>FROM</tt> line: there go the user and the domain that
 you indicated when launching <tt>./configure</tt>.
@@ -483,7 +497,7 @@ and one on another queue, and then search by queue.
 
 <h2><a name="2.9">2.9 Changing default parameters in defaults.inc.in </a></h2>
 
-<p>- This file contains judge default parameters that can't be change without recompiling the judge.
+<p>- This file contains judge default parameters that can't be changed without recompiling the judge.
 See README.hackers if you want to change some.
 
 <h2><a name="2.10">2.10 Other source modifications</a></h2>
@@ -505,7 +519,9 @@ so much fun anymore ;-)
 
 <p><tt>        make all</tt>
 
-<p>and the judge will be compiled.
+<p>and the judge will be compiled.  Any error that you could meet in an official release
+is probably caused by compilation tools (see <tt>autoconf</tt> and <tt>automake</tt>
+requested versions above).
 
 <h2><a name="3.2">3.2 Installation</a></h2>
 
@@ -567,16 +583,16 @@ containing all binaries and data files (yes, it is against the Debian policy).
 contains all non-hard-coded parameters before compilation.  You must check the following variables:
 
 <p>   * <tt>GAMES_MASTER</tt>: put YOUR email address or an alias on it, NOT the judge address!!.
-<br>   * <tt>OURSELVES</tt>: the Unix user name of the judge; it is used to
-avoid mail loops; you can keep the name 'judge' if this is its name.
+<br>   * <tt>OURSELVES</tt>: the Unix user name of the judge, already filed by the
+<tt>--with-user</tt> option of <tt>./configure</tt>; it is used to avoid mail loops.
 <br>   * <tt>JUDGE_CODE</tt>: codename of your judge (ALEX,FROG,USEF...), you MUST change it.
 <br>   * <tt>SPECIAL_PW</tt>: the password for the judge-keeper, keep it for yourself!).
 <br>   * <tt>AUTO_MASTER</tt>: yes or no; whatever the default is, you should put 'yes' for an 'official'
-judge, 'no' for an experimental one.
+judge, you can put 'no' for an experimental one.
 
 <p>- Optionally, you can decide in which directory must go all running games
 by setting the <tt>GAME_DIR</tt> variable.  You MUST create the directory before running the judge.
-<br> Example:
+<br> Example, to use the <tt>games</tt> directory in the user's home:
 <p><tt>GAME_DIR=games/</tt>
 
 <p> Don't forget the last '/'!
@@ -622,7 +638,7 @@ these options really work nowadays?]</i>
 
 <h2><a name="5.3">5.3 dipclean</a></h2>
 
-<p>- (This bug should be corrected in 1.3.2 judges) Open the '<tt>dipclean</tt>' script and change any path that doesn't match
+<p>- (This bug should be corrected in 1.5.1 judges) Open the '<tt>dipclean</tt>' script and change any path that doesn't match
 your system (especially the first line).
 
 <p>- It is now useless to run it for a first install.
@@ -758,8 +774,8 @@ back to them, so please put there the reason why game creation is not allowed.</
 <tr><td><tt>map.n</tt><td>Compiled data files, one for each variant.</tr>
 <tr><td><tt>data/map.&lt;variant_name&gt;</tt><td>Real map source files</tr>
 <tr><td><tt>data/info</tt><td>Help file sent to players</tr>
-<tr><td><tt>data/seed.n</tt><td>Initial position of units on the map</tr>
-<tr><td><tt>data/report.n</tt><td>Initial position report in a game.  (You can put
+<tr><td><tt>data/seed.*</tt><td>Initial position of units on the map</tr>
+<tr><td><tt>data/report.*</tt><td>Initial position report in a game.  (You can put
 any other information, text or joke there!!)</tr>
 <tr><td><tt>data/</tt><td>Other files that can get by the players by the '<tt>get</tt>'
 command (help files...)</tr>
@@ -837,7 +853,7 @@ See <tt>README.statistics</tt>.</tr>
 
 <table border=1 cellpadding=3 summary="Files created">
 <tr><td><tt>zforward</tt><td>See <tt>README.bailout</tt>.  After a judge crash, <tt>.forward</tt> is
-renamed to zforward, and the judge won't be run by an incoming email.</tr>
+renamed to <tt>zforward</tt>, and the judge won't be run by an incoming email.</tr>
 </table>
 
 <h2><a name="6.10">6.10 Other files</a></h2>
@@ -866,7 +882,7 @@ and check that everything above is OK.
 <p>- From your normal account, with any mail agent you want, send him
 a mail with only '<tt>version</tt>' in the body. It should answer very quickly
 (if the machine is not overloaded and if there is no network problem)
-with its version number (probably 1.3.2 if you are dealing with the
+with its version number (probably 1.5.1 if you are dealing with the
 standard judge), the number of registered players and running games.
 
 <p>- Ask him the help files : '<tt>get package</tt>', '<tt>get index</tt>' , '<tt>get info</tt>'
@@ -944,11 +960,11 @@ convoy :-).  Try phase orders.  Try proxy orders.
 the game to finish normally and quickly, change the parameters to NoDIAS, make a quick draw.
 
 <p>- Check variants too! A h32 (Hundred) could be quicker to check the
-full commands than a standard.  A 'chess' variant (not yet on a 1.3.2 judge) would be good too.
+full commands than a standard.  A 'chess' variant (not yet on a 1.5.1 judge) would be good too.
 
 <h2><a name="7.2">7.2 Automatic judge tester</a></h2>
 
-<p>Yes, it would be fine to have one.  As far as I know, nobody finished one.
+<p>Yes, it would be fine to have one.  As far as I know, nobody finished one yet.
 
 
 <h1><a name="8">8 Troubleshooting</a></h1>
@@ -995,7 +1011,9 @@ these are just files added at the beginning or the end of mails sent by the judg
 <p>The <tt>report.*</tt> files in <tt>data/</tt> are the beginning positions sent to
 the judge when a game begins.  They're just text and you can change
 whatever you want there and add silly comments.  (Be careful not to
-break software like DipChief or web observers...)
+break software like DipChief or web observers...).  If you want to add variants,
+see documentation in the judge code, in <a href="VariantsHOWTO.htm">VariantsHOWTO.html</a>
+or <a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.
 
 <p>You can read <tt>README.hackers</tt> if you change the code.
 
@@ -1025,7 +1043,7 @@ with data in <tt>/var/njudge</tt> for example.
 
 <p> Let's suppose that you want to modify the source code of the judge
 with a patch found on judge-maint. (This example suppose that you have a
-symlink '<tt>source</tt>' pointing to the real 1.3.2 tree).
+symlink '<tt>source</tt>' pointing to the real 1.5.1 tree).
 
 <p> Lock the judge: enter '<tt>flock dip.log</tt>' in the executables (often '<tt>dip/</tt>') directory.
 
@@ -1036,11 +1054,11 @@ symlink '<tt>source</tt>' pointing to the real 1.3.2 tree).
 
 <p>- Create a new source directory to be sure
 
-<p><tt>cp -R njudge-1.3.2 njudge-1.3.2-patch1</tt>
+<p><tt>cp -R njudge-1.5.1 njudge-1.5.1-patch1</tt>
 
 <p>- Make the '<tt>source</tt>' symlink to point to the new directory.
 <p><tt>        rm source
-<br>        ln -s /home/alex/njudge-1.3.2-patch1 source
+<br>        ln -s /home/alex/njudge-1.5.1-patch1 source
 </tt>
 
 <h2><a name="11.3">11.3 Makefile variables</a></h2>
@@ -1110,13 +1128,13 @@ you won't break anything. It was not the case before 0.8.10 :-)
 
 <h2><a name="12.1">12.1 The author</a></h2>
 
-<p> The author is 28 years old, writes SQL all day long for big
+<p> The author is 29 years old, writes SQL all day long for big
 corporations to eat and pay the mortgage, and is trying to learn Java, C and PHP
 (The most difficult part is to find some time for it...)
 
 <h2><a name="12.2">12.2 Thanks</a></h2>
 
-<p> Many parts of this HowTo are cut-and-pasted from <tt>README</tt> and <tt>INSTALL</tt>files,
+<p> Many parts of this HowTo are cut-and-pasted from <tt>README</tt> and <tt>INSTALL</tt> files,
 from source code and from mails of the judge-maint mailing list.
 
 <p> Thanks to Philippe Lalande, JK of Frog, who was soooooo patient with
@@ -1142,6 +1160,12 @@ send me a copy of the thing you're making while you're at it).
 (no translation known for the moment).
 
 <hr>
+
+<p>
+      <a href="http://validator.w3.org/check/referer"><img border="0"
+          src="http://www.w3.org/Icons/valid-html401"
+          alt="Valid HTML 4.01!" height="31" width="88"></a>
+    </p>
 
 </body>
 </html>
