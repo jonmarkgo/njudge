@@ -1,6 +1,8 @@
-
 	/*
 	 * $Log$
+	 * Revision 1.23  2004/05/13 00:17:19  millis
+	 * Don't send emails to NOBODY (Bug 306)
+	 *
 	 * Revision 1.22  2004/01/11 01:02:29  millis
 	 * Fix bug 265, so that convoys work in high seas.
 	 *
@@ -858,8 +860,8 @@ int absence_adjust(long *deadline)
 				       or game is quiet
 				       or is the master before adjusting the deadline */
 				    if ((dipent.players[i].status & SF_MOVE &&
- 					(dipent.flags & F_STRWAIT || DIPENT_NO_PRESS)) || 
-				        (!(dipent.flags & F_STRWAIT) && !DIPENT_NO_PRESS) ||
+ 					(dipent.x2flags & X2F_STRWAIT || DIPENT_NO_PRESS)) || 
+				        (!(dipent.x2flags & X2F_STRWAIT) && !DIPENT_NO_PRESS) ||
 					dipent.flags & F_QUIET ||
 					dipent.players[i].power == MASTER)
 				    {
@@ -932,7 +934,8 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
         if (!seq) {
                 if (!(seq = dipent.phase[5] == 'M' ? &dipent.movement :
                       dipent.phase[5] == 'R' ? &dipent.retreat :
-                      dipent.phase[5] == 'B' ? &dipent.builds : NULL)) {
+                      dipent.phase[5] == 'B' ? &dipent.builds : 
+		      dipent.phase[5] == 'A' && (dipent.flags & F_INTIMATE) ? &dipent.builds : NULL)) {
                         fprintf(stderr, "Invalid phase [%s] in deadline for '%s'.\n",
                                 dipent.phase, dipent.name);
                         fprintf(log_fp, "Invalid phase [%s] in deadline for '%s'.\n",
@@ -1494,3 +1497,41 @@ void MailOut(char *out_line, char *address)
    }
 
 }
+
+/* Return power that is controlling another */
+
+int PowerControlledBy( int p)
+{
+    int ret;
+
+    ret = FindPower(p);
+
+    if (ret >= dipent.n) 
+	    return 0;  /* Not a valid power */
+
+    ret = dipent.players[ret].controlling_power;
+
+    return ret;
+}
+
+void PrintTwoColTable( char * title, char *power_col, char *other_col ) {
+/* Print out a table with two cols, the first being a power list */
+
+    int i;
+
+    fprintf(rfp,"\n%s:\n", title);
+
+    fprintf(rfp, "\n%s", power_col);
+    for (i = strlen(power_col); i < LPOWER; i++)
+        putc(' ', rfp);
+        fprintf(rfp, "%s\n", other_col);
+        for (i = 0; i < strlen(power_col); i++)
+            putc('-', rfp);
+        for (i = strlen(power_col); i < LPOWER; i++)
+            putc(' ', rfp);
+        for (i = 0; i < strlen(other_col); i++)
+            putc('-', rfp);
+        putc('\n', rfp);
+
+}
+

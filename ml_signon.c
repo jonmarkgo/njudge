@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.40  2004/05/12 23:56:56  millis
+ * Fix bug 298, don't advance deadline if first turn and other players still CD
+ * on takeover.
+ *
  * Revision 1.39  2004/05/12 23:44:04  millis
  * Fix Bug 305 so that same player can return, even if dead
  *
@@ -190,6 +194,53 @@
 
 #define ADMINISTRATOR	'@'
 
+/*
+ * Place the correct money values in the beginning players treasury
+ */
+ 
+void SetupIntimateTreasury(void)
+{
+    int i,p;
+    short value;
+
+    if (has_treasury)
+	    return;  /* Game datafile already has treasury */
+
+    if (atoi(dipent.seq) > 1) return; /* Not on first turn, so ignore this call */
+
+    for (i = 0; i < dipent.n; i++) {
+	p = dipent.players[i].power;
+
+	if (dipent.players[i].power < WILD_PLAYER && 
+	    dipent.players[i].controlling_power == 0) {
+	    
+	    if (dipent.variant == V_STANDARD) {
+                /* For standard, we have fixed values:
+	         *  E, F, R & T are given 20 credits, G 22, A & I 24.
+	         */
+	        switch (pletter[V_STANDARD][p]) {
+		    case 'I':
+		    case 'A':
+		        value = 24;
+		        break;
+		    case 'G':
+		        value = 22;
+		        break;
+		    default:
+		        value = 20;
+	        }
+	    } else {
+            /* For non-standard games, 3 * numer of powers */
+	    value = dipent.np * 3;
+	    }
+
+	} else 
+	    value = 0;  /* Not a player! */
+
+	ducats[p].treasury = value;
+    }
+    return;
+}
 /*
  * Open a data file, based on variant setting
  */
@@ -1363,7 +1414,13 @@ void mail_igame(void)
 					break;
 			}
 			if (j < WILD_PLAYER) {
-				memcpy(&dipent.players[dipent.n], &dipent.players[i], sizeof(Player));
+				if (dipent.flags & F_INTIMATE) {                                                                   /* in intimate, other powers are autonomous */
+				    dipent.players[dipent.n].controlling_power = AUTONOMOUS;
+				    strcpy(dipent.players[dipent.n].address, NULL_EMAIL);
+				    strcpy(dipent.players[dipent.n].password, "password");
+				} else {
+				    memcpy(&dipent.players[dipent.n], &dipent.players[i], sizeof(Player));
+				}
 				dipent.players[dipent.n].power = j;
 				dipent.n++;
 			}
@@ -1417,6 +1474,9 @@ void mail_igame(void)
 
 	strcpy(dipent.seq, "001");
 	strcpy(dipent.phase, sphase[dipent.variant]);
+	if (dipent.flags & F_INTIMATE) {
+	    dipent.phase[5] = 'A';
+	}
 	seq.clock = dipent.movement.clock;
 	seq.mint = dipent.movement.mint;
 	seq.next = dipent.movement.next * 2;
@@ -1469,6 +1529,11 @@ void mail_igame(void)
 	for (i = 0; i < dipent.n + 1; i++) {
 		if (dipent.players[i].power < 0)
 			continue;
+
+		if ((dipent.flags & F_INTIMATE) && 
+		     dipent.players[i].controlling_power != AUTONOMOUS && 
+		     dipent.players[i].power != MASTER) 
+		    dipent.players[i].status |= SF_WAIT; /* Always set a wait for players in intimate */
 
 		if ((ofp = fopen("dip.temp", "w")) == NULL) {
 			fprintf(stderr, "igame: Error opening second temporary file.\n");

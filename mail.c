@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.70  2004/05/13 00:17:19  millis
+ * Don't send emails to NOBODY (Bug 306)
+ *
  * Revision 1.69  2004/03/28 15:51:05  millis
  * Fix bug 271, provide more information about unstart
  *
@@ -2281,7 +2284,7 @@ int mail(void)
 					continue;
 
 				if (dipent.players[j].status & SF_DRAW) {
-					if (dipent.flags & F_NODIAS) {
+					if (dipent.x2flags & X2F_NODIAS) {
 						fprintf(rfp, "%-15s: DRAW %s\n", powers[dipent.players[j].power],
 						 dipent.players[j].pref);
 					} else {
@@ -2291,7 +2294,7 @@ int mail(void)
 			}
 		} else {
 			if (dipent.players[player].status & SF_DRAW) {
-				if (dipent.flags & F_NODIAS) {
+				if (dipent.x2flags & X2F_NODIAS) {
 					fprintf(rfp, "%s: DRAW %s\n", powers[dipent.players[player].power],
 					    dipent.players[player].pref);
 				} else {
@@ -2656,6 +2659,8 @@ void msg_header(FILE * fp)
 			fprintf(fp, " Shorthand");
 		if (dipent.flags & F_WINGS)
 			fprintf(fp, " Wings");
+		if (dipent.flags & F_INTIMATE)
+			fprintf(fp, " Intimate");
 		fprintf(fp, "\n");
 		free(temp);
 
@@ -2915,7 +2920,7 @@ static int InsertDummyPlayers()
         while (players != dipent.np && i < MAXPLAYERS ) {
             dipent.players[i].power = WILD_PLAYER;
             dipent.players[i].userid = 0;
-            strcpy(dipent.players[i].address,NOBODY);
+            strcpy(dipent.players[i].address,NULL_EMAIL);
             dipent.players[i].status = SF_ABAND;
             players++;
             dipent.n++;

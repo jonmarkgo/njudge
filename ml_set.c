@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.56  2004/05/20 15:48:39  russblau
+ * Fix bug 123 (SET ALLOW|DENY MASTER works when it shouldn't)
+ *
  * Revision 1.55  2004/05/20 14:08:41  russblau
  * Fix Bug 310 (Wrong error message when using inverted flag logic)
  *
@@ -1181,7 +1184,6 @@ void mail_setp(char *s)
 	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS,
             PRV_APPROVAL, PRV_NOAPPROVAL,
             PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED
-
 	};
 
 	chk24nmr = 0;
@@ -1494,7 +1496,7 @@ void mail_setp(char *s)
 				if (read_phase > 0)
 					fprintf(pfp, "%c: set wait\n", name[0]);
 				else {
-					if (dipent.flags & F_STRWAIT) {
+					if (dipent.x2flags & X2F_STRWAIT) {
 						if ((dipent.players[player].status & SF_MOVE) ||
 						    (dipent.players[player].power == MASTER)) {
 							fprintf(rfp, "'Wait' status set.\n\n");
@@ -1796,7 +1798,7 @@ void mail_setp(char *s)
 		case SET_DRAW:
 			if (check_can_vote(player, DRAW_VOTE))
 				break;
-			if (dipent.flags & F_NODIAS) {
+			if (dipent.x2flags & X2F_NODIAS) {
 
 				for (t = s; *s && !isspace(*s) && *s != ','; s++);
 				if (*s)
@@ -1827,7 +1829,7 @@ void mail_setp(char *s)
 		case SET_NODRAW:
 			if (check_can_vote(player,DRAW_VOTE))
 				break;
-			if (dipent.flags & F_NODIAS)
+			if (dipent.x2flags & X2F_NODIAS)
 				fprintf(rfp, "You will now only accept a concession.\n");
 			else
 				fprintf(rfp, "You will now not accept a DIAS draw.\n");
@@ -1837,7 +1839,7 @@ void mail_setp(char *s)
 		case SET_CONC:
 			if(check_can_vote(player, CONC_VOTE))
 				break;
-			if(dipent.flags & F_NODIAS)
+			if(dipent.x2flags & X2F_NODIAS)
 			{
 				fprintf(rfp,"It is pointless to vote for a concession in a NoDIAS game\n");
 				fprintf(rfp,"Simply vote for a one player draw!\n\n");
@@ -1868,8 +1870,8 @@ void mail_setp(char *s)
                         break;
 		
 		case SET_DIAS:
-			if (dipent.flags & F_NODIAS) {
-				dipent.flags ^= F_NODIAS;
+			if (dipent.x2flags & X2F_NODIAS) {
+				dipent.x2flags ^= X2F_NODIAS;
 				fprintf(rfp, "Draws must now include all survivors. All draw%s",
 					" flags cleared.\n");
 				pprintf(cfp, "%s%s as %s in '%s' set the DIAS flag.\n",
@@ -1892,10 +1894,10 @@ void mail_setp(char *s)
 			}
 			break;
 		case SET_NODIAS:
-			if (dipent.flags & F_NODIAS) {
+			if (dipent.x2flags & X2F_NODIAS) {
 				fprintf(rfp, "Game '%s' is already no-DIAS.\n", dipent.name);
 			} else {
-				dipent.flags ^= F_NODIAS;
+				dipent.x2flags ^= X2F_NODIAS;
 				fprintf(rfp, "Draws need not now include all survivors.\n%s",
 					"All draw flags cleared.\n");
 				pprintf(cfp, "%s%s as %s in '%s' cleared the DIAS flag.\n",
@@ -1917,7 +1919,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_CONCESSIONS:
-			if(dipent.flags & F_NODIAS)
+			if(dipent.x2flags & X2F_NODIAS)
 			{
 				fprintf(rfp,"NODIAS game already allow concessions!\n");
 				break;
@@ -2152,12 +2154,12 @@ void mail_setp(char *s)
 			break;
 
 		case SET_NOPROXY:
-			SETFLAGS(0, F_PROXY);
+			SETX2FLAGS(0, X2F_PROXY);
 			broad_params = 1;
 			break;
 
 		case SET_PROXY:
-			SETFLAGS(F_PROXY, F_PROXY);
+			SETX2FLAGS(X2F_PROXY, X2F_PROXY);
 			broad_params = 1;
 			break;
 
@@ -2586,10 +2588,10 @@ void mail_setp(char *s)
 			break;
 
 		case SET_STRWAIT:
-                        if (dipent.flags & F_STRWAIT) {
+                        if (dipent.x2flags & X2F_STRWAIT) {
                                 fprintf(rfp, "Game '%s' is already StrictWait.\n", dipent.name);
                         } else {
-                                dipent.flags |= F_STRWAIT;
+                                dipent.x2flags |= X2F_STRWAIT;
                                 fprintf(rfp, "Only players with moves required can set WAIT.\n");
                                 pprintf(cfp, "%s%s as %s in '%s' set the StrictWait flag.\n",
                                         NowString(),
@@ -2604,10 +2606,10 @@ void mail_setp(char *s)
                         break;
 
                 case SET_NOSTRWAIT:
-                        if (!(dipent.flags & F_STRWAIT)) {
+                        if (!(dipent.x2flags & X2F_STRWAIT)) {
                                 fprintf(rfp, "Game '%s' is already NoStrictWait.\n", dipent.name);
                         } else {
-                                dipent.flags &= ~F_STRWAIT;
+                                dipent.x2flags &= ~X2F_STRWAIT;
                                 fprintf(rfp, "Any player can set WAIT.\n");
                                 pprintf(cfp, "%s%s as %s in '%s' cleared the StrictWait flag.\n",
                                         NowString(),
@@ -3080,7 +3082,6 @@ CATF_SETOFF,
 			}
 			break;
 
-/*
                 case SET_AIRLIFT:
                         CheckNoMach();
 			CheckWings();
@@ -3106,7 +3107,7 @@ CATF_SETOFF,
                                             CATF_NORMAL);
                         }
                         break;
-*/
+		
 		case SET_BLANKBOARD:
                         CheckNoMach();
                         if (dipent.seq[0] != 'x') {
