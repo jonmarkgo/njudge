@@ -1,5 +1,7 @@
-Greetings from the Diplomacy* Adjudicator!!                2 July 1996.
+Greetings from the Diplomacy* Adjudicator!!                8th August 2000
 index.
+
+(Note new commands for this judge version are marked witn an '*'.)
 
 This is an alphabetical list of all the commands that the adjudicator will
 process with a brief description.  Each command is preceded by a who/where
@@ -176,8 +178,17 @@ any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
         may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or the
         end of the (incoming) mail message.  See file 'press'.
 
+mod/aft*PROMOTE address
+	To promote the observer with the specified address to also be a master.
+
 any/any REGISTER ... END  
         To register yourself.  See file 'form'.
+
+mod/aft*RESIGN power-or-email
+	A master-only command to resign a particular power. This can be done at
+	any time by the master. The master MUST use this form to resign himself.
+	The <power-or-email> specification can also be an email address, and will
+	work with observers too.
 
 any/aft RESIGN
         To withdraw from the game.  This must be the LAST command in the
@@ -194,6 +205,9 @@ mod/aft ROLLBACK turn
 any/any SEND [ME] file
         Equivalent to "get file".
 
+any/aft*SET [NO]ABSENCE start_date [TO end_date]
+	Cancel/request an absence period. See file 'absence' for details.
+
 mod/aft SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
         To change what users can sign on.  By default only people from
         different sites can sign onto a game.
@@ -205,10 +219,35 @@ any/aft SET ADDRESS  [reply_address]
         address you will get two replies, one to each address.  This can
         be fixed by using "set address" with no reply address specified.
 
-mod/aft SET ALL PRESS
+mod/aft*SET ALL PRESS
 	To request that all partial press be sent to you as the moderator
 	of the game as well as to the intended recipients.  Use "SET NORMAL
-	PRESS" to disable this feature.
+	PRESS" to disable this feature. Can be extended to observers if a 
+	SET WATCH ALLPRESS was previously sent.
+
+mod/aft*SET ANYCENTRE[S]
+	SET ANYCENTER[S]
+	Override variant settings so that a power can build in any owned
+	centre/center during a build phase.
+
+mod/aft*SET ANYDISBAND
+	Allow powers to disband any unit during a build phase (and thus
+	gaining option to rebuild on a buildable centre if desired).
+	A 'wait' is set for all active players during the build phase.
+	Opposite of SET NORMAL DISBAND, see below.
+
+mod/aft*SET AUTOPROC[ESS]
+	Lets the judge automatically process turns when possible. It is 
+	equivalent to SET NOMANUALPROCESS, see below.
+
+mod/aft*SET AUTOSTART
+	Allows a game to automatically start when it has a quorum. It is 
+	equivalent to SET NOMANUALSTART, see below.
+
+mod/aft*SET [NO]AUTODISBAND
+	Disables/enables the autodisband rule. This rule when enables means
+	that units are automatically disbanded when dislodged, i.e. no 
+	retreats are permitted.
 
 mod/mac SET [NO]ADJACENCY
         Disables/enables optional rule that allows bribes from nonadjacent
@@ -217,8 +256,20 @@ mod/mac SET [NO]ADJACENCY
 mod/mac SET [NO]ASSASSINATIONS
         Disables/enables optional assassination rules.
 
+mod/aft*SET BLANKBOARD
+        Set the game to start in a build phase, with no units, so that players
+	can place a different initial stating unit position.
+	Can only be set before hte game begins, and has no effect on games
+	that alreaady start in a build phase (such as Chaos).
+
+mod/aft*SET [NO]BLANKPRESS
+	Disables/enables players to send blank press messages. Usually not very 
+	useful to enable.
+
 mod/aft SET BN|BNC [NUMBER] number
-        Sets the Boardman number for a game.  This command should only be
+        {Note: This command is no longer of use as Bordman numbers are no
+	 longer being maintained. Retained for compatability only. }
+	Sets the Boardman number for a game.  This command should only be
         issued after receiving a number from the Boardman Number Custodian
         (BNC); at the time of this writing, the BNC for Internet games is
         Nick Fitzpatrick (nfitz@sentex.ca).  The Boardman number
@@ -268,8 +319,13 @@ mod/mac SET [NO]DICE
 any/aft SET [NO]DRAW [powerlist]
         Cast a vote in an automated draw. See file 'draws'.
 
+mod/aft*SET EMPTYBOARD
+	The same as SET BLANKBOARD, see above.
+
 mod/aft SET EP number
-        Sets the Electonic Protocol number for a game.  This command should
+        {Note: This command is no longer of use as EP numbers are no
+	 longer being maintained. Retained for compatability only. }
+	Sets the Electonic Protocol number for a game.  This command should
         only be issued after receiving a number from the Electronic
         Protocol Number Keeper (EPNK); at the time of this writing, the EPNK
         is Sean Starkey (starkey@netcom.com).  The EP number takes the form
@@ -283,6 +339,9 @@ mod/aft SET EP number
 mod/mac SET [NO]FAMINE
         Disables/enables optional famine rules.
 
+mod/mac*SET [NO]FORT[RESS]
+        Disables/enables optional fortress rules.
+
 mod/aft SET GRACE date
         Changes the grace period for the current phase.  See file 'deadlines'.
 
@@ -292,6 +351,24 @@ mod/aft SET GREY [PRESS]
 mod/aft SET GREY/WHITE [PRESS]
         Sets press option to grey by default with white allowed.  See file
         'press'.
+
+any/aft*SET [NO]HOLIDAY[S]
+	Same as SET [NO]ABSENCE.
+
+mod/aft*SET HOMECENTRE[S]
+	SET HOMECENTER[S]
+	Override game settings to allow builds to be made only in designated
+	power's home centres/centers during build phase.
+
+mod/aft*SET [NO]LATECOUNT
+	Disables/enables late counting. If enabled, every time a player is
+	late the late messages will include a count of the number of times
+	this player has been late in the game. This counter will be reset
+	when a new player takes over.	
+
+mod/aft*SET [NO]LATEPRESS
+	Disables/enables players who are marked as late from sending any
+	press (except to the master).
 
 mod/aft SET LEVEL ANY|NOVICE|AMATEUR|INTERMEDIATE|ADVANCED|EXPERT
         Restricts access to a particular class of player.  The three
@@ -308,8 +385,46 @@ mod/mac SET [NO]LOANS
         Disables/enables optional rules allowing players to borrow money
         from the bank.
 
+mod/mac*SET MACH[-]1
+mod/mac*SET MACHIAVELLI[-]1
+        Enables original rules for a Machiavelli game. Can only be set
+        before game starts. See rules.mach1 for details.
+
+mod/mac*SET MACH[-]2
+mod/mac*SET MACHIAVELLI[-]2
+        Enables 2nd Edition rules for a Machiavelli game. Can only be set
+        before game starts. See rules.mach2 for details.
+
+mod/mac*SET MACH[-]3
+mod/mac*SET MACHIAVELLI[-]3
+	Enables Special rules for a Machiavelli game. Can only be set
+	before game starts. See rules.mach3 for details.
+
+mod/aft*SET [NO]MANUALPROCESS
+	Disables/enables the requirement that the turn will only occur 
+	when the master executes the 'PROCESS' command.
+
+mod/aft*SET [NO]MANUALSTART
+	Disables/enables the requriement that the gaem will only start 
+	when the master allows. If game was NOMANUALSTART and ready to go,
+	the SET NOMANUALSTART will start it.
+
+mod/aft*SET MAXABSENCE number
+	Sets the maximum absence that will be accepted automatically from
+	a player in valid turn days.
+	The parameter <number> can be set no higher than 31 and no lower 
+	than 0. See file 'absence' for further details.
+
+mod/aft*SET [NO]MINORPRESS
+	Disables/enables the sending of press message during minor phases
+	(retreats and builds). FTF games commonly do not allow minor phase
+	press, Judge games historically have. 
+	Cannot be changed once the game is in progress.
+
 mod/aft SET MN|MNC [NUMBER] number
-        Sets the Miller number for a game.  This command should only be
+        {Note: This command is no longer of use as Miller numbers are no
+         longer being maintained. Retained for compatability only. }
+	Sets the Miller number for a game.  This command should only be
         issued after receiving a number from the Miller Number Custodian
         (MNC); at the time of this writing, the MNC for Internet games is
         Nick Fitzpatrick (nfitz@sentex.ca).  The Miller Number
@@ -341,9 +456,18 @@ mod/aft SET NOLIST
         be able to see it.  Useful for "by invitation only" games.  See
         also "set list" and file 'master'.
 
+any/aft*SET [NO]BROADCAST PRESS
+	Disables/enables receiving broadcast press messages. 
+	Only possible for observers or moderators.
+
 any/aft SET NORMAL PRESS
 	Disables the "SET ALL PRESS" option where all partial press is sent
-	to you as the moderator of a game.
+	to you as the moderator or observer of a game.
+
+mod/aft*SET NORMAL DISBAND
+        Uses the standard rules for disbands on a build turn, i.e. can
+        only disband when power has moer units than centres. 
+	Opposite of SET ANYDISBAND (see above).
 
 mod/aft SET OBSERVER ANY [PRESS]
         Permits observers and alternates to submit press with the same 
@@ -383,7 +507,8 @@ mod/aft SET PARTIAL MAY [BE FAKED]
         See file 'press'.
 
 any/aft SET PASSWORD new_password     
-        To change your password.
+        To change your password. Passwords must contain only alphanumeric
+	characters.
 
 mod/mac SET [NO]PLAGUE
         Disables/enables optional plague rules.
@@ -425,6 +550,15 @@ mod/aft SET [NO]REVEAL
 	flag is useful for gunboat tournaments where player lists may
 	be the same in multiple games.
 
+mod/aft* SET [NO]RESUME
+	Enables/disables players from resuming a game. If enabled, any player
+	can resume a terminated game. If disabled, only the moderator can.
+
+mod/aft SET [NO]SHOW
+	If a game is set to NoShow, chnages to game settings will appear
+	to be made by 'someone@somewhere'. Otherwise, the changer will
+	have their email shown.
+
 mod/mac SET [NO]SPECIAL
         Disables/enables optional rules that allow double strength units.
 
@@ -443,12 +577,24 @@ mod/aft SET [NO]STRICTWAIT
 	will be allowed to set wait.  If NOSTRICTWAIT is set (default), any
 	currently active player can set wait.
 
+mod/aft*SET TRANSFORM <transform-option>
+	SET TRAFO <transform-option>
+	Enables unit transformations, according to the passed <transform-option>. 
+	See file 'transform' for details.
+
+mod/aft*SET NOTRANSFORM 
+	SET NOTRAFO
+	Disables the transformation of units. 
+
 mod/aft SET UNMODERATE
         Changes a game from moderated to unmoderated.
 
 mod/aft SET UNRATED
         Changes a game from rated to unrated.  Unrated games will not
 	affect the players' dedication rating.
+
+any/aft*SET [NO]VACATION[S]
+	Same as SET [NO]ABSENCE.
 
 mod/aft SET VARIANT variant [options]         
         To change the variant of a game.  This can only be done before the
@@ -460,6 +606,11 @@ mod/aft SET VARIANT variant [options]
 any/aft SET WAIT
         Specifies that orders should not be processed until the deadline.
         See also "set nowait".
+
+mod/aft*SET [NO]WATCH ALLPRESS
+	Disable/enable observers to also use the 'SET ALL PRESS' command to
+	see partial press between players. Use with caution to avoid gunboat
+	security breaches.
 
 mod/aft SET WHITE [PRESS]
         Sets press option to white only.  See file 'press'.
@@ -495,7 +646,8 @@ any/aft SUMMARY
         the generic "someone@somewhere".
 
 mod/aft TERMINATE
-        To declare the game over.
+        To declare the game over. If the game has not started, it will be
+	ended and no-one can ever sign onto it again.
 
 any/pre VERSION [level]   
         To see the current version of the software.  If the optional level
