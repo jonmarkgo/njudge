@@ -381,6 +381,7 @@ dist_doc_DATA = docs/InstallationHOWTO.txt \
 		docs/README.timezone \
 		docs/njudgemapdatahowto.htm \
 		docs/njudgemapdatahowto.txt \
+		docs/manual-all.htm \
 		AUTHORS \
 		COPYING \
 		ChangeLog \

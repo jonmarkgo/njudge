@@ -3,6 +3,11 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.33  2003/09/09 18:51:22  jaldhar
+# Got rid of port.h and replaced with some extra configure checks.  The
+# include strings.h was not carried over because it is commented out and
+# likely wouldn't work anyway.
+#
 # Revision 1.32  2003/07/23 21:47:07  millis
 # Remove delete of map files from remap target.
 #
@@ -249,6 +254,7 @@ dist_doc_DATA=	docs/InstallationHOWTO.txt \
 		docs/README.timezone \
 		docs/njudgemapdatahowto.htm \
 		docs/njudgemapdatahowto.txt \
+		docs/manual-all.htm \
 		AUTHORS \
 		COPYING \
 		ChangeLog \
