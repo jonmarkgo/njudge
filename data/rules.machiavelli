@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   Jan 22, 2004
+Greetings from the Diplomacy* Adjudicator!!                  March 3, 2004
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -1245,6 +1245,18 @@ coasts would be eligible for conversion.
 Version 2: Fleets may only convert to garrison or vice versa from/to a sea area 
 containing the anchor symbol.  Only one "anchored" coast may exist.
 
+**Support into multi-coastal provinces**
+This is a recurrent bone of contention.  To simplify the procedure and avoid 
+endless discussions about what coast the support was intended to (after the 
+judge software has added an arbitrary coastal designation), we recommend that 
+the GM always declares in the game information what rule he will use.
+
+We recommend one of these solutions:
+1) Support always successful regardless of if the fleet givning support can 
+   move to the coast in question, or
+2) Support only successful if the fleet giving support can move to the coast 
+   that the supported fleet is on. 
+
 
 APPENDIX 5 -- INCOME QUICK REFERENCE CHART
 
@@ -1305,6 +1317,7 @@ v2.4a 9th Dec 2003.  Coastal spec for coversions.  Correction of typo re
     income for besieged cities.  Author Millis Miller.
 v2.4b 22nd Jan 2004.  'Income quick ref chart' (app 5).  Minor correction 
     re coasts and disbands.  Venice 5e corrected.  Author Sergio Lidsell.
-
+v2.4c 3rd march 2004.  Note about support into multi-coastal provinces 
+    added.  Author Sergio Lidsell.
 
 This document is free to distribute for non-commercial and non-profit  purposes.
