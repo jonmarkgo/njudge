@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.26  2003/06/10 10:33:30  millis
+# Bug174 fix, delete the map files first
+#
 # Revision 1.25  2003/05/11 16:15:16  millis
 # Fixed bug 153 (make not upgrading data files correctly)
 #
@@ -64,7 +67,7 @@ LN_S=@LN_S@
 PERL=@PERL@
 
 bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump lenlimit \
+	fmtwho ded_to_ascii ascii_to_ded zpblind recdump lenlimit \
         ascii2rec
 
 bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
@@ -174,11 +177,6 @@ delgame_SOURCES=delgame.c
 flock_SOURCES=	flock.c
 
 fmtwho_SOURCES=	fmtwho.c
-
-ign_SOURCES=ign.c \
-		strcasecmp.c
-ign.o: ign.c
-	${CC} ${DEFS} ${INCLUDES} ${AM_CFLAGS} ${CFLAGS} -DMAIL_PROG=\"${MAIL}\" -c $<
 
 pdip_SOURCES=	pdip.c
 
