@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/14 07:40:17  greg
+ * minor bug fix & put "[Error Flag]" in subjectline when appropriate
+ *
  * Revision 1.5  2001/07/01 23:19:29  miller
  * Added predict and eject commands
  *
@@ -819,9 +822,9 @@ int mail(void)
 						fprintf(rfp, "Name of game for summary must be specified.\n");
 						break;
 					}
-					sprintf(line, "D%s/summary", name);
+					sprintf(line, "%s%s/summary", GAME_DIR, name);
 					if (!(tfp = fopen(line, "r"))) {
-						sprintf(line, "D%s/G001", name);
+						sprintf(line, "%s%s/G001", GAME_DIR, name);
 						if (!(tfp = fopen(line, "r"))) {
 							if (!msg_header_done)
 								msg_header(rfp);
@@ -861,7 +864,7 @@ int mail(void)
 							fprintf(rfp, "Problem generating summary for game '%s'.\n", name);
 							break;
 						}
-						sprintf(line, "D%s/summary", name);
+						sprintf(line, "%s%s/summary", GAME_DIR, name);
 						if (!(tfp = fopen(line, "r"))) {
 							if (!msg_header_done)
 								msg_header(rfp);
@@ -1226,7 +1229,7 @@ int mail(void)
 						if (dipent.players[player].power != power(*line))
 							fputs(line, tfp);
 					fclose(pfp);
-					sprintf(line, "D%s/P%s", dipent.name, dipent.seq);
+					sprintf(line, "%s%s/P%s", GAME_DIR, dipent.name, dipent.seq);
 					ferrck(tfp, 2001);
 					rename("dip.temp", line);
 					pfp = tfp;
@@ -1304,7 +1307,7 @@ int mail(void)
 					fclose(qfp);
 
 					/* Open draw file (for summary) */
-					sprintf(line, "D%s/draw", dipent.name);
+					sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
 					if (!(termfp = fopen(line, "r"))) {
 						if ((dfp = fopen(line, "w")) == NULL) {
 							fprintf(log_fp, "mail: Error opening draw file.\n");
@@ -1341,7 +1344,7 @@ int mail(void)
 					 */
 
 					if (dipent.flags & F_GUNBOAT) {
-						sprintf(line, "D%s/msummary", dipent.name);
+						sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 						remove(line);
 					}
 					/*
@@ -1364,8 +1367,8 @@ int mail(void)
 
 					/*  Mail summary to HALL_KEEPER */
 
-					sprintf(line, "%s D%s/summary 'HoF: Termination in %s' '%s'"
-						, SMAIL_CMD ,dipent.name, dipent.name, HALL_KEEPER);
+					sprintf(line, "%s %s%s/summary 'HoF: Termination in %s' '%s'",
+						SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
 					execute(line);
 					}
 					broadcast = 1;
@@ -1420,9 +1423,9 @@ int mail(void)
 					 */
 
 					if (dipent.flags & F_GUNBOAT) {
-						sprintf(line, "D%s/summary", dipent.name);
+						sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
 						remove(line);
-						sprintf(line, "D%s/msummary", dipent.name);
+						sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
 						remove(line);
 					}
 					for (i = 0; i < dipent.n; i++)
@@ -1566,7 +1569,7 @@ int mail(void)
 					}
 					if (!(i = atoi(s)))
 						i = atoi(dipent.seq) - 1;
-					sprintf(temp, "D%s/G%3.3d", dipent.name, i);
+					sprintf(temp, "%s%s/G%3.3d", GAME_DIR, dipent.name, i);
 					if (!(tfp = fopen(temp, "r"))) {
 						fprintf(rfp, "Sorry, %s does not exist, roll back not possible.\n",
 							temp);
@@ -1612,12 +1615,12 @@ int mail(void)
 					fclose(tfp);
 
 					fclose(ofp);
-					sprintf(Tfile, "D%s/T%s", dipent.name, dipent.seq);
+					sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
 					if ((ofp = fopen(Tfile, "w")) == NULL) {
 						fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 						return E_FATAL;
 					}
-					sprintf(Mfile, "D%s/M%s", dipent.name, dipent.seq);
+					sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
 					if ((tfp = fopen(Mfile, "r")) != NULL) {
 						while (fgets(line, sizeof(line), tfp)) {
 							if (!strcmp(line, "X-marker\n"))
@@ -1640,7 +1643,7 @@ int mail(void)
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
 
-						sprintf(line, "D%s/%ssummary", dipent.name, mflg);
+						sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg);
 						if (!(tfp = fopen(line, "r"))) {
 							sprintf(line, "%s -C %s -%s%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
 								dipent.flags & F_QUIET ? "q" : "",
@@ -1652,7 +1655,7 @@ int mail(void)
 									dipent.name);
 								break;
 							}
-							sprintf(line, "D%s/%ssummary", dipent.name, mflg);
+							sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg);
 							if (!(tfp = fopen(line, "r"))) {
 								fprintf(rfp, "Sorry, unable to generate summary for '%s'.\n",
 									dipent.name);
