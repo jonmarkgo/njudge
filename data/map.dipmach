@@ -4,7 +4,7 @@
 Switzerland,           l0. swi switz
 Adriatic Sea,          w0. adr adriatic  
 Aegean Sea,            w0. aeg aegean 
-Albania,               l0. alb alban
+Albania,               x0. alb alban
 Ankara,                T1f ank ankar
 Apulia,                I0. apu apuli puglia pug
 Armenia,               T0. arm armen
@@ -44,7 +44,7 @@ Moscow,                R3f mos mosco
 Munich,                G1f mun munic
 Naples,                I1P nap naple napoli
 North Atlantic Ocean,  w0. nao nat
-North Africa,          l0. naf nora afric africa
+North Africa,          x0. naf nora afric africa
 North Sea,             w0. nth norsea nts
 Norway,                x1P nor nwy norw norwa norge
 Norwegian Sea,         w0. nwg norwsea nrg norwegian
