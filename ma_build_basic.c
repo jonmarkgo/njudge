@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.5  2002/10/19 21:39:16  millis
+   ** Fixed Bug 21: Mach2 games allowing Armies in Venice
+   **
    ** Revision 1.4  2002/02/25 11:51:51  miller
    ** Various updates for Machiavelli bug fixes
    **
@@ -44,7 +47,7 @@ static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
 /* See if passed location is in conditions to be built on */
 int MachCheckOwnedOKBasic( char type, int u, int p, int p1, int *c1)
 {
-        char *t;
+        unsigned char *t;
 
         if (type == 'x') {
                 errmsg("Unit type must be specified.\n");
@@ -117,7 +120,8 @@ int ma_buildin_basic(char **s, int p)
 
 /*  Read build orders in from input file.  */
 
-	char type, order, *t;
+	char type, order;
+	unsigned char *t;
 	int i, j, u, p1, c1;
 	/*
 	   **  Process lines of the form:
