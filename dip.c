@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.54  2004/07/07 22:50:39  millis
+ * Bug91: further fixes for Duplex code
+ * (these mainly to get absences and late handling working)
+ *
  * Revision 1.53  2004/07/04 03:28:12  millis
  * Bug 97: don't make each power have to move if duplex and supress
  * extra 'reminder' messages.
@@ -813,6 +817,7 @@ void master(void)
                                for (i = 0; i < dipent.n; i++) {
                                 if (dipent.players[i].power < 0)
                                     continue;
+				if (dipent.players[i].controlling_power != 0) continue;
                                 if (!(dipent.players[i].status & SF_RESIGN)) {
                                     sprintf(line,
                                         "%s 'Game pause reminder: %s'",
@@ -820,7 +825,7 @@ void master(void)
 				    MailOut(line, dipent.players[i].address);
 				}
                               }
-			      dipent.process = now + 3 * 60 * 60; /* Remind every 3 days that game is paused */
+			      dipent.process = now + dipent.movement.next * 60 * 60; /* Remind every normal movement periodi that game is paused */
 			    }
 
         		} else {
@@ -1015,6 +1020,9 @@ int process(void)
 	static char *dedfmt = "Adding %d to user %d's dedication to yield %d.\n";
 	char late[51];
 	struct stat ppinfo;
+
+
+	if (GAME_PAUSED) return 0;  /* game is paused, do not process! */
 
 	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
 	rfp = NULL;
