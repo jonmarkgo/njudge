@@ -1,6 +1,10 @@
 
 /*
    ** $Log$
+   ** Revision 1.2  2002/10/07 03:58:16  nzmb
+   ** Changed ml_date.c so set deadline command defaults to phase clock parameter
+   ** rather than 23:30 local time.
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -199,7 +203,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 	if (mon != -1 && mon != t.tm_mon) {
 		if (!past && mon < t.tm_mon) {
 			if ((year == -1 && t.tm_mon - mon < 6) || year == tm->tm_year) {
-				fprintf(rfp, "Month has already past.\n");
+				fprintf(rfp, "Month has already passed.\n");
 				return 1;
 			}
 			if (year == -1)
@@ -217,12 +221,12 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 	if (dom != -1 && dom != t.tm_mday) {
 		if (!past && dom < t.tm_mday) {
 			if (mon != -1) {
-				fprintf(rfp, "Day of the month has already past.\n");
+				fprintf(rfp, "Day of the month has already passed.\n");
 				return 1;
 			} else {
 				if (t.tm_mon++ == 13 - 1) {
 					if (year != -1) {
-						fprintf(rfp, "Day of the month has already past.\n");
+						fprintf(rfp, "Day of the month has already passed.\n");
 						return 1;
 					}
 					t.tm_mon = 1 - 1;
@@ -234,7 +238,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 		t.tm_hour = 0;
 	}
 	if (!past && hour < t.tm_hour) {
-		fprintf(rfp, "Hour has past.\n");
+		fprintf(rfp, "Hour has passed.\n");
 		return 1;
 	}
 	t.tm_hour = hour;

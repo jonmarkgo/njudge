@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.32  2003/02/17 15:39:20  millis
+ * bug 10, prevent overlapping absences
+ * Also improve text output for absences.
+ *
  * Revision 1.31  2003/01/15 13:59:26  millis
  * Removed Dipstats
  *
@@ -3198,7 +3202,7 @@ void mail_setp(char *s)
 					raddr, PRINT_POWER, ptime(&dates));
 
 				fprintf(mbfp," to \n%s.\n\n", ptime(&datee));
-				fprintf(mbfp,"A master must approve this as it exceeds game limit of %d.\n\n",
+				fprintf(mbfp,"A master must approve this as it exceeds game limit of %d days.\n\n",
 					dipent.max_absence_delay);
 				fprintf(mbfp,"To approve, send the following commands:\n");
 				fprintf(mbfp,"BECOME %c\n", pletter[dipent.variant][dipent.players[player].power]);
@@ -3221,7 +3225,7 @@ void mail_setp(char *s)
 				fprintf(rfp, " to %s.\n\n", 
 					 ptime(&dipent.players[player].absence_end[i]));
 
-				fprintf(rfp, "Please cancel existing absence first, via 'SET NOABSENCE %s'.\n\n",
+				fprintf(rfp, "Please cancel existing absence first, using 'SET NOABSENCE %s'.\n\n",
 					abs_time(&dipent.players[player].absence_start[i]));
 				s="";
 				break;
@@ -3233,20 +3237,22 @@ void mail_setp(char *s)
 				dipent.players[player].absence_start[i] = dates;
 				dipent.players[player].absence_end[i] = datee;
 				dipent.players[player].absence_count++;
-				fprintf(rfp, "Absence requested from %s to\n", ptime(&dates));
+				fprintf(rfp, "Absence recorded from %s to\n", ptime(&dates));
 				fprintf(rfp,"%s.\n\n", ptime(&datee));
 
 				if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL))
-					sprintf(subjectline, "%s:%s - %s Absence Request", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Absence Notice", JUDGE_CODE, dipent.name, dipent.phase);
 
-				fprintf(mbfp, "%s as %s requested absence from %s to\n",
+				fprintf(mbfp, "%s as %s set absence from %s to\n",
 				raddr, PRINT_POWER, ptime(&dates));
-				fprintf(mbfp,"%s.\n\n", ptime(&datee));
-				fprintf(mbfp,"Note: this will automatically action, you do not have to do anything.\n\n");
+				fprintf(mbfp,"%s; Master's approval NOT required.\n\n", ptime(&datee));
+				fprintf(mbfp,"To revoke this, if you feel it necessary, send the following commands:\n");
+				fprintf(mbfp,"    BECOME %c\n", pletter[dipent.variant][dipent.players[player].power]);
+				fprintf(mbfp,"    SET NOABSENCE %s\n", abs_time(&dates));
 				broadcast_master_only = 1;
 			} else {
 			    if (*s) {
-				fprintf(rfp, "Too many absences requested.\n\n");
+				fprintf(rfp, "Too many absences pending.\n\n");
 				s = "";
 				break;
 			    }
@@ -3267,7 +3273,7 @@ void mail_setp(char *s)
 				break;
 			}
 			if (dipent.players[player].absence_count <= 0 ) {
-				fprintf(rfp, "No absences previously requested - command ignored.\n\n");
+				fprintf(rfp, "No absences currently pending - command ignored.\n\n");
 				s = "";
 				break;
                         }
@@ -3310,7 +3316,7 @@ void mail_setp(char *s)
 				}
 			}
 			if (!k) {
-				fprintf(rfp,"No absence found for requested date.\n");
+				fprintf(rfp,"No absence found for specified date.\n");
 			}
 			s="";
 			break;
@@ -3680,7 +3686,7 @@ char * SetSubkey(int act, char *s)
 }
 void ShowTransformSettings(FILE* rfp)
 {
-        fprintf(rfp,"Current tansform setting:");
+        fprintf(rfp,"Current transform setting:");
         if (dipent.xflags & (XF_TRANS_MOVE | XF_TRANS_BUILD))
             {
                if (dipent.xflags & XF_TRANS_BUILD) {

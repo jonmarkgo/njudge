@@ -2,13 +2,13 @@ Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
 absence.
 
 An attempt to remove the greatest burden from moderators: that of 
-administrating holiday requests.
+administering holiday requests.
 
-Now players (and the moderator too) can indicate periods when they will
+Now players (and Masters too) can indicate periods when they will
 not be available and when the game should extend its deadlines automatically. 
 Observers and inactive (eliminated) players cannot use the SET ABSENCE command.
 
-The following commands are available to signed-on players and moderators:
+The following commands are available to signed-on players and Masters:
 
   SET ABSENCE start_date [TO end_date]
 
@@ -17,10 +17,22 @@ The following commands are available to signed-on players and moderators:
      the current date.  If end_date is before start_date, the command will be
      ignored.  If absences are overlaid, they count as separate absences.
 
+     IMPORTANT: Setting an absence never extends the *current* deadline; it
+     only takes effect when a turn is processed, if the *next* deadline
+     using the normal settings would fall after start_date.  A player
+     who is going away needs to either submit their orders for the phase
+     that is pending at start_date before they leave, pick a start_date that
+     is early enough so that this won't be a problem, or ask the Master to
+     extend the current deadline.  (Understandably, Masters may be unhappy if 
+     you choose the last option.)
+
      Start_date and end_date may use any of the date/time formats accepted
      for the "SET DEADLINE" command.  See file 'deadlines'.  If no time is
-     specified, it defaults to the move clock setting for the current game
-     (i.e., the standard deadline time for move phases).
+     specified, it defaults to the Move Clock setting for the current game
+     (i.e., the standard deadline time for move phases).  Safe formats
+     include "MMM dd" and "dd MMM" -- for example, "SET ABSENCE Nov 23 TO 1 Dec"
+     should work fine.  Generally, the Judge only recognizes three-letter
+     English abbreviations for months.
 
      Odd results may sometimes occur if an absence is requested to begin or
      end on a day on which the Judge does not allow deadlines to fall.  So,
@@ -90,26 +102,26 @@ he will also see the pending future absences every time he sends a message
 for the game (along with pending orders). 
 
 If an absence request exceeds the game limit (see command "SET MAXABSENCE" in
-file 'index'), a message will be sent to the master who must manually
-activate the absence for it to take effect.  Generally, the master should do
+file 'index'), a message will be sent to the Master who must manually
+activate the absence for it to take effect.  Generally, the Master should do
 this by using the "BECOME power" command and setting the absence for the
 player, as this allows the player to cancel or change the absence later if
-desired.  (Also, the master, like each player, has only three absence
+desired.  (Also, the Master, like each player, has only three absence
 "slots," and might use them all up setting absences for other players.)  The
-MAXABSENCE setting is ignored if the absence is set by the master, even using
+MAXABSENCE setting is ignored if the absence is set by a Master, even using
 BECOME.
 
 Each time a turn is processed, any absence that was set to end before the
 current date/time is expired and removed from memory.  Then, the next
-deadline is increased for each pending absence request that starts at or
+deadline is increased for each pending absence that starts at or
 before the new deadline, if at least one of the following conditions is met:
 
- - Master requested the absence
+ - a Master requested the absence
  - Player has a move to make and game is either StrictWait or NoPress
  - Game has press and is not StrictWait
  - The game is set to 'quiet' mode.
 
-Note: The deadline will be adjusted to be equal to the last end date
+Note: The deadline will be adjusted to be equal to the last end_date
 requested.  So, if want some time after your return to consider your move,
 add a little bit accordingly.    
 
