@@ -1,3 +1,50 @@
+2005-01-05 17:10  millis
+
+	* data/: info.dipmach1, report.dipmach1, seed.dipmach1: [no log
+	  message]
+
+2005-01-05 17:07  millis
+
+	* data/map.dipmach1: [no log message]
+
+2005-01-05 17:04  millis
+
+	* configure.ac, njudge.spec, BUGS, NEWS: Updated for new version
+	  njudge_1.7.4
+
+2005-01-05 16:56  millis
+
+	* mail.c: Fix Bug 395, don't allow press to be copied inadvertently
+
+2004-12-28 02:04  millis
+
+	* ma_movement.c: Fixed Bug 393 (Mach2 siege break failed)
+
+2004-12-17 13:08  alange
+
+	* bailout.c: Bug 391: Don't rename FORWARD once KEEPOUT file
+	  exists.
+
+2004-12-06 10:15  machmstr
+
+	* data/rules.machiavelli: Notice that a garrison and an army or
+	  fleet in the *same province* cannot *trade places*. E.g. G PISA C
+	  A at the same time as F PISA C G is not allowed regardless of
+	  units strengths.
+
+	  Nor can two units *trade provinces* with each other. E.g. F PISA
+	  M PIO at the same time as A PIO M PISA is not allowed regardless
+	  of units strengths.
+
+	  Notice that special units retain their 'specialness' if you bribe
+	  them to turn autonomous. Thus you may e.g. create an elite
+	  autonomous garrison!
+
+2004-12-04 13:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_3
+
 2004-12-04 13:15  millis
 
 	* configure.ac, njudge.spec: New version njudge-1.7.3
