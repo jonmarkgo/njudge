@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.15  2003/01/18 15:17:28  millis
+   ** first intermediate checkin, with Native and Multi-province support
+   **
    ** Revision 1.14  2002/12/12 01:46:31  millis
    ** Fixed Bug 51 (Suez counting as an owned province)
    **
@@ -363,7 +366,6 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 	if (out_text != NULL) strcpy(out_string, out_text);
 	return 0;
 }
-
 int buildin(char **s, int p)
 {
 /*  Read build orders in from input file.  */
@@ -384,7 +386,7 @@ int buildin(char **s, int p)
 	*s = get_order(*s, &order);
 	*s = get_type(*s, &type);
 	*s = get_prov(*s, &p1, &c1);
-	if (!p1 && order != 'w') {
+	if (!p1 && order != 'w' && order != 'u') {
 		errmsg("Unrecognized province -> %s", *s);
 		return E_WARN;
 	}
@@ -398,8 +400,9 @@ int buildin(char **s, int p)
 	if (order == 'x')
 		order = nu[p] >= 0 ? 'b' : 'r';
 
-	if ((order == 'b' && (nu[p] <= 0 || cnb[p])) ||
-	    (order == 'w' && (nu[p] <= 0 || cnb[p])) ||
+	if (!(dipent.xflags & XF_ANYDISBAND))
+	if ((order == 'b' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) && cnb[p] ))) ||
+	    (order == 'w' && (nu[p] <= 0 || (!(dipent.xflags & XF_ALTBUILD) && cnb[p] ))) ||
 	    (order == 'r' && nu[p] >= 0)) {
 		errmsg("%s is not permitted to %s any units.\n",
 		       powers[p], order == 'r' ? "remove" : "build");
@@ -462,7 +465,7 @@ int buildin(char **s, int p)
 	case 'w':
 
 		if ((u = pr[p1].unit)) {
-			if (unit[u].status != 'b') {
+			if (unit[u].status != 'b' && unit[u].exists ) {
 				errmsg("%s already has a unit present.\n", pr[p1].name);
 				return E_WARN;
 			} else {
@@ -488,8 +491,21 @@ int buildin(char **s, int p)
 			pr[unit[u].loc].unit = 0;
 		} else {
 			nu[p]--;
+			if (dipent.xflags & XF_ALTBUILD) {
+			    if (nu[p] == 1) nu[p] = -2;
+			}
 			u = ++nunit;
 		}
+
+		if (dipent.xflags & XF_ALTBUILD) {
+		    /* A Dirty fix that seems to do the trick */
+		    if (!u ) {
+		        nu[p]--;
+                            if (nu[p] == 1) nu[p] = -2;
+                            u = ++nunit;
+                    }
+		}
+ 
 
 		pr[p1].unit = order == 'w' ? 0 : u;
 		unit[u].owner = p;
@@ -502,12 +518,41 @@ int buildin(char **s, int p)
 		lu[p] = u;
 		break;
 
+	case 'u':    /* Unwaive, or remove waive orders */
+		if (dipent.xflags & XF_ANYDISBAND)
+		for (u = 1; u <= nunit; u++) {
+		   if (unit[u].owner == p && unit[u].type == 'x' ) {
+			unit[u].owner = 0; /* not owned! */
+			nu[p]++;
+			if (nu[p] == -1)
+			    nu[p] = 2;
+		    }
+		}
+
+	        break;
+
+
 	case 'm':
+		if (dipent.xflags & XF_ALTBUILD) {
+		    if (!(u = pr[p1].unit) || unit[u].owner != p || !unit[u].exists) {
+                        errmsg("%s does not own a unit %s %s to maintain.\n",
+                        powers[p], mov_type(p1,u), pr[p1].name);
+                        return E_WARN;
+                    }
+		    if (unit[u].status == 'd') {
+			nu[p]--;
+		        if (nu[p] == 1)
+			    nu[p] = -2;
+		    }
+			
+		    unit[u].order = 'm';
+		    unit[u].status = 'm';
+		}
 		break;
 
 	case 'r':
-		u = GetUnitIndex(p1, p); /* Will return the next unit to disband */
-		if (!(u) || unit[u].owner != p) {
+		u = GetUnitIndex(p, p1); /* Will return the next unit to disband */
+		if (!u || unit[u].owner != p) {
 			errmsg("%s does not own a unit %s %s to remove.\n",
 			powers[p], mov_type(p1,u), pr[p1].name);
 			return E_WARN;
@@ -516,7 +561,8 @@ int buildin(char **s, int p)
 		   *  If this one's already been removed, put it back.
 		 */
 
-		if (unit[u].status == 'd') {
+		if (!(dipent.xflags & XF_ANYDISBAND)) {
+		    if (unit[u].status == 'd') {
 			nu[p]--;
 			for (i = lu[p], j = 0; i && i != u; i = unit[i].order)
 				j = i;
@@ -529,7 +575,7 @@ int buildin(char **s, int p)
 		   *  If he's removing too many, the earliest one removed comes back.
 		 */
 
-		if (nu[p] == -1) {
+		    if (nu[p] == -1) {
 			for (i = lu[p], j = 0; unit[i].order; i = unit[i].order)
 				j = i;
 			if (j)
@@ -537,13 +583,24 @@ int buildin(char **s, int p)
 			else
 				lu[p] = 0;
 			unit[i].status = ':';
-		} else {
+		    } else {
 			nu[p]++;
+		    }
+		}
+		else {
+		    if (dipent.xflags & XF_ALTBUILD) {
+		    nu[p]++;
+		    if (nu[p] == -1)
+		        nu[p] = 2;  /* Funny threshold, value always avoids +/-1 */
+		    }
 		}
 
 		unit[u].status = 'd';
-		unit[u].order = lu[p];
-		lu[p] = u;
+		if (!(dipent.xflags & XF_ANYDISBAND)) {
+		    unit[u].order = lu[p];
+		    lu[p] = u;
+		}
+
 		break;
 
 	case 't':
@@ -602,7 +659,7 @@ int buildin(char **s, int p)
                         return E_WARN;
                 } else if (unit[u].type == type && unit[u].coast == c1) {
 			/* Unit was marked to be transformed, cancel transform */
-                        unit[u].status = ':';
+                        unit[u].status = ' ';
 			unit[u].order = ' ';
 		} else {
                     unit[u].status = 't';
@@ -629,10 +686,10 @@ int buildin(char **s, int p)
                     errmsg("Only owned centres can be made a home centre.\n");
                     return E_WARN;
                 }
-		if (pr[p1].type == pletter[dipent.variant][p]) {
-		    errmsg("Centre is already owned by %s.\n",power(p));
-		    return E_WARN;
-		}
+                if (pr[p1].type == pletter[dipent.variant][p]) {
+                    errmsg("Centre is already owned by %s.\n",power(p));
+                    return E_WARN;
+                }
                 if (CountHomeCentres(p) >= dipent.num_homes) {
                     errmsg("Power already has enough home centres.\n");
                     return E_WARN;
@@ -647,18 +704,18 @@ int buildin(char **s, int p)
                         return E_WARN;
                    } else {
                         pr[p1].home = p;
-		   }
+                   }
                 }
                 break;
 
 
-	case 'n':  /* Home centre cancel */
-	    if (!(dipent.x2flags & X2F_MORE_HOMES)) {
+        case 'n':  /* Home centre cancel */
+            if (!(dipent.x2flags & X2F_MORE_HOMES)) {
                      errmsg("Invalid build order encountered.\n");
                     return E_WARN;
             }
             pr[p1].home = pr[p1].type;
-	    break;
+            break;
 
 
 	default:
@@ -669,19 +726,23 @@ int buildin(char **s, int p)
 	return 0;
 
 }
+
 void buildout(int pt)
 {
-	int i, u, p, c1, p1, p_index;
-	char mastrpt_pr[NPOWER + 1];    /* Used to be [MAXPLAYERS]. DAN 04/02/1999 */
-	int num_hc;
-	int pr_found;
-	int one_printed;
-	int assumed[ NPOWER + 1 ];  /* Count number of centres power is assuming this turn as home centre */
-
+	int i, u, p, c1, p_index, counting_centres, u_diff[NPOWER + 1], p1;
+	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
+        int num_units[NPOWER +1];
+        int num_hc;
+        int pr_found;
+        int one_printed;
+        int assumed[ NPOWER + 1 ];  /* Count number of centres power is assuming this turn as home centre */
 
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
+	for ( u = 0; u <= NPOWER; u++)
+		num_units[u] = 0;   /* Initialise array */
+	
 	if (pt == MASTER) {
 		for (u = 0; u <= NPOWER; u++)    /* Used to be < MAXPLAYERS. DAN. */
 			mastrpt_pr[u] = 0;
@@ -696,7 +757,7 @@ void buildout(int pt)
 		fprintf(rfp, "\n");
 	};
 
-         for (p1 = 1;  p1<= npr; p1++) {
+        for (p1 = 1;  p1<= npr; p1++) {
             pr_found = 0;
             for (u = 1; u <= nunit; u++) {
                 if (unit[u].loc == p1)
@@ -704,22 +765,27 @@ void buildout(int pt)
             }
             if (!pr_found && pr[p1].type == 'x') {
                 /* Unowned centre: if we have natives, build one there */
-                if (dipent.has_natives && 
-			(pr[p1].owner == dipent.has_natives || !pr[p1].owner)) {
+                if (dipent.has_natives &&
+                        (pr[p1].owner == dipent.has_natives || !pr[p1].owner)) {
                     unit[++nunit].type = 'A';
-		    unit[nunit].stype = 'x';
+                    unit[nunit].stype = 'x';
                     unit[nunit].owner = dipent.has_natives;
                     unit[nunit].status = 'b';
-		    unit[nunit].loc = p1;
-		}
+                    unit[nunit].loc = p1;
+                }
             }
          }
 
-	for (u = 1; u <= nunit; u++) {
-		if (processing || pt == unit[u].owner || pt == MASTER) {
+	for (p = 1; p <= NPOWER; p++) { /* This loop is just to order by power */
+            p_index = FindPower(p);
+            if (p_index >= dipent.n) continue; /* Not a valid power */
+	    if (!(processing || pt == p || pt == MASTER)) continue;	
+	    for (u = 1; u <= nunit; u++) {
+		if (p == unit[u].owner) {
 
 			if (unit[u].status == 'b') {
 
+				num_units[unit[u].owner]++;
 				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
@@ -731,8 +797,7 @@ void buildout(int pt)
 					fprintf(rfp, ".\n");
 				unit[u].status = ':';
 
-			} else if (unit[u].status == 'd') {
-
+			} else if (unit[u].status == 'd' && unit[u].exists) {
 				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
@@ -746,7 +811,7 @@ void buildout(int pt)
 
 
 			} else if (unit[u].status == 'w') {
-
+				num_units[unit[u].owner]++;
 				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
@@ -754,6 +819,7 @@ void buildout(int pt)
 				unit[u].owner = 0;
 
 			} else if (unit[u].status == 't') {
+				num_units[unit[u].owner]++;
 				/* Only notify when changing type */
                                         fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
                                         for (i = strlen(powers[p]); i < LPOWER; i++)
@@ -772,13 +838,50 @@ void buildout(int pt)
                                                 unit[u].coast = unit[u].new_coast;
 					}
 				unit[u].status = ':';
-			}
+			} else if (unit[u].status == 'm') {
+			    num_units[unit[u].owner]++;
+				/* only notify when explictly maintaining units */
+			    if (!processing && !predict) {		
+				fprintf(rfp, "%s: ", powers[p= unit[u].owner]);
+				 for (i = strlen(powers[p]); i < LPOWER; i++)
+                                                putc(' ', rfp);
+                                        fprintf(rfp, "Maintains the %s %s %s.\n",
+                                                utype(unit[u].type),
+                                                mov_type(unit[u].loc,u),
+                                                pr[unit[u].loc].name);
+ 			    }
+				unit[u].status = ':';
+			} else if (unit[u].status == ':' && (dipent.xflags & XF_ALTBUILD)) {
+				num_units[unit[u].owner]++;
+                                fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+                                for (i = strlen(powers[p]); i < LPOWER; i++)
+                                                putc(' ', rfp);
+                                fprintf(rfp, "No order for the %s %s %s", 
+				             utype(unit[u].type),
+					     mov_type(unit[u].loc,u),
+					     pr[unit[u].loc].name);
+                                if (!processing && !predict ) {
+                                        more_orders++;
+                                }
+                                fprintf(rfp, " (maintain).\n");
+                        }
 		}
+	    }
+	    if (!processing && !predict && pt == MASTER)
+                    fprintf(rfp,"\n"); /* Extra blank for master */
+
 	}
 
 	for (p = 1; p <= NPOWER; p++) {
-		assumed[p] = 0;  /* Zero array */
-		if (nu[p] > 1 && (processing || pt == p || pt == MASTER)) {
+		assumed[p]=0;
+		if  (processing || pt == p || pt == MASTER) {
+		    p_index = FindPower(p);
+		    if (p_index >= dipent.n) continue; /* Not a valid power */
+                    counting_centres = dipent.players[p_index].centers -
+                                       dipent.players[p_index].centres_blockaded;
+                    u_diff[p] = num_units[p] - counting_centres;
+
+		    if (u_diff[p] < 0) {
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
 				putc(' ', rfp);
@@ -788,28 +891,43 @@ void buildout(int pt)
 				     (dipent.xflags & XF_BUILD_ANYCENTRES))))
 					break;
 			}
-
-			if (i > npr || cnb[p]) {
+			if (!(dipent.xflags & XF_ANYDISBAND)) {
+			    if (i > npr || (!(dipent.xflags & XF_ALTBUILD) && cnb[p]) ) {
 				i = nu[p] - 1;
 				if (processing)
-					fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
+				    fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
 				else
-					fprintf(rfp, "%d unusable build%s pending.\n", i, i == 1 ? "" : "s");
+				    fprintf(rfp, "%d unusable build%s pending.\n", i, i == 1 ? "" : "s");
 				nu[p] = 1;
-				canbuild = 0;
-			} else {
+			    } else {
 				i = nu[p] - 1;
-
+	
 				fprintf(rfp, "%d build%s pending.\n", i, i == 1 ? "" : "s");
+			    }
 			}
-		}
+		    }
+		    if ((dipent.xflags & XF_ANYDISBAND) && u_diff[p] != 0 ) {
+		        if (!processing && !predict && !(pt == MASTER)) 
+		                err++;	
+		        if (u_diff[p] > 0) 
+		            fprintf(rfp,"%d too many units: need to remove some.\n", u_diff[p]);
+		        else
+			    fprintf(rfp,"%d too few units: need to build/maintain/waive.\n", -u_diff[p]);
+		    }
+		}	
 	}
 
-	if (!processing && (nu[pt] < -1 || nu[pt] > 1))
-		more_orders++;
+	if (dipent.xflags & XF_ALTBUILD) {
+	    if (err)
+		more_orders++; /* MUST be 100% ok for these variants */
+
+        } else {
+            if (!processing && (nu[pt] < -1 || nu[pt] > 1))
+                more_orders++;
+        }
 
 	for (u = 1; u <= nunit; u++) {
-		if ((p = unit[u].owner) && nu[p] < -1 && pr[unit[u].loc].owner != p) {
+		if ((p = unit[u].owner) && u_diff[p] > 0 && pr[unit[u].loc].owner != p) {
 			nu[p]++;
 			unit[u].owner = 0;
 			if (processing || pt == p || pt == MASTER) {
@@ -824,47 +942,46 @@ void buildout(int pt)
 		}
 	}
 
-	one_printed = 0;
-	for (p1 = 1;  p1<= npr; p1++) {
-	    p = pr[p1].home;
-	    if ( pr[p1].type != pletter[dipent.variant][pr[p1].home] &&
-		PossibleHomeCentre(pletter[dipent.variant][pr[p1].home])) {
-		 assumed[p]++;
-		 if (processing || pt == p || pt == MASTER) {
-		    one_printed++;
-		    fprintf(rfp, "\n%s: ", powers[p]);
+        one_printed = 0;
+        for (p1 = 1;  p1<= npr; p1++) {
+            p = pr[p1].home;
+            if ( pr[p1].type != pletter[dipent.variant][pr[p1].home] &&
+                PossibleHomeCentre(pletter[dipent.variant][pr[p1].home])) {
+                 assumed[p]++;
+                 if (processing || pt == p || pt == MASTER) {
+                    one_printed++;
+                    fprintf(rfp, "\n%s: ", powers[p]);
                                 for (i = strlen(powers[p]); i < LPOWER; i++)
                                         putc(' ', rfp);
                                 fprintf(rfp, "Assumes %s as a home centre.",
                                         pr[p1].name);
-		}
-	    }
-	}
-	if (one_printed) fprintf(rfp, "\n");
+                }
+            }
+        }
+        if (one_printed) fprintf(rfp, "\n");
 
-	/* Now show pending moves for home centre declarations */
-	one_printed = 0;
+        /* Now show pending moves for home centre declarations */
+        one_printed = 0;
         for (p = 1; p <= NPOWER && (dipent.x2flags & X2F_MORE_HOMES); p++) {
             if (p != dipent.has_natives && (processing || pt == p || pt == MASTER )) {
-		p_index = FindPower(p);
-		if (dipent.players[p_index].centers <=0 &&
-		    dipent.players[p_index].units <= 0)
-			continue;  /* Not an alive player, so ignore */
-	        num_hc = CountHomeCentres(p);
-		if ( (dipent.x2flags & X2F_MORE_HOMES) && 
-	     	     num_hc + assumed[p] < dipent.num_homes && CountCentres(p) > 0) {
-			fprintf(rfp, "\n%s: ", powers[p]);
-			one_printed++;
+                p_index = FindPower(p);
+                if (dipent.players[p_index].centers <=0 &&
+                    dipent.players[p_index].units <= 0)
+                        continue;  /* Not an alive player, so ignore */
+                num_hc = CountHomeCentres(p);
+                if ( (dipent.x2flags & X2F_MORE_HOMES) &&
+                     num_hc + assumed[p] < dipent.num_homes && CountCentres(p) > 0) {
+                        fprintf(rfp, "\n%s: ", powers[p]);
+                        one_printed++;
                         for (i = strlen(powers[p]); i < LPOWER; i++)
                                  putc(' ', rfp);
-                        fprintf(rfp, "%d more Home Centre assignment%s pending.", 
-				dipent.num_homes - num_hc - assumed[p],
-				dipent.num_homes - num_hc - assumed[p] > 1 ? "s" : "" );
-		}
-	    }
-	}
-
-	if (one_printed) fprintf(rfp, "\n");
-	        
-}
+                        fprintf(rfp, "%d more Home Centre assignment%s pending.",
+                                dipent.num_homes - num_hc - assumed[p],
+                                dipent.num_homes - num_hc - assumed[p] > 1 ? "s" : "" );
+                }
+            }
+        }
+	
+        if (one_printed) fprintf(rfp, "\n");
+}	        
 /****************************************************************************/
