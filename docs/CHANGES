@@ -1,0 +1,96 @@
+
+
+1.0.2 (STILL BETA) :
+ - fixed the bug that was reported in plyrdata.c (Tim Miller)
+ - added some concession handling code into summary.c that was there before
+ but must have gotten lost during one of the upgrades (Tim Miller)
+ - fix that will allow players in Ancient Med games to phase
+ orders.(Tim Miller)
+ - documentation reorganization (Christophe Courtois)
+
+
+1.0.0 (29th Dec. 2001) : First stable official 1.x judge release
+
+-----
+
+No change information in this file between 1997 and 2002. 
+Sometimes, I'll do some archaelogic work to update this - C.Courtois
+
+-----
+Mon Jun  9 02:40:32 UTC 1997
+
+The current version being worked on is 9.0.9.  9.0.7 was a massive code
+clean up, and should compile under gcc -Wall cleanly.  9.0.8 Was some
+hundred variants added in.
+
+Added a sun os section to the makefile listing some make variables that were
+needed on a sun machine.
+
+Added a sun section to the bottom of jm.c.  Added the fcntl.h standard
+include to dip.c
+
+Fri Oct 10 03:54:46 UTC 1997
+
+Lots of undocumented cleanup.
+
+Removed EP_CUSTODIAN stuff from the code.  It had been commented out.
+
+Sun Oct 12 22:00:00 UTC 1997
+
+name changed to njudge.
+
+version 0.8.1 released
+
+Sun Oct 12 22:09:21 UTC 1997
+
+altered conf.c to put the judge code into the environment when it is set.
+that way an intelligent smail script won't need to be altered when
+installing or upgrading.  the intelligent smail script has already been
+written.
+
+Sun Oct 12 22:43:43 UTC 1997
+
+added a countgames() function to dipent.c
+
+changed main() for all programs to not take a third (environment) argument.
+we weren't using it anyway, and it is undefined to do so.
+
+Wed Oct 15 05:21:43 UTC 1997
+
+A config variable (MAXGAMES) can be set to limit the max number of games.
+
+Sat Oct 25 19:31:58 UTC 1997
+
+deleted README.version, README.admin
+
+rewrote version.c to get rid of most of it.  we just include the version
+from the makefile and dump it out.  no more of this complicated source fork
+tracking.
+
+moved some remaining globals in dip.c to global.c
+
+Mon Oct 27 05:29:31 UTC 1997
+
+deleted getdtablesize() and the code section to close extra file
+descriptors.  we weren't likely to have any, and if we do, it's probably
+deliberate, so don't muck with it.  and it's wasn't portable.
+
+Tue Oct 28 17:48:25 GMT 1997
+
+added chris brand's patch to either enable or eliminate multiple replies to
+an address.  i'm not really sure what it does.  but he wrote it, and wanted
+it, and it wasn't unreasonable when i asked what it did.
+
+straightened out the hundred variant data files, and eliminated two older
+variants that i believe were test variants used when developing hundred and
+classical.
+
+Wed Oct 29 18:32:29 GMT 1997
+
+deleted configure stuff which wasn't complete.  will use autoconf later,
+maybe.
+
+Tue Nov  4 23:21:13 GMT 1997
+
+added Mr Roust's patch to make the history command case insensitive.
+

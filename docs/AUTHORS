@@ -1,0 +1,27 @@
+ This is the list of all people having contributed in the code base:
+
+[This is only the skeleton of the file, as I don't know who did that in the 
+12 past years]
+
+M. Becroft		: plyrdata (with Tim Miller)
+Chris Brand		: (1997) mail.c modifications
+Christophe Courtois	: documentation
+Gregory A.Greenman	: Many many things
+David Kovar		: Many many things
+Dietmar Kulsch		: German version (DEDO)
+Philippe Lalande	: Some code from FROG
+Ken Lowe		: Original development, coded first version, from 1987
+David Norman		: many many many things, including countless variants
+C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
+Millis Miller		: many things, including maintenance, CVS and tarball maintenance
+Tim Miller		: plyrdata, Crowded, and many other things
+Kevin A. Roust		:
+T.Ruelle		: (1994) params.c
+Alain Tesio		:
+Nathan Wagner		: (1997)
+
+Found in the source code but who are they?
+
+rpaar
+Positron
+BLR

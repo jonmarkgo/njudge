@@ -1,0 +1,30 @@
+
+Statistics:
+
+THe judge statistics can be enabled from the configuration file by turning on 
+the STATS_FLAG (set to 1).
+
+This will create and then use a sub-directory called STATS_DIR (defaults to 
+./stats) that will store the following information:
+
+ - Mail addresses contacting judge
+ - Number of times a game is accessed
+ - Number of times certain commands are used
+
+The stats directory has the following format:
+
+ ./stats
+ ./stats/<type>
+ ./stats/<type>/<YYMMDDHH>
+
+where:
+ <type> is one of the supported statistics types
+ <YYMMDD> is the date code for a 24-hour period, subdivided into one hour slots
+
+Directories not found will be automatically created, and files appended to.
+A simple line is appended each time to the relevant file that an event occurs.
+Further processing can be made as desired to a file by appropriate filtering 
+etc.
+
+-Millis Miller 11th July 2000
+
