@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added XF_FLAG defines for Extended flags
+ * Added absences to player and game structures
+ *
  * Revision 1.1  1998/02/28 17:51:14  david
  * Initial revision
  *
@@ -128,6 +132,7 @@
 #define XF_NORESUME	0x400000 /* Only master can resume game */
 #define XF_AUTODISBAND	0x800000 /* There is no retreats */
 #define XF_ANYDISBAND	0x1000000 /* Can disband any unit in a build phase */
+#define XF_NOATTACK_TRANS  0x2000000 /* An attacked unit fails transformations  */
 
 typedef struct Sequence {
 	int clock;		/* Time of day for orders to be due             */
