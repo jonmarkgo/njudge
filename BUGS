@@ -1,9 +1,8 @@
-The following bugs were outstanding as of 1.7.1
+The following bugs were outstanding as of 1.7.2
 
 --------------------
 
-33 bugs found.
-ID 	Sev 	Pri 	Plt 	Assignee 	Status 	Resolution 	Summary
+ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 282 	maj 	P3 	All 	judge-maint@diplom.org 	REOP 		'::' summary lines sometimes not sent
 131 	nor 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
 149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
@@ -14,11 +13,16 @@ ID 	Sev 	Pri 	Plt 	Assignee 	Status 	Resolution 	Summary
 252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
 253 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		signons with password=«judge» don't work
 256 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Abandoned player can't signon due to low dedication
-257 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Masters not warned on deadline shift after bailout recovery
+257 	nor 	P3 	All 	dip@alange.net 	NEW 		Masters not warned on deadline shift after bailout recovery
 259 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline advanced for no apparent reason
 269 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		unstart not working for Machiavelli games
 292 	nor 	P3 	All 	judgekeeper@braincells.com 	NEW 		Alter smail & atrun to use paths
 300 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		History incorrectly shows press message
+357 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Listing of completed game hides player identities.
+358 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		diary -- when game finishes, send diary AFTER announcement
+359 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Limit Diary 'mail-bombing'
+361 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		First turn in duplex game does not process before deadline
+364 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Machiavelli duplex play
 35 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player with unusable builds must waive
 40 	min 	P3 	All 	millis@faztek.org 	NEW 		Sort out summary report spacing
 100 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Wrong person sent termination
@@ -35,6 +39,10 @@ ID 	Sev 	Pri 	Plt 	Assignee 	Status 	Resolution 	Summary
 304 	min 	P3 	All 	judgekeeper@braincells.com 	NEW 		cmap invoked unecessarily in make process
 330 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		No summary file before game start causes termination prob...
 337 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		delgame does not show real games path
+348 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		hardcoded plague start year
+356 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Players Marked as Late in Completed Game
+362 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set draw should return who gets in the draw
+373 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player receives notice with wrong header
 255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
-351 	tri 	P3 	All 	judgekeeper@braincells.com 	NEW 		Date error on FreeBSD
-33 bugs found. 
+41 bugs found.
+

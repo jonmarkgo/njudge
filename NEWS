@@ -1,18 +1,23 @@
-This is a new functionality release.
+This is a bug-fix release.
 
 The following bugs were fixed in 1.7.1
 
 (ordered by Severity)
 
-
-----------------------
-
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 347 	cri 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Njudge 1.7.0 treats all games as NMR
-346 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Duplex games 'set address' only changes one address
-352 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate processes first turn with no bank balance
-326 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Cannot rollback to first intimate turn or reprocess it
-350 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate: too many powers showed as late/abandoned
-345 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Changing address in 'Intimate' changes controlled players...
-349 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate: Victory incorrectly shown on results
-7 bugs found. 
+355 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	First 'abandoned' messages not shown
+366 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Cannot waive builds in a duplex game
+368 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Unable to declare NoDIAS draw/Concede in Duplex games
+376 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Cannot retreat self-dislodged units in duplex game
+371 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Several missing break; statements in ml_set.c
+370 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Coastal sonvoys flag broken
+375 	nor 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Mach2 treats besieged conversion according to Mach1 rules
+374 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Become command does not work as expected
+360 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	info.duplex needs update
+365 	min 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	power wins without reaching victory conditions in mach2_s...
+369 	min 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Deadline not set to "clock" time after change to DST
+351 	tri 	P3 	All 	judgekeeper@braincells.com 	RESO 	FIXE 	Date error on FreeBSD
+363 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Victories for player, not power
+353 	enh 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Earlier first deadline in No Press games
+15 bugs found. 
