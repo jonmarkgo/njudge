@@ -1,6 +1,11 @@
 
 /*
    ** $Log$
+   ** Revision 1.4  2003/09/09 18:51:31  jaldhar
+   ** Got rid of port.h and replaced with some extra configure checks.  The
+   ** include strings.h was not carried over because it is commented out and
+   ** likely wouldn't work anyway.
+   **
    ** Revision 1.3  2003/02/25 11:11:23  russblau
    ** Improved absence documentation and related Judge message strings.
    **
@@ -56,9 +61,10 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
  */
 
 	char *s;
-	struct tm *tm, t;
+	struct tm *tm, t, now;
+	time_t t1, t2;
 	int dow, mon, dom, hour, mins, year;
-	int i, j, change;
+	int i, change;
 	int clockhours, clockmins;
 
 	static char *dows[] =
@@ -66,6 +72,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 	static char *mons[] =
 	{"", "jan", "feb", "mar", "apr", "may", "jun",
 	 "jul", "aug", "sep", "oct", "nov", "dec"};
+	static int month_length[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
 	dow = mon = hour = mins = dom = year = -1;
 
@@ -156,140 +163,104 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 		clockmins = 30;
 	}	
 
-	if (hour == -1)
-		hour = past ? 0 : /*23*/ clockhours;
-	if (mins == -1)
-		mins = past ? 0 : /*30*/ clockmins;
-	if (dom == -1 && dow == -1 && mon != -1 && past)
-		dom = 1;
+	time(&t2);
+	tm = localtime(&t2);
 
-	time(date);
-	tm = localtime(date);
+	memcpy(&now, tm, sizeof(now));
 
-	if (dow != -1) {
-		if (dom != -1 || mon != -1 || year != -1) {
+/* Default DST indicator to unknown. Populate time of day in the struct */
+	t.tm_isdst = -1;
+	t.tm_hour = hour != -1 ? hour : past ? 0 : clockhours;
+	t.tm_min = mins != -1 ? mins : past ? 0 : clockmins;
+	t.tm_sec = 0;
+
+	if (dow != -1) /* Calculate date if day of week provided. */	
+	{
+		if (dom != -1 || mon != -1 || year != -1)
+		{
 			fprintf(rfp, "Don't specify day of week with month, day or year.\n");
 			return 1;
 		}
-		i = dow - tm->tm_wday;
-		if (!past) {
-			if (i <= 0)
-				i += 7;
-		} else {
-			if (i >= 0)
-				i -= 7;
-		}
-		*date += 24 * 60 * 60 * i - ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec);
-		tm = localtime(date);
-		if (tm->tm_hour != 0) {		/* correct for daylight savings */
-			i = 0 - tm->tm_hour;
-			if (i > 10) {
-				i -= 24;
-			} else if (i < -10) {
-				i += 24;
-			}
-			*date += 60 * 60 * i - (tm->tm_min * 60 + tm->tm_sec);
-		}
+		i = dow - now.tm_wday;
+		if (past && i>=0) 
+			i -= 7;
+		if (!past && i <= 0)
+			i += 7;
+		t.tm_year = now.tm_year;
+		t.tm_mon = now.tm_mon;
+		t.tm_mday = now.tm_mday + i;
 	}
-	memcpy(&t, tm, sizeof(t));
-
-	if (year != -1 && year != tm->tm_year) {
-		if (!past && year < tm->tm_year) {
-			fprintf(rfp, "Invalid year.\n");
-			return 1;
+	else /* Calculate if day of year provided or only time of day. */
+	{
+		if (year != -1)
+		{
+			t.tm_year = year;
+			t.tm_mon = past ? 0 : 11; /* Jan or Dec */
+			t.tm_mday = past ? 1 : 31; /* Jan 1 or Dec 31 */
 		}
-		t.tm_year = year;
-		t.tm_mon = 1 - 1;
-		t.tm_mday = 1;
-		t.tm_hour = 0;
-	}
-	if (mon != -1 && mon != t.tm_mon) {
-		if (!past && mon < t.tm_mon) {
-			if ((year == -1 && t.tm_mon - mon < 6) || year == tm->tm_year) {
-				fprintf(rfp, "Month has already passed.\n");
-				return 1;
-			}
+		else
+		{
+			t.tm_year = now.tm_year;
+		}
+		if (mon != -1)
+		{
+			t.tm_mon = mon;
+			t.tm_mday = past ? 1 : month_length[mon];
+		}
+		else
+		{
 			if (year == -1)
-				t.tm_year++;
+				t.tm_mon = now.tm_mon;
 		}
-		if (past && mon > t.tm_mon) {
-			if (year == -1 && mon - t.tm_mon < 10) {
-				t.tm_year--;
-			}
+		if (dom != -1)
+		{
+			t.tm_mday = dom;
 		}
-		t.tm_mon = mon;
-		t.tm_mday = 1;
-		t.tm_hour = 0;
-	}
-	if (dom != -1 && dom != t.tm_mday) {
-		if (!past && dom < t.tm_mday) {
-			if (mon != -1) {
-				fprintf(rfp, "Day of the month has already passed.\n");
-				return 1;
-			} else {
-				if (t.tm_mon++ == 13 - 1) {
-					if (year != -1) {
-						fprintf(rfp, "Day of the month has already passed.\n");
-						return 1;
-					}
-					t.tm_mon = 1 - 1;
-					t.tm_year++;
-				}
-			}
-		}
-		t.tm_mday = dom;
-		t.tm_hour = 0;
-	}
-	if (!past && hour < t.tm_hour) {
-		fprintf(rfp, "Hour has passed.\n");
-		return 1;
-	}
-	t.tm_hour = hour;
-	t.tm_min = mins;
-	t.tm_sec = 0;
-
-	for (i = 0; i < 10 && (tm->tm_year != t.tm_year); i++) {
-		*date += (t.tm_year - tm->tm_year) * 365 * 24 * 60 * 60;
-		tm = localtime(date);
-	}
-
-	*date += (t.tm_mon * 31 - tm->tm_yday) * 24 * 60 * 60;
-	tm = localtime(date);
-
-	for (i = 0; i < 10 && (tm->tm_mon != t.tm_mon); i++) {
-		*date += (t.tm_mon - tm->tm_mon) * 25 * 24 * 60 * 60;
-		tm = localtime(date);
-	}
-
-	for (i = 0; i < 9 && (tm->tm_year != t.tm_year ||
-			      tm->tm_mon != t.tm_mon ||
-			      tm->tm_mday != t.tm_mday ||
-			      tm->tm_hour != t.tm_hour ||
-			      tm->tm_min != t.tm_min); i++) {
-
-		*date += (j = ((((((t.tm_year - tm->tm_year) * 14L +
-				   t.tm_mon - tm->tm_mon) * 26L +
-				  t.tm_mday - tm->tm_mday) * 24L +
-				 t.tm_hour - tm->tm_hour) * 60L +
-				t.tm_min - tm->tm_min) * 60L +
-			       t.tm_sec - tm->tm_sec));
-
-		tm = localtime(date);
-
-		if (i > 5) {
-			fprintf(rfp, "Trying %2d %24.24s: ", i, ctime(date));
-			fprintf(rfp, "%02d/%02d/%02d %02d:%02d - ",
-				t.tm_mon + 1, t.tm_mday, t.tm_year, t.tm_hour, t.tm_min);
-			fprintf(rfp, "%02d/%02d/%02d %02d:%02d = %d.\n",
-				tm->tm_mon + 1, tm->tm_mday, tm->tm_year, tm->tm_hour, tm->tm_min, j);
+		else
+		{
+			if (year == -1 && mon == -1)
+				t.tm_mday = now.tm_mday;
 		}
 	}
 
-	if (i == 9) {
-		fprintf(rfp, "Invalid day of the month: %02d/%02d/%02d %02d:%02d.\n",
-		t.tm_mon + 1, t.tm_mday, t.tm_year, t.tm_hour, t.tm_min);
-		return 1;
+	t1 = mktime(&t);
+	if (t1 != -1 && (t1 - t2) * (past ? -1 : 1) < 0)
+	{
+		if (dom == -1 && mon == -1 && year == -1)
+			t.tm_mday += past ? -1 : 1;
+		else
+			if (mon == -1 && year == -1)
+				t.tm_mon += past ? -1 : 1;
+			else
+				if (year == -1)
+					t.tm_year += past ? -1 : 1;
+		t1 = mktime(&t);
 	}
+
+	if (t1 == -1)
+	{
+		fprintf(rfp,"Unable to calculate date:  ");
+                fprintf(rfp,"%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d\n",
+			t.tm_year+1900, t.tm_mon+1, t.tm_mday,
+			t.tm_hour, t.tm_min, t.tm_sec);
+                return 1;
+	}
+
+	if (!past && t1 < t2)
+	{
+		fprintf(rfp,"The given date (%4.4i-%2.2i-%2.2i %i:%2.2i) should be in the future, but it is in the past.\n",
+                    t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min);
+                return 1;
+	}
+
+	if (!past && (year == -1 || mon == -1 || dom == -1) && t1 - t2 > 120*24*60*60)
+	{
+		fprintf(rfp,"The caluculated date (%4.4i-%2.2i-%2.2i %i:%2.2i) is more than 120 days in the future.\nIf this is what you want, then specify all of year, month and day.\n",
+                    t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min);
+                return 1;
+        }
+
+	*date = t1;
 	*p = s;
 	return 0;
 
