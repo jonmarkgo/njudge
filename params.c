@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.43  2004/07/26 22:32:49  millis
+ * Small change to show Duplex vs number of powers actually playing
+ *
  * Revision 1.42  2004/07/25 16:07:14  millis
  * Bug 151, allow less powers than variant default.
  *
@@ -792,7 +795,9 @@ void params(FILE * fp)
 
 	if (dipent.x2flags & X2F_CAPTUREWIN) 
 	    fprintf(fp, "  Win by capturing 1 power's home centres, or all draw at %d centres.\n", dipent.vp);
-        else
+        else if (dipent.flags & F_INTIMATE)
+	    fprintf(fp, "  Win by being first to capture opponent home centre with own unit.\n");
+	else
             fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
 
 	/* No of centres added. DAN. */
