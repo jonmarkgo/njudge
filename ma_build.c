@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.4  2002/02/25 11:51:51  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.2.2.1  2001/10/19 23:34:03  dema
  * Added missed include
  *
@@ -127,8 +130,8 @@ int ma_buildin(char **s, int p)
 
                 /* If Venice, only allow one unit to exist at a time */
                 if (is_venice(p1)) {
-                        if ((pr[p1].unit && unit[pr[p1].unit].status != 'b' ) ||
-                            (pr[p1].gunit && unit[pr[p1].gunit].status != 'b')) {
+                        if ((pr[p1].unit && unit[pr[p1].unit].status != 'b' && unit[pr[p1].unit].status != 'x') ||
+                            (pr[p1].gunit && unit[pr[p1].gunit].status != 'b' && unit[pr[p1].gunit].status != 'x' )) {
                             errmsg("Cannot order for more than one unit in %s.\n", pr[p1].name);
                             return E_WARN;
                         }
@@ -307,6 +310,10 @@ void ma_buildout(int pt)
 					ducats[p].treasury -= c1;
 				} else if (unit[u].owner == AUTONOMOUS) {
 					fprintf(rfp, "  (free)\n");
+				} else if (atoi(dipent.seq) <= 2) {
+				       /* First turn, allow overspend */
+					fprintf(rfp, "  (%d ducats)\n", c1);
+                                        ducats[p].treasury = 0;  
 				} else {
 					fprintf(rfp, "  (%d ducats *** NSF\n", c1);
 					unit[u].owner = 0;
