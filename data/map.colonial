@@ -3,6 +3,9 @@
 # This is the standard (1994) version, with only one land bridge
 #
 # $Log$
+# Revision 1.3  2002/04/15 12:43:34  miller
+# Added TSR and Suez provinces
+#
 # Revision 1.2  2001/10/20 12:11:36  miller
 # Merged in changes from DEMA and USTV
 #
@@ -56,7 +59,7 @@ Gulf of Siam,   w gos siag
 Hong Kong,      B hk
 Hyderabad,      l hyd
 Irkutsk,        l irk
-Java Sea,       w javs js
+Java Sea,       w javs js jvs
 Java,   H jav
 Karachi,        x kar
 Kashgar,        x kag

@@ -5,6 +5,9 @@
 # - There is a land bridge between Sakhalin and Vladivostok
 #
 # $Log$
+# Revision 1.3  2002/12/30 16:39:40  millis
+# Allow fleets to use new land-bridges too.
+#
 # Revision 1.2  2002/12/30 12:26:36  millis
 # Corrected colonial96 land-bridges
 #
@@ -57,7 +60,7 @@ Gulf of Siam,   w gos siag
 Hong Kong,      B hk
 Hyderabad,      l hyd
 Irkutsk,        l irk
-Java Sea,       w javs js
+Java Sea,       w javs js jvs
 Java,   H jav
 Karachi,        x kar
 Kashgar,        x kag
