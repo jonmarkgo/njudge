@@ -192,7 +192,7 @@ char *powers[] =
      "Northern_Territory",
     "Canada", "Caribbean-Federation", "Haida", "CSA",
      "Spanish-America",
-     "Date", "Nobunaga", "Tokugawa", "Sorin", "Mori", "Uesugi",
+     "Date", "Nobunaga", 
 //** ADD NEW POWERS ABOVE THIS LINE! **/
 	"a power", "Autonomous", "Observer", "Master"};
 
@@ -270,7 +270,7 @@ char *owners[] =
      "Northern_Territorian",
      "Canada", "Free Caribbean Federation", "Haida Confederation",
      "Confederate States of America", "Spanish America",
-     "Date", "Nobunagan", "Tokugawan", "Sorin", "Mori", "Uesugi",
+     "Date", "Nobunagan", 
 /** ADD NEW POWERS ABOVE THIS LINE! **/
 	"??????", "Autonomous", "Observer", "Master"};
 
