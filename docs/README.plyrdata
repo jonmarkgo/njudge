@@ -27,6 +27,12 @@ to enter the number of the record you wish to modify. The record number of
 a particular player is always the same as that player's user ID number.
 The program will ask you which field of the record you wish to modify, and
 then ask for the new value for that field. The new data will then be
-written back into the plyrdata file. I'm hoping to make some improvements
-to this user interface, and perhaps add an e-mail command for the
-Judgekeeper to use shortly.
+written back into the plyrdata file. 
+
+
+I've now added the "record" command, which allows the Judge Keeper to modify
+a player's entry via an e-mail command. Please see the index file and look
+under the "record" entry for details.
+
+Tim Miller
+April 28, 2002 
