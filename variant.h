@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2004/03/16 07:52:41  nzmb
+ * dded the minorpowers variant.
+ *
  * Revision 1.15  2003/07/15 12:11:13  millis
  * Make non-player ordinals relative
  *
@@ -140,7 +143,7 @@ enum {
 #define LPOWER        24	/* Length of the longest power name              */
 
 /* Do not exceed byte limit as these are used in char arrays */
-#define WILD_PLAYER  114  /* First non-player player ordinal               */
+#define WILD_PLAYER  123  /* First non-player player ordinal               */
 #define NEUTRAL	     (WILD_PLAYER +1) /* Neutral power 			   */
 #define AUTONOMOUS   (NEUTRAL +1)     /* Non-player ordinal                */
 #define OBSERVER     (AUTONOMOUS +1)  /* Non-player ordinal                */
