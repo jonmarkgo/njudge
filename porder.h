@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2003/01/18 14:17:21  millis
+ * Added isNativeUnit macro
+ *
  * Revision 1.11  2003/01/15 14:14:34  millis
  * Added missing Native defines
  *
@@ -109,6 +112,7 @@ extern struct province {
 	int gconv;		/* Mach: Non-zero if garrison converted       */
 	int new_owner;		/* For setup, the new owner of province	      */
 	int order_index;	/* index of next unit to be ordered	      */	
+	int unit_held;		/* 1 if unit held here from last turn, else 0 */
 } pr[NPROV + 1];
 
 extern int npr;			/* Actual number of provinces                 */
@@ -136,7 +140,10 @@ extern struct units {
 	unsigned char unit_coast; /* cost of supported/convoyed unit         */
 	short railway_index;	/* Index of railway being used, else -1 */
 	short exists;		/* True if unit really exists */
-
+	short fleet_index;	/* Non-zero for parent fleet of af */
+	short army_index;	/* Non-zero for parent army of af */
+	short af_index;		/* Non-zero for index of subordinate af */
+	int fallback;		/* If using a railway and blocked, dest province */
 } unit[MAXUNIT];
 
 extern char *mtype[];
