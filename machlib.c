@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.2.2.1  2001/10/19 23:09:49  dema
+ * Add check function for initial money
+ *
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Forst and unit type limits
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -7,6 +13,7 @@
  * Morrolan v9.0
  */
 
+#include <stdlib.h>
 #include "dip.h"
 #include "porder.h"
 #include "mach.h"
@@ -45,6 +52,20 @@ void set_rebellion(int prov)
 	   ** This assumes rebellion always affects the province
 	 */
 	set_prebellion(prov);
+}
+
+/*
+ * See if power has initial money, return 1 if so, 0 if not or none defined
+ */
+
+int GetInitialMoney(int p, int *money)
+{
+    if (!(initial_money.enabled)) return 0; /* No inital money defined */
+
+    if (atoi(dipent.seq) >1 ) return 0; /* Not on initial turn */ 
+
+    *money = initial_money.money[p];
+    return 1;
 }
 
 /*

@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.2.2.1  2001/10/19 23:07:42  dema
+ * Added missing header file include
+ *
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Various
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -8,7 +14,7 @@
  */
 
 #include <stdlib.h>
-
+#include <string.h>
 #include "dip.h"
 #include "porder.h"
 #include "mach.h"

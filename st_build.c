@@ -1,6 +1,12 @@
 
 /*
    ** $Log$
+   ** Revision 1.5.2.1  2001/10/20 00:52:49  dedo
+   ** Remvoe compile warnings
+   **
+   ** Revision 1.5  2001/02/26 11:27:12  miller
+   ** Fixed small bug on line 107, using [i] instead of [p]
+   **
    ** Revision 1.4  2000/11/18 21:12:14  miller
    ** Fixed ONECENTRE bug
    **
@@ -39,6 +45,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "dip.h"
 #include "functions.h"

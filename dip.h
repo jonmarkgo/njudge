@@ -1,5 +1,14 @@
 /*
  * $Log$
+ * Revision 1.8.2.2  2001/10/20 00:54:08  dedo
+ * *** empty log message ***
+ *
+ * Revision 1.8.2.1  2001/10/15 00:48:38  ustv
+ * Addedextra flags x2flags
+ *
+ * Revision 1.8  2001/08/18 06:25:40  nzmb
+ * Added XF_NOCONCESSIONS & SF_CONC
+ *
  * Revision 1.7  2001/07/08 22:53:57  miller
  * New defines
  *
@@ -57,6 +66,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+
 #include "conf.h"
 
 #define min(a,b)      ((a) < (b) ? (a) : (b))
@@ -162,6 +172,12 @@
 #define XF_NO_MIXED_CONTROL     XF_MACH2  /* Cannot own province if city is not empty */
 #define XF_CITY_ONLY_VICTORY    XF_MACH2  /* Only need to win cities for victory */
 
+/* Extra 2 flags */
+#define X2F_RAILWAYS 0x1	/* allows railways */
+#define X2F_HONGKONG 0x2
+#define X2F_GATEWAYS 0x4
+#define X2F_COLONIAL (X2F_RAILWAYS | X2F_HONGKONG | X2F_GATEWAYS)
+
 typedef struct Sequence {
 	int clock;		/* Time of day for orders to be due             */
 	float mint;		/* Minimum time before orders will be processed */
@@ -186,7 +202,7 @@ typedef struct Sequence {
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
 #define SF_TURNGO  0x4000	/* Set by the master to make a manual turn go   */
-#define SF_CONC    0x8000	/* Player agreed to concession */
+#define SF_CONC    0x8000     /* Player agreed to concession */
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
@@ -228,6 +244,8 @@ struct dipent {
 	int level;		/* Level:   L_ANY, L_NOVICE, L_EXPERIENCED      */
 	int flags;		/* Flags:   F_NONMR                             */
 	int xflags;		/* Extra flags: XF_*				*/
+	int x2flags;		/* More extra flags */
+
 	int dedicate;		/* Minimum dedication requirement               */
 	float orded;	        /* Minimum ontime ratio requirement       */
 	float rrded;            /* Maximum resignation ratio requirement  */

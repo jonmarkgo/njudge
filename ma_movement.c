@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.3.2.1  2001/10/19 23:37:01  dema
+ * Added NoMoney handling, and correct calculatinos for lifting sieges
+ *
+ * Revision 1.3  2001/07/08 22:58:24  miller
+ * Preliminary check for XF_NOMENY
+ *
  * Revision 1.2  2001/07/01 23:19:29  miller
  * Many fixes
  *
@@ -470,7 +476,11 @@ int ma_moveout(int pt)
 		dipent.phase[0] == 'U' ? "Summer" : "Spring",
 		atoi(&dipent.phase[1]));
 
-	fputc('\n', rfp);
+	/* Needed to say which turn no. for mapit */
+	if (dipent.xflags & XF_NOMONEY)
+	    fprintf(rfp, " (%s.%s)\n", dipent.name, dipent.seq); 
+	else
+	    fputc('\n', rfp);
 
 	/*
 	   **  Flag bogus orders, initialize support.
@@ -962,7 +972,7 @@ int ma_moveout(int pt)
 					bounce++;
 				}
 			} else if (unit[u].order == 'b' && !result[u]) {
-				if ((u2 = has_garrison(unit[u].loc)) && is_sieged(unit[u].loc)) {
+				if ((u2 = has_garrison(unit[u].loc)) /*&& is_sieged(unit[u].loc)*/) {
 					for (u3 = 1; u3 <= nunit; u3++) {
 						if (unit[u3].order == 'm'
 						    && unit[u3].dest == unit[u].loc
@@ -974,10 +984,15 @@ int ma_moveout(int pt)
 /*                fprintf(rfp, "Second part: Dislodge in %s unit %d by %d\n",
  */
 /*                              pr[unit[u2].loc].name, u2, u); */
+					    if (is_sieged(unit[u].loc)) {
 						if (result[u2] < DISLODGED)
 							result[u2] += DISLODGED;
 						unit[u2].status = 'r';
 						bounce++;
+					    } else {
+					        if (!result[u2])
+						    result[u2] = BESIEGE;
+					    }
 					}
 				}
 			}
@@ -1189,7 +1204,7 @@ int ma_moveout(int pt)
 
 			else if ((unit[u].order == 'l' && !result[u]) || 
 				(result[u] == SELF_BESIEGE) ||
-				(dipent.xflags & XF_NOLIFT_SIEGE)) {
+				(unit[u].type != 'G' && (dipent.xflags & XF_NOLIFT_SIEGE) )) {
 				remove_siege(unit[u].loc);
 			}
 		}

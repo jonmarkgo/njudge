@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.2.2.1  2001/10/19 23:11:39  dema
+   ** Added missing include
+   **
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** small change to allow syntax checking to work with preprocessing commands
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -24,6 +30,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "dip.h"
 #include "functions.h"

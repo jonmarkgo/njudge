@@ -1,5 +1,17 @@
 /*
  * $Log$
+ * Revision 1.15.2.3  2001/10/19 23:55:13  dedo
+ * Remove warning for over-large string literal
+ *
+ * Revision 1.15.2.2  2001/10/19 23:43:02  dema
+ * Allowed seting/clearing of NoMoney flag and Basic/Advanced
+ *
+ * Revision 1.15.2.1  2001/10/15 22:23:18  ustv
+ * Merged concessions, duality and Colonial flags
+ *
+ * Revision 1.15  2001/08/31 02:03:01  greg
+ * added "Ready to Start" subjectline for manual start games
+ *
  * Revision 1.14  2001/08/30 05:01:30  nzmb
  * Modified second argument of calls to check_can_vote.
  *
@@ -93,6 +105,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "dip.h"
 #include "mail.h"
@@ -182,7 +195,7 @@ void CheckForGameStart()
 	    fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
             mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
 
-		sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
+	    sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
         }
      broadcast = 1;
      }
@@ -239,18 +252,18 @@ int CheckAndToggleFlag( int *flag,   /* dipent.flags or dipent.xflags */
 		}
                 fprintf(rfp, "Game '%s' is already %s%s.\n", dipent.name, no_text, flag_name);
              } else {
-		if (inverted_logic) {
+		if (inverted_logic==CATF_INVERSE) {
 		   op_text = SET_TEXT;
                 } else {
                    op_text = CLEARED_TEXT;
                 }
                 *flag &= ~flag_mask;
                 fprintf(rfp, warn_text);
-                pprintf(cfp, "%s%s as %s in '%s' cleared the %s flag.\n", NowString(),
-                        xaddr, powers[dipent.players[player].power], dipent.name, flag_name);
+                pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+                        xaddr, powers[dipent.players[player].power], dipent.name, op_text, flag_name);
                /* WAS mfprintf  1/95 BLR */
-               fprintf(bfp, "%s as %s in '%s' cleared the %s flag.\n", xaddr, PRINT_POWER, dipent.name, flag_name);
-               fprintf(mbfp, "%s as %s in '%s' cleared the %s flag.\n", raddr, PRINT_POWER, dipent.name, flag_name);
+               fprintf(bfp, "%s as %s in '%s' %s the %s flag.\n", xaddr, PRINT_POWER, dipent.name, op_text, flag_name);
+               fprintf(mbfp, "%s as %s in '%s' %s the %s flag.\n", raddr, PRINT_POWER, dipent.name, op_text, flag_name);
                fprintf(mbfp, warn_text);
 		broadcast = 1;
 		setting = 1;
@@ -296,8 +309,9 @@ void break_date_into_two( char * instring, char *s1, char *s2)
 	t = strstr(s1,"to");
 	if (t) {
 	    /* Remove the "to" component" */
-	    *t++ = '\0';
-	    while (!isdigit(*t) && t) t++;	
+	    *t++ = '\0'; t++;
+	    
+	    while (isspace(*t) && t) t++;	
 	    strcpy(s2, t);
 	}
 }
@@ -595,6 +609,23 @@ void mail_setp(char *s)
 #define PRV_CONC          'a'
 #define SET_NOCONC        138
 #define PRV_NOCONC        'a'
+#define SET_DUALITY	  139
+#define	PRV_DUALITY 	  'm'
+#define SET_NODUALITY	  140
+#define PRV_NODUALITY  	  'm'
+#define SET_HONGKONG	  141
+#define PRV_HONGKONG      'm'
+#define SET_NOHONGKONG	  142
+#define PRV_NOHONGKONG	  'm'
+#define SET_GATEWAY	  143
+#define PRV_GATEWAY	  'm'
+#define SET_NOGATEWAY	  144
+#define PRV_NOGATEWAY	  'm'
+#define SET_RAILWAY	  145
+#define PRV_RAILWAY	  'm'
+#define SET_NORAILWAY     146
+#define PRV_NORAILWAY     'm'
+
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -715,7 +746,14 @@ void mail_setp(char *s)
          "nocoastalconvoy", "no coastalconvoy",
 	 "money", "nomoney", "no money",
 	 "disband", "no disband", "nodisband", 
-	 "basic", "advanced"
+	 "basic", "advanced",
+	 "duality", "no duality", "noduality",
+	 "hong kong", "hongkong",
+	 "no hong kong", "no hongkong", "nohongkong",
+	 "gateways", "gateway",
+	 "no gateways", "no gateway", "nogateways", "nogateway",
+	 "railways", "railyway",
+	 "no railways", "no railway", "norailways", "norailway" 
  	};
 
 
@@ -842,7 +880,14 @@ void mail_setp(char *s)
         SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
 	SET_MONEY, SET_NOMONEY, SET_NOMONEY, 
 	SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
-	SET_BASIC, SET_ADVANCED
+	SET_BASIC, SET_ADVANCED,
+	SET_DUALITY, SET_NODUALITY, SET_NODUALITY,
+	SET_HONGKONG, SET_HONGKONG,
+	SET_NOHONGKONG, SET_NOHONGKONG, SET_NOHONGKONG,
+	SET_GATEWAY, SET_GATEWAY,
+	SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY, SET_NOGATEWAY,
+	SET_RAILWAY, SET_RAILWAY,
+	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY
     };
 
 
@@ -967,9 +1012,16 @@ void mail_setp(char *s)
         PRV_COASTALCONVOY, PRV_COASTALCONVOY,  PRV_COASTALCONVOY, PRV_COASTALCONVOY,
         PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
         PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
-        SET_MONEY, SET_NOMONEY, SET_NOMONEY,
-        SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
-        SET_BASIC, SET_ADVANCED
+        PRV_MONEY, PRV_NOMONEY, PRV_NOMONEY,
+        PRV_MOVEDISBAND, PRV_NOMOVEDISBAND, PRV_NOMOVEDISBAND,
+        PRV_BASIC, PRV_ADVANCED,
+	PRV_DUALITY, PRV_NODUALITY, PRV_NODUALITY,	
+	PRV_HONGKONG, PRV_HONGKONG,
+	PRV_NOHONGKONG, PRV_NOHONGKONG, PRV_NOHONGKONG,
+	PRV_GATEWAY, PRV_GATEWAY,
+	PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY, PRV_NOGATEWAY,
+	PRV_RAILWAY, PRV_RAILWAY,
+	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY
 
 };
 
@@ -1680,8 +1732,7 @@ void mail_setp(char *s)
         		{
                 		dipent.xflags ^= XF_NOCONCESSIONS;
                 		fprintf(rfp,"Concessions are now permitted in %s.\n",dipent.name);
-				pprintf(cfp,"%s%s as %s in '%s' set the concessions flag.\nPowers may
-                        		concede the game to the largest power on the board.\n",
+				pprintf(cfp,"%s%s as %s in '%s' set the concessions flag.\nPowers may concede the game to the largest power on the board.\n",
                         		NowString(),xaddr,
                         		powers[dipent.players[player].power],dipent.name);
                         	fprintf(bfp,"%s as %s in '%s' set the concessions flag.\nPowers may now concede to the largest power on the board.\n",
@@ -2351,12 +2402,12 @@ void mail_setp(char *s)
                         break;
 
                 case SET_RESUME:
-                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "NoResume", CATF_SETOFF,
+                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "Resume", CATF_SETOFF,
                                                "Resume can now be performed by any player.\n",CATF_INVERSE);
                         break;
 
                 case SET_NORESUME:
-                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "NoResume", CATF_SETON,
+                        CheckAndToggleFlag(&dipent.xflags,  XF_NORESUME, "Resume", CATF_SETON,
                                                "Resume can now only be performed by moderators.\n",CATF_INVERSE);
                         break;
 
@@ -2566,6 +2617,98 @@ void mail_setp(char *s)
                         break;
 
 
+               case SET_DUALITY:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set Duality flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_PROV_DUALITY, "Duality", CATF_SETON,
+                                           "Some map specific provinces may now work with dual land and water behaviour.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+ 
+                case SET_NODUALITY:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear Duality flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_PROV_DUALITY, "Duality", CATF_SETOFF,
+                                           "All map provinces now only have one behaviour.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;              
+
+		case SET_HONGKONG:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to set HongKong flag!\n\n",
+				    dipent.name);
+/*			} else if (nhk == 0) {
+			    fprintf(rfp, "Variant has no HongKong provinces: flag setting ignored!\n\n");
+ */			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_HONGKONG, "HongKong", CATF_SETON,
+						"HongKong flag set.\n",
+						CATF_NORMAL);
+			}
+			break;
+
+		case SET_NOHONGKONG:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to clear HongKong flag!\n\n",
+				dipent.name);
+			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_HONGKONG, "NoHongKong", CATF_SETOFF,
+					"HongKong flag cleared.\n",
+					CATF_NORMAL);
+			}
+			break;
+
+		case SET_GATEWAY:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to set Gateways flag!\n\n", dipent.name);
+/*			} else if (ngw == 0) {
+			    fprintf(rfp," Variant has no gatways defined: flag ignored!\n\n");
+ */			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_GATEWAYS, "Gateways", CATF_SETON,
+				"Gateways are now enabled.\n", CATF_NORMAL);
+			}
+			break;
+
+		case SET_NOGATEWAY:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to clear Gateways flag!\n\n", dipent.name);
+			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_GATEWAYS, "NoGateways", CATF_SETOFF,
+				"Gateways are now disabled.\n", CATF_NORMAL);
+			}
+			break;
+			
+		case SET_RAILWAY:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to set Railways flag!\n\n", dipent.name);
+/*			} else if (nrw == 0) {
+			    fprintf(rfp, "Variant has no railways defined: flag ignored!\n\n");
+ */			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_RAILWAYS, "Railways", CATF_SETON,
+				"Railways are now enabled.\n", CATF_NORMAL);
+			}
+			break;
+
+		case SET_NORAILWAY:
+			CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to clear Railways flag!\n\n", dipent.name);
+			} else {
+			    CheckAndToggleFlag(&dipent.x2flags, X2F_RAILWAYS, "NoRailways", CATF_SETOFF,
+			    "Railways are now disabled.\n", CATF_NORMAL);
+			}
+			break;
+
 /*
                 case SET_AIRLIFT:
                         CheckNoMach();
@@ -2696,7 +2839,7 @@ void mail_setp(char *s)
                             fprintf(rfp, "Game '%s' has already started: not allowed to set HomeCentres!\n\n",
 				    dipent.name);
                         } else {
-				CheckAndToggleFlag(&dipent.xflags,  XF_BUILD_ANYCENTRES, "HomeCentres", CATF_SETOFF,
+				CheckAndToggleFlag(&dipent.xflags,  XF_BUILD_ONECENTRE, "HomeCentres", CATF_SETOFF,
                                                "Powers can only build on vacant owned home centres.\n",CATF_INVERSE);
                         }
 			break;
@@ -2776,17 +2919,21 @@ void mail_setp(char *s)
                                 s = "";
                                 break;
                         } else {
-                                if (mail_date(&se, &datee, 0, rfp)) {
+				if (*ss) {
+				    fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", ss);
+				    s = "";
+				    break;
+				}
+                                if (!*se || mail_date(&se, &datee, 0, rfp)) {
                                         fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
                                         datee = dates + (24l * 60l *60l );
                                 }
-                                if ( datee <= dates) datee = dates + (24l * 60l *60l );
 
                                 if (datee <= dates ) {
                                     fprintf(rfp,
-                                            "Absence end date \n%s is not after absence start date \n",
-					    ptime(&dates));
-				    fprintf(rfp,"%s.\n\n", ptime(&datee));
+                                            "Absence end date \n  %s\nis not after absence start date \n",
+					    ptime(&datee));
+				    fprintf(rfp,"  %s\nRequest ignored.\n\n", ptime(&dates));
                                     s="";
                                     break;
                                 }
@@ -2944,19 +3091,18 @@ void mail_setp(char *s)
                                                    CATF_NORMAL);
                         break;
 
-/*
 		case SET_MONEY:
 			CheckMach();
-                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETON,
+                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETOFF,
                                                 "Game now has money.\n", CATF_INVERSE);
 			break;
 
 		case SET_NOMONEY:
                         CheckMach();
-                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETOFF,
+                        CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETON,
                                                 "Game now does not have money.\n", CATF_INVERSE);
                         break;
-*/
+		
 		case SET_MOVEDISBAND:
                         if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Disband!\n\n",
@@ -2981,7 +3127,10 @@ void mail_setp(char *s)
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Basic", CATF_SETON,
                                                 "Game is now in basic settings.\n", CATF_INVERSE);
-			 
+			
+			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice", 
+				 	   CATF_SETON,
+					   "", CATF_INVERSE); 
                         break;
 
 
@@ -2989,6 +3138,9 @@ void mail_setp(char *s)
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Advanced", CATF_SETOFF,
                                                 "Game is now in advanced settings.\n", CATF_INVERSE);
+			CheckAndToggleFlag(dipent.flags, F_NODICE, "NoDice",
+					   CATF_SETOFF,
+					   "", CATF_INVERSE);
 			break;
 
 */	

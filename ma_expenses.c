@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.3.2.1  2001/10/19 23:35:11  dema
+ * Do not allow expenses if NoMoney game
+ *
+ * Revision 1.3  2001/07/08 22:58:24  miller
+ * Preliminary check for XF_NOMENY
+ *
  * Revision 1.2  2001/07/01 23:19:29  miller
  * Many mach fixes
  *
@@ -442,6 +448,8 @@ void expout(int pt)
 	unsigned char amount[WILD_PLAYER][4];
 	unsigned char assassin[WILD_PLAYER];
 
+	if (dipent.xflags & XF_NOMONEY)
+	    return;
 
 	if (err)
 		fprintf(rfp, "\n");

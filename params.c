@@ -1,5 +1,15 @@
 /*
  * $Log$
+ * Revision 1.8.2.2  2001/10/20 00:52:20  dedo
+ * Correctedcompile error
+ *
+ * Revision 1.8.2.1  2001/10/15 22:27:51  ustv
+ * Merge in concession and colonial flag code
+ *
+ * Revision 1.8  2001/08/18 07:08:54  nzmb
+ * Show concessions flag. Also new dedication params show up when either
+ * has been modified (not both as before).
+ *
  * Revision 1.7  2001/07/08 23:00:51  miller
  * New flags and tidy-up
  *
@@ -148,7 +158,7 @@ void params(FILE * fp)
 
 	/* General information (access, level, moderated, rated, dedication). */
 
-	sprintf(line, "  Access:  %s-site",
+	sprintf(line, "   Access:  %s-site",
 		(temp = strcap(accesses[dipent.access])));
 	free(temp);
 	sprintf(&line[strlen(line)], ", Level: %s",
@@ -167,7 +177,7 @@ void params(FILE * fp)
         print_params(fp, line);
 
 	if (dipent.orded != 0.000 || dipent.rrded != 1.000) {
-		sprintf(line, "  DSettng:" );
+		sprintf(line, "   DSettng:" );
 		sprintf(&line[strlen(line)], 
 			" Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",
 			dipent.orded,dipent.rrded);
@@ -177,7 +187,7 @@ void params(FILE * fp)
 
 	/* Variant & option information. */
 
-	sprintf(line, "  Variant: %s", (temp = strcap(variants[dipent.variant])));
+	sprintf(line, "  Variant:  %s", (temp = strcap(variants[dipent.variant])));
 	free(temp);
 
 	if (dipent.flags & F_GUNBOAT) {
@@ -205,7 +215,7 @@ void params(FILE * fp)
 
 	/*  Flag information.  */
 
-	sprintf(line, "  Flags:   ");
+	sprintf(line, "    Flags:  ");
 	if (dipent.flags & F_NONMR) {
 		strcat(line, "NoNMR");
 	} else {
@@ -240,8 +250,20 @@ void params(FILE * fp)
         strcat(line, ".");
         print_params(fp, line);
 
+	if (dipent.x2flags & X2F_COLONIAL) {
+	    sprintf(line, " Colonial:  ");
+	    first_flag = 1;
+	    if (dipent.x2flags & X2F_HONGKONG)
+		strcatf(line, "HongKong", &first_flag);
+	    if (dipent.x2flags & X2F_GATEWAYS)
+		strcatf(line, "Gateways", &first_flag);
+	    if (dipent.x2flags & X2F_RAILWAYS)
+		strcatf(line, "Railways", &first_flag);
+	    strcat(line,".");
+	    print_params(fp, line);
+	}
 	if (dipent.flags & F_MACH) {
-        sprintf(line, "   Mach:   ");
+        sprintf(line, "    Mach:   ");
 
 		if (dipent.flags & F_NODICE) {
 			strcat(line, "NoDice");
@@ -292,7 +314,7 @@ void params(FILE * fp)
 	
         /* Transform information.  */
         if (!(dipent.flags & F_MACH) && (dipent.xflags & XF_TRANS_ANYT)) {
-            sprintf(line, "  Trafo:  ");
+            sprintf(line, "   Trafo:  ");
 
 	    if (dipent.xflags & XF_TRANS_BUILD) {
 		strcat(line," Build:");
@@ -339,7 +361,7 @@ void params(FILE * fp)
        }
  
        /*  xFlag information.  */
-         sprintf(line, "  xFlags:  ");
+         sprintf(line, "   xFlags:  ");
 	first_flag = 1;
 	if (!(dipent.flags & F_MACH)) {
 	    if ((dipent.xflags & XF_BUILD_ONECENTRE) == XF_BUILD_ONECENTRE) {
@@ -403,14 +425,16 @@ void params(FILE * fp)
         if (dipent.xflags & XF_COASTAL_CONVOYS) {
                 strcatf(line, "CostalConvoy", &first_flag);
         }
-	if (dipent.xflags & XF_MOVEDISBAND) {
+	if (dipent.xflags & XF_MOVEDISBAND)
 		strcatf(line, "Disband", &first_flag);
-	}
 	if ((dipent.xflags & XF_NOCONCESSIONS) && !(dipent.flags & F_NODIAS)){
-		strcat(line, ", No concessions");
-	}else{
-		strcat(line, ", Concessions");
+		strcatf(line, "No concessions", &first_flag);
+	} else {
+		strcatf(line, "Concessions", &first_flag);
 	}
+
+	if (dipent.xflags & XF_PROV_DUALITY)
+		strcatf(line, "Duality", &first_flag);
 
 	if (first_flag != 1) {
 		/* Only show xflags if there are some to show! */
@@ -424,7 +448,7 @@ void params(FILE * fp)
 
 	/*  Press information.  */
 
-	sprintf(line, "  Press:   ");
+	sprintf(line, "    Press:  ");
 	switch (dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) {
 	case (F_NOWHITE | F_GREY | F_DEFWHITE):
 		strcat(line, "Undefined");
@@ -533,7 +557,7 @@ void params(FILE * fp)
 			centers = dipent.players[index].centers;
 			squares += centers * centers;
 		}
-		fprintf(fp, "  Index:   %-3d\n", squares / dipent.np);
+		fprintf(fp, "    Index:  %-3d\n", squares / dipent.np);
 	}
 	return;
 }

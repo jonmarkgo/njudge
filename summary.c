@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.6.2.1  2001/10/15 22:30:45  ustv
+ * Added display of duality stuff
+ *
+ * Revision 1.6  2001/08/18 07:11:36  nzmb
+ * Show concessions if applicable
+ * 
  * Revision 1.5  2001/07/15 09:20:27  greg
  * added support for game directories in a sub directory
  *
@@ -289,6 +295,7 @@ int main(int argc, char **argv)
 		pr[i].move = (unsigned char *) &heap[cmap[CMAP_MOVE]];
 		pr[i].type = cmap[CMAP_TYPE];
 		pr[i].flags = cmap[CMAP_FLAG];
+		pr[i].type2 = cmap[CMAP_TYPE2];
 		n = islower(pr[i].type) ? 0 : power(pr[i].type);
 		pr[i].owner = n;
 		pr[i].cown = n;
@@ -323,6 +330,38 @@ int main(int argc, char **argv)
                         return E_FATAL;
                 }
 	}
+/* Now read colonial hk, gw and rw settings */	
+        if (fread(&nhk, sizeof(nhk),1, ifp) != 1) {
+            /* Serious error, what to do? */
+            nhk = 0;
+        }
+        if (nhk > 0) {
+            if(fread(hk, sizeof(hk[0]), nhk, ifp) != nhk) {
+                fprintf(ifp, "Mismatch on number of hk records.\n");
+                exit(1);
+            }
+        }
+        if (fread(&ngw, sizeof(ngw),1, ifp) != 1) {
+            /* Serious error, what to do? */
+            ngw = 0;
+        }
+        if (ngw > 0) {
+            if(fread(gw, sizeof(gw[0]), ngw, ifp) != ngw) {
+                fprintf(ifp, "Mismatch on number of gw records.\n");
+                exit(1);
+            }
+        }
+	if (fread(&nrw, sizeof(nrw),1, ifp) != 1) {
+	    /* Serious error, what to do? */
+	    nrw = 0;
+	}
+	if (nrw > 0) {
+	    if(fread(rw, sizeof(rw[0]), nrw, ifp) != nrw) {
+		fprintf(ifp, "Mismatch on number of rw records.\n");
+		exit(1);
+	    }
+	}
+
 	/*
 	 *  Get the province/supply center ordering.
 	 */
@@ -644,16 +683,6 @@ int main(int argc, char **argv)
 			fputs(line, ifp);
 		fclose(tfp);
 	}
-	/*
-	 * Concession (if any) goes here
-	 */
-
-	sprintf(line, "%s%s/conc",GAME_DIR,dipent.name);
-	if ((tfp = fopen(line, "r"))) {
-                while (fgets(line, sizeof(line), tfp))
-                        fputs(line, ifp); 
-                fclose(tfp);
-        }
 	/*
 	 *  Comments if any are next.
 	 */

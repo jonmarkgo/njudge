@@ -1,5 +1,19 @@
+/*
+ * $Log$
+ * Revision 1.6.2.2  2001/10/20 00:52:05  dedo
+ * Add missing prototypes
+ *
+ * Revision 1.6.2.1  2001/10/19 23:31:42  dema
+ * Added new Mach fundtion prototype + CVS header
+ *
+ *
+ */    
+
 #include <stdio.h>
 #include <time.h>
+
+/* Not included by stdlib.h for some reason */
+void  exit(int);
 
 /* needed for sequence typedef */
 #include "dip.h"
@@ -127,6 +141,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp);
 int has_fortress(int prov);
 int has_fortcity(int prov);
 void set_rebellion(int prov);
+int GetInitialMoney(int power, int *money);
 int PermittedMachUnit(int power, char type, char stype, int mode);
 
 /* defined in ma_expenses.c */
@@ -145,6 +160,13 @@ void fam_plag(int t);
 /* defined in ma_build.c */
 int ma_buildin(char **s, int p);
 void ma_buildout(int pt);
+
+/* defined in ma_build_basic.c */
+int MachCheckOwnedOKBasic( char type, int u, int p, int p1, int *c1);
+int ma_init_build_basic(void);
+int build_syntaxcheck_basic(char *in_text, int precheck, char *out_string);
+int ma_buildin_basic(char **s, int p);
+void ma_buildout_basic(int pt);
 
 /* defined in ma_movement.c */
 int ma_movein(char **s, int p);

@@ -1,5 +1,15 @@
 /*
  * $Log$
+ * Revision 1.2.2.2  2001/10/19 23:24:36  dema
+ * Added handling for inital money
+ *
+ * Revision 1.2.2.1  2001/10/15 00:18:30  ustv
+ * Added handling of comments, Colonial settings
+ *
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * New processing for storm stables, venice flag, duality provinces,
+ * unit limits
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -49,6 +59,9 @@ int main(int argc, char *argv[])
 	int power_index;
 	char unit_list[MAX_UNIT_TYPES][200]; /* to be safe only! */
 	char power_name[20];
+	char *s;
+	char temp_line[100];
+	int money;
 
 	switch (argc) {
 	case 1:
@@ -103,6 +116,8 @@ int main(int argc, char *argv[])
 		/*  Process province definitions: name, type code code ...   */
 
 		while (fgets(line, sizeof(line), ifp) && *line != '-') {
+		    if (isalnum(line[0]) ) { /* Treat all others as comments */
+
 			if (npr == NPROV) {
 				fprintf(stderr, "Maximum number of provinces (%d) exceeded.\n", NPROV);
 				exit(1);
@@ -187,10 +202,12 @@ int main(int argc, char *argv[])
 					exit(1);
 				}
 			}
+		    }
 		}
 
 		heap[hp++] = 0;
 		printf("%d of %d provinces used.\n", npr, NPROV);
+		initial_money.enabled = 0; /* Set default, no initial money */
 
 		/*
 		 *  Process movement: prov-type: prov prov prov/coast ...
@@ -205,6 +222,7 @@ int main(int argc, char *argv[])
 
 		n = 0;
 		while (fgets(line, sizeof(line), ifp) && *line != '-') {
+		    if (isalnum(line[0])) { /* treat all others as comments */
 			t = get_prov(line, &m, &i);
 			if (!m || *t++ != '-') {
 				fprintf(stderr, "Bad movement: %s", line);
@@ -309,6 +327,7 @@ int main(int argc, char *argv[])
 					exit(1);
 				}
 			}
+		    }
 		}
 		heap[hp++] = 0;
 
@@ -369,6 +388,158 @@ int main(int argc, char *argv[])
 					}
 				}
 				break;
+
+				/*
+				 * HongKong table 
+				 */
+			case 'H':
+			    if (nhk >= MAX_POWERS) {
+			        fprintf(stderr,"Too many power entries in HK section.\n");
+				err++;
+				break;
+			    }
+			    i = 0; /* Counter for entries */
+			    while (fgets(line, sizeof(line), ifp) &&
+				   !isspace(*line) && line[0] != '#') {
+				/* Each line is of the format:
+				 * Powerletter: prov1 prov2 ...
+                                 */
+				hk[nhk].power_letter = line[0]; /* TDB, validate power */
+				t = &line[2];
+				while(isspace(*t)) t++; /* discount spaces */
+				while (*t) {
+				    s = temp_line;
+				    while (*t && *t != ' ') {
+				        *s = *t;
+					s++; t++;
+				    }
+				    *s = '\0';
+			            get_prov(temp_line, &p, &m);
+				    if (!p) {
+					fprintf(stderr,
+					        "Bad province in HongKong List %s.\n", 
+						temp_line);
+					err++;
+					break;
+				    }
+				    if (i >= MAX_HK_PROVINCES) {
+					fprintf(stderr,
+						"Too many provinces in HK List.\n");
+					err++;
+					break;
+				    }
+				    hk[nhk].pr[i] = p;
+				    i++;
+				    hk[nhk].np = i;
+				}
+				nhk++;
+			    };
+
+			    break;
+
+				/*
+				 * Gateway table
+				 */
+			case 'G':
+			    while (fgets(line, sizeof(line), ifp) &&
+				   !isspace(*line) && line[0] != '#') {
+				/* This specifies gateways and has the
+				 * following layout:
+			         * gatway-name:gateway-prov prov1 prov2
+				 */
+				if (ngw >= MAX_GATEWAYS) {
+				    fprintf(stderr,"Maximum gateways reached,\n");
+				    err++;
+				}
+			        t = line;
+				s = gw[ngw].name;
+				while (*t && (*t != ':')) {
+				    *s = *t; 
+				    s++; t++;
+				}
+				*s = '\0';
+				t = get_prov(++t, &p, &m);
+				if (!p) {
+				    fprintf(stderr,"Gateway province not found.\n");
+				    err++;
+				}
+				gw[ngw].gw_prov = p;
+
+				/* OK, stuff in the controlled provinces now */
+				i=0;
+				while (*t) {
+				    s = t;
+				    while (*t && *t != ' ')
+				        t++;
+				    t = get_prov(s, &p, &m);
+				    if (!p) {
+				        fprintf(stderr, "Province not found in gateway spec.\n");
+					err++;
+				    }
+				    if (i >= MAX_GW_PROVINCES) {
+					fprintf(stderr, "Too many gatway provinces for %s specified.", gw[ngw].name);
+				    }
+				    gw[ngw].pr[i] = p;
+				    i++;
+				    gw[ngw].np = i;
+				}
+				ngw++;
+			    };
+			    break;
+
+				/*
+				 * Railway table
+				 */
+			case 'R':
+			    while (fgets(line, sizeof(line), ifp) &&
+				   !isspace(*line) && line[0] != '#') {
+			    	/* Railway table
+				 * Provides a list of connected provinces
+				 * Format is the following:
+				 * name:permitted_power_letters prov1 prov2 ...
+				 */
+				if (nrw >= MAX_RAILWAYS) {
+				    fprintf(stderr, "Maximum %d railways already specified.<n", MAX_RAILWAYS);
+				    err++;
+				    break;
+				}
+				t = line;
+				s = rw[nrw].name;
+				while (*t && *t != ':') {
+				    *s = *t;
+				    *s++; *t++;
+				}
+				*s = '\0';
+				t++; /* Skip the ':' */
+				i = 0;
+				while (*t && *t != ' ' && i < MAX_POWERS) {
+				    rw[nrw].power_letter[i] = *t;
+				    t++; i++;
+				}
+				rw[nrw].power_letter[i] = '\0'; 
+				/* Now get the railway provinces */
+				t++;
+				i = 0;
+				while (*t && i < MAX_RW_PROVINCES) {
+				    s = t;
+				    while (*t && *t != ' ') t++;
+				    t = get_prov(s, &p, &m);
+				    if (!p) {
+					fprintf(stderr,"Unknown province %s in railway.\n", s);
+					err++;
+					break;
+				    }
+				    if (pr[p].type == 'w') {
+					fprintf(stderr,"Water province %s cannot be part of railway.\n", s);
+					err++;
+					break;
+				    }
+				    rw[nrw].pr[i++] = p;
+				    rw[nrw].np++;
+				}
+				nrw++;
+			    };
+			    break;
 
 				/*
 				 *  Plague, Famine and Storm tables.
@@ -442,9 +613,10 @@ int main(int argc, char *argv[])
 						continue;
 					}
 					vincome[nv].prov = p;
-					if (sscanf(t, "%d%d%d%d%d%d%d", &vi_array[0], &vi_array[1],
+					money = 0;
+					if (sscanf(t, "%d%d%d%d%d%d%d%d", &vi_array[0], &vi_array[1],
 						   &vi_array[2], &vi_array[3], &vi_array[4], &vi_array[5],
-						   &vi_array[6]) != 7) {
+						   &vi_array[6], &money) < 7) {
 						fprintf(stderr, "Bad dice list in income: %s", line);
 						err++;
 						continue;
@@ -456,6 +628,8 @@ int main(int argc, char *argv[])
 					vincome[nv].vinc[3] = vi_array[4];
 					vincome[nv].vinc[4] = vi_array[5];
 					vincome[nv].vinc[5] = vi_array[6];
+					initial_money.money[p] = money;
+					if (money) initial_money.enabled = 1; /* There is inital money */
 
 					if (nv++ > MAXVINC) {
 						fprintf(stderr, "Maximum number of variable income cities.\n");
@@ -464,64 +638,65 @@ int main(int argc, char *argv[])
 					}
 				}
 				break;
-
-			/*
-			 * Special unit limits 
-			 */
-
-			case 'L':
-				power_index = 0;
-				while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
-				    if (sscanf(line, "%s %s %s %s", 
-						power_name,
-					        unit_list[0], unit_list[1],  unit_list[2]) != MAX_UNIT_TYPES +1) { 
-				      fprintf(stderr, "Bad unit line: %s ", line);
-				      err++;
-				    } else {	
-				       strncpy(&permitted_units[power_index].power_letter,
-					       power_name, 1);
-					for (i = 0; i < MAX_UNIT_TYPES; i++)
-					{
-					     permitted_units[power_index].permissions[i] = 0;
-					    for (j = 0; j < MAX_SPEC_TYPES; j++)
-					    {
-					        switch (unit_list[i][j])
-						{
-						    case P_ANYTIME:
-						        permitted_units[power_index].permissions[i] += PP_ANYTIME << (j*2);
-							break;
-
-						    case P_BUILD:
-							   permitted_units[power_index].permissions[i] += PP_BUILD << (j*2);
-							break;
-					
-						   case P_BUY:
-							permitted_units[power_index].permissions[i] += PP_BUY << (j*2);                                                        break;
-
-						   case P_NEVER:
-							permitted_units[power_index].permissions[i] += PP_NEVER << (j*2);
-							break;
-						   
-						   default:
-							fprintf(stderr, "Unknown option in line: %s", line);
-							err++;
-							break;
-					      }
-					  }
-				     }
-				       power_index++;
-				   }
-				   /* fprintf(stderr, "Pwer = %s, army = %s, fleet = %s\n",
-					   power_name, army_list, fleet_list); */
-				}
-				break;
-
+                        /*
+                         * Special unit limits
+                         */
+ 
+                        case 'L':
+                                power_index = 0;
+                                while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+                                    if (sscanf(line, "%s %s %s %s",
+                                                power_name,
+                                                unit_list[0], unit_list[1],  unit_list[2]) != MAX_UNIT_TYPES +1) {
+                                      fprintf(stderr, "Bad unit line: %s ", line);
+                                      err++;
+                                    } else {
+                                       strncpy(&permitted_units[power_index].power_letter,
+                                               power_name, 1);
+                                        for (i = 0; i < MAX_UNIT_TYPES; i++)
+                                        {
+                                             permitted_units[power_index].permissions[i] = 0;
+                                            for (j = 0; j < MAX_SPEC_TYPES; j++)
+                                            {
+                                                switch (unit_list[i][j])
+                                                {
+                                                    case P_ANYTIME:                                                              
+                                                        permitted_units[power_index].permissions[i] += PP_ANYTIME << (j*2);
+                                                        break;
+ 
+                                                    case P_BUILD:
+                                                           permitted_units[power_index].permissions[i] += PP_BUILD << (j*2);
+                                                        break;
+ 
+                                                   case P_BUY:
+                                                        permitted_units[power_index].permissions[i] += PP_BUY << (j*2);
+                                              break;
+ 
+                                                   case P_NEVER:
+                                                        permitted_units[power_index].permissions[i] += PP_NEVER << (j*2);
+                                                        break;
+ 
+                                                   default:
+                                                        fprintf(stderr, "Unknown option in line: %s", line);
+                                                        err++;
+                                                        break;
+                                              }
+                                          }
+                                     }
+                                       power_index++;
+                                   }
+                                   /* fprintf(stderr, "Pwer = %s, army = %s, fleet = %s\n",
+                                           power_name, army_list, fleet_list); */
+                                }
+                                break;
+                                         
 			/*
 			 * Comments.
 			 */
 
 			case '\n':
 			case '#':
+			case ' ':
 				break;
 
 			default:
@@ -554,6 +729,7 @@ int main(int argc, char *argv[])
 				cmap[CMAP_MOVE] = pr[i].move - (unsigned char *) heap;
 				cmap[CMAP_TYPE] = pr[i].type;
 				cmap[CMAP_FLAG] = pr[i].flags;
+				cmap[CMAP_TYPE2] = pr[i].type2;
 				fwrite(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp);
 			}
 			fwrite(heap, sizeof(unsigned char), hp, ifp);
@@ -563,7 +739,21 @@ int main(int argc, char *argv[])
 				fwrite(ptab, sizeof(ptab), 1, ifp);
 				fwrite(stab, sizeof(stab), 1, ifp);
 				fwrite(permitted_units, sizeof(permitted_units), 1, ifp);
+				fwrite(&initial_money, sizeof(initial_money),1,ifp);
 			}
+			fwrite(&nhk, sizeof(nhk), 1, ifp);
+                        if (nhk) {
+                                fwrite(hk, sizeof(hk[0]), nhk, ifp);
+                        }
+			fwrite(&ngw, sizeof(ngw), 1, ifp);
+                        if (ngw) {
+                                fwrite(gw, sizeof(gw[0]), ngw, ifp);
+                        }
+                        fwrite(&nrw, sizeof(nrw), 1, ifp);
+                        if (nrw) {
+                                fwrite(rw, sizeof(rw[0]), nrw, ifp);
+                        }
+			/* These two are wirrten last as only sumamry.c needs them (po_init.c doesn't) */
 			fwrite(&nc, sizeof(nc), 1, ifp);
 			if (nc) {
 				fwrite(cent, sizeof(cent[0]), nc, ifp);

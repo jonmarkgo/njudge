@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.3.2.1  2001/10/15 00:28:29  ustv
+   ** Added check for HongKong flag
+   **
+   ** Revision 1.3  2001/04/15 21:21:22  miller
+   ** Add use of MaxCountryStrlen()
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Small changes for blockade calculations
    **
@@ -28,6 +34,7 @@
    **
  */
 
+#include <string.h>
 #include "dip.h"
 #include "functions.h"
 #include "mail.h"
@@ -35,6 +42,7 @@
 
 static void newowner(void);
 static void next_phase(void);
+static char HongKongCheck(int, int);
 
 /***************************************************************************/
 /*  Print out build statistics.  
@@ -212,7 +220,7 @@ static void newowner(void)
 
 	for (n = 1; n <= nunit; n++) {
 		if (unit[n].owner && pr[p = unit[n].loc].type != 'l' && !water(p) && unit[n].type != 'W') {
-			pr[p].owner = unit[n].owner;
+			pr[p].owner = HongKongCheck(unit[n].owner,p);
 		}
 	}
 }
@@ -290,4 +298,24 @@ int process_output(int pt, char phase)
 		return E_FATAL;
 	}
 	return 1;		/* not reached */
+}
+
+char 
+HongKongCheck(int power, int prov_index)
+{
+    int i,j;
+    char power_letter = dipent.pl[power];
+
+    if (!(dipent.x2flags & X2F_HONGKONG))
+	return power;  /* No HonkKong flag set, so return power */
+
+    for (i = 0; i < nhk;i++) {
+	if (hk[i].power_letter == power_letter) {
+ 	    for (j = 0; j < hk[i].np; j++) {
+		if (hk[i].pr[j] == prov_index)
+		    return AUTONOMOUS; /* Pretend unowned */
+	    }
+	}
+    }
+    return power;
 }

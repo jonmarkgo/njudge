@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.3.2.1  2001/10/19 23:37:29  dema
+ * Added handling for NoMoney games
+ *
+ * Revision 1.3  2001/07/08 22:58:24  miller
+ * Preliminary check for XF_NOMENY
+ *
  * Revision 1.2  2001/07/01 23:19:29  miller
  * Mach2 settings and other fixes
  *
@@ -64,8 +70,16 @@ static void next_phase(int power)
 		/* Check victory conditions */
 		/* Init build phase */
 		fam_plag(FAMINE);
-		income(1);
-		dipent.phase[5] = 'B';
+		if (!(dipent.xflags & XF_NOMONEY))
+		    income(1);
+		if (!(dipent.xflags & XF_NOMONEY))
+		    dipent.phase[5] = 'B';
+		else if (ma_init_build_basic())
+		    dipent.phase[5] = 'B';
+		else {
+		    next_year();
+		}
+		
 	} else {
 		if (dipent.phase[0] == 'U') {	/* End of summer */
 			dipent.phase[0] = 'F';
@@ -305,6 +319,13 @@ static void newowner(void)
 			}
 		}
 	}
+
+	/* See if NoMoney, need to do a standard-style report */
+
+	if (dipent.xflags & XF_NOMONEY) {
+	    ma_ownership();
+	}
+
 }
 
 /****************************************************************************/
@@ -395,6 +416,7 @@ void income(int mindie)
 	int vinc[AUTONOMOUS + 1];
 
 
+	if (dipent.xflags & XF_NOMONEY) return; /* No money, no income! */
 	die_rolls(DIE_INCOME);
 
 	/*
@@ -484,6 +506,10 @@ void income(int mindie)
 				s++;
 			n += vincome[i].vinc[d - 1];
 		}
+		/* Adjust income if fixed */
+		if (GetInitialMoney(p, &n))
+		    strcpy(line," Fixed ");
+                 
 		fprintf(rfp, "%-13.13s%-12.12s%-10.10s%4d\n",
 			pr[p].name, powers[u], line, n);
 		vinc[u] += n;

@@ -1,5 +1,14 @@
 /*
  * $Log$
+ * Revision 1.5.2.2  2001/10/19 23:45:15  dema
+ * Handle NoMoney settings and initial_money
+ *
+ * Revision 1.5.2.1  2001/10/15 00:27:36  ustv
+ * Added Honk-kong, Railway and gateway variable initialisation
+ *
+ * Revision 1.5  2001/07/15 09:19:36  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.4  2001/07/01 23:19:29  miller
  * Add storm table and unit limits
  *
@@ -136,6 +145,7 @@ int po_init(void)
 			pr[i].move = (unsigned char *) &heap[cmap[CMAP_MOVE]];
 			pr[i].type = cmap[CMAP_TYPE];
 			pr[i].flags = cmap[CMAP_FLAG];
+			pr[i].type2 = cmap[CMAP_TYPE2];
 			n = islower(pr[i].type) ? 0 : power(pr[i].type);
 			pr[i].owner = n;
 			pr[i].cown = n;
@@ -173,7 +183,43 @@ int po_init(void)
                                 fprintf(rfp, "cmap permitted_units read error, %d. %s\n", i, line);
                                 return E_FATAL;
                         }
+                        if ((i = fread(&initial_money, sizeof(initial_money), 1, ifp)) != 1) {
+                                fprintf(rfp, "cmap initial_money read error, %d. %s\n", i, line);
+                                return E_FATAL;
+                        }                                                                                                        
 		}
+/* Now read colonial hk, gw and rw settings */
+        if (fread(&nhk, sizeof(nhk),1, ifp) != 1) {
+            /* Serious error, what to do? */
+            nhk = 0;
+        }
+        if (nhk > 0) {
+            if(fread(hk, sizeof(hk[0]), nhk, ifp) != nhk) {
+                fprintf(ifp, "Mismatch on number of hk records.\n");
+                bailout(1);
+            }
+        }
+        if (fread(&ngw, sizeof(ngw),1, ifp) != 1) {
+            /* Serious error, what to do? */
+            ngw = 0;
+        }
+        if (ngw > 0) {
+            if(fread(gw, sizeof(gw[0]), ngw, ifp) != ngw) {
+                fprintf(ifp, "Mismatch on number of gw records.\n");
+                bailout(1);
+            }
+        }
+        if (fread(&nrw, sizeof(nrw),1, ifp) != 1) {
+            /* Serious error, what to do? */
+            nrw = 0;
+        }
+        if (nrw > 0) {
+            if(fread(rw, sizeof(rw[0]), nrw, ifp) != nrw) {
+                fprintf(ifp, "Mismatch on number of rw records.\n");
+                bailout(1);
+            }
+        }
+/* End of colonial reading */
 		fclose(ifp);
 
 		/*
@@ -652,7 +698,21 @@ int gameout(void)
 	 */
 
 	for (n = 0, p = 1; p <= npr; p++) {
-		np[pr[p].owner]++;
+		if (!(dipent.xflags & XF_NOMONEY)) {
+		    np[pr[p].owner]++;
+		} 
+		else if( cityvalue(p)) {
+		    /* It's a mach game, see if Mach2 */
+		    if (dipent.xflags & XF_MACH2) {
+			if (pr[p].owner == pr[p].cown) {
+			    /* In mach2, only if city & province owner same */
+			    np[pr[p].cown]++;
+			}
+		    } 
+		    else {
+			np[pr[p].cown]++;
+  		    } 
+		} 
 		ns[n] = pr[p].name[0];
 		n1[n] = pr[p].name[1];
 		n2[n] = pr[p].name[2];
@@ -722,10 +782,17 @@ int gameout(void)
 		dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT);
 		if ((p = dipent.players[u].power) <= NPOWER) {
 			dipent.players[u].units = nu[p];
-			dipent.players[u].centers = (dipent.flags & F_MACH) ? ducats[p].treasury
-			    : np[p];
+			if (dipent.flags & F_MACH)
+			    if (dipent.xflags & XF_NOMONEY)
+				dipent.players[u].centers = np[p];
+			    else
+			        dipent.players[u].centers = ducats[p].treasury;
+			else 
+			    dipent.players[u].centers = np[p];
+
 			/* Mark player as dead if he is */
-			if (!(dipent.flags & F_MACH)) {
+			if (!(dipent.flags & F_MACH) || 
+			     (dipent.xflags & XF_NOMONEY)) {
 				if (dipent.players[u].centers <= 0) dipent.players[u].status |= SF_DEAD;			     }
 			if (need_order[p])
 				dipent.players[u].status |= SF_MOVE;

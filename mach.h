@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.2.2.1  2001/10/19 23:09:27  dema
+ * Extra values for initial money settings (as in Mach2)
+ *
+ * Revision 1.2  2001/07/01 23:19:29  miller
+ * Lots of fixes
+ *
  * Revision 1.1  1998/02/28 17:51:14  david
  * Initial revision
  *
@@ -105,6 +111,14 @@ extern int ftab[12 - 1][12 - 1];	/* Machiavelli famine province list           *
 extern int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list           */
 extern int stab[12 - 1][12 - 1];        /* Machiavelli storm province list            */
 extern struct p_unit permitted_units[MAXPLAYERS]; /* Mach permitted units for a country 	      */
+
+struct p_money
+{
+    int enabled;
+    int money[NPROV+1];
+}; /* Initial money for city */
+
+extern struct p_money initial_money;
 
 #define PFTAB(name) int (*name)[12-1]
 

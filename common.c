@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.2.2.1  2001/10/19 23:25:18  dema
+ * Initialse need-order array
+ *
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added handling for Wing units
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -92,6 +98,9 @@ void init_retreats(void)
 
 	dipent.phase[5] = 'R';
 
+	for (i=0; i < NPOWER+1; i++)
+	    need_order[i] = 0;  /* Initialise array */
+	
 	for (i = 1; i <= nunit; i++)
 		if (unit[i].status == 'r')
 			if (unit[i].owner < WILD_PLAYER)
@@ -103,6 +112,9 @@ void init_movement(void)
 	int i;
 
 	dipent.phase[5] = 'M';
+
+	for (i=0; i < NPOWER+1; i++)
+            need_order[i] = 0;  /* Initialise array */                                  
 
 	for (i = 1; i <= nunit; i++)
 		if (unit[i].owner < WILD_PLAYER)

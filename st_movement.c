@@ -1,5 +1,14 @@
 /*
 ** $Log$
+** Revision 1.11.2.2  2001/10/20 00:52:49  dedo
+** Remvoe compile warnings
+**
+** Revision 1.11.2.1  2001/10/15 22:28:33  ustv
+** Added handling for province duality
+**
+** Revision 1.11  2001/07/08 23:01:38  miller
+** Space fixup and DISBAND flag and predict usage
+**
 ** Revision 1.10  2001/07/01 23:19:29  miller
 ** Limit tables
 **
@@ -55,10 +64,20 @@
 * 03 Dec 1999 Millis Miller Added handling for wing blockading 
 */
 #include <stdlib.h>
+#include <string.h>
+
 #include "functions.h"
 #include "dip.h"
 #include "porder.h"
-#define convoyable(p) (water(p) | (dipent.xflags & XF_COASTAL_CONVOYS))
+
+int convoyable(int p) 
+{ 
+    return (water(p) | \
+	              (dipent.xflags & XF_COASTAL_CONVOYS) | \
+	      ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 == 'w')));
+}
+
+
 extern int one_owned[];
 int StrictConvoy(int p_index)
 {

@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.5.2.1  2001/10/15 00:15:04  ustv
+ * Added handling for 2nd type field, comments and Colonial settings
+ *
+ * Revision 1.5  2001/07/01 23:19:29  miller
+ * Limit tables
+ *
  * Revision 1.4  2001/02/23 00:19:59  miller
  * unDOSify
  *
@@ -51,7 +57,8 @@
 #define CMAP_MOVE   1
 #define CMAP_TYPE   2
 #define CMAP_FLAG   3
-#define CMAP_SIZE   4
+#define CMAP_TYPE2  4
+#define CMAP_SIZE   5
 
 #define bribe(c)        (c == 'b' || c == 'd' || c == 'g')
 #define water(p)	(pr[p].type == 'w' || pr[p].type == 'v')
@@ -107,6 +114,52 @@ extern unsigned char *heap;
 extern int hp, hpx, maxheap;
 
 extern int nv;			/* Number of variable income cities           */
+
+/* Colonial special settings */
+
+
+/* HonkKong settings */
+
+#define MAX_HK_PROVINCES 10
+
+struct hk_struct {
+int np;
+char power_letter;
+int pr[MAX_HK_PROVINCES];
+};
+
+extern struct hk_struct hk[MAX_POWERS];
+
+extern int nhk;
+
+#define MAX_GW_PROVINCES 2
+#define MAX_GATEWAYS 5
+
+struct gw_struct {
+int np;
+char name[40];
+int gw_prov;
+int pr[MAX_GW_PROVINCES];
+};
+
+extern struct gw_struct gw[MAX_GATEWAYS];
+
+extern int ngw;
+
+#define MAX_RAILWAYS 5
+#define MAX_RW_PROVINCES 10
+
+struct rw_struct {
+int np;
+char name[40];
+char power_letter[MAX_POWERS+1];
+int pr[MAX_RW_PROVINCES];
+};
+
+extern struct rw_struct rw[MAX_RAILWAYS];
+
+extern int nrw;
+
 
 extern FILE *ifp;
 

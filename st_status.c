@@ -1,6 +1,12 @@
 
 /*
    ** $Log$
+   ** Revision 1.4.2.1  2001/10/19 23:13:17  dema
+   ** Added missing include
+   **
+   ** Revision 1.4  2001/07/10 21:43:33  miller
+   ** Fix for blind to not show summary if not master
+   **
    ** Revision 1.3  2001/02/23 00:19:33  miller
    ** un-DOSify
    **
@@ -30,6 +36,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "dip.h"
 #include "functions.h"

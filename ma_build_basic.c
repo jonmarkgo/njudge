@@ -1,6 +1,12 @@
 
 /*
    ** $Log$
+   ** Revision 1.1.2.1  2001/10/19 23:34:42  dema
+   ** First proper version to allow builds in NoMoney Mach games
+   **
+   ** Revision 1.1  2001/07/08 22:50:03  miller
+   ** Initial revision
+   **
    **
  */
 
@@ -23,11 +29,11 @@
  */
 
 #include <stdlib.h>
-
+#include <string.h>
 #include "dip.h"
 #include "functions.h"
 #include "porder.h"
-
+#include "mach.h"
 
 
 static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
@@ -35,17 +41,15 @@ static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
 /* See if passed location is in conditions to be built on */
 int MachCheckOwnedOKBasic( char type, int u, int p, int p1, int *c1)
 {
-/** Disabled MLM **/
-#ifdef ZZZ
         char *t;
 
         if (type == 'x') {
                 errmsg("Unit type must be specified.\n");
                 return 0;
         }
-        if (type == 'A')
+        if (type != 'F')
                 *c1 = MV;
-        } else {
+        else {
                 if (!(*c1))
                         *c1 = XC;
                 for (t = (char *) pr[p1].move; *t; t++)
@@ -57,39 +61,47 @@ int MachCheckOwnedOKBasic( char type, int u, int p, int p1, int *c1)
                         return 0;
                 }
         }
-#endif
         return 1; /* it passed ok */
 }
 /****************************************************************************/
-void ma_init_build_basic(void)
+int ma_init_build_basic(void)
 {
-/** Disabled MLM **/
-#ifdef ZZZ
 	int i=0, p;
+	int move_to_make = 0;
 
 	/*  Count number of units allowed to be built.  */
 
 	for (p = 1; p <= NPOWER; p++) {
 		nu[p] = 0;
 		lu[p] = 0;
-		for (i = 1; i <= npr; i++)
-			if (pr[i].cowner == p )
+		need_order[p] = 0;
+		for (i = 1; i <= npr; i++) {
+			/* Owned if both city and province are player AND
+			   city has some value (i.e. not a fort) */
+			if (pr[i].cown == p && pr[i].owner == p && 
+			    (pr[i].flags & 0x7))
 				nu[p]++;
+		}
 		for (i = 1; i <= nunit; i++)
 			if (unit[i].owner == p)
 				nu[p]--;
-		if (nu[p] < 0)
+		if (nu[p] < 0) {
+			move_to_make++;
 			nu[p]--;
-		if (nu[p] > 0)
+			need_order[p]++;
+		}
+		if (nu[p] > 0) {
+			move_to_make++;
 			nu[p]++;
-
+			need_order[p]++;
+		}
 		for (i = 1; i <= npr; i++) {
-			if (pr[i].cowner == p && 
-			    ((pr[i].type == dipent.pl[p])) 
+			if (pr[i].cown == p && 
+			    ((pr[i].type == dipent.pl[p]))) 
 				cnb[p] = 0;
 		}
 	}
-#endif
+	return move_to_make;
 }
 
 int build_syntaxcheck_basic(char *in_text, int precheck, char *out_string)
@@ -99,8 +111,6 @@ int build_syntaxcheck_basic(char *in_text, int precheck, char *out_string)
 
 int ma_buildin_basic(char **s, int p)
 {
-/** Disabled MLM **/
-#ifdef ZZZ
 
 /*  Read build orders in from input file.  */
 
@@ -118,8 +128,14 @@ int ma_buildin_basic(char **s, int p)
 	*s = get_order(*s, &order);
 	*s = get_type(*s, &type);
 	*s = get_prov(*s, &p1, &c1);
+
+	if (type == 'G' && !has_fortress(p1)) {
+		errmsg("There is no fort in %s to have a garrison.\n", pr[p1].name);
+		return E_WARN;
+	}
+	
 	if (!p1 && order != 'w') {
-		errmsg("Unrecognized province -> %s", *s);
+		errmsg("Unrecognized province -> %s.\n", *s);
 		return E_WARN;
 	}
 	if (p == MASTER) {
@@ -151,11 +167,20 @@ int ma_buildin_basic(char **s, int p)
 			       pr[p1].name, powers[p]);
 			return E_WARN;
 		}
-		if (pr[p1].cowner != p) {
-			errmsg("%s does not control %s.\n",
+		if (pr[p1].cown != p) {
+			errmsg("%s does not control %s city.\n",
 			       powers[p], pr[p1].name);
 			return E_WARN;
 		}
+		if (pr[p1].owner != p) {
+                        errmsg("%s does not control %s province.\n",
+				 powers[p], pr[p1].name);
+                        return E_WARN;
+                }       
+		if ((pr[p1].flags & 0x7) == 0) {
+			errmsg("%s is not a city.\n",
+			       pr[p1].name);
+		}     
 		if (type == 'x') {
 			errmsg("Unit type must be specified for build.\n");
 			return E_WARN;
@@ -165,9 +190,14 @@ int ma_buildin_basic(char **s, int p)
 				pr[p1].name);
 			return E_WARN;
 		}
-		if (type == 'A')
+		if (type == 'F' && !(pr[p1].flags & PF_PORT)) {
+			errmsg("Cannot build fleet in %s as it is not a port.\n",
+				pr[p1].name);
+			return E_WARN;
+		}
+		if (type != 'F')
 			c1 = MV;
-		} else {
+		else {
 			if (!c1)
 				c1 = XC;
 			for (t = (char *) pr[p1].move; *t; t++)
@@ -183,7 +213,12 @@ int ma_buildin_basic(char **s, int p)
 		/*  FALL THROUGH  */
 	case 'w':
 
-		if ((u = pr[p1].unit)) {
+		if (type != 'G')
+		    u = pr[p1].unit;
+		else
+		    u = pr[p1].gunit;
+
+		if (u) {
 			if (unit[u].status != 'b') {
 				errmsg("%s already has a unit present.\n", pr[p1].name);
 				return E_WARN;
@@ -194,7 +229,10 @@ int ma_buildin_basic(char **s, int p)
 				else
 					unit[i].order = unit[u].order;
 			}
-			pr[unit[u].loc].unit = 0;
+			if (type != 'G') 
+				pr[unit[u].loc].unit = 0;
+			else
+				pr[unit[u].loc].gunit = 0;
 
 			/*
 			   **  If he's building too many, the earliest built gets chucked.
@@ -207,13 +245,19 @@ int ma_buildin_basic(char **s, int p)
 				unit[i].order = 0;
 			else
 				lu[p] = 0;
-			pr[unit[u].loc].unit = 0;
+			if (type != 'G') 
+				pr[unit[u].loc].unit = 0;
+			else 
+				pr[unit[u].loc].gunit = 0;
 		} else {
 			nu[p]--;
 			u = ++nunit;
 		}
 
-		pr[p1].unit = order == 'w' ? 0 : u;
+		if (type != 'G') 
+		    pr[p1].unit = order == 'w' ? 0 : u;
+		else
+		    pr[p1].gunit = order == 'w' ? 0 : u; 
 		unit[u].owner = p;
 		unit[u].type = type;
 		unit[u].stype = 'x';
@@ -272,7 +316,6 @@ int ma_buildin_basic(char **s, int p)
 		err++;
 		return E_WARN;
 	}
-#endif
 	return 0;
 }
 
@@ -280,6 +323,9 @@ void ma_buildout_basic(int pt)
 {
 	int i, u, p, c1;
 	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
+	int seq_val;
+
+	seq_val = atoi(dipent.seq) -1; /* = 0 at start of game */
 
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
@@ -300,7 +346,8 @@ void ma_buildout_basic(int pt)
 	for (u = 1; u <= nunit; u++) {
 		if (processing || pt == unit[u].owner || pt == MASTER) {
 
-			if (unit[u].status == 'b') {
+			/* Also print builds if first turn (adjust) */
+			if (unit[u].status == 'b' || seq_val == 0) {
 
 				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
@@ -385,7 +432,7 @@ void ma_buildout_basic(int pt)
 		more_orders++;
 
 	for (u = 1; u <= nunit; u++) {
-		if ((p = unit[u].owner) && nu[p] < -1 && pr[unit[u].loc].owner != p) {
+		if ((p = unit[u].owner) && nu[p] < -1 ) {
 			nu[p]++;
 			unit[u].owner = 0;
 			if (processing || pt == p || pt == MASTER) {

@@ -1,4 +1,10 @@
-
+/*
+ * $Log$
+ * Revision 1.4.2.2  2001/10/19 23:33:42  dema
+ * Added initial_money + CVS header
+ *
+ *
+ */    
 
 #include <stdio.h>
 #include "dip.h"
@@ -36,6 +42,7 @@ int ftab[12 - 1][12 - 1];	/* Machiavelli famine province list          */
 int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list          */
 int stab[12 - 1][12 - 1];       /* Machiavelli storm  province list          */
 struct p_unit permitted_units[MAXPLAYERS]; /* Mach list of permitted unit types	     */
+struct p_money initial_money;   /* Mach set of initial money */
 
 /* from porder.c, probably from some header file before that, i didn't
  * keep very good track -- nw Sun Oct  5 07:00:38 GMT 1997
@@ -51,6 +58,16 @@ char line[1024];
 unsigned char *heap;
 int hp, hpx, maxheap;
 int nv;				/* Number of variable income cities           */
+
+int nhk=0; 
+struct hk_struct hk[MAX_POWERS];
+
+int ngw =0;
+struct gw_struct gw[MAX_GATEWAYS];
+
+int nrw = 0;
+struct rw_struct rw[MAX_RAILWAYS];
+
 FILE *ifp;
 
 int nunit;			/* Actual number of units in the game         */

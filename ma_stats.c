@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.2.2.1  2001/10/19 23:08:49  dema
+   ** Added XF_NOMONEY handling (for Mach games with no money)
+   **
+   ** Revision 1.2  2001/07/01 23:19:29  miller
+   ** various
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -9,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "functions.h"
 #include "dip.h"
@@ -38,6 +45,7 @@ void balance(int pt, int next, int listflg)
 			y++;
 		}
 	}
+	if (!(dipent.xflags & XF_NOMONEY)) {
 	fputs("\nPower     Treasury\n", rfp);
 	fputs("--------  --------\n", rfp);
 	for (p = 1; p < WILD_PLAYER; p++) {
@@ -58,6 +66,7 @@ void balance(int pt, int next, int listflg)
 			}
 			fputc('\n', rfp);
 		}
+	}
 	}
 
 
@@ -108,11 +117,15 @@ void ma_ownership(void)
 	 sig;
 	char *s, buf[1024];
 
+	int u=1,l=2;
+	int nc[NPOWER+1];
+
 	reb = noin = fam = sig = 0;
 
 	fprintf(rfp, "\nCities Controlled:\n\n");
 
 	for (j = 1; j <= NPOWER + 1; j++) {
+	    nc[j] = 0;
 		if (dipent.pl[j] == 'x')
 			continue;
 		i = j == NPOWER + 1 ? 0 : j;
@@ -127,6 +140,9 @@ void ma_ownership(void)
 		for (p = 0, n = 1; n <= npr; n++) {
 			if ((pr[n].cown == i || (i == 0 && pr[n].cown == AUTONOMOUS))
 			    && cityvalue(n)) {
+				if (pr[n].cown == pr[n].owner)
+				    nc[j]++;  /* Person owns completely this city */
+		
 				if (p++) {
 					*s++ = ',';
 					*s++ = ' ';
@@ -191,6 +207,8 @@ void ma_ownership(void)
 		for (p = 0, n = 1; n <= npr; n++) {
 			if ((pr[n].type == 'x' || !islower(pr[n].type)) &&
 			    (pr[n].owner == i || (i == 0 && pr[n].owner == AUTONOMOUS))) {
+			    if (!(dipent.xflags & XF_NOMONEY) ||
+				(pr[n].owner != pr[n].cown && cityvalue(n))) {
 				np[i]++;
 				if (p++) {
 					*s++ = ',';
@@ -215,6 +233,7 @@ void ma_ownership(void)
 						s++;
 				}
 			}
+		    }
 		}
 
 		if (!p)
@@ -234,4 +253,61 @@ void ma_ownership(void)
 	if (noin)
 		fputs(", & = No income (Province in rebellion)", rfp);
 	fputs(".\n\n", rfp);
+
+	if (dipent.xflags & XF_NOMONEY) {
+	/* Also show building needs for no money games */
+
+	    for (i = 1; i <= NPOWER; i++) {
+                if (dipent.pl[i] == 'x')
+                        continue;
+                if (nc[i] > nu[i]) {
+                        for (p = 1; p <= npr; p++) {
+                                if (pr[p].owner == i
+                                    && (pr[p].type == dipent.pl[i] || pr[p].type == 'x')
+                                    && (!(u = pr[p].unit) || unit[u].loc != p)) {
+                                        need_order[i]++;
+                                        break;
+                                }
+                        }
+                } else if (nc[i] < nu[i]) {
+                        if (nc[i] > 0)
+                                need_order[i]++;
+                }
+
+                p = strlen(powers[i]) + 1;
+                fprintf(rfp, "%s:", powers[i]);
+                while (p++ < GetMaxCountryStrlen() )
+                        putc(' ', rfp);
+                l = nc[i] >= nu[i] ? nc[i] - nu[i] : nu[i] - nc[i];
+                fprintf(rfp, "%2d Supply center%s %2d Unit%s  %s %2d unit%s.",
+                        nc[i], nc[i] == 1 ? ", " : "s,",
+                        nu[i], nu[i] == 1 ? ": " : "s:",
+                        nc[i] >= nu[i] ? "Builds " : "Removes",
+                        l, l == 1 ? "" : "s");
+                {
+                        for (p = 0; p < dipent.n; p++)
+                                if (dipent.players[p].power == i)
+                                        break;       
+		        if (p < dipent.n && dipent.players[p].status & SF_CD &&
+                            !(dipent.flags & F_QUIET)) {
+                                fprintf(rfp, "%s  (* CD *)\n", l == 1 ? " " : "");
+                                if (!nc[i] && !nu[i]) {
+                                        dipent.players[p].status = 0;
+                                        dipent.players[p].power =
+                                            *dipent.players[p].address == '*' ? -1 : OBSERVER;
+                                }
+                        } else if (p < dipent.n && dipent.players[p].status & SF_ABAND &&
+                                   !(dipent.flags & F_QUIET)) {
+                                fprintf(rfp, "%s  (* ABANDONED *)\n", l == 1 ? " " : "");
+                                if (!nc[i] && !nu[i]) {
+                                        dipent.players[p].status = 0;
+                                        dipent.players[p].power =
+                                            *dipent.players[p].address == '*' ? -1 : OBSERVER;
+                                }
+                        } else
+                                putc('\n', rfp);
+                }
+	    }
+	}
+
 }

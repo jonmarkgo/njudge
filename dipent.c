@@ -1,6 +1,14 @@
-
 /*
  * $Log$
+ * Revision 1.8.2.2  2001/10/19 23:29:08  dema
+ * Allow powers with spaces in their names to be used
+ *
+ * Revision 1.8.2.1  2001/10/15 00:00:24  ustv
+ * Added reading/writing of dipent.x2flags
+ *
+ * Revision 1.8  2001/07/15 09:14:18  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.7  2001/07/08 22:54:49  miller
  * Set default correctly for rrded, and add TIME_TOLERANCE usage from dip.conf
  *
@@ -86,7 +94,6 @@ int getdipent(FILE * fp)
 
 	int i, j, tempvp, tempplayers;
 	int tempcentres;
-	int temp;
 	time_t now;
 	unsigned char line[1000];
 	char *s; 
@@ -100,7 +107,7 @@ int getdipent(FILE * fp)
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
 		   &dipent.xflags, &dipent.max_absence_delay,
-		   &temp);
+		   &dipent.x2flags);
 
 	if (i == 7) {
 		dipent.flags = F_NONMR;
@@ -136,6 +143,7 @@ int getdipent(FILE * fp)
                 if (dipent.variant == V_machiavelli)
                     dipent.xflags |= XF_COASTAL_CONVOYS;
                 i = 13;
+		dipent.x2flags = 0;
         }
 
 	if (i != 13) {
@@ -145,7 +153,8 @@ int getdipent(FILE * fp)
 	/* tempcentres will rember centres setting */
 	tempcentres = dipent.xflags & XF_BUILD_ONECENTRE;
 	SETNP(dipent.variant);
-	dipent.xflags |= tempcentres;
+	dipent.xflags &= ~XF_BUILD_ONECENTRE;
+	dipent.xflags += tempcentres;
 
 	if (tempvp != 0)
 		dipent.vp = tempvp;
@@ -314,7 +323,7 @@ void putdipent(FILE * fp, int dopw)
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
 		dipent.no_of_players, dipent.xflags,
 		dipent.max_absence_delay,
-                0 /* This indicates version 0.8.9 onwards */);
+                dipent.x2flags /* This indicates version 0.8.9 onwards */);
 
 	if (dipent.process)
 		fprintf(fp, "Process   %24.24s (%ld)\n",
@@ -641,17 +650,27 @@ void getplay(char *line, Player * p)
 
 void putplay(FILE * fp, Player * p, int dopw)
 {
-
+#define MAX_OUTPOWER 9
 	char c;
+/* Outpower will allow powers with spaces in names to be used */
+	char out_power[MAX_OUTPOWER];
+	int i;
 
 	if (p->power >= 0) {
+		strncpy(out_power, powers[p->power], MAX_OUTPOWER - 1);
+		out_power[MAX_OUTPOWER-1] = '\0';
+		for (i=0; out_power[i] != '\0' && i < MAX_OUTPOWER; i++) {
+		    /* Substitute space with '_' to prevent crash on fscanf */
+		    if (out_power[i] == ' ') out_power[i] = '_';
+		}
+		    
 		if (isupper(c = dipent.pl[p->power]))
 			c = tolower(c);
 		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld\n",
-			c, powers[p->power] + 1,
+			c, &out_power[1],
 		   p->status, p->units, p->centers, p->userid, p->siteid,
 			dopw ? p->password : "xxx", p->address,p->late_count, p->centres_blockaded,
-	p->absence_count,
+		   p->absence_count,
                    p->absence_start[0], p->absence_end[0],
                    p->absence_start[1], p->absence_end[1],
                    p->absence_start[2], p->absence_end[2],

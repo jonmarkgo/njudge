@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.5.2.1  2001/10/20 00:52:49  dedo
+ * Remvoe compile warnings
+ *
+ * Revision 1.5  2001/07/15 09:18:58  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.4  2001/07/01 23:19:29  miller
  * typo fix
  *
@@ -285,6 +291,7 @@ int phase_syntax(int phase, char *s)
 			}
 			break;
 		default:
+			break;
 	}
 
 	return 0;			/*  Heck, I don't know!!  Looks good to me. */

@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.2.2.1  2001/10/20 00:51:31  dedo
+   ** Removed warnings
+   **
+   ** Revision 1.2  2001/07/15 09:13:16  greg
+   ** added support for game directories in a sub directory
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -10,8 +16,11 @@
 
 
 #include <stdio.h>
+#include <string.h>
 #include "port.h"
 #include "dip.h"
+
+extern void exit(int);
 
 int main(int argc, char *argv[])
 {

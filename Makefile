@@ -1,5 +1,13 @@
 # Diplomacy Adjudicator.
 #
+# $Log$
+# Revision 1.14.2.2  2001/10/20 00:51:07  dedo
+# Added INSTALLCMD default
+#
+# Revision 1.14.2.1  2001/10/15 00:25:25  ustv
+# Check before installing to prevent judge over-write
+#
+#
 #  Copyright 1987, Lowe.
 #
 #  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
@@ -17,11 +25,12 @@
 #		echo "Default Makefile.defines created - please check." ; \
 #	fi;
 
-
+#default, over-ridden by user Makefile.defines if needed
+INSTALLCMD=install
 include Makefile.defines
 
 #set the judge version
-JVERSION=0.8.10
+JVERSION=0.8.11-pre
 
 # Programs, Sources, and Objects.
 
@@ -150,18 +159,24 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	 ${INSTALLDIR}/rundipmap ${INSTALLDIR}/runlistmap ${INSTALLDIR}/newlogs cmap \
 	 summary bgreet deddump delgame flock fmtwho ign pdip rdip recdump magic \
 	 defaults.inc
-	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	@if [ -f ${INSTALLDIR}/dip.master ]; then \
+	    echo; echo "Error: ${INSTALLDIR}/dip.master exists." ;echo; \
+	    echo "Cannot install over existing judge."; \
+	    echo "Perhaps you meant to do 'make upgrade'."; echo; echo; \
+	    exit 1; \
+	fi;
+	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
-	install ${INSFLAGS} summary ${INSTALLDIR}/summary
-	install ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
-	install ${INSFLAGS} deddump ${INSTALLDIR}/deddump
-	install ${INSFLAGS} delgame ${INSTALLDIR}/delgame
-	install ${INSFLAGS} flock ${INSTALLDIR}/flock
-	install ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
-	install ${INSFLAGS} ign ${INSTALLDIR}/ign
-	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
-	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
-	install ${INSFLAGS} recdump ${INSTALLDIR}/recdump
+	${INSTALLCMD} ${INSFLAGS} summary ${INSTALLDIR}/summary
+	${INSTALLCMD} ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
+	${INSTALLCMD} ${INSFLAGS} deddump ${INSTALLDIR}/deddump
+	${INSTALLCMD} ${INSFLAGS} delgame ${INSTALLDIR}/delgame
+	${INSTALLCMD} ${INSFLAGS} flock ${INSTALLDIR}/flock
+	${INSTALLCMD} ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
+	${INSTALLCMD} ${INSFLAGS} ign ${INSTALLDIR}/ign
+	${INSTALLCMD} ${INSFLAGS} pdip ${INSTALLDIR}/pdip
+	${INSTALLCMD} ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+	${INSTALLCMD} ${INSFLAGS} recdump ${INSTALLDIR}/recdump
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 		ln -f -s ${INSTALLDIR}/rdip ${DESTDIR}; \
 		ln -f -s ${INSTALLDIR}/dip ${DESTDIR}; \
@@ -213,26 +228,25 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	@echo
 
 remap: cmap
-	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
+	@make -f Datamake                                                                                 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
 #	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 #	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
 #	fi; 
 
 upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
 	 remap pdip rdip summary deddump recdump delgame flock ign flist magic
-	@make -f Datamake
-	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
-	install ${INSFLAGS} summary ${INSTALLDIR}/summary
-	install ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
-	install ${INSFLAGS} deddump ${INSTALLDIR}/deddump
-	install ${INSFLAGS} delgame ${INSTALLDIR}/delgame
-	install ${INSFLAGS} flock ${INSTALLDIR}/flock
-	install ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
-	install ${INSFLAGS} ign ${INSTALLDIR}/ign
-	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
-	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
-	install ${INSFLAGS} recdump ${INSTALLDIR}/recdump
+	${INSTALLCMD} ${INSFLAGS} summary ${INSTALLDIR}/summary
+	${INSTALLCMD} ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
+	${INSTALLCMD} ${INSFLAGS} deddump ${INSTALLDIR}/deddump
+	${INSTALLCMD} ${INSFLAGS} delgame ${INSTALLDIR}/delgame
+	${INSTALLCMD} ${INSFLAGS} flock ${INSTALLDIR}/flock
+	${INSTALLCMD} ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
+	${INSTALLCMD} ${INSFLAGS} ign ${INSTALLDIR}/ign
+	${INSTALLCMD} ${INSFLAGS} pdip ${INSTALLDIR}/pdip
+	${INSTALLCMD} ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+	${INSTALLCMD} ${INSFLAGS} recdump ${INSTALLDIR}/recdump
 magic:
 	@if [ -f .magic.h ]; then \
 		cat .magic.h  | grep DIE_MAGIC | cut -d' ' -f3 >  ${DESTDIR}/.magic.dat; \
@@ -313,7 +327,7 @@ ${INSTALLDIR}/data/flist: ${INSTALLDIR}/data Datamake flist.info
 	rm  temp.flist1 temp.flist2
 
 ${INSTALLDIR}/dip: dip
-	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	${INSTALLCMD} ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 
 ${INSTALLDIR}/diprun: diprun
@@ -431,9 +445,9 @@ bailout.o: bailout.c dip.h conf.h port.h variant.h diplog.h
 common.o: common.c dip.h conf.h port.h variant.h porder.h
 conf.o: conf.c conf.h hashtable.h
 dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h \
- plyrdata.h
-dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
- defaults.inc functions.h diplog.h
+  plyrdata.h
+dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h defaults.inc \
+  functions.h diplog.h
 diplog.o: diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
 dipstats.o: dipstats.c conf.h dipstats.h
 draw.o: draw.c dip.h conf.h port.h variant.h functions.h mail.h
@@ -443,69 +457,66 @@ history.o: history.c dip.h conf.h port.h variant.h functions.h mail.h
 jm.o: jm.c functions.h dip.h conf.h port.h variant.h
 lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
 ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
- functions.h
+  functions.h
 ma_build_basic.o: ma_build_basic.c dip.h conf.h port.h variant.h \
- functions.h porder.h
+  functions.h porder.h mach.h
 ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
- mach.h functions.h
-ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
- porder.h mach.h functions.h
+  mach.h functions.h
+ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h porder.h \
+  mach.h functions.h
 ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
- mach.h functions.h
+  mach.h functions.h
 ma_porder.o: ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
- mach.h functions.h
-ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h \
- mach.h functions.h
-ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
- mail.h porder.h mach.h
+  mach.h functions.h
+ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h mach.h \
+  functions.h
+ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h mail.h \
+  porder.h mach.h
 machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
 mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h \
- dipstats.h diplog.h
-ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h \
- functions.h porder.h
+  dipstats.h diplog.h
+ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h functions.h \
+  porder.h
 mfprintf.o: mfprintf.c mail.h variant.h
 ml_date.o: ml_date.c port.h
 ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
- functions.h
+  functions.h
 ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
-ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
- functions.h
+ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h functions.h
 ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
- dipstats.h diplog.h plyrdata.h
-ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
- ml_signon.h functions.h dipstats.h plyrdata.h
+  dipstats.h diplog.h plyrdata.h
+ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h ml_signon.h \
+  functions.h dipstats.h plyrdata.h
 params.o: params.c dip.h conf.h port.h variant.h functions.h
 plyrdata.o: plyrdata.c plyrdata.h
 phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
-po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
- functions.h porder.h
+po_condition.o: po_condition.c dip.h conf.h port.h variant.h functions.h \
+  porder.h
 po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
- porder.h
+  porder.h
 po_get.o: po_get.c dip.h conf.h port.h variant.h functions.h porder.h
 po_init.o: po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
- functions.h
+  functions.h
 po_mastrpt.o: po_mastrpt.c dip.h conf.h port.h variant.h
 porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
-st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h \
- porder.h
+st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h porder.h
 st_movement.o: st_movement.c functions.h dip.h conf.h port.h variant.h \
- porder.h
-st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h \
- mail.h porder.h
+  porder.h
+st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h mail.h \
+  porder.h
 st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
- porder.h
+  porder.h
 st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
- porder.h
+  porder.h
 strcasecmp.o: strcasecmp.c
 strdup.o: strdup.c
 users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h \
- plyrdata.h
+  plyrdata.h
 variant.o: variant.c dip.h conf.h port.h variant.h
 version.o: version.c dip.h conf.h port.h variant.h functions.h
-cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
- mach.h
+cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h mach.h
 summary.o: summary.c dip.h conf.h port.h variant.h porder.h mach.h \
- functions.h diplog.h
+  functions.h diplog.h
 bgreet.o: bgreet.c dip.h conf.h port.h variant.h functions.h
 deddump.o: deddump.c dip.h conf.h port.h variant.h
 delgame.o: delgame.c port.h dip.h conf.h variant.h

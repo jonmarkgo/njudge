@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.3.2.1  2001/10/19 23:36:03  dema
+ * Added missing include
+ *
+ * Revision 1.3  2001/08/19 14:31:11  miller
+ * Fixed small message error for famined units removed duing plague
+ *
  * Revision 1.2  2001/07/01 23:19:29  miller
  * Added Storms
  *
@@ -12,6 +18,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "dip.h"
 #include "mail.h"

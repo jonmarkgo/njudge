@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.5.2.1  2001/10/15 00:36:05  ustv
+ * Added Ancient_Med variant
+ *
+ * Revision 1.5  2001/07/08 23:07:55  miller
+ * REmoved excess power names
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Specify for each variant if it is a homeCentre, OneCentre or AnyCentre game.
  * This makes it clearer for the player (who will see this always in a game listing) as well as removing specific tests in the code. Plus now any variant uses this only as a default - a game setup can change this if required/wanted.
@@ -89,7 +95,8 @@ enum {
 	V_layered,		/* 28 Layered			     */
         V_sailho_crowded,       /* 29 SailHo crowded                 */
 	V_sailho,		/* 30 SailHo			     */
-	/** ADD NEW VARIANTS ABOVE THIS LINE! **/
+	V_ancient_med,		/* 31 Ancient_Med			     */
+/** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
 
@@ -99,10 +106,10 @@ enum {
 #define LPOWER        24	/* Length of the longest power name              */
 
 /* Do not exceed byte limit as these are used in char arrays */
-#define WILD_PLAYER  113  /* First non-player player ordinal               */
-#define AUTONOMOUS   114  /* Non-player ordinal                            */
-#define OBSERVER     115  /* Non-player ordinal                            */
-#define MASTER       116  /* Last Non-player ordinal                       */
+#define WILD_PLAYER  114  /* First non-player player ordinal               */
+#define AUTONOMOUS   115  /* Non-player ordinal                            */
+#define OBSERVER     116  /* Non-player ordinal                            */
+#define MASTER       117  /* Last Non-player ordinal                       */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
@@ -145,6 +152,7 @@ enum {
     case V_layered: 	dipent.np = 7; dipent.vp = 35; break; \
     case V_sailho:	dipent.np = 4; dipent.vp = 9; break; \
     case V_sailho_crowded: dipent.np = 6; dipent.vp = 10; break; \
+    case V_ancient_med: 	dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
