@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2003/06/19 23:43:18  millis
+ * Added a repeat test flag.
+ *
  * Revision 1.16  2003/06/19 23:27:55  millis
  * Bug 181, bailout recovery only for control game, and adjust deadlines
  * for non-control games.
@@ -311,6 +314,14 @@ int getdipent(FILE * fp)
 			deadline(NULL, 1);
 			time_warp = 1;
 			DIPNOTICE("TimeWarp detected.");
+
+			/* If recovering from bailout, notify the GAMES_MASTER */
+           		if (bailout_recovery && !recover_print) {
+                    	    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
+                            execute(line);
+                            recover_print = 1;
+			}
+			
 		} else {
 		    time_warp = 0;
 		}
@@ -329,7 +340,9 @@ int getdipent(FILE * fp)
 		} else {
 			notifies = "*";
 		}
-		/* Non control game, check for a time-warp or bailout recovery set */
+
+	} else {
+	    /* Non control game, check for a time-warp or bailout recovery set */
                 if ((time_warp || bailout_recovery) && dipent.phase[5] != 'A') {
                 /* Try to fix the warp/recovery by adjusting deadline */
                 /* Rather simplistic, but will do for now */
@@ -339,15 +352,8 @@ int getdipent(FILE * fp)
 #define PROCESS_SHIFT (24*60*60)
                     if (dipent.process && (dipent.process < now + PROCESS_SHIFT))
                         dipent.process += PROCESS_SHIFT;
-	       } 
+               }
 
-	} else {
-	    if (bailout_recovery && !recover_print) {
-                    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
-                        execute(line);
-                    DIPNOTICE("Bailout recovery detected.");
-		    recover_print = 1;
-	    }
         }
 	return 1;
 }
