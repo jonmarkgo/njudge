@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -21,13 +24,16 @@
 #include <time.h>
 #include "dip.h"
 #include <sys/stat.h>
+#include "diplog.h"
 
-extern char *line;
+extern char line[1024];
 extern int Dflg;
+
+void inform_rgd(void);
 
 /****************************************************************************/
 
-void bailout(int level)
+void real_bailout(int level, char *sourcename, int linenum)
 {
 	/*
 	 * Bailout.  We have detected some sort of fatal error that will prevent
@@ -36,22 +42,23 @@ void bailout(int level)
 	 * mail messages.
 	 */
 
-	char line[150];
-	extern int Dflg;
+	char myline[150];
+	/*extern int Dflg;*/
 	struct stat sbuf;
 
 
 	if (!Dflg) {
 		if (!stat(BAILOUT_PLAN, &sbuf))
 			rename(BAILOUT_PLAN, PLAN);
-		/* inform_rgd(); */
+		inform_rgd(); 
 		rename(FORWARD, KEEPOUT);
 		rename(YFORWARD, FORWARD);
 		fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", FORWARD,
 			KEEPOUT);
-		sprintf(line, "./smail /dev/null 'Bailout executed.' '%s'",
-			GAMES_MASTER);
-		system(line);
+		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
+			SMAIL_CMD, sourcename, linenum, GAMES_MASTER);
+		system(myline);
+		DIPERROR(myline);
 	}
 	exit(level);
 }
@@ -69,7 +76,7 @@ void inform_rgd(void)
 	 */
 	char info_line[100];
 	struct stat sbuf;
-	long now;
+	time_t now;
 	FILE *ofp, *ifp;
 
 	/* Open the temporary file. */
@@ -89,13 +96,13 @@ void inform_rgd(void)
 			fprintf(log_fp, "Unable to open %s.\n", BAILOUT_MSG);
 			return;
 		}
-		while (fgets(line, sizeof(line), ifp))
+		while (fgets(line, (int) sizeof(line), ifp))
 			fputs(line, ofp);
 
 		fclose(ifp);
 	}
 	fclose(ofp);
 
-	sprintf(line, "./smail dip.temp '%s' '%s'", info_line, RGD_GATEWAY);
+	sprintf(line, "%s dip.temp '%s' '%s'", SMAIL_CMD, info_line, RGD_GATEWAY);
 	system(line);
 }
