@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030925;23235900">
+	<META NAME="CHANGED" CONTENT="20030926;21572800">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -29,16 +29,16 @@
 of e-mail format of Diplomacy electronic Judges</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
-<P CLASS="western">Version 0.1-0.4 Christophe Courtois - September
+<P CLASS="western">Version 0.1-0.5 Christophe Courtois - September
 2003</P>
 <P CLASS="western"><BR><BR>
 </P>
 <H1 CLASS="western">Introduction</H1>
-<P CLASS="western">This document describes the output format of <SPAN STYLE="font-style: normal">the
-njudge Diplomacy adjudicator.</SPAN></P>
+<P CLASS="western">This document describes the output format of the
+njudge Diplomacy adjudicator.</P>
 <P CLASS="western"><FONT COLOR="#ff0000"><I>WARNING : </I>This is
 work in progress; please report any mistake, incoherence, gap...
-<BR>Variants, and  especially Macchivelli, may not be well described
+<BR>Variants, and especially Macchivelli, may not be well described
 here.</FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
@@ -165,10 +165,8 @@ e-mail, with the same provisions as the header.</P>
 	<UL>
 		<LI><P CLASS="western">'<FONT FACE="Courier New">Judge: </FONT>' [7
 		characters, space included]</P>
-		<LI><P CLASS="western">The code of the judge [4 letters] [<FONT COLOR="#ff0000">TO
-		SOLVE : Why only 4 letters ? Does not seem hardcoded anyway. Always
-		uppercase ??</FONT>], 
-		</P>
+		<LI><P CLASS="western">The code of the judge [4 letters] [This is a
+		tradition ; more letters could be used.]</P>
 		<LI><P CLASS="western">Followed by two spaces.</P>
 		<LI><P CLASS="western">Only if the player is signed onto a game:</P>
 		<UL>
@@ -340,9 +338,9 @@ the game.</P>
 		<LI><P CLASS="western" STYLE="font-style: normal">Two blank lines</P>
 		<LI><P CLASS="western" STYLE="font-style: normal">The message &ldquo;The
 		deadline for the first orders is &ldquo;, and the date with the
-		usual format [<I>official 1.x judges</I>].<BR>OR<BR>The message
+		default format [<I>official 1.x judges</I>].<BR>OR<BR>The message
 		&ldquo;The deadline for the first movement orders is &ldquo;, and
-		the date with the usual format [<I>seen at least on Frog, a 0.8.6
+		the date with the default format [<I>seen at least on Frog, a 0.8.6
 		judge</I>].</P>
 	</UL>
 </UL>
@@ -522,7 +520,7 @@ parts are:</P>
 					<LI><P CLASS="western">a space,</P>
 					<LI><P CLASS="western">the words &ldquo;No Order Processed&rdquo;</P>
 					<LI><P CLASS="western">If necessary: two spaces, and
-					&ldquo;(*dislodged*)&rdquo;.</P>
+					&ldquo;(*dislodged*)&rdquo; or &ldquo;(*destroyed*)&rdquo;.</P>
 				</UL>
 				<LI><P CLASS="western">For a simple movement: 
 				</P>
@@ -561,6 +559,7 @@ parts are:</P>
 					<UL>
 						<LI><P CLASS="western">&ldquo;(*cut*)&rdquo;,</P>
 						<LI><P CLASS="western">or &ldquo;(*cut, dislodged*)&rdquo;,</P>
+						<LI><P CLASS="western">or &ldquo;(*cut, destroyed*)&rdquo;,</P>
 						<LI><P CLASS="western">or &ldquo;(*void*)<FONT COLOR="#000000">&rdquo;
 						</FONT>
 						</P>
@@ -581,17 +580,18 @@ parts are:</P>
 					(uppercase)</P>
 					<LI><P CLASS="western">a space,</P>
 					<LI><P CLASS="western">the movement of the convoyed unit, as
-					described in the previous paragraph, including the last dot</P>
+					described in the previous paragraph, including the last point</P>
 					<LI><P CLASS="western">followed if necessary by two spaces and
 					&ldquo;(*dislodged*&rdquo;)</P>
-					<P CLASS="western"></P>
 				</UL>
 			</UL>
 		</UL>
-		<LI><P CLASS="western">Two blank lines</P>
+		<LI><P CLASS="western">A blank line [<I>all following options add
+		another line; that will make two blank lines</I>]</P>
 		<LI><P CLASS="western">If necessary, the list of dislodged or
-		destroyed armies:</P>
+		destroyed units: for each of these units:</P>
 		<UL>
+			<LI><P CLASS="western">A blank line,</P>
 			<LI><P CLASS="western">&ldquo;The&rdquo;, and a space,</P>
 			<LI><P CLASS="western">the adjective describing the power
 			(lowercase with the first letter uppercase), and a space,</P>
@@ -601,19 +601,93 @@ parts are:</P>
 			(depending on the territory type), and a space</P>
 			<LI><P CLASS="western">the full territory name (lowercase with the
 			first letter of each word uppercase), a space</P>
-			<LI><P CLASS="western"> &ldquo;with no valid retreats was
+			<LI><P CLASS="western">&ldquo;with no valid retreats was
 			destroyed&rdquo;<BR>OR:<BR>&ldquo;can retreat to&rdquo;, followed
 			by:</P>
 			<UL>
-				<LI><P CLASS="western"> a space,</P>
+				<LI><P CLASS="western">a space,</P>
 				<LI><P CLASS="western">territory full names (lowercase with the
 				first letter of each word uppercase),</P>
 				<LI><P CLASS="western">separated by a space, &ldquo;or&rdquo; and
 				a space if there is more than one,</P>
 			</UL>
 			<LI><P CLASS="western">a point.</P>
-			<LI><P CLASS="western"></P>
-			<LI><P CLASS="western"><FONT COLOR="#ff0000">TO BE CONTINUED...</FONT><BR><BR><BR>
+			<LI><P CLASS="western"><FONT COLOR="#000000">NB: the line may wrap
+			if it is too long.</FONT></P>
+		</UL>
+		<LI><P CLASS="western">If the judge does not need to wait for
+		retreat orders, and this is Fall, we have directly the centers
+		ownership:</P>
+		<UL>
+			<LI><P CLASS="western">A blank line,</P>
+			<LI><P CLASS="western">&ldquo;Ownership of supply centers:&rdquo;</P>
+			<LI><P CLASS="western">A blank line</P>
+			<LI><P CLASS="western">For each power, a new line:</P>
+			<UL>
+				<LI><P CLASS="western">the power name (lowercase with first
+				letter uppercase),</P>
+				<LI><P CLASS="western">a colon, 
+				</P>
+				<LI><P CLASS="western">from the 12<SUP>th</SUP> character on the
+				line, the list of the supply centers (lowercase with first letter
+				uppercase), each followed by a space and a comma, except the last
+				one which is followed by a point.</P>
+				<LI><P CLASS="western">NB: for successful powers, the line may
+				wrap and we obtain multiple lines, but the 11 first characters of
+				the line will always be blanked on such following lines.</P>
+			</UL>
+			<LI><P CLASS="western">A blank line,</P>
+			<LI><P CLASS="western">For each power, a new line:</P>
+			<UL>
+				<LI><P CLASS="western">the power name (lowercase with first
+				letter uppercase),</P>
+				<LI><P CLASS="western">a colon, 
+				</P>
+				<LI><P CLASS="western">from the 12<SUP>th</SUP> character (if the
+				power has less than 9 centers), or the 11<SUP>th</SUP> (if the
+				power has between 10 and 99 centers):</P>
+				<UL>
+					<LI><P CLASS="western">the centers number that the power owns, 
+					</P>
+					<LI><P CLASS="western">a space, &ldquo;Supply centers&rdquo;,  a
+					comma,</P>
+					<LI><P CLASS="western">one or two spaces (depending of the
+					numbers of units),</P>
+					<LI><P CLASS="western">the current units number, 
+					</P>
+					<LI><P CLASS="western">a space, &ldquo; Units&rdquo;, a colon,
+					two spaces</P>
+					<LI><P CLASS="western">&ldquo;Removes&rdquo; and two spaces, <BR>OR
+					<BR>&ldquo;Builds&rdquo; and three spaces,</P>
+					<LI><P CLASS="western">the number of units to build/remove, a
+					space,</P>
+					<LI><P CLASS="western">&ldquo;unit&rdquo; or &ldquo;units&rdquo;,
+					a point.</P>
+					<LI><P CLASS="western">If the power has won as a solo: two
+					spaces and &ldquo;(* VICTORY!! *)&rdquo;.</P>
+				</UL>
+			</UL>
+		</UL>
+		<LI><P CLASS="western">If the game is finished (a player has won
+		alone): 
+		</P>
+		<UL>
+			<LI><P CLASS="western">A blank line,</P>
+			<LI><P CLASS="western">&ldquo;The game is over.  Thank you for
+			playing.&rdquo; (2 spaces between the sentences).</P>
+		</UL>
+		<LI><P CLASS="western">If the game is not finished, message about
+		the new deadline. 
+		</P>
+		<UL>
+			<LI><P CLASS="western">A blank line,</P>
+			<LI><P CLASS="western">The first line is: &ldquo;The next phase of
+			'yyyyy' will be Retreats for&rdquo; (where yyyyy is the game
+			name), a space, the season (Winter, Fall...), a space, &ldquo;of&rdquo;,
+			a space, the year, a point.</P>
+			<LI><P CLASS="western">The second line is: &ldquo;The deadline for
+			orders will be&rdquo;, a space, the deadline date with the default
+			format, a point. <BR><BR><BR>
 			</P>
 		</UL>
 	</UL>
