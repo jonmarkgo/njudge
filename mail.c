@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.63  2003/12/12 10:16:13  millis
+ * Fixed compile error
+ *
  * Revision 1.62  2003/12/11 13:18:01  millis
  * Removed tests for msg_header_done.
  *
@@ -256,6 +259,7 @@
 #include "plyrdata.h" /* Change Sep 23, 2001 */
 
 static int junkmail = 0;	/* Non zero if no reply to be sent		*/
+static int spammail = 0;	/* Mark messages as spam if they don't come from a valid user and don't contain a valid command */
 static int command = 0;		/* Non zero if some intelligable command found	*/
 static int skipping = 0;	/* Non zero if skipping rest of input		*/
 static int movement = 0;	/* Non zero if movement orders received		*/
@@ -2367,7 +2371,11 @@ int mail(void)
 		fclose(pfp);
 	}
 	if (!command) {
+		int tuid, tsid, tlvl;
+
 		fprintf(rfp, "Signon command not encountered.  Use 'help' for info.\n");
+		if(!getuser(raddr, &tuid, &tsid, &tlvl)) /* do we know this guy? */
+			spammail = 1;
 		mail_reply(E_WARN);
 	} else {
 		mail_reply(0);
@@ -2433,13 +2441,23 @@ void mail_reply(int err)
 	if ((err != E_FATAL) && (!junkmail))
 		send_press();
 
-	if (err != 0 && !junkmail) {
+	if (err != 0 && !junkmail && !spammail) {
+		int hdr_end = 0;
+
 		fflush(ifp);
 		rewind(ifp);
-		fprintf(rfp, "\n---- Original message follows:\n\n");
+		fprintf(rfp, "\n---- Original message follows:\n");
 		while (fgets(line, sizeof(line), ifp))
-			fputs(line, rfp);
+		{
+			if(!strcmp(line, "\n") || !strcmp(line, "\r\n"))
+				hdr_end = 1;
+			if(hdr_end)
+				fputs(line, rfp);
+		}
+	} else if (err != 0 && !junkmail && spammail) {
+		fprintf(rfp, "\nYour original message is not being echoed because you are not registered on this judge.\n");
 	}
+
 	if (!Dflg)
 	{
 		if(signedon && (dipent.phase[6] != 'X'))
