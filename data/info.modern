@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 Jan 3, 2000
+Greetings from the Diplomacy* Adjudicator!!              July 28th, 2003
 Info.Modern
 
   Modern Diplomacy is intended to be diplomacy with an updated map,
@@ -17,18 +17,19 @@ any case, it will not intervene in Europe.
 
   Other than this, borders and neutral supply centers were distributed
 to even out the game. Monaco was made a neutral SC (it has lots 
-of money) even though it's size does not warrant it, and Gibraltar was
-made a British home SC, both to give Britain a port in the Mediterranean,
+of money) even though its size does not warrant it, and Gibraltar was
+made a British home SC (both to give Britain a port in the Mediterranean,
 and to give Spain more than one neighbour). 
 
   There is also another type of unit optionally available, the wing. This
 will be active if the game is set up with wings variant modifier.
 Wings can go over water and land but can not capture a
-supply center. Therefore, if France manages to move a plane over London,
-England would still own it, but not be able to build there. 
+supply center: blockading it instead. Therefore, if France manages to move 
+a wing over London, England would still own it, but would neither be able 
+to build there nor count London for build purposes.
 Only the three 'nuclear' powers have wings available at the start
 (Britain, France and Russia) though any power can build them.
-See the file 'wings' for more information.
+See the file 'info.wings' for more information.
 
   Powers:
 
@@ -37,7 +38,7 @@ See the file 'wings' for more information.
                    Turkey (T), Ukraine (U)
   5 center powers: Russia (R)
 
-  Starting positions (Spring 1994): (Games with A/F rules play the 'W' units)
+  Starting positions (Spring 1994): (Games with wings play the 'W' units)
 
   Britain (B) : F EDI, F GIB, F LIV, F/W LON 
   Egypt (E) : F ALE, A ASW, F CAI
@@ -140,5 +141,6 @@ except for:
   Alternatives are also available for many spaces, especially water
 spaces. See the map file for these alternative abbreviations.
 
+------------------
 Programmed for the judge by Vincent Mous & Nicholas Fitzpatrick
 Wings added by Millis Miller
