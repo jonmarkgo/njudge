@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2003/01/13 22:38:51  millis
+ * merged in from ustv
+ *
  * Revision 1.4.2.1  2003/01/13 16:04:47  millis
  * ustv latest versions
  *
@@ -26,8 +29,39 @@
 
 #include "dip.h"
 #include "porder.h"
+#include "functions.h"
 
 /****************************************************************************/
+int valid_artillery_move(int u, int p, int *c, int *b)
+{
+    /* Return valid_move() if not an artillery unit */
+    /* Return 0 if artillery but can't get there */
+    /* return 1 if artillery and can get there */
+
+    int ok = 0;
+    unsigned char *t, fc;
+
+    ok = valid_move(u, p, c, b);
+
+    if (unit[u].type != 'R')
+	return ok;  /* Non artillery can only support in the same place */
+
+/* Create a dummy unit */
+	nunit++;
+	
+
+        for (t = pr[unit[u].loc].move; *t && !ok; t++) {
+	    unit[nunit].loc = *t++;
+	    fc = *t >> 4;
+	    if (fc == MV ) {
+	        ok = valid_move(nunit, p, c, b);
+	    }
+	}
+
+    nunit--;  /* Delete dummy unit */
+
+    return ok;  
+}
 
 int valid_move(int u, int p, int *c, int *b)
 {
