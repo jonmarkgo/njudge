@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.23  2003/05/12 02:38:23  millis
+   ** Bug 118 fix, correctly handle transforms for fleets.
+   **
    ** Revision 1.22  2003/05/10 00:46:15  millis
    ** Bug 140 fix, display 'orders' when orders and 'results' when results
    **
@@ -971,7 +974,7 @@ void buildout(int pt)
 					break;
 			}
 			if (!(dipent.xflags & XF_ANYDISBAND)) {
-			    if (i > npr || (!(dipent.xflags & XF_ALTBUILD) ) ) {
+			    if (i > npr ) {
 				i = nu[p] - 1 + ExtraCentres();
 				if (processing)
 				    fprintf(rfp, "%d unusable build%s waived.\n", i, i == 1 ? "" : "s");
