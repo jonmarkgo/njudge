@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2002/07/16 18:14:21  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.11  2002/05/04 02:06:17  nzmb
  * Added code to display the time left until the deadline and grace at the
  * bottom of their reply whenever a player signs on.
@@ -228,6 +231,7 @@ void send_package(char *addr);
 void whois(char *t);
 int new_checklist(FILE * fp, char *addr);
 int is_allowed(int type_flag);
+int is_disallowed(int type_flag);
 int send_dedication(char *raddr);
 int newuser(char *addr, FILE * fp);
 int iamalso(char *addr, char *oldaddr);
