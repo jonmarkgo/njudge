@@ -1,8 +1,11 @@
 #!/usr/bin/perl
 
 # $Log$
+# Revision 1.2  2004/01/18 01:11:05  millis
+# Make diff work via Unix 'diff' command
+#
 # Revision 1.1  2004/01/18 00:56:41  millis
-# First version
+# First version (from Jeff Smith <smith@pobox.com>)
 #
 
 use strict;
