@@ -54,7 +54,8 @@
  *  18 Nov 1999 Millis Miller Prevent ? signons to terminated but unstarted game
  *  02 Dec 1999 Millis Miller Reset deadlines to sensible values on player takeover
  *  03 Dec 1999 Millis Miller Chose different seed/report files if blind/wings
- *
+ *  26 May 2001 Mario Becroft Changes for plyrdata record and dedication
+ *		Tim Miller    systems.
  */
 
 /*
@@ -77,6 +78,7 @@
 #include "variant.h"
 #include "functions.h"
 #include "dipstats.h"
+#include "plyrdata.h"
 
 char *generic_names[] =
 {"b*", "c*", "d*", "e*", "f*", "g*",
@@ -184,7 +186,7 @@ int mail_signon(char *s)
 		variant = V_STANDARD;
 		flags = 0;
 		while (*s) {
-			s = lookforv(s, variants, NVARIANT + NVAROPTS, &i);
+			s = lookforv(s, variants, NVARIANT + NVAROPTS, &i, 1);
 			if (!i) {
 				if (!msg_header_done)
 					msg_header(rfp);
@@ -595,6 +597,7 @@ int mail_signon(char *s)
 
 				if (!msg_header_done)
 					msg_header(rfp);
+				put_data(dipent.players[i].userid,tookover);
 				fprintf(rfp, "Take over of abandoned %s allowed.\n\n", powers[n]);
 				fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
 				time(&now);
@@ -766,6 +769,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
  */
 
 	int i, s1, s2, ret;
+	float ont_rat, res_rat;
 	char *temp;
 
 	ret = 0;
@@ -903,6 +907,41 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 			dipent.name, dipent.dedicate);
 		fprintf(rfp, "are currently rated at %d.  Use 'get deadline' for more info.\n",
 			ded[userid].r);
+		return -1;
+	}
+	if(get_data(userid,total) == 0)
+	{
+		ont_rat = -1;
+		/* We're doing this to avoid divide by 0 errors. */
+	}
+	else
+	{
+		ont_rat = 1.0 * get_data(userid,ontime) / get_data(userid,total);
+	}
+	if(get_data(userid,started) == 0 && get_data(userid,tookover) == 0) 
+	{
+		res_rat = -1;
+	}
+	else
+	{
+		res_rat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
+	}
+	if(ont_rat < dipent.orded && ont_rat >= 0)
+	{
+		if(!msg_header_done)
+			msg_header(rfp);
+		fprintf(rfp,"Sorry, game '%s' requires an ontime ratio of at least %.3f.\n",
+			dipent.name,dipent.orded);
+		fprintf(rfp,"You are currently rated %.3f\n",ont_rat);
+		return -1;
+	}
+	if(res_rat > dipent.rrded)
+	{
+		if(!msg_header_done)
+			msg_header(rfp);
+		fprintf(rfp,"Sorry, game '%s' requires a minimum resignation ratio of %.3f.\n", 
+			dipent.name,dipent.rrded);
+		fprintf(rfp,"You are currently rated %.3f.\n",res_rat);
 		return -1;
 	}
 	return (ret);
@@ -1161,6 +1200,14 @@ void mail_igame(void)
 		msg_header(ofp);
 		fprintf(ofp, "You have been selected as %s in game '%s' of Diplomacy.",
 			powers[dipent.players[i].power], dipent.name);
+		/* Increment the started value for plyrdata. But only if the
+		   game is rated and we're not an observer. */
+		if((!(dipent.flags & F_NORATE)) && dipent.players[i].power != OBSERVER) {
+			if(put_data(dipent.players[i].userid,started) < 0)
+			{
+				fprintf(stderr,"Unable to log plyrdata for %d.\n",dipent.players[i].userid);
+			}
+		}
 		fprintf(ofp, "\n\nThe following players are in this game:\n");
 		/* TODO: reorder the powers alphabetically to avoid people knowing
 	           that first person signing on got first power etc */
