@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                  July 13, 1991.
+Greetings from the Diplomacy* Adjudicator!!                  Jan 3, 2000
 Syntax.
 
 The format of your diplomacy orders depends on the phase of the game:
@@ -7,13 +7,14 @@ one line by separating them with commas or semicolons.
 
 Movement orders:
 
-<type> <s_prov> <holds>
-<type> <s-prov> <moves>   <d-prov>
-<type> <s-prov> <moves>   <c-prov> <moves> <c-prov> ... <moves> <d-prov>
-<type> <s-prov> <support> <type> <s-prov> 
-<type> <s-prov> <support> <type> <s-prov> <moves> <d-prov>
-<type> <s-prov> <convoy>  <type> <s-prov> <moves> <d-prov>
-<type> <s-prov> <proxy>   <power>
+[<type>] <s_prov> <holds>
+[<type>] <s-prov> <moves>   <d-prov>
+[<type>] <s-prov> <moves>   <c-prov> <moves> <c-prov> ... <moves> <d-prov>
+[<type>] <s-prov> <support> [<type>] <s-prov> 
+[<type>] <s-prov> <support> [<type>] <s-prov> <moves> <d-prov>
+[<type>] <s-prov> <convoy>  [<type>] <s-prov> <moves> <d-prov>
+[<type>] <s-prov> <proxy>   <power>
+[<type>] <s-prov> <transforms> <type>
 
 Retreat orders:
 
@@ -23,12 +24,13 @@ Retreat orders:
 Adjustment orders:
 
 <build>  <type> <s-prov>
-<remove> <type> <s-prov>
+<remove> [<type>] <s-prov>
+<transform> [<type>] <s-prov> <to> <type>
 <waive>
 
 Where:
 
-<type>    = "army", "a", "fleet", "f" or <empty>.
+<type>    = "army", "a", "fleet", "f", "wing", "w" or <empty>.
 <s-prov>  = Source province.
 <d-prov>  = Destination province.
 <c-prov>  = Intermediate water province in a convoy route.
@@ -36,12 +38,17 @@ Where:
 <holds>   = "h", "hold", "holds", "stand", "stands".
 <moves>   = "-", "->", "m", "move", "moves", "move to", "moves to".
 <support> = "s", "support", "supports".
-<convoy>  = "c", "convoy", "convoys".
+<convoy>  = "c", "convoy", "convoys", "transport", "transports" , "t",
+	    "fast ferry", "ferry", "ff", "f"
 <proxy>   = "p", "proxy", "proxy to".
-<disband> = "d", "disband".
+<disband> = "d", "disband", "disbands".
 <build>   = "b", "build" or <empty>.
 <remove>  = "r", "remove", "d", "disband" or <empty>.
 <waive>   = "w", "waive".
+<transforms> = "transforms to", "transform to", "transform", "transforms",
+		"trafo","tr".
+<tranform> = "transform", "transforms", "trafo"
+<to>	  = "to", "->"
 
 Province names can be abbreviated or can be spelled out.  Coasts can be
 specified by following the province name with one of:
