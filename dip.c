@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.46  2004/01/21 00:55:57  millis
+ * Allow passing of forced date/time (for testing)
+ *
  * Revision 1.45  2003/12/28 00:13:38  millis
  * Fix bug 229 (display on email title if game with abandoned players is NoList)
  *
@@ -446,9 +449,6 @@ void init(int argc, char **argv)
 
 	subjectline[0] = '\0';
 
-	time(&now);
-	srand(now);
-
 	dflg = argv[0];
 	if ((nflg = strrchr(argv[0], '/'))) {
 		dflg = argv[0];
@@ -614,6 +614,11 @@ void init(int argc, char **argv)
 			exit(E_FATAL);
 		}
 	}
+
+	/* Reset the random seed */
+	time(&now);
+	srand(now);
+
 
 	if (CONFIG_FILE == NULL)
 	{
@@ -1547,9 +1552,7 @@ int process(void)
 				ptime(&dipent.deadline));
 			if (dipent.phase[5] == 'B' && 
 				 (dipent.x2flags & X2F_MORE_HOMES)) {
-			    /* A build phase in a transform game means that all can transform */
-			    /* OR when any player can disband */
-			    /* OR game allows home centre assignments */
+			    /* game allows home centre assignments */
 			    /* Thus set active players in a wait state */
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)

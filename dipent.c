@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2003/07/17 22:59:29  millis
+ * Bug 185
+ *
  * Revision 1.19  2003/07/16 14:50:56  millis
  * Used D_X2FLAGS to allow default setting for X2FLAGS for games (if desired)
  *
@@ -310,8 +313,10 @@ int getdipent(FILE * fp)
 		if (dipent.process && (dipent.start > (now +TIME_TOLERANCE) || 
 		    now > (TIME_TOLERANCE + dipent.process))) {
 			fprintf(stderr, "Current date %24.24s should be between...\n", ctime(&now));
-			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
-			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
+			if (!dip_time) {
+			    fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
+			    fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
+			}
 			fprintf(stderr, "Time warp indicated.  GM notified.\n");
 			sprintf(line, "/dev/null 'Diplomacy time warp'");
 			MailOut(line, GAMES_MASTER);
