@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                15th April 2001
+Greetings from the Diplomacy* Adjudicator!!                8th July 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
@@ -52,7 +52,8 @@ mod/aft*EJECT power-or-email
         any time by the master. The master MUST use this form to resign himself.
         The <power-or-email> specification can also be an email address, and will
         work with observers too.
-                                                                                                                                      adm/pre FIXID siteid site_name
+
+adm/pre FIXID siteid site_name
         Sets all players who have registered with the specified site name
         to have a siteid as indicated.  By default all users get their
         area code times 100 as a siteid and must be fixed to some non-
@@ -334,6 +335,10 @@ mod/mac SET [NO]DICE
         the game: Variable income, bank loans, assassinations, famine and 
         plague.
 
+mod/aft*SET [NO]DISBAND
+	Disabled/enables the use of a disband order during a normal movement
+	phase. 
+
 any/aft SET [NO]DRAW [powerlist]
         Cast a vote in an automated draw. See file 'draws'.
 
@@ -357,7 +362,7 @@ mod/aft SET EP number
 mod/mac SET [NO]FAMINE
         Disables/enables optional famine rules.
 
-mod/mac+SET [NO]FORT[RESS]
+mod/mac*SET [NO]FORT[RESS]
         Disables/enables optional fortress rules.
 
 mod/aft SET GRACE date
@@ -404,7 +409,7 @@ mod/mac SET [NO]LOANS
         from the bank.
 
 mod/aft+SET[NO]MACH2
-	Disables/Enables Machiavelli 2nd Edition (1995) rules.
+	Disables/enables Machiavelli 2nd Edition (1995) rules.
 
 aft*SET [NO]MANUALPROCESS
 	Disables/enables the requirement that the turn will only occur 
