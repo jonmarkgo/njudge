@@ -272,11 +272,17 @@ int ma_buildin_basic(char **s, int p)
 		break;
 
 	case 'r':
-		if (!(u = pr[p1].unit) || unit[u].owner != p) {
-			errmsg("%s does not own a unit %s %s %s to remove.\n",
-			powers[p], mov_type(p1,u), pr[p1].name);
+		if (type == 'G') 
+		    u = pr[p1].gunit;
+		else
+		    u = pr[p1].unit;
+
+		if (!(u) || unit[u].owner != p) {
+			errmsg("%s does not own %s %s %s to remove.\n",
+			powers[p], autype(type), mov_type(p1,u), pr[p1].name);
 			return E_WARN;
 		}
+
 		/*
 		   *  If this one's already been removed, put it back.
 		 */
