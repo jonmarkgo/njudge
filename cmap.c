@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2002/08/27 22:27:44  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.5  2002/05/16 13:11:55  miller
  * Removed warning and debug line
  *
@@ -75,7 +78,7 @@ int main(int argc, char *argv[])
 		dir[0] = '\0';
 		break;
 	case 2:
-		sprintf(dir, "%s", argv[1]);
+		sprintf(dir, "%s/", argv[1]);
 		break;
 	default:
 		fprintf(stderr, "Usage %s [directory]\n", *argv);
@@ -90,16 +93,16 @@ int main(int argc, char *argv[])
 	for (v = 1; v < NVARIANT; v++) {
 		nrw=0; ngw = 0;  /* Initialise variables */
 		if (v == 1)
-			sprintf(line, "%s/map", dir);
+			sprintf(line, "%sdata/map", dir);
 		else
-			sprintf(line, "%s/map.%s", dir, variants[v]);
+			sprintf(line, "%sdata/map.%s", dir, variants[v]);
 		if (stat(line, &sbuf)) {
 			perror(line);
 			exit(1);
 		}
 		t1 = sbuf.st_mtime;
 
-		sprintf(file, "%s/map.%d", dir, v);
+		sprintf(file, "%smap.%d", dir, v);
 		if (stat(file, &sbuf))
 			t2 = 0;
 		else
