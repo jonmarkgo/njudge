@@ -1,3 +1,43 @@
+2004-12-04 13:15  millis
+
+	* configure.ac, njudge.spec: New version njudge-1.7.3
+
+2004-12-04 13:12  millis
+
+	* BUGS, NEWS: Updated for njudge-1.7.3
+
+2004-12-04 12:59  millis
+
+	* starter.flist, data/rules.intimate: Fix bug 388
+
+2004-12-04 12:47  millis
+
+	* st_movement.c: Fixed Bug 387, support being incorrectly voided.
+
+2004-12-04 08:21  millis
+
+	* plyrdata.c: Fix Bug 386, allowing FreeBSD compiling
+
+2004-11-24 04:29  millis
+
+	* st_movement.c: Fix Bug 385 (Portage game hangs judge and coasts
+	  not working correctly)
+
+2004-11-24 04:26  millis
+
+	* data/map.dipmach: Fix Bug 386 (Naf and Alb to type 'x' not type
+	  'l')
+
+2004-10-30 15:59  millis
+
+	* data/index: Summer and Garrison flags appeared in 1.4.0, not
+	  1.5.0
+
+2004-10-24 02:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_2
+
 2004-10-24 02:11  millis
 
 	* BUGS, NEWS, configure.ac, njudge.spec: Next version 1.7.2
