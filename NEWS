@@ -1,6 +1,6 @@
 This is a bug-fix release.
 
-The following bugs were fixed in 1.5.5
+The following bugs were fixed in 1.5.6
 
 (ordered by Severity)
 
@@ -8,13 +8,7 @@ The following bugs were fixed in 1.5.5
 ----------------------
 
 ID  	 Sev  	 Pri  	 Plt  	 Owner  	 State  	 Result  	 Summary
-273 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Blocked move through Suez still contests space
-219 	nor 	P3 	All 	tim@gem.win.co.nz 	RESO 	FIXE 	Wrong phase name in output of terminated game
-265 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Multi-province units not convoying
-268 	nor 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Suppress errors about unknown powers in assassinate
-102 	min 	P3 	All 	tim@gem.win.co.nz 	RESO 	FIXE 	Setting game start date does NOT affect the first turn
-235 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Version command prints out the results twice
-229 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Generate a warning when a game with abandoned player(s) i...
-262 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	1900 Steamroller flag
+274   	maj   	P3   	All   	judge-maint@diplom.org   	RESO   	FIXE   	Summary not being generated for standard games
+275 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Disable touch-press restrictions when game is over 
 
-8 bugs found. 
+2 bugs found. 
