@@ -1,5 +1,22 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * ENORMOUS number of changes, including:
+ *  - Checks to warn if trying to set 'silly' options  (for example, Mach options in non-Mach game, press options in nopress game etc.)
+ *  - Check when a quorum exists to start the game if number of plyers is changed
+ *  - Show players preferences to master
+ *  - New general purpose function to ease flag setting/resetting
+ *  - setting of absence delay checks (non-master cannot be greater than game limit)
+ *  - New commands, which are:
+ *     SET_(NO)LATECOUNT, SET_(NO)STRCONVOY, SET(NO)LATEPRESS, SET(NO)MANUALPROC,
+ *     SET_(NO)MANSTART, SET_(NO)TRANSFORM, SET_(ANY/ONE/HOME)CENTRES,
+ *     SET(NO)ABSENCE, SET_MAXABSENCE, SET_(NO)NORMBROAD, SET_(NO)BLANKPRESS,
+ *     SET(NO)MINORPRESS, SET_MAC(1/2/3), SET_(NO)AIRLIFT, SET_BLANKBOARD,
+ *     SET_(NO)AUTODISBAND
+ *    (some of which are to be implemented still)
+ *   - Observers can watch press of a game (if flag enablingthis is set)
+ *   - Passwords only allow alpha-numeric characters
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -504,7 +521,10 @@ void mail_setp(char *s)
 #define PRV_ANYDISBAND 'm'
 #define SET_NORMALDISBAND 122
 #define PRV_NORMALDISBAND 'm'
-
+#define SET_ATTACKTRANS	  123
+#define PRV_ATTACKTRANS	 'm'
+#define SET_NOATTACKTRANS 124
+#define PRV_NOATTACKTRANS 'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -614,7 +634,10 @@ void mail_setp(char *s)
 	 "auto disband", "autodisband",
 	 "no auto disband", "noautodisband", "no autodisband",
 	 "any disband", "anydisband",
-	 "normal disband", "normaldisband"
+	 "normal disband", "normaldisband",
+	 "attack transform", "attack transforms",
+	 "no attack transforms", "noattack transforms", 
+	 "no attack tranform", "noattack transform"
 	};
 
 
@@ -730,7 +753,10 @@ void mail_setp(char *s)
 	SET_AUTODISBAND, SET_AUTODISBAND,
 	SET_NOAUTODISBAND, SET_NOAUTODISBAND, SET_NOAUTODISBAND,
 	SET_ANYDISBAND, SET_ANYDISBAND,
-        SET_NORMALDISBAND, SET_NORMALDISBAND
+        SET_NORMALDISBAND, SET_NORMALDISBAND,
+	SET_ATTACKTRANS , SET_ATTACKTRANS,
+        SET_NOATTACKTRANS, SET_NOATTACKTRANS,
+	SET_NOATTACKTRANS, SET_NOATTACKTRANS
 
     };
 
@@ -847,7 +873,10 @@ void mail_setp(char *s)
         PRV_AUTODISBAND, PRV_AUTODISBAND,
         PRV_NOAUTODISBAND, PRV_NOAUTODISBAND, PRV_NOAUTODISBAND,
 	PRV_ANYDISBAND, PRV_ANYDISBAND,
-        PRV_NORMALDISBAND, PRV_NORMALDISBAND
+        PRV_NORMALDISBAND, PRV_NORMALDISBAND,
+	PRV_ATTACKTRANS, PRV_ATTACKTRANS,
+	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
+	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS
 
 };
 
@@ -2079,6 +2108,39 @@ void mail_setp(char *s)
                                                "Resume can now only be performed by moderators.\n",CATF_INVERSE);
                         break;
 
+                case SET_ATTACKTRANS:
+                        CheckNoMach();
+			if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change Transform settings!\n\n",
+                                    dipent.name);
+                        } else if (!(dipent.xflags & XF_TRANS_MOVE)) {
+                            fprintf(rfp, "Move transformations must be enabled first!\n\n");
+                        } else  {
+				CheckAndToggleFlag(&dipent.xflags,  XF_NOATTACK_TRANS, "NoAttackTransform", CATF_SETOFF,
+                                               "Move transformations will now only fail on dislodged units.\n",CATF_INVERSE);
+                            ShowTransformSettings(bfp);
+                            ShowTransformSettings(mbfp);
+                            ShowTransformSettings(rfp);
+                        }
+			break;
+
+                case SET_NOATTACKTRANS:
+                        CheckNoMach();
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change Transform settings!\n\n",
+                                    dipent.name);
+                        }
+			else if (!(dipent.xflags & XF_TRANS_MOVE)) {
+                            fprintf(rfp, "Move transformations must be enabled first!\n\n");
+                        } else  {
+			    CheckAndToggleFlag(&dipent.xflags,  XF_NOATTACK_TRANS, "AttackTransform", CATF_SETON,
+                                               "Move transformations will now also fail on unsuccessful attacks.\n",CATF_INVERSE);
+                            ShowTransformSettings(bfp);
+                            ShowTransformSettings(mbfp);
+                            ShowTransformSettings(rfp);
+                        }
+			break;
+
                 case SET_AUTODISBAND:
                        if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to change AutoDisband flag!\n\n",
@@ -2867,6 +2929,13 @@ void ShowTransformSettings(FILE* rfp)
                             fprintf(rfp,"HomeCentre");
                             break;
                     }
+		    if (dipent.xflags & XF_NOATTACK_TRANS )
+		    {
+			fprintf(rfp, ", fail on dislodge only");
+		    }
+		    else
+			fprintf(rfp, ", fail on unsupported attacks");
+
 		    break;
 
                 case 0:
