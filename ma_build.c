@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -131,6 +134,12 @@ int ma_buildin(char **s, int p)
 				}
 			}
 		}
+                /* MLM 19/6/2001 OK, see if unit is allowed */
+		if (!PermittedMachUnit(p,type,stype, PP_BUILD)) {
+		    errmsg("Power is not allowed to build this unit type.\n");
+		    return E_WARN;
+		}
+		
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].status == 'x') {
 				if (is_garrison(u)) {
@@ -230,7 +239,7 @@ void ma_buildout(int pt)
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
-	n = strlen(powers[AUTONOMOUS]);
+	n = (int) strlen(powers[AUTONOMOUS]);
 
 	fprintf(rfp, "\n");
 	if (pt == MASTER) {
@@ -301,7 +310,7 @@ void ma_buildout(int pt)
 					water(unit[u].loc) ? "the " : "",
 					pr[unit[u].loc].name);
 
-				if (processing && is_sieged(unit[u].loc)) {
+				if ((processing || predict) && is_sieged(unit[u].loc)) {
 					remove_siege(unit[u].loc);
 					fprintf(rfp, " (siege lifted)\n");
 				} else {
@@ -317,7 +326,7 @@ void ma_buildout(int pt)
 				for (i = strlen(powers[p]); i < n; i++)
 					putc(' ', rfp);
 				fprintf(rfp, "%s %s", Utype(unit[u].type), pr[unit[u].loc].name);
-				if (!processing) {
+				if (!processing && !predict ) {
 					fprintf(rfp, " *** No order received, maintain or remove");
 					more_orders++;
 					err++;
