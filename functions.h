@@ -45,6 +45,7 @@ void AddUnitProvinceToOrder(char *text, int unit, int place);
 void AddPowerToOrder(char *text, int power);
 void AddOrderToOrder(char *text, int order);
 char *lookforv(char *l, char *w[], int len, int *n, int exact_word);
+void InformCustodians( char *game_name, char *text, int variant, int is_gunboat);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);
@@ -126,6 +127,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp);
 int has_fortress(int prov);
 int has_fortcity(int prov);
 void set_rebellion(int prov);
+int PermittedMachUnit(int power, char type, char stype, int mode);
 
 /* defined in ma_expenses.c */
 int testword(char **stream, char *word);
