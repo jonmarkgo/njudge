@@ -1,8 +1,5 @@
 /*
  * $Log$
- * Revision 1.7  2001/10/20 12:11:16  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
- *
  * Revision 1.6.2.1  2001/10/15 22:30:45  ustv
  * Added display of duality stuff
  *
@@ -272,6 +269,9 @@ int main(int argc, char **argv)
 
 	variant = dipent.variant;
 
+/*** TODO: Make summary.c and po-init.c use the same code!!! 
+     I am fixing a bug due only to this now! MLM 05/03/2002 ***/
+
 	sprintf(line, "map.%d", variant);
 	if ((ifp = fopen(line, "r")) == NULL) {
 		fprintf(log_fp, "sum: Error opening map data file %s.\n", line);
@@ -332,6 +332,14 @@ int main(int argc, char **argv)
                         fprintf(log_fp, "sum: cmap stab read error, %d. %s\n", i, line);
                         return E_FATAL;
                 }
+		if ((i = fread(permitted_units, sizeof(permitted_units), 1, ifp)) != 1) {
+                                fprintf(rfp, "cmap permitted_units read error, %d. %s\n", i, line);
+                                return E_FATAL;
+                        }
+                        if ((i = fread(&initial_money, sizeof(initial_money), 1, ifp)) != 1) {
+                                fprintf(rfp, "cmap initial_money read error, %d. %s\n", i, line);
+                                return E_FATAL;
+                        }                                                                                              
 	}
 /* Now read colonial hk, gw and rw settings */	
         if (fread(&nhk, sizeof(nhk),1, ifp) != 1) {
@@ -686,16 +694,6 @@ int main(int argc, char **argv)
 			fputs(line, ifp);
 		fclose(tfp);
 	}
-	/*
-	 * or concession ...
-	 */
-	sprintf(line, "%s/%s/conc", GAME_DIR, dipent.name);
-	if((tfp = fopen(line, "r"))) {
-		while(fgets(line, sizeof(line), tfp))
-			fputs(line, ifp);
-		fclose(tfp);
-	}
-
 	/*
 	 *  Comments if any are next.
 	 */
