@@ -1,3 +1,22 @@
+2002-08-29  Jaldhar H Vyas  <judgekeeper@braincells.com>
+
+	* Merged stuff from docs/CHANGES into this file.
+
+2002-08-28  Millis L. Miller <millis@faztek.org>
+
+	* Removed bgreet.c and bgreet targets
+
+	* Set BUGS file to zero length
+
+	* Fixed a small mach bug in ma_porder.c
+
+	* Added missing makeflist file and patched Makefile.am
+
+(27th August 2002)
+2002-08-27  Millis L. Miller <millis@faztek.org>
+
+	* Fixed a mach Victory bug.
+
 2002-08-27  Jaldhar H Vyas  <judgekeeper@braincells.com>
 
 	* New build system using GNU autotools.
@@ -19,3 +38,468 @@
 	* newlogs: changed to use gzip by default.
 
 	* Added Debian package infrastructure.
+
+(9th August 2002)
+Changed ml_signon.c to detect if same person is signing on after resigning
+(23rd July)
+Added njudgemapdatahowto.htm to explain map file
+(20th July 2002)
+fixed Mach bug in ma_porder.c that didnt't correctly set province ownership
+to garrisons under all conditions.
+
+1.2.0 (17th July 2002)
+Fixed bug that was causing the judge to segment fault when writing to the
+   xcontrol file 
+Fixed bug that was incorrectly rejecting some valid pregame signons
+(both in ml_signon.c)
+Added [no]mustorder flag
+Added postalpress
+Prevention of conditional orders in blind games
+
+1.1.1 (17th May 2002)
+Fixed transform build error  (st_build.c)
+Fixed duplicate address checking (mail.c)
+Blind games also set to quiet
+Blind games don't inform GAMES_OPENER
+Allow nopress signalling in Mach games
+Fix subject lines for absence requests
+fixed phase length, so it's no longer hard coded for responses
+partial fix for unusable builds, players with only unusable builds
+   will no longer be flagged as having orders due, however players
+   with some usable builds will need to waive any unusable builds,
+   also, if one or more players have unusable builds, but no
+   player has usable builds, the build phase will process after
+   a short delay
+(7th May)
+ - Checked in info.colonial with new colonial rules (forgotten for 1.1.0)
+(23rd April)
+ - Spelling fix "Svmebody" -> "Somebody" in summary.c
+(22nd April 2002)
+ - Small conversion bug in ma_movement.c
+
+1.1.0 (19th April 2002)
+
+(18th April 2002)
+Added the following commands:
+- unstart
+- set secret
+- set [prflist|prfrand|prfboth]
+
+Fixed Set Absence so that "to" is not case sensitive
+
+Fixed Quiet games so that new players are announced
+before the game starts
+
+Fixed ascii_to_ded.c so thatit no longer generates an
+error when compiled
+(15th April 2002)
+ - Many changes from USTV, inluding blind, railways/hongkong/gateways
+   and initial setup option
+(9th April 2002)
+ - Small change to dip.c to avoid repeated abandoned messages
+(6th April 2002)
+ - Fixed dip.c to not process build turns without waiting
+ - Small fix to ml_short.c to add space after province and allow "prov" 
+
+1.0.3 (1st April 2002)
+Next release version with small bug-fixes 
+(25th March 2002)
+ - Fixed Machivalli bug for ownership in ma_porder.c
+(20th March 2002)
+ - Corrected Classical to be a ONECENTRE game in variant.h
+(10th March 2002)
+ - Added automatic wait in build_transform games for build phases in dip.c
+(5th March 2002) :
+ - Corrected problem in summary.c (preventing Machiavelli summaries)
+ - Fixed beleagured garrison bug in st/ma_movement.c
+
+1.0.2 (25th February 2002) :
+ - Added in new Mach fixes (correct Venice problem, assorted fixes)
+ - Added STORMS flag for Machiavelli games (Millis Miller)
+ - Added NOMONEY setting for Machiavelli (basic rules, Millis Miller)
+ - fixed the bug that was reported in plyrdata.c (Tim Miller)
+ - added some concession handling code into summary.c that was there before
+ but must have gotten lost during one of the upgrades (Tim Miller)
+ - fix that will allow players in Ancient Med games to phase
+ orders.(Tim Miller)
+ - documentation reorganization and cleaning (Christophe Courtois)
+
+
+1.0.0 (29th Dec. 2001) : First stable official 1.x judge release
+
+-----
+(Following comes from former file data/log)
+
+
+Version 1.0 DCK - Moved sources from u.washington.edu to morrolan.eff.org
+Version 1.0 DCK - Took over maintenance of judge sources.
+Version 1.1 DCK - Changed victory condition from 36 to 37 in Youngstown
+Version 1.2 DCK - Added Russell's map command option
+Version 2.0 DCK - Added Brion's portability cleanup work and NOSHOW option
+Version 2.1 KL  - Fixed ml_date.c
+	    DCK - Added new index and info files for map command
+Version 2.2 DCK - Added ADMINISTRATOR password
+		- Added fix to discard mail with Precedence: junk
+Version 2.3 DCK - Added Ken's fix for Jamie's IBM VM header problem.
+Version 2.4 DCK - Added Ken's fix for ???? and for a master attempting to 
+		  purchase provinces.
+Version 2.5 DCK - Added Shift variants.
+Version 2.6 DCK - Fix to gameout routine to detect deleted powers.
+Version 3.0 DCK - Added Jonathan's automated draws.
+		- Added Jonathan's "SET ALL PRESS" mods to provide the master
+		  with the true source of press.
+		- Added to the game disabling code.
+		- "Desper fix" - press with no options does not work. You
+		  must use broadcast instead.
+		- Change to Machiavelli map
+Version 3.1 DCK - Fixed two bugs in mail.c introduced in V3.0
+Version 3.2 DCK - Fixed bug in po_newowner.c (Machiavelli support)
+	    KDR - Fixed bug in QUIET flag support 
+Version 4.0 RV -  Added Ken's patch for po_expchk.c and po_newowner.c about
+		  purchasing another power's unit with insufficient funds
+		  and having to submit order for a phantom unit.
+Version 4.0 RV -  Added SET CENTERS command to set the winning centers
+Version 4.0 RV -  Added Press options of brief listing
+Version 4.0 RV -  Added a line to prevent mail from anon.penet.fi
+Version 4.1 RV -  Fixed a bug in SET CENTERS - they weren't being set!!
+Version 4.2 RV -  Fixed problem with mail headers.
+Version 4.3 RV -  Fixed SET PREF bug
+	    DCK - Upped MAXUSERS to 2500
+Version 4.4 DCK - Fixed bug in rdip.c
+		  Fixed error messages in admin script
+	    SS  - Fixed three problems in summary.c
+			- EP #'s, summary command not working, summary
+			  not updated if no build/adjustment phase
+	    DCK	- Removed a number of items from the data directory since
+		  they are now available from ftp.nda.com.
+Version 4.5 SS  - Added support for MNs et al
+Version 4.6 SS  - Fixed master's report.
+Version 5.0 Jimmy
+	    Eric
+	    Robs - Added support for rootz, chromatic, and aberration.
+	    Curt - Fixed some problems in mail.c and po_bldret.c
+Version 5.1 Ed Hinton - Fixed to compile under Sun's cc.
+		- Sets deadline to an order processing day after takeover.
+		- Added STRICTGRACE flag for current grace behavior.
+		  NoSTRUCTGRACE requires grace to end on a processing day,
+		  new games default.
+Version 5.2 Kovar et al - Added code for blacklisting players
+	    Nick - Fixed, again, problem with map.machiavelli
+Version 5.3 Rehbold - Fixed rebellion problem in po_movechk.c
+	    Kovar - Fixed typographical error in data/index.
+	    Ruelle - Made default dedication for all new games -10
+Version 5.4 Curt  - Fixed press to "press to m" always works.
+		  - Added more information to the mail headers.
+	 	  - Cleaned up variant.h
+		  - Reordered starter.flist.
+		  - Cleaned up header files.
+		  - Fixed capitalization on NoSTRICTGRACE.
+		  - Added get package code.
+		  - Fixed Makefile to create dip.blist
+	   	  - Did some stylistic cleanups.
+Version 5.5 Curt  - Fixed bug in history command
+	    Kovar - Improved dipclean for better log file cleanup.
+Version 5.6 Nick  - set unlist = set nolist
+		  - Send notifications of game start to BNC & EPNC.
+		  - Send notification of game end to BNC,EPNC & HoF.
+		  - Allow more than four unusable builds in a phase.
+	    Travis - Changed default settings to include NoStrictGrace.
+		  - Standardize form of <gamename> in messages to '<gamename>'
+		  - Added 'amateur' level designation.
+		  - Added dedicate and dedgame commands, but disabled them.
+		  - Added 'whogame' command, to return whois for a particular
+		    game.
+		  - Clarified differences in set dedicate and set level
+		    command descriptions.
+	    Curt  - Minor cleanup in Makefile.
+		  - Put apostrophes around email address in all smail calls.
+		  - Don't include multiple gam headers for pre-signon list
+		    and list-full commands.
+		  - Properly broadcast changed parameters
+		  - Always include the sender's address in press to master.
+		  - Correct capitalization of "(No)List" flag in reports.
+Version 5.7 Nick  - Milan and Asia variants.
+		  - New flist.
+	    Travis - Fixed game level in list and summaries.
+		  - Amateur setting for registrations.
+		  - Updated data/form.
+		  - Added "whogame" command.
+Version 6.0 Nick  - Spelling corrections in info.asia
+	    Curt  - Fixed fake press bug, cleaned up resign documentation
+	    Travis- Cleaned up whogame command output
+	    DCK   - Removed all PostScript maps.
+	    Sean  - Wrote pointer file for maps et al.
+	    Nick  - Fixed a connection problem in map.asia and other asia probs
+	    Sean  - Wrote ftpbymail document, fixed summary, fixed smail
+Version 6.1 Curt  - Allow 'gray' spelling as well as 'grey' in 'set press'
+		    commands.  Files affected:  ml_set.c.
+		  - Do not count provinces marked 'l' (land) or 'w' (water)
+		    in initial summary  counts.  Files affected:  summary.c.
+		  - Improve the documentation of the 'history' command, 
+		    showing acceptable date formats.  Files affected: 
+		    data/index.
+	    Nick  - Use latest, not first, dip entry from files in summary;
+		    also allow for longer output lines.  Files affected:
+		    summary.c.
+Version 6.2 DCK   - Upped MAXUSERS in bgreet.c. (Should really include
+		    the right header file.)
+		  - Changed mail.c to reject mail from "mailer-daemon".
+		  - Moved 'deadline' to 'deadlines'.
+Version 6.3 Eric  - Bug fix in mail.c that caused some platforms to
+                    core dump when terminating game.
+            Nick  - Bug fix in summary.c causing summary to core dump
+                    on some platforms for longer games.
+                  - Added start and end dates to summary.
+                  - Enhanced result information in summary.
+                  - Enhanced information on game starts for BNC/MNC.
+       VM + Nick  - Added Modern variant.  (Altered order of powers in
+                    Aberration).
+Version 6.4 Nick  - Fixed that caused the D*/draw file to be deleted
+                    when a game was won.
+                    Added Judge Code (ie USEF) to summary.
+Version 7.0 Andre - Cleaned up Machiavelli code
+	    Larry - Improved reporting of fleet retreats when various
+	 	    coasts are available.
+		  - Master now gets 'user@host' rather than 'someone@somewhere'
+		    in gunboat signons.
+		  - Added Index parameter to list output.
+		  - Fixed modern map to correct summary problem.
+		  - Fixed problem with single forward quote on subject
+		    line of a mail message.
+		  - Added GET DEDICATION command.
+		  - Fixed handling of errors in 'dip'. rdip should now
+		    bailout if dip dies abnormally, preventing loops.
+		  - A forced resignation of a player by a GM now sends
+		    to correct user name, ie, the player's.
+		  - Added code to send mail to dipl-l and to reset
+		    the .plan file for the judge whenever the judge
+		    bails out.
+		  - Moved dedication constants to dip.h
+		  - Implemented Deny/Allow. (See data/denyallow)
+	   David  - Various small edits for mailing addresses, minor
+		    bugs, etc etc etc.
+Version 7.1 Larry - Fixed bug that caused multiple resigns to crash the judge.
+		  - Fixed bug that caused judge to crash on bad input.
+		  - Fixed bug that caused judge to hang on bad registrations.
+Version 7.2 Larry - Fixed summary bug introduced in 7.0
+Version 7.3 Larry &
+	    Ken!  - Fixed error in beleagured garrison handling.
+		    aka Hallmark fix. (Later removed.)
+Version 8.0 	  - Released because DCK got out of sync with patches.
+		    Took Larry's sources and am calling them 8.0
+	    Larry - Fixed phased orders and summaries for games going into
+		    the year 2000+
+		  - Removed call - inform_rg() - as it appears to be 
+		    problematic.
+		  - Added StrictWait code. 
+		  - Fixed a 'double resign' problem.
+		  - Fixed case where bad input on registration form caused
+		    crash.
+	          - Fixed case where games would not terminate correctly.
+	    Kevin - Fixed problem with Asia variant - name conflict.
+	    Nick  - Put in new Hall Of Fame pointer.
+	    David - Changed 'deadline' to 'deadlines' in starter.flist
+		    and data/package. 
+Version 8.1 Larry - Removed alternate processing.
+Version 8.2 Nick et al - Hundred variant.
+
+  
+
+
+
+-----
+(Following come from  former CHANGES and Changelog files)
+
+Mon Jun  9 02:40:32 UTC 1997
+
+The current version being worked on is 9.0.9.  9.0.7 was a massive code
+clean up, and should compile under gcc -Wall cleanly.  9.0.8 Was some
+hundred variants added in.
+
+Added a sun os section to the makefile listing some make variables that were
+needed on a sun machine.
+
+Added a sun section to the bottom of jm.c.  Added the fcntl.h standard
+include to dip.c
+
+Fri Oct 10 03:54:46 UTC 1997
+
+Lots of undocumented cleanup.
+
+Removed EP_CUSTODIAN stuff from the code.  It had been commented out.
+
+Sun Oct 12 22:00:00 UTC 1997
+
+name changed to njudge.
+
+version 0.8.1 released
+
+Sun Oct 12 22:09:21 UTC 1997
+
+altered conf.c to put the judge code into the environment when it is set.
+that way an intelligent smail script won't need to be altered when
+installing or upgrading.  the intelligent smail script has already been
+written.
+
+Sun Oct 12 22:43:43 UTC 1997
+
+added a countgames() function to dipent.c
+
+changed main() for all programs to not take a third (environment) argument.
+we weren't using it anyway, and it is undefined to do so.
+
+Wed Oct 15 05:21:43 UTC 1997
+
+A config variable (MAXGAMES) can be set to limit the max number of games.
+
+Sat Oct 25 19:31:58 UTC 1997
+
+deleted README.version, README.admin
+
+rewrote version.c to get rid of most of it.  we just include the version
+from the makefile and dump it out.  no more of this complicated source fork
+tracking.
+
+moved some remaining globals in dip.c to global.c
+
+Mon Oct 27 05:29:31 UTC 1997
+
+deleted getdtablesize() and the code section to close extra file
+descriptors.  we weren't likely to have any, and if we do, it's probably
+deliberate, so don't muck with it.  and it's wasn't portable.
+
+Tue Oct 28 17:48:25 GMT 1997
+
+added chris brand's patch to either enable or eliminate multiple replies to
+an address.  i'm not really sure what it does.  but he wrote it, and wanted
+it, and it wasn't unreasonable when i asked what it did.
+
+straightened out the hundred variant data files, and eliminated two older
+variants that i believe were test variants used when developing hundred and
+classical.
+
+Wed Oct 29 18:32:29 GMT 1997
+
+deleted configure stuff which wasn't complete.  will use autoconf later,
+maybe.
+
+Tue Nov  4 23:21:13 GMT 1997
+
+added Mr Roust's patch to make the history command case insensitive.
+
+Sun Mar 16 06:53:13 1997  rpaar  <rpaar@devel>
+
+	* mail.c, ml_signon.c, draw.c, dip.c:
+	Fixed the EP_CUSTODIAN lines with comments, thus not executing them
+
+Wed Mar 12 21:42:51 1997  davidn  <davidn@devel>
+
+	* Makefile:
+	Fix to ensure summary, cmap and others build when variant.h is changed.
+
+	* po_init.c:
+	Fix to allow w and x to be handled correctly as power letters in
+	variants, without clshing with neutral scs and water provinces.
+
+	* po_mastrpt.c:
+	Fix to ensure judge does not try to send 4Gb of spaces to the gm
+	when there is a power with more than 10 letters in its name.
+
+Sun Feb 16 20:43:18 1997  davidn  <davidn@devel>
+
+	* dip.h, dipent.c, ml_list.c, ml_set.c, ml_signon.c, params.c: Additions
+	to dipent structure and associated code, to allow duplex variants.
+	Command is "set players n".
+
+Sun Jan 26 16:59:50 1997  rpaar  <rpaar@devel>
+
+	* dip.conf:
+	Removed larry's address from the EP_Cust reference.  This is an interim fix
+	until a better solution can be written.  The installing admin will
+	have to insert an address at build time, I suppose.
+
+	* common.c:
+	Applied Kevin's year patch to remove some bugs in year handling.
+
+Wed Jan  1 22:10:12 1997  davidn  <davidn@devel>
+
+	* variant.h: Extra marker lines added for use with AddMap.
+
+Sun Nov 24 20:02:09 1996  rpaar  <rpaar@devel>
+
+	* version.c: Modified to have version numbers generated by RCS.
+	Added new function strconv( char*)
+
+	* version.h: Modified to have version numbers generated by RCS.
+	Removed VERMAJ, and VERMIN.
+
+Mon Nov 18 18:39:44 1996  rpaar  <rpaar@devel>
+
+	* st_movement.c: Applied K.Lowe's convoy bug patch.
+
+Wed Nov 13 23:16:56 1996  rpaar  <rpaar@devel>
+
+	* params.c:
+
+	Changed the loop range in printlevel to 1 <= x <= nlevel instead of 0 <=
+	x <= nlevel.
+	Changed return strcap("undefined") to return ("Undefined")
+
+Sun Nov 10 14:22:47 1996  rpaar  <rpaar@devel>
+
+	* history.c: changed the "broad#" to "broad" in the keys[] array.
+	modified the return text to include newlines.
+
+Thu Nov  7 08:01:09 1996  rpaar  <rpaar@devel>
+
+	* st_porder.c:
+	Changed fprintf(bfp, "If you want a draw,..." to fprintf(rfp,...
+
+Tue Nov  5 23:23:54 1996  rpaar  <rpaar@devel>
+
+	* ml_signon.h: AddeLog message comments to header
+
+	* mail.c, mail.h, lib.c: USIT changes to fix minor bugs
+
+	* history.c: Added function to process history as turns not dates
+
+	* conf.h: NW's changes
+
+	* Makefile: NW's new Makefile
+
+	* ml_signon.h: Initial revision
+
+	* ml_signon.c:
+	Changes made by NW to suppress non standard characters as input.
+
+Fri Oct 25 07:19:48 1996  rpaar  <rpaar@devel>
+
+	* .magic.h: Initial revision
+
+Thu Oct 24 08:03:50 1996  rpaar  <rpaar@devel>
+
+	* Makefile: Removed definition of SRCDIR
+
+	* Makefile: Removed TAB from line 148
+
+Sun Oct 20 12:33:49 1996  rpaar  <rpaar@devel>
+
+	* dip.template: Missing file needed for installation
+
+	* Makefile, Makefile~, README, README.JudgeKeeper, README.admin,
+	README.bailout, README.duplex, README.fixids, README.flags,
+	README.flist, README.gotchas, README.ignore, README.master,
+	README.resign, README.timewarp, README.version, assign.c, atrun,
+	bailout.c, bgreet.c, boolean.h, cmap.c, common.c, conf.c, conf.h,
+	deddump.c, defaults.h, delgame.c, dip.c, dip.conf, dip.h, dipclean,
+	dipent.c, diprun, draw.c, flist.info, flock.c, fmtwho.c, global.h,
+	history.c, ign.c, jm.c, lib.c, log, ma_build.c, ma_expenses.c,
+	ma_famplag.c, ma_movement.c, ma_porder.c, ma_retreat.c, ma_stats.c,
+	mach.h, machlib.c, mail.c, mail.h, makedata, makeout, mfprintf.c,
+	ml_date.c, ml_getaddr.c, ml_list.c, ml_press.c, ml_set.c, ml_signon.c,
+	newlogs, newvers, params.c, pdip.c, phase.c, po_condition.c,
+	po_errmsg.c, po_get.c, po_init.c, po_mastrpt.c, porder.c, porder.h,
+	port.h, rdip.c, rundipmap, runlistmap, smail, st_build.c, st_movement.c,
+	st_porder.c, st_retreat.c, st_status.c, starter.flist, starter.flist~,
+	strcasecmp.c, strdup.c, summary.c, users.c, variant.h, variant.h.new,
+	variantx.h, version.c, version.h: Morrolan v9.0
