@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.22  2004/01/11 01:02:29  millis
+	 * Fix bug 265, so that convoys work in high seas.
+	 *
 	 * Revision 1.21  2003/09/14 08:25:13  millis
 	 * Fix bug 225
 	 *
@@ -1484,7 +1487,7 @@ void MailOut(char *out_line, char *address)
    static char lline[256];
 
    while ( ptr = GetAddressPart(count++, address)) {
-        if (*ptr != '*' ) {
+        if (*ptr != '*' && !strcmp(NOBODY, ptr)) {
            sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
            execute(lline);
 	}

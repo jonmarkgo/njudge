@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.69  2004/03/28 15:51:05  millis
+ * Fix bug 271, provide more information about unstart
+ *
  * Revision 1.68  2004/03/28 15:27:56  millis
  * Ignore any message with 'X-Njudge:' in mail header (or message)
  *
@@ -2892,8 +2895,6 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 	return result;
 }
 
-#define NULL_EMAIL "nobody@localhost"
-
 static int InsertDummyPlayers()
 {
     int i;
@@ -2914,7 +2915,7 @@ static int InsertDummyPlayers()
         while (players != dipent.np && i < MAXPLAYERS ) {
             dipent.players[i].power = WILD_PLAYER;
             dipent.players[i].userid = 0;
-            strcpy(dipent.players[i].address,NULL_EMAIL);
+            strcpy(dipent.players[i].address,NOBODY);
             dipent.players[i].status = SF_ABAND;
             players++;
             dipent.n++;
