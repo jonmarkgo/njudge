@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2001/10/23 00:39:52  greg
+ * Added subjectline for Promote command and fixed subjectline for Eject command to show power ejected - not master.
+ *
  * Revision 1.11  2001/10/22 20:09:05  nzmb
  * Cw.c draw.c added chenges and fixes so summaries for draws and concessions are properly sent to the HALL_KEEPER address.
  *
@@ -2023,8 +2026,8 @@ void mail_reply(int err)
 		if (!strncmp(subject, "[You are late!] ", 16))
 			shiftleft(16);
 
-		if (!strncmp(subject, JUDGE_CODE, 4)) {
-			shiftleft(4);
+		if (!strncmp(subject, JUDGE_CODE, strlen(JUDGE_CODE))) {
+			shiftleft(strlen(JUDGE_CODE));
 
 			if (signedon) {
 				if (!strncmp(subject, ":", 1)) {

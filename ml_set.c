@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2001/10/20 12:11:13  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.15.2.3  2001/10/19 23:55:13  dedo
  * Remove warning for over-large string literal
  *
@@ -1207,7 +1210,10 @@ void mail_setp(char *s)
 				fprintf(rfp, "You may not change the preference list after the game %s",
 					"begins.\n");
 			} else {
-				sprintf(subjectline, "%s:%s - %s Preference Change", JUDGE_CODE, dipent.name, dipent.phase);
+/*				if (subjectline[0] == '\0') {*/
+				if (strstr(subjectline, "New Player Signon") == NULL) {
+					sprintf(subjectline, "%s:%s - %s Preference Change", JUDGE_CODE, dipent.name, dipent.phase);
+				}
 
 				for (t = s; *s && !isspace(*s) && *s != ','; s++);
 				if (*s)

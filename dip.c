@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.14  2001/08/18 06:09:15  nzmb
+ * Added code to reset concession flags when turn processes, and not to warn
+ * people in terminated games.
+ *
  * Revision 1.13  2001/07/15 09:13:52  greg
  * added support for game directories in a sub directory
  *
@@ -978,6 +982,8 @@ int process(void)
 		}
 		i = dipent.np + '0' - dipent.seq[1];
 		if (dipent.xflags & XF_MANUALSTART && i <= 0) {
+			sprintf(subjectline, "%s:%s - Waiting for Master to Start",
+				JUDGE_CODE, dipent.name);
 			fprintf(rfp,
                         	"Diplomacy game '%s' is still waiting for master to start it.\n",
                         	dipent.name );
@@ -989,12 +995,14 @@ int process(void)
 				dipent.name);
 
 		} else {
-		fprintf(rfp,
-			"Diplomacy game '%s' is still waiting for %d player%s to sign on.\n",
-			dipent.name, i, i == 1 ? "" : "s");
-		pprintf(cfp,
-			"%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n",
-			NowString(), dipent.name, i, i == 1 ? "" : "s");
+			sprintf(subjectline, "%s:%s - Waiting for More Players",
+				JUDGE_CODE, dipent.name);
+			fprintf(rfp,
+				"Diplomacy game '%s' is still waiting for %d player%s to sign on.\n",
+				dipent.name, i, i == 1 ? "" : "s");
+			pprintf(cfp,
+				"%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n",
+				NowString(), dipent.name, i, i == 1 ? "" : "s");
 			sprintf(title_text,
 			        "Diplomacy game %s signup waiting",
 				dipent.name);
