@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2003/05/13 00:07:26  millis
+ * Bug 110, move on process deadline by 24 hours on bailout recovery
+ *
  * Revision 1.27  2003/05/12 23:23:46  millis
  * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
  *
@@ -434,5 +437,7 @@ extern int victor;              /* Set to power index if there is a game winner 
 extern int process_set; 	/* Set to 1 if process has been set */
 
 extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       */
+
+extern int GM_Became;		/* set to 1 if GM issued become */
 
 #endif				/* _DIP_H */

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.44  2003/05/13 07:23:58  nzmb
+ * Fixed bug #48 by limiting to 100 the number of infoplayer request that can be sent in one e-mail
+ *
  * Revision 1.43  2003/05/12 23:23:46  millis
  * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
  *
@@ -211,6 +214,9 @@ static int InsertDummyPlayers( void );
 
 /* set the max. infoplayer requests per e-mail here */
 #define INFOPLAYER_MAX 100
+
+char *mail_r2file;
+#define r2file mail_r2file
 
 #define FROM      	1
 #define GET       	2
@@ -495,6 +501,7 @@ int mail(void)
 	char uuenc;
 	char *whotext;
 	char x[30];
+	char cmdline[64];
 	PLYRDATA_RECORD record;
 	time_t now2;
 	static unsigned int no_of_infop = 0;
@@ -502,8 +509,9 @@ int mail(void)
 	someone = "someone@somewhere";
 
 	starting = msg_header_done = 0;
+	rfile = "dip.reply";
+	r2file = "dip.gmreply";
 
-	rfile = "dip.reply";	/* TODO make this configurable */
 	if (Dflg)
 		rfp = stdout;
 	else if (!(rfp = fopen(rfile, "w"))) {
@@ -1939,10 +1947,24 @@ int mail(void)
 						fprintf(rfp, "No one is signed up to play %s.\n", powers[n]);
 						break;
 					}
+
+					/* gm only gets confirmation of commands to this point */
+					fclose(rfp);
+					sprintf(cmdline, "mv %s %s", rfile, r2file);
+					system(cmdline);
+					
+					/* open new reply for both */
+					if((rfp = fopen(rfile, "w")) == NULL)
+					{
+						fprintf(stderr, "Error reopening %s.\n", rfile);
+						bailout(E_FATAL);
+					}
+					msg_header(rfp);
 					fprintf(rfp, "Master %s assuming identity of %s.\n", raddr, powers[n]);
 					fprintf(rfp, "Password not shown; Address %s.\n\n",
 					      dipent.players[i].address);
 					player = i;
+					GM_Became = 1;
 					break;
 
 				case PROCESS:
@@ -2587,6 +2609,7 @@ void mail_reply(int err)
 		s = raddr;
 		sprintf(jline, "%s", JUDGE_CODE);
 	}
+
 	if (*s && *s != '*' && !Dflg) {
 		/* call lenlimit to make sure lines <=1024 long */
 		sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, rfile, rfile);
@@ -2594,22 +2617,46 @@ void mail_reply(int err)
                 sprintf(line, "mv %s.tmp %s", rfile, rfile);
                 system(line);
 
+		/*
+		 * This code sends mail to whoever owns the power, which is
+		 * cool, but it may reveal master commands to the player
+		 * if the GM "became" him, fix by Tim Miller, so we only send
+		 * rfile.
+		 * May 14, 2003
+		 */
 		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag] " : "", jline, subject, s);
 
 		if ((i = execute(line))) {
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, s);
 		}
 	}
-	if (*raddr != '*' && address_not_in_list(raddr,s) && !Dflg) {
 
-		/* TODO make the ./smail configurable */
-		/* done ;-) */
-		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag]" : "", jline, subject, raddr);
-		if ((i = execute(line))) {
-			/* TODO, why not just have execute() write it's errors to the log */
-			fprintf(log_fp, "Error %d sending mail to %s.\n", i, raddr);
-		}
-	}
+	if (*raddr != '*' && address_not_in_list(raddr,s) && !Dflg) {
+                        
+                /*
+                 * this code returns a reply to whoever sent the mail, if it's
+                 * the GM and he became, we need to give him his old stuff
+                 * too.
+                 */
+                if(GM_Became)
+                {
+                        sprintf(line, "cat %s %s > dip.tempreply", r2file
+                                , rfile);
+                        system(line);
+                        sprintf(line, "mv dip.tempreply %s", rfile);
+                        system(line);
+                }
+                sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD,
+                        rfile, errorflag ? "[Error Flag]" : "", jline, subject,
+				raddr);
+                if ((i = execute(line))) {
+                        /* TODO, why not just have execute() write its errors
+                           to the log */ 
+                        fprintf(log_fp, "Error %d sending mail to %s.\n",
+                                i, raddr);
+                }
+        }
+
 	return;
 }
 

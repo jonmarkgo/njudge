@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/05/13 10:59:09  millis
+ * Correctly set bailout flag to initial 0 value
+ *
  * Revision 1.10  2003/05/13 00:07:26  millis
  * Bug 110, move on process deadline by 24 hours on bailout recovery
  *
@@ -137,3 +140,5 @@ int victor = 0;			/* Set to index of power when there is a victor */
 int process_set; 		/* Set to 1 if process command has been set */
 
 int bailout_recovery = 0;       /* Set to 1 if recovering from a bail-out	*/
+
+int GM_Became = 0;		/* if GM issued the become command */
