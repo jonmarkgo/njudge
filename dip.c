@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.23  2002/05/11 09:15:30  greg
+ * Minor bug fixes
+ * - fixed subjectline for absence requests
+ * - fixed phase length, so it's no longer hard coded for responses
+ * - partial fix for unusable builds, players with only unusable builds
+ *    will no longer be flagged as having orders due, however players
+ *    with some usable builds will need to waive any unusable builds,
+ *    also, if one or more players have unusable builds, but no
+ *    player has usable builds, the build phase will process after
+ *    a short delay
+ *
  * Revision 1.22  2002/05/04 02:06:16  nzmb
  * Added code to display the time left until the deadline and grace at the
  * bottom of their reply whenever a player signs on.
@@ -229,10 +240,11 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
         char *out_file = "dip.rreply";
 
         sprintf(line,
-                "%s %s %s -i=%s -o=%s",
+                "%s %s %s %s -i=%s -o=%s",
                 "./zpblind",
                 powers[dipent.players[player_index].power],
                 owners[dipent.players[player_index].power],
+		dipent.x2flags & X2F_BLIND_NO_CENTRES ? "-v=HideAll" : "",
                 in_file,
                 out_file);
 
@@ -824,11 +836,17 @@ int process(void)
 	*/
 	dedtest = dipent.dedapplied;
 
-	if (GAME_PAUSED) {
-		fprintf(lfp, "Diplomacy game '%s' is waiting to be continued.\n", dipent.name);
-		fprintf(mlfp, "Diplomacy game '%s' is waiting to be continued.\n", dipent.name);
-		return 0;
-	}
+        if (GAME_PAUSED) {
+		/**** To be created proper file etc. 
+                fprintf(lfp,
+                        "Diplomacy game '%s' is waiting to be continued.\n",
+                        dipent.name);
+                fprintf(mlfp,
+                        "Diplomacy game '%s' is waiting to be continued.\n",
+                        dipent.name);
+		****/
+                return 0;
+        }
 
 	if (now < dipent.grace) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
@@ -1380,10 +1398,13 @@ int process(void)
 			    fprintf(rfp,"Requested absence(s) activated.\n");
 			fprintf(rfp, "The deadline for orders will be %s.\n",
 				ptime(&dipent.deadline));
-			if (dipent.phase[5] == 'B' &&
-				((dipent.xflags & XF_TRANS_BUILD) || (dipent.xflags & XF_ANYDISBAND))) {
+			if (dipent.phase[5] == 'B' && 
+				((dipent.xflags & XF_TRANS_BUILD) || 
+				 (dipent.xflags & XF_ANYDISBAND) ||
+				 (dipent.x2flags & X2F_MORE_HOMES))) {
 			    /* A build phase in a transform game means that all can transform */
 			    /* OR when any player can disband */
+			    /* OR game allows home centre assignments */
 			    /* Thus set active players in a wait state */
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
@@ -1441,7 +1462,7 @@ int process(void)
 			}
 		}
 
-		if (!strcmp(dipent.seq, "002")) {
+		if (!strcmp(dipent.seq, "002") && !(dipent.flags & F_BLIND)) {
 			sprintf(line, "%s dip.result 'Diplomacy results %s %s' '%s'",
 				SMAIL_CMD, dipent.name, phase, GAMES_OPENER);
 			execute(line);
