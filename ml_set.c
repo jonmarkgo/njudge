@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.34  2003/02/28 20:16:43  nzmb
+ * Changed the name of resignation ratio to CD ratio, to avoid confusion with
+ * Doug Massey's DRR.
+ *
  * Revision 1.33  2003/02/25 11:11:24  russblau
  * Improved absence documentation and related Judge message strings.
  *
@@ -833,8 +837,8 @@ void mail_setp(char *s)
 	 "max vacations", "maxvacations",
 	 "max holidays", "maxholidays",
 	 "one centre", "onecentre", "one center", "onecenter",
-	 "normal broadcast", "normalbroadcast",
-	 "no normal broadcast", "nonormal broadcast", "nonormalbroadcast",
+	 "broadcast", "broadcast press", "normalbroadcast",
+	 "no broadcast", "no broadcast press", "nonormalbroadcast",
 	 "blank press", "blankpress",
 	 "no blank press", "noblankpress", "no blankpress",
 	 "minor press", "minorpress",
@@ -970,15 +974,15 @@ void mail_setp(char *s)
 	 SET_WATCHALL, SET_WATCHALL,
 	 SET_NOWATCHALL, SET_NOWATCHALL, SET_NOWATCHALL, SET_NOWATCHALL,
 	 SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, SET_ABSENCE, 
-         SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,
-	 SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,SET_NOABSENCE,
+         SET_NOABSENCE, SET_NOABSENCE, SET_NOABSENCE, SET_NOABSENCE,
+	 SET_NOABSENCE, SET_NOABSENCE, SET_NOABSENCE, SET_NOABSENCE,
 	 SET_NOABSENCE, SET_NOABSENCE,
 	 SET_MAXABSENCE, SET_MAXABSENCE,
 	 SET_MAXABSENCE, SET_MAXABSENCE,
 	 SET_MAXABSENCE, SET_MAXABSENCE,
 	 SET_ONECENTRE, SET_ONECENTRE, SET_ONECENTRE, SET_ONECENTRE,
-	 SET_NORMBROAD, SET_NORMBROAD, 
-	 SET_NONORMBROAD, SET_NONORMBROAD, SET_NONORMBROAD ,
+	 SET_NORMBROAD, SET_NORMBROAD, SET_NORMBROAD, 
+	 SET_NONORMBROAD, SET_NONORMBROAD, SET_NONORMBROAD,
 	 SET_BLANKPRESS, SET_BLANKPRESS,
 	 SET_NOBLANKPRESS, SET_NOBLANKPRESS, SET_NOBLANKPRESS,
 	 SET_MINORPRESS, SET_MINORPRESS,
@@ -1121,7 +1125,7 @@ void mail_setp(char *s)
 	 PRV_MAXABSENCE, PRV_MAXABSENCE,
  	 PRV_MAXABSENCE, PRV_MAXABSENCE,
 	 PRV_ONECENTRE, PRV_ONECENTRE, PRV_ONECENTRE, PRV_ONECENTRE,
-         PRV_NORMBROAD, PRV_NORMBROAD,
+         PRV_NORMBROAD, PRV_NORMBROAD, PRV_NORMBROAD,
          PRV_NONORMBROAD, PRV_NONORMBROAD, PRV_NONORMBROAD,
          PRV_BLANKPRESS, PRV_BLANKPRESS,
          PRV_NOBLANKPRESS, PRV_NOBLANKPRESS, PRV_NOBLANKPRESS,

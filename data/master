@@ -1,17 +1,21 @@
-Greetings from the Diplomacy* Adjudicator!!                 19 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                 27 February, 2003
 master
-
 
 Note: see file 'index' for a fuller list of available commands, and an
       explanation of the syntax conventions used in this document.
 
-To become a Master for a particular game, you must be signed on as the only
+By default, when you create a game, the Judge registers you as a player in
+that game.  To become a Master, you must be signed on as the only
 player and then use the "BECOME MASTER" command.  Thus, to create a new
 Youngstown variant game called "older" with yourself as Master, send the
 following text to the judge:
 
    CREATE ?older <password> youngstown
    BECOME MASTER
+
+The Judgekeeper can change the default setting so that the person who
+creates the game automatically becomes Master.  If this setting is in effect,
+you can skip the BECOME command.
 
 If anyone else is signed on to the game you will not be allowed to become
 Master this way. However, a game can have two or more Masters. If you wish to
@@ -141,6 +145,22 @@ the "m<name>" syntax and use the following commands:
      existed will also be reprocessed so if they were revised by hand the
      first time the replayed phase was processed the revisions may get lost.
 
+   EJECT power|email_address
+     This allows you to "resign" any player or Observer from your game.
+     Obviously, this command should be used with some discretion.  You must
+     use the "email_address" form to specify who to eject if there is more
+     than one person assigned to a given power; most often, this would be
+     true for Observers.  You can also "EJECT" yourself as Master; if there
+     is no other Master, however, you shouldn't do this unless the Judge
+     allows unmoderated games and you have used the SET UNMODERATED command
+     first.
+
+   PROMOTE email_address
+     Promotes the specified person, who must already have signed on to the
+     game as an Observer, to Master status.  This command allows a game to
+     have multiple Masters; very handy if you are going off on vacation or
+     have an unexpected business trip.
+
    SET [UN]MODERATED
      This command sets or clears the flag that disallows the other players
      from adjusting the deadlines and other parameters associated with the
@@ -179,8 +199,10 @@ the "m<name>" syntax and use the following commands:
    SET NORMAL PRESS
      This command clears the "all press" flag.
 
-See the file 'index' for a complete list of the rest of the flags that
-you can set or clear as the Master.
+Get the file 'index' for a complete list of the rest of the flags that
+you can set or clear as the Master.  In general, the commands listed in this
+document can only be used by a Master; but the other "SET" commands listed
+in file 'index' can also be used by any player in an unmoderated game.
 
 The reply that you get back from the judge after signing on as Master
 (unless you relinquish the Master status by using the BECOME command)

@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                   3 February, 2003
 index.
 
 (Note: Current as of njudge version 1.3.1.
@@ -31,14 +31,14 @@ mac:  Can only be used in a Machiavelli variant game, and only before the
 bgs:  Can only be used Before Game Starts.
 
 Items in square brackets are optional, items in uppercase are keywords and
-must be entered exactly as specified (although the command parser actually
-is not case-sensitive), items in lowercase are parameters and should have
-an appropriate value substituted in.  Words separated by vertical bars (|)
+must be entered exactly as specified (although the command parser actually is
+not case-sensitive), items in lowercase are parameters and should have an
+appropriate value substituted in.  Words separated by vertical bars (|)
 indicate a choice of one of the words.
 
 Most command parameters are self-explanatory.  "name" means the name of a
-game, which must be no more than 8 alphanumeric characters.  "address" means
-a valid email address.  "power" means the name (not just the first letter) of
+game, which must be no more than 8 alphanumeric characters.  "address" means a
+valid email address.  "power" means the name (not just the first letter) of
 one of the powers in the game, which depends on the variant being played.
 
 
@@ -56,23 +56,23 @@ mod/    BECOME power
 
 ply/    BROADCAST [options]
         To send a press message; options may or not be specified, and the
-        message may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF',
-        or the end of the (incoming) mail message.  The adjudicator will send
-        as press any text that it encounters until it reaches a line
-        containing only one of these three keywords.  In particular, it
-        will ignore any orders or other command keywords appearing in the
-        text of press, but to play it safe, you may wish to put a ">" or
-        other character in front of such material.  See file 'press'.
+        message may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or
+        the end of the (incoming) mail message.  The adjudicator will send as
+        press any text that it encounters until it reaches a line containing
+        only one of these three keywords.  In particular, it will ignore any
+        orders or other command keywords appearing in the text of press, but
+        to play it safe, you may wish to put a ">" or other character in front
+        of such material.  See file 'press'.
 
 ply/    CLEAR
         To clear any pending orders entered with the PHASE command.  (Note:
         there is no way to clear orders entered for the current phase.)
 
 any/bgs CREATE ?name password [variant] [option [option ...]]
-        To create a new game on the Judge.  This command will fail, of
-        course, if the game "name" already exists, or if the Judge is not
-        allowing creation of new games.  The game will be Standard unless a
-        variant and/or options are specified. The "variant" and "option"
+        To create a new game on the Judge.  This command will fail, of course,
+        if the game "name" already exists, or if the Judge is not allowing
+        creation of new games.  The game will be Standard unless a variant
+        and/or options are specified. The "variant" and "option"
         specifications for this command are the same as those accepted by the
         "SET VARIANT" command, below. See file 'master' for more detail on
         creating games.
@@ -80,19 +80,19 @@ any/bgs CREATE ?name password [variant] [option [option ...]]
 mod/    EJECT power|email
         A moderator-only command to resign a particular power.  This can be
         done at any time by the moderator.  The moderator MUST use this form
-        to resign himself.  If an email address is specified, the command
-        will work to resign observers too.  The "EJECT power" form will not
-        work if more than one person is signed on to the specified power.
+        to resign himself.  If an email address is specified, the command will
+        work to resign observers too.  The "EJECT power" form will not work if
+        more than one person is signed on to the specified power.
 
 ply/    ENDBROADCAST|ENDPRESS
-        Terminate a Press or Broadcast message.  Note that either form of
-        this command will terminate either kind of message.
+        Terminate a Press or Broadcast message.  Note that either form of this
+        command will terminate either kind of message.
 
 adm/    FIXID siteid site_name
-        Sets all players who have registered with the specified site name
-        to have a siteid as indicated.  By default all users get their
-        area code times 100 as a siteid and must be fixed to some non-
-        even multiple of 100.
+        Sets all players who have registered with the specified site name to
+        have a siteid as indicated.  By default all users get their area code
+        times 100 as a siteid and must be fixed to some non- even multiple of
+        100.
 
 any/    GET file
         To get a particular file.  For a complete list of files see file
@@ -104,10 +104,10 @@ any/    GET DEDICATION
 
 any/    GET PACKAGE
         To get the 'new user package' of files.  These files are generally
-        sent automatically to new users at the time they register with a
-        Judge (see command "REGISTER"), but they can be specifically 
-        requested with this command.  These files are the ones that all new 
-        users should read before attempting any Judge Diplomacy games.
+        sent automatically to new users at the time they register with a Judge
+        (see command "REGISTER"), but they can be specifically requested with
+        this command.  These files are the ones that all new users should read
+        before attempting any Judge Diplomacy games.
 
 any/    HELP
         The general introduction text is returned, and any other text
@@ -120,30 +120,30 @@ ply/    HELP
 any/    HISTORY [name] [FROM date] [TO date] [LINES n]
         HISTORY [name] EXCLSTART turnId [EXCLEND turnId] [BROAD]
 
-        Retrieve (by email) history information for the specified game.
-        A "name" is required unless the command is given after a valid
-        SIGNON, in which case the signed-on game is assumed.  The history
-        information is all the messages that an observer would have seen had
-        he been signed on for the time period.  This includes broadcasts, but
-        not any partial press.
+        Retrieve (by email) history information for the specified game.  A
+        "name" is required unless the command is given after a valid SIGNON,
+        in which case the signed-on game is assumed.  The history information
+        is all the messages that an observer would have seen had he been
+        signed on for the time period.  This includes broadcasts, but not any
+        partial press.
 
-        The command "HISTORY [name]" without any other arguments will
-        retrieve all history for the period from one week ago (real time) to
-        the present, up to a maximum of 1000 lines.  Other command
-        specifications can be used to change the time period covered and the
-        length of the response.  See file 'history' for syntax details.
+        The command "HISTORY [name]" without any other arguments will retrieve
+        all history for the period from one week ago (real time) to the
+        present, up to a maximum of 1000 lines.  Other command specifications
+        can be used to change the time period covered and the length of the
+        response.  See file 'history' for syntax details.
 
-        Finally, note that much game history information can also be
-        retrieved from Alain Tésio's exceptional "Diplomacy tools" site,
+        Finally, note that much game history information can also be retrieved
+        from Alain Tésio's exceptional "Diplomacy tools" site,
         http://www.floc.net/
 
 any/    IAMALSO address
         To register a new email address and link it to an existing
-        registration.  If your return address changes you can use this
-        command to tell the adjudicator that you are the same person without
-        having to resubmit a complete form.  You must send this command
-        _from_ the new address.  The address specified must be one that was
-        registered previously.
+        registration.  If your return address changes you can use this command
+        to tell the adjudicator that you are the same person without having to
+        resubmit a complete form.  You must send this command _from_ the new
+        address.  The address specified must be one that was registered
+        previously.
 
 any/    INFOPLAYER address
         Prints out the current dedication and plyrdata info for the given
@@ -151,14 +151,14 @@ any/    INFOPLAYER address
 
 any/    LIST [FULL|name]
         If no optional name or keyword is specified a short list of the
-        current games is generated.  If the FULL keyword is specified
-        a detailed report including the player list of each game is
-        generated.  If a name is specified, the full report for that game
-        is generated along with unit positions and supply center holdings.
+        current games is generated.  If the FULL keyword is specified a
+        detailed report including the player list of each game is generated.
+        If a name is specified, the full report for that game is generated
+        along with unit positions and supply center holdings.
 
 ply/    LIST
-        The detailed report of all players and units will be generated
-        for the currently signed on game.
+        The detailed report of all players and units will be generated for the
+        currently signed on game.
 
 any/    MAP name [n]
         [Deprecated: this command is disabled by default on new Judges,
@@ -168,18 +168,18 @@ any/    MAP name [n]
         Send a postscript map of the current status of the game.  Not all
         variants are supported.  The "n" option sends the file in plain
         postscript format instead of uuencoded, compressed ps format.
-        
+
         Rather than use this command, you can obtain maps of any game in
-        multiple formats from Alain Tésio's outstanding "Diplomacy tools" 
+        multiple formats from Alain Tésio's outstanding "Diplomacy tools"
         site, http://www.floc.net/
 
 any/    MAP * [n]
         [Deprecated: see previous entry.]
-        This command must prefix a LIST output from any judge and will
-        produce a map based on that output.  The "*" is real and is not
-        replaced.  The "n" option is as above.
-        The LIST output supplied must *not* have any characters added to
-        the beginning of the line.  e.g: The comment (">") character.
+        This command must prefix a LIST output from any judge and will produce
+        a map based on that output.  The "*" is real and is not replaced.  The
+        "n" option is as above.  The LIST output supplied must *not* have any
+        characters added to the beginning of the line; e.g., the comment (">")
+        character.
 
 adm/    NOCONTROL
         Prevents broadcast message from actually being sent.  For debugging.
@@ -195,9 +195,8 @@ ply/    PHASE season year phase
 ply/   !POSTALPRESS
         If postal press is enabled, this command will append the lines
         following it to the postal press file, until an "ENDPRESS",
-        "ENDBROADCAST", or "SIGNOFF" is encountered.  When the orders
-        process, the postal press file is mailed to everyone signed on to
-        the game.
+        "ENDBROADCAST", or "SIGNOFF" is encountered.  When the orders process,
+        the postal press file is mailed to everyone signed on to the game.
 
 mod/    PREDICT
         Will send to the moderator a prediction of the current turn, using
@@ -205,8 +204,8 @@ mod/    PREDICT
 
 ply/    PRESS options
         To send a press message; options must be specified, and the message
-        may be terminated by "ENDBROADCAST", "ENDPRESS", "SIGNOFF", or the
-        end of the (incoming) mail message.  See file 'press'.
+        may be terminated by "ENDBROADCAST", "ENDPRESS", "SIGNOFF", or the end
+        of the (incoming) mail message.  See file 'press'.
 
 mod/    PROCESS [season year phase]
         Force the judge to process orders immediately with whatever it has in
@@ -220,7 +219,7 @@ mod/    PROMOTE address
 
 adm/    RECORD userid plyrdata_field value SPECIAL_PW
         Adjusts the given user's plyrdata record field given by field to a
-        new value givden by value.  Fields are 1 for ontime, 2 for total, 3
+        new value given by value.  Fields are 1 for ontime, 2 for total, 3
         for start, 4 for resignations, and 5 for tookovers.  The SPECIAL_PW
         is defined in dip.conf
 
@@ -234,9 +233,9 @@ ply/    RESIGN
         cannot RESIGN.  See command "EJECT".
 
 ply/    RESUME
-        To restart a completed or terminated game.  Only the moderator can
-        issue this command, unless the moderator has previously used the "SET
-        RESUME" command.
+        To restart a completed or terminated game.  The "SET [NO]RESUME"
+        command (below) determines whether this command will be accepted from
+        any player, or only from a Master.
 
 mod/    ROLLBACK turn
         Rolls the game back to a previously processed turn.  See file
@@ -256,49 +255,48 @@ mod/    SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
         forms, this command is no longer widely used.
 
 ply/    SET ADDRESS [reply_address]
-        To change where your reports go.  If you don't specify an address,
-        the address from the mail headers (specifically, the _last_
-        Reply-To: header encountered) will be used.  If you signon and
-        the address in the mail headers does not match the reporting
-        address you will get two replies, one to each address.  This can
-        be fixed by using "set address" with no reply address specified.  You
-        can also specify multiple addresses separated by commas, but no
-        spaces, to receive reports at two (or more) addresses.
+        To change where your reports go.  If you don't specify an address, the
+        address from the mail headers (specifically, the _last_ Reply-To:
+        header encountered) will be used.  If you signon and the address in
+        the mail headers does not match the reporting address you will get two
+        replies, one to each address.  This can be fixed by using "set
+        address" with no reply address specified.  You can also specify
+        multiple addresses separated by commas, but no spaces, to receive
+        reports at two (or more) addresses.
 
 mod/mac SET [NO]ADJACENT|ADJACENCY
         Disables/enables optional rule that allows bribes from nonadjacent
         players.
 
 mod/    SET ALL PRESS
-        To request that all partial press be sent to you as the moderator
-        of the game as well as to the intended recipients.  Use "SET NORMAL
-        PRESS" to disable this feature.  Can be extended to observers if a
-        SET WATCH ALLPRESS was previously sent.
+        To request that all partial press be sent to you as the moderator of
+        the game as well as to the intended recipients.  Use "SET NORMAL
+        PRESS" to disable this feature.  Can be extended to observers if a SET
+        WATCH ALLPRESS was previously sent.
 
 mod/    SET ALLOW PLAYER [-]address
         Add an address to the "allow" list for the game; or, using the "-"
         prefix, remove an address from that list.  IMPORTANT:  if the
-        moderator creates an "allow" list for a game, then *only* addresses
-        on that list will be able to sign on as a player or observer.  This
-        can be used to set up an invitation-only game.  See also command 
-        "SET DENY PLAYER".
+        moderator creates an "allow" list for a game, then *only* addresses on
+        that list will be able to sign on as a player or observer.  This can
+        be used to set up an invitation-only game.  See also command "SET DENY
+        PLAYER".
 
 adm/    SET ALLOW PLAYER|MASTER [-]address
         Modifies the global "allow" lists for all games on the Judge.  If
         these lists exist, only addresses on the list will be allowed to
         signon to games (for the PLAYER list) or to CREATE games (for the
         MASTER list).  This is only useful for a Judge limited to private
-        games.  See also command "SET DENY", and see file 'denyallow' for
-        more technical details.
+        games.  See also command "SET DENY".
 
 mod/bgs SET ANYCENTRE[S]|ANYCENTER[S]
         Allows a power to build in any owned centre during a build phase.
 
 mod/bgs+SET ANYDISBAND
         Allow powers to disband any unit during a build phase (and thus
-        gaining the option to rebuild on a buildable centre if desired).
-        A 'wait' is set for all active players during the build phase.
-        Opposite of "SET NORMAL DISBAND", see below.
+        gaining the option to rebuild on a buildable centre if desired).  A
+        'wait' is set for all active players during the build phase.  Opposite
+        of "SET NORMAL DISBAND", see below.
 
 mod/mac SET [NO]ASSASSINS|ASSASSINATION[S]
         Disables/enables optional assassination rules.
@@ -330,10 +328,10 @@ mod/bgs!SET [NO]BCENTERS|[NO]BCENTRES
         the power sending the command) in "Blind" variant.  Default disabled.
 
 mod/bgs SET BLANKBOARD
-        Set the game to start in a build phase, with no units, so that
-        players can place a different initial stating unit position.
-        Can only be set before the game begins, and has no effect on games
-        that already start in a build phase (such as Chaos).
+        Set the game to start in a build phase, with no units, so that players
+        can place a different initial stating unit position.  Can only be set
+        before the game begins, and has no effect on games that already start
+        in a build phase (such as Chaos).
 
 mod/    SET [NO]BLANKPRESS
         Disables/enables players to send blank press messages.  Usually not
@@ -344,10 +342,10 @@ mod/    SET BN|BNC [NUMBER] number
         longer being maintained.  Retained for compatibility only.}
         Sets the Boardman number for a game.  This command should only be
         issued after receiving a number from the Boardman Number Custodian
-        (BNC).  Boardman numbers are only assigned to Standard games.  The
-        BNC number appears in the game's listing and summary.
+        (BNC).  Boardman numbers are only assigned to Standard games.  The BNC
+        number appears in the game's listing and summary.
 
-ply/    SET [NO]BROADCAST PRESS
+ply/    SET [NO]BROADCAST [PRESS]
         Disables/enables receiving broadcast press messages.
         Only possible for observers or moderators.
 
@@ -568,14 +566,18 @@ mod/    SET NO PRESS
 mod/    SET [PRESS] NONE
         Same as "SET NO PRESS".
 
-ply/    SET NORMAL PRESS
-        Disables the "SET ALL PRESS" option where all partial press is sent
-        to you as the moderator or observer of a game.
+ply/    SET [NO]NORMAL BROADCAST
+        Same as "SET [NO]BROADCAST [PRESS]".
 
 mod/bgs SET NORMAL DISBAND
         Uses the standard rules for disbands on a build turn, i.e.  can
         only disband when power has more units than centres.
         Opposite of "SET ANYDISBAND" (see above).
+
+mod/    SET NORMAL PRESS
+        Disables the "SET ALL PRESS" option where all partial press is sent to
+        Masters.  May also be used by Observers if "SET WATCH ALLPRESS" has
+        been used.
 
 mod/    SET OBSERVER ANY [PRESS]
         Permits observers and alternates to submit press with the same
