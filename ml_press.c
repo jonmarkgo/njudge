@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2003/08/10 15:27:51  millis
+ * Fix bug 25 (Add TouchPress)
+ *
  * Revision 1.7  2003/06/20 23:25:37  millis
  * Fix bug 180, missing press messages (due to too much stack variables)
  *
@@ -515,7 +518,7 @@ void mail_press(char *s, int need_opts)
 	}
 
 	if (partial) {
-		if (dipent.x2flags & X2F_TOUCHPRESS) {
+		if (dipent.x2flags & X2F_TOUCHPRESS && !master_press) {
 		    xctr =0;
                     while ((part_list[xctr] = toupper(part_list[xctr])) != '\0') {
 		        if (!IsAdjacent(dipent.players[player].power, power(part_list[xctr]))) {
@@ -527,7 +530,7 @@ void mail_press(char *s, int need_opts)
 		    }
 		}
         } else {
-            if (dipent.x2flags & X2F_TOUCHPRESS) {
+            if (dipent.x2flags & X2F_TOUCHPRESS && !master_press)  {
                 if ( dipent.players[player].status & SF_BROAD_SENT) {
                        fprintf(rfp,"Sorry, you have already sent one broadcast: wait until next turn!\n");
                        bad_cmd = 1;
@@ -536,6 +539,11 @@ void mail_press(char *s, int need_opts)
 		}
             }
         }
+
+	if (GAME_PAUSED && !master_press && !master_only_press) {
+		fprintf(rfp,"Sorry, you cannot press (except to the master alone) when the game is paused.\n");
+                       bad_cmd = 1;
+	}
 
 			
 /*  If command is invalid, discard the following text.  */
