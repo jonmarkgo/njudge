@@ -1,3 +1,101 @@
+2004-04-04 09:10  millis
+
+	* njudge.spec, configure.ac: Next version
+
+2004-04-04 09:09  millis
+
+	* BUGS, NEWS: New for version 1.6.0
+
+2004-04-04 08:58  millis
+
+	* dip.c, draw.c, ml_signon.c: Fixed bug 285 (inform extra
+	  custodians of game start)
+
+2004-04-04 08:19  millis
+
+	* functions.h: Added new defiens to fix bug 193
+
+2004-04-04 08:19  millis
+
+	* starter.flist: Added information about MinorPower variant
+
+2004-04-04 08:16  millis
+
+	* data/index: Fix bug 193i (added description for approval
+	  mechanism)
+
+2004-04-04 08:15  millis
+
+	* ma_porder.c, ml_set.c, ml_signon.c, params.c, po_mastrpt.c,
+	  porder.c: Fix bug 193 (add approval mechanism to allow moves)
+
+2004-04-03 08:29  millis
+
+	* cmap.c, st_porder.c: Fixed ExtraCentres problem (wasn't working!)
+
+2004-04-02 03:02  millis
+
+	* data/report.35: Removed file (not needed, uses report.minorpower)
+
+2004-03-28 08:06  millis
+
+	* dip.h: Added approval flags (for bug 193)
+
+2004-03-28 07:51  millis
+
+	* mail.c, data/index: Fix bug 271, provide more information about
+	  unstart
+
+2004-03-28 07:31  millis
+
+	* smail.in: Added X-Njudge: header to protect messages (Bug 284)
+
+2004-03-28 07:27  millis
+
+	* mail.c: Ignore any message with 'X-Njudge:' in mail header (or
+	  message)
+
+2004-03-28 02:17  millis
+
+	* mail.c, ml_press.c: Fix Bug 281: generate error if press rejected
+	  by MustOrder flag.
+
+2004-03-28 02:01  millis
+
+	* mail.c: Bug 280, add blank line before message
+
+2004-03-28 01:52  millis
+
+	* dip.c, mail.c, phase.c: Fix bug 282 (reset msg_header_done on
+	  closing rfp file)
+
+2004-03-17 02:11  millis
+
+	* po_init.c: Fix bug 279 (incorrectly marking centre as blockaded)
+	  due to not initialising variable.
+
+2004-03-15 23:52  nzmb
+
+	* data/: info.minorpower, map.minorpower, report.35,
+	  report.minorpower, seed.minorpower: Added the minorpowers
+	  variant.
+
+2004-03-15 23:52  nzmb
+
+	* variant.c, variant.h: dded the minorpowers variant.
+
+2004-03-03 06:49  millis
+
+	* docs/njudge-work-guide.html: First draft
+
+2004-02-22 15:26  millis
+
+	* dip.h: Small Bug91 change
+
+2004-02-17 16:53  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_6
+
 2004-02-17 16:21  millis
 
 	* NEWS, Makefile.in, configure, njudge.spec: Next version 1.5.6
@@ -21,11 +119,6 @@
 	* Makefile.in, NEWS, aclocal.m4, configure, configure.ac,
 	  njudge.spec: Updates for new version njduge-1.5.5
 
-2004-02-14 15:35  millis
-
-	* mail.c, ml_signon.h: For Bug91 (duplex play), know which power is
-	  being resigned (first or not)
-
 2004-02-14 15:32  millis
 
 	* dip.c, dipent.c: Allow use of fixed time via parameter (for
@@ -45,10 +138,6 @@
 	* dip.h: Fixed X2F_PRESS_OPTIONS to use '|' not '&', else shows
 	  blank x2flags setting
 
-2004-02-14 15:12  millis
-
-	* ml_signon.c: Intermediate fix for Bug91
-
 2004-02-14 15:11  millis
 
 	* ml_signon.c: Forced ocmmit, no changes
@@ -65,30 +154,6 @@
 2004-01-20 16:53  millis
 
 	* mail.h: Comment added
-
-2004-01-17 17:12  millis
-
-	* tests/njudge-test.sh: Added credit to Jeff Smith
-
-2004-01-17 17:11  millis
-
-	* tests/njudge-test.sh: Make diff work via Unix 'diff' command
-
-2004-01-17 17:00  millis
-
-	* tests/input/: A-Reg06.txt, A-Reg07.txt, A-Reg08.txt, A-Reg09.txt,
-	  A-Reg10.txt: text fix.
-
-2004-01-17 16:56  millis
-
-	* tests/: njudge-test.sh, smail-test, input/A-Reg01.in,
-	  input/A-Reg01.txt, input/A-Reg02.in, input/A-Reg02.txt,
-	  input/A-Reg03.in, input/A-Reg03.txt, input/A-Reg04.in,
-	  input/A-Reg04.txt, input/A-Reg05.in, input/A-Reg05.txt,
-	  input/A-Reg06.in, input/A-Reg06.txt, input/A-Reg07.in,
-	  input/A-Reg07.txt, input/A-Reg08.in, input/A-Reg08.txt,
-	  input/A-Reg09.in, input/A-Reg09.txt, input/A-Reg10.in,
-	  input/A-Reg10.txt: First version
 
 2004-01-13 10:17  millis
 
@@ -2001,10 +2066,6 @@
 
 	* mail.c, ml_set.c, ml_signon.c: Removed Dipstats
 
-2003-01-15 05:54  millis
-
-	* mail.c, ml_signon.c, ml_set.c: Removed call to dipstat
-
 2003-01-15 05:47  millis
 
 	* params.c: Fixed compile error
@@ -2059,20 +2120,6 @@
 2003-01-13 09:39  millis
 
 	* dip.h: Merge from ustv branch
-
-2003-01-13 08:04  millis
-
-	* cmap.c, common.c, conf.c, dipent.c, global.c, lib.c, ma_build.c,
-	  ma_build_basic.c, ma_movement.c, mail.c, ml_list.c, ml_set.c,
-	  ml_signon.c, params.c, po_get.c, po_init.c, po_mastrpt.c,
-	  st_build.c, st_movement.c, st_porder.c, st_retreat.c, st_setup.c,
-	  summary.c, variant.c, zparseb.c, zpblind.c, conf.h, dip.h,
-	  functions.h, porder.h, variant.h, zmacro.h, zparseb.h: ustv
-	  latest versions
-
-2003-01-13 08:01  millis
-
-	* dip.c: Latest ustv version
 
 2003-01-13 07:57  millis
 
