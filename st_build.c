@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.7  2001/10/29 23:41:34  miller
+   ** Fixed reoccurring chaos bug (use centre() macro not 'x' to test province)
+   **
    ** Revision 1.6  2001/10/20 12:11:14  miller
    ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
    **
@@ -490,7 +493,7 @@ int buildin(char **s, int p)
                         return E_WARN;
                 } else if (unit[u].type == type && unit[u].coast == c1) {
 			/* Unit was marked to be transformed, cancel transform */
-                        unit[u].status = ' ';
+                        unit[u].status = ':';
 			unit[u].order = ' ';
 		} else {
                     unit[u].status = 't';
