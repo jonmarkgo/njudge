@@ -3,6 +3,7 @@
 1.0.2 (25th February 2002) :
  - Added in new Mach fixes (correct Venice problem, assorted fixes)
  - Added STORMS flag for Machiavelli games (Millis Miller)
+ - Added NOMONEY setting for Machiavelli (basic rules, Millis Miller)
  - fixed the bug that was reported in plyrdata.c (Tim Miller)
  - added some concession handling code into summary.c that was there before
  but must have gotten lost during one of the upgrades (Tim Miller)
