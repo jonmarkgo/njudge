@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.74  2004/10/12 01:14:51  alange
+ * Fix typo in case MAP: message
+ *
  * Revision 1.73  2004/08/03 21:52:45  millis
  * Fix Bug 326 (allow Intimate to rollback to first turn)
  *
@@ -1889,6 +1892,8 @@ int mail(void)
  
 					if (0 >= n || n >= WILD_PLAYER) {
 						fprintf(rfp, "Become error: unknown power- %s", s);
+						fprintf(rfp, "Ignoring rest of input.\n");
+                                                skipping++;  /* Ignore rest of email */
 						break;
 					}
 					for (i = 0; i < dipent.n; i++)
