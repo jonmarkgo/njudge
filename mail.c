@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.62  2003/12/11 13:18:01  millis
+ * Removed tests for msg_header_done.
+ *
  * Revision 1.61  2003/12/11 13:11:45  millis
  * In msg_header(), exit if msg_header_done is set (avoid tests everywhere)
  *
@@ -2570,7 +2573,7 @@ void msg_header(FILE * fp)
 {
 	char *temp;
 	
-	if (fp == rfp && msg_header_done) return: /* Already done, so exit */
+	if (fp == rfp && msg_header_done) return; /* Already done, so exit */
 
 	/* The 4-letter Judge code (or "XXXX" if no code assigned yet).  */
 
