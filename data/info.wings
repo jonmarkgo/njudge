@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                 Jan 3, 2000
-wings
+Greetings from the Diplomacy* Adjudicator!!                 Sep 2, 2004
+info.wings
 
 Wings were added to provide a missing element from the original
 conception of the modern game, but can apply equally well to any variant
@@ -36,6 +36,14 @@ captured or re-blockaded).
 For the purposes of victory conditions, a blockaded centre does not count
 whilst it is being blockaded, neither for its owner nor for the power
 blockading it.
+
+Two important consequences of wing behaviour are:
+ - If a player has only wing units, they can never capture more centes
+   (unless one of the winds is disbanded on a retreat allowing a rebuild
+   in adjustment phase).
+ - If a player is eliminated (loses all owned centres) but has one or more
+   wings occupying other centres at that time, those centres still count as
+   being blockaded.
 
 Millis Miller
 
