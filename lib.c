@@ -1,6 +1,10 @@
 
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Lots of changes, including
+ *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -422,7 +426,8 @@ char *lookfor(char *l, char *w[], int len, int *n)
 			}
 		}
 
-		if (!*t) {
+                /* terminate only if at end of string */
+                if ((!*t) && ((!*s) || (!isalnum(*s)) || (*s != '_'))) {
 			*n = i;
 			while (isspace(*s))
 				s++;
