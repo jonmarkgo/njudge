@@ -1,13 +1,16 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.17  2002/01/05 17:09:36  miller
+# Moved version to another file (Makefile.version) and removed mapit
+#
 # Revision 1.16  2001/12/29 20:38:03  nzmb
 #
 # Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
 # stable.
 #
 # Revision 1.15  2001/10/20 12:11:10  miller
-# Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+# Merged in changes from DEMA and USTV 
 #
 # Revision 1.14.2.2  2001/10/20 00:51:07  dedo
 # Added INSTALLCMD default
@@ -420,106 +423,110 @@ lint:
 depend: 
 	${CC} -MM ${INCPATH} ${SRCS} ${EXTRAS} > makedep 
 	echo '/^# DO NOT DELETE THIS LINE/+2,$$d' >eddep
+	echo ',s/version.o\:/version.o\: Makefile.version' > edv
+	echo ',s/\:/\: Makefile Makefile.defines/g' >> edv
+	echo 'w' >> edv
+	ed - makedep < edv
 	echo '$$r makedep' >>eddep
 	echo 'w' >>eddep
 	cp Makefile Makefile.bak
 	ed - Makefile < eddep
-	# rm eddep makedep
+	rm edv eddep makedep
 	echo '# DEPENDENCIES MUST END AT END OF FILE' >> Makefile
 	echo '# IF YOU PUT STUFF HERE IT WILL GO AWAY' >> Makefile
 	echo '# see make depend above' >> Makefile
 
 # DO NOT DELETE THIS LINE -- make depend uses it
 # DEPENDENCIES MUST END AT END OF FILE
-assign.o: assign.c dip.h conf.h port.h variant.h
-bailout.o: bailout.c dip.h conf.h port.h variant.h diplog.h
-common.o: common.c dip.h conf.h port.h variant.h porder.h
-conf.o: conf.c conf.h hashtable.h
-dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h \
+assign.o: Makefile Makefile.defines assign.c dip.h conf.h port.h variant.h
+bailout.o: Makefile Makefile.defines bailout.c dip.h conf.h port.h variant.h diplog.h
+common.o: Makefile Makefile.defines common.c dip.h conf.h port.h variant.h porder.h
+conf.o: Makefile Makefile.defines conf.c conf.h hashtable.h
+dip.o: Makefile Makefile.defines dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h \
  plyrdata.h
-dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
+dipent.o: Makefile Makefile.defines dipent.c dip.h conf.h port.h variant.h defaults.h \
  defaults.inc functions.h diplog.h
-diplog.o: diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
-dipstats.o: dipstats.c conf.h dipstats.h
-draw.o: draw.c dip.h conf.h port.h variant.h functions.h mail.h
-global.o: global.c dip.h conf.h port.h variant.h mach.h porder.h
-hashtable.o: hashtable.c hashtable.h
-history.o: history.c dip.h conf.h port.h variant.h functions.h mail.h
-jm.o: jm.c functions.h dip.h conf.h port.h variant.h
-lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
-ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
+diplog.o: Makefile Makefile.defines diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
+dipstats.o: Makefile Makefile.defines dipstats.c conf.h dipstats.h
+draw.o: Makefile Makefile.defines draw.c dip.h conf.h port.h variant.h functions.h mail.h
+global.o: Makefile Makefile.defines global.c dip.h conf.h port.h variant.h mach.h porder.h
+hashtable.o: Makefile Makefile.defines hashtable.c hashtable.h
+history.o: Makefile Makefile.defines history.c dip.h conf.h port.h variant.h functions.h mail.h
+jm.o: Makefile Makefile.defines jm.c functions.h dip.h conf.h port.h variant.h
+lib.o: Makefile Makefile.defines lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
+ma_build.o: Makefile Makefile.defines ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h
-ma_build_basic.o: ma_build_basic.c dip.h conf.h port.h variant.h \
+ma_build_basic.o: Makefile Makefile.defines ma_build_basic.c dip.h conf.h port.h variant.h \
  functions.h porder.h mach.h
-ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
+ma_expenses.o: Makefile Makefile.defines ma_expenses.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
-ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
+ma_famplag.o: Makefile Makefile.defines ma_famplag.c dip.h conf.h port.h variant.h mail.h \
  porder.h mach.h functions.h
-ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
+ma_movement.o: Makefile Makefile.defines ma_movement.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
-ma_porder.o: ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
+ma_porder.o: Makefile Makefile.defines ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
  mach.h functions.h
-ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h \
+ma_retreat.o: Makefile Makefile.defines ma_retreat.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
-ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
+ma_stats.o: Makefile Makefile.defines ma_stats.c functions.h dip.h conf.h port.h variant.h \
  mail.h porder.h mach.h
-machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
-mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h \
+machlib.o: Makefile Makefile.defines machlib.c dip.h conf.h port.h variant.h porder.h mach.h
+mail.o: Makefile Makefile.defines mail.c dip.h conf.h port.h variant.h mail.h functions.h \
  dipstats.h diplog.h plyrdata.h
-ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h \
+ml_short.o: Makefile Makefile.defines ml_short.c dip.h conf.h port.h variant.h mail.h \
  functions.h porder.h
-mfprintf.o: mfprintf.c mail.h variant.h
-ml_date.o: ml_date.c port.h
-ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
+mfprintf.o: Makefile Makefile.defines mfprintf.c mail.h variant.h
+ml_date.o: Makefile Makefile.defines ml_date.c port.h
+ml_getaddr.o: Makefile Makefile.defines ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
  functions.h
-ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
-ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
+ml_list.o: Makefile Makefile.defines ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
+ml_press.o: Makefile Makefile.defines ml_press.c dip.h conf.h port.h variant.h mail.h \
  functions.h
-ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
+ml_set.o: Makefile Makefile.defines ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
  dipstats.h diplog.h plyrdata.h
-ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
+ml_signon.o: Makefile Makefile.defines ml_signon.c dip.h conf.h port.h variant.h mail.h \
  ml_signon.h functions.h dipstats.h plyrdata.h
-params.o: params.c dip.h conf.h port.h variant.h functions.h
-plyrdata.o: plyrdata.c plyrdata.h
-phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
-po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
+params.o: Makefile Makefile.defines params.c dip.h conf.h port.h variant.h functions.h
+plyrdata.o: Makefile Makefile.defines plyrdata.c plyrdata.h
+phase.o: Makefile Makefile.defines phase.c dip.h conf.h port.h variant.h porder.h functions.h
+po_condition.o: Makefile Makefile.defines po_condition.c dip.h conf.h port.h variant.h \
  functions.h porder.h
-po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
+po_errmsg.o: Makefile Makefile.defines po_errmsg.c dip.h conf.h port.h variant.h functions.h \
  porder.h
-po_get.o: po_get.c dip.h conf.h port.h variant.h functions.h porder.h
-po_init.o: po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
+po_get.o: Makefile Makefile.defines po_get.c dip.h conf.h port.h variant.h functions.h porder.h
+po_init.o: Makefile Makefile.defines po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h
-po_mastrpt.o: po_mastrpt.c dip.h conf.h port.h variant.h
-porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
-st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h \
+po_mastrpt.o: Makefile Makefile.defines po_mastrpt.c dip.h conf.h port.h variant.h
+porder.o: Makefile Makefile.defines porder.c dip.h conf.h port.h variant.h porder.h functions.h
+st_build.o: Makefile Makefile.defines st_build.c dip.h conf.h port.h variant.h functions.h \
  porder.h
-st_movement.o: st_movement.c functions.h dip.h conf.h port.h variant.h \
+st_movement.o: Makefile Makefile.defines st_movement.c functions.h dip.h conf.h port.h variant.h \
  porder.h
-st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h \
+st_porder.o: Makefile Makefile.defines st_porder.c dip.h conf.h port.h variant.h functions.h \
  mail.h porder.h
-st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
+st_retreat.o: Makefile Makefile.defines st_retreat.c dip.h conf.h port.h variant.h functions.h \
  porder.h
-st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
+st_status.o: Makefile Makefile.defines st_status.c dip.h conf.h port.h variant.h functions.h \
  porder.h
-strcasecmp.o: strcasecmp.c
-strdup.o: strdup.c
-users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h \
+strcasecmp.o: Makefile Makefile.defines strcasecmp.c
+strdup.o: Makefile Makefile.defines strdup.c
+users.o: Makefile Makefile.defines users.c dip.h conf.h port.h variant.h mail.h functions.h \
  plyrdata.h
-variant.o: variant.c dip.h conf.h port.h variant.h
-version.o: version.c dip.h conf.h port.h variant.h functions.h
-cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
+variant.o: Makefile Makefile.defines variant.c dip.h conf.h port.h variant.h
+version.o: Makefile Makefile.defines Makefile.version version.c dip.h conf.h port.h variant.h functions.h
+cmap.o: Makefile Makefile.defines cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
  mach.h
-summary.o: summary.c dip.h conf.h port.h variant.h porder.h mach.h \
+summary.o: Makefile Makefile.defines summary.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h diplog.h
-bgreet.o: bgreet.c dip.h conf.h port.h variant.h functions.h
-deddump.o: deddump.c dip.h conf.h port.h variant.h
-delgame.o: delgame.c port.h dip.h conf.h variant.h
-flock.o: flock.c port.h
-fmtwho.o: fmtwho.c functions.h dip.h conf.h port.h variant.h
-ign.o: ign.c
-pdip.o: pdip.c
-recdump.o: recdump.c plyrdata.h
-rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
+bgreet.o: Makefile Makefile.defines bgreet.c dip.h conf.h port.h variant.h functions.h
+deddump.o: Makefile Makefile.defines deddump.c dip.h conf.h port.h variant.h
+delgame.o: Makefile Makefile.defines delgame.c port.h dip.h conf.h variant.h
+flock.o: Makefile Makefile.defines flock.c port.h
+fmtwho.o: Makefile Makefile.defines fmtwho.c functions.h dip.h conf.h port.h variant.h
+ign.o: Makefile Makefile.defines ign.c
+pdip.o: Makefile Makefile.defines pdip.c
+recdump.o: Makefile Makefile.defines recdump.c plyrdata.h
+rdip.o: Makefile Makefile.defines rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above
