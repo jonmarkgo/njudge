@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Dec. 11, 2002.
+Greetings from the Diplomacy* Adjudicator!!                Apr. 11, 2003.
 Info.mach2span*
 
 
@@ -9,7 +9,7 @@ For rule differences between Machiavelli and Machiavelli2 see the file
 "rules.machiavelli2".
 
 
-Machiavelli 2 Setup
+Machiavelli 2 Alternate Setup
 
 The Spanish Preponderance Machiavelli scenario starts in 1521 with six
 powers.  The Habsburgs (Spain-Naples-Austria) and France vye for control 
@@ -74,19 +74,17 @@ Special rules:
   Sardinia.  This means that Naples state and Sardinia can be conquered 
   separately.
 
-  (Tech. note: in the original rules Naples is part of Austria, but as 
-  that makes Austria very strong and hard to conquer it was decided to 
-  separate those two entities in 'judge' play and also to change the 
-  Naples city variable income to be Naples state variable income, as to 
-  let Austria keep that edge.  Incidentally this is also an historically 
-  more accurate state of control.  Play with the default victory 
-  conditions is not recommended.)
+  (Tech. note: in the original Avalon Hill rules Naples is part of 
+  Austria, but as that makes Austria very strong and hard to conquer it 
+  was decided to separate those two entities in 'judge' play and also 
+  to change the Naples city variable income to be Naples state variable 
+  income, as to let Austria keep that edge.  Incidentally this is also 
+  an historically more accurate state of control.)
 
 
 Default victory conditions:
 
-  Play with the default victory conditions is not recommended as Austria 
-  begins with 14 cities!!
+  Notice that Austria begins with 9 cities!!
 
   The first player to control at least 15 cities and have control of at
   least two power's original home countries (eg: his own and one other
@@ -101,3 +99,5 @@ All rights reserved.  Used with permission.
 REVISION HISTORY
 v1, Nov 17th 2002.  Final release version.  By Sergio Lidsell.
 v1b, Dec 11th, 2002. Added Naples definition. By Millis Miller.
+V1c, Apr 11th 2003.  Clarified that this is the alternate setup and 
+   corrected the info about Austrian controlled cities at start.  By SL.

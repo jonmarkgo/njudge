@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Feb. 23, 2003.
+Greetings from the Diplomacy* Adjudicator!!                Apr. 11, 2003.
 Info.mach2sfd2*
 
 
@@ -9,7 +9,7 @@ For rule differences between Machiavelli and Machiavelli2 see the file
 "rules.machiavelli2".
 
 
-Machiavelli 2 Setup
+Machiavelli 2 Alternate Setup
 
 The Struggle for Dominance II Machiavelli scenario starts in 1513 with 
 six powers.  The scenario begins with the French having been kicked 
@@ -80,13 +80,12 @@ Special rules:
   Sardinia.  This means that Naples state and Sardinia can be conquered 
   separately.
 
-  (Tech. note: in the original rules Naples is part of Austria, but as 
-  that makes Austria very strong and hard to conquer it was decided to 
-  separate those two entities in 'judge' play and also to change the 
-  Naples city variable income to be Naples state variable income, as to 
-  let Austria keep that edge.  Incidentally this is also an historically 
-  more accurate state of control.  Play with the default victory 
-  conditions is not recommended.)
+  (Tech. note: in the original Avalon Hill rules Naples is part of 
+  Austria, but as that makes Austria very strong and hard to conquer it 
+  was decided to separate those two entities in 'judge' play and also 
+  to change the Naples city variable income to be Naples state variable 
+  income, as to let Austria keep that edge.  Incidentally this is also 
+  an historically more accurate state of control.)
 
 
 Default victory conditions:
@@ -105,3 +104,4 @@ All rights reserved.  Used with permission.
 
 REVISION HISTORY
 v1b, Feb 23rd 2003.  Final release version.  By Sergio Lidsell.
+V1c, Apr 11th 2003.  Clarified that this is the alternate setup.  By SL.

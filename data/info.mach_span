@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Dec. 11, 2002.
+Greetings from the Diplomacy* Adjudicator!!                Apr. 11, 2003.
 Info.machspan*
 
 
@@ -6,7 +6,7 @@ For rule differences between Machiavelli and Diplomacy, see the file
 "rules.machiavelli".
 
 
-Machiavelli Classic Setup
+Machiavelli Classic Alternate Setup
 
 The Spanish Preponderance Machiavelli scenario starts in 1521 with six
 powers.  The Habsburgs (Spain-Naples-Austria) and France vye for control 
@@ -71,12 +71,12 @@ Special rules:
   Sardinia.  This means that Naples state and Sardinia can be conquered 
   separately.
 
-  (Tech. note: in the original rules Naples is part of Austria, but as 
-  that makes Austria very strong and hard to conquer it was decided to 
-  separate those two entities in 'judge' play and also to split the 
-  Austrian variable income in two -Austria's and Naples'- as not to make 
-  Austria even stronger.  Incidentally this is also a historically more 
-  accurate state of control.)
+  (Tech. note: in the original Avalon Hill rules Naples is part of 
+  Austria, but as that makes Austria very strong and hard to conquer it 
+  was decided to separate those two entities in 'judge' play and also 
+  to split the double Austrian variable income in two -Austria's and 
+  Naples'- as not to make Austria even stronger.  Incidentally this is 
+  also a historically more accurate state of control.)
 
 
 Default victory conditions:
@@ -95,4 +95,5 @@ All rights reserved.  Used with permission.
 
 REVISION HISTORY
 v1, Nov 17th 2002.  Final release version.  By Sergio Lidsell.
-V1b, Dec 11th 2002.  Added description of Naples. By Millis Miller
+V1b, Dec 11th 2002.  Added description of Naples. By Millis Miller.
+V1c, Apr 11th 2003.  Clarified that this is the alternate setup.  By SL.
