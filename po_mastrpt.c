@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.2  2003/01/14 13:56:46  millis
+   ** Updated with ustv merged changed
+   **
    ** Revision 1.1.2.1  2003/01/13 16:04:56  millis
    ** ustv latest versions
    **
@@ -32,6 +35,10 @@ void mast_rpt(int current_power, int line_up)
 
 	if (current_power == dipent.has_natives) 
 		return;  /* Don't show moves pending from natives */
+
+	if (FindPower(current_power) >= dipent.n)
+		return;  /* Don't show moves pending from non-players */
+
 	fprintf(rfp, "%s:", powers[current_power]);
 	if (line_up) {
 		for (cnt = strlen(powers[current_power]); cnt < LPOWER + 1; cnt++) {
