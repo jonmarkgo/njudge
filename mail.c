@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.54  2003/07/20 08:38:34  millis
+ * Removed incorrect execute(line) calls
+ * Also deleted some unused variables
+ *
  * Revision 1.53  2003/07/19 13:11:59  millis
  * Bug 197, remove map command
  *
@@ -1879,6 +1883,18 @@ int mail(void)
 					if (!(i = atoi(s)))
 						i = atoi(dipent.seq) - 1;
 					sprintf(temp, "%s%s/G%3.3d", GAME_DIR, dipent.name, i);
+					
+					if (i == 1) {
+                                            /* First phase, so check if it was an adjustment */
+                                            if (sphase[dipent.variant][5] == 'A')
+                                                i = 2;  /* For adjustments, first phase is #2 */
+                                        }
+
+                                        if (atoi(dipent.seq) == i ) {
+                                                fprintf(rfp, "Already on specified turn, roll back ignored.\n\n");
+                                                break;
+                                        }
+
 					if (!(tfp = fopen(temp, "r"))) {
 						fprintf(rfp, "Sorry, %s does not exist, roll back not possible.\n",
 							temp);
