@@ -1,16 +1,20 @@
-From jdr@u.washington.edu Fri Feb 12 00:13:54 1993
-Date: Thu, 11 Feb 93 21:13:17 -0800
-From: Judge Dash Request <jdr@u.washington.edu>
-To: kovar@morrolan.eff.org
-Subject: Re: Game in a loop?
+README.bailout : How to recover the judge from a bailout
 
-> dip.log shows a lot of:
-> message saved on saved_mail . Looks like a bunch of normal mail. Hmm.
+ $Log: README.bailout,v 
 
-Sounds like you had a bailout.  Your .forward file should have been
-renamed to zforward and new incoming mail should not be invoking the
-rdip program.  Did I ever outline the procedure for recovering from
-a bailout?  Anyway, it is:
+
+
+This document describes the procedures used to recover a judge from
+a bailout. To determine if this has occured, you should have noticed the
+following:
+
+ - Judge sent an error message to the GAMES_MASTER address in dip.conf
+ - There is a file 'zforward' in the judge's home directory
+ - The judge is not responding to emails sent to it
+ - There is probably a file called saved_mail in the judge's game directory
+ - rdip and dip are not being invoked.
+
+The procedure to restart the judge is the following:
 
    1) You should have a zforward file, new mail is going into the
       standard /usr/spool/mail (or equivalent) file and there are
@@ -25,6 +29,10 @@ a bailout?  Anyway, it is:
 
    4) Rename the zforward file to xforward.  The presence of the
       zforward causes all mail to be written to saved_mail.
+      Note also that the presence of xforward will also cause all games 
+      to be delayed 24 hours from the current time, to allow players time 
+      to change orders/masters to alter deadlines after the judge comes 
+      back on-line.
 
    5) Make sure there is no "dip.input" file.  If your system went
       down while the judge was running this file may get left lying
@@ -48,14 +56,17 @@ a bailout?  Anyway, it is:
       the mail has been appended to dip.mail and will be processed
       by the earlier rdip when it catches up with its backlog.
 
-   9) Rename the /usr/spool/mail/judge file to "t2" and process it
+   9) Rename* the /usr/spool/mail/judge file to "t2" and process it
       with "rdip < t2".  Again you should get the "dip.input exists"
       message.
 
   10) Rename the xforward file to .forward.  If there are any new
       messages in /usr/spool/mail/judge you should process them with
-      a rename to t3 and a "rdip < t3".
+      a rename* to t3 and a "rdip < t3".
 
-I'll add this to my release stuff as "README.bailout".
+*On some systems, it may not be possible to perform the rename operation 
+specified as the judge user. In these cases, copy the mail file and use 
+a mail client to delete the mails manually.
 
--Ken
+
+---- End of README.bailout ------------------------------------------
