@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/02/25 11:51:53  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.7  2001/10/26 23:20:35  nzmb
  * put the crowded_1898 variant in (Tim Miller)
  *
@@ -151,7 +154,7 @@ enum {
     case V_colonial:    dipent.np =  7; dipent.vp = 30; break;          \
     case V_h31:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
     case V_h32:         dipent.np =  3; dipent.vp =  9; dipent.xflags |= XF_BUILD_ANYCENTRES; break;          \
-    case V_classical:   dipent.np =  5; dipent.vp =  18; dipent.xflags |= XF_BUILD_ANYCENTRES; break;         \
+    case V_classical:   dipent.np =  5; dipent.vp =  18; dipent.xflags |= XF_BUILD_ONECENTRE; break;         \
     case V_empire:	dipent.np = 10; dipent.vp = 29; break; \
     case V_african2:	dipent.np = 6; dipent.vp = 19; break; \
     case V_wraparound2:	dipent.np = 7; dipent.vp = 19; break; \
