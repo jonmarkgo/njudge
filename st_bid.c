@@ -1,6 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.1  2004/05/22 08:50:14  millis
+   ** Bug 297: Add Intimate Diplomacy
    **
+
  */
 
 /*  st_bid.c
@@ -52,7 +55,10 @@ static void CalculateWinningBids( void ) {
 	    new_controller[p1] = AUTONOMOUS;  /* no-one yet controls this one */
 
             for (p = 1; p <= NPOWER; p++) { /* This loop is just to order by power */
-                if (final_bid[p][p1] == bid_total) {
+	    p_index = FindPower(p);
+	    if (p_index >= dipent.n) continue; /* Not a valid power */ 
+            if (dipent.players[p_index].controlling_power != 0) continue;  /* not a real player */
+	    if (final_bid[p][p1] == bid_total) {
                     /* Same bid, null out both */
                     final_bid[p][p1] = 0;
 		    final_bid[bid_power][p1] = 0;
@@ -101,6 +107,7 @@ static int TotaliseWinningBids( void ) {
              p_index = FindPower(p);
              power_bid_total[p] = 0;
              if (p_index >= dipent.n) continue; /* Not a valid power */
+	     if (dipent.players[p_index].controlling_power != 0) continue; /* Not a real player */
              for (p1 = 1; p1 <= NPOWER; p1++) {
 		  if (power_overbidden[p1]) {
                       power_bid_total[p] += OverbidValue(final_bid[p][p1]); 

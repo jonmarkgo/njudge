@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.20  2004/06/03 22:57:48  millis
+ * Bug 297 - fix for Intimate where not marking player as needing
+ * to make moves (status value was being lost)
+ *
  * Revision 1.19  2004/06/01 23:16:18  millis
  * Fix bug 316 (incorrect blockaded centres)
  *
@@ -781,8 +785,13 @@ int gamein(void)
 		pr[p].unit_held = 0;  /* if no units, can't be same unit holding! */
 	}
 
-	if (dipent.flags & F_INTIMATE)
+	if (dipent.flags & F_INTIMATE) {
 		UpdateUnitControllers();
+
+       		for (p = 1; p <= NPOWER; p++)
+           	    for (p1= 1; p1 <= NPOWER; p1++)
+               		bids[p][p1] = 0;
+	}
 
 	return err;
 }
