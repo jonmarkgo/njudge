@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.34  2004/07/10 07:18:22  nzmb
+** Final tweaks to new convoy code. Fixes bug #290.
+**
 ** Revision 1.33  2004/07/09 17:57:04  millis
 ** Restored disabled code for multi-province units checks
 **
@@ -159,7 +162,17 @@ static int HasCoast(int p, char c) {
 
 
     /* If has coasts but none specified, also fail */
-    if (!(c == MV && pr[p].coasts))
+    if (c == MV && pr[p].coasts) {
+	/* No coast specified but province has coasts */
+	ret = 0;
+    } else if (c != MV && !pr[p].coasts) {
+	/* Coast specified but province has no coasts */
+	ret = 0;
+    } else if (c == MV && !pr[p].coasts && HAS_PORTAGE ) {
+	/* Not coast specified, province has no coasts and 
+	 * playing PORTAGE variant */
+	ret = 1;
+    } else 
     
       switch (c) {
 
@@ -201,7 +214,7 @@ static int valid_aw_move(int i, int p2, int *c2, int *j)
     ret = valid_move(i, p2, c2, j);
 
     if (!ret)
-        if (dipent.xflags & XF_AIRLIFTS || HAS_PORTAGE) {
+        if ((dipent.xflags & XF_AIRLIFTS || HAS_PORTAGE) && (unit[i].coast != MV)) {
 	    unit[i].coast = MV;
 	    ret = valid_aw_move(i, p2, c2, j);
         }
@@ -841,7 +854,7 @@ int movein(char **s, int p)
 				    return E_WARN;
 				}
 				c3 = MV;
-				if (!railway_flag && (!valid_move(i, p2, &c3, &j))) {
+				if (!railway_flag && (!valid_aw_move(i, p2, &c3, &j))) {
 					errmsg("The %s in %s can't convoy from %s to %s.\n",
 					 utype(unit[u].type), pr[p1].name, pr[unit[i].loc].name, pr[p2].name);
 					return E_WARN;
