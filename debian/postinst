@@ -27,7 +27,7 @@ if [ "$1" = "configure" ]; then
         continue;
       fi
     else
-      /usr/sbin/adduser --home $destdir --gecos "$CODE Diplomacy Adjudicator" --disabled-password --quiet $NAME;
+      /usr/sbin/adduser --home $destdir --no-create-home --gecos "$CODE Diplomacy Adjudicator" --disabled-password --quiet $NAME;
     fi
   done
   while [ -z "$ADDRESS" ]; do
