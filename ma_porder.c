@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2002/08/28 21:12:29  millis
+ * Only notify for city onwership change if city has a value
+ *
  * Revision 1.11  2002/08/27 23:56:10  millis
  * Added better victory display (fixing Mach victory bug)
  *
@@ -126,8 +129,8 @@ static void CalculateNewOwners(void)
                 if (unit[u].type == 'G') {
                         ncown[p] = unit[u].owner;
                         if (pr[unit[u].loc].unit == 0 || 
-			    unit[pr[unit[u].loc].gunit].owner == 0 ||
-			    unit[pr[unit[u].loc].gunit].owner == unit[u].owner) {
+			    unit[pr[unit[u].loc].unit].owner == 0 ||
+			    unit[pr[unit[u].loc].unit].owner == unit[u].owner) {
 				/* Province is owned by city owner if no-one in province or
 				   provice unit is owned by same power */
                                 npown[p] = unit[u].owner;
