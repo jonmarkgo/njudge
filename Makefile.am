@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.15  2003/02/17 12:41:40  millis
+# Fixed Bug 108, make lines >=1024 terminate in '\n'
+#
 # Revision 1.14  2003/01/14 14:05:50  millis
 # Added history
 #
@@ -188,9 +191,9 @@ dist_doc_DATA=	docs/InstallationHOWTO \
 		docs/README.plyrdata \
 		docs/README.resign \
 		docs/README.size \
-		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
+		docs/README.timezone \
 		docs/njudgemapdatahowto.htm \
 		docs/njudgemapdatahowto.txt \
 		AUTHORS \

@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.18  2003/02/17 12:41:40  millis
+# Fixed Bug 108, make lines >=1024 terminate in '\n'
+#
 # Revision 1.17  2003/01/15 13:30:34  millis
 # Restore mistakenly deleted items
 # -------------------------------------------
@@ -279,9 +282,9 @@ dist_doc_DATA = docs/InstallationHOWTO \
 		docs/README.plyrdata \
 		docs/README.resign \
 		docs/README.size \
-		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
+		docs/README.timezone \
 		docs/njudgemapdatahowto.htm \
 		docs/njudgemapdatahowto.txt \
 		AUTHORS \
