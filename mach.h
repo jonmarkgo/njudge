@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2002/02/25 11:51:52  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.3  2001/10/20 12:11:13  miller
  * Merged in changes from DEMA and USTV
  *
@@ -96,7 +99,7 @@ extern unsigned char allies[NPOWER + 1][NPOWER + 1];	/* Who is allowing whom    
 /* The various permitted ownership times of unit type types */
 #define P_ANYTIME       'x'  /* This unit type can be built or bribed freely */
 #define P_BUILD         'b'  /* This unit type can only be built             */
-#define P_BUY           'p'  /* This unit type can only be purchased        */
+#define P_BUY           'r'  /* This unit type can only be bribed/purchased  */
 #define P_NEVER         '.'  /* This unit type can never be owned            */
 
 /* THe equivalent masks for the above */
