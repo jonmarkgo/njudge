@@ -1,11 +1,11 @@
 /*
-   ** $Log$
-   ** Revision 1.5  2001/11/18 17:28:28  miller
-   ** Corrected build checking for chaos-like games
-   **
-   ** Revision 1.4  2001/10/20 12:11:15  miller
-   ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
-   **
+  ** $Log$
+  ** Revision 1.6  2001/11/18 17:40:18  miller
+  ** Small typo fix
+  **
+  ** Revision 1.5  2001/11/18 17:28:28  miller
+  ** Corrected build checking for chaos-like games
+  **
    ** Revision 1.3.2.1  2001/10/15 00:28:29  ustv
    ** Added check for HongKong flag
    **
@@ -49,9 +49,7 @@
 static void newowner(void);
 static void next_phase(void);
 static char HongKongCheck(int, int);
-
-#define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type <= '9'))
-
+ #define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type <= '9'))
 /***************************************************************************/
 /*  Print out build statistics.  
    Return zero if no builds are needed
@@ -74,8 +72,11 @@ int ownership(void)
 
 		np[i] = nu[i] = 0;
 		for (n = 1; n <= nunit; n++)
-			if (unit[n].owner == i)
+			if (unit[n].owner == i && unit[n].type != ' ') {
 				nu[i]++;
+			        if (unit[n].type == 'T')
+				    nu[i]++;  /* AF is two units */
+			}
 
 		s = buf;
 		strcpy(s, powers[i]);
@@ -136,7 +137,13 @@ int ownership(void)
 	for (i = 1; i <= NPOWER; i++) {
 		if (dipent.pl[i] == 'x')
 			continue;
-		if (np[i] > nu[i]) {
+		if (dipent.xflags & XF_ALTBUILD) {
+                    need_order[i]++;
+                    if (statusval >= 0)
+                                statusval++;
+                }
+
+		else if (np[i] > nu[i]) {
 			for (p = 1; p <= npr; p++) {
 				if (pr[p].owner == i
 				    && (pr[p].type == dipent.pl[i] || IsCentre(p))
@@ -153,6 +160,7 @@ int ownership(void)
 			if (statusval >= 0)
 				statusval++;
 		}
+		
 		p = strlen(powers[i]) + 1;
 		fprintf(rfp, "%s:", powers[i]);
 		while (p++ < GetMaxCountryStrlen() )
@@ -195,6 +203,10 @@ int ownership(void)
 		}
 	}
 
+	/* Build transform and anydisband games always have build phase */
+	if (dipent.xflags & XF_ALTBUILD) 
+	    if (statusval == 0)
+		statusval = 1;
 	return statusval;
 }
 
@@ -239,6 +251,12 @@ void process_input(int pt, char phase)
 	int u, p;
 	int status;
 
+	if (pt != MASTER && GAME_PAUSED) {
+	    fprintf(rfp,"\n\n ***Game is suspended: no orders allowed until master continues it again.***\n\n");
+	    err++;
+	    return;
+	}
+
 	for (u = 1; u <= nunit; u++)
 		unit[u].order = 'n';
 
@@ -252,9 +270,16 @@ void process_input(int pt, char phase)
 			while (*s == ' ')
 				s++;
 
+			if ((GAME_SETUP)) {
+			    status = setupin(&s, p);
+			} else {
 			switch (phase) {
 			case 'B':
-				status = buildin(&s, p);
+				if (dipent.xflags & XF_ALTBUILD) {  
+				    status = buildin_td(&s, p);
+				} else {
+				    status = buildin(&s, p);
+				}
 				break;
 			case 'M':
 				status = movein(&s, p);
@@ -264,6 +289,7 @@ void process_input(int pt, char phase)
 				break;
 			default:
 				status = 0;
+			}
 			}
 			if (status)
 				junk(&s);
@@ -277,9 +303,20 @@ int process_output(int pt, char phase)
 {
 	int retreats;
 
+	if (pt != MASTER && GAME_PAUSED) {
+	    return E_WARN;
+	}
+	if (GAME_SETUP) {
+	    setupout(pt);
+	    return 1;
+	}
 	switch (phase) {
 	case 'B':		/* Adjustments */
-		buildout(pt);
+		if (dipent.xflags & XF_ALTBUILD) 
+		    buildout_td(pt);
+		else
+		    buildout(pt);
+
 		if (processing) {
 			next_year();
 		}

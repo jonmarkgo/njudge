@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/17 15:16:48  greg
+ * added GAME_DIR
+ *
  * Revision 1.5  2001/07/08 22:56:29  miller
  * Add TIME_TOLERANCE and WARP_FILE
  *
@@ -136,6 +139,7 @@ int conf_init(void)
 	conf_set("CUSTODIAN_sailho", "tarzan_monkeyman@bigfoot.com");
 	conf_set("CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"); 
 
+	conf_set("BLIND", "./zpblind");
 	return 1;
 }
 

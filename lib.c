@@ -1,43 +1,47 @@
 
-/*
- * $Log$
- * Revision 1.8  2001/07/08 22:55:37  miller
- * Use CUSTODIAN name in better order
- *
- * Revision 1.7  2001/07/01 23:19:29  miller
- * Add InformCustodians func
- *
- * Revision 1.6  2001/06/24 05:35:03  nzmb
- * Reset dipent.dedapplied to 0 when new deadline is calculated.
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Lots of changes, including
- *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.2  1996/11/05 23:09:52  rpaar
- * USIT changes to fix minor bugs
- */
+	/*
+	 * $Log$
+	 * Revision 1.9  2001/07/15 09:15:46  greg
+	 * added support for game directories in a sub directory
+	 * /.
+	 *
+	 * Revision 1.8  2001/07/08 22:55:37  miller
+	 * Use CUSTODIAN name in better order
+	 *
+	 * Revision 1.7  2001/07/01 23:19:29  miller
+	 * Add InformCustodians func
+	 *
+	 * Revision 1.6  2001/06/24 05:35:03  nzmb
+	 * Reset dipent.dedapplied to 0 when new deadline is calculated.
+	 *
+	 * Revision 1.2  2000/11/14 14:27:37  miller
+	 * Lots of changes, including
+	 *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
+	 *
+	 * Revision 1.1  1998/02/28 17:49:42  david
+	 * Initial revision
+	 *
+	 * Revision 1.2  1996/11/05 23:09:52  rpaar
+	 * USIT changes to fix minor bugs
+	 */
 
-/*  lib.c
- *  Copyright 1987, Lowe.
- *
- *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
- *  Maryland, all rights reserved; used with permission.
- *
- *  Redistribution and use in source and binary forms are permitted
- *  provided that it is for non-profit purposes, that this and the 
- *  above notices are preserved and that due credit is given to Mr.
- *  Lowe.
- *
- *  Version History
- *
- *  Version Author          Date      Comments
- * ------------------------------------------------------------------------
- *  1       Ken Lowe        1987      Original Code
- *  2       David Norman    19/05/96  Unobfuscate get_prov
+	/*  lib.c
+	 *  Copyright 1987, Lowe.
+	 *
+	 *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+	 *  Maryland, all rights reserved; used with permission.
+	 *
+	 *  Redistribution and use in source and binary forms are permitted
+	 *  provided that it is for non-profit purposes, that this and the 
+	 *  above notices are preserved and that due credit is given to Mr.
+	 *  Lowe.
+	 *
+	 *  Version History
+	 *
+	 *  Version Author          Date      Comments
+	 * ------------------------------------------------------------------------
+	 *  1       Ken Lowe        1987      Original Code
+	 *  2       David Norman    19/05/96  Unobfuscate get_prov
  *                                    Fix get_prov to cope with a province 
  *                                    "New York" and an abbreviation "New"
  *                                    for a different province
@@ -394,6 +398,17 @@ int *coast;			/* OUTPUT: The specified coast */
 		heap_walker++;
 	}
 
+	if (*province_number) {
+	    /* province found: check if allowed gateway or railway */
+	    if (pr[*province_number].type == 'r' && !(dipent.x2flags && X2F_RAILWAYS) && dipent.name[0]) {
+		    *province_number = 0;
+		    search_province_remains = search_province;
+		}
+	    if (pr[*province_number].type == 'g' && !(dipent.x2flags && X2F_GATEWAYS) && dipent.name[0]) {
+		    *province_number = 0;
+		    search_province_remains = search_province;
+		}
+	}
 	/* Return the part of the search string which was not used */
 
 	return search_province_remains;
@@ -501,6 +516,8 @@ char *autype(char c)
 		return ("an army/fleet");
 	else if (c == 'S')
 		return ("a spy");
+	else if (c ==' ')
+		return "";
 	else
 		return ("a unit");
 }
@@ -547,6 +564,8 @@ char *utype(char c)
 		return ("army/fleet");
 	else if (c == 'S')
 		return ("spy");
+	else if (c == ' ')
+		return "";
 	else
 		return ("unit");
 }
@@ -568,6 +587,8 @@ char c;
 		return ("Army/Fleet");
 	else if (c == 'S')
 		return ("Spy");
+	else if (c == ' ')
+		return "";
 	else
 		return ("Unit");
 }
@@ -1099,4 +1120,144 @@ void InformCustodians( char *game_name, char *text, int variant, int is_gunboat)
     }
 
 }
+int ValidGatewayProvince(int igw,  int p)
+{
+    int i;
 
+    if (!(dipent.x2flags & X2F_GATEWAYS)) return 0;
+
+     for (i = 0; i < gw[igw].np; i++) 
+	if (gw[igw].pr[i] == p)
+	    return 1;
+
+     return 0;  /* not found in valid province list */
+}
+int ValidRailwayProvince( int irw, int p, int *pr_index)
+{
+    int i;
+    *pr_index = -1;
+
+    if (!(dipent.x2flags & X2F_RAILWAYS)) return 0;
+
+    for (i=0; i < rw[irw].np; i++)
+	if (rw[irw].pr[i] == p) {
+	    *pr_index = i;
+	    return 1;
+    }
+
+    return 0;  /* not found in valid provinces list */
+}
+
+int PermittedRailwayPower(int irw, char power_letter)
+{
+    int i;
+
+    if (!(dipent.x2flags & X2F_RAILWAYS)) return 0;
+
+    for (i=0; i < MAX_POWERS+1; i++) {
+        if (rw[irw].power_letter[i] == power_letter)
+	    return 1;
+    }    
+    return 0;
+}
+;
+/* This function determines if the source-dest order uses a gateway */
+int IsGatewayOrder(int u, int *igw) 
+{
+	int source = unit[u].loc;
+	int dest = unit[u].dest;
+	int i,j,k; 
+
+	if (!(dipent.x2flags & X2F_GATEWAYS)) return 0;
+
+	/* If not moving or supporting, not using gateway! */
+        if (unit[u].order != 'm' && unit[u].order != 's') return 0; 
+	for (i=0; i < ngw; i++) {
+	    for (j=0; j < MAX_GW_PROVINCES; j++) {
+	        if (gw[i].pr[j] == source) {
+		    for (k = 0; k < MAX_GW_PROVINCES; k++) {
+		        if (gw[i].pr[k] == dest) {
+			    *igw = i;
+			    return 1;
+			}
+		    }
+		} else if (gw[i].pr[j] == dest) {
+		    for (k = 0; k < MAX_GW_PROVINCES; k++) {
+                        if (gw[i].pr[k] == source) {
+                            *igw = i;
+                            return 1;
+                        }
+		    }
+		}
+	    }
+	}
+	return 0; 
+};
+
+/* Check that the passed gateway follows the unit's order */
+int IsGatewayOrdered(int igw,int u, int result[])
+{
+	int u1;
+
+        if (!(dipent.x2flags & X2F_GATEWAYS)) return 0;
+
+	/* Sanity check */
+	if (igw < 0 || igw >= ngw) return 0;
+	
+	u1 = pr[gw[igw].prov_index].unit;
+
+	if (!u1) return 0;  /* No unit there */
+
+	if (unit[u1].order != 's') return 0; /* Not supporting anyone */
+
+	if (unit[u].order == 'm' &&
+	    unit[u1].dest == unit[u].dest &&
+	    unit[u1].unit == u && !result[u1])
+		return 1;
+
+	if (unit[u].order == 's' &&
+	    unit[u1].dest == unit[u].loc &&
+	    unit[u1].unit == u && !result[u1])
+		return 1;
+
+	return 0;	
+};
+
+char HasUnit(int province_index)
+{
+	if (pr[province_index].unit >= 0)
+            return unit[pr[province_index].unit].type;
+       else
+	return '\0';
+};
+
+/* See if a gateway province, then only can retreat if owns gateway */
+int AllowedGatewayRetreat( int u, int p)
+{
+    int i, j, k, u1;
+
+    if (!(dipent.x2flags & X2F_GATEWAYS))
+	return 1;   /* No gateways, so always allowed */
+
+    for (i=0; i < ngw; i++) {
+        for (j=0; j < MAX_GW_PROVINCES; j++) {
+            if (gw[i].pr[j] == unit[u].loc) {
+                for (k = 0; k < MAX_GW_PROVINCES; k++) {
+                    if (gw[i].pr[k] == p) {
+			 for (u1 = 1; u1 <= nunit; u1++) {
+			     if (unit[u1].loc == gw[i].prov_index) {
+				if (unit[u1].status == ':' && 
+				    unit[u1].owner == unit[u].owner) {
+				    return 1;  
+				/* Found gatway unit of same owner, not dislodged */
+				}
+			     }
+			}
+			return 0; /* using gateway, but not allowed */
+		    }
+		}
+	    }
+	}
+    }
+    return 1;  /* not on a gateway, so ok to retreat */
+}

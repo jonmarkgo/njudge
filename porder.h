@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/10/29 23:41:34  miller
+ * Fixed reoccurring chaos bug (use centre() macro not 'x' to test province)
+ *
  * Revision 1.6  2001/10/20 12:11:14  miller
  * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
  *
@@ -110,6 +113,8 @@ extern struct units {
 	/* may retreat.                               */
 	short unit_prov;	/* province of supported/convoyed unit        */
 	unsigned char unit_coast; /* cost of supported/convoyed unit         */
+	short railway_index;	/* Index of railway being used, else -1 */
+	short exists;		/* True if unit really exists */
 
 } unit[MAXUNIT];
 
@@ -144,7 +149,8 @@ extern int nhk;
 struct gw_struct {
 int np;
 char name[40];
-int gw_prov;
+int prov_index; /* Index of psuedo province that is the gateway itself */
+int gw_prov;    /* Index of province that is gateway in pr[] */
 int pr[MAX_GW_PROVINCES];
 };
 
@@ -156,7 +162,8 @@ extern int ngw;
 #define MAX_RW_PROVINCES 10
 
 struct rw_struct {
-int np;
+int np; /* Number of provinces in local pr[] */
+int prov_index; /* Index of dummy province in global pr[] */
 char name[40];
 char power_letter[MAX_POWERS+1];
 int pr[MAX_RW_PROVINCES];

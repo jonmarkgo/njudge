@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2002/02/25 12:35:14  miller
+ * mall compile error fix
+ *
  * Revision 1.18  2002/02/25 11:51:52  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -641,6 +644,9 @@ void mail_setp(char *s)
 #define PRV_STORM	  'm'
 #define SET_NOSTORM	  148
 #define PRV_NOSTORM	  'm'
+#define SET_NOTVARIANT    149
+#define PRV_NOTVARIANT    'm'
+
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -770,7 +776,9 @@ void mail_setp(char *s)
 	 "railways", "railyway",
 	 "no railways", "no railway", "norailways", "norailway",
 	 "storms", "storm",
-	 "nostorms", "nostorm", "no storms", "no storm" 
+	 "nostorms", "nostorm", "no storms", "no storm",
+         "not variant", "notvariant"
+ 
  	};
 
 
@@ -907,7 +915,7 @@ void mail_setp(char *s)
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
 	SET_STORM, SET_STORM,
 	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
-	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY
+	SET_NOTVARIANT, SET_NOTVARIANT
     };
 
 
@@ -1043,7 +1051,9 @@ void mail_setp(char *s)
 	PRV_RAILWAY, PRV_RAILWAY,
 	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY,
 	PRV_STORM, PRV_STORM,
-	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM
+	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM,
+        PRV_NOTVARIANT, PRV_NOTVARIANT
+
 };
 
 	chk24nmr = 0;
@@ -1855,6 +1865,32 @@ void mail_setp(char *s)
 				CheckForGameStart(); /*see if we have quorum */
 			}
 			break;
+
+               case SET_NOTVARIANT:
+                        s = lookforv(s, variants, NVARIANT + NVAROPTS,&i,1);
+                        if (!i) {
+                                fprintf(rfp, "Invalid variant: %s", s);
+                                fputs("Valid variants flags are:\n", rfp);
+                                while (i < NVARIANT + NVAROPTS)
+                                        fprintf(rfp, "   %s\n", variants[i++]);
+                        } else if (dipent.seq[0] != 'x') {
+                                fprintf(rfp,
+                                        "The variant setting cannot be changed after the game has started.\n");
+                        } else {
+                                if (i >= NVARIANT) {
+                                        dipent.flags &= ~vvalue[i];
+                                        if (dipent.flags & F_GUNBOAT &&
+                                     dipent.players[player].power != MASTER) {
+                                        xaddr = someone;
+                                    }
+                                    broad_params = 1;
+                                } else {
+                                    fprintf(rfp, "Cannot remove variant: try setting to another variant.\n");
+                                }
+                        }
+                        break;
+
+
 
 		case SET_FLAG:
 			fprintf(rfp, "Flag word used2b %x.\n", dipent.flags);

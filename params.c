@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/02/25 11:51:53  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.9  2001/10/20 12:11:14  miller
  * Merged in changes from DEMA and USTV 
  *
@@ -204,7 +207,7 @@ void params(FILE * fp)
 	}
 	if (!(dipent.flags & F_MACH)) {
 	    if (dipent.flags & F_AFRULES) {
-		strcat(line, ", A/F Rules");
+		strcat(line, ", AF_Rules");
 	    }
 	    if (dipent.flags & F_SHORTHAND ) {
                 strcat(line, ", Shorthand");

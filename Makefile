@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.23  2002/04/15 10:55:14  miller
+# Added size_check to dependencies
+#
 # Revision 1.22  2002/04/12 18:20:50  miller
 # Fixed small error
 #
@@ -103,6 +106,7 @@ SRCS = 	assign.c \
 		po_mastrpt.c \
 		porder.c \
 		st_build.c \
+		st_setup.c \
 		st_movement.c \
 		st_porder.c \
 		st_retreat.c \
@@ -452,7 +456,7 @@ clean:
 	rm -f a.out core dip Datamake *.o *~
 	rm -f cmap fmtwho pdip rdip summary
 	rm -f deddump delgame flock ign makedep eddep recdump
-	rm -f zpblind ascii_to_ded ded_to_ascii	
+	rm -f size_check zpblind ascii_to_ded ded_to_ascii	
 lclint:
 	lint ${SRCS}
 lint: 
@@ -537,6 +541,8 @@ po_init.o: Makefile Makefile.defines po_init.c dip.h conf.h port.h variant.h por
 po_mastrpt.o: Makefile Makefile.defines po_mastrpt.c dip.h conf.h port.h variant.h
 porder.o: Makefile Makefile.defines porder.c dip.h conf.h port.h variant.h porder.h functions.h
 st_build.o: Makefile Makefile.defines st_build.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
+st_setup.o: Makefile Makefile.defines st_setup.c dip.h conf.h port.h variant.h functions.h \
  porder.h
 st_movement.o: Makefile Makefile.defines st_movement.c functions.h dip.h conf.h port.h variant.h \
  porder.h

@@ -87,6 +87,39 @@ void UpdateBlockades()
         }
 }
 
+static void CreateDummyRailwayUnits(void)
+{
+/* Dummy units are needed for railways. One is created per railway, with owner = 0 */
+    int i;
+
+    if (!(dipent.x2flags & X2F_RAILWAYS)) return;  /* No railways, so no dummies! */
+    for (i = 0; i < nrw; i++) {
+       unit[++nunit].loc = rw[i].prov_index;
+       pr[rw[i].prov_index].unit = nunit;
+       unit[nunit].owner = 0;   /* No owner, dummy province */
+       unit[nunit].railway_index = -1;  
+    }
+}
+static void CreateDummyGatewayUnits(void)
+{
+/* Dummy units are needed for gateways. One is created per gateway, with owner = 0 */
+    int i;
+
+    if (!(dipent.x2flags & X2F_GATEWAYS)) return;  /* No gateways, so no dummies! */
+
+    for (i = 0; i < ngw; i++) {
+       unit[++nunit].loc = gw[i].prov_index;
+       pr[gw[i].prov_index].unit = nunit;
+       unit[nunit].owner = 0;   /* No owner, dummy province */
+       unit[nunit].railway_index = -1;
+       unit[nunit].type = ' ';  /* no type! */
+       unit[nunit].stype = 'x'; /* Not a special type */
+       unit[nunit].order = 'h'; /* default hold order */
+       if (pr[gw[i].gw_prov].unit)
+	   unit[nunit].owner = unit[pr[gw[i].gw_prov].unit].owner;
+    }
+}
+
 int po_init(void)
 {
 
@@ -152,6 +185,8 @@ int po_init(void)
 			pr[i].home = n;
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
+			if (pr[i].type == 'r' || pr[i].type == 'g' )
+			    pr[i].move = NULL;
 		}
 
 		if ((i = fread(heap, sizeof(unsigned char), hp, ifp)) != hp) {
@@ -247,12 +282,14 @@ void po_chkmov(void)
 
 	for (from = 1; from <= npr; from++) {
 		if (!(s = pr[from].move)) {
-			fprintf(rfp, "No movement table for %s.\n", pr[from].name);
+			if (pr[from].type != 'r' && pr[from].type != 'g')
+			    fprintf(rfp, "No movement table for %s.\n", pr[from].name);
 			continue;
 		}
 		while ((to = *s++)) {
 			if (!(t = pr[to].move)) {
-				fprintf(rfp, "No movement table for %s.\n", pr[to].name);
+				if (pr[to].type != 'r' && pr[to].type != 'g')
+				    fprintf(rfp, "No movement table for %s.\n", pr[to].name);
 				continue;
 			}
 			i = *s++ & 0x0f;
@@ -320,7 +357,9 @@ int gamein(void)
 			fprintf(rfp, "Invalid unit owner %c for unit %d.\n", *line, nunit);
 			err++;
 		}
+		unit[nunit].railway_index = -1; /* not yet using a railway */
 		unit[nunit].status = line[1];
+		unit[nunit].exists = 1;  /* reading it in, so it must exist! */
 		s = &line[3];
 		unit[nunit].stype = islower(*s) ? *s++ : 'x';
 		c = unit[nunit].type = *s++;
@@ -331,6 +370,8 @@ int gamein(void)
 		else if (c == 'F')
 			unit[nunit].coast = XC;
 		else if (c == 'W')
+			unit[nunit].coast = MV;
+		else if (c == 'T')
 			unit[nunit].coast = MV;
 		else {
 			fprintf(rfp, "Invalid type %c for unit %d.\n", c, nunit);
@@ -388,6 +429,10 @@ int gamein(void)
 		}
 
 	}
+
+	for (i= nunit+1; i < MAXUNIT; i++) 
+	    unit[i].exists = 0;
+
 
 	/*
 	 *  Read in ownership of supply centers, one character per province.
@@ -612,7 +657,9 @@ int gamein(void)
 	fclose(ifp);
       
         UpdateBlockades();
- 
+
+	CreateDummyRailwayUnits();
+	CreateDummyGatewayUnits(); 
 	return err;
 }
 
@@ -648,8 +695,10 @@ int gameout(void)
 	for (p = 1; p <= AUTONOMOUS; p++) {
 		nu[p] = np[p] = 0;
 		for (u = 1; u <= nunit; u++) {
+			if (unit[u].type == ' ') continue;  /* dont write */
 			if (unit[u].owner == p) {
 				nu[p]++;
+				if (unit[u].type == 'T' ) nu[p]++;  /* AF fleet occupies two units */
 				if (unit[u].stype == 'x') {
 					fprintf(ifp, "%c%c %c %s", dipent.pl[p],
 						unit[u].status,
@@ -699,7 +748,8 @@ int gameout(void)
 
 	for (n = 0, p = 1; p <= npr; p++) {
 		if (!(dipent.xflags & XF_NOMONEY)) {
-		    np[pr[p].owner]++;
+		    if (pr[p].type != 'r' && pr[p].type != 'g')
+		        np[pr[p].owner]++;
 		} 
 		else if( cityvalue(p)) {
 		    /* It's a mach game, see if Mach2 */
@@ -794,7 +844,7 @@ int gameout(void)
 			if (!(dipent.flags & F_MACH) || 
 			     (dipent.xflags & XF_NOMONEY)) {
 				if (dipent.players[u].centers <= 0) dipent.players[u].status |= SF_DEAD;			     }
-			if (need_order[p])
+			if (need_order[p] && !(dipent.players[u].status & SF_DEAD))
 				dipent.players[u].status |= SF_MOVE;
 		} else {
 			dipent.players[u].units = 0;

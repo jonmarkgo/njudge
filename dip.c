@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2002/04/09 10:54:38  miller
+ * Add check before resending abandoned messages
+ *
  * Revision 1.18  2002/04/06 14:40:27  miller
  * Fixed a bad '=' that casued all builds to not set SF_MOVE flag (DAMN!)
  *
@@ -112,8 +115,9 @@
 
 void init(int, char **);
 void phase_pending(void);	/* defined in phase.c */
-void  inform_party_of_blind_turn(int player_index, char *turn_text);
+void  inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 void CheckRemindPlayer( int player, long one_quarter);
+void CheckSizes(void);   /* Check that no sizes have changed */
 
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
 
@@ -129,6 +133,8 @@ int main(int argc, char *argv[])
 
 	OPENDIPLOG(exe_name);
 	DIPINFO("Started dip");
+
+        CheckSizes();
 
 	if(open_plyrdata() != 0)
 	{
@@ -174,57 +180,51 @@ int main(int argc, char *argv[])
 
 }
 
+void CheckSizes(void)
+{
+    FILE *fptr;
+    int ss, si, sl;
+
+    fptr = fopen(".size.dat","r");
+    if (!fptr) return;  /* Assume it is ok if no file found */
+    fscanf(fptr, "%d %d %d", &ss, &si, &sl);
+    fclose(fptr);
+
+    if (ss != sizeof(short) || si != sizeof(int) || sl != sizeof(long))
+        bailout(E_FATAL);   /* Don't run if sizes bad */
+}
+
+
 /* 
  * This function will tell all players that a blind turn has happened
  * The text will be varied depending on who is being told
  */
 
-void inform_party_of_blind_turn( int player_index, char *turn_text)
+void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_file)
 {
-	char line[150];
+        char line[150];
 
 /* ito be made configureable */
-	char *rfile = "dip.reply";
+        char *out_file = "dip.rreply";
 
-	if (Dflg)
-              rfp = stdout;
-         else if (!(rfp = fopen(rfile, "w"))) {
-	        perror(rfile);
-                bailout(1);
-	}
+        sprintf(line,
+                "%s %s %s -i=%s -o=%s",
+                "./zpblind",
+                powers[dipent.players[player_index].power],
+                owners[dipent.players[player_index].power],
+                in_file,
+                out_file);
 
-	fprintf(rfp, "Blind turn %s has occurred.\n\n", turn_text);
-	
-	switch (dipent.players[player_index].power)
-	{
-		case MASTER:
-			fprintf(rfp, "It is your responsability to inform affected player(s).\n");
-			break;
+        system(line);
 
-		case OBSERVER:
-			break;
+       sprintf(line, "%s %s '%s:%s - %s Blind Results' '%s'",
+                SMAIL_CMD, out_file, JUDGE_CODE, dipent.name, turn_text,
+                dipent.players[player_index].address);
 
-		default:
-			if (dipent.players[player_index].centers > 0) {
-			    /* Player still has some interest */
-			    if (dipent.players[player_index].status & SF_MOVE) {
-				fprintf(rfp,"A move is expected from you. The master should contact you shortly.\n");
-			    } else {
-				fprintf(rfp,"The master should send your results shortly.\n");
-			    }
-			} else {
-			    /* What more does a dead player want to know?! */
-			}
-	}
-	fclose(rfp);
-
-	sprintf(line, "%s %s 'Diplomacy blind results %s %s' '%s'",
-                              SMAIL_CMD, rfile, 
-			      dipent.name, turn_text, dipent.players[player_index].address);
         if (*(dipent.players[player_index].address) != '*' && !Dflg) {
                                 execute(line);
         }
-}			
+}
 
 
 /****************************************************************************/
@@ -780,6 +780,16 @@ int process(void)
 	** At that point dipent.dedapplied will be set to dedtest.
 	*/
 	dedtest = dipent.dedapplied;
+
+        if (GAME_PAUSED) {
+                fprintf(lfp,
+                        "Diplomacy game '%s' is waiting to be continued.\n",
+                        dipent.name);
+                fprintf(mlfp,
+                        "Diplomacy game '%s' is waiting to be continued.\n",
+                        dipent.name);
+                return 0;
+        }
 
 	if (now < dipent.grace) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
@@ -1353,7 +1363,7 @@ int process(void)
 			if (dipent.flags & F_BLIND) {
 			    /* Ooops, it's a blind variant */
 			    /* Special routine to work out what to tell who */
-			    inform_party_of_blind_turn(i, phase);
+			    inform_party_of_blind_turn(i, phase,"dip.result");
 			}
 			/* If a build transfer, set a wait for all players playing */
                         if ((dipent.phase[5] == 'B') && !(dipent.players[i].status & SF_DEAD)

@@ -1,7 +1,10 @@
 /*
 ** $Log$
+** Revision 1.13  2002/03/05 23:19:49  miller
+** Fix special bleagured garisson bug
+**
 ** Revision 1.12  2001/10/20 12:11:15  miller
-** Merged in changes from DEMA and USTV 
+** Merged in changes from DEMA and USTV
 **
 ** Revision 1.11.2.2  2001/10/20 00:52:49  dedo
 ** Remvoe compile warnings
@@ -19,7 +22,7 @@
 ** Fix proxy-unit order bug
 **
 ** Revision 1.8  2001/05/14 23:08:49  miller
-** Remove DOS ^M
+** Remove DOS 
 **
 ** Revision 1.7  2001/05/09 05:59:50  greg
 ** minor bug fix
@@ -38,7 +41,7 @@
 ** Added move syntax checker
 ** Allow wing units to be used
 ** Allow transformations
-** REcalculate blockade settings
+** Recalculate blockade settings
 **
 ** Revision 1.1 1998/02/28 17:49:42 david
 ** Initial revision
@@ -72,6 +75,11 @@
 #include "functions.h"
 #include "dip.h"
 #include "porder.h"
+
+#define INVALID_ORDER(p1,u)  errmsg("Invalid order for the %s %s %s.\n", \
+                 utype(unit[u].type), \
+                 mov_type(p1,u), pr[p1].name); \
+                return E_WARN;
 
 int convoyable(int p) 
 { 
@@ -142,6 +150,10 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 	switch (order) {
 	case 'c':
 	case 's':
+	case 'a':
+		if (order == 'a' && !(dipent.xflags & XF_AIRLIFTS)) {
+		    /*INVALID_ORDER(p1,u);*/
+		}
 		s = get_type(s, &c);
 		s = get_prov(s, &p2, &c2);
 		AddUnitProvinceToOrder(out_text, c, p2);
@@ -210,7 +222,7 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 				t = get_action(s, &c);
 				/* Check that not disallowed for Army/Fleet rules */
 				if (dipent.flags & F_AFRULES && c == 'm') {
-				    errmsg("Multi-hop convoys are not allowed with A/F rules.");
+				    errmsg("Multi-hop convoys are not allowed with A/F rules.\n");
 				    return E_WARN;
 				}
 			 c2 = MV;
@@ -288,9 +300,11 @@ int movein(char **s, int p)
 {
 /* Read movement in from input file. */
 	char c, order, *t;
-	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl;
+	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl, igw, irw;
+	int railway_flag = 0;
 	unsigned char *bp;
 	char temp_text[256];
+	int dummy;
  
 /* Process lines of the form:
 **
@@ -312,7 +326,15 @@ int movein(char **s, int p)
 		errmsg("Unrecognized source province -> %s", *s);
 		return E_WARN;
 	}
+	if (railway(p1)) {
+		errmsg("Cannot start order with railway");
+		return E_WARN;
+	}
+
 	u1 = pr[p1].unit;
+	if (gateway(p1))
+		igw = pr[p1].type2; 
+
 	u = u1;
 	/* p3 and c3 initialisation */
 	p3 = p1;
@@ -322,6 +344,7 @@ int movein(char **s, int p)
 		 water(p1) ? "in the" : "in", pr[p1].name);
 		return E_WARN;
 	}
+	unit[u].railway_index = -1;  /* to reset */
 	if (p != unit[u].owner && p != MASTER) {
 		if (!(dipent.flags & (F_PROXY))) {
 			errmsg("%s doesn't own the %s %s %s.\n", powers[p], utype(c),
@@ -345,6 +368,7 @@ int movein(char **s, int p)
 			unit[u2].owner = p;
 			unit[u2].proxy = u;
 			unit[u2].order = 'n';
+			unit[u2].railway_index = -1;
 			u = u2;
 		}
 	}
@@ -360,9 +384,22 @@ int movein(char **s, int p)
 	bp = NULL;
 	bl = 0;
 	*s = get_action(*s, &order);
+
+	if (gateway(p1) && order != 's' && order != 'h' && order != 'n') {
+	    errmsg("Gateway can only be ordered to support or hold");
+	    return E_WARN;
+	} 
 	switch (order) {
 	case 'c':
 	case 's':
+	case 'a':
+		if (order == 'a' && !(dipent.xflags & XF_AIRLIFTS)) {
+		    INVALID_ORDER(p1,u);
+		}
+		if (unit[u].type == 'T' && order == 'c') {
+		    errmsg("Army/Fleets cannot convoy.\n");
+		    return E_WARN;
+		}
 		*s = get_type(*s, &c);
 		*s = get_prov(*s, &p3, &c3);
 		p2 = p3;
@@ -378,12 +415,15 @@ int movein(char **s, int p)
 			 water(p2) ? "in the" : "in", pr[p2].name);
 			return E_WARN;
 		 }
-		 if (order == 'c' && unit[u2].type != 'A') {
-			errmsg("The convoy order should specify source %s\n",
+		 if ((order == 'a' || order == 'c') &&
+			!(dipent.flags & F_BLIND) && 
+			unit[u2].type != 'A') {
+			errmsg("The %s order should specify source %s\n",
+			 order == 'c' ? "convoy" : "airlift",
 			 "and final destination of an army.");
 			return E_WARN;
 		 }
-		 if ((c != 'x' && c != unit[u2].type)) {
+		 if ((c != 'x' && c != unit[u2].type && !(dipent.flags & F_BLIND))) {
 			errmsg("The unit %s %s is %s, not %s.\n",
 			 mov_type(p2,u2), pr[p2].name,
 			 autype(unit[u2].type), autype(c));
@@ -409,6 +449,12 @@ int movein(char **s, int p)
 			 utype(unit[u].type), pr[p1].name);
 			return E_WARN;
 		}
+		if (order == 'a' && unit[u].type != 'W') {
+			errmsg("The %s in %s can't airlift anything!!\n",
+			utype(unit[u].type), pr[p1].name);
+			return E_WARN;
+		}
+
 		if (order == 'c' && water(p2)) {
 			errmsg("The convoy order should specify source %s\n",
 			 "and final destination of an army.");
@@ -420,8 +466,8 @@ int movein(char **s, int p)
                     return E_WARN;
                 }
 		c1 = 0;
-		if (order == 's' &&
-		 (!valid_move(u, p2, &c1, &bl) || c1 == MX)) {
+		if (!gateway(p1) && (order == 's' &&
+		 (!valid_move(u, p2, &c1, &bl) || c1 == MX))) {
 			errmsg("The %s %s %s can't get to %s%s to support.\n",
 			 utype(unit[u].type),
 			 mov_type(p1, u), pr[p1].name,
@@ -457,16 +503,49 @@ int movein(char **s, int p)
 			 water(p1) ? "the " : "", pr[p1].name, *s);
 			return E_WARN;
 		}
+		if (railway(p2)) {
+		    irw = pr[p2].type2;
+		    if (unit[u].type != 'A') {
+			errmsg("Only armies can use railways.\n");
+			return E_WARN;
+		    }
+		    if (!ValidRailwayProvince(irw, p1,&dummy)) {
+			errmsg("Source province is not on railway.\n");
+			return E_WARN;
+		    }
+		    if(!PermittedRailwayPower(irw, pletter[dipent.variant][unit[u].owner])) {
+
+			errmsg("Power is not allowed to use railway.\n");
+			return E_WARN;
+		    }
+		}
 		t = get_action(*s, &c);
-		if (c == 'm') {
+		/*if (railway(p2)) {
+		    if (c != 'm') {
+			errmsg("Armies must move off railway - order failed.\n");
+			return E_WARN;
+		    } else {
+			*s = get_prov(t, &p3, &c3);
+			if (!ValidRailwayProvince(irw, p3,&dummy)) {
+			    errmsg("Destination province is not on railway.\n");
+			    return E_WARN;
+			}
+			if (p2 == p3) {
+			    errmsg("Cannot get on and off of railway at same province.\n");
+			    return E_WARN;
+			}
+		    }
+		} else*/
+		  if (c == 'm') {
 			if (unit[u].type == 'A') {
 				i = nunit + 1;
 				unit[i].loc = unit[u].loc;
 				unit[i].coast = XC;
+				unit[i].railway_index = -1;
 				bp = &heap[hp];
-				while (c == 'm') {
-					if (!valid_move(i, p2, &c2, &j) || !convoyable(p2) ||
-					 (!(u2 = pr[p2].unit) || unit[u2].type != 'F')) {
+				while (c == 'm' && !railway_flag) {
+					if (!railway(p2) &&(!valid_move(i, p2, &c2, &j) || !convoyable(p2) ||
+					 (!(u2 = pr[p2].unit) || unit[u2].type != 'F'))) {
 						errmsg("The army in %s can't convoy through %s%s.\n",
 						 pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
 						return E_WARN;
@@ -475,6 +554,7 @@ int movein(char **s, int p)
 						bl = j;
 					heap[hp++] = pr[p2].unit;
 					unit[i].loc = p2;
+					if (railway(p2)) railway_flag = 1;
 					*s = get_prov(t, &p2, &c2);
 					if (!p2) {
 						errmsg("Movement from %s%s to unrecognized province -> %s",
@@ -483,12 +563,16 @@ int movein(char **s, int p)
 					}
 					t = get_action(*s, &c);
 					/* Check that not disallowed for Army/Fleet rules */
-					if (dipent.flags & F_AFRULES && c == 'm') {
+					if (!railway_flag && ((dipent.flags & F_AFRULES) && c == 'm')) {
                                             errmsg("Multi-hop convoys are not allowed with A/F rules.");
                                             return E_WARN;
                                         }
+					if (railway_flag && !ValidRailwayProvince(irw, p2,&dummy)) {
+                            			errmsg("Destination province is not on railway.\n");
+                            			return E_WARN;
+                        		}
 				}
-				if (!valid_move(i, p2, &c2, &j)) {
+				if (!railway_flag && (!valid_move(i, p2, &c2, &j))) {
 					errmsg("The army in %s can't convoy from %s to %s.\n",
 					 pr[p1].name, pr[unit[i].loc].name, pr[p2].name);
 					return E_WARN;
@@ -505,6 +589,7 @@ int movein(char **s, int p)
 				 mov_type(p1, u), pr[p1].name);
 				return E_WARN;
 			}
+
 		} else {
 			if (!valid_move(u, p2, &c2, &bl)) {
 				errmsg("The %s %s %s can't get to %s%s.\n", utype(unit[u].type),
@@ -615,12 +700,80 @@ int movein(char **s, int p)
                 unit[u].new_type = c; /* Store the new requested type */
                 unit[u].new_coast = c1; /* and the new coast */
 		break;
+
+	case 'e':  /* Embark order, AF only */
+		if (!(dipent.flags & F_AFRULES)) {
+		    INVALID_ORDER(p1, u);
+		}
+		/* Unit needs to be an army, trying to get onto a fleet */
+		if (unit[u].type != 'A') {
+		    errmsg("Only armies can embark.\n");
+		    return E_WARN;
+		}
+
+		/* Check that destination unit is a fleet */
+		*s = get_type(*s, &c);
+                *s = get_prov(*s, &p3, &c3);
+                p2 = p3;
+                c2 = c3;
+		u2 = pr[p2].unit;
+		if ((!(dipent.flags & F_BLIND) && (unit[u2].type != 'F' || !u2)) || (c != 'F' && c != 'x' )) {
+		    errmsg("Can only embark onto fleets.\n");
+		    return E_WARN;
+		} 
  
+		break;
+
+	case 'k':  /* disembark order, AF only */
+		if (!(dipent.flags & F_AFRULES)) {
+		    INVALID_ORDER(p1,u);
+		}
+		/* Unit needs to be a fleet or army/fleet */
+		if (unit[u].type != 'T' && unit[u].type != 'F' ) {
+		    errmsg("Cannot disembark from non-fleet units.\n");
+		    return E_WARN;
+		}
+
+		*s = get_prov(*s, &p3, &c3);
+	
+		if (!water(p1)) {
+		    errmsg("%s is not a water province to disembark from",
+			pr[p1].name);
+		    return E_WARN;
+		}	
+		c3 = XC;  /* Any coast, NOT army movement */
+		if (!valid_move(u, p3, &c3, &bl)) {
+		    errmsg("%s is not adjacent to %s to disembark to.\n",
+			pr[p3].name, pr[p1].name);
+		    return E_WARN;
+		}
+		p2=p3; c2=c3;
+		break;
+
 	default:
-		errmsg("Invalid order for the %s %s %s.\n",
-		 utype(unit[u].type),
-		 mov_type(p1,u), pr[p1].name);
-		return E_WARN;
+		INVALID_ORDER(p1,u);
+
+	}
+	if (gateway(p1)) {
+            switch (order) {
+                case 's':
+                    /* OK, gateway has a support order: see if for valid province movement or support */
+                    if (ValidGatewayProvince(igw, p2) && ValidGatewayProvince(igw, p3) ) {
+			/* All ok, fall through */
+                    } else {
+                        errmsg("Invalid provinces for gateway.\n");
+                        return E_WARN;
+		    }
+                    break;
+		case 'h':
+		case 'n':
+		    break;
+
+                default:
+                    errmsg("Invalid order for gateway.\n");
+                    return E_WARN;
+            }
+
 	}
 	unit[u].order = order;
 	unit[u].unit = u2;
@@ -630,20 +783,14 @@ int movein(char **s, int p)
 	unit[u].dcoast = c2;
 	unit[u].convoy = bp;
 	unit[u].bloc = bl;
+	if (railway_flag)
+	    unit[u].railway_index = irw;
+
 	return 0;
 }
-/****************************************************************************/
-int moveout(int pt)
-{
-/* Process movement orders. */
-	int u, u2, u3, u4, bounce = 0, i, index, p;
-	unsigned char *s, *t, c, contest[NPROV + 1];
-	int c1;
-	int unit_dislodged;
-	char cbuffer[1024];
-	int result[MAXUNIT];
-	int support[MAXUNIT];
-	int fail[MAXUNIT]; /* Marked as failed when attacked, useful for transforms only */
+
+	static int bounce;
+        static int rw_used[MAX_RAILWAYS]; /* check if railway being used mroe than once */
 #define supval(u) (unit[u].stype == 'm' || unit[u].stype == 'p' ? 2 : 1)
 #define VOID 1
 #define NO_CONVOY 2
@@ -652,26 +799,491 @@ int moveout(int pt)
 #define NO_SUPPORT 5
 /* #define BESIEGE 6 */
 /* #define DOSIEGE 7 */
-#define BLOCKED	 8
+#define BLOCKED  8
 #define BAD_CONVOY 9
-#define DISLODGED 32	/* added on */
-#define MAYBE_NO_CONVOY 33	/* no message */
-	static char *results[] =
-	{"dislodged",
-	 "void",
-	 "no convoy",
-	 "cut",
-	 "bounce",
-	 "no support",
-	 "",
-	 "",
+#define BAD_AIRLIFT 10
+#define DISLODGED 32    /* added on, used as bit mask */
+#define MAYBE_NO_CONVOY 33      /* no message */
+        static char *results[] =
+        {"dislodged",
+         "void",
+         "no convoy",
+         "cut",
+         "bounce",
+         "no support",
+         "",
+         "",
 /* "siege in progress", */
 /* "siege required", */
-	 "blocked",
-	 "WARN: check convoy"};
+         "blocked",
+         "WARN: check convoy",
+	 "WARN: check airlift" };
+
+static int result[MAXUNIT];
+static int support[MAXUNIT];
+static int fail[NPROV+1]; /* Marked as failed when attacked, useful for transforms only */
+static unsigned char  contest[NPROV + 1];
  
+/**** called to actually do move processing ****/
+static void DoMoves( void)
+{
+        int u, u2, u3, u4, p, igw;
+	unsigned char *s;
+	int unit_dislodged;
+
+
+/* Pass 0a: See if railway being used more than once and fail the moves if so */
+
+    for (u=0; u < nrw; u++)
+	rw_used[u] = 0;
+
+    for (u = 1; u <= nunit; u++) {
+        if (unit[u].railway_index >= 0 && unit[u].owner)
+            rw_used[unit[u].railway_index]++;
+    }
+
+   for (u = 1; u <= nunit; u++) {
+        if (unit[u].railway_index >= 0 && unit[u].owner)
+            if (rw_used[unit[u].railway_index] > 1)
+                result[u] = BLOCKED;  /* Mark duplicate uses as BLOCKED moves */
+
+        if (IsGatewayOrder(u, &igw)) {
+            if (!IsGatewayOrdered(igw,u, result))
+                result[u] = BLOCKED;
+        }
+    }
+
+/* Pass 1: Tally up all the support orders, verify convoys. */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 's' && !result[u]) {
+                                if (unit[u2 = unit[u].unit].order == 'm') {
+                                        if (unit[u2].dest == unit[u].dest &&
+                                         (unit[u2].dcoast == unit[u].dcoast || unit[u2].dcoast <= XC)) {
+                                                if (!result[u2] && unit[u].type != ' ')
+                                                        support[u2] += supval(u);
+                                        } else {
+                                                result[u] = VOID;
+                                        }
+                                } else {
+                                        if (unit[u2].loc == unit[u].dest) {
+					    if (unit[u].type != ' ')
+                                                support[u2] += supval(u);
+					} else {
+                                                result[u] = VOID;
+                                        }
+                                }
+
+                        } else if (unit[u].order == 'm' && unit[u].convoy != NULL) {
+                                for (s = unit[u].convoy; *s; s++) {
+                                        if (unit[*s].order != 'c' || unit[*s].unit != u ||
+                                        (unit[*s].dest != unit[u].dest &&
+                                         unit[*s].dest != unit[*(s + 1)].loc)) {
+                                            if (pr[unit[*s].loc].type != 'r') {
+                                                /* only disallow if not a railway unit involved */
+                                                result[u] = NO_CONVOY;
+                                                support[u] = supval(u) - 1;
+                                                break;
+                                            }
+                                        }
+                                        if ( HasUnit(unit[u].dest) && unit[pr[unit[u].dest].unit].owner != unit[u].owner) {
+                                         /* Non owner attacked this unit, so set the fail flag */
+                                         if (dipent.xflags & XF_NOATTACK_TRANS)
+                                         if (dipent.xflags & XF_TRANS_MANYW)
+                                                 fail[unit[u].dest] = 'f';
+                                        }
+                                }
+                        } else if (unit[u].order == 'm' ) {
+
+                            if (HasUnit(unit[u].dest) && unit[pr[unit[u].dest].unit].owner != unit[u].owner) {
+                                         /* Non owner attacked this unit, so set the fail flag */
+                                         if (dipent.xflags & XF_NOATTACK_TRANS)
+                                         if (dipent.xflags & XF_TRANS_MANYW)
+                                                 fail[unit[u].dest] = 'f';
+                                        }
+
+			/***
+                            if (IsGatewayOrder(u, &igw)) {
+                                if (!IsGatewayOrdered(igw,u))
+                                    result[u] = BLOCKED;
+                            }
+			 ***/
+
+                        }
+                }
+/* Pass 2a: Check for support cut from non-convoyed units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0 || result[u])
+                                continue;
+                        if ((unit[u].order == 'm' && !unit[u].convoy && unit[u].dcoast != MX)
+                         && (u2 = pr[unit[u].dest].unit)
+                         && unit[u2].order == 's' && !result[u2]
+                         && unit[u2].dest != unit[u].loc        /* X */
+                         && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
+                                result[u2] = CUT;
+                                support[unit[u2].unit] -= supval(u2);
+                        }
+                }
+/* Pass 2a.1: Check for support cut from "support needed" units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0 || result[u])
+                                continue;
+                        if (unit[u].dcoast == MX) {
+                                unit[u].dcoast = MV;
+                                if (unit[u].order == 'm' && !unit[u].convoy && support[u] >= 0
+                                 && (u2 = pr[unit[u].dest].unit)
+                                 && unit[u2].order == 's' && !result[u2]
+                                 && unit[u2].dest != unit[u].loc        /* X */
+                                 && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
+                                        result[u2] = CUT;
+                                        support[unit[u2].unit] -= supval(u2);
+                                }
+                        }
+                }
+/* Pass 3a: Check for dislodged convoys. XII.3 */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'c' && !result[u2 = unit[u].unit]) {
+                                for (s = unit[u2].convoy; s != NULL && *s; s++) {
+                                        if (*s == u) {
+                                                for (u3 = 1; u3 <= nunit; u3++) {
+                                                        if (unit[u3].owner <= 0)
+                                                                continue;
+                                                        if (unit[u3].order == 'm' && !result[u3] &&
+                                                         unit[u3].owner != unit[u].owner &&
+                                                         unit[u3].dest == unit[u].loc && support[u3] > support[u]) {
+                                                                result[u2] = MAYBE_NO_CONVOY;
+                                                                goto nextp3a;
+                                                        }
+                                                }
+                                                                                          }
+                                }
+                        }
+                 nextp3a:;
+                }
+/* Pass 2b: Check for support cut from convoyed units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'm' && unit[u].convoy && !result[u]
+                         && (u2 = pr[unit[u].dest].unit)
+                         && unit[u2].order == 's' && !result[u2]
+                         && unit[u2].dest != unit[u].loc        /* X */
+                         && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
+/* XII.5: You can't cut support of attacks against your convoy */
+                                for (s = unit[u].convoy; s != NULL && *s; s++)
+                                        if (unit[u2].unit == *s)
+                                                goto nextp2b;
+                                result[u2] = CUT;
+                                support[unit[u2].unit] -= supval(u2);
+                        }
+                 nextp2b:;
+                }
+/* Pass 3b: Recheck for dislodged convoys. XII.3 */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'c' && result[u2 = unit[u].unit] == MAYBE_NO_CONVOY) {
+                                for (s = unit[u2].convoy; s != NULL && *s; s++) {
+                                        if (*s == u) {
+                                                for (u3 = 1; u3 <= nunit; u3++) {
+                                                       if (unit[u3].owner <= 0)
+                                                                continue;
+                                                        if (unit[u3].order == 'm' && !result[u3] &&
+                                                         unit[u3].owner != unit[u].owner &&
+                                                         unit[u3].dest == unit[u].loc && support[u3] > support[u]) {
+                                                                for (u4 = 1; u4 <= nunit; u4++) {
+                                                                        if (u4 == u3)
+                                                                                continue;
+                                                                        if (unit[u4].order == 'm' &&
+                                                                         unit[u4].dest == unit[u].loc &&
+                                                                         support[u4] >= support[u3])
+                                                                                break;
+                                                                }
+                                                                if (u4 <= nunit)
+                                                                        continue;
+                                                                result[u] = DISLODGED;
+                                                                result[u2] = NO_CONVOY;
+                                                                support[u2] = supval(u2) - 1;
+                                                                goto nextp3b;
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                 nextp3b:;
+                }
+/* Pass 2c: Check for support cut from convoyed units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (result[u] == MAYBE_NO_CONVOY) {
+                                result[u] = 0;
+                                if ((u2 = pr[unit[u].dest].unit)
+                                 && unit[u2].order == 's' && !result[u2]
+                                 && unit[u2].dest != unit[u].loc        /* X */
+                                 && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
+/* XII.5: You can't cut support of attacks against your convoy */
+                                        for (s = unit[u].convoy; s != NULL && *s; s++)
+                                                if (unit[u2].unit == *s)
+                                                        goto nextp2c;
+                                        result[u2] = CUT;
+                                        support[unit[u2].unit] -= supval(u2);
+                                }
+                        }
+                 nextp2c:;
+                }
+/* Pass 4b: Check for dislodged support. X */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'm' && (u2 = pr[unit[u].dest].unit)
+                         && unit[u2].order == 's' && !result[u] && !result[u2]
+                         && unit[u2].dest == unit[u].loc) {
+/* Your support cannot dislodge your own unit. IX.3 */
+                                for (u3 = 1, p = 0; u3 <= nunit; u3++) {
+                                        if (unit[u3].owner <= 0)
+                                                continue;
+                                        if (!result[u3] && unit[u3].order == 's' &&
+                                         unit[u3].unit == u && unit[u3].owner == unit[u2].owner)
+                                                p += supval(u3);
+                                }
+         			if (support[u]-p > support[u2]) {
+           			    for (u4=1, unit_dislodged=1; u4<=nunit; u4++ ) {
+             			        if ( ( u != u4 )
+               			        && ( unit[ u4 ].order == 'm' )
+               			        && ( !result[ u4 ] )
+               			        && ( unit[ u4 ].dest == unit[ u ].dest )
+               			        && ( support[ u4 ] >= support[u]-p ) )
+                 			    unit_dislodged = 0;
+           			    }
+
+           			    if ( unit_dislodged == 1 ) {
+             			    result[u2] = DISLODGED;
+             			    support[unit[u2].unit] -= supval(u2);
+           			    }
+				}	
+                        }
+                }
+/* Pass 5: Check for movement bounces */
+                do {
+                        bounce = 0;
+                        for (u = 1; u <= nunit; u++) {
+                                if (unit[u].owner <= 0)
+                                        continue;
+                                if ((unit[u].order == 'm') && !result[u]) {
+                                        /*
+                                         ** The destination is contested by unit u unless there is a
+                                         ** unit there moving into unit u's starting location.
+                                         */
+                                        if (!((u2 = pr[unit[u].dest].unit) && !result[u2]       /* IX.7.note */
+                                         &&unit[u2].order == 'm'
+                                         && unit[u2].dest == unit[u].loc
+                                         && !unit[u2].convoy && !unit[u].convoy)) {     /* XIV.6 */
+                                                contest[unit[u].dest]++;
+                                        }
+                                        p = 0;
+                                        if (u2) {
+                                                /*
+                                                 ** Your support cannot dislodge your own unit. IX.3
+                                                 */
+                                                if (result[u2] || (unit[u2].order != 'm' &&
+                                                unit[u2].order != 'v')) {
+                                                        for (u3 = 1; u3 <= nunit; u3++) {
+                                                                if (unit[u3].owner <= 0)
+                                                                        continue;
+                                                                if (!result[u3] && unit[u3].order == 's' &&
+                                                                 unit[u3].unit == u && unit[u3].owner == unit[u2].owner)
+                                                                        p += supval(u3);
+                                                        }
+                                                }
+                                                /*
+                                                 ** Unit u bounces if the unit there is holding with more support.
+                                                 */
+                                                if ((unit[u2].order != 'm' && unit[u2].order != 'd')
+                                                 || (unit[u2].dest == unit[u].loc
+                                                        && !unit[u2].convoy && !unit[u].convoy)) {      /* XIV.6 */
+                                                        if (support[u] - p <= support[u2]
+                                                         || unit[u].owner == unit[u2].owner) {  /* IX.3 */
+                                                                bounce++;
+                                                                result[u] = BOUNCE;
+                                                                goto nextp5;
+                                                        }
+                                                        /*
+                                                         ** ...or if the unit's movement bounced and we have no support.
+                                                         */
+                                                } else if (result[u2]
+                                                         && ((support[u] - p < supval(u2))
+                                                         || unit[u].owner == unit[u2].owner)) { /* IX.3 */
+                                                        bounce++;
+                                                        result[u] = BOUNCE;
+                                                        goto nextp5;
+                                                }
+                                        }
+                                        /*
+                                         ** Unit bounces if another unit is moving to the same spot with
+                                         ** the same amount or more support.
+                                         */
+                                        for (u3 = 1; u3 <= nunit; u3++) {
+                                                if (unit[u3].owner <= 0)
+                                                        continue;
+                                                if (u != u3 && unit[u].dest == unit[u3].dest &&
+                                                 ((unit[u3].order == 'm') &&
+                                                (!result[u3] || result[u3] == BOUNCE)) &&
+                                                 support[u] - p <= support[u3]) {
+                                                        /*
+                                                         ** Won't bounce if unit there dislodges other unit. IX.7.note
+                                                         */
+                                                        if (!(u2 && unit[u2].order == 'm' && !result[u2]
+                                                         && unit[u2].dest == unit[u3].loc
+                                                         && !unit[u2].convoy && !unit[u3].convoy)) {
+                                                                bounce++;
+                                                                result[u] = BOUNCE;
+                                                                goto nextp5;
+                                                        }
+                                                }
+                                        }
+                                }
+                         nextp5:;
+                        }
+                } while (bounce);
+/* Pass 5aa: Disband requested disband units */
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if (unit[u].order == 'd') {
+                            result[u] = 0; /* Disbands never fail */
+                        }
+                }
+/* Pass 5a: flag dislodgements */
+                bounce = 0;
+                for (u = 1; u <= nunit; u++) {
+                        if (unit[u].owner <= 0)
+                                continue;
+                        if ((unit[u].order == 'm') && !result[u]) {
+                                if ((u2 = pr[unit[u].dest].unit) &&
+                                ((unit[u2].order != 'm' && unit[u2].order != 'd') || result[u2])) {
+                                        if (result[u2] < DISLODGED)
+                                                result[u2] += DISLODGED;
+                                        unit[u2].status = 'r';
+                                        bounce++;
+                                }
+                        }
+                }
+}
+
+/* Check if railway move requested is to be blocked */
+int RailwayMoveCut( int u)
+{
+    /* Moves on a railway are blocked if a non-owner unit is on the line, 
+     * OR a non-owner move to destination will be successful
+     */
+
+    int diff, source_pr, dest_pr, i, u1;
+    int irw = unit[u].railway_index;
+
+    if (irw < 0) return 0;  /* wasting my time! */
+
+    ValidRailwayProvince(irw, unit[u].loc, &source_pr);
+    ValidRailwayProvince(irw, unit[u].dest, &dest_pr);
+
+    diff = source_pr < dest_pr ? 1: -1;
+
+    for (i = source_pr; i != dest_pr; i=i+diff) {
+	if (i==source_pr) continue;  /* No need tolook at where I am! */
+	
+	for (u1=1; u1 <= nunit; u1++) {
+	    if (u == u1) continue;  /* Don't look at me! */
+	    if (unit[u].owner != unit[u1].owner && 
+                  ((unit[u1].loc == rw[irw].pr[i] && 
+		    unit[u1].status == ':' &&
+		    unit[u1].order != 'm') ||
+		   (unit[u1].dest ==  rw[irw].pr[i] && !result[u1]))) {
+		/* OK; we've got a unit either here and not of mtype OR
+		  going here and not of my type */
+
+		/* So, let's order dummy unit to move there, to fake bounce */
+		unit[pr[rw[irw].prov_index].unit].dest = rw[irw].pr[i];
+	        unit[pr[rw[irw].prov_index].unit].order = 'm';
+		unit[pr[rw[irw].prov_index].unit].owner = AUTONOMOUS; /* Just so it is calculated in */
+		return 1;
+	    }
+	}
+    }
+    return 0;
+}
+
+/* Check if railway has a free province to retreat to */
+int HasFreeRWProvince( int u, int *p)
+{
+    /* Moves on a railway are blocked if a non-owner unit is on the line,
+     * OR a non-owner move to destination will be successful
+     */
+
+    int diff, source_pr, dest_pr, i, u1;
+    int irw = unit[u].railway_index;
+    int possible_free;
+
+    *p = -1;  /* Default, bad value */
+    if (irw < 0) return 0;  /* wasting my time! */
+
+    ValidRailwayProvince(irw, unit[u].loc, &source_pr);
+    ValidRailwayProvince(irw, unit[u].dest, &dest_pr);
+
+    diff = source_pr < dest_pr ? 1: -1;
+
+    possible_free = 1;
+    for (i = source_pr; i != dest_pr && possible_free; i=i+diff) {
+        if (i==source_pr) continue;  /* No need to look at where I was going to! */
+        for (u1=1; u1 <= nunit && possible_free; u1++) {
+            if (u == u1) continue;  /* Don't look at me! */
+            if (((unit[u].owner != unit[u1].owner) &&
+                  (unit[u1].loc == rw[irw].pr[i] && 
+		   unit[u1].status == ':' &&
+		   unit[u1].order != 'm')) ||
+                   (unit[u1].dest ==  rw[irw].pr[i] && !result[u1]) ||
+		   (unit[pr[rw[irw].prov_index].unit].dest == rw[irw].pr[i])) {
+                /* OK; we've got a unit either here and not of mtype OR
+                  someone tried to go here (with sucess) OR
+		  the fake unit went here (indicating a detected cut)  */
+                possible_free = 0;  /* No, it is occupied */
+            }
+        }
+	if (possible_free) {
+	    /* If still free, it is free! save free value */
+	    *p = rw[irw].pr[i];
+	}
+	if (unit[u].owner == unit[u1].owner)
+	    possible_free = 1;  /* same owner means not cut, carry on */
+    }
+    if (*p == -1)
+    	return 0;
+    else
+    {
+	unit[u].dest = *p;
+	unit[u].status = ':';
+	result[u] = 0;
+    }
+	return 1;
+}
+
+/****************************************************************************/
+int moveout(int pt)
+{
+/* Process movement orders. */
+	int u, u2, i, index, p, igw;
+	unsigned char *s, *t, c;
+	int c1;
+	char cbuffer[1024];
+	int new_result[MAXUNIT]; 
+	int rw_print = 0;
+
+	bounce = 0;
 	for (p = 1; p <= npr; p++) {
 		contest[p] = 0;
+		fail[p] = 0;
 	}
 	if (err)
 		fprintf(rfp, "\n");
@@ -685,7 +1297,6 @@ int moveout(int pt)
 	 */
 	for (u = 1; u <= nunit; u++) {
 		result[u] = 0;
-		fail[u] = 0;
 		/*** Not sure why this was here, but it messed up land-units
 		 giving support to fleets to a costal region
 		 MLM 28/09/2000
@@ -696,10 +1307,17 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			
 		support[u] = unit[u].dcoast == MX ? -1 : supval(u) - 1;
 	}
+
+	for (u = 0; u < nrw; u++)
+	    rw_used[u] = 0;
 	/*
 	 ** If we're not really processing, clear all the bogus proxy orders and
 	 ** skip to the report generation.
 	 */
+
+#define unit_space(u)  (unit[u].type == ' ' ? "" : " ")
+
+
 	if (!processing && !predict) {
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].proxy != 0 && unit[u].order == 'n')
@@ -713,8 +1331,9 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			if (unit[u].order == 'p') {
 				if (unit[u].owner != p)
 					fprintf(rfp, "\n");
-				fprintf(rfp, "%s: %s%s %s", powers[p = unit[u].owner], Stype(unit[u].stype),
-					Utype(unit[u].type), pr[unit[u].loc].name);
+
+				fprintf(rfp, "%s: %s%s%s%s", powers[p = unit[u].owner], Stype(unit[u].stype),
+					Utype(unit[u].type), unit_space(u), pr[unit[u].loc].name);
 				if (unit[u].coast > XC)
 					fprintf(rfp, " (%s)", mtype[unit[u].coast]);
 				fprintf(rfp, " Proxy given to %s.\n", powers[unit[u].unit]);
@@ -742,346 +1361,69 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 		if (p)
 			fprintf(rfp, "\n");
  
-/* Pass 1: Tally up all the support orders, verify convoys. */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (unit[u].order == 's' && !result[u]) {
-				if (unit[u2 = unit[u].unit].order == 'm') {
-					if (unit[u2].dest == unit[u].dest &&
-					 (unit[u2].dcoast == unit[u].dcoast || unit[u2].dcoast <= XC)) {
-						if (!result[u2])
-							support[u2] += supval(u);
-					} else {
-						result[u] = VOID;
-					}
-				} else {
-					if (unit[u2].loc == unit[u].dest)
-						support[u2] += supval(u);
-					else {
-						result[u] = VOID;
-					}
-				}
-			} else if (unit[u].order == 'm' && unit[u].convoy != NULL) {
-				for (s = unit[u].convoy; *s; s++) {
-					if (unit[*s].order != 'c' || unit[*s].unit != u ||
-					(unit[*s].dest != unit[u].dest &&
-					 unit[*s].dest != unit[*(s + 1)].loc)) {
-						result[u] = NO_CONVOY;
-						support[u] = supval(u) - 1;
-						break;
-					}
-					if (unit[unit[u].dest].owner != unit[u].owner) {
-					 /* Non owner attacked this unit, so set the fail flag */
-					 if (dipent.xflags & XF_NOATTACK_TRANS)
-					 if (dipent.xflags & XF_TRANS_MANYW)
-						 fail[unit[u].dest] = 'f';
-					}
-				}
-			}
-		}
-/* Pass 2a: Check for support cut from non-convoyed units */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0 || result[u])
-				continue;
-			if ((unit[u].order == 'm' && !unit[u].convoy && unit[u].dcoast != MX)
-			 && (u2 = pr[unit[u].dest].unit)
-			 && unit[u2].order == 's' && !result[u2]
-			 && unit[u2].dest != unit[u].loc	/* X */
-			 && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-				result[u2] = CUT;
-				support[unit[u2].unit] -= supval(u2);
-			}
-		}
-/* Pass 2a.1: Check for support cut from "support needed" units */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0 || result[u])
-				continue;
-			if (unit[u].dcoast == MX) {
-				unit[u].dcoast = MV;
-				if (unit[u].order == 'm' && !unit[u].convoy && support[u] >= 0
-				 && (u2 = pr[unit[u].dest].unit)
-				 && unit[u2].order == 's' && !result[u2]
-				 && unit[u2].dest != unit[u].loc	/* X */
-				 && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-					result[u2] = CUT;
-					support[unit[u2].unit] -= supval(u2);
-				}
-			}
-		}
-/* Pass 3a: Check for dislodged convoys. XII.3 */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (unit[u].order == 'c' && !result[u2 = unit[u].unit]) {
-				for (s = unit[u2].convoy; s != NULL && *s; s++) {
-					if (*s == u) {
-						for (u3 = 1; u3 <= nunit; u3++) {
-							if (unit[u3].owner <= 0)
-								continue;
-							if (unit[u3].order == 'm' && !result[u3] &&
-							 unit[u3].owner != unit[u].owner &&
-							 unit[u3].dest == unit[u].loc && support[u3] > support[u]) {
-								result[u2] = MAYBE_NO_CONVOY;
-								goto nextp3a;
-							}
-						}
-					}
-				}
-			}
-		 nextp3a:;
-		}
-/* Pass 2b: Check for support cut from convoyed units */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (unit[u].order == 'm' && unit[u].convoy && !result[u]
-			 && (u2 = pr[unit[u].dest].unit)
-			 && unit[u2].order == 's' && !result[u2]
-			 && unit[u2].dest != unit[u].loc	/* X */
-			 && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-/* XII.5: You can't cut support of attacks against your convoy */
-				for (s = unit[u].convoy; s != NULL && *s; s++)
-					if (unit[u2].unit == *s)
-						goto nextp2b;
-				result[u2] = CUT;
-				support[unit[u2].unit] -= supval(u2);
-			}
-		 nextp2b:;
-		}
-/* Pass 3b: Recheck for dislodged convoys. XII.3 */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (unit[u].order == 'c' && result[u2 = unit[u].unit] == MAYBE_NO_CONVOY) {
-				for (s = unit[u2].convoy; s != NULL && *s; s++) {
-					if (*s == u) {
-						for (u3 = 1; u3 <= nunit; u3++) {
-							if (unit[u3].owner <= 0)
-								continue;
-							if (unit[u3].order == 'm' && !result[u3] &&
-							 unit[u3].owner != unit[u].owner &&
-							 unit[u3].dest == unit[u].loc && support[u3] > support[u]) {
-								for (u4 = 1; u4 <= nunit; u4++) {
-									if (u4 == u3)
-										continue;
-									if (unit[u4].order == 'm' &&
-									 unit[u4].dest == unit[u].loc &&
-									 support[u4] >= support[u3])
-										break;
-								}
-								if (u4 <= nunit)
-									continue;
-								result[u] = DISLODGED;
-								result[u2] = NO_CONVOY;
-								support[u2] = supval(u2) - 1;
-								goto nextp3b;
-							}
-						}
-					}
-				}
-			}
-		 nextp3b:;
-		}
-/* Pass 2c: Check for support cut from convoyed units */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (result[u] == MAYBE_NO_CONVOY) {
-				result[u] = 0;
-				if ((u2 = pr[unit[u].dest].unit)
-				 && unit[u2].order == 's' && !result[u2]
-				 && unit[u2].dest != unit[u].loc	/* X */
-				 && unit[u2].owner != unit[u].owner) {	/* IX.6.note */
-/* XII.5: You can't cut support of attacks against your convoy */
-					for (s = unit[u].convoy; s != NULL && *s; s++)
-						if (unit[u2].unit == *s)
-							goto nextp2c;
-					result[u2] = CUT;
-					support[unit[u2].unit] -= supval(u2);
-				}
-			}
-		 nextp2c:;
-		}
-/* Pass 4a: Check for conditional movement blocked by an incoming fleet. */
-/*
-for (u = 1; u <= nunit; u++) {
-if (unit[u].owner <= 0 || result[u]) continue;
-if (p = unit[u].bloc) {
-int j;
-i = -1;
-u3 = 0;
-for (u2 = 1; u2 <= nunit; u2++) {
-j = -1;
-if (unit[u2].order == 'm') { 
-if (!result[u2]) {
-if (unit[u2].dest == p) {
-j = support[u2];
-}
-} else {
-if (unit[u2].loc == p) {
-j = supval(u2);
-}
-}
-} else {
-if (unit[u2].loc == p) {
-j = support[u2];
-}
-}
-if (j > i) { 
-i = j;
-u3 = u2;
-} else if (j == i) { 
-u3 = 0;
-}
-}
-if (u3 && (unit[u3].type == 'F')) {
-result[u] = BLOCKED;
-}
-}
-}
-*/
-/* Pass 4b: Check for dislodged support. X */
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if (unit[u].order == 'm' && (u2 = pr[unit[u].dest].unit)
-			 && unit[u2].order == 's' && !result[u] && !result[u2]
-			 && unit[u2].dest == unit[u].loc) {
-/* Your support cannot dislodge your own unit. IX.3 */
-				for (u3 = 1, p = 0; u3 <= nunit; u3++) {
-					if (unit[u3].owner <= 0)
-						continue;
-					if (!result[u3] && unit[u3].order == 's' &&
-					 unit[u3].unit == u && unit[u3].owner == unit[u2].owner)
-						p += supval(u3);
-				}
-				if (support[u] - p > support[u2]) {
-				     for (u4=1, unit_dislodged=1; u4<=nunit; u4++ ) {
-                                        if ( ( u != u4 )
-                                        && ( unit[ u4 ].order == 'm' )
-                                        && ( !result[ u4 ] )
-                                        && ( unit[ u4 ].dest == unit[ u ].dest )
-                                        && ( support[ u4 ] >= support[u]-p ) )
-                                            unit_dislodged = 0;
-                                    }
+	DoMoves();   /** All the logic to work out the moves **/
 
-                                    if ( unit_dislodged == 1 ) {
-                                    result[u2] = DISLODGED;
-                                    support[unit[u2].unit] -= supval(u2);
-                                    }
-                                }
-			}
-		}
- 
-/* Pass 5: Check for movement bounces */
-		do {
-			bounce = 0;
-			for (u = 1; u <= nunit; u++) {
-				if (unit[u].owner <= 0)
-					continue;
-				if ((unit[u].order == 'm') && !result[u]) {
-					/*
-					 ** The destination is contested by unit u unless there is a
-					 ** unit there moving into unit u's starting location.
-					 */
-					if (!((u2 = pr[unit[u].dest].unit) && !result[u2]	/* IX.7.note */
-					 &&unit[u2].order == 'm'
-					 && unit[u2].dest == unit[u].loc
-					 && !unit[u2].convoy && !unit[u].convoy)) {	/* XIV.6 */
-						contest[unit[u].dest]++;
-					}
-					p = 0;
-					if (u2) {
-						/*
-						 ** Your support cannot dislodge your own unit. IX.3
-						 */
-						if (result[u2] || (unit[u2].order != 'm' &&
-						unit[u2].order != 'v')) {
-							for (u3 = 1; u3 <= nunit; u3++) {
-								if (unit[u3].owner <= 0)
-									continue;
-								if (!result[u3] && unit[u3].order == 's' &&
-								 unit[u3].unit == u && unit[u3].owner == unit[u2].owner)
-									p += supval(u3);
-							}
-						}
-						/*
-						 ** Unit u bounces if the unit there is holding with more support.
-						 */
-						if ((unit[u2].order != 'm')
-						 || (unit[u2].dest == unit[u].loc
-							&& !unit[u2].convoy && !unit[u].convoy)) {	/* XIV.6 */
-							if (support[u] - p <= support[u2]
-							 || unit[u].owner == unit[u2].owner) {	/* IX.3 */
-								bounce++;
-								result[u] = BOUNCE;
-								goto nextp5;
-							}
-							/*
-							 ** ...or if the unit's movement bounced and we have no support.
-							 */
-						} else if (result[u2]
-							 && ((support[u] - p < supval(u2))
-							 || unit[u].owner == unit[u2].owner)) {	/* IX.3 */
-							bounce++;
-							result[u] = BOUNCE;
-							goto nextp5;
-						}
-					}
-					/*
-					 ** Unit bounces if another unit is moving to the same spot with
-					 ** the same amount or more support.
-					 */
-					for (u3 = 1; u3 <= nunit; u3++) {
-						if (unit[u3].owner <= 0)
-							continue;
-						if (u != u3 && unit[u].dest == unit[u3].dest &&
-						 ((unit[u3].order == 'm') &&
-						 (!result[u3] || result[u3] == BOUNCE)) &&
-						 support[u] - p <= support[u3]) {
-							/*
-							 ** Won't bounce if unit there dislodges other unit. IX.7.note
-							 */
-							if (!(u2 && unit[u2].order == 'm' && !result[u2]
-							 && unit[u2].dest == unit[u3].loc
-							 && !unit[u2].convoy && !unit[u3].convoy)) {
-								bounce++;
-								result[u] = BOUNCE;
-								goto nextp5;
-							}
-						}
-					}
-				}
-			 nextp5:;
-			}
-		} while (bounce);
+	/* Now recheck the railways, adjusting those that have failed */
 
-/* Pass 5aa: Disband requested disband units */
-                for (u = 1; u <= nunit; u++) {
-                        if (unit[u].owner <= 0)
-                                continue;
-                        if (unit[u].order == 'd') {
-			    result[u] = 0; /* Disbands never fail */
-			}
+	if (nrw > 0 && (dipent.x2flags & X2F_RAILWAYS)) {
+	    /*
+             * Railway moves will fail if any intermediate point is occupied or successfully attacked
+             * by non-mover country
+             */
+	
+	    for (u = 1; u <= nunit; u++) {
+		support[u] = 0;  /* Zero the support as it will be redone */
+		new_result[u] = 0;
+	    }
+
+	    for (u = 1; u <= nunit; u++) {
+		if (unit[u].railway_index >= 0 && (result[u] % DISLODGED) != BLOCKED) {
+		    /* OK, we've got a valid railway move, see if prematurely cut */
+  		    if (RailwayMoveCut(u)) {
+			new_result[u] = BOUNCE;
+		    }
 		}
- 
-/* Pass 5a: flag dislodgements */
-		bounce = 0;
-		for (u = 1; u <= nunit; u++) {
-			if (unit[u].owner <= 0)
-				continue;
-			if ((unit[u].order == 'm') && !result[u]) {
-				if ((u2 = pr[unit[u].dest].unit) &&
-				((unit[u2].order != 'm') || result[u2])) {
-					if (result[u2] < DISLODGED)
-						result[u2] += DISLODGED;
-					unit[u2].status = 'r';
-					bounce++;
-				}
+		if (gateway(unit[u].loc)) {
+		    /* OK, got a gateway, see if ordering */
+		    if (unit[u].order == 's') {
+			/* Ordering, so see if related province will be emtpy or dislodged */
+			igw = pr[unit[u].loc].type2;
+			i = gw[igw].gw_prov;
+			if (unit[pr[i].unit].status == 'r' ||
+			    (unit[pr[i].unit].order == 'm' && !result[pr[i].unit])) {
+			    new_result[u] = VOID;  /* No longer got gateway unit in place! */
 			}
+		    }
+		}
+	    }
+	
+	    /* OK, now reinitialise data arrays before reprocessing */
+	    bounce = 0;
+	    for (u=1; u <= nunit; u++) {
+		unit[u].status = ':';
+		result[u] = new_result[u];
+            }	
+	
+	    DoMoves();  /** Recalculate moves after railway failure included **/
+	}
+    }
+/* OK, let's take out any dummy railway units that were made autonomous */
+    for (i = 0; i < nrw; i++)
+        unit[pr[rw[i].prov_index].unit].owner = 0;  /* Now not owned, forced! */
+
+
+/* Pass 6a. Convert fleets to Army/fleet if unit could embark */
+
+        for (p = 0, u = 1; u <= nunit && (dipent.flags & F_AFRULES); u++) {
+                if (unit[u].owner <= 0)
+                        continue;
+                if (processing || pt == unit[u].owner || pt == MASTER) {
+		   if (unit[u].order == 'e' && unit[pr[unit[u].dest].unit].type == 'F' &&
+		      unit[u].owner == unit[pr[unit[u].dest].unit].owner)
+			unit[pr[unit[u].dest].unit].type = 'T';
 		}
 	}
+
 /* Pass 6: Process movement, print report */
 	for (p = 0, u = 1; u <= nunit; u++) {
 		if (unit[u].owner <= 0)
@@ -1095,8 +1437,8 @@ result[u] = BLOCKED;
 			fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
 			if (unit[u].proxy != 0)
 				fprintf(rfp, "%s ", owners[unit[unit[u].proxy].owner]);
-			fprintf(rfp, "%s%s %s", Stype(unit[u].stype),
-			 Utype(unit[u].type), pr[unit[u].loc].name);
+			fprintf(rfp, "%s%s%s%s", Stype(unit[u].stype),
+			 Utype(unit[u].type), unit_space(u), pr[unit[u].loc].name);
 			if (unit[u].coast > XC)
 				fprintf(rfp, " (%s)", mtype[unit[u].coast]);
 			switch (unit[u].order) {
@@ -1141,7 +1483,11 @@ result[u] = BLOCKED;
 					fprintf(rfp, " (%s)", mtype[unit[u].dcoast]);
 				break;
 			case 'n':
-				if (unit[u].owner != AUTONOMOUS) {
+			/*
+				if (unit[u].type == ' ') {
+					fprintf(rfp, " HOLD");
+				} else
+			*/	if (unit[u].owner != AUTONOMOUS) {
 					fprintf(rfp, ", No Order Processed");
 					if (dipent.phase[0] != 'F' || pr[unit[u].loc].type != 'v')
 						more_orders++;
@@ -1159,7 +1505,7 @@ result[u] = BLOCKED;
 					fprintf(rfp,"unknown ");
 				}
 				if (!(dipent.flags & F_BLIND))
-				 fprintf(rfp, "%s %s", Utype(unit[u2].type), pr[unit[u].unit_prov].name);
+				 fprintf(rfp, "%s%s%s", Utype(unit[u2].type), unit_space(u2), pr[unit[u].unit_prov].name);
 				else
 				 fprintf(rfp, "%s %s", "Unit", pr[unit[u].unit_prov].name);
 				if (unit[u].unit_coast > XC)
@@ -1178,16 +1524,47 @@ result[u] = BLOCKED;
                                 fprintf(rfp, " (%s)", mtype[c1]);
                             }
 				/* Now apply the changes iif not dislodged */
-				if (unit[u].status != 'r' && !fail[u]) {
+				if (unit[u].status != 'r' && !fail[unit[u].loc]) {
 				 unit[u].type = unit[u].new_type;
 				 unit[u].coast = unit[u].new_coast;
 				}
                             break;
- 
+
+			case 'a':
+			    fprintf(rfp, " AIRLIFT ");
+			    if ((i = unit[u2 = unit[u].unit].owner) != p) {
+                                    if (!(dipent.flags & F_BLIND))
+                                        fprintf(rfp, "%s ", owners[i]);
+                                    else
+                                        fprintf(rfp,"unknown ");
+                                }
+                                else if (!processing && !predict && unit[u2].dest != unit[u].dest)
+                                        result[u] = BAD_AIRLIFT;
+                                fprintf(rfp, "Army %s -> %s", pr[unit[u].unit_prov].name,
+                                        pr[unit[u].dest].name);
+
+			    break;
+			case 'e':
+			    fprintf(rfp, " EMBARK ");
+			    if ((i = unit[u2 = unit[u].unit].owner) != p) {
+                                    if (!(dipent.flags & F_BLIND))
+                                        fprintf(rfp, "%s ", owners[i]);
+                                    else
+                                        fprintf(rfp,"unknown ");
+                                }
+                                fprintf(rfp, "Fleet %s", 
+                                        pr[unit[u].dest].name);
+
+			    break;
+			case 'k':
+			    fprintf(rfp, " DISEMBARK ");
+			    fprintf(rfp, "Army %s", pr[unit[u].dest].name);
+	
+			    break; 
 			default:
 				fprintf(rfp, " INVALID ORDER (internal error)");
 			}
-			if (fail[u])
+			if (fail[unit[u].loc])
 				fprintf(rfp, ". (*failed*)\n");
 			else if (result[u]) {
 				fprintf(rfp, ". (*%s%s*)\n", results[result[u] % DISLODGED],
@@ -1197,6 +1574,46 @@ result[u] = BLOCKED;
 			}
 		}
 	}
+
+/* and now display the railway movements, for failing railways */
+    if ((dipent.x2flags & X2F_RAILWAYS) && (processing || predict))
+    for (u = 1; u <=nunit; u++) {
+	if (unit[u].railway_index > - 1 ) {
+	    if (result[u] && !((result[u] % DISLODGED) == BLOCKED)) { 
+		/* OK, unit was not successful and not blocked: need to work out retreat */
+	        if (HasFreeRWProvince(u, &p)) {
+		    if (!rw_print) {
+		        fprintf(rfp, "\n");
+			rw_print = 1;
+		    }
+		    if (result[u] >= DISLODGED) {
+			/* If unit was marked as dislodged, it is not now it has moved elsewhere */
+			result[u] -= DISLODGED;
+			bounce--;
+	            }
+		    unit[u].dest = p;  /* Mark it to move into free province */
+		    fprintf(rfp, "%s: ", powers[unit[u].owner]);
+		    fprintf(rfp, "%s%s %s", Stype(unit[u].stype),
+                         Utype(unit[u].type), pr[unit[u].loc].name);
+                        if (unit[u].coast > XC)
+                                fprintf(rfp, " (%s)", mtype[unit[u].coast]);
+		    if ((s = unit[u].convoy)) {
+                        while (*s) {
+                            fprintf(rfp, " -> %s", pr[unit[*s++].loc].name);
+                        }
+                    }
+                    fprintf(rfp, " -> %s", pr[unit[u].dest].name);
+                    if (unit[u].dcoast > XC)
+                        fprintf(rfp, " (%s)", mtype[unit[u].dcoast]);
+		    fprintf(rfp,".\n");
+		}
+	    }
+        }
+    }
+
+    if (rw_print)
+	fprintf(rfp, "\n");
+	
 /* Pass 7: Print out retreats. */
 	if (processing || predict) {
 		i = 0;
@@ -1243,7 +1660,8 @@ result[u] = BLOCKED;
 					 && (!(u2 = pr[p].unit)	/* XI: can't retreat to */
 						||(unit[u2].loc != p	/* attackers origin. */
 					 && unit[u2].loc != unit[u].loc))
-					 && (dipent.phase[0] != 'F' || pr[p].type != 'v')) {
+					 && (dipent.phase[0] != 'F' || pr[p].type != 'v')
+					 && AllowedGatewayRetreat(u, p)) {
 						if (!i++)
 							sprintf(t, " can retreat to ");
 						else

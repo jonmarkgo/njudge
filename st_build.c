@@ -1,11 +1,14 @@
 
 /*
    ** $Log$
+   ** Revision 1.9  2001/12/28 06:21:24  nzmb
+   ** Fixed bug causing segmentation fault in st_build.c .. there was an extra %s in line 402.
+   **
    ** Revision 1.7  2001/10/29 23:41:34  miller
    ** Fixed reoccurring chaos bug (use centre() macro not 'x' to test province)
    **
    ** Revision 1.6  2001/10/20 12:11:14  miller
-   ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+   ** Merged in changes from DEMA and USTV 
    **
    ** Revision 1.5.2.1  2001/10/20 00:52:49  dedo
    ** Remvoe compile warnings
@@ -255,6 +258,11 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 	}
 	if (out_text != NULL) strcpy(out_string, out_text);
 	return 0;
+}
+
+int buildin_td(char **s, int p)
+{
+    return buildin(s, p);
 }
 
 int buildin(char **s, int p)
@@ -511,6 +519,11 @@ int buildin(char **s, int p)
 	}
 	return 0;
 
+}
+
+void buildout_td(int pt)
+{
+    return buildout(pt);
 }
 
 void buildout(int pt)

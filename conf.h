@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/07/17 09:55:31  greg
+ * added GAME_DIR
+ *
  * Revision 1.4  2001/07/08 22:57:07  miller
  * New defines
  *
@@ -70,6 +73,7 @@
 #define TIME_TOLERANCE  atoi(config("TIME_TOLERANCE"))
 #define WARP_FILE	config("WARP_FILE")
 #define GAME_DIR	config("GAME_DIR")
+#define BLIND_CMD        config("BLIND_CMD")
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think

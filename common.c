@@ -47,8 +47,9 @@ int valid_move(int u, int p, int *c, int *b)
 	*b = 0;
 	if (u <= 0) return 0; /* Invalid unit index */
 	for (t = pr[unit[u].loc].move; *t; t++) {
-		if (*t++ == p
-		    && ((unit[u].type == 'W') || 
+		if (*t++ == p)
+		  if 
+		     (((unit[u].type == 'W') || (unit[u].type == 'T') || 
 			 ((unit[u].coast == (fc = (*t >> 4)) || (unit[u].coast == XC && fc))
 		          && (*c == (*t & 0x0F) || !*c)))) {
 			if (!*c)

@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 	for (v = 1; v < NVARIANT; v++) {
+		nrw=0; ngw = 0;  /* Initialise variables */
 		if (v == 1)
 			sprintf(line, "%sdata/map", dir);
 		else
@@ -458,12 +459,21 @@ int main(int argc, char *argv[])
 				    s++; t++;
 				}
 				*s = '\0';
+				get_prov( gw[ngw].name, &p, &m);
+				if (!p) {
+                                    fprintf(stderr,"Gateway not found.\n");
+                                    err++;
+                                }
+				pr[p].type2 = ngw; /* remember the index of gateway for the province */
+				gw[ngw].prov_index = p; /* Remember this fake province index */
+
 				t = get_prov(++t, &p, &m);
 				if (!p) {
 				    fprintf(stderr,"Gateway province not found.\n");
 				    err++;
 				}
 				gw[ngw].gw_prov = p;
+				
 
 				/* OK, stuff in the controlled provinces now */
 				i=0;
@@ -510,6 +520,15 @@ int main(int argc, char *argv[])
 				    *s++; *t++;
 				}
 				*s = '\0';
+				fprintf(stderr,"Adding railway %s\n", s);
+				get_prov( rw[nrw].name, &p, &m);
+                                if (!p) {
+                                    fprintf(stderr,"Railway province not found.\n");
+                                    err++;
+                                }
+                                pr[p].type2 = nrw; /* remember the index of railway for the province */
+
+
 				t++; /* Skip the ':' */
 				i = 0;
 				while (*t && *t != ' ' && i < MAX_POWERS) {
@@ -517,6 +536,7 @@ int main(int argc, char *argv[])
 				    t++; i++;
 				}
 				rw[nrw].power_letter[i] = '\0'; 
+				rw[nrw].prov_index = p; /* Also remember province index */
 				/* Now get the railway provinces */
 				t++;
 				i = 0;
@@ -789,7 +809,8 @@ void po_chkmov(void)
 
 	for (from = 1; from <= npr; from++) {
 		if (!(s = pr[from].move)) {
-			fprintf(stderr, "No movement table for %s.\n", pr[from].name);
+			if (pr[from].type != 'g' && pr[from].type != 'r')
+			    fprintf(stderr, "No movement table for %s.\n", pr[from].name);
 			continue;
 		}
 		while ((to = *s++)) {

@@ -55,6 +55,7 @@ void status(int pt)
 	char *t, *s, line[1024];
 	unsigned char *b;
 	int i, l, p, u;
+	char *type_space;
 
 	int not_ok_as_blind = 0;
 
@@ -77,7 +78,8 @@ void status(int pt)
 
 	p = 0;
 	for (u = 1; u <= nunit; u++) {
-                if (pt == unit[u].owner || !not_ok_as_blind)
+                if (unit[u].owner != 0 &&
+		    (pt == unit[u].owner || !not_ok_as_blind))
                 {
                     /* ok to show in a blind game */
 
@@ -89,8 +91,14 @@ void status(int pt)
 		sprintf(t, "%s:%*s", powers[p], l, "");
 		t += l + 2;
 
-		sprintf(t, "%s%s %s",
-			Stype(unit[u].stype), Utype(unit[u].type), pr[unit[u].loc].name);
+		if (unit[u].type == ' ') 
+			type_space = "";
+		else
+			type_space = " ";
+
+		sprintf(t, "%s%s%s%s",
+			Stype(unit[u].stype), Utype(unit[u].type), 
+			type_space, pr[unit[u].loc].name);
 		while (*t)
 			t++;
 

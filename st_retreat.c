@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2001/07/08 23:04:09  miller
+   ** Add predict flag
+   **
    ** Revision 1.3  2000/11/14 14:27:37  miller
    ** Allow wing units
    ** REcalcultate blockade settings
@@ -249,6 +252,7 @@ void retreatout(int pt)
 	};
 	for (u = 1; u <= nunit; u++) {
 		if (unit[u].status != ':' &&
+		    !gateway(unit[u].loc) && !railway(unit[u].loc) &&
 		    (pt == (p = unit[u].owner) || pt == MASTER || processing)) {
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)

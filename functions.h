@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/02/25 11:51:50  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.7  2001/10/20 12:11:11  miller
  * Merged in changes from DEMA and USTV
  *
@@ -63,6 +66,13 @@ void AddPowerToOrder(char *text, int power);
 void AddOrderToOrder(char *text, int order);
 char *lookforv(char *l, char *w[], int len, int *n, int exact_word);
 void InformCustodians( char *game_name, char *text, int variant, int is_gunboat);
+int ValidGatewayProvince(int igw, int p);
+int ValidRailwayProvince(int irw, int p, int *pr_index);
+int PermittedRailwayPower(int irw, char power_letter);
+int IsGatewayOrder(int u, int *igw);
+int IsGatewayOrdered(int igw, int u, int result[]);
+char HasUnit(int province_index);
+int AllowedGatewayRetreat(int u, int p);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);
@@ -110,6 +120,10 @@ int buildin(char **s, int p);
 void init_build(void);
 void buildout(int pt);
 int build_syntaxcheck(char *s, int precheck, char *out_string);
+
+/* defined in st_setup.c */
+int setupin(char **s, int p);
+void setupout(int pt);
 
 /* defined in st_retreat.c */
 int retreatin(char **s, int pt);

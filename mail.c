@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2002/01/08 21:22:01  miller
+ * Redid GG fix for JUDGE_CODE != 4
+ *
  * Revision 1.14  2001/12/29 20:38:04  nzmb
  *
  * Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
@@ -133,6 +136,8 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define EJECT   39
 #define RECORD  40
 #define INFOPLAYER	41
+#define SETUP   42
+#define PAUSE   43
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -147,7 +152,8 @@ static char *prelim[] =
  "nocontrol", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fixid",
- "map", "signoff", "record", "infoplayer" /* , "ded game#", "dedicate#",
+ "map", "signoff", "record", "infoplayer"
+ /* , "ded game#", "dedicate#",
 	"ded#" */ };
 
 static int pvalue[] =
@@ -176,7 +182,8 @@ static char *commands[] =
  "terminate", "resume", "become",
  "process", "roll back", "map",
  "promote", "predict",
- "eject", "record", "infoplayer"
+ "eject", "record", "infoplayer",
+ "setup", "suspend" 
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -190,7 +197,8 @@ static int cvalue[] =
  TERMINATE, RESUME, BECOME,
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
- EJECT, RECORD, INFOPLAYER
+ EJECT, RECORD, INFOPLAYER,
+ SETUP, PAUSE
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
@@ -1362,6 +1370,24 @@ int mail(void)
 					fprintf(rfp, "Pending orders cleared.\n\n");
 					break;
 
+                                case PAUSE:
+                                    if (!PRIVOK) {
+                                        fprintf(rfp, "Sorry, game '%s' is moderated.  ", dipent.name);
+                                        fprintf(rfp, "Only the master can pause this game.\n\n");
+                                                break;;
+                                    }
+                                    dipent.phase[6] = 'P';
+                                    break;
+
+                                case SETUP:
+                                    if (!PRIVOK) {
+                                        fprintf(rfp, "Sorry, game '%s' is moderated.  ", dipent.name);
+                                        fprintf(rfp, "Only the master can go to setup mode.\n\n");
+                                        break;
+                                    }
+                                    dipent.phase[6] = 'S';
+                                    break;
+
 				case TERMINATE:
 					/* Allow termination of unstarted games */
 					if (dipent.seq[0] == 'x') {
@@ -1501,7 +1527,7 @@ int mail(void)
 					break;
 
 				case RESUME:
-					if (dipent.phase[6] != 'X' || !strcmp(dipent.name, "control")) {
+					if (!(GAME_TERMINATED || GAME_PAUSED || GAME_SETUP) || !strcmp(dipent.name, "control")) {
 						fprintf(rfp, "Resume on active game ignored.\n");
 						break;
 					}
@@ -1558,6 +1584,7 @@ int mail(void)
 						dipent.players[i].status &= ~SF_DRAW;
 					broadcast = 1;
 					break;
+
 				
                                 case PREDICT:
                                         /* Predict the move results (to master only) */
@@ -1566,7 +1593,12 @@ int mail(void)
                                                           mail_reply(E_WARN);
                                                           return(E_WARN);
                                                                   }
-                                        fprintf(rfp, "Predicting turn %s for game '%s'.\n",dipent.phase, dipent.name);
+                                        if GAME_SETUP {
+                                            fprintf(rfp, "You can't predict while in setup mode.\n");
+                                            mail_reply(E_WARN);
+                                            return(E_WARN);
+                                        }
+					fprintf(rfp, "Predicting turn %s for game '%s'.\n",dipent.phase, dipent.name);
 					fprintf(rfp, "*** Note: This is NOT definitive results, DO NOT DISCLOSE TO PLAYERS ***\n\n");
                                         predict = 1;
                                         break;
@@ -1709,6 +1741,9 @@ int mail(void)
 						fclose(tfp);
 						break;
 					}
+
+					if GAME_SETUP
+                                           dipent.phase[6] = ' ';
 
 					sprintf(subjectline, "%s:%s - %s Rollback to ", JUDGE_CODE, dipent.name, dipent.phase);
 
@@ -1994,7 +2029,9 @@ int mail(void)
 			dipent.players[player].status &= ~SF_MOVED;
 			fprintf(rfp, "\n\n%d error%s encountered.\n\n", i, i == 1 ? "" : "s");
 			errorflag++;
-			if (dipent.players[player].status & SF_MOVE) {
+			if ((dipent.players[player].status & SF_MOVE) &&
+                           (dipent.players[player].power != MASTER) &&
+                            !GAME_PAUSED) {
 				long then;
 				if (time(NULL) <= dipent.deadline) {
 				    fprintf(rfp, "Unless error-free orders are received by the deadline ");
@@ -2227,7 +2264,7 @@ void msg_header(FILE * fp)
 		if (dipent.flags & F_BLIND)
 			fprintf(fp, " Blind");
 		if (dipent.flags & F_AFRULES)
-			fprintf(fp, " A/F Rules");
+			fprintf(fp, " AF_Rules");
 		if (dipent.flags & F_SHORTHAND)
 			fprintf(fp, " Shorthand");
 		if (dipent.flags & F_WINGS)

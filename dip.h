@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/02/25 11:51:50  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.9  2001/10/20 12:11:11  miller
  * Merged in changes from DEMA and USTV 
  *
@@ -180,6 +183,14 @@
 #define X2F_HONGKONG 0x2
 #define X2F_GATEWAYS 0x4
 #define X2F_COLONIAL (X2F_RAILWAYS | X2F_HONGKONG | X2F_GATEWAYS)
+
+
+#define GAME_TERMINATED       (dipent.phase[6] == 'X')
+#define GAME_PAUSED           (dipent.phase[6] == 'P')
+#define GAME_SETUP            (dipent.phase[6] == 'S')
+
+/* Following is when everyone alive can move in a build turn */
+#define XF_ALTBUILD (XF_ANYDISBAND | XF_TRANS_BUILD)
 
 typedef struct Sequence {
 	int clock;		/* Time of day for orders to be due             */
