@@ -526,7 +526,7 @@ mod/mac SET [NO] FAMINE
 mod/mac SET [NO] FORT[RESS]                                            {0.8.9}
         Disables/enables optional fortress rules.
 
-mod/mac SET [NO] GARRISON[S]                                           {1.5.0}
+mod/mac SET [NO] GARRISON[S]                                           {1.4.0}
         Disables/enables use of garrisons.
 
 mod/bgs SET [NO] GATEWAYS                                             {0.8.11}
@@ -860,7 +860,7 @@ mod/    SET [NO] STRICT WAIT
         be allowed to set wait.  If NOSTRICTWAIT is set (default), any
         currently active player can set wait.
 
-mod/bgs SET [NO] SUMMER                                                {1.5.0}
+mod/bgs SET [NO] SUMMER                                                {1.4.0}
         Disables/enables a “summer” phase between Spring and Fall.  (This
         phase is abbreviated “U” for purposes of commands such as “HISTORY”,
         “PHASE” and “ROLLBACK”.)  Enabled by default for Machiavelli, disabled
