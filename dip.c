@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2002/11/13 22:26:58  millis
+ * Bug 23, don't show missing players in a secret game
+ *
  * Revision 1.28  2002/10/19 22:44:17  millis
  * Removed a simple warning
  *
@@ -263,7 +266,7 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
                 "./zpblind",
                 powers[dipent.players[player_index].power],
                 owners[dipent.players[player_index].power],
-		dipent.x2flags & X2F_BLIND_NO_CENTRES ? "-v=HideAll" : "",
+		dipent.x2flags & X2F_BLIND_CENTRES ? "" : "-v=HideAll",
                 in_file,
                 out_file);
 

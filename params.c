@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2002/12/28 00:42:54  millis
+ * Implement bug 17, noBcentres option (to hide others centres in blind)
+ *
  * Revision 1.17  2002/11/14 00:07:49  millis
  * Trivial change to remove a space character
  *
@@ -501,7 +504,7 @@ void params(FILE * fp)
 	}
 
 	if (dipent.flags & F_BLIND) {
-	    if (dipent.x2flags & X2F_BLIND_NO_CENTRES) {
+	    if (dipent.x2flags & X2F_BLIND_CENTRES) {
                 strcatf(line, "BlindCentres", &first_flag);
             } else {
                 strcatf(line, "NoBlindCentres", &first_flag);

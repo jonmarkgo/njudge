@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2002/12/11 16:13:16  millis
+ * Added new flag to set up autonomous garrisons in every fort (for Mach)
+ *
  * Revision 1.17  2002/08/27 23:56:10  millis
  * Added better victory display (fixing Mach victory bug)
  *
@@ -229,10 +232,10 @@
 #define X2F_PREFRANDONLY	0x10
 #define X2F_SECRET		0x20
 #define X2F_MORE_HOMES		0x40  /* Allow powers to declare more homes up to num_homes */
-#define X2F_BLIND_NO_CENTRES	0x80 /* in Blind, don't display centre summary */
+#define X2F_BLIND_CENTRES	0x80 /* in Blind, don't display centre summary */
 #define X2F_BURN_BOATS		0x100 /* Native African, burn boats on landing */
 #define X2F_SETUP_USED		0x200 /* Set when setup has been used once */
-#define X2F_BLIND_NOCENTRES	0x400 /* In blind, don't even want to see centres! */
+#define X2F_NEUTRALS		0x400 /* Flag to set up Neutrals in each province */
 #define X2F_NO_TREASURY		0x800  /* In Mach, don't show treasury	*/
 #define X2F_MUSTORDER		0x1000  /* don't allow press (except to m) unless orders are in */
 #define X2F_POSTALPRESS		0x2000  /* allow szine style press (published w/ moves) */
