@@ -1,4 +1,6 @@
 1.0.3-pre 
+(20th March 2002)
+ - Corrected Classical to be a ONECENTRE game in variant.h
 (10th March 2002)
  - Added automatic wait in build_transform games for build phases in dip.c
 (5th March 2002) :
