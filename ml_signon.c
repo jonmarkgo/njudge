@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2003/07/22 23:45:22  millis
+ * Bug 135
+ *
  * Revision 1.29  2003/07/15 11:42:04  millis
  * Fixed compile bug
  *
@@ -760,10 +763,27 @@ int mail_signon(char *s)
 						dipent.name, ptime(&dipent.deadline));
 					fprintf(rfp, "Grace period for '%s' advanced to %s.\n\n",
 						dipent.name, ptime(&dipent.grace));
-					mfprintf(bfp, "Grace period for '%s' advanced to %s.\n\n",
+					mfprintf(bfp, "Grace period for '%s' advanced to %s.\n\nAlso, a wait has been placed for all active players",
 						 dipent.name, ptime(&dipent.grace));
+					if (DIPENT_NO_PRESS)
+					   mfprintf(bfp, " with moves to make");
+
+					mfprintf(bfp, ".\nThis can be removed with the 'SET NOWAIT' command.\n\n");
+
 					pprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.grace));
+
+			
+				    for (i = 0; i < dipent.n; i++) {
+                                        if (dipent.players[i].power < 0)
+                                            continue;
+
+                                        if(!(dipent.players[i].status & SF_DEAD)) {
+					    if (dipent.players[i].status & SF_MOVE ||
+						!DIPENT_NO_PRESS)
+				            dipent.players[i].status |= SF_WAIT;
+				        }
+				    }
 				}
 				break;
 			}

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/07/20 08:43:52  millis
+ * Missing include
+ *
  * Revision 1.30  2003/07/20 08:37:04  millis
  * make ls & md members of type time_t
  *
@@ -214,6 +217,7 @@
 #define F_WINGS     0x80000000  /* Wings variant (for modern)		    */
 
 #define HasPress(x)  ( (x.flags & F_GREY) | !(x.flags & F_NOWHITE) | !(x.flags & F_NOPARTIAL) | (x.flags & F_OBWHITE) | !(x.flags & F_OBNONE))
+#define DIPENT_NO_PRESS ((dipent.flags & F_NOWHITE) && !(dipent.flags & F_GREY))
 
 #define XF_MANUALPROC	0x1	/* Set if master needs to process turns     */
 #define XF_MANUALSTART	0x2	/* Set if master needs to start game        */

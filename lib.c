@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.18  2003/07/19 14:04:27  millis
+	 * fixed bug in address handling
+	 *
 	 * Revision 1.17  2003/07/17 00:01:29  millis
 	 * Use MailOut to send emails
 	 *
@@ -788,8 +791,6 @@ int GetOneWord(char *text)
 
 int deadline_recursive( sequence *seq, int new, int *rec_count);
 
-#define DIPENT_NO_PRESS ((dipent.flags & F_NOWHITE) && !(dipent.flags & F_GREY))
- 
 /****************************************************************************/
 /* Look and see if any requested absences */
 /* and adjust deadline parameter accordingly if so */
