@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.19  2003/05/12 02:05:25  millis
+** Small text correction
+**
 ** Revision 1.18  2003/05/02 22:16:08  millis
 ** Various changes (NEUTRALS, Artillery etc.)
 **
@@ -338,7 +341,7 @@ int movein(char **s, int p)
 /* Read movement in from input file. */
 	char c, order;
 	unsigned char *t;
-	int i, j, p1, p2, p3, u, u1, u2, u3, c1, c2, c3, bl, igw=-1, irw=-1;
+	int i, j, p1, p2, p3, u, u1, u2, c1, c2, c3, bl, igw=-1, irw=-1;
 	int railway_flag = 0;
 	unsigned char *bp;
 	char temp_text[256];
@@ -1236,7 +1239,7 @@ static void DoMoves( void)
                                          &&unit[u2].order == 'm'
                                          && unit[u2].dest == unit[u].loc
                                          && !unit[u2].convoy && !unit[u].convoy)) {     /* XIV.6 */
-					    if (unit[u2].railway_index == -1 || unit[u2].fallback == 0 )
+					    if ((unit[u2].railway_index == -1 || unit[u2].fallback == 0 ))
                                                 contest[unit[u].dest]++;
                                         }
                                         p = 0;
@@ -1434,7 +1437,7 @@ int HasFreeRWProvince( int u, int *p, int set)
 	    /* If still free, it is free! save free value */
 	    *p = rw[irw].pr[i];
 	}
-	if (unit[u].owner == unit[u1].owner)
+	if (unit[u].owner == unit[u1-1].owner)
 	    possible_free = 1;  /* same owner means not cut, carry on */
     }
     if (*p == -1)
@@ -1567,6 +1570,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 		    /* OK, we've got a valid railway move, see if prematurely cut */
   		    if (RailwayMoveCut(u)) {
 			new_result[u] = BOUNCE;
+			support[u] = -1; /* Unit no longer counts for result purposes */
+					 /* The railway unit instead will bounce if required */
 		    }
 		}
 		if (gateway(unit[u].loc)) {
@@ -1581,13 +1586,6 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 			}
 		    }
 		}
-		if (unit[u].railway_index >= 0 && (result[u] == BOUNCE || new_result[u] == BOUNCE)) {
-		    /* Set up where railway unit will go to, if possible */
-                        /* Note, this may not be a100% correct thing to do as possibly
-                           the previously-thought vacant province may not still be
-                           but it's the best I can think of at the moment */
-                        HasFreeRWProvince(u, &unit[u].fallback, 0);
-		}
 	    }
 	
 	    /* OK, now reinitialise data arrays before reprocessing */
@@ -1598,8 +1596,18 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
             }	
 	
 	    DoMoves();  /** Recalculate moves after railway failure included **/
+	
+	    for (u=1; u <= nunit; u++) {
+		if (unit[u].railway_index >= 0 && (result[u] == BOUNCE || new_result[u] == BOUNCE)) {
+                    /* Set up where railway unit will go to, if possible */
+                        HasFreeRWProvince(u, &unit[u].fallback, 0);
+                }
+	    }
 	}
+
     }
+
+
 /* OK, let's take out any dummy railway units that were made autonomous */
     for (i = 0; i < nrw; i++)
         unit[pr[rw[i].prov_index].unit].owner = 0;  /* Now not owned, forced! */
