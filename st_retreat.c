@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -120,7 +123,7 @@ void retreatout(int pt)
 {
 
 	int p, i, u, u2;
-	char mastrpt_pr[MAXPLAYERS];
+	char mastrpt_pr[ NPOWER + 1 ];	// Used to be [MAXPLAYERS]. DAN 13/07/99
 
 /*  Generate report  */
 
@@ -155,7 +158,7 @@ void retreatout(int pt)
 /*  Pass two, display results and move the units.  */
 
 	if (pt == MASTER) {
-		for (u = 0; u < MAXPLAYERS; u++)
+		for (u = 0; u < NPOWER + 1; u++)
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
