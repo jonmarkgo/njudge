@@ -1,3 +1,5 @@
+(10 June 2002)
+Changed st_build.c that was counting gateway units for build purposes.
 (31 May 2002)
 Change to ma_build.c to allow venice builds to change mind
 Change to ma_porder.c to fix problem with provinces stayin unowned
