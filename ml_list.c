@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2001/04/15 21:21:22  miller
+   ** Add use of GetMaxCountryStrlen() to space out properly for big country names
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Various changes including:
    **  - Adjust display for blind games
@@ -211,8 +214,8 @@ void mail_listit(void)
 	
 			if ( (!(dipent.flags & F_GUNBOAT)
 			    && 0 < dipent.players[i].userid
-			    && dipent.players[i].userid < nded
-			    && ded[dipent.players[i].userid].r 
+			    && dipent.players[i].userid <= nded)
+/*			    && ded[dipent.players[i].userid].r */
 			    && (0 != strcmp(dipent.players[i].password,GONE_PWD))))
 				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r);
 			else
