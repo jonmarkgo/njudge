@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.14  2003/11/18 03:20:10  nzmb
+ * improved cmpaddr so it (should) return 0 on a blank address or one that has
+ * a non alphanumeric character as its first character -- partial fix to bug
+ * number 250.
+ *
  * Revision 1.13  2003/10/12 06:16:20  nzmb
  * Fixed bugs 240 & 241. You now cannot iamalso yourself to more than one
  * registration. Also if you try to do iamalso address1,address2 the Judge
@@ -1247,8 +1252,8 @@ int cmpaddr(char *addr, char *list)
 	register char *s, *t, c = 0, d = 0, k;
 
 	/* do some sanity checking on the inputs */
-	if(addr[0] == '\0' || list[0] == '\0')
-		return 0;
+	if (IsBlank(addr) || IsBlank(list))
+                return 0;
 	if(!isalnum(addr[0]) || !isalnum(list[0]))
 		return 0;
 
