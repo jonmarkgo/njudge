@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2003/05/02 17:28:43  millis
+ * Added define for CAPTUREWIN, prior to actual implementation
+ *
  * Revision 1.23  2003/04/27 17:23:35  millis
  * Bug 142, add flag for AutoCreate
  *
@@ -267,7 +270,8 @@
 #define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 
 /* Define for X2F flags for params.c to display */
-#define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
+/* Do not display Colonial, Preference and Mach-only flags */
+#define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS)
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
