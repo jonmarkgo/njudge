@@ -1,5 +1,12 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Various changes including
+ *  - Partial press between master and only one power is NOT sent to others with WATCHALL set
+ *  - Rejct press in a monor phase when XF_NOMINORPRESS is set
+ *  - Change press handling to allow observers to press  in no-press games f allowed (i.e. BackSeat Driver variant)
+ *  - Add prevention of press from late players, if flag is set
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -176,11 +183,15 @@ void mail_press(char *s, int need_opts)
 	 fake_count = 0,	/* Number of entries in fake_list */
 	 i,			/* Return value from lookfor() */
 	 partial = NONE;	/* Is this message to some only? */
+	char lpower;
+	int xctr;
+
 /*
  *  End of Definitions
  */
 
 /*  Parse the command line options, if any, setting local flags only.  */
+	sprintf(subjectline, "%s:%s - %s Diplomacy Notice ml_press", JUDGE_CODE, dipent.name, dipent.phase);
 
 	master_press = 0;
 	master_only_press = 0; 
@@ -496,6 +507,8 @@ void mail_press(char *s, int need_opts)
 
 		if ((partial && (fake != FAKEB)) || (fake == FAKEP) || (fake == FAKEA)) {
 			if (color == GREY) {
+				sprintf(subjectline, "%s:%s - %s Press to ", JUDGE_CODE, dipent.name, dipent.phase);
+
 				strcpy(line, "Message to ");
 				sprintf(mline, "Message [from %s as %s] to ",
 					dipent.players[player].address,
@@ -508,6 +521,9 @@ void mail_press(char *s, int need_opts)
 			} else {
 				if (!(dipent.flags & F_GUNBOAT) ||
 				    (dipent.players[player].power == MASTER)) {
+					lpower = dipent.pl[dipent.players[player].power];
+					sprintf(subjectline, "%s:%s - %s Press from %c to ", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+
 					sprintf(line, "Message from %s as %s to ", raddr,
 						powers[dipent.players[player].power]);
 					sprintf(mline, "Message from %s as %s to ", raddr,
@@ -518,6 +534,9 @@ void mail_press(char *s, int need_opts)
    from [<address> as] <power> to ".  */
 
 				} else {
+					lpower = dipent.pl[dipent.players[player].power];
+					sprintf(subjectline, "%s:%s - %s Press from %c to ", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+
 					sprintf(line, "Message from %s to ",
 						powers[dipent.players[player].power]);
 					sprintf(mline, "Message from [%s as] %s to ",
@@ -530,10 +549,18 @@ void mail_press(char *s, int need_opts)
    so), add "all but ".  */
 
 			if ((fake == FAKEA) || (!fake && (partial == ALLBUT))) {
+				strcat(subjectline, "all but ");
 				strcat(line, "all but ");
 				strcat(mline, "all but ");
 			}
 /*  List the destination (or supposed destination) powers.  */
+			xctr = 0;
+			while ((fake_list[xctr] = toupper(fake_list[xctr])) != '\0') xctr++;
+			xctr =0;
+			while ((part_list[xctr] = toupper(part_list[xctr])) != '\0') xctr++;
+
+			strcat(subjectline, ((fake == FAKEP) || (fake == FAKEA)) ? fake_list :
+				part_list);
 
 			list_powers(line, ((fake == FAKEP) || (fake == FAKEA)) ? fake_list :
 				    part_list);
@@ -546,6 +573,8 @@ void mail_press(char *s, int need_opts)
 
 		} else {
 			if (color == GREY) {
+				sprintf(subjectline, "%s:%s - %s Broadcast", JUDGE_CODE, dipent.name, dipent.phase);
+
 				strcpy(line, "Broadcast message");
 				sprintf(mline, "Broadcast message [from %s as %s]",
 					dipent.players[player].address,
@@ -558,6 +587,9 @@ void mail_press(char *s, int need_opts)
 			} else {
 				if (!(dipent.flags & F_GUNBOAT) ||
 				    (dipent.players[player].power == MASTER)) {
+					lpower = dipent.pl[dipent.players[player].power];
+					sprintf(subjectline, "%s:%s - %s Broadcast from %c", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+
 					sprintf(line, "Broadcast message from %s as %s", raddr,
 						powers[dipent.players[player].power]);
 					sprintf(mline, "Broadcast message from %s as %s", raddr,
@@ -568,6 +600,9 @@ void mail_press(char *s, int need_opts)
    "Broadcast message from [<address> as] <power>".  */
 
 				} else {
+					lpower = dipent.pl[dipent.players[player].power];
+					sprintf(subjectline, "%s:%s - %s Broadcast from %c", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+
 					sprintf(line, "Broadcast message from %s",
 						powers[dipent.players[player].power]);
 					sprintf(mline, "Broadcast message from [%s as] %s",
