@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.38  2004/05/22 08:39:57  millis
+# Bug 297: Add Intimate Diplomacy
+#
 # Revision 1.37  2004/05/11 20:10:24  jaldhar
 # Fixed duplication of datadir in upgrade-data target of Makefile.am.
 # Other automake files regenerated in the process.
@@ -353,7 +356,7 @@ install-data-hook: dirs flist magic
 	${LN_S} -f ../dip.whois ${DESTDIR}${datadir}/whois
 	$(mkinstalldirs) ${DESTDIR}${bindir}/Dcontrol
 	@echo "control   001       S1801MX   1 1 1 0 2 18 7" > ${DESTDIR}${bindir}/dip.master
-	@echo "Process   " `LC_TIME=C date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}${bindir}/dip.master
+	@echo "Process   " `LC_TIME=C date '+%a %b %d %X '` `date '+%Y' | awk '{print1+$1}'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "Start     " `LC_TIME=C date '+%a %b %d %X %Y'` >> ${DESTDIR}${bindir}/dip.master
 	@echo "-" >> ${DESTDIR}${bindir}/dip.master
 	@echo "\"| ${bindir}/rdip -b -d ${bindir} \"" > ${DESTDIR}${bindir}/${USER}-forward
