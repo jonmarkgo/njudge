@@ -1,0 +1,12 @@
+#!/bin/sh
+cd /users/judge/dip
+flock dip.log
+# find . -size 0 -exec rm {} \;
+find . -name "[MTP]*" -atime +90 -exec rm {} \;
+./newlogs
+flock
+at 2am dipclean
+date | grep Sun > /dev/null
+if [ "$status" -eq 0 ] ;  then
+bgreet
+fi

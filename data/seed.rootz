@@ -1,0 +1,47 @@
+S1901M
+A: A Budapest One
+A: A Vienna One
+A: F Trieste One
+1: A Budapest Two
+1: A Vienna Two
+1: F Trieste Two
+E: A Liverpool One
+E: F Edinburgh One
+E: F London One
+2: A Liverpool Two
+2: F Edinburgh Two
+2: F London Two
+F: A Marseilles One
+F: A Paris One
+F: F Brest One
+3: A Marseilles Two
+3: A Paris Two
+3: F Brest Two
+G: A Berlin One
+G: A Munich One
+G: F Kiel One
+4: A Berlin Two
+4: A Munich Two
+4: F Kiel Two
+I: A Rome One
+I: A Venice One
+I: F Naples One
+5: A Rome Two
+5: A Venice Two
+5: F Naples Two
+R: A Moscow One
+R: A Warsaw One
+R: F Sevastopol One
+R: F St Petersburg One/sc 
+6: A Moscow Two
+6: A Warsaw Two
+6: F Sevastopol Two
+6: F St Petersburg Two/sc
+T: A Constantinople One
+T: A Smyrna One
+T: F Ankara One
+7: A Constantinople Two
+7: A Smyrna Two
+7: F Ankara Two
+-1 Null ownership/contested record will initialize from the map data.
+-1

@@ -1,0 +1,241 @@
+/*
+ * $Log$
+ * Revision 1.1  1996/10/20 12:29:45  rpaar
+ * Morrolan v9.0
+ */
+
+/*  phase.c
+
+ *  Copyright 1987, Lowe.
+ *
+ *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+ *  Maryland, all rights reserved; used with permission.
+ *
+ *  Redistribution and use in source and binary forms are permitted
+ *  provided that it is for non-profit purposes, that this and the 
+ *  above notices are preserved and that due credit is given to Mr.
+ *  Lowe.
+ */
+
+#include <stdlib.h>
+#include <string.h>
+
+#include "dip.h"
+#include "porder.h"
+#include "functions.h"
+
+int phase(char *s)
+{
+
+	/*
+	 *  Determine whether the specified phase is past, present or future
+	 *  and, if something in the future, what type of phase it will be.
+	 *
+	 *  The return value is:
+	 *    -1: Past or invalid phase specification
+	 *     0: The current phase
+	 *     1: A future movement phase
+	 *     2: A future retreat phase
+	 *     3: A future adjustment phase
+	 */
+
+	char *t = s;
+	int i, j;
+	int s1, s2 = -999999, y1, y2 = -999999, p1, p2 = -999999;
+
+#ifdef notdef
+	fprintf(log_fp, "Phase: Comparing %s and %s", dipent.phase, s);
+#endif				/* notdef */
+	s1 = *dipent.phase == 'S' ? 0 : *dipent.phase == 'U' ? 1 : 2;
+	y1 = atoi((dipent.phase) + 1);
+	p1 = (i = dipent.phase[5]) == 'M' ? 1 : i == 'R' ? 2 : 3;
+
+	if ((i = toupper(*s)) == 'S' || i == 'U') {
+		s2 = 0;
+		if (dipent.flags & F_MACH && (i == 'U' || !strncasecmp(s, "summer", 6))) {
+			s2 = 1;
+		}
+	} else if (i == 'F' || i == 'W') {
+		s2 = 2;
+	}
+	while (*t && !(*t == '1' || *t == '2'))
+		t++;
+	if (!*t || (y2 = atoi(t)) < 1000 || y1 + 5 < y2)
+		y2 = -1;
+
+	while (isdigit(*t))
+		t++;
+	while (isspace(*t))
+		t++;
+	if ((j = toupper(*t)) == 'M')
+		p2 = 1;
+	else if (j == 'R')
+		p2 = 2;
+	else if (j == 'B' || j == 'A' || i == 'W') {
+		p2 = 3;
+		if (s2)
+			s2 = 2;
+	}
+	if (s2 < 0)
+		fprintf(rfp, "Unrecognized season: phase %s\n", s);
+
+	if (y2 < 0)
+		fprintf(rfp, "Invalid year: phase %s\n", s);
+
+	if (p2 < 0)
+		fprintf(rfp, "Unrecognized phase: phase %s\n", s);
+
+	if ((i = (y2 * 100 + s2 * 10 + p2) - (y1 * 100 + s1 * 10 + p1)) >= 0)
+		j = i;
+	else
+		j = -1;
+
+#ifdef notdef
+	fprintf(log_fp, "Phase: Returning %d. y1/s1/p1=%d/%d/%d, y2/s2/p2=%d/%d/%d.\n",
+		j, y1, s1, p1, y2, s2, p2);
+#endif				/* notdef */
+	return j;
+
+}
+
+void phase_pending(void)
+{
+
+	/*
+	 *  Process the pending orders now that we've advanced to the next phase.
+	 *
+	 *  We have to go through each power individually so that we can generate
+	 *  a report to send to him in case there were any errors.  We'll set the
+	 *  "orders received" flag regardless so unless he does a "set wait" he
+	 *  could get his orders processed even with errors or if incomplete.
+	 */
+
+	int i, n, p, found, skip;
+	char *s, Tfile[30], Mfile[30];
+	FILE *ifp, *ofp, *tfp = NULL, *mfp;
+
+	static char *words[] =
+	{0, "phase", "set#wait", "set#nowait"};
+
+#define PHASE  1
+#define WAIT   2
+#define NOWAIT 3
+
+	sprintf(Tfile, "D%s/P%3.3d", dipent.name, atoi(dipent.seq) - 1);
+	if (!(ifp = fopen(Tfile, "r")))
+		return;
+
+	sprintf(Tfile, "D%s/P%s", dipent.name, dipent.seq);
+	if (!(ofp = fopen(Tfile, "w"))) {
+		perror(Tfile);
+		bailout(1);
+	}
+	sprintf(Tfile, "D%s/T%s", dipent.name, dipent.seq);
+	sprintf(Mfile, "D%s/M%s", dipent.name, dipent.seq);
+
+	found = 1;
+	for (p = 1; p < WILD_PLAYER; p++) {
+
+		for (n = 0; n < dipent.n; n++)
+			if (dipent.players[n].power == p)
+				break;
+		if (n == dipent.n)
+			continue;
+
+		if (found) {
+			if (!(tfp = fopen(Tfile, "w"))) {
+				perror(Tfile);
+				bailout(1);
+			}
+			if ((mfp = fopen(Mfile, "r"))) {
+				while (fgets(line, sizeof(line), mfp)) {
+					if (!strcmp(line, "X-marker\n"))
+						*line = 'Y';
+					fputs(line, tfp);
+				}
+				fclose(mfp);
+			}
+			fputs("X-marker\n", tfp);
+		}
+		found = 0;
+		skip = -1;
+		rewind(ifp);
+		while (fgets(line, sizeof(line), ifp)) {
+			if (power(*line) == p) {
+				s = lookfor(line + 3, words, nentry(words), &i);
+				switch (i) {
+				case PHASE:
+					if (!(skip = phase(s)))
+						continue;
+					break;
+
+				case WAIT:
+					if (!skip) {
+						if (dipent.flags & F_STRWAIT)
+							if (dipent.players[n].status & SF_MOVE)
+								dipent.players[n].status |= SF_WAIT;
+							else
+								dipent.players[n].status |= SF_WAIT;
+						continue;
+					}
+					break;
+
+				case NOWAIT:
+					if (!skip) {
+						dipent.players[n].status &= ~SF_WAIT;
+						continue;
+					}
+				}
+
+				if (!skip) {
+					fputs(line, tfp);
+					found++;
+				} else if (skip > 0)
+					fputs(line, ofp);
+			}
+		}
+
+		if (found) {
+			ferrck(tfp, 3001);
+			fclose(tfp);
+			rfp = fopen("dip.reply", "w");
+			if (porder('T', n, 0) == E_FATAL) {
+				sprintf(line, "./smail dip.reply 'Pending orders error' '%s'",
+					GAMES_MASTER);
+			} else {
+
+				dipent.players[n].status |= SF_PART;
+				if (more_orders) {
+					fprintf(rfp, "The partial orders will be processed unless complete ");
+					fprintf(rfp, "orders are received by\n%s.\n\n", ptime(&dipent.grace));
+				} else {
+					dipent.players[n].status |= SF_MOVED;
+				}
+
+				rename(Tfile, Mfile);
+				sprintf(line, "./smail dip.reply 'Diplomacy pending orders %s %s' '%s'",
+					dipent.name, dipent.phase, dipent.players[n].address);
+				if (*dipent.players[n].address == '*')
+					continue;
+				dipent.players[n].status &= ~(SF_ABAND | SF_CD);
+			}
+			fclose(rfp);
+			execute(line);
+		}
+	}
+
+	fclose(ofp);
+	fclose(ifp);
+
+}
+
+void phase_syntax(int phase, char *s)
+{
+	/*
+	 *  Do a preliminary syntax check on the given order.  We're just trying
+	 *  to warn the player that there may be some sort of problem when we go
+	 *  to process his order in the future phase.
+	 */
+
+	return;			/*  Heck, I don't know!!  Looks good to me. */
+}

@@ -1,0 +1,78 @@
+I've added four commands to the Judge's command list:
+	SET ALLOW PLAYER [-]address
+	SET DENY PLAYER [-]address
+	SET ALLOW MASTER [-]address
+	SET DENY MASTER [-]address
+
+where the master of a game can add or remove players from the .ALLOW and
+.DENY files for their particular games.  In addition, the JK can use these
+commands to add and remove players (or masters) to the Judge .ALLOW and .DENY
+lists remotely, by signing on to the CONTROL game, and issuing these commands.
+By including the '-' prepender, the listed player will be removed from that
+file.
+
+For example, let's say I am Mastering a game DUMMY, and I want to make sure
+that Joe@Blow.com can't sign on to the game, I would issue the command:
+
+signon mdummy password
+set deny player joe@blow.com
+
+or, let's say I wanted to prevent joe from getting on my judge altogether,
+I'd issue the command:
+
+signon mcontrol password
+set deny player joe@blow.com
+
+[obviously, if I'm operating locally, it's simpler just to edit the file,
+ but you see what I mean.]
+
+The mechanism works as follows:
+
+There are four files which are critical to this mechanism.  They are:
+
+players.ALLOW - this file will contain a list of all players that will be
+		allowed to be players on the judge (or game).
+players.DENY  - this file will contain a list of all players that are
+		barred from playing on this judge (or game).
+masters.ALLOW - this file will contain a list of all players that are
+		allowed to act as masters on this judge.
+masters.DENY  - this file will contain a list of all players that are
+		barred from acting as masters on this judge.
+
+When a player signs on to the judge (or onto a game), the judge will:
+
+1) Look for a file players.ALLOW in the judge's directory.  If it finds
+it, it will look for this players name.  If it finds it, it will allow the
+player to continue.  If it doesn't find the players name, it will not allow
+the player to continue.
+2) If there is not a players.ALLOW file, it will look for a players.DENY file.
+If it finds that, it will look in that file for this player.  It it finds the
+name, it will not allow the player to continue.  If it doesn't find the player,
+it will allow the player to continue.
+
+This process is identical for signing on to a game, except that the
+players.DENY and players.ALLOW files will be looked for in the D<gamename>
+directory.
+
+Similarly, when a player attempts to CREATE a game, the judge will follow the
+same algorithm, looking for masters.ALLOW, and masters.DENY files in the
+judges directory.
+
+There are several VERY important things to remember take note of:
+
+1) I would recommend using the players.ALLOW file in the main directory
+sparingly.  If you only list 5 players in this file, those are the ONLY 5
+players that can sign on to the judge.  This is much more useful for the
+games file, as this can be used for setting up invitation-only games.  You
+create the game, and set up the seven players you want to have in the game,
+and those are the only ones that will be allowed in, including Observers.
+2) Whenever a change is made to any of the files using the judge, the judge
+will save the previous version of the file as <file>.bak.  Currently, only
+one player per command can be added.
+3) The format of the files is:
+=<player address>
+the '=' is required.
+4) If you already have the blacklist file (dip.blist), you will need to copy
+it to players.DENY.
+
+Larry Richardson  1/95

@@ -1,0 +1,72 @@
+Greetings from the Diplomacy* Adjudicator!!                 Jun 14, 1994
+Info.asia
+
+Asian Diplomacy was originally conceived of and created by David Lawler,
+updated and modified by Peter Baer.  Territory chart revised by Will Wible. 
+
+This variant has undergone extensive development and playtesting over more
+than four years.  Several email and quite a few live games later, here are the
+results.
+
+Note that there are absolutely no rule changes from the standard Dip rulebook.
+Just a new map.  Comments: canals are similar to Constantinople in the regular
+Vanilla game; ie fleets and armies may cross, but only one may be occupying
+the territory at a time. Asian Diplomacy has almost no historical basis.
+However, it is VERY well balanced, which should be the final criteria for a
+wargame.  All powers have equal chances to win.
+
+
+Map
+
+An ASCII version of the map is available from the judge as the file asia.asc.
+A PostScript map is still under development.  The interconnectivities between
+the provinces, and the abbreviations for the provinces, can be found in the
+file map.asia, or on the ASCII map (asia.asc).  Many provinces have a few
+abbreviations that are acceptable; for example, ura and ural for urals.
+Most provinces can be abbreviated by the first 3 letters of the name,
+exceptions to this rule are:
+
+eas      Eastern African Sea
+esb      East Siberia
+ecs      East China Sea
+eio      East Indian Ocean
+eme,emed Eastern Mediterranean
+hkg,hk   Hong Kong
+hon      Honshu
+irn      Iran
+irq      Iraq
+jav      Java
+jvs,jws  Javan Sea
+scs      South China Sea
+sio      South Indian Ocean
+tha      Thailand
+ths      Thai Sea
+
+Other acceptable abbreviations are in the map.asia file; if in doubt you can 
+always spell out the name in full.
+
+
+Countries and Starting Positions
+
+There are 7 nations.  As with Youngstown, there are 2 nations beginning with
+the letter 'I'; once again, the letter 'N' is used for India.  'I' is used 
+by Indonesia.
+                           
+The starting positions are:
+
+China              India               Indonesia           Japan
+A Beijing          A Calcutta          F Borneo            F Hokkaido
+A Tibet            A Delhi             F Java              F Honshu
+F Shanghai         F Bombay            F Sumatra           A Manchuria
+                                                           F Philippines
+Russia             Siberia             Persia
+A Moscow           A Irkutsk           A Iran
+A Sevastopol       F Kamchatka         A Iraq
+F St Petersburg    A West Siberia      F Arabia (east coast)
+
+
+Victory Conditions
+
+40 territories are marked as supply centers, and 21 are needed to win.
+
+Programmed for the judge by Nicholas Fitzpatrick

@@ -1,0 +1,12 @@
+	  Too true, thanks for pointing it out. The other thing to do would be
+	to find a master for it. Hmm. Can you become a master after the game
+	has started? And ... Is the correct way to "destroy" a game to set it to
+	nolist and remove all the players?
+
+Ken has put in Master's after the fact.  I believe he just puts
+an extra line, in the appropiate place in the control file, I think
+he also sometimes has the person add himself as an observer, and
+then he just adjusts the line for him to become Master.  I do
+not believe Master's have to be at the top, also, games, CAN have
+more than one Master, (though they would have to be entered by hand).
+As long as they are both marked as Master, they both have powers.

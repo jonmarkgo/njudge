@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+#  Generate a make file to get the data files copied.
+#  Note: We use tar here because we want to preserve links.
+#
+cd data
+list="*"
+echo $list | sed "s-^-install: -" | sed "s- - $1/data/-g"
+for name in $list; do
+  echo ""
+  echo $1/data/$name: data/$name
+  echo \	tar cf - data/$name \| \(cd $1\; tar xvf -\)
+done

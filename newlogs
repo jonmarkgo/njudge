@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+LOGS="dip.log dip.rlog mail.log"
+
+for i in $LOGS; do
+LOG=$i
+	if test -s $LOG
+	then
+		test -f $LOG.6.Z && mv $LOG.6.Z  $LOG.7.Z
+		test -f $LOG.5.Z && mv $LOG.5.Z  $LOG.6.Z
+		test -f $LOG.4.Z && mv $LOG.4.Z  $LOG.5.Z
+		test -f $LOG.3.Z && mv $LOG.3.Z  $LOG.4.Z
+		test -f $LOG.2.Z && mv $LOG.2.Z  $LOG.3.Z
+		test -f $LOG.1.Z && mv $LOG.1.Z  $LOG.2.Z
+		test -f $LOG.0.Z && mv $LOG.0.Z  $LOG.1.Z
+		mv $LOG    $LOG.0
+		compress $LOG.0
+		touch $LOG
+		chmod 600    $LOG
+		sleep 40
+	fi
+done
+
+
+

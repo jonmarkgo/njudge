@@ -1,0 +1,527 @@
+/*
+ * $Log$
+ * Revision 1.1  1996/10/20 12:29:45  rpaar
+ * Morrolan v9.0
+ */
+
+/*  po_cmap.c
+ *  Copyright 1987, Lowe.
+ *
+ *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+ *  Maryland, all rights reserved; used with permission.
+ *
+ *  Redistribution and use in source and binary forms are permitted
+ *  provided that it is for non-profit purposes, that this and the 
+ *  above notices are preserved and that due credit is given to Mr.
+ *  Lowe.
+ */
+
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include "dip.h"
+#include "conf.h"
+#include "functions.h"
+#include "porder.h"
+#include "mach.h"
+
+int main(int argc, char *argv[])
+{
+
+/*
+ *  Compile the map into something that can be sucked in easily.
+ */
+
+	unsigned char from = 0, to;
+	int i, j, n, m, p, v, nc, np;
+	char file[255], *t, dir[100];
+	long t1, t2;
+	struct stat sbuf;
+	PFTAB(pftab);
+	short cent[NPROV];
+	short prov[NPROV];
+
+	switch (argc) {
+	case 1:
+		dir[0] = '\0';
+		break;
+	case 2:
+		sprintf(dir, "%s/", argv[1]);
+		break;
+	default:
+		fprintf(stderr, "Usage %s [directory]\n", *argv);
+		exit(1);
+	}
+
+	maxheap = 10000;
+	if (!(heap = (unsigned char *) malloc(maxheap + 10))) {
+		fprintf(stderr, "Unable to allocate heap.\n");
+		exit(1);
+	}
+	for (v = 1; v < NVARIANT; v++) {
+		if (v == 1)
+			sprintf(line, "%sdata/map", dir);
+		else
+			sprintf(line, "%sdata/map.%s", dir, variants[v]);
+		if (stat(line, &sbuf)) {
+			perror(line);
+			exit(1);
+		}
+		t1 = sbuf.st_mtime;
+
+		sprintf(file, "%smap.%d", dir, v);
+		if (stat(file, &sbuf))
+			t2 = 0;
+		else
+			t2 = sbuf.st_mtime;
+
+		if (stat(*argv, &sbuf)) {
+			fprintf(stderr, "stat: ");
+			perror(*argv);
+			exit(1);
+		}
+		if (t1 < t2 && sbuf.st_mtime < t2)
+			continue;
+
+		printf("Compiling new %s for %s variant.\n", file, variants[v]);
+		if ((ifp = fopen(line, "r")) == NULL) {
+			fprintf(stderr, "Error opening map data file %s.\n", line);
+			exit(1);
+		}
+		hp = 0;
+		npr = 0;
+
+		/*  Process province definitions: name, type code code ...   */
+
+		while (fgets(line, sizeof(line), ifp) && *line != '-') {
+			if (npr == NPROV) {
+				fprintf(stderr, "Maximum number of provinces (%d) exceeded.\n", NPROV);
+				exit(1);
+			}
+			pr[++npr].name = (char *) &heap[hp];
+			pr[npr].move = NULL;
+			pr[npr].unit = 0;
+			for (t = line; *t && *t != ','; t++) {
+				if (*t == '\n') {
+					heap[hp++] = 0;
+					fprintf(stderr, "Missing comma for province %s.\n", pr[npr].name);
+					exit(1);
+				}
+				heap[hp++] = *t;
+			}
+			heap[hp++] = 0;
+			heap[hp++] = npr;
+
+			for (t++; isspace(*t); t++);
+			if (*t) {
+				pr[npr].type = *t++;
+			} else {
+				fprintf(stderr, "Missing type/abbreviations for %s.\n", pr[npr].name);
+				exit(1);
+			}
+
+			pr[npr].flags = 0;
+
+			if (*t && !isspace(*t)) {
+
+				if (*t < '0' || '7' < *t) {
+					fprintf(stderr, "Bad city value %c for %s.\n", *t, pr[npr].name);
+					err++;
+				}
+				pr[npr].flags = (*t++ - '0');	/* Number of city points */
+
+				if (*t == 'f' || *t == 'P')
+					pr[npr].flags |= PF_FORTRESS;	/* Province is fortifiable */
+
+				if (*t == 'p' || *t == 'P')
+					pr[npr].flags |= PF_PORT;	/* Province is a port city */
+
+				while (*t && !isspace(*t))
+					t++;
+
+			}
+			for (;;) {
+				while (isspace(*t))
+					t++;
+				if (!*t)
+					break;
+				while (*t && !isspace(*t))
+					heap[hp++] = *t++;
+
+				heap[hp++] = 0;
+				heap[hp++] = npr;
+
+				if (hp > maxheap) {
+					fprintf(stderr, "Heap exceeded!!  Processing %s.\n", pr[npr].name);
+					exit(1);
+				}
+			}
+		}
+
+		heap[hp++] = 0;
+		printf("%d of %d provinces used.\n", npr, NPROV);
+
+		/*
+		 *  Process movement: prov-type: prov prov prov/coast ...
+		 *  Where type is mv = Land movement
+		 *                xc = Any coast
+		 *                nc = North coast
+		 *                sc = South coast
+		 *                ec = East coast
+		 *
+		 *  Heap gets two-ples: province and "from coast" * 0x10 | "to coast".
+		 */
+
+		n = 0;
+		while (fgets(line, sizeof(line), ifp) && *line != '-') {
+			t = get_prov(line, &m, &i);
+			if (!m || *t++ != '-') {
+				fprintf(stderr, "Bad movement: %s", line);
+				err++;
+				continue;
+			}
+			if (m != n && pr[m].move) {
+				fprintf(stderr, "Movement for province %s noncontiguous.\n", pr[m].name);
+				err++;
+			}
+			n = m;
+
+			if (!pr[n].move) {
+				heap[hp++] = 0;
+				pr[n].move = &heap[hp];
+			}
+			switch (*t) {
+
+			case 'm':
+				from = MV * 0x10;
+				break;
+			case 'x':
+				from = XC * 0x10;
+				break;
+			case 'n':
+				from = NC * 0x10;
+				break;
+			case 'e':
+				from = EC * 0x10;
+				break;
+			case 'w':
+				from = WC * 0x10;
+				break;
+			case 's':
+				from = SC * 0x10;
+				break;
+			case 'c':
+				from = CC * 0x10;
+				break;
+
+			default:
+				fputs(line, stderr);
+				fprintf(stderr, "Invalid movement %c for province %s.\n", *t, pr[n].name);
+				err++;
+			}
+
+			while (*t && !isspace(*t))
+				t++;
+			while (isspace(*t))
+				t++;
+			while (*t) {
+				t = get_prov(t, &m, &i);
+				if (!m) {
+					fprintf(stderr, "Movement from %s to unknown: %s", pr[n].name, t);
+					m = 1;
+					err++;
+					break;
+				}
+				to = i ? i : from ? XC : MV;
+
+				if (*t == '/') {
+					switch (*++t) {
+
+					case 'm':
+						to = MX;
+						break;	/* Only with support */
+					case 'x':
+						to = XC;
+						break;
+					case 'n':
+						to = NC;
+						break;
+					case 'e':
+						to = EC;
+						break;
+					case 'w':
+						to = WC;
+						break;
+					case 's':
+						to = SC;
+						break;
+					case 'c':
+						to = CC;
+						break;
+
+					default:
+						fprintf(stderr, "Movement for %s: %s/%s", pr[n].name, pr[m].name, t);
+						to = 0;
+						err++;
+					}
+					while (*t && !isspace(*t))
+						t++;
+					while (isspace(*t))
+						t++;
+				}
+				heap[hp++] = m;
+				heap[hp++] = from | to;
+
+				if (hp > maxheap) {
+					fprintf(stderr, "Heap exceeded!!  Processing movement %s -> %s.\n",
+						pr[n].name, pr[m].name);
+					exit(1);
+				}
+			}
+		}
+		heap[hp++] = 0;
+
+		/*
+		 *  Process miscellaneous section.
+		 */
+
+		nc = np = nv = 0;
+		while (fgets(line, sizeof(line), ifp) && *line != '-') {
+			int vi_array[7];
+
+			switch (*line) {
+
+				/*
+				 *  Center ordering for summary report.
+				 */
+
+			case 'C':
+				while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+					for (t = line; isspace(*t); t++);
+					while (*t) {
+						t = get_prov(t, &j, &i);
+						if (!(cent[nc++] = j)) {
+							fprintf(stderr, "Unrecognized center in centers list: %s", t);
+							t = "";
+							err++;
+						}
+						if (nc > NPROV) {
+							fprintf(stderr, "Maximum centers in center list exceeded.\n");
+							err++;
+						}
+						if (*t == ',')
+							t++;
+					}
+				}
+				break;
+
+				/*
+				 *  Owner (province) ordering for summary report.
+				 */
+
+			case 'O':
+				while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+					for (t = line; isspace(*t); t++);
+					while (*t) {
+						t = get_prov(t, &j, &i);
+						if (!(prov[np++] = j)) {
+							fprintf(stderr, "Unrecognized center in province list: %s", t);
+							t = "";
+							err++;
+						}
+						if (np > NPROV) {
+							fprintf(stderr, "Maximum centers in province list exceeded.\n");
+							err++;
+						}
+						if (*t == ',')
+							t++;
+					}
+				}
+				break;
+
+				/*
+				 *  Plague and Famine tables.
+				 */
+
+			case 'F':
+			case 'P':
+				pftab = *line == 'F' ? ftab : ptab;
+				for (i = 2; i <= 12; i++) {
+					if (!fgets(line, sizeof(line), ifp)) {
+						fprintf(stderr, "End of input in famine/plague table.\n");
+						err++;
+						break;
+					}
+					if (i != atoi(line)) {
+						fprintf(stderr, "Column %d mismatch in famine/plague table.\n", i);
+						fprintf(stderr, "Line: %s", line);
+						err++;
+					}
+					if (!(t = strchr(line, ':'))) {
+						fprintf(stderr, "Missing colon in famine/plague table.\n");
+						fprintf(stderr, "Line: %s", line);
+						err++;
+					}
+					t++;
+					for (j = 2; j <= 12; j++) {
+						while (isspace(*t))
+							t++;
+						if (*t == '-') {
+							while (*t == '-')
+								t++;
+							p = 0;
+						} else {
+							t = get_prov(t, &p, &m);
+							if (!p) {
+								fprintf(stderr, "Bad province %d in famine table: %s", j, t);
+								fprintf(stderr, "Line: %s", line);
+								err++;
+								break;
+							}
+						}
+						pftab[i - 2][j - 2] = p;
+					}
+				}
+				break;
+
+				/*
+				 *  Variable income tables.
+				 */
+
+			case 'V':
+				while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+					t = get_prov(line, &p, &m);
+					if (!p) {
+						fprintf(stderr, "Bad province in variable income: %s", line);
+						err++;
+						continue;
+					}
+					vincome[nv].prov = p;
+					if (sscanf(t, "%d%d%d%d%d%d%d", &vi_array[0], &vi_array[1],
+						   &vi_array[2], &vi_array[3], &vi_array[4], &vi_array[5],
+						   &vi_array[6]) != 7) {
+						fprintf(stderr, "Bad dice list in income: %s", line);
+						err++;
+						continue;
+					}
+					vincome[nv].dice = vi_array[0];
+					vincome[nv].vinc[0] = vi_array[1];
+					vincome[nv].vinc[1] = vi_array[2];
+					vincome[nv].vinc[2] = vi_array[3];
+					vincome[nv].vinc[3] = vi_array[4];
+					vincome[nv].vinc[4] = vi_array[5];
+					vincome[nv].vinc[5] = vi_array[6];
+
+					if (nv++ > MAXVINC) {
+						fprintf(stderr, "Maximum number of variable income cities.\n");
+						nv = 0;
+						err++;
+					}
+				}
+				break;
+
+				/*
+				 *  Comments.
+				 */
+
+			case '\n':
+			case '#':
+				break;
+
+			default:
+				fprintf(stderr, "Unrecognized code in miscellaneous section: %s", line);
+				err++;
+			}
+		}
+
+		printf("%d of %d heap space used.\n", hp, maxheap);
+
+		fclose(ifp);
+
+		/* Check movement table for consistency */
+		po_chkmov();
+
+		/*
+		 *  Write the results out to the new map file.
+		 */
+
+		if (!err) {
+			if (!(ifp = fopen(file, "w"))) {
+				perror(file);
+				exit(1);
+			}
+			fwrite(&npr, sizeof(npr), 1, ifp);
+			fwrite(&hp, sizeof(hp), 1, ifp);
+			fwrite(&nv, sizeof(nv), 1, ifp);
+			for (i = 1; i <= npr; i++) {
+				cmap[CMAP_NAME] = pr[i].name - (char *) heap;
+				cmap[CMAP_MOVE] = pr[i].move - (unsigned char *) heap;
+				cmap[CMAP_TYPE] = pr[i].type;
+				cmap[CMAP_FLAG] = pr[i].flags;
+				fwrite(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp);
+			}
+			fwrite(heap, sizeof(unsigned char), hp, ifp);
+			if (nv) {
+				fwrite(vincome, nv, sizeof(vincome[0]), ifp);
+				fwrite(ftab, sizeof(ftab), 1, ifp);
+				fwrite(ptab, sizeof(ptab), 1, ifp);
+			}
+			fwrite(&nc, sizeof(nc), 1, ifp);
+			if (nc) {
+				fwrite(cent, sizeof(cent[0]), nc, ifp);
+			}
+			fwrite(&np, sizeof(np), 1, ifp);
+			if (np) {
+				fwrite(prov, sizeof(prov[0]), np, ifp);
+			}
+			fclose(ifp);
+		}
+	}
+
+	exit(err);
+
+}
+
+/*
+ * TODO holy christmas, this function is defined both here and in
+ * po_init.c  this is bad.  
+ * since cmap is a separate program, i'm leaving it as is, but
+ * we should really have either one definition if it's really the
+ * same function, or we should rename this one
+ */
+
+void po_chkmov(void)
+{
+
+/* Check movement table for consistancy */
+
+	int from, to, i, j;
+	unsigned char *s, *t;
+
+
+	for (from = 1; from <= npr; from++) {
+		if (!(s = pr[from].move)) {
+			fprintf(stderr, "No movement table for %s.\n", pr[from].name);
+			continue;
+		}
+		while ((to = *s++)) {
+			if (!(t = pr[to].move)) {
+				fprintf(stderr, "No movement table for %s.\n", pr[to].name);
+				continue;
+			}
+			i = *s++ & 0x0f;
+			while ((j = *t++) && ((j != from) || (i != MX && i != *t >> 4)))
+				t++;
+			if (!j) {
+				fprintf(stderr, "Can't get back to %s from %s (%s).\n",
+					pr[from].name,
+					pr[to].name, mtype[i]);
+				err++;
+			}
+		}
+	}
+}
+
+/****************************************************************************/

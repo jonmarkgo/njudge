@@ -1,0 +1,15 @@
+Greetings from the Diplomacy* Adjudicator!!                 October 13, 1992.
+Info.fleet_rome
+
+The "Fleet Rome" variant differ from regular Diplomacy in only one
+detail;  Italy starts with a Fleet in Rome instead of an Army.
+
+To sign onto a fleet_rome game, the fleet_rome keyword must be specified
+as part of the variant identification:
+
+    signon ?name password fleet_rome
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

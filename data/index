@@ -1,0 +1,543 @@
+Greetings from the Diplomacy* Adjudicator!!                2 July 1996.
+index.
+
+This is an alphabetical list of all the commands that the adjudicator will
+process with a brief description.  Each command is preceded by a who/where
+pair.  This indicates who can execute the command and where the command
+can appear.  The who options are:
+
+any:  Anyone can execute the command.
+mod:  Only the moderator in moderated games, anyone in unmoderated games.
+adm:  Only the administrator.  These commands are listed to be complete,
+      but should *NOT* be executed by nonadministrators.  If there is any
+      doubt, you are not an administrator.
+
+The where options are:
+
+any:  Can appear either before or after a signon command.
+pre:  Must appear before a signon command.
+aft:  Can only appear after a signon command.
+mac:  Can only appear after a signon to a Machiavelli variant game.
+
+Items in square brackets are optional, items in uppercase are keywords
+and must be entered exactly as specified, items in lowercase are
+parameters and should have an appropriate value substituted in.  Words
+separated by vertical bars (|) indicate a choice of one of the words.
+
+
+adm/pre ADJUST userid increment
+        The increment is added to the player's dedication rating.
+
+any/aft BECOME MASTER
+        Allows the sole player signed onto a particular game to become
+        the master/moderator of that game.  See file 'master'.
+
+mod/aft BECOME power
+        Allows the master for a game to assume the identity of a particular
+        power.  See file 'master'.
+
+any/aft BROADCAST [options] ... [ENDBROADCAST|ENDPRESS|SIGNOFF]          
+        To send a press message; options may or not be specified, and the
+        message may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF',
+        or the end of the (incoming) mail message.  See file 'press'.
+
+any/aft CLEAR
+        To clear any pending orders entered with the PHASE command.
+
+adm/pre FIXID siteid site_name
+        Sets all players who have registered with the specified site name
+        to have a siteid as indicated.  By default all users get their
+        area code times 100 as a siteid and must be fixed to some non-
+        even multiple of 100.
+
+any/any GET file
+        To get a particular file.  For a complete list of files see file
+        'flist'.  See file 'info' for a description of the more important
+        files.
+
+any/any GET DEDICATION
+	To determine the users current dedication rating.
+
+any/any GET PACKAGE
+        To get the 'new user package' of files.  These files are generally
+        sent automatically to new users at the time they register with a
+        Judge (see REGISTER command), but they can be specifically requested
+        with this command.  These files are the ones that all new users
+        should read before attempting any Judge Diplomacy games.
+
+any/pre HELP
+        The general introduction text is returned.  This is equivalent to
+        the "get info" command except that no other commands after the help 
+        command will be processed.
+
+any/aft HELP
+        Equivalent to "get info".
+
+any/any HISTORY [game] [FROM date] [TO date] [LINES n]
+        HISTORY [game] EXCLSTART turnId [EXCLEND turnId] [BROAD]
+
+        The first form:
+	Retrieves the history information for the specified game for the
+	specified time period (in real time rather than game time).  The
+	history information is all the messages that an observer would 
+	have seen had he been signed on for the time period.  The default
+	period is 1 week ago to the present or 1000 lines whichever comes
+	first.
+
+        Dates can be specified in the following forms (only spaces should
+	be used to separate parts of a date, except a comma is optionally
+	allowed after the day of the month):
+	       a)  Day of week (three-letter abbreviation)
+	       b)  Day and month (three-letter abbreviation), or month and day
+	       c)  Day, month, and year, or month, day, and year, where year
+		   can be specified either as 80-99 (= 1980-1999) or four digits.
+		   Also, a time in hours and minutes (i.e., 'hh:mm' form, using a
+		   24-hour clock) can be added after any of the above if desired;
+		   otherwise, the time defaults to midnight (00:00) of the specified
+		   day.
+
+        To get the earliest part of the history (or the whole history), use
+        a date that is known to be earlier than the game start date; 1 Jan
+	1990 (or Jan 1, 1990) is usually sufficient for this purpose.
+
+        The second form:
+        Retrieves the history information for the specified game excluding
+	phases starting from EXCLSTART turnId to [EXCLEND turnId].
+	Note: EXCLSTART is not optional.
+	In the case where [EXCLEND turnId] is not specified, the returned
+	history contains turns from start of game to (but not including)
+	EXCLSTART turn.
+
+        The format for 'turnId' is: SYYYYT
+          where:  S - the season (ex: 'S' for Spring, or 'F' for Fall)
+                  Y - each digit in the year. (ex: 1901, 1425, 1999)
+                  T - Turn (ex: 'M' for Movement Phase, 'B' for builds, 'R' for Retreats)
+
+        More concrete examples: 
+                S1902M (Spring 1902 Movement Phase)
+                F1999B (Fall 1999 Adjustment(Builds) Phase)
+
+        No checking is done to determine whether the TurnIds given are
+	actually found in the game.  The default action for the second form,
+	on erroneous turnIds, is to return a complete history, noting the
+        exception below.
+
+        By default 'Diplomacy notices' are not included. However, if a draw
+        notice is found outside the excluded set of phases the draw notice
+	will be included, regardless of [BROAD] flag status.
+	[BROAD] must be, explicitly, given to have notices included
+	in the history.  In the worst case, with [BROAD] command, the
+	returned message can be anywhere from 200 Kb to as much as 1 Mb.
+	(BEWARE! using this flag.)
+
+any/any IAMALSO address   
+		  To register a new email address.  If your return address changes
+		  you can use the IamAlso command to tell the adjudicator that you
+		  are the same person without having to resubmit a complete form.
+		  The address specified must be one that was registered previously.
+
+any/pre LIST [FULL|name]
+        If no optional name or keyword is specified a short list of the
+        current games is generated.  If the FULL keyword is specified
+        a detailed report including the player list of each game is
+        generated.  If a name is specified, the full report for that game
+        is generated along with unit positions and supply center holdings.
+
+any/aft LIST
+        The detailed report of all players and units will be generated
+        for the currently signed on game.
+
+any/pre MAP name [n]
+        Send a postscript map of the current status of the game. Not all
+        variants are supported. The "n" option sends the file in plain
+        postscript format instead of uuencoded, compressed ps format.
+	(This command may be disabled)
+
+any/pre MAP * [n]
+	This command must prefix a LIST output from any judge and will
+	produce a map based on that output. The "*" is real and is not
+	replaced. The "n" option is as above.
+	The LIST output supplied must *not* have any characters added to
+	the beginning of the line. e.g: The comment (">") character.
+	(This command may be disabled)
+        
+adm/pre NOCONTROL
+        Prevents broadcast message from actually being sent.  For debugging.
+
+any/pre OBSERVE xxxx password           
+        To become an observer.  This command is interpreted as a signon.
+
+any/aft PHASE season year phase       
+        To specify that any following orders should be held until the
+        specified phase before processing.
+
+any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
+        To send a press message; options must be specified, and the message
+        may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or the
+        end of the (incoming) mail message.  See file 'press'.
+
+any/any REGISTER ... END  
+        To register yourself.  See file 'form'.
+
+any/aft RESIGN
+        To withdraw from the game.  This must be the LAST command in the
+        message to be effective; so if you want to broadcast a farewell
+        message, do so before you enter the 'resign' command.
+
+mod/aft RESUME
+        To restart a completed or terminated game
+
+mod/aft ROLLBACK turn
+        Rolls the game back to the previously processed turn.  See file
+        'master'.
+
+any/any SEND [ME] file
+        Equivalent to "get file".
+
+mod/aft SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
+        To change what users can sign on.  By default only people from
+        different sites can sign onto a game.
+
+any/aft SET ADDRESS  [reply_address]  
+        To change where your reports go.  If you don't specify an address
+        the address from the mail headers will be used.  If you signon and
+        your the address in the mail headers does not match the reporting
+        address you will get two replies, one to each address.  This can
+        be fixed by using "set address" with no reply address specified.
+
+mod/aft SET ALL PRESS
+	To request that all partial press be sent to you as the moderator
+	of the game as well as to the intended recipients.  Use "SET NORMAL
+	PRESS" to disable this feature.
+
+mod/mac SET [NO]ADJACENCY
+        Disables/enables optional rule that allows bribes from nonadjacent
+        players.
+
+mod/mac SET [NO]ASSASSINATIONS
+        Disables/enables optional assassination rules.
+
+mod/aft SET BN|BNC [NUMBER] number
+        Sets the Boardman number for a game.  This command should only be
+        issued after receiving a number from the Boardman Number Custodian
+        (BNC); at the time of this writing, the BNC for Internet games is
+        Nick Fitzpatrick (nfitz@sentex.ca).  The Boardman number
+        takes the form YYYYAA, where YYYY is the year, and AA are combinations
+        of letters between A and ZZ.  Boardman numbers are only assigned to
+        Standard games.  The BNC number appears in the game's listing and
+        summary.
+
+mod/aft SET [NO]CD
+        Same as "set [no]nmr".
+
+mod/aft SET CENTERS number
+        Set the number of centers required to win the game to "number".
+	This will cause the game to end when the first player reaches this
+	number of winning centers. If more than one player reaches this
+	value, then it is advanced to one more center than the top
+	players have. If a draw is acceptable then a vote is required
+	using the SET DRAW command.
+
+mod/aft SET COMMENT text
+	Sets the comment that appears in the brief listing format.  The
+	text string should be under 60 characters in length.
+
+mod/aft SET COMMENT BEGIN
+	Sets the comment that appears in the full listing format.  The
+	full comment consists of the rest of the input mail message up
+	to (an optional) signoff command.
+
+mod/aft SET DEADLINE date
+        Changes the deadline for the current phase.  See file 'deadlines'.
+
+mod/aft SET DEDICATION level
+        Restricts access to the game to those people with a dedication
+        rating equal or greater than the indicated level.  The indicated
+	level can not be higher than the Moderator's current dedication
+	rating.  See file 'deadlines'.
+
+mod/aft SET [NO]DIAS
+        Disables/enables requirement that all draws must include all
+        survivors. See file 'draws'.
+
+mod/mac SET [NO]DICE
+        Disables/enables optional rules that introduce random events into
+        the game: Variable income, bank loans, assassinations, famine and 
+        plague.
+
+any/aft SET [NO]DRAW [powerlist]
+        Cast a vote in an automated draw. See file 'draws'.
+
+mod/aft SET EP number
+        Sets the Electonic Protocol number for a game.  This command should
+        only be issued after receiving a number from the Electronic
+        Protocol Number Keeper (EPNK); at the time of this writing, the EPNK
+        is Sean Starkey (starkey@netcom.com).  The EP number takes the form
+        YY-NNN, where YY is the last two digits of the year the game started,
+        and NNN is the number of the game within that year (e.g., 94-1 is the
+        first EP game started in 1994).  EP numbers are only assigned to
+        games that follow the Electronic Protocol House Rules (send 'get
+        house.rules' to any Judge to receive a copy).  The EP number appears
+        in the game's listing and summary.
+
+mod/mac SET [NO]FAMINE
+        Disables/enables optional famine rules.
+
+mod/aft SET GRACE date
+        Changes the grace period for the current phase.  See file 'deadlines'.
+
+mod/aft SET GREY [PRESS]
+        Sets press option to grey only.  See file 'press'.
+
+mod/aft SET GREY/WHITE [PRESS]
+        Sets press option to grey by default with white allowed.  See file
+        'press'.
+
+mod/aft SET LEVEL ANY|NOVICE|AMATEUR|INTERMEDIATE|ADVANCED|EXPERT
+        Restricts access to a particular class of player.  The three
+	official classes are Novice, Intermediate, and Expert.  Amateur 
+	means either Novice or Intermediate, and Advanced means either 
+	Intermediate or Expert.  Any of course means any class of player
+	may play.  Players can change their classification (if they feel 
+	their level has changed) by re-registering.  See file 'form'.
+
+mod/aft SET LIST
+        Changes a game from unlisted to listed for generic list commands.
+
+mod/mac SET [NO]LOANS
+        Disables/enables optional rules allowing players to borrow money
+        from the bank.
+
+mod/aft SET MN|MNC [NUMBER] number
+        Sets the Miller number for a game.  This command should only be
+        issued after receiving a number from the Miller Number Custodian
+        (MNC); at the time of this writing, the MNC for Internet games is
+        Nick Fitzpatrick (nfitz@sentex.ca).  The Miller Number
+        takes the form YYYYAAAbb00, where YYYY is the year, AAA are 
+        combinations of letters between A and ZZZ, and bb00 is the
+        designation for a specific variant, which is set by the North 
+        American Variant Bank (NAVB).  Miller numbers are only assigned 
+        to non-Standard games.  The MNC number appears in the game's 
+        listing and summary.
+
+any/aft SET MODERATE
+        Changes a game from unmoderated to moderated.
+
+mod/aft SET MOVE|RETREAT|ADJUST CLOCK|MIN|NEXT|GRACE|DELAY|DAYS value       
+        To change the deadline calculation.  See file 'deadlines'.
+
+mod/aft SET NMR
+        Allows orders to be processed even if all powers have not yet 
+        submitted complete ones.  See also "set nonmr".
+
+mod/aft SET NO FAKE [BROADCAST]
+        See file 'press'.
+
+mod/aft SET NO GREY [PRESS]
+        Same as "set white".
+
+mod/aft SET NOLIST
+        If a game is set NOLIST then only people who know about it will
+        be able to see it.  Useful for "by invitation only" games.  See
+        also "set list" and file 'master'.
+
+any/aft SET NORMAL PRESS
+	Disables the "SET ALL PRESS" option where all partial press is sent
+	to you as the moderator of a game.
+
+mod/aft SET OBSERVER ANY [PRESS]
+        Permits observers and alternates to submit press with the same 
+        restrictions as regular players.
+
+mod/aft SET OBSERVER NO [PRESS]
+        Disallows press from observers and alternates.
+
+mod/aft SET OBSERVER WHITE [PRESS]
+        Disallows observers and alternates from submitting grey press.
+
+mod/aft SET [PRESS] NONE
+        Same as "set nopress".
+
+mod/aft SET NO NMR
+        Opposite of "set nmr".
+
+mod/aft SET NO PARTIAL [PRESS]
+        Disables messages to individual powers.  See file 'press'.
+
+mod/aft SET NO PRESS
+        Disables all press/broadcast messages.  See file 'press'.
+
+any/aft SET NO WAIT
+        Clears the effect of "set wait".
+
+mod/aft SET NO WHITE [PRESS]
+        Same as "set grey".
+
+mod/aft SET PARTIAL [PRESS]
+        Allows messages to be sent to individual powers.  See file 'press'.
+
+mod/aft SET PARTIAL [FAKES [BROADCAST]] [BY DEFAULT]
+        See file 'press'.
+
+mod/aft SET PARTIAL MAY [BE FAKED]
+        See file 'press'.
+
+any/aft SET PASSWORD new_password     
+        To change your password.
+
+mod/mac SET [NO]PLAGUE
+        Disables/enables optional plague rules.
+
+mod/aft SET PLAYERS number
+        Sets the number of players (not powers) in the game.   When the
+        number of players is set to some number less than the number of
+        powers, the game will begin when that number of players signs on to
+        the game, assigning excess powers evenly among the players, thus
+        enabling them to play multiple powers. See info.duplex for more
+        information and an example.
+
+any/aft SET PREFERENCE list
+        To establish a preference list for power assignment.  Should
+        appear immediately after an initial signon entering a forming
+        game.  Can be modified up until the powers are actually assigned.
+
+mod/aft SET PRIVATE
+        Equivalent to "set nolist".
+
+mod/aft SET PUBLIC
+        Equivalent to "set list".
+
+mod/aft SET [NO]QUIET
+	Sets the "quiet" flag.  This flag prevents announcements about
+	power abandonment, power takeovers and such from being broadcast
+	to the other players or observers.  Its purpose is to prevent
+	information from being disclosed in gunboat games, particularly
+	tournaments where multiple games may lose the same player.
+
+mod/aft SET RATED
+	Changes a game to rated.  By default moderated games are rated
+	and unmoderated games are unrated.  Unrated games will not affect
+	the players' dedication rating.
+
+mod/aft SET [NO]REVEAL
+	If a gunboat game is set "no reveal", the player list will not
+	be revealed in summary output after the game terminates.  This
+	flag is useful for gunboat tournaments where player lists may
+	be the same in multiple games.
+
+mod/mac SET [NO]SPECIAL
+        Disables/enables optional rules that allow double strength units.
+
+mod/aft SET START date
+        Sets the earliest start date for the current phase.  See file
+        'deadlines'.
+
+mod/aft SET [NO]STRICTGRACE
+        Disables/enables enforcement of grace period as an ABSOLUTE time
+        interval after the deadline.  If disabled (default), then grace
+        periods will always end on an appropriate order processing day.
+
+mod/aft SET [NO]STRICTWAIT
+	Determines the ability of players who can set the WAIT flag.  If
+	STRICTWAIT is set, only players who have moves currently required
+	will be allowed to set wait.  If NOSTRICTWAIT is set (default), any
+	currently active player can set wait.
+
+mod/aft SET UNMODERATE
+        Changes a game from moderated to unmoderated.
+
+mod/aft SET UNRATED
+        Changes a game from rated to unrated.  Unrated games will not
+	affect the players' dedication rating.
+
+mod/aft SET VARIANT variant [options]         
+        To change the variant of a game.  This can only be done before the
+        powers are assigned and before the requisite number of players for
+        the new variant type have signed on.  For a complete list of valid
+        variants and options use the "SIGNON ?name password XXXX" command 
+        (where XXXX is any invalid variant name).
+
+any/aft SET WAIT
+        Specifies that orders should not be processed until the deadline.
+        See also "set nowait".
+
+mod/aft SET WHITE [PRESS]
+        Sets press option to white only.  See file 'press'.
+
+mod/aft SET WHITE/GREY [PRESS]
+        Sets press option to white by default with grey allowed.  See
+        file 'press'.
+
+any/aft SIGNOFF                       
+        To indicate the end of useful text.  The signoff command is used
+        to prevent your signiture file from being interpreted as orders
+        and/or being sent out as part of a press message.
+
+any/pre SIGNON pxxxx password
+        To sign onto an existing power that you own or to take over an
+        abandoned power.
+
+any/pre SIGNON ? password               
+        To enter the next available game that is forming.
+
+any/pre SIGNON ?xxxx password [variant] 
+        To enter a particular game that is forming.
+
+any/pre SUMMARY name
+        To get an historical summary of the specified game indicating who
+        took what power over when and which supply centers each power owned
+        throughout the game.
+
+any/aft SUMMARY
+        To get the summary report for the signed on game as above.  The
+        master in a gunboat game will get a slightly different summary
+        that includes the actual player names and addresses rather than
+        the generic "someone@somewhere".
+
+mod/aft TERMINATE
+        To declare the game over.
+
+any/pre VERSION [level]   
+        To see the current version of the software.  If the optional level
+        is specified, the log of all enhancements since that level will be
+        retrieved.
+
+any/pre WATCH name password
+        Equivalent to "observe".
+
+any/any WHO user [user ...]
+        Equivalent to WHOIS.
+
+any/pre WHOGAME name [full]
+	Retrieves WHOIS information for all players associated with game
+	'name'.  Note that this command can only be used by the master
+	(and only after he signs on) if the game is gunboat.  The optional
+	"full" argument will return information for observers and alternates
+	as well, while the default only returns information for the players
+	and the master.  See also "whois" below.
+
+any/aft WHOGAME [full]
+	Retrieves WHOIS information for all players associated with the
+	currently signed on game.  Note that if the game is gunboat, 
+	only the master can use this command.  The optional "full"
+	argument will return information for observers and alternates
+	as well, while the default only returns information for the 
+	players and the master.  See also "whois" below.
+
+any/any WHOIS user [user ...]
+        To retrieve registration information for particular players.  All
+        registered people with mail addresses that start with a prefix that
+        matches any of the "user" words specified will be listed.  Thus the
+        command "whois p" will list all users who have an email address that
+        starts with a P.  The entire database can be retreived with the
+        "get whois" command.
+
+any/aft WITHDRAW
+        Equivalent to "resign".
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.
+
+

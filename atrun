@@ -1,0 +1,15 @@
+#! /bin/csh
+#
+#  Invoked as: atrun norm time month day
+#          or: atrun dorm time month day
+#
+if ("$1" == "dorm") then
+  atrm `atq | awk '$NF == "diprun" {print $7}'` >& /dev/null
+#MIPS   at -r `at -l |& grep -v 1400` >& /dev/null
+
+# linux: atrm `atq | awk '{print $5}'` >& /dev/null
+# linux: this is not well tested but i think it works -- nw
+
+endif
+at $2 $3 $4 diprun
+rm -f dip.xfail

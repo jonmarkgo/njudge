@@ -1,0 +1,259 @@
+Info.Classical
+
+There are nice gif maps available for this variant:
+
+COLOR: http://haas.berkeley.edu/~schwarz/classice.gif
+BW: http://haas.berkeley.edu/~schwarz/classebw.gif
+
+The variant also has an evolving web page, currently located at:
+
+http://www.dragonfire.net/~Cyberia/classic.htm
+
+THE RULES
+
+  Classical Mediterranean Diplomacy, by Andy Schwarz and Vincent Mous
+
+ 1) The rules of "standard" Diplomacy are valid, unless specifically
+    replaced or amended by these rules
+
+ 2) All references in the "standard" rules to specific powers,
+    provinces, locations, and seasons do not apply to "Classical."
+    The standard map is replaced by the "Classical" variant map.
+
+ 3) The game begins in Spring 273 B.C.  Because years before 1 A.D. count
+    backwards, Spring 273 B.C. is followed by Fall 273 B.C., Winter 273
+    B.C., and then Spring 272 B.C.  However, for the purposes of Judge
+    play, the game is counted in years since the death of Alexander the
+    Great (to allow time to move forward and fit the Judge program).  Thus
+    273 B.C. is noted as Year 50, and 272 B.C. is Year 51, etc.
+
+ 4) There are 35 supply centers on the board.  The winner is the power
+    which holds 18 or more supply centers during an adjustment phase.
+
+ 5)  There are 5 great powers.  The starting units are as follows:
+
+     A-MACEDON        C-CARTHAGE        E-EGYPT
+     A Pella          F Carthage        A Thebes
+     F Cassandreia    F Panormus        F Alexandria
+     F Kallatis       F Leptis Magna    F Memphis
+
+     R-ROME           S-SYRIA
+     A Brundisium     A Antioch
+     A Roma           A Damascus
+     F Cumae          F Tyre
+
+     *** Please note that MACEDON is abbreviated with an "A" to avoid
+         conflict with the MASTER of the game. ***
+
+ 6) A power may build in any vacant supply center it owns during an
+    adjustment phase, assuming at least one of the original SCs of that
+    power is owned by that power: thus while there are permanent "home
+    centers," as long as you own one, all owned centers act like home
+    centers.  For example, Carthage may build in Syracuse if (1) it is
+    vacant, (2) Carthage owns it and (3) Carthage is eligible for a build
+    and (4) Carthage still owns at least one of: Panormus, Carthage, or
+    Leptis Magna.
+
+SPECIAL MAP FEATURES
+
+ 7) All Coastal provinces are assumed to have only one coast.  Thus, for
+    example, a fleet can enter Athens from Euboea and exit to Corinth
+    the following turn.  The same holds for Fleets entering Sinai from
+    Memphis and proceeding to Petra (and vice versa), and for Agrigentum as
+    well.
+
+    Note, however, that two neighboring coastal provinces, may not
+    necessarily be adjacent for the purposes of sea travel.  For example.
+    Etruria and Cisalpina are both coastal provinces, but they do not touch
+    on a water border, and thus a fleet in Etruria may not move to
+    Cisalpina or vice versa.
+
+ 7a) The Nile is navigable up to Thebes.  Once in Thebes, a fleet may move
+     to the Sinai, Sea of Reeds, or Nubian Desert via "portage" (this is
+     just a regular move order. i.e. a "portage" from Thebes to Nubian
+     Desert is just F Thebes- Nubian Desert, with no special indication
+     that the fleet may have had to be lifted across a stretch of desert)
+     Note, however, F Thebes cannot move to Libya, for the same reasons
+     that F Cis-Etr is not allowed.
+
+ 7b) The Rhodes space in southeastern Asia Minor consists of the island of
+     Rhodes proper and the mainland province of Caria which Rhodes
+     controlled.  They are one province despite being separated by water.
+
+     Thus, for example, a unit entering Rhodes from the Sea of Alexander
+     may move to Pergamum in the following season (and vice versa).  Note
+     however, that the Lycian Sea and the Cretan Sea ARE adjacent (as are
+     Lycian and Kos), despite this unusual land province.
+
+  8) The games has several land bridges, designed to improve interaction
+     among the five powers.  These connect the following land provinces:
+
+     Mauretania <-> Saguntum           Kyrnos <-> Sardo
+     Cumae <-> Mamertines              Brundisium <-> Epirus
+     Bithynia <-> Thrace               Thrace <-> Troy
+     Chersonesus <-> Tanais                Corinth <-> Delphi
+
+     *** Note that Rhodes also has a land bridge indicated, but its
+     special nature is defined by rule 7b above. ***
+    8a) Units (army or fleet) in a province with a land bridge may move to
+       the opposite shore at full strength.  In addition, a unit in such a
+       province may give support to a unit on the other side, or support a
+       move into the space across the bridge, also at full strength,
+       regardless of the presence of a fleet in the waters between the land
+       bridges.
+
+Examples:
+  R: Brundisium-Epirus. A: Pella-Epirus.
+                Result: both bounce.
+
+  R: Dalmatia-Epirus, Brundisium s Dalmatia-Epirus. A: Pella-Epirus.
+                Result: Dalmatia-Epirus succeeds.
+
+  R: Brundisium S Epirus, Epirus H. A: Pella-Epirus, Delphi S Pella-Epirus.
+                Result: Epirus holds, Pella bounces.
+
+8b) None of these land bridges precludes movement across the sea spaces
+    they cross.  For example, an army moving from Thrace to Troy will not
+    impede a fleet moving from Propontis to Lesbos.  In addition, these
+    land bridges do not prevent convoys, so an army in Bithynia may convoy
+    via Propontis and Lesbos to Pergamum, or even, should the need arise,
+    directly across the Propontis to Thrace (this might be used to swap two
+    units which would otherwise bounce).
+
+
+ 9) Generally, land locations can be abbreviated by the first three
+    letters.  The one exception is Sarmatia, abbreviated as Srm  to avoid a
+    conflicts with Sardo, Sar. Ignore the word "The" when abbreviating.
+
+    Sea space abbreviations are a bit more complicated.  Three-word sea
+    spaces, like Bay of Pelusium and the Magna Grecian Sea are abbreviated
+    by their initials, e.g., BoP and MGS.  Sea spaces beginning with Sinus
+    are abbreviated S plus the first two letters of the second word,
+    e.g., Sinus Ligusticum is abbreviated SLi.  Similarly, sea spaces
+    beginning with Mare are abbreviated M plus the first two letters of the
+    second word, e.g., Mare Adriaticum is abbreviated MAd.  Other Sea
+    Spaces are abbreviated by the first two letters of their first name and
+    S, such as Antigonid Sea (AnS) or Messenian Gulf (MeG).  In a few
+    cases, such as Maeotis Palus, the first three letters will suffice
+    (Mae).  Finally, the Syrtis Major and Syrtis Minor are abbreviated SMa
+    and SMi respectively.
+
+Please note these abbreviations:
+
+    Mare Internum          MIn
+    Minoan Sea             MiS
+    Antioch                Ant
+    Antigonid Sea          AnS
+    Sardo                                Sar
+    Sarmatia                  Srm
+    Syrtis Major           SMa
+    Syrtis Minor           SMi
+    Barcid Sea                   BaS
+    Baleares                     Bal
+    The Fetters                  Fet
+    The Mamertines         Mam
+
+
+----------------------------------------------------------------------
+Historical background:
+
+Typically, the history of the ancient Mediterranean is written in two
+halves, a Greek and Roman split, with events in Greece taking center-stage
+until the death of Alexander the Great in 323 B.C.  Then the focus shifts
+west.  First we head backwards in time to the early days of Rome.  The
+narrative pushes forward to the last decades of the 4th century B.C. again,
+to the point of Alexander's death, when the Romans take on the Samnites for
+control of the Italian peninsula south of the Po.
+
+Soon after the Roman victory over Samnium, Carthage looms as a rival to
+Rome and the next hundred years or so are spent on the three Punic Wars,
+with passing discussion of things Greek.   Mention is made here and there
+of the "Diadochi" (Successor) Kingdoms formed by Alexander's generals in
+Macedon, Egypt and Syria, for example when Macedon allies with Carthage
+during the second Punic War, or when Egypt chooses neutrality throughout.
+But for the most part, general histories act as if the Greek world stood
+still and waited for Rome to come calling, whereupon these corrupt kingdoms
+succumbed, one by one, to the virile power of the Roman Republic.  Or so
+some of the more pro-Roman historians would have us believe.  Conveniently,
+at about the time of the shift to Imperial rule, Rome has managed to
+conquer the Hellenistic east and the history of these eastern kingdoms is
+taken up again, now as part of Imperial Rome.
+
+But in 323 B.C.,  when Alexander died in Babylon, he was preparing (among
+many things) to sail west and conquer Sicily.  His death, and the
+subsequent wars dividing Alexander's legacy left the Sicilian Greeks
+independent until Rome and Carthage contested control, starting in 264
+B.C.. But in 273 B.C, nine years before the First Punic War broke out, Rome
+and Egypt formed an alliance of friendship, partially out of fear of a
+Carthaginian-Syrian pact.  In theory, Carthage and Rome were allied as well
+against the threat from Syracuse and Epirus.  And thus the 3 way eastern
+struggle and the one-on-one between Carthage and Rome can be seen as a five
+
+ way struggle for power in a single Classical Mediterranean world, breaking
+away from the traditional approach to classical history, and considering
+whether more aggressive intervention from the East might have thwarted Rome
+before the defeat of Carthage.
+
+Case in point: in 282, Rome went to war with Taras (Tarentum in Latin,
+modern day Taranto), a Greek city-state in the "in step" of the Italian
+boot.  The Romans had entered the "Sinus Tarentinus" in violation of a
+treaty with Taras, and in response, Taras declared war and asked King
+Pyrrhus of Epirus, a relative of Alexander the Great (on his mother's
+side), to serve as general.  Pyrrhus (aided by various Greek leaders)
+invaded Italy with a professional army using Macedonian phalanx tactics.
+With a much smaller army, Pyrrhus managed to defeat the Romans at Heraclea.
+Had Pyrrhus had more strength to follow up on this and the subsequent
+victory at Ausculum, perhaps Rome would have become part of the periphery
+of states around the Hellenistic kingdoms, rather than the eventual master.
+Instead, with his eponymous pyrrhic victory, Pyrrhus was worn down and
+eventually left Greek Italy to its Roman fate.
+
+Classical Diplomacy is set in 273 B.C, 50 years after the death of
+Alexander the Great.  This is just after the Romans have secured control of
+all of Italy south of the Po, and in the very year in which Rome and Egypt
+signed their first pact of friendship.   Carthage, which rules the major
+western Mediterranean islands, southern Spain and northern Africa, is still
+nominally Rome's ally, having joined to fight the common enemy of Pyrrhus.
+Carthage and Greece share a long history of trade relations.
+
+After 50 years of struggle, the successor states to Alexander have hammered
+out a compromise of coexistence: Macedon is to be ruled by the family of
+Demetrius Poliorcetes (City-Conqueror), son of Antigonus Monopthalmus
+(One-Eyed), one of Alexander's generals.  Egypt remains in the hands of the
+House of Ptolemy (another of Alexander's generals), and the vast lands
+formerly ruled by the Persians from Asia Minor to the Indus Valley, fall to
+The House of Seleucus, yet another Alexandrine general (Seleucus was
+Alexander's cavalry commander).
+
+The city-states of Greece and western Asia Minor, who chafed under
+Macedonian rule, have broken free into autonomous leagues.  The Greek
+colonies in Sicily and at the far reaches of the Black Sea and Western
+Mediterranean remain free.  But they are kept safe only by the mutual
+jealousy of their larger neighbors, none of whom wish to yield to another
+in fear of being out-positioned.
+
+Five well-balanced powers face each other across the Mediterranean.  Can
+you manipulate your allies and crush your foes to control the known world?
+--------
+
+
+ The Classical Mediterranean Diplomacy variant follows the most of
+the rules as standard Diplomacy with a modified map.  The game was designed
+to allow a balanced, yet asymmetric five-player variant for the same level
+of intrigue and interaction as standard Diplomacy when 7 players aren't
+available.
+
+The variant was designed by Vincent Mous and Andy Schwarz.  Playtesters and
+kibitzers included Benjamin Winkler, Charlie Eldred, Toby Tyrrell, Eric
+Coffey, Nate Kaiser, Jon Fetter, Manus Hand, Nate Johnson, David Schmid,
+Wes Makin, Eric Person, James Mixon, Brian Burkhart, Paul Ang, and John
+Quarto von Tivador.  Many more people helped bring this game to reality,
+and special thanks should be given to Kevin Roust and David Norman for
+their tireless efforts.
+
+----------------------------------------------------------------------
+Diplomacy is copyright Avalon Hill, Baltimore, Maryland, 1976.
+
+The Classical Mediterranean map and variant is copyright Andy Schwarz and
+Vince Mous, 1996, 1997.
+

@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# This shell script is run from mail.c when the MAP command is received.
+# It accepts a parameter of "n" if the resulting map is not supposed to be
+# Unix-compressed and UUencoded. It's not efficient, but it works!!
+#
+# Remember to put a configured copy of the "dipmap" script into the
+# same directory as the judge executable and this script. This script
+# will execute the "dipmap" script.
+#
+# It creates/uses the following files :
+#          map.list    =   Temp file that contains the output of a 
+#				LIST command (file must/should exist)
+#          map.tmp     =   Output (stderr) put of dipmap command
+#				(contains any error messages)
+#	   map.out.Z   =   Temp file output of compressing
+#	   map.out     =   Map output of dipmap command
+#				If this file exists when the script
+#				returns, it is mailed to sender.
+#
+#  If have chosen not to delete the temp files so that some form of
+#  debugging can be done. This can be safely done, though (except map.out)
+#
+rm -f map.tmp
+mapname=`grep Game map.list | \
+  awk '{ printf("%s-%s", substr($2,2,length($2) - 2), substr($5,2,length($5) - 2)) }'`.Z
+dipmap $2 $3 $4 <map.list 2> map.tmp
+t=`grep "no reports found" map.tmp`
+if [ "$t" != "" ] 
+then rm -f map.out
+else 
+  if [ "$1" != "n" ]
+  then
+    rm -f map.out.Z
+    compress map.out
+    rm -f map.out
+    uuencode $mapname <map.out.Z >map.out
+    rm -f map.out.Z
+  fi
+fi
+rm -f dip.xfail
+

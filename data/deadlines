@@ -1,0 +1,159 @@
+Greetings from the Diplomacy* Adjudicator!!                   August 31, 1990.
+Deadlines.
+
+Unless otherwise specified, orders will be processed on the following
+schedule:
+
+Moves   clock 1410 min 12.00 next 72.00 grace 168.00 delay 0.50 days --TWTF-
+Retreat clock   -1 min  0.00 next 24.00 grace  72.00 delay 0.50 days --TWTF-
+Adjust  clock   -1 min  0.00 next 24.00 grace  72.00 delay 0.50 days --TWTF-
+
+The parameters are as follows:
+
+clock:  If non-negative, indicates the minutes past midnight to which the
+        initial deadline will be set.  1410 is eleven thirty pm.
+
+min:    Indicates the minimum number of hours that can elapse between the
+        previous phase and the new phase.  Thus, in the above example,
+        there will be at least 12 hours after a build or retreat phase
+        before the movement orders will be processed.  This parameter has
+        no real use other than to prevent a runaway situation if all of
+        the powers in a game were to go CD.
+
+next:   Indicates the number of hours after the previous phase is 
+        processed that the new deadline will be set.  This may be
+        increased to fit into the values of the 'clock' and/or 'days'
+        parameters.  In the default case, movement orders are three days
+        after the previous phase.  However, because of the setting of
+        days, if this falls on a weekend it will slide to Tuesday.
+
+grace:  Indicates the number of hours the deadline will be extended if
+        not everyone has gotten their orders in yet.  In the default
+        case, a grace period of one week after the initial deadline is
+        allowed.  When the deadline comes up, a reminder message will
+        be sent to everyone who hasn't gotten their orders in and a
+        notice will be sent to the other players and observers in the
+        game indicating who is late.  The reminder will then be sent
+        to the late parties every day.  If orders have still not been
+        received within 24 hours of the grace period, a notice will
+        be sent to all players and observers in that game indicating
+        that the late power has been abandoned.  Abandoned powers may
+        be taken over by anyone not already playing a power in the
+        game merely by signing on with any password.  If orders
+        are still not received before the grace period expires,
+        that power will be marked "Civil Disorder" and the phase
+        will be processed with incomplete orders.  On subsequent
+        phases powers marked CD will not be considered when deciding
+        whether the deadline should slide.  When a valid signon is
+        received, the CD and/or abandonded status will be cleared.
+
+delay:  Indicates the number of hours after the last required orders
+        have been received before the orders will be processed.  The
+        default for this is set such that if all powers get their
+        orders in before the deadline, the orders will be processed one
+        half hour later.  This gives people a little time to change
+        their mind after orders are submitted.
+
+days:   Specifies which days of the week are valid for the setting of
+        the initial deadline.  This has no effect on the sliding of the
+        deadline as specified by grace or delay.  An uppercase letter
+        indicates that that day of the week is okay.  If the letter is
+        lowercase, then the deadline is delayed until after noon.  A
+        dash indicates that the deadline cannot fall on that day of the
+        week.
+
+These parameters can be changed with the set command.  In moderated games
+only the master or moderator can use these commands.  For example:
+
+        SET MOVES NEXT 48.0 DELAY 1.0
+        SET BUILDS DELAY 1.0
+
+In addition, the following commands can be used to affect the current
+phase only:
+
+   SET DEADLINE date   Affects the sending of the reminder.
+   SET GRACE    date   Affects the limit on determining who goes CD.
+   SET START    date   Affects the earliest orders will be processed.
+   SET WAIT            Per user, specifies that orders should not be
+   SET NOWAIT          or should be processed before the DEADLINE.
+
+The dates in the above commands can be any combination of the three
+letter abbreviation for the month, a day of the month, or hour-colon-
+minute.  Any SET command except for SET PASSWORD, SET WAIT and SET
+NOWAIT will generate a message that will be sent to all people
+involved in the game indicating that you've been mucking around
+with the game parameters.  Everyone active in the game should agree
+before deadlines are adjusted.  Note, all times are based on the time
+zone of the adjudicator.
+
+Orders can be sent in anytime before the deadline.  If multiple
+movement orders are received for the same unit, the most recent one
+received will override the earlier one.  Attempting to build or debuild
+too many units during the adjustments phase will cause the earliest
+received build/debuild requests to be ignored.  Thus you can send in
+preliminary movement orders immediately and then send in revised orders
+after you change your mind from diplomatic talks.  Beware, though, that
+if everyone gets their orders in before the deadline, the orders may be
+processed before you have a chance to get your revised orders in.  If
+you toss a "set wait" command into your orders, you can avoid having
+your orders processed before the deadline.  When you've decided that
+your orders are final, you can send in a message with a 'set nowait'
+command to allow the orders to be processed as soon as the delay period
+expires and everyone else has their orders in.  If the reply mail to
+any order indicates that there was an error or you have a unit that you
+did not supply an order for or you didn't explicitly specify all your
+builds, debuilds or retreats, the flag indicating that your orders have
+been received will not be set.  Note that all builds must be specified
+or explicitly "waived" before the adjudicator will consider your build
+orders complete unless it is impossible to build all units (eg: five
+supply centers taken in a single year or no vacant home centers).  An
+error free set of orders will be required to set the "has submitted
+orders" status.  If no error free orders have been received by the time
+the grace period expires, the partial orders will be processed and the
+CD status will be set for your power.  See the discussion on grace
+periods above for more info on what happens when you miss a deadline
+and taking over abandoned powers.
+
+The commands:
+
+   SET NONMR
+   SET NMR
+
+can be used to set and clear a flag that forces the adjudicator to wait
+until someone takes over an abandoned power before orders will be
+processed.  This prevents a "No Moves Received" status for a power in
+CD so that the game doesn't get lopsided when one power takes over a
+defenseless neighbor.  The adjudicator will send out a reminder every
+48 hours that it is waiting for someone to take over the abandoned
+power(s) while the NONMR flag is set.
+
+There are penalties for missing deadlines.  The judge attempts to keep
+track of how dedicated you are to the game on the following schedule:
+
+    +3 points for getting your orders in on time.
+    -1 point  for each "deadline missed" reminder the judge sends you.
+   -50 points for becoming abandoned.
+  -100 points for missing the grace period and going CD.
+
+There is no penalty for resigning before a deadline or if you submit
+complete orders BEFORE you resign.  However, you will continue to
+receive the -1 point penalty every day that your power remains
+abandoned after the deadline.  If your power goes CD after you've
+resigned without anyone else taking the power over, you will receive
+the CD penalty as well (this is to discourage you from resigning when
+you're down to a few units which could be used to affect the final
+outcome of the game, but you've just lost interest).  Your rating on
+this scale is displayed by the 'list' command.  Certain games can be
+designated "only for dedicated players" with the command:
+
+  set dedication -10
+
+to prevent anyone with a dedication of less than negative 10 from signing
+on.  Of course, if a game had a dedication setting greater than zero, you
+would have to "prove yourself" in prior games before you could sign on or
+take over an abandoned power in that game.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

@@ -1,0 +1,12 @@
+This release has preliminary support for three new hundred variants.  But
+the seed and report files aren't there, nor have the old hundred variants
+been taken out of the code.  I advise against trying to run any type of
+hundred variant unless you want to help debug it.
+
+po_get.c needs the function get_amount() looked at by someone who can fix
+machiavelli code.  there is an type overflow condition there, among other
+things.
+
+the flock/lockf stuff still screws up a sun.  the whole thing should be
+changed to use posix fcntl stuff.
+

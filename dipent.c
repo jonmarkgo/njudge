@@ -1,0 +1,547 @@
+
+/*
+ * $Log$
+ * Revision 1.2  1997/02/16 20:43:18  davidn
+ * Additions to dipent structure and associated code, to allow duplex variants.
+ * Command is "set players n".
+ *
+ * Revision 1.1  1996/10/20 12:29:45  rpaar
+ * Morrolan v9.0
+ */
+
+/*
+ * dipent.c *  Copyright 1987, Lowe. * *  Diplomacy is a trademark of the
+ * Avalon Hill Game Company, Baltimore, *  Maryland, all rights reserved;
+ * used with permission. * *  Redistribution and use in source and binary
+ * forms are permitted *  provided that it is for non-profit purposes,
+ * that this and the  *  above notices are preserved and that due credit
+ * is given to Mr. *  Lowe. * *  DATE        NAME         REASON *
+ * ----------- ------------ ----------------------------------------- *
+ * ?? ??? 1987 Ken Lowe     He wrote it *  29 Dec 1996 David Norman
+ * Addition of dipent.no_of_players *  29 Dec 1996 David Norman Protection 
+ * against killing dip.master added 
+ */
+
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
+
+#include "dip.h"
+#include "defaults.h"
+#include "functions.h"
+
+extern int Dflg;
+
+char *ctime();
+char *lookfor();
+
+void putseq(FILE * fp, char *s, sequence * seq);
+void gettime(char *line, long *time);
+void getplay(char *line, Player * p);
+void putplay(FILE * fp, Player * p, int dopw);
+
+/************************************************************************/
+
+int getdipent(FILE * fp)
+{
+
+/*
+ *  Read the next game entry from the master file.
+ */
+
+	int i, j, tempvp, tempplayers;
+	long now;
+	char line[1000], *s, *malloc();
+
+	memset(&dipent, 0, sizeof(dipent));
+	if (!fgets(line, sizeof(line), fp))
+		return 0;
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d", dipent.name, dipent.seq, dipent.phase,
+		   &dipent.access, &dipent.variant,
+		   &dipent.level, &dipent.dedicate,
+		   &dipent.flags, &tempvp, &tempplayers);
+
+	if (i == 7) {
+		dipent.flags = F_NONMR;
+		i = 8;
+	}
+	if (i == 8) {
+		tempvp = 0;
+		i = 9;
+	}
+	if (i == 9) {
+		tempplayers = 0;
+		i = 10;
+	}
+	if (i != 10) {
+		fprintf(stderr, "Bad header in master file.\n%s\n", line);
+		bailout(E_FATAL);
+	}
+	SETNP(dipent.variant);
+
+	if (tempvp != 0)
+		dipent.vp = tempvp;
+
+	if (tempplayers != 0) {
+		dipent.no_of_players = tempplayers;
+	} else {
+		dipent.no_of_players = dipent.np;
+	}
+
+	while (fgets(line, sizeof(line), fp) && *line != '-') {
+		switch (*line) {
+
+		case 'A':
+		case 'B':
+			memset(&dipent.builds, 0, sizeof(sequence));
+			if (getseq(stderr, line, &dipent.builds))
+				bailout(E_FATAL);
+			break;
+
+		case 'C':
+			line[strlen(line) - 1] = '\0';
+			for (s = line; !isspace(*s); s++);
+			while (isspace(*s))
+				s++;
+			strncpy(dipent.comment, s, sizeof(dipent.comment) - 1);
+			break;
+
+		case 'D':
+			gettime(line, &dipent.deadline);
+			break;
+
+		case 'E':
+			line[strlen(line) - 1] = '\0';
+			for (s = line; !isspace(*s); s++);
+			while (isspace(*s))
+				s++;
+			strncpy(dipent.epnum, s, sizeof(dipent.epnum) - 1);
+			break;
+
+		case 'G':
+			gettime(line, &dipent.grace);
+			break;
+
+		case 'M':
+			memset(&dipent.movement, 0, sizeof(sequence));
+			if (getseq(stderr, line, &dipent.movement))
+				bailout(E_FATAL);
+			break;
+
+		case 'N':
+			line[strlen(line) - 1] = '\0';
+			for (s = line; !isspace(*s); s++);
+			while (isspace(*s))
+				s++;
+			strncpy(dipent.bn_mnnum, s, sizeof(dipent.bn_mnnum) - 1);
+			break;
+
+		case 'P':
+			gettime(line, &dipent.process);
+			break;
+
+		case 'R':
+			memset(&dipent.retreat, 0, sizeof(sequence));
+			if (getseq(stderr, line, &dipent.retreat))
+				bailout(E_FATAL);
+			break;
+
+		case 'S':
+			gettime(line, &dipent.start);
+			break;
+
+		case '_':
+			if (dipent.n > 0) {
+				line[strlen(line) - 1] = '\0';
+				for (s = line; !isspace(*s); s++);
+				while (isspace(*s))
+					s++;
+				strcpy(dipent.players[dipent.n - 1].pref, s);
+			}
+			break;
+
+		default:
+			if (dipent.n >= MAXPLAYERS) {
+				fprintf(stderr, "Too many players for game '%s'.\n", dipent.name);
+				bailout(E_FATAL);
+			}
+			*dipent.players[dipent.n].pref = '\0';
+			getplay(line, &dipent.players[dipent.n++]);
+		}
+	}
+	if (Dflg > 1)
+		fprintf(log_fp, "Getdipent returns: '%s'.\n", dipent.name);
+
+	if (!strcmp(dipent.name, "control")) {
+		time(&now);
+		if (dipent.process && (dipent.start > now || now > dipent.process)) {
+			fprintf(stderr, "Current date %24.24s should be between...\n", ctime(&now));
+			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
+			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
+			fprintf(stderr, "Time warp indicated.  GM notified.\n");
+			sprintf(line, "./smail /dev/null 'Diplomacy time warp' '%s'", GAMES_MASTER);
+			execute(line);
+			bailout(E_FATAL);
+		}
+		dipent.start = now - 1;
+		dipent.process = now + 168 * HRS2SECS;
+		for (j = i = 0; i < dipent.n; i++)
+			j += strlen(dipent.players[i].address) + 2;
+		if ((s = notifies = malloc(j + 1))) {
+			for (i = 0; i < dipent.n; i++) {
+				if (dipent.players[i].power == MASTER)
+					*s++ = '+';
+				strcpy(s, dipent.players[i].address);
+				s += strlen(s) + 1;
+			}
+			*s = '\0';
+		} else {
+			notifies = "*";
+		}
+	}
+	return 1;
+}
+
+/***********************************************************************/
+
+void putdipent(FILE * fp, int dopw)
+{
+
+/*
+ * Write the current entry out to the master file. 
+ */
+
+	int i;
+	char line[1000];
+
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d\n", dipent.name, dipent.seq,
+		dipent.phase, dipent.access, dipent.variant,
+		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
+		dipent.no_of_players);
+	if (dipent.process)
+		fprintf(fp, "Process   %24.24s (%ld)\n",
+			ctime(&dipent.process), dipent.process);
+	if (dipent.deadline)
+		fprintf(fp, "Deadline  %24.24s (%ld)\n",
+			ctime(&dipent.deadline), dipent.deadline);
+	if (dipent.start)
+		fprintf(fp, "Start     %24.24s (%ld)\n",
+			ctime(&dipent.start), dipent.start);
+	if (dipent.grace)
+		fprintf(fp, "Grace     %24.24s (%ld)\n",
+			ctime(&dipent.grace), dipent.grace);
+	if (*dipent.comment)
+		fprintf(fp, "Comment   %s\n", dipent.comment);
+	if (*dipent.epnum)
+		fprintf(fp, "EP_number %s\n", dipent.epnum);
+	if (*dipent.bn_mnnum)
+		fprintf(fp, "Number_BM %s\n", dipent.bn_mnnum);
+
+	putseq(fp, "Moves  ", &dipent.movement);
+	putseq(fp, "Retreat", &dipent.retreat);
+	putseq(fp, "Adjust ", &dipent.builds);
+
+	for (i = 0; i < dipent.n; i++) {
+		putplay(fp, &dipent.players[i], dopw);
+	}
+	if (fprintf(fp, "-\n") == 0) {
+		fprintf(stderr, "Error writing to dip.master. Disk error suspected. Bailing out\n");
+		sprintf(line, "./smail /dev/null 'File error writing dip.master' '%s'", GAMES_MASTER);
+		execute(line);
+		bailout(E_FATAL);
+	}
+}
+
+/***********************************************************************/
+
+void newdipent(char *name, int variant)
+{
+
+/*
+ * Build a new diplomacy master file entry. 
+ */
+
+	char dir[50];
+
+	/* TODO allow an arbitrary prefix.  E.g. "games/" */
+	sprintf(dir, "D%s", name);
+	mkdir(dir, 0777);
+	strncpy(dipent.name, name, sizeof(dipent.name));
+	strcpy(dipent.seq, "x0");
+	strcpy(dipent.phase, sphase[variant]);
+	dipent.access = D_ACCESS;
+	dipent.level = D_LEVEL;
+	dipent.flags = D_FLAGS;
+	dipent.dedicate = D_DEDICATE;
+	dipent.variant = variant;
+	SETNP(variant);
+	dipent.process = 0;
+	dipent.deadline = 0;
+	dipent.start = 0;
+	dipent.grace = 0;
+	dipent.movement.clock = D_MOVE_CLOCK;
+	dipent.movement.mint = D_MOVE_MINT;
+	dipent.movement.next = D_MOVE_NEXT;
+	dipent.movement.grace = D_MOVE_GRACE;
+	dipent.movement.delay = D_MOVE_DELAY;
+	strcpy(dipent.movement.days, D_MOVE_DAYS);
+	dipent.retreat.clock = D_RETREAT_CLOCK;
+	dipent.retreat.mint = D_RETREAT_MINT;
+	dipent.retreat.next = D_RETREAT_NEXT;
+	dipent.retreat.grace = D_RETREAT_GRACE;
+	dipent.retreat.delay = D_RETREAT_DELAY;
+	strcpy(dipent.retreat.days, D_RETREAT_DAYS);
+	dipent.builds.clock = D_BUILDS_CLOCK;
+	dipent.builds.mint = D_BUILDS_MINT;
+	dipent.builds.next = D_BUILDS_NEXT;
+	dipent.builds.grace = D_BUILDS_GRACE;
+	dipent.builds.delay = D_BUILDS_DELAY;
+	strcpy(dipent.builds.days, D_BUILDS_DAYS);
+	dipent.n = 0;
+	dipent.no_of_players = dipent.np;
+}
+
+/***********************************************************************/
+
+void testdipent(int seq, int variant)
+{
+
+/*
+ * Initialize the dipent structure for the test case. 
+ */
+
+	int i;
+	long now;
+
+	time(&now);
+
+	newdipent("test", variant);
+	sprintf(dipent.seq, "%03d", seq);
+	strcpy(dipent.phase, "?1901?");
+
+	dipent.process = now - 1;
+	dipent.deadline = now - 1;
+	dipent.start = now - 1;
+	dipent.grace = now - 1;
+	dipent.n = WILD_PLAYER;
+	for (i = 0; i < dipent.n; i++) {
+		dipent.players[i].power = i;
+		dipent.players[i].status = 0;
+		dipent.players[i].siteid = 0;
+		dipent.players[i].userid = 0;
+		strcpy(dipent.players[i].password, "spud");
+		strcpy(dipent.players[i].address, "*");
+	}
+	dipent.players[0].power = power('o');
+	strcpy(dipent.players[0].password, "spud");
+	strcpy(dipent.players[0].address, GAMES_MASTER);
+}
+
+/***********************************************************************/
+
+int getseq(FILE * fp, char *line, sequence * seq)
+{
+
+	static char *keys[] =
+	{"", "clock", "c", "min", "m", "next", "n",
+	 "grace", "g", "delay", "de", "days", "day", "da"};
+	static char action[] =
+	{'x', 'c', 'c', 'm', 'm', 'n', 'n',
+	 'g', 'g', 'd', 'd', 'D', 'D', 'D'};
+	int i;
+	char *p, *s, *t, word[30];
+	float f;
+
+	for (s = line; !isspace(*s); s++);
+	while (isspace(*s))
+		s++;
+
+	while (*s) {
+		s = lookfor(s, keys, nentry(keys), &i);
+		switch (action[i]) {
+		case 'c':
+			if (sscanf(s, "%d", &i) != 1 || i > 1440) {
+				fprintf(fp, "%sBad clock specification.\n", line);
+				return 1;
+			}
+			seq->clock = i;
+			break;
+
+		case 'm':
+			if (sscanf(s, "%f", &f) != 1 || f < 0) {
+				fprintf(fp, "%sBad minimum time specification.\n", line);
+				return 1;
+			}
+			seq->mint = f;
+			break;
+
+		case 'n':
+			if (sscanf(s, "%f", &f) != 1 || f < 0) {
+				fprintf(fp, "%sBad next time specification.\n", line);
+				return 1;
+			}
+			seq->next = f;
+			break;
+
+		case 'g':
+			if (sscanf(s, "%f", &f) != 1 || f < 0) {
+				fprintf(fp, "%sBad grace time specification.\n", line);
+				return 1;
+			}
+			seq->grace = f;
+			break;
+
+		case 'd':
+			if (sscanf(s, "%f", &f) != 1 || f < 0) {
+				fprintf(fp, "%sBad delay time specification.\n", line);
+				return 1;
+			}
+			seq->delay = f;
+			break;
+
+		case 'D':
+			if (sscanf(s, "%10s", word) != 1) {
+				fprintf(fp, "%s,Bad list of days specification.\n", line);
+				return 1;
+			}
+			for (p = word, t = "SMTWTFS"; *t; t++, p++) {
+				if (*p != *t && *p != tolower(*t) && *p != '-') {
+					fprintf(fp, "%sBad list of days specified.\n", line);
+					return 1;
+				}
+			}
+			*p = '\0';
+			strcpy(seq->days, word);
+			if (!strcmp(seq->days, "-------")) {
+				fprintf(fp, "%sAt least one day of the week must be allowed.\n", line);
+				return 1;
+			}
+			break;
+
+		default:
+			sscanf(s, "%s", word);
+			fprintf(fp, "Invalid keyword %s.\n", word);
+			return 1;
+			break;
+		}
+
+		while (*s && !isspace(*s))
+			s++;
+		while (isspace(*s))
+			s++;
+	}
+	return 0;
+}
+
+/***********************************************************************/
+
+void putseq(FILE * fp, char *s, sequence * seq)
+{
+	if (*seq->days)
+		fprintf(fp,
+			"%-9.9s clock %4d min %5.2f next %6.2f grace %6.2f delay %.2f days %s\n",
+			s, seq->clock, seq->mint, seq->next, seq->grace, seq->delay, seq->days);
+}
+
+/***********************************************************************/
+
+void gettime(char *line, long *time)
+{
+
+	char *s, *t;
+
+	for (s = line; !isspace(*s); s++);
+	while (isspace(*s))
+		s++;
+
+	for (t = s; *t && *t != '('; t++);
+	if (*t == '(' && (*time = atol(t + 1)))
+		return;
+
+	if (jm(s, time)) {
+		fprintf(stderr, "Error processing '%s' %s", dipent.name, line);
+		bailout(E_FATAL);
+	}
+}
+
+/***********************************************************************/
+
+void getplay(char *line, Player * p)
+{
+
+	int i;
+	char c;
+
+	*p->pref = '\0';
+	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s", &c, &p->status,
+		   &p->units, &p->centers, &p->userid, &p->siteid,
+		   p->password, p->address);
+	if (i != 8) {
+		fprintf(stderr, "Bad player entry for '%s'.  Only found %d items.\n%s\n",
+			dipent.name, i, line);
+		bailout(E_FATAL);
+	}
+	/*
+	 * The following 2 lines are to intended to cover the removal of the
+	 * alternate from the judge code.  This code will automatically
+	 * replace alternates that might still be in the dip.master file and
+	 * make them observers. 
+	 */
+	if (c == '%')
+		c = 'o';
+	if (!(p->power = power(c))) {
+		fprintf(stderr, "Invalid power character: %s\n", line);
+		bailout(E_FATAL);
+	}
+}
+
+void putplay(FILE * fp, Player * p, int dopw)
+{
+
+	char c;
+
+	if (p->power >= 0) {
+		if (isupper(c = dipent.pl[p->power]))
+			c = tolower(c);
+		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s\n",
+			c, powers[p->power] + 1,
+		   p->status, p->units, p->centers, p->userid, p->siteid,
+			dopw ? p->password : "xxx", p->address);
+		if (*(p->pref))
+			fprintf(fp, "_pref: %s\n", p->pref);
+	}
+}
+
+int countgames(void)
+{
+	FILE *mf;
+	char line[1024];
+	int gamecount = 0;
+	int len;
+
+	if (!(mf = fopen(MASTER_FILE, "r"))) {
+		perror(MASTER_FILE);
+	}
+	do {
+		fgets(line, sizeof(line), mf);
+		if (feof(mf))
+			break;
+		/* TODO check for an error */
+		len = strlen(line);
+		if (len && line[len - 1] == '\n') {
+			line[len - 1] = '\0';
+		}
+		if (!strcmp("-", line)) {
+			gamecount++;
+		}
+	} while (!feof(mf));
+
+	fclose(mf);
+
+	/* the control game will be counted by above */
+	return gamecount - 1;
+}

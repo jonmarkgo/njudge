@@ -1,0 +1,37 @@
+One thing that is not described anywhere in the readme files is the
+dip.ignore file.  All bounced mail gets written to this file.  There
+is a program called "ign" that will attempt to process it.  Many times
+people have return addresses that look like "user@host" without a valid
+domain name.  The ign program has a ".ignrc" file that can contain a
+list of aliases:
+
+     alias user@host  user@host.valid.domain.com
+
+The method I use to process the ignored mail is:
+
+     judge> cd dipsrc
+     judge> mv ../dip/dip.ignore ignore
+     judge> ign
+
+Ign looks for a file called "ignore" in the current directory.  It
+lists out the messages pending with an ordinal, its size and the
+address where it thinks it should be sent.  If you've got a bogus
+address you'll probably want to add an alias to the .ignrc file
+and restart ign.  If you type in a number, it will write all the
+messages for that number's address to a file and then attempt to
+mail the combined file.  You can also prefix the number with an "e"
+to invoke vi on the file prior to mailing or an "x" to discard the 
+messages to that address.  When you "q" all the rest of the messages
+will be written to ignore.new in the current directory.  You can
+then:
+
+    judge> vi .ignrc	(to add new aliases)
+    judge> mv ignore.new ignore
+    judge> ign
+
+and carry on.  If you get any addresses that are listed as "UNKNOWN"
+you have to go into the ignore file by hand and figure out what it is.
+Usually they're messages that some system administrator sent from his
+"root" account.  The judge refuses to process mail that comes from root
+(or Postmaster or uucp or ...) as it would likely cause infinite mail
+loops.  Bounced mail is one of the biggest headaches with the judge.

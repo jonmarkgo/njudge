@@ -1,0 +1,702 @@
+/*
+ * $Log$
+ * Revision 1.2  1997/03/12 21:33:31  davidn
+ * Fix to allow w and x to be handled correctly as power letters in
+ * variants, without clshing with neutral scs and water provinces.
+ *
+ * Revision 1.1  1996/10/20 12:29:45  rpaar
+ * Morrolan v9.0
+ */
+
+/*  init.c
+ *  Copyright 1987, Lowe.
+ *
+ *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+ *  Maryland, all rights reserved; used with permission.
+ *
+ *  Redistribution and use in source and binary forms are permitted
+ *  provided that it is for non-profit purposes, that this and the 
+ *  above notices are preserved and that due credit is given to Mr.
+ *  Lowe.
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "dip.h"
+#include "porder.h"
+#include "mach.h"
+#include "functions.h"
+
+static int variant = 0;		/* The currently loaded variant */
+
+int po_init(void)
+{
+
+/*
+ *  Initialize, read the data structures off the input files.
+ */
+
+	int i, n;
+
+	err = 0;
+
+	for (i = 1; i < WILD_PLAYER; i++)
+		need_order[i] = 0;
+
+	memset(ducats, 0, sizeof(ducats));
+
+	if (hpx != 0 && variant == dipent.variant) {
+		hp = hpx;
+		for (i = 0; i <= npr; i++) {
+			n = islower(pr[i].type) ? 0 : power(pr[i].type);
+			pr[i].owner = n;
+			pr[i].cown = n;
+			pr[i].home = n;
+			pr[i].unit = 0;
+			pr[i].gunit = 0;
+			pr[i].flags &= PF_CONSTANT;
+		}
+	} else {
+
+		variant = dipent.variant;
+		if (hp)
+			free(heap);
+
+		sprintf(line, "map.%d", variant);
+		if ((ifp = fopen(line, "r")) == NULL) {
+			fprintf(rfp, "Error opening map data file %s.\n", line);
+			return E_FATAL;
+		}
+		if (fread(&npr, sizeof(npr), 1, ifp) != 1 ||
+		    fread(&hp, sizeof(hp), 1, ifp) != 1 ||
+		    fread(&nv, sizeof(nv), 1, ifp) != 1) {
+			fprintf(rfp, "Error reading map file npr/hp/nv, %s.\n", line);
+			return E_FATAL;
+		}
+		maxheap = hp + 2048;
+		if (!(heap = (unsigned char *) malloc(maxheap + 10))) {
+			fprintf(rfp, "Unable to allocate heap.\n");
+			return E_FATAL;
+		}
+		for (i = 1; i <= npr; i++) {
+			if (fread(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp) != CMAP_SIZE) {
+				fprintf(rfp, "cmap read error prov = %d, %s.\n", i, line);
+				return E_FATAL;
+			}
+			pr[i].name = (char *) &heap[cmap[CMAP_NAME]];
+			pr[i].move = (unsigned char *) &heap[cmap[CMAP_MOVE]];
+			pr[i].type = cmap[CMAP_TYPE];
+			pr[i].flags = cmap[CMAP_FLAG];
+			n = pr[i].type == 'l' ? 0 : power(pr[i].type);
+			pr[i].owner = n;
+			pr[i].cown = n;
+			pr[i].home = n;
+			pr[i].unit = 0;
+			pr[i].gunit = 0;
+		}
+
+		if ((i = fread(heap, sizeof(unsigned char), hp, ifp)) != hp) {
+			fprintf(rfp, "cmap heap read error, %d of %d, %s.\n", i, hp, line);
+			return E_FATAL;
+		}
+		if (nv > MAXVINC) {
+			fprintf(rfp, "Maximum variable income exceeded.\n");
+			return E_FATAL;
+		}
+		if (nv > 0) {
+			if ((i = fread(vincome, sizeof(vincome[0]), nv, ifp)) != nv) {
+				fprintf(rfp, "cmap income read error, %d of %d, %s.\n", i, nv, line);
+				return E_FATAL;
+			}
+			if ((i = fread(ftab, sizeof(ftab), 1, ifp)) != 1) {
+				fprintf(rfp, "cmap ftab read error, %d. %s\n", i, line);
+				return E_FATAL;
+			}
+			if ((i = fread(ptab, sizeof(ptab), 1, ifp)) != 1) {
+				fprintf(rfp, "cmap ptab read error, %d. %s\n", i, line);
+				return E_FATAL;
+			}
+		}
+		fclose(ifp);
+
+		/*
+		 * Check movement table for consistancy.
+		 */
+
+		po_chkmov();
+		hpx = hp;
+	}
+
+	return err;
+}
+
+
+/****************************************************************************/
+
+void po_chkmov(void)
+{
+
+/* Check movement table for consistancy */
+
+	int from, to, i, j;
+	unsigned char *s, *t;
+
+
+	for (from = 1; from <= npr; from++) {
+		if (!(s = pr[from].move)) {
+			fprintf(rfp, "No movement table for %s.\n", pr[from].name);
+			continue;
+		}
+		while ((to = *s++)) {
+			if (!(t = pr[to].move)) {
+				fprintf(rfp, "No movement table for %s.\n", pr[to].name);
+				continue;
+			}
+			i = *s++ & 0x0f;
+			while ((j = *t++) && ((j != from) || (i != MX && i != *t >> 4)))
+				t++;
+			if (!j) {
+				/* TODO of course this may be deliberate... */
+				fprintf(rfp, "Can't get back to %s from %s (%s).\n",
+					pr[from].name,
+					pr[to].name, mtype[i]);
+				err++;
+			}
+		}
+	}
+}
+
+int gamein(void)
+{
+
+	int i = 0, j, p1, c1;
+	int index, counter;
+	char c, phase[15], *s, *t;
+	char buffer[1024];
+
+	/* Read in current position */
+
+	sprintf(line, "D%s/G%s", dipent.name, dipent.seq);
+	if ((ifp = fopen(line, "r")) == NULL) {
+		fprintf(rfp, "Error opening game position data file %s.\n", line);
+		return E_FATAL;
+	}
+	fgets(line, sizeof(line), ifp);
+	line[strlen(line) - 1] = '\0';
+	line[sizeof(phase) - 1] = '\0';
+	strcpy(phase, line);
+	if ((phase[0] != 'S' && phase[0] != 'F' && phase[0] != 'U') ||
+	    !isdigit(phase[1]) || !isdigit(phase[2]) ||
+	    !isdigit(phase[3]) || !isdigit(phase[4]) ||
+	    !isalpha(phase[5])) {
+		fprintf(rfp, "Invalid phase %s in game file.\n", phase);
+		return E_FATAL;
+	}
+	if (strncmp(phase, dipent.phase, 6)) {
+		if (strcmp(dipent.phase, "?1901?")) {
+			fprintf(rfp, "Phase %s for '%s' does not match master file.\n",
+				dipent.phase, dipent.name);
+			err++;
+		}
+		fprintf(rfp, "Assuming game phase of %s in file %s.\n", phase, line);
+		strcpy(dipent.phase, phase);
+	}
+	/*
+	 *  Read unit positions "E: xF London".
+	 */
+
+	nunit = 0;
+	memset(unit, 0, sizeof(unit));
+	while (fgets(line, sizeof(line), ifp) && *line != '-') {
+		if (nunit == MAXUNIT - 1) {
+			fprintf(rfp, "Maximum number of units (%d) exceeded.\n", nunit);
+			err++;
+			break;
+		}
+		if (!(unit[++nunit].owner = power(*line))) {
+			fprintf(rfp, "Invalid unit owner %c for unit %d.\n", *line, nunit);
+			err++;
+		}
+		unit[nunit].status = line[1];
+		s = &line[3];
+		unit[nunit].stype = islower(*s) ? *s++ : 'x';
+		c = unit[nunit].type = *s++;
+		if (c == 'A')
+			unit[nunit].coast = MV;
+		else if (c == 'G')
+			unit[nunit].coast = MV;
+		else if (c == 'F')
+			unit[nunit].coast = XC;
+		else {
+			fprintf(rfp, "Invalid type %c for unit %d.\n", c, nunit);
+			err++;
+		}
+
+		s = get_prov(s, &p1, &c1);
+		if (!(unit[nunit].loc = p1)) {
+			fprintf(rfp, "Unknown province %s for unit %d.\n", s, nunit);
+			err++;
+		}
+		if (c1)
+			unit[nunit].coast = c1;
+
+		/*
+		 *  If retreating build list of retreat provinces in convoy chain.
+		 */
+
+		unit[nunit].convoy = NULL;
+		if (unit[nunit].status == 'r') {
+			counter = 0;
+			unit[nunit].convoy = &heap[hp];
+			while (p1 && *s++ == ',') {
+				s = get_prov(s, &p1, &c1);
+				if (p1)
+					heap[hp++] = p1;
+
+				/* save the coasts */
+				buffer[counter++] = c1 ? c1 : 0;
+			}
+			heap[hp++] = 0;
+
+			/* put the coasts on the heap */
+			unit[nunit].rcoast = &heap[hp];
+			for (index = 0; index < counter; index++)
+				heap[hp++] = buffer[index];
+			heap[hp++] = 0;
+		}
+		/*
+		 *  Otherwise link the province back to the unit.
+		 */
+
+		else if (unit[nunit].type == 'G') {
+			if (pr[p1].gunit) {
+				fprintf(rfp, "More than one garrison in %s.\n", pr[p1].name);
+				err++;
+			} else {
+				pr[unit[nunit].loc].gunit = nunit;
+			}
+		} else if (pr[p1].unit) {
+			fprintf(rfp, "More than one unit in province %s.\n", pr[p1].name);
+			err++;
+		} else {
+			pr[unit[nunit].loc].unit = nunit;
+		}
+
+	}
+
+	/*
+	 *  Read in ownership of supply centers, one character per province.
+	 */
+
+	if (dipent.flags & F_MACH) {
+		memset(allies, 0, sizeof(allies));
+		for (i = 0; i < WILD_PLAYER; i++) {
+			allies[i][i] = 1;
+		}
+		memset(npown, 0, sizeof(npown));
+		memset(ncown, 0, sizeof(ncown));
+	}
+	fgets(line, sizeof(line), ifp);
+	if (*line != '-') {
+		if (line[1] == ':') {
+			j = 1;
+			while (fgets(line, sizeof(line), ifp) && line[1] == ':') {
+				switch (*line) {
+
+					/*
+					 *  a: Alliance record: X ppppp  (Retreat phase only)
+					 */
+
+				case 'a':
+					t = line + 2;
+					while (isspace(*t))
+						t++;
+					if (!(i = power(*t))) {
+						fprintf(rfp, "Unknown power %c on '%s' alliance: %s",
+						  *t, dipent.name, line);
+						fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
+						  *t, dipent.name, line);
+						err++;
+					} else {
+						while (*t && !isspace(*t))
+							t++;
+						while (isspace(*t))
+							t++;
+						while (*t && !isspace(*t)) {
+							if (!(j = power(*t))) {
+								fprintf(rfp, "Unknown power %c on '%s' alliance: %s",
+									*t, dipent.name, line);
+								fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
+									*t, dipent.name, line);
+								err++;
+							} else {
+								allies[i][j] = 1;
+							}
+							t++;
+						}
+					}
+					break;
+
+					/*
+					 *  A: Assassination chit ownership: X ppppp
+					 */
+
+				case 'A':
+					t = line + 2;
+					while (isspace(*t))
+						t++;
+					if (!(i = power(*t))) {
+						fprintf(rfp, "Unknown power %c on '%s' assassinate: %s",
+						  *t, dipent.name, line);
+						fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
+						  *t, dipent.name, line);
+						err++;
+					} else {
+						while (*t && !isspace(*t))
+							t++;
+						while (isspace(*t))
+							t++;
+						for (j = 0; j < MAX_CHIT && *t && !isspace(*t); t++, j++) {
+							if (!(chits[i][j] = power(*t))) {
+								fprintf(rfp, "Unknown power %c on '%s' assassinate: %s",
+									*t, dipent.name, line);
+								fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
+									*t, dipent.name, line);
+								err++;
+							}
+						}
+						if (j == MAX_CHIT) {
+							fprintf(rfp, "Too many %d assassinates (%s): %s", j, dipent.name, line);
+							fprintf(log_fp, "Too many %d assassinates (%s): %s", j, dipent.name,
+								line);
+							err++;
+						}
+					}
+					break;
+
+					/*
+					 *  C: City ownership
+					 */
+
+				case 'C':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						pr[i].cown = power(*t);
+					break;
+
+					/*
+					 *  c: New city ownership
+					 */
+
+				case 'c':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						ncown[i] = power(*t);
+					break;
+
+					/*
+					 *  D: Ducat treasury and loan information.
+					 */
+
+				case 'D':
+					t = line + 2;
+					while (isspace(*t))
+						t++;
+					if (!(i = power(*t))) {
+						fprintf(rfp, "Unknown power on '%s' ducats line: %s",
+						      dipent.name, line);
+						fprintf(log_fp, "Unknown power on '%s' ducats line: %s",
+						      dipent.name, line);
+						err++;
+					} else {
+						while (*t && !isspace(*t))
+							t++;
+						sscanf(t, "%hd%hd%hd%hd%hd%hd%hd%hd%hd%hd%hd%hd%hd",
+						     &ducats[i].treasury,
+						       &ducats[i].loan[0], &ducats[i].interest[0],
+						       &ducats[i].loan[1], &ducats[i].interest[1],
+						       &ducats[i].loan[2], &ducats[i].interest[2],
+						       &ducats[i].loan[3], &ducats[i].interest[3],
+						       &ducats[i].loan[4], &ducats[i].interest[4],
+						       &ducats[i].loan[5], &ducats[i].interest[5]);
+					}
+					break;
+
+					/*
+					 *  F: Province flags
+					 */
+
+				case 'F':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						pr[i].flags |= (*t - '0') << 8;
+					break;
+
+					/*
+					 *  H: Province home ownership
+					 */
+
+				case 'H':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						pr[i].home = power(*t);
+					break;
+
+					/*
+					 *  N: Comment, province name.  Note: OCHF must follow N.
+					 */
+
+				case 'N':
+					j = i;
+					break;
+
+					/*
+					 *  n: Comment, province name second and third characters.
+					 */
+
+				case 'n':
+					break;
+
+					/*
+					 *  O: Province ownership.
+					 */
+
+				case 'O':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						pr[i].owner = power(*t);
+					break;
+
+					/*
+					 *  o: New province ownership
+					 */
+
+				case 'o':
+					for (i = j, t = line + 2; *t && !isspace(*t); i++, t++)
+						npown[i] = power(*t);
+					break;
+
+				default:
+					fprintf(rfp, "Unknown owner code for '%s'.\n%s", dipent.name, line);
+					fprintf(log_fp, "Unknown owner code for '%s'.\n%s", dipent.name, line);
+					err++;
+					break;
+				}
+			}
+
+		} else {	/* Old pre-Machiavelli format */
+
+			for (t = line, i = 0; *t && !isspace(*t); t++) {
+				if (i > NPROV) {
+					fprintf(rfp, "Maximum provinces exceeded reading ownership line.\n");
+					err++;
+					break;
+				}
+				pr[++i].owner = power(*t);
+			}
+		}
+
+		/*
+		 *  Skip over player list.
+		 */
+
+		while ((t = fgets(line, sizeof(line), ifp)))
+			if (*line == '-')
+				break;
+
+		if (!t) {
+			fprintf(rfp, "Missing '-1' after ownership record.\n");
+			err++;
+		}
+	}
+	fclose(ifp);
+
+	return err;
+}
+
+int gameout(void)
+{
+
+	/*  Write the next version of the game data file  */
+
+	unsigned char *b, *rc;
+	int i, j, n, p, u;
+	int nu[AUTONOMOUS + 1], np[AUTONOMOUS + 1];
+	char ns[80], n1[80], n2[80], os[80], o1[80], cs[80], c1[80],
+	 hs[80], fs[80];
+
+	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
+	sprintf(line, "D%s/G%s", dipent.name, dipent.seq);
+
+	if ((ifp = fopen(line, "w")) == NULL) {
+		fprintf(rfp, "Error opening game position output data file %s.\n", line);
+		fprintf(log_fp, "Error opening game position output data file %s.\n", line);
+		perror(line);
+		return E_FATAL;
+	}
+	fprintf(ifp, "%s\n", dipent.phase);
+	fprintf(log_fp, "Writing %s for %s.\n", line, dipent.phase);
+
+
+	/*
+	 *  Write out the location of each unit.
+	 */
+
+	for (p = 1; p <= AUTONOMOUS; p++) {
+		nu[p] = np[p] = 0;
+		for (u = 1; u <= nunit; u++) {
+			if (unit[u].owner == p) {
+				nu[p]++;
+				if (unit[u].stype == 'x') {
+					fprintf(ifp, "%c%c %c %s", dipent.pl[p],
+						unit[u].status,
+						unit[u].type,
+						pr[unit[u].loc].name);
+				} else {
+					fprintf(ifp, "%c%c %c%c %s", dipent.pl[p],
+						unit[u].status,
+						unit[u].stype,
+						unit[u].type,
+						pr[unit[u].loc].name);
+				}
+
+				if (unit[u].coast > XC)
+					fprintf(ifp, "/%s", mtype[unit[u].coast]);
+
+				if (unit[u].status == 'r') {
+					for (b = unit[u].convoy, rc = unit[u].rcoast; *b; b++, rc++) {
+						fprintf(ifp, ", %s", pr[*b].name);
+						if (*rc > XC) {
+							switch (*rc) {
+							case NC:
+								fprintf(ifp, "/nc");
+								break;
+							case SC:
+								fprintf(ifp, "/sc");
+								break;
+							case WC:
+								fprintf(ifp, "/wc");
+								break;
+							case EC:
+								fprintf(ifp, "/ec");
+								break;
+							}
+						}
+					}
+				}
+				putc('\n', ifp);
+			}
+		}
+	}
+	fprintf(ifp, "-1\n");
+
+	/*
+	 *  Write out the ownership of each province.
+	 */
+
+	for (n = 0, p = 1; p <= npr; p++) {
+		np[pr[p].owner]++;
+		ns[n] = pr[p].name[0];
+		n1[n] = pr[p].name[1];
+		n2[n] = pr[p].name[2];
+		os[n] = dipent.pl[pr[p].owner];
+		o1[n] = dipent.pl[npown[p]];
+		cs[n] = dipent.pl[pr[p].cown];
+		c1[n] = dipent.pl[ncown[p]];
+		hs[n] = dipent.pl[pr[p].home];
+		fs[n] = ((pr[p].flags & 0x3F00) >> 8) + '0';
+		if (n++ == 78 - 2 || p == npr) {
+			ns[n] = n1[n] = n2[n] = os[n] = o1[n] =
+			    cs[n] = c1[n] = hs[n] = fs[n] = '\0';
+			fprintf(ifp, "N:%s\nn:%s\nn:%s\nO:%s\n", ns, n1, n2, os);
+			if (dipent.flags & F_MACH) {
+				fprintf(ifp, "C:%s\nH:%s\nF:%s\n", cs, hs, fs);
+				if (dipent.phase[5] == 'R') {
+					fprintf(ifp, "o:%s\nc:%s\n", o1, c1);
+				}
+			}
+			n = 0;
+		}
+	}
+
+	if (dipent.flags & F_MACH) {
+		for (i = 1; i < WILD_PLAYER; i++) {
+			if (dipent.pl[i] != 'x') {
+				fprintf(ifp, "D: %c %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
+					dipent.pl[i], ducats[i].treasury,
+				ducats[i].loan[0], ducats[i].interest[0],
+				ducats[i].loan[1], ducats[i].interest[1],
+				ducats[i].loan[2], ducats[i].interest[2],
+				ducats[i].loan[3], ducats[i].interest[3],
+				ducats[i].loan[4], ducats[i].interest[4],
+				ducats[i].loan[5], ducats[i].interest[5]);
+				if (chits[i][0]) {
+					fprintf(ifp, "A: %c ", dipent.pl[i]);
+					for (j = 0; chits[i][j]; j++) {
+						if (chits[i][j] == WILD_PLAYER)
+							continue;
+						fputc(dipent.pl[chits[i][j]], ifp);
+					}
+					fputc('\n', ifp);
+				}
+				if (dipent.phase[5] == 'R') {
+					int n = 0;
+					for (j = 1; j < WILD_PLAYER; j++) {
+						if (i != j && allies[i][j]) {
+							if (!n++)
+								fprintf(ifp, "a: %c ", dipent.pl[i]);
+							fputc(dipent.pl[j], ifp);
+						}
+					}
+					if (n)
+						fputc('\n', ifp);
+				}
+			}
+		}
+	}
+	/*
+	 *  Indicate who needs to get their orders in next phase.
+	 */
+
+	for (u = i = 0; u < dipent.n; u++) {
+		if (dipent.players[u].power < 0)
+			continue;
+
+		dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT);
+		if ((p = dipent.players[u].power) <= NPOWER) {
+			dipent.players[u].units = nu[p];
+			dipent.players[u].centers = (dipent.flags & F_MACH) ? ducats[p].treasury
+			    : np[p];
+			if (need_order[p])
+				dipent.players[u].status |= SF_MOVE;
+		} else {
+			dipent.players[u].units = 0;
+			dipent.players[u].centers = 0;
+		}
+		if ((0 < p && p <= NPOWER)
+		|| (p == MASTER && (dipent.flags & F_MODERATE) && !i++)) {
+			fprintf(ifp, "%-9.9s %4x %2d %2d %3d %5d %4d %s\n", powers[p],
+			dipent.players[u].status, dipent.players[u].units,
+				dipent.players[u].centers, dipent.players[u].userid,
+				dipent.players[u].siteid, ded[dipent.players[u].userid].r,
+				dipent.players[u].address);
+		}
+	}
+	fprintf(ifp, "-2\n");
+
+	/*
+	 *  Dump out some more info for enhanced summary reports.
+	 */
+
+	putdipent(ifp, 0);
+
+	fclose(ifp);
+
+	/*
+	 *  Remove the summary files which may be out of date now.
+	 */
+
+	/* TODO allow for placement into a games subdir */
+	sprintf(line, "D%s/summary", dipent.name);
+	remove(line);
+	sprintf(line, "D%s/msummary", dipent.name);
+	remove(line);
+	return 0;
+}

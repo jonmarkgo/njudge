@@ -1,0 +1,634 @@
+Greetings from the Diplomacy* Adjudicator!!             December 11, 1991.
+Rules.machiavelli*
+
+
+Machiavelli is a board game by Avalon Hill which is quite similar to
+Diplomacy, but quite a bit more complicated.  The game is now out of
+production so unless you've already got one it is not likely that you'll
+find a copy of it.  This description of the game should be enough to
+teach you the rules if you're familiar with the rules to Diplomacy.  You
+will need a map, a PostScript version of which is available via the
+adjudicator with the "get machiavelli.ps" command.  The time frame of
+Machiavelli is Renaissance Italy from 1385 to 1529.
+
+The movement rules for true Machiavelli differ from Diplomacy in a number
+of places.  The major difference is in support.  Rather than supporting
+a particular unit to a province, you support a particular power's action
+in a province.  The rules are very vague about conflicts such as what
+happens when a power orders two of his units to move to the same province.
+This adjudicator ignores the Machiavelli movement rules and uses the
+standard Diplomacy movement rules instead.  Units are specified by their
+type and source province as in Diplomacy rather than their unit number.
+Convoys and supports specify the source and destination of the unit you
+are convoying rather than just the destination province.  If there are 
+Machiavelli purests out there who want to play with the Machiavelli 
+movement rules (and if you can describe them unambiguously) let me know 
+and I'll think about implementing them.
+
+Unless explicitly contradicted herein, the rules to standard Diplomacy
+apply to Machiavelli.  One contradiction is that fleets may convoy armies
+even if they are in coastal provinces.
+
+A year in Machiavelli is comprised of three 'campaigns' which are
+equivalent to the two seasons, Spring and Fall, of Diplomacy.  They are
+Spring, Summer and Fall.  This adjudicator processes movement and
+retreat phases for each of these seasons and an adjustment phase at
+the end of the Fall season.  Machiavelli lists the adjustment phase
+at the beginning of Spring, but it's six of one or a half dozen of the
+other.  Things mesh better with the common representation.
+
+Rather than getting one unit per supply center owned, in Machiavelli
+units are paid for out of the treasury.  Only those units that the player
+chooses to maintain survive through the adjustments phase.
+
+Machiavelli introduces a new unit type called a "garrison" which occupies
+"fortified cities" or "fortresses".  The fortified cities are filled in
+squares on the map, fortresses are open squares and their use is optional.
+Two units may be in the same province if one is garrisoned in the city
+and another is outside the city.  A city can be garrisoned by ordering an
+army or a fleet in a province containing an unoccupied city to "convert"
+during a movement phase.  The garrison thus created can only hold, support
+actions into its corresponding province, or convert back to a fleet or
+army.  An army could convert into a garrison in the spring and that
+garrison could then convert into a fleet in the subsequent summer.  It
+could not, however, convert directly into a fleet in one season.  An army
+or fleet that is forced to retreat from a province with an unoccupied
+fortified city or fortress can convert to a garrison if and only if it
+has no other place to which to retreat.  Of course it could not retreat
+by converting into a garrison if the unit that displaced it was a garrison
+converting into its location since you cannot retreat to the location your
+attacker came from).
+
+To displace a garrison it must be besieged.  To besiege a garrison, an
+army or fleet in the containing province must issue the besiege order for
+two consecutive campaigns.  After successfully issuing the first besiege
+order, the besieging unit must either issue a second besiege order or a
+"lift siege" order on the subsequent movement phase.  It cannot choose to
+move or support another action.  A besieged garrison (one whose city's
+siege started during the previous campaign) cannot convert, although it
+can support another unit moving into its province to displace the besieging
+unit.  When the siege is complete, the garrisoned unit is eliminated.  If
+the garrison is eliminated before the siege is completed (eg: the siege
+starts in the Fall and the owning power decides not to maintain the
+garrison on the subsequent adjustment phase) the sieging unit is free to
+issue other orders in what would be the second campaign of the siege.
+
+Fleets can only convert to garrisons or besiege fortified cities or
+fortresses that are also ports.  The port cities are signified by an anchor
+symbol on the map.
+
+In the pure Machiavelli rules as written, an army or fleet converting into
+a garrison will bounce another unit attempting to move into its province
+and then convert.  Also, a garrison converting to an army or fleet into
+an unoccupied province will convert first and then the movement rules
+would be applied.  These rules complicate things.  Using them, if you
+had an army and a garrison in Genoa, you would have to move the army out
+of Genoa on one turn and wait until the next movement phase before you
+could convert the garrison.  This adjudicator treats the city as if it
+was a separate space on the map.  Converting units are treated the same
+as a unit moving into or out of the province.  Thus, if a garrison in
+Genoa attempts to convert into an army at the same time as an army moves
+from Monferrat to Genoa (and neither one has support), they will both
+bounce and stay where they were.
+
+At the start of some scenarios fortresses and/or garrisons contain
+"autonomous garrisons" which are ones that are not owned by any player.
+They act as obstacles and must be besieged or bribed to be removed.
+
+Special mapboard features and rules:
+
+1) Piombino: This province includes the offshore island of Elba.  A 
+   fleet in this province controls the straits between the mainland
+   and the island.  An army unit in this province does not control
+   the straits.  The straits are not a separate sea, but are part
+   of the Eastern Tyrrhenian Sea.  If they are not controlled by
+   a Fleet unit in Piombino, a hostile Fleet could move directly
+   from Pisa to the Eastern Tyrrhenian Sea or vice versa, or
+   transport an army from one to the other.
+
+2) Sicily: A fleet in Messina similarly controls the straits between
+   Messina and Otranto.  As long as there is a fleet in Messina, no
+   hostile fleet could move directly from the Gulf of Naples to the
+   Ionian Sea or vice versa.  
+
+   If a fleet successfully advances into Piombino or Messina in the same
+   turn as a hostile fleet attempts to use the straits, the movement
+   through the straits is blocked.  As long as a fleet unit is in the
+   controlling province, no other player's units may use the straits
+   without the controlling player's permission.  If a player wishes to
+   allow another player to use the straits, he must include an "alliance
+   power" command with his movement orders.
+
+3) Croatia and Provence: These provinces have a north and south coast
+   which are treated just like the dual coast provinces in other variants
+   of Diplomacy.
+
+4) Venice Lagoon: Although small, the lagoon surrounding Venice is treated
+   like an ordinary sea space.
+
+5) Venice: Only one unit may be in Venice at a time.  Thus if there is
+   a garrison there, there cannot also be a fleet or army and vice versa.  
+   Because of this, it is impossible to besiege a garrison in Venice.
+
+6) All land spaces can be abbreviated uniquely to their first 5 letters.
+   Where there are no conflicts, they can also be abbreviated to their
+   first 3 letters.  For conflicting names, the longer of the names can
+   usually be abbreviated to the 3 letters and the shorter to some other
+   3 letter combination.  Sea spaces can be abbreviated to the first letter 
+   of each word in their name.  There are additional abbreviations which
+   can be determined by examining the "map.machiavelli" file.
+
+
+The sequence of play for Adjustment phases:
+
+1) Famine phase (optional).  A certain number of provinces may be struck
+   by famine.  First a 2d6 die roll determines the type of year:
+
+     2,3  No disaster
+     4,6  Good year, row only
+     5,7  Good year, column only
+    8-12  Bad year, row and column
+
+   Then the list of provinces hit by famine is selected with one or two 
+   2d6 die rolls on the "Famine Table":  
+
+         2     3     4     5     6     7     8     9    10    11    12
+    2: ----- ----- Prove Patri Moden ----- Corsi Ancon ----- ----- -----
+    3: ----- Piomb ----- ----- ----- ----- ----- Tunis ----- ----- Paler
+    4: Tivol ----- Otran Padua Swiss Cremo Pontr ----- Herze ----- -----
+    5: Friul ----- Bolog Saler Veron Austr Milan Sienn ----- ----- Duraz
+    6: Marse Ragus Vicen Carin Berga Pisto Spole ----- Pianc Hunga -----
+    7: ----- Bari  Slavo Montf Urbin Forno ----- Como  Trent ----- -----
+    8: Ferra ----- Rome  Pavia ----- ----- Arezz Bresc Saluz Alban Genoa
+    9: ----- ----- Croat ----- Flore Turin Mantu Capua Trevi ----- -----
+   10: Savoy ----- Sardi ----- Parma Bosni Tyrol ----- Naple Romag Dalma
+   11: ----- ----- Venic ----- ----- ----- ----- Carni ----- Messi -----
+   12: ----- ----- ----- Pisa  Aquil Avign Lucca ----- Istri ----- -----
+
+   The effect of famine is:
+
+   a) Any unit in a famined province at the end of the spring movement
+      is eliminated.  This includes garrison units.
+   b) New units may not be built in famined provinces.
+   c) Famine has no effect on control.
+   d) A famined province without a garrisoned city will not produce income.
+      A garrisoned city will produce income, but the province will not.
+
+2) Income phase.  Each player receives income in the form of "ducats".  
+   The income comes from four sources:
+
+   a) 1 ducat for each sea space that contains one of your fleets.
+   b) 1 ducat for each controlled province.
+   c) 1 ducat for each normal city controlled.  For major cities
+      that contain a number, that is the number of ducats received.
+   d) Variable income based on the home country and a 1d6 die roll.
+      If one player gains control of another player's home country,
+      the variable income of that home country is also gained.
+
+   The last player to have a unit in a province is the one who controls
+   it.  Regardless of the season.  Thus if a unit starts out in Genoa in
+   the spring and moves to Fornova and then to Parma in the summer and to
+   Mantua in the fall, at the beginning of the following adjustment phase
+   that player would count the income for all four provinces if no one
+   else moved into them.  If a province has an ungarrisoned city, the
+   last player in the province gains control of the city.  If one player
+   has a unit in a province and another has a garrison in the city, the
+   province income will go to the one player while the city income goes
+   to the other.  If the unit in the province leaves or is eliminated
+   while the garrison remains, control of the province will revert to the
+   player with the garrison.  This applies to autonomous garrisons as
+   well.  A besieged city produces no income.
+
+   To gain control of another player's home country, you must control all 
+   of his original provinces and cities.  A player who controls no cities
+   in his home country (or countries if he has taken over another's home
+   country) at the end of a campaign is eliminated from the game and all 
+   of his military units are immediately removed from the mapboard.
+
+   The variable income in ducats for the major powers is:
+
+         Power    1  2  3  4  5  6  die roll
+        -------  ------------------
+        Austria:  1  2  3  3  4  4
+        Florence: 1  2  3  3  4  5
+        France:   1  2  3  4  5  6
+        Genoa:    1  2  2  3  3  4   (some scenarios only)
+        Milan:    2  3  3  4  4  5
+        Naples:   1  2  2  3  3  4
+        Papacy:   2  3  3  4  5  6
+        Turkey:   1  2  3  4  5  6
+        Venice:   2  3  3  4  4  5
+   
+
+3) Military unit payment.  The adjudicator waits for adjustment orders at
+   this point.  Each player must choose which units he wishes to maintain
+   or build.  Three (3) ducats must be paid for each unit that is to
+   remain on the map at the end of this phase.  
+
+   a) New units may be placed only in controlled provinces that contain
+      a city and are located in the player's home countries.  They may be
+      placed either in the province or within a fortified city.
+   b) Only one unit may be placed in a particular province.  If another
+      unit is in a city one may be placed in the province or vice versa,
+      but a unit cannot be placed both in the city and another in the 
+      province during the same adjustment phase.
+   c) Old units may not be traded for new ones in the same province.
+      However, a player could remove a unit from one province or city 
+      (ie: not pay for it), and then place another unit in another 
+      province or city.
+   d) It is possible that a player will not be able to place all the
+      new units desired.  The maximum number of units that any player
+      can have on the map are: 12 armies, 8 fleets and 6 garrisons.
+   e) Once units are paid for, they are paid for the entire year.  No
+      further ducats need be paid for the units for the rest of the
+      year, but also, no "refunds" of ducats can be made for units that
+      may be eliminated or disbanded during the year.
+
+   Each existing unit must be explicitly "maintain"ed or "disband"ed
+   before the adjudicator will consider your orders complete.  If you
+   submit a "maintain" order and change your mind, a subsequent "disband"
+   order can be submitted anytime before the phase is processed.  If you
+   change your mind about a previously submitted "build" order, it can
+   be rescinded with a subsequent "disband" order or an order to build
+   a different type of unit in the same province or within the city.
+
+
+Movement phases:
+
+1) Plague phase (optional).  This is only done during the summer campaign.  
+   Plague is determined in an identical fashion as the famine.  The effect
+   of plague is that all units in the plagued provinces are eliminated.  A
+   separate plague table is used to select the set of provinces hit:
+
+         2     3     4     5     6     7     8     9    10    11    12
+    2: Vicen Swiss ----- ----- Carni ----- ----- ----- ----- Montf Capua
+    3: Pontr Bosni Slavo ----- ----- ----- Croat ----- Tivol Bari  Tyrol
+    4: Savoy ----- ----- Fruil ----- Rome  ----- Marse Pavia ----- -----
+    5: ----- Saler Veron ----- Dalma Lucca Bolog Carin Prove ----- -----
+    6: ----- ----- Turin Sienn Messi Padua Austr Ferra ----- ----- -----
+    7: Paler ----- Genoa Alban Pisa  Tunis Avign Milan ----- ----- Sardi
+    8: Duraz ----- Naple Moden Perug Cermo Venic Flore ----- ----- -----
+    9: ----- Berga Ancon Parma ----- ----- ----- ----- Mantu Istri -----
+   10: Romag Hunga ----- Urbin ----- ----- ----- ----- Trevi ----- Como
+   11: Pianc Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
+   12: Trent Herze ----- Bresc ----- ----- ----- Corsi ----- Patri Saluz
+
+2) The adjudicator waits for expenditure and movement orders.
+
+3) Borrowing phase.  The first option during the expenditures phase is 
+   the borrowing of ducats.  Players may borrow up to 25 ducats from
+   "the bank".  The loan can either be for 1 year at 20% interest or
+   for 2 years at 50% interest.  At the *end* of the borrowing
+   phase of the indicated season of the indicated year, the full amount
+   including interest must be paid.  Another loan can be taken out to
+   pay off the first loan as long as the outstanding principle at any
+   time is not greater than 25 ducats.  Loans can be paid back early
+   during any borrowing phase, interest first.  For example, you can
+   take out a loan of 15 ducats in Summer of 1492 for two years.  By
+   Summer of 1494 you must pay 23 ducats (interest is always rounded
+   up), but if you only had 13 ducats in your treasury at the beginning
+   of the Summer 1494 borrowing phase you could take out another loan
+   of 10 ducats during that phase so that you had sufficient funds to
+   pay off the loan.  
+
+   Careful planning must be executed to ensure that you don't default on 
+   the loan.  If you are unable to pay off a loan, you suffer the same
+   effects as assassination below and you will not be allowed to borrow
+   from the bank for the rest of the game.  In addition to borrowing
+   ducats from the bank, players may loan ducats to other players.
+   Loaning ducats to another player can be done during any borrowing
+   phase and happens before the bank collects any outstanding loans
+   due during that phase.  The receiving player (and any third party)
+   will not know whether he really received the loan until the phase is
+   actually processed.  Whether or not the player pays back these
+   nonbinding loans is up to the individual player.  A player who is in
+   debt to the bank cannot loan money to another player before paying
+   off that loan.  Thus you cannot, as your last dying gasp, borrow 25
+   ducats and give them to your ally.
+
+   The judge processes the pay/borrow commands in the following sequence:
+
+     a) "Pay to bank" commands.
+     b) "Pay to other player" commands (must be no outstanding loans).
+     c) "Borrow" commands.  Total principle cannot exceed 25d.
+     d) Bank collects any due loans.
+
+   Example: If you have 20d and a 25+13=38d loan due, you *cannot* borrow
+   18d to pay off that loan because you would be over your credit limit
+   temporarily, eventhough you would immediately drop back down below it.
+   In this case you would need to get other players to help you out.  You
+   could pay the 20d toward the loan, changing it to 18+0d, and borrow 7d
+   more, so you would need 11d from other players to avoid the penalty
+   Paying to the bank comes first so you couldn't use the money received
+   from other players to lower your loan in order to increase the amount
+   you could borrow.  However, if they gave you the money on the previous
+   season it would only have to be 6d.  With 26d and a 25+13=38d loan, you
+   can pay it off to 12+0d, allowing you to borrow up to 13d to pay off the 
+   remaining 12d due.
+
+4) Expenditures phase.  Each player can make up to four expenditures 
+   during each campaign.  The ducats for the expenditure are subtracted
+   from the player's treasury.  If the expenditure is invalid the cost
+   of the expenditure is nevertheless subtracted from the treasury.
+   Expenditures will be executed in their numerical order.  If the
+   treasury is insufficient to support all the expenditures (eg: an
+   expected loan from another player didn't come through) the remaining
+   treasury will be used anyway.
+
+   a) Famine relief.  3 ducats.  This order is given to end the effects of 
+      famine in a province.  The name of the province is noted.
+
+   b) Pacify Rebellion.  12 ducats.  This order is given to end the effects 
+      of a rebellion in a province.
+
+   c) Counter-bribe.  3n ducats.  Used to nullify a suspected bribe attempt.
+      Bribes are items 'd' through 'i' below.  The unit must be specified.  
+      Any multiple of 3 ducats can be spent.
+
+      1) If a unit has a bribe and a counter-bribe the number of the
+         counter-bribe ducats is subtracted from the bribe ducats.  If
+         the remaining number of bribe ducats are too few to carry out
+         the ordered bribe, it fails.
+      2) Counter-bribes are only effective against bribes (d-i below),
+         they cannot be used to against rebellions or assassination
+         attempts.
+      3) Counter-bribes can be ordered for another player's units or
+         autonomous garrisons as well as for your own units.
+      4) If several bribes are directed at the same unit during the same
+         campaign, only the largest one is considered.  All smaller ones
+         are ignored and wasted.  If there is a tie for the largest bribe,
+         all bribes to that unit fail and are wasted.
+      5) Bribes can be larger than the minimum costs listed in multiples
+         of three ducats.  Larger bribes are common to offset suspected
+         counter-bribes.  The minimum cost for all bribes for garrisons
+         in major cities (those with a number imprinted) are doubled.
+      6) A player who orders a bribe to buy another unit may also submit
+         orders for that unit in the same campaign.
+      7) The size of the bribe must be large enough to carry out the
+         specified bribe order.  Even if the amount of the bribe is large
+         enough to carry out another, cheaper, bribe, if there are not
+         enough ducats for the ordered bribe, it fails.
+
+   d) Disband autonomous garrison.  6+3n ducats.  If successful the specified
+      autonomous garrison is removed from play.
+
+   e) Buy autonomous garrison.  9+3n ducats.  If successful the specified
+      autonomous garrison will become one of your own units.
+
+   f) Committed garrison to autonomous.  9+3n ducats.  If successful the
+      specified garrison owned by another player will become autonomous.
+      The term "committed" refers to a unit owned by another player as
+      opposed to "autonomous" which is an unowned unit.
+
+   g) Disband committed garrison.  12+3n ducats.  If successful the
+      specified garrison is removed from play.
+
+   h) Disband army or fleet.  12+3n ducats.  If successful the specified
+      unit is removed from play.
+
+   i) Buy army or fleet.  18+3n ducats.  If successful the specified unit
+      becomes one of your own.  An army remains an army and a fleet will
+      remain a fleet.
+
+   j) Conquered province to rebel.  9 ducats.  This order is given to start
+      a rebellion in an enemy-controlled province that is not part of his
+      home country.  
+
+   k) Home province to rebel.  15 ducats.  This order is given to start
+      a rebellion in an enemy-controlled province that is part of his home
+      country.
+
+      Notes on rebellions:
+
+      1) If the province contains a fortified city or a fortress when 
+         fortresses are in play, the rebellion affects the city.  If there
+         is a garrison, the rebellion only affects the province, even if 
+         the garrison leaves or is eliminated.
+
+      2) Rebellions are directed at a particular power.  They will remain
+         in the province and/or city until they are pacified, put down or
+         liberated.
+
+      3) Income cannot be collected from a province and/or city that is
+         in rebellion, although income can be collected for a city within
+         a rebelling province if the city is not in rebellion itself.
+
+      4) A rebellion may be pacified using the pacify rebellion expenditure.
+
+      5) A rebellion in a province may be put down by the controlling player 
+         by issuing a hold order for an army or fleet or garrison in the 
+         province.
+
+      6) To put down a rebellion in a fortified city or fortress, the
+         normal besiege sequence must be carried out.
+
+      7) A rebellion may be liberated by a unit of another player moving
+         into the province.  The rebellion is liberated immediately whether
+         or not it is in a city.  The rebellion is also liberated if another 
+         power buys a unit in the rebelling province.
+
+      8) Any player other than the one to which the rebellion is directed
+         gets an automatic support in moving into a rebelling province.
+         If two other players attempt to move into a rebelling province at
+         the same time, neither can take advantage of this support.
+
+      9) No rebellion may be placed in Venice if there is a unit there,
+         either in the city or in the province.
+
+   l) Assassination (optional).  12n ducats.  At the start of the game 
+      each player is given one 'assassination chit' for each of the other
+      players.  You must have such a chit to attempt an assassination on
+      another player.  Once an attempt is made, the corresponding chit is
+      destroyed.  Chits can be traded amongst the players.  When an
+      assassination is executed, a 1d6 die roll is made.  For every 12
+      ducats paid in the attempt, the chances of the attempt being
+      successful increase by one number.  36 is the maximum, yielding a
+      50% success rate.  More that one assassination attempt may be made
+      on the same player, but the effects are the same if one or both of
+      them succeed.
+
+      1) All the units of the victim of a successful assassination attempt
+         are paralized for the campaign.  All orders are converted to hold
+         orders although they may still be supported by other players'
+         units.  The hold orders cannot be used to put down rebellions and
+         all sieges that the player is attempting are broken.
+
+      2) Any of the victim's garrisons that are under siege are immediately
+         eliminated.
+
+      3) Some number of the victim's controlled provinces will take advantage
+         of the assassination to rebel.  Based on a 1d6 die roll: 
+
+               Type of province            die 
+            --------------------------     ---
+            A home province with a unit     1
+            Home province with no unit     1-2
+            Conquered province with unit   1-3
+            Conquered province, no unit    1-5
+   
+      4) The assassinated player is not out of the game.  He continues,
+         representing his own successor as ruler of the major power.  The
+         effects of assassination merely show the often chaotic effects
+         of a sudden shift in power at the top.
+
+The military units in the game are all assumed to be of the standard
+composition of the times; that is, they are mainly composed of mercenaries
+who fought (usually no harder than necessary) for money, and are highly
+susceptible to bribes, as their allegiance went to the highest bidder.
+Some military units of different composition did appear during this time,
+and the following three unit types represent them.  Each power may only
+have one special unit in play at any one time.  They can be armies, fleets
+or garrisons.
+
+a) Citizen's Militia:
+     1) Costs 6 ducats rather than 3.
+     2) Has a strength of 1.
+     3) Costs twice the normal amount to bribe.
+
+b) Elite Mercenaries:
+     1) Costs 6 ducats rather than 3.
+     2) Has a strength of 2.
+     3) May be bribed for the normal amount.
+
+c) Elite Professionals:
+     1) Costs 9 ducats rather than 3.
+     2) Has a strength of 2.
+     3) Costs twice the normal amount to bribe.
+
+
+The syntax for the orders are:
+
+Movement/Expenditure orders:
+ 
+<type> <s_prov> <holds>
+<type> <s-prov> <moves>   <d-prov>
+<type> <s-prov> <moves>   <c-prov> <moves> <c-prov> ... <moves> <d-prov>
+<type> <s-prov> <support> <type> <s-prov>
+<type> <s-prov> <support> <type> <s-prov> <moves> <d-prov>
+<type> <s-prov> <convoy>  <type> <s-prov> <moves> <d-prov>
+<type> <s-prov> <convert> <type>
+<type> <s-prov> <besiege>
+<type> <s-prov> <lift>
+
+<borrow>  <amount> <duration>
+<give>    <amount> to <power> | "bank"          (money)
+<give>    <power>  to <power>                   (assassination chits)
+<expense> <amount> <etype> <type> <s-prov>
+<ally>    <power>
+
+Retreat orders:
+
+<type> <s-prov> <moves>   <d-prov>
+<type> <s-prov> <disband>
+
+Adjustment orders:
+
+<build>    <stype> <s-prov>
+<remove>   <type>  <s-prov>
+<maintain> <type>  <s-prov>
+
+Where:
+
+<stype>    = Special type (eg: "militia") or <empty> followed by <type>.
+<type>     = "army", "a", "fleet", "f", "garrison", "g", or <empty>.
+<s-prov>   = Source province.
+<d-prov>   = Destination province.
+<c-prov>   = Intermediate water province in a convoy route.
+<holds>    = "h", "hold", "holds", "stand", "stands".
+<moves>    = "-", "->", "m", "move", "moves", "move to", "moves to".
+<support>  = "s", "support", "supports".
+<convoy>   = "t", "transport", "transports", "convoy", "convoys"
+<convert>  = "c", "convert", "convert to".
+<besiege>  = "b", "besiege", "siege".
+<lift>     = "l", "lift", "lift siege".
+<disband>  = "d", "disband".
+<build>    = "b", "build".
+<remove>   = "r", "remove", "d", "disband".
+<maintain> = "m", "maintain".
+
+<borrow>   = "borrow".
+<duration> = "for 1 year", "for 2 years"
+<give>     = "loan", "give", "pay"
+<amount>   = <number> "ducats", <number> "d"
+<power>    = Power name or abbreviation of 2 or more letters.
+<ally>     = "allow", "alliance", "ally with", "ally"
+<expense>  = "expense" <number 1-4> ":"
+<etype>    = "famine relief", "pacify rebellion", "counter-bribe", "disband",
+             "buy", "garrison to autonomous", "cause rebellion", "assassinate",
+             "none"
+
+
+Example movement phase orders for Florence:
+
+   Signon Lname <password>
+   Pay 14 ducats to bank                    All loans from bank must be paid...
+   Pay  6 ducats to Milan                   before giving to another power...
+   Borrow 25 ducats for 2 years             but then more could be borrowed.
+   Expense 1: 12 ducats Disband Army Bologna
+   Expense 2: 3 ducats Counter-bribe Army Arezzo
+   Expense 3: 24 ducats Assassinate Papacy
+   Army Arezzo -> Sienna; Army Florence -> Arezzo
+   Fleet Pisa Convert to Garrison
+
+If you then changed your mind and decided not to pay the 6 ducats to Milan
+or spend the money to counter-bribe Arezzo but instead use it to attempt to 
+buy the unit in Bologna anticipating a counter-bribe, you could submit a 
+revision containing:
+
+   Signon Lname <password>
+   Pay 0 ducats to Milan
+   Expense 1: 21 ducats buy Army Bologna
+   Expense 2: none
+   Army Bologna -> Ferrara
+
+
+Optional rules:
+
+The "set" command can be used by the moderater/master of a game to enable 
+or disable the following optional rules:
+
+  set [no]famine
+    To disable/enable the famine rules.
+
+  set [no]plague
+    To disable/enable the plague rules.
+
+  set [no]loans
+    To disable/enable the borrowing of ducats from the bank.  This does not
+    affect whether one player can give money to another player (or the bank).
+
+  set [no]assassinations
+    To disable/enable the use of the assassination expenditure.  The effects
+    of assassinations can still be realized by non-payment of loans if they
+    are in play even with assassinations disabled.
+
+  set [no]dice
+    To disable/enable random events.  Setting nodice automatically disables
+    the above four options.  Enabling any of the above options automatically
+    enables the dice option.  In addition to the four items above, when the
+    nodice option is selected rolls for variable income will always come up
+    as 4s on odd years and 3s on even years.
+
+  set [no]special
+    To disable/enable the special unit types.
+
+  set [no]adjacency
+    To disable/enable the restriction that bribes can only be made to
+    units to which you have an adjacent unit.  When adjacency is selected
+    you must have a unit adjacent to another unit in order to bribe or
+    counter-bribe that unit.  Note that a fleet in Sienna is considered
+    adjacent to a garrison in Florence for the purposes of bribery.  You
+    can always counter-bribe your own unit as it will suffice as its own
+    adjacent unit.
+
+The status of these options are listed in the "full" listing of the games
+under the heading "flags".  By default they are all enabled except for the
+"plague" option which is disabled (that rule's just too nasty).
+
+-----
+
+* Machiavelli is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

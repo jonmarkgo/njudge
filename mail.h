@@ -1,0 +1,110 @@
+/*
+   ** $Log$
+   ** Revision 1.2  1996/11/05 23:11:36  rpaar
+   ** USIT changes to fix minor bugs
+   **
+ */
+
+/*  mail.h -- header file for mail handling routines
+   **
+   **  Copyright 1987, Lowe.
+   **
+   **  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+   **  Maryland, all rights reserved; used with permission.
+   **
+   **  Redistribution and use in source and binary forms are permitted
+   **  provided that it is for non-profit purposes, that this and the 
+   **  above notices are preserved and that due credit is given to Mr.
+   **  Lowe.
+   **
+ */
+
+#ifndef _MAIL_H
+#define _MAIL_H
+
+#include "variant.h"		/* To pick up MAX_POWERS definition */
+
+extern int errno;
+extern int Dflg;
+extern int more_orders;
+extern int control;
+
+int signedon;			/* Nonzero if player signed on                  */
+int starting;			/* Nonzero if quorum has been reached           */
+int player;			/* Player ordinal if signon processed           */
+int generic;			/* Nonzero if new generic game needed           */
+int listflg;			/* Non zero if a list command was processed     */
+int broadcast;			/* Non zero to send a press message out         */
+int broad_part;			/* Non zero if some don't get it                */
+char broad_list[MAX_POWERS + 1];
+			/* List of power letters who get message...     */
+int broad_allbut;		/* ... or don't, as the case may be             */
+int broad_read;			/* Non zero if reading broadcast text now       */
+int broad_skip;			/* Non zero if skipping broadcast message input */
+int broad_signon;		/* Non zero if new signon needs broadcasting    */
+int broad_params;		/* Non zero if changed params need broadcasting */
+int read_phase;			/* > zero if future phase processing            */
+int moreaddr;			/* Non zero when address continued on 2nd line  */
+int create;			/* Non zero when processing create command      */
+int msg_header_done;		/* Message header has/hasn't been written out   */
+char baddr[80];			/* Optional additional broadcast recipient      */
+char raddr[80];			/* Reply mail address from mail header          */
+char *xaddr;			/* Address that gets announced to other people  */
+char *someone;			/* Generic address for gunboat games            */
+char *somepower;		/* Generic power name for gunboat games         */
+char name[20];			/* Signon name: pname, p=power, name=game       */
+
+char Mfile[20];			/* Movement orders file name                    */
+char Tfile[20];			/* Temporary movement orders file name          */
+FILE *mail_bfp;			/* Broadcast file pointer                       */
+FILE *mail_mbfp;		/* Broadcast to master file pointer             */
+FILE *mail_mfp;			/* Master file pointer                          */
+FILE *mail_nfp;			/* New master file pointer                      */
+FILE *mail_ofp;			/* Output file pointer                          */
+FILE *mail_qfp;			/* Terminate result for Custodians file pointer */
+FILE *mail_ifp;			/* Incoming message (copy thereof) file pointer */
+FILE *mail_pfp;			/* Future phase file pointer                    */
+FILE *mail_tfp;			/* Temporary file pointer                       */
+char mail_bfile[20];		/* Name of broadcast file                       */
+char mail_mbfile[20];		/* Name of master broadcast file                */
+char *mail_rfile;		/* Name of reply file                           */
+
+/*
+   **  Temporary set of defines to make it easy to split the monster mail.c
+   **  file up into smaller pieces.  Of course these temporary definitions
+   **  will undoubtably stick around for near to forever, but it's nice to
+   **  know that there were intentions to clean it up when it was first done.
+ */
+
+#define bfp		mail_bfp
+#define mbfp            mail_mbfp
+#define mfp		mail_mfp
+#define nfp		mail_nfp
+#define ofp		mail_ofp
+#define qfp		mail_qfp
+#define ifp		mail_ifp
+#define pfp		mail_pfp
+#define tfp		mail_tfp
+#define bfile		mail_bfile
+#define mbfile          mail_mbfile
+#define rfile		mail_rfile
+
+char *lookfor();
+
+#define pcontrol if (!(dipent.flags & (F_NOLIST|F_QUIET))) control
+#define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
+#define PRIVOK      (dipent.players[player].power == MASTER || \
+                     !(dipent.flags & F_MODERATE))
+#define any_broadcast (broadcast || broad_signon || broad_params)
+
+/*
+   ** Defines for the ALLOW/DENY Functionality
+ */
+#define GLOBAL_PLAYER	1
+#define GLOBAL_MASTER	2
+#define GAME_PLAYER	3
+#define GAME_MASTER	99
+
+#endif
+
+/***************************************************************************/

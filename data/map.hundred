@@ -1,0 +1,98 @@
+Anglia,                 l ang
+Aragon,                 l ara cat catalonia
+Biscay,                 w bis
+Bristol Channel,        w bch bristol
+Brittany,               x brt bri
+Calais,                 E cal artois art
+Cantons,                x can swiss swi switz
+Castile,                l cas ibe ibi iberia castille
+Dauphine,               F dau
+Devon,                  E dev ply plymouth
+Dijon,                  B dij
+English Channel,        w ech eng
+Flanders,               B fla ant antwerp
+Friesland,              l fri fries
+Guyenne,                E guy aqu aqui aquitaine
+Holland,                B hol ams amsterdam
+Irish Sea,              w iri irs
+Limousin,               l lim
+London,                 E lon
+Lorraine,               l lor  swa swabia
+Luxembourg,             B lux
+Mediterranean,          w med
+Minch,                  w min
+Normandy,               E nmd nrm
+North Sea,              w nth
+Northumbria,            l num northumberland
+Orleanais,              F orl orleans
+Paris,                  F par
+Poitou,                 l poi
+Provence,               F pro
+Savoy,                  l sav
+Scotland,               x sco
+Strait of Dover,        w dov str
+The Wash,               w was the
+Toulouse,               F tou
+Wales,                  l wal
+-1
+ang-mv: num dev lon
+ang-xc: num/ec nth was dov lon
+ara-mv: guy tou cas
+ara-nc: bis guy cas
+ara-sc: cas tou med
+bch-xc: bis bri ech dev wal iri
+bis-xc: ara/nc guy bri bch cas
+bri-mv: nmd orl poi guy
+bri-xc: guy bis bch ech nmd
+cal-mv: fla dij par nmd lon
+cal-xc: nmd dov fla lon
+can-mv: dij lor sav dau
+cas-mv: ara
+cas-xc: ara/nc ara/sc bis med
+dau-mv: lim orl par dij can sav pro
+dev-mv: wal num ang lon
+dev-xc: lon ech bch wal
+dij-mv: cal fla lux lor can dau par
+dov-xc: ech lon ang was hol fla cal nmd
+ech-xc: bch dev lon dov nmd bri
+fla-mv: hol lux dij cal
+fla-xc: hol cal dov
+fri-mv: lux hol
+fri-xc: was hol
+guy-mv: bri poi ara  tou
+guy-xc: ara/nc bis bri
+hol-mv: fri lux fla
+hol-xc: fri fla dov was
+iri-xc: min num/wc wal bch
+lim-mv: poi orl dau pro tou
+lon-mv: ang dev cal
+lon-xc: ang dov ech dev cal
+lor-mv: dij lux can
+lux-mv: lor dij fla hol fri
+med-xc: ara/sc tou pro sav cas
+min-xc: sco num/wc iri nth
+nmd-mv: orl bri cal par
+nmd-xc: bri ech dov cal
+nth-xc: sco min was ang num/ec
+num-ec: sco nth ang
+num-mv: sco ang dev wal
+num-wc: sco min iri wal
+orl-mv: bri nmd par dau lim poi
+par-mv: cal dij dau orl nmd
+poi-mv: bri orl lim tou guy
+pro-mv: tou lim dau sav
+pro-xc: sav med tou
+sav-mv: pro dau can
+sav-xc: med pro
+sco-mv: num
+sco-xc: num/ec min nth num/wc
+tou-mv: ara poi lim pro guy
+tou-xc: pro med ara/sc
+wal-mv: num dev
+wal-xc: num/wc iri bch dev
+was-xc: ang nth fri hol dov
+-1
+Center order for summary report:
+ sco dev lon guy bri nmd cal fla hol lux dij par orl dau can pro tou
+#End of center ordering
+-1

@@ -1,0 +1,25 @@
+S1901M
+A: A Budapest
+A: A Vienna
+A: F Trieste
+E: A Liverpool
+E: F Edinburgh
+E: F London
+F: A Marseilles
+F: A Paris
+F: F Brest
+G: A Berlin
+G: A Munich
+G: F Kiel
+I: F Rome
+I: A Venice
+I: F Naples
+R: A Moscow
+R: A Warsaw
+R: F Sevastopol
+R: F St Petersburg/sc
+T: A Constantinople
+T: A Smyrna
+T: F Ankara
+-1 Null ownership/contested record will initialize from the map data.
+-1

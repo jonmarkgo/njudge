@@ -1,0 +1,96 @@
+Greetings from the Diplomacy* Adjudicator!!                 July 30, 1995 
+Info.coldip
+     
+The Colonial Diplomacy variant of diplomacy follows the most of the rules 
+as standard diplomacy with a modified map, and with 3 optional rules which 
+can be set on or off at the GMs desire.  The game is the first Avalon Hill 
+published variant.
+     
+The judge version was designed by Andy Schwarz (who did the grunt work) and 
+Larry Richardson (who did the harder stuff).
+     
+Rules:
+     
+1)  Except as noted below, the standard rules of play for Diplomacy on the
+    judge apply.
+     
+2)  There are 7 great powers.  The starting units are as follows:
+     
+    B-BRITAIN           C-CHINA             F-FRANCE
+    A Madras            A Peking            A Tongking 
+    A Delhi             A Canton            F Annam
+    F Bombay            A Sinkiang          A Conchin 
+    F Hong Kong         A Shanghai
+    F Singapore         A Manchuria
+    F Aden
+     
+    H-HOLLAND           J-JAPAN             R-RUSSIA 
+    F Java              A Kyoto             A Moscow
+    A Borneo            F Kyushu            A Vladivostok 
+    F Sumatra           F Otaru             A Omsk
+                        F Tokyo             F Odessa
+                                            F Port Arthur
+     
+    T-TURKEY
+    A Angora
+    F Baghdad
+    F Constantinople
+     
+3)  There are three optional rules which cannot be listed here because the
+    Avalon Hill copyright applies.  Plus, they haven;t been coded up yet!
+     
+4)  CEBU looks like a body of water with islands inside of it, which is
+    accurate.  It is analogous to  Kiel, Constantinople or Denmark in the 
+    standard diplomacy.
+     
+5)  The Caspian Sea, Lake Baykal and any other unnamed space is
+    not passable.
+     
+6)  There are 57 supply centers.  The victory criterion is possession of 29
+    supply centers at the end of any Fall retreat.
+     
+7)  The game begins in 1870.
+     
+     
+Province Abbreviations
+     
+All land province are abbreviated by the first three letters of the province, 
+except the following:
+     
+hk              Hong Kong
+kag             Kashgar
+kam             Kashmir
+mac             Manchuria
+may             Mandalay
+mna             Manila
+gui             New Guinea
+prs             Persia
+prm             Perm
+part            Port Arthur
+sig             Singapore
+sik             Sinkiang
+ubur            Upper Burma
+     
+Sea Space abbreviations are less obvious, but there is a pattern.
+     
+All sea spaces which take the form Sea of #Something or Gulf of ##Something 
+take the abbreviation so# or go#.  For example, Gulf of Manaar is "gom" and 
+Sea of Japan is "soj".
+     
+All sea spaces which take the form ###something Sea or ###something Gulf 
+take the abbreviation ###s.  For example, Persian Gulf is "perg" and Sulu 
+Sea is "suls".
+     
+All sea spaces which end in Ocean or no water designation (such as Lower 
+Pacific) are abbreviated by their initials. For example, Lower Pacific is 
+"lp" and West Indian Ocean is "wio".
+     
+If there is no conflict, you may be able to use initials even if the sea 
+rules say otherwise.  For example, the Okhotsk Sea is "okhs" but "os" will 
+also work.
+     
+     
+Have Fun!
+     
+     
+

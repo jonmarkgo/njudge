@@ -1,0 +1,37 @@
+Subject: Re: Youngstown Duplex
+
+> I was thinking of playing or mastering a youngstown duplex game on the
+> EFF judge.  David Kovar is not sure what the manual commands are to set
+> multiple countries for a single player, and suggested that I ask you.
+> Could you please send the commands to me and/or him?  I can forward
+> them to him, as we are already in touch.
+
+In order to do the "duplex youngstown" variant, I waited for notification
+that 5 players had signed on and then:
+
+  1) flock dip.log
+
+  2) Edited dip.master 
+      a) Making duplicate entries for four of the five players (changing 
+	 a sixth player to an alternate if he got there first).  
+      b) Adding preference lists for every player so that the powers 
+	 were properly distributed by the judge.
+      c) Changing the "sequence" number from "x5" to "x9" so the judge
+         knew there are nine players signed on.
+
+  3) Unlock the log file.
+
+  4) Sent in a signon request for myself to become the "10th" player
+     with an appropriate preference setting.
+
+  5) flock dip.log and edited dip.master again to change my entry into 
+     an entry for the fifth player.
+
+  6) Forwarded the game start message that the judge sent me to the real
+     player telling him it was really supposed to be his and send an
+     optional broadcast message telling the rest of the players the
+     same thing (if it's not a gunboat game).
+
+The demand for this is high enough that it would make a good variant to
+add.  Would require gathering a pretty good understanding of the game
+start mechanism.

@@ -1,0 +1,381 @@
+This document describes the Electronic Protocol House Rules. These rules
+cover Diplomacy play via email with human and computer adjucation.
+
+These HRs cover regular and variant games.  In the case of variant games
+these HRs may be modified by the rules of the variant and the alterations 
+will be found in the rules of the variant.  GMs should announce such 
+differences at the time of the game creation.
+
+If a game is not being played on a judge, a player should ignore any
+references to the judge in these rules.
+
+This document supplements Avalon Hill's Diplomacy rules (most recent
+American edition.)
+
+General rules:
+
+1) Joining a game implies an intention to play the game through to the end.
+Leaving a game without a good reason is considered very disrespectful. Don't
+join unless you are willing to commit yourself to an entire game, which
+may take several months.
+
+2) Automatic allies or automatic enemies will not be allowed in the same game.
+If you violate this rule you risk, at the very least, expulsion from the game.
+
+3) Players may not communicate with each other directly (ie, through
+a mechanism other than the judge) in games where the identity of other
+players is concealed, or at all in games where communication is
+barred. The potential for this arises if they guess at another
+player's identity or if the player's identity is accidentally
+revealed.
+
+3a) Players in gunboat games may not make any claim, true or false,
+as to their real identities.
+
+
+4) Players are expected to treat each other with dignity and respect. Abusive
+language or behavior is frowned on, unless clearly in character in a
+roleplayed game.
+
+5) Unless otherwise stated, observers should not offer opinions and
+analysis of the game.
+
+6) Players should submit moves by the deadline. It is suggested that players
+submit a set of tentative orders as soon as possible and then modify them as
+the turn progresses.  A player who consistently submits moves after the
+deadline risks being expelled from the game.
+
+7) Players should not continue negotiations past the deadline. If they need 
+more time they should request a deadline extension. If you have already
+submitted orders, you may continue to diplome after the deadline has
+passed.
+
+8) It is unacceptable behavior to deliberately submit moves late for any reason
+(example, while awaiting reply from an ally).
+
+9) Turns will never be replayed. Turns may be reprocessed to correct an
+error, but no new orders will be allowed. Turns will only be reprocessed
+if there was an error in calculating the results on the part of the judge
+software. GMs may change this rule at their discretion without losing EP
+status for the game.
+
+10) If a player is unable to continue playing, the player should
+notify the GM as soon as possible to allow the GM time to find a
+replacement.
+
+11) Computer opponents are not allowed in games without prior permission.
+
+12) A valid registration form is required for all players. Lying on your
+registration for is grounds for expulsion from the judge. The following
+fields must be valid: Name, Site, Email, Level, Address. In non-judge
+games, the GM will decide what information he requires. 
+
+13) A player is responsible for submitting their own orders. GMs are
+generally willing to accept orders over the phone if necessary, but the
+final responsibility lies with the player.
+
+14) All games must be set NoNMR.
+
+15) All games must be set "different-site", meaning that not more than
+one player from the same site may be in the same game. "chaos" and
+foreign language games are exempt from this rule.
+
+16) All games must have a GM.
+
+Player Replacement:
+
+1) Players may not reenter a game as a different power under any
+conditions.
+
+GM rules:
+
+1) GMs are to remain scrupulously impartial in all matters.
+
+2) GMs should not change the parameters of the game after players
+start signing up for the game unless the players unanimously vote to
+do so.  This includes changing the deadline calculation, victory
+conditions, press flags, etc.
+
+3) GMs may not play in their own game. Judge keepers may not play in
+any game on their own judge. EP status will not be granted to games
+that violate this rule.
+
+Voting:.
+
+1) All votes to change the nature of the game (deadline calculation,
+et al) must be unanimous.
+
+2) The GM is responsible for officially announcing a vote and recording the
+outcome. He must announce the outcome of the vote but should not announce
+the number of votes for each option or how anyone voted.
+
+3) A vote is not closed until the next move has processed. 
+
+4) In all cases, if a player does not submit a vote, then that player
+is assumed to have voted against the proposal, ie NVR=no.
+
+5) GMs may be ejected by a unanimous vote of the players. The vote will be
+run by the judge keeper. This is really a method of last resort and the
+judge keeper will only allow this after all other methods have failed.
+
+Draws and Concessions:
+
+1) Draw votes will be managed by the judge where available. If the draw
+mechanism is unavailable, the GM will run the vote. The draws will be
+DIAS unless otherwise stated when the game was created or unless the
+game was changed to non-DIAS by the players.
+
+2) Voting on draws is anonymous.  Draws may only include players that
+have not been eliminated from the game.  Draws may not give order of
+finishes such as 2nd place, 3rd place, etc.  Players are either
+included in the draw or not.
+
+3) The following people can vote in a draw: All players who had not
+been eliminated by the end of the game year, i.e. have both no units
+and no supply centers.
+
+4) The GM reserves the right to terminate a game in a draw involving
+all of the remaining powers if it is clear that the position on the
+board has reached a stalemate. (Determined by no changes to province
+ownership for the last three game-years.) The GM must announce their
+decision to start the three game-year clock one season prior to doing
+so.  If a player objects to the termination and can convince the GM
+that there is still play in the game then the game will continue
+
+5) All players entitled to vote must vote unanimously for the draw
+vote for it to pass.
+
+6) All surviving powers may conceed a victory to a single power by unanimous
+vote, subject to the same voting restrictions and methods as those for
+draws. The DIAS flat does not apply in this case.
+
+Unacceptable behavior:
+
+1) Cheating: 
+
+Intentionally circumventing the house rules, the judge mechanism,
+or the rules of the particular game can lead to the player being 
+blacklisted in the EP hobby. 
+
+The name of a player blacklisted will be distributed to the EPCC, all
+judge keepers, and all GMs along with a statement advising them of the
+player's past actions and a request to deny the player entry into any
+EP games.
+
+2) Cross Play:
+
+Attempting to influence a player's behaviour in one game by offering
+threats or concessions in another game is called "cross play". This is
+strongly discouraged.
+
+3) Press:
+
+a) The following people can submit press in a game: Players currently in
+the game plus players who were in the game but were eliminated,
+observers, the GM, the manager, and the editor. (But if you resigned
+or were kicked out, you have no such privileges.)  No player or
+observer can claim to be the GM, or judge keeper. Nor can the GM or
+judge keeper pretend to be one of the others, or a player, if in fact
+that is not the case.
+
+b) You may forge correspondence from other players within the limits
+of the press settings unless you are sending correspondence to the GM.
+
+4) Deception and the GM
+
+The GM will not participate in deceptions involving other players.
+The GM will delay the game and ask for new orders from a player if the GM
+suspects that a player's orders were faked by another player.
+
+5) Violation of Privacy
+
+Anyone violating the privacy of another player or GM may be ejected
+from the game. This specifically refers to electronic mail, but
+will be used in other situations if justified.
+
+
+6) Bad Behavior
+
+Players who are known to NMR, deceive the GM, or are simply known 
+to be abusive may not be allowed to play in this EP games.  And players 
+who become abusive to the GM or other players during a game can be 
+ejected.
+
+7) Sneaking into a Game
+
+You can not enter a single game as multiple players, use an 
+alias without prior arrangement, or be related to another player.  
+All information provided in your registration form must be accurate
+as mentioned above.
+
+Disputes:
+
+The following groups or individuals are responsible for resolving the
+disputes in the specified areas. Disputes that cannot be resolved at
+that level should be promoted to the next level up.
+
+GM - internal game problems.
+Judge keeper - technical problems
+EPCC - EP House Rules
+
+How to Handle Complaints
+
+A problem in the game should be brought to the attention of the GM.
+He will make a ruling and refer any technical problems to the
+judge-keeper. If the GM can not be reached then the EPCC should be
+contacted, or the Judge Keeper for purely technical problems. If a
+player disagrees with the GM's ruling in response to a complaint he
+should simultaneously address an appeal to the GM and the EPCC. 
+
+Generally, appeals should be broadcast to the entire EPCC
+(epcc-l@nda.com). However, if the problem involves secret elements of
+a game (eg: pending orders) then it should be send only to EPCC
+members who are not in the game. If the game is gunboat, then your
+identity is secret and you must take all procautions against mailing
+your appeal to any member of the EPCC who might be in the game.
+The player should send mail only to the judge keeper if he is a member
+of the EPCC, or let the GM form a list of  EPCC members not involved
+in the game and send to everyone on that list. If that is not
+possible, the player may send his appeal to the EPCC secretary. 
+
+The EPCC should also be contacted if the GM seems to have disappeared.
+
+The EPCC should rule over the house rules even if they have been
+modified. However, the EPCC has the right to refuse to hear an
+appeal (no decision), in which case the Judge Keeper or GM has the
+final word.   
+
+AH Rules That Have Been Replaced:
+
+1) VII.3.b
+When a fleet can move to two coasts and the coast is not specified,
+the adjudicator will pick an arbitrary coast.  Actually not totally
+arbitrary, but the first one in its movement list. 
+
+2) IX.1
+Do not specify owners of units in support and convoy orders.  This
+redundant specification would unnecessarily complicate the parser. 
+The movement results will indicate the alternate power on support
+and convoy orders.
+
+3)IX.7
+Based on the second statement after XIV.5, IX.7 does not apply if
+either or both of the dislodged or dislodging unit is convoyed. 
+
+4) XII
+Armies intending to use a convoy must specify the convoy route
+in their movement orders as in the examples:
+               A LON-ENG-BEL,
+               F ENG C A LON-BEL.
+        or     A LON-ENG-MID-WES-TUN,
+               F ENG C A LON-TUN,
+               F MID C A LON-TUN,
+               F WES C A LON-TUN,
+               A NAF S A LON-TUN.
+
+5) XII.4
+Since convoy routes must be specified, there will never be any ambiguity.
+
+6) XII.5
+a) This rule when taken literally can have some unintended results.
+For example:
+        England: F Iri-Mid, F Eng S F Iri-Mid
+        France:  F Spa(nc) S F Mid, F Mid Convoy A Por-Bre, A Por-Mid-Bre
+        Italy:   F Gulf of Lyon Convoy A Tus-Spa, A Tus-GoL-Spa
+
+What happens in the Mid-Atlantic ocean?  What about if the additional order:
+        Italy:   A Mar S A Tus-Spa
+is entered?  With literal interpretation of the rules, the fleet
+in Spain would be dislodged, but its support to the fleet in the
+Mid-Atlantic Ocean (of an action in a body of water containing a
+convoying fleet) would not be cut.  This adjudicator makes five
+passes to determine what support gets cut:
+        a) Normal non-convoyed movement cuts support.
+        b) Any armies being convoyed by fleets that would be dislodged
+           without further support cuts are flagged "maybe no convoy".
+        c) Any convoyed armies without the "maybe no convoy" status cut
+           support provided by units in their destination provinces.
+        d) Any armies being convoyed by fleets that still would be
+           dislodged are flagged "definitely no convoy".
+        e) Any armies still flagged "maybe no convoy" status cut support
+           of units in their destination provinces.  The "maybe no convoy"
+           status is cleared.
+
+Using this algorithm, Spain's support above would be cut in pass
+three.  The Mid-Atlantic Ocean's dislodgement would be detected
+in pass four.  Portugal would be given the "no convoy" status and
+thus would have no effect on any unit in Brest in pass five.
+
+7) XII.6
+This rule is known to be vague and lead to certain paradoxes when a
+unit is given the choice between a land route and a convoy. However,
+this does not apply here since an army must specifically specify its
+convoy route if it is to be convoyed. Note that convoy between
+adjacent provinces are possible, and may be useful certain
+circumstances. 
+
+8) XIII.2
+The rule reads as follows: "BUILDING AND REMOVING UNITS 
+(ADJUSTMENTS).  After the Fall moves have been played, and the 
+retreats (if any) made, each player's number of units MUST be 
+adjusted to equal the number of supply centers his Great Power 
+controls.  If he has fewer centers than units, he MUST disband the 
+excess units only, by removing them from the board.  The units 
+removed may be any of his units he choses.  If he has more centers 
+than units, he MAY build units by placing them..." (Emphasis on MUST 
+and MAY is not in the original.)
+
+This is vague.  Is the rulebook saying that he MUST disband units and 
+MAY build units because he can always disband units but is not always 
+able to build units?  If not, why is the rulebook saying that he MUST 
+adjust his units to be equal to the number of supply centers that he 
+controls?  
+
+Here is the replacement rule:  You don't have to accept all possible 
+builds. Possible builds not being using must be specifically marked
+using the WAIVE command or your orders will be marked as unfinished.
+
+9) XIV.4
+If a power is required to remove a unit and no valid order is
+received, the least recently produced unit that is not at a supply
+center will be disbanded.  This is the first one listed on the
+reports which will be the one most likely to be furthest away from
+a home supply center. (However, in any case NMR is prohibited by above
+rules, so this change should have no effect.)
+
+10) COASTAL DESIGNATIONS FOR FLEET SUPPORT ORDERS
+The judge requires that an order for a unit supporting a fleet movement
+to a bi-coastal province specify the correct coast, otherwise the support
+will be void.
+
+Unusual Board Situations:
+
+Certain extremely rare situations are not covered by the rules of
+Diplomacy.  (For example, Pandin's paradox discovered by Tony Pandin
+in which a convoy causes its own disruption.) In such a situation,
+the results of the Diplomacy Adjudicator will be accepted as final.
+
+Other Notes:
+
+1) DIPLOMACY RULES AND COPYRIGHT INFRINGEMENT
+Avalon Hill permits us to run Diplomacy games electronically with
+the understanding that no copies of the rules will be distributed
+electronically and that all Avalon Hill maps retain the Avalon
+Hill copyright. If you violate this understanding, you put the
+entire Internet hobby at risk.
+
+2) CHANGE OF ADDRESS
+The GM is not responsible for problems caused by you changing your 
+e-mail address without notifying the GM.
+Extra eMail addresses can be added with the IAmAlso command.
+Your return address can be changed with the SET ADDRESS command.
+To remove an address, re-REGISTER.
+
+3) HOUSE RULES
+Changes to any of these rules will result in loss of EP status for the
+game in question unless specifically exempted above.
+
+The EPCC is the only body that can make official changes to these house
+rules.
+
+-----

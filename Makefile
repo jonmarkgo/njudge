@@ -1,0 +1,407 @@
+# Diplomacy Adjudicator.
+#
+#  Copyright 1987, Lowe.
+#
+#  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+#  Maryland, all rights reserved; used with permission.
+#
+#  Redistribution and use in source and binary forms are permitted
+#  provided that it is for non-profit purposes, that this and the 
+#  above notices are preserved and that due credit is given to Mr.
+#  Lowe.
+
+DESTDIR= /home/judge/dip
+SRCDIR= 
+INCPATH=
+LOGEDIT= vi +
+CC=gcc
+USER=judge
+JVERSION=0.8.5
+
+# locations of some support programs
+HEAD=/bin/head
+MAIL=/bin/mail
+
+# Non-test options.  Comment out if testing with GDB.
+CFLAGS= -pipe -O -Wall -DJVERSION=\"$(JVERSION)\"
+LDFLAGS= 
+INSFLAGS= -c -s -m 755
+LIBS= -lm
+
+# Test options.  Comment (#) out if NOT testing with GDB.
+#CFLAGS= -gstabs -DSOLARIS
+#LDFLAGS= -gstabs  -DSOLARIS
+#INSFLAGS= -c -m 755
+#LIBS=
+
+# Programs, Sources, and Objects.
+
+SRCS = 	assign.c \
+		bailout.c \
+		common.c \
+		conf.c \
+		dip.c \
+		dipent.c \
+		draw.c \
+		global.c \
+		hashtable.c \
+		history.c \
+		jm.c \
+		lib.c \
+		ma_build.c \
+		ma_expenses.c \
+		ma_famplag.c \
+		ma_movement.c \
+		ma_porder.c \
+		ma_retreat.c \
+		ma_stats.c \
+		machlib.c \
+		mail.c \
+		mfprintf.c \
+		ml_date.c \
+		ml_getaddr.c \
+		ml_list.c \
+		ml_press.c \
+		ml_set.c \
+		ml_signon.c \
+		params.c \
+		phase.c \
+		po_condition.c \
+		po_errmsg.c \
+		po_get.c \
+		po_init.c \
+		po_mastrpt.c \
+		porder.c \
+		st_build.c \
+		st_movement.c \
+		st_porder.c \
+		st_retreat.c \
+		st_status.c \
+		strcasecmp.c \
+		strdup.c \
+		users.c \
+		variant.c \
+		version.c
+
+EXTRAS = cmap.c summary.c bgreet.c deddump.c delgame.c \
+         flock.c fmtwho.c ign.c pdip.c rdip.c
+ 
+OBJS = $(SRCS:%.c=%.o)
+
+FILES=	${SRCDIR}/Makefile ${SRCDIR}/README ${SRCDIR}/dip.template \
+	${SRCDIR}/*.h ${SRCDIR}/*.c ${SRCDIR}/makedata ${SRCDIR}/newvers \
+	${SRCDIR}/diprun ${SRCDIR}/smail ${SRCDIR}/dipclean ${SRCDIR}/atrun \
+        ${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
+	${SRCDIR}/data/* ${SRCDIR}/starter.flist ${SRCDIR}/mapit/* \
+	${SRCDIR}/rundipmap ${SRCDIR}/README.*
+
+.SUFFIXES: .c .o .h
+
+.c.o:
+	${CC} ${CFLAGS} ${INCPATH} -c $*.c
+
+all:	dip rdip pdip cmap summary bgreet deddump delgame flock fmtwho ign
+
+dip: ${OBJS}
+	${CC} ${LDFLAGS} -o dip ${OBJS} ${LIBS}
+
+cmap:	cmap.o lib.o bailout.o conf.o strdup.o variant.o hashtable.o global.o
+	${CC} ${LDFLAGS} -o cmap cmap.o lib.o bailout.o conf.o strdup.o \
+	                    variant.o hashtable.o global.o ${LIBS}
+
+summary: summary.o dipent.o jm.o lib.o params.o po_get.o bailout.o conf.o variant.o hashtable.o global.o strdup.o
+	${CC} ${LDFLAGS} -o summary summary.o dipent.o jm.o lib.o hashtable.o \
+						params.o po_get.o bailout.o conf.o strdup.o variant.o \
+						global.o ${LIBS}
+
+bgreet:	bgreet.o
+	${CC} ${LDFLAGS} -o bgreet bgreet.o ${LIBS}
+
+deddump: deddump.o conf.o strdup.o hashtable.o global.o
+	${CC} ${LDFLAGS} -o deddump deddump.o conf.o strdup.o hashtable.o global.o ${LIBS}
+
+delgame: delgame.o
+	${CC} ${LDFLAGS} -o delgame delgame.o ${LIBS}
+
+flock:	flock.o
+	${CC} ${LDFLAGS} -o flock flock.o ${LIBS}
+
+fmtwho:	fmtwho.o
+	${CC} ${LDFLAGS} -o fmtwho fmtwho.o ${LIBS}
+
+ign:	ign.o strcasecmp.o
+	${CC} ${LDFLAGS} -o ign ign.o strcasecmp.o ${LIBS}
+
+pdip:	pdip.o
+	${CC} ${LDFLAGS} -o pdip pdip.o ${LIBS}
+
+rdip:	rdip.o bailout.o conf.o strdup.o hashtable.o global.o
+	${CC} ${LDFLAGS} -o rdip rdip.o bailout.o conf.o strdup.o hashtable.o global.o ${LIBS}
+
+Datamake: data/*
+	./makedata ${DESTDIR} > Datamake
+
+# ${DESTDIR}/data/flist removed from list because it doesn't work --nw
+
+install: ${DESTDIR} ${DESTDIR}/data dip \
+	 ${DESTDIR}/diprun ${DESTDIR}/smail ${DESTDIR}/dipclean ${DESTDIR}/atrun \
+	 ${DESTDIR}/rundipmap ${DESTDIR}/runlistmap ${DESTDIR}/newlogs cmap \
+	 summary bgreet deddump delgame flock fmtwho ign pdip rdip
+	install ${INSFLAGS} dip ${DESTDIR}/newprg
+	mv ${DESTDIR}/newprg ${DESTDIR}/dip
+	install ${INSFLAGS} summary ${DESTDIR}/summary
+	install ${INSFLAGS} bgreet ${DESTDIR}/bgreet
+	install ${INSFLAGS} deddump ${DESTDIR}/deddump
+	install ${INSFLAGS} delgame ${DESTDIR}/delgame
+	install ${INSFLAGS} flock ${DESTDIR}/flock
+	install ${INSFLAGS} fmtwho ${DESTDIR}/fmtwho
+	install ${INSFLAGS} ign ${DESTDIR}/ign
+	install ${INSFLAGS} pdip ${DESTDIR}/pdip
+	install ${INSFLAGS} rdip ${DESTDIR}/rdip
+	rm -f data/RCS
+	cp data/* ${DESTDIR}/data
+	./cmap ${DESTDIR} >> ${DESTDIR}/install.log
+	cp dip.conf $(DESTDIR)/dip.conf
+	cp smail.pl $(DESTDIR)/smail.pl
+	touch ${DESTDIR}/dip.msg
+	@chmod 640 ${DESTDIR}/dip.msg
+	touch ${DESTDIR}/dip.addr
+	@chmod 640 ${DESTDIR}/dip.addr
+	touch ${DESTDIR}/dip.whois
+	@chmod 640 ${DESTDIR}/dip.whois
+	@echo "control   001       S1801MX   1 1 1 0 2 18 7" > ${DESTDIR}/dip.master
+	@echo "Process   " `date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}/dip.master
+	@echo "Start     " `date '+%a %b %d %X %Y'` >> ${DESTDIR}/dip.master
+	@echo "-" >> ${DESTDIR}/dip.master
+	@echo
+	@echo "you must now edit DESTDIR/dip.conf, DESTDIR/smail, DESTDIR/atrun,"
+	@echo "and DESTDIR/dip.msg (which may be left empty)"
+	@echo
+
+upgrade:	dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
+	 pdip rdip summary deddump delgame flock ign
+	install ${INSFLAGS} dip ${DESTDIR}/newprg
+	mv ${DESTDIR}/newprg ${DESTDIR}/dip
+	install ${INSFLAGS} summary ${DESTDIR}/summary
+	install ${INSFLAGS} bgreet ${DESTDIR}/bgreet
+	install ${INSFLAGS} deddump ${DESTDIR}/deddump
+	install ${INSFLAGS} delgame ${DESTDIR}/delgame
+	install ${INSFLAGS} flock ${DESTDIR}/flock
+	install ${INSFLAGS} fmtwho ${DESTDIR}/fmtwho
+	install ${INSFLAGS} ign ${DESTDIR}/ign
+	install ${INSFLAGS} pdip ${DESTDIR}/pdip
+	install ${INSFLAGS} rdip ${DESTDIR}/rdip
+	
+${DESTDIR}:
+	mkdir ${DESTDIR}
+	mkdir ${DESTDIR}/Dcontrol
+	cp dip.template ${DESTDIR}/dip.master
+	cp /dev/null    ${DESTDIR}/dip.addr
+	cp /dev/null    ${DESTDIR}/dip.whois
+	cp /dev/null	${DESTDIR}/dip.blist
+	chmod 700 ${DESTDIR}
+	-chown $(USER) ${DESTDIR}
+	-chown $(USER) ${DESTDIR}/Dcontrol
+
+${DESTDIR}/data:
+	mkdir ${DESTDIR}/data
+	ln -s ../dip.whois ${DESTDIR}/data/whois
+	chmod 700 ${DESTDIR}/data
+	-chown $(USER) ${DESTDIR}/data
+
+flist.info:
+	cp starter.flist flist.info
+
+# flist: Available file list.  
+#
+#   1) First generate a header on temp.flist1
+#   2) Generate a list of all files in the format  "name size date +"
+#   3) Sort and merge with the flist.info which is "name %	   = comment"
+#   4) Edit the resulting file to:
+#	a) Insert a # at the beginning of each comment line (those with an =).
+#	b) Join the comment lines to the end of the preceeding lines.
+#	c) Replace the first # with a %.
+#	d) Delete anything after a second # (represents comment with no file)
+#	e) Delete the text from the + to the =.
+#	f) Delete any extra + signs (files without comments).
+#	g) Delete any entries with a comment of NOLIST.
+#   5) Merge the header and the resulting file list.
+
+
+${DESTDIR}/data/flist: ${DESTDIR}/data Datamake flist.info
+	@make -f Datamake
+	echo >  temp.flist1 "Files and sizes in bytes as of `date`"
+	echo >> temp.flist1 ""
+	echo >> temp.flist1 \
+"Name                   Size  Last Change    Description"
+	echo >> temp.flist1 \
+"------------------   ------ -------------   ---------------------------------"
+	(cd ${DESTDIR}/data; \
+	  /bin/ls -lL | grep -v "^total" | \
+	  awk '{printf("%-20.20s%7d %3s %3s %5s  +\n",$$8,$$4,$$5,$$6,$$7)}' \
+	) | sort - flist.info > temp.flist2
+	(echo g/=/s/'^'/'#'/;           \
+	 echo g/=/.-1,.j;               \
+	 echo g/'#'/s/'#'/'\%'/;        \
+	 echo g/'#'/s/'#'.'*'//;        \
+	 echo g/=/s/+.'*'=//;           \
+	 echo g/+/s/+//;                \
+	 echo g/NOLIST/d;               \
+	 echo w) | \
+	  ed - temp.flist2
+	rm ${DESTDIR}/data/flist
+	cat temp.flist1 temp.flist2 > ${DESTDIR}/data/flist
+	rm  temp.flist1 temp.flist2
+
+${DESTDIR}/dip: dip
+	install ${INSFLAGS} dip ${DESTDIR}/newprg
+	mv ${DESTDIR}/newprg ${DESTDIR}/dip
+
+${DESTDIR}/diprun: diprun
+	cp diprun ${DESTDIR}/diprun
+
+${DESTDIR}/smail: smail
+	cp smail ${DESTDIR}/smail
+
+${DESTDIR}/dipclean: dipclean
+	cp dipclean ${DESTDIR}/dipclean
+
+${DESTDIR}/atrun: atrun
+	cp atrun ${DESTDIR}/atrun
+
+${DESTDIR}/rundipmap: rundipmap
+	cp rundipmap ${DESTDIR}/rundipmap
+
+${DESTDIR}/runlistmap: runlistmap
+	cp runlistmap ${DESTDIR}/runlistmap
+
+${DESTDIR}/newlogs: newlogs
+	cp newlogs ${DESTDIR}/newlogs
+
+tar: ../dip.tar.Z ../mapit.tar.Z
+
+../dip.tar.Z: README Makefile ${SRCS}
+#	newvers VERMAJ
+#	@touch .log/oldlog
+	rm -f ../dip.tar.Z
+	(cd ..; tar -cvf dip.tar ${FILES}; compress dip.tar)
+
+../mapit.tar.Z: 
+	(tar -cvf ../mapit.tar mapit; compress ../mapit.tar)
+
+loglink:
+	rm -f ${DESTDIR}/data/log
+	ln -s `pwd`/.log/log ${DESTDIR}/data/log
+
+more:
+	rm -f morefil
+	(cd ..; more ${FILES} > morefil)
+
+list:
+	rm -f listing
+	-for i in ${FILES}; do \
+		expand ../$$i | pr -h $$i | sed 's/^/       /' >> listing; \
+	done
+
+clean:
+	rm -f a.out core dip Datamake *.o *~
+	rm -f cmap bgreet fmtwho pdip rdip summary
+	rm -f deddump delgame flock ign makedep eddep
+	
+lint:
+	lint ${SRCS}
+
+depend:
+	${CC} -MM ${INCPATH} ${SRCS} ${EXTRAS} > makedep 
+	echo '/^# DO NOT DELETE THIS LINE/+2,$$d' >eddep
+	echo '$$r makedep' >>eddep
+	echo 'w' >>eddep
+	cp Makefile Makefile.bak
+	ed - Makefile < eddep
+	# rm eddep makedep
+	echo '# DEPENDENCIES MUST END AT END OF FILE' >> Makefile
+	echo '# IF YOU PUT STUFF HERE IT WILL GO AWAY' >> Makefile
+	echo '# see make depend above' >> Makefile
+
+# DO NOT DELETE THIS LINE -- make depend uses it
+# DEPENDENCIES MUST END AT END OF FILE
+dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h
+dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
+ functions.h
+bailout.o: bailout.c dip.h conf.h port.h variant.h
+assign.o: assign.c dip.h conf.h port.h variant.h
+common.o: common.c dip.h conf.h port.h variant.h porder.h
+conf.o: conf.c conf.h hashtable.h
+draw.o: draw.c dip.h conf.h port.h variant.h functions.h mail.h
+global.o: global.c dip.h conf.h port.h variant.h
+hashtable.o: hashtable.c hashtable.h
+history.o: history.c dip.h conf.h port.h variant.h functions.h mail.h
+jm.o: jm.c
+lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h \
+ .magic.h
+machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
+ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
+ functions.h
+ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
+ mach.h functions.h
+ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
+ mach.h functions.h
+ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
+ porder.h mach.h functions.h
+ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
+ mail.h porder.h mach.h
+ma_porder.o: ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
+ mach.h functions.h
+ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h \
+ mach.h functions.h
+mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h
+mfprintf.o: mfprintf.c mail.h variant.h
+ml_date.o: ml_date.c port.h
+ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
+ functions.h
+ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
+ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
+ functions.h
+ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h
+ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
+ ml_signon.h .magic.h functions.h
+params.o: params.c dip.h conf.h port.h variant.h functions.h
+phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
+porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
+po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
+ functions.h porder.h
+po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
+po_get.o: po_get.c dip.h conf.h port.h variant.h porder.h
+po_init.o: po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
+ functions.h
+po_mastrpt.o: po_mastrpt.c dip.h conf.h port.h variant.h
+st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
+st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
+st_movement.o: st_movement.c functions.h dip.h conf.h port.h variant.h \
+ porder.h
+st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h \
+ mail.h porder.h
+st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
+strcasecmp.o: strcasecmp.c
+strdup.o: strdup.c
+users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h
+variant.o: variant.c dip.h conf.h port.h variant.h
+version.o: version.c dip.h conf.h port.h variant.h
+cmap.o: cmap.c dip.h conf.h port.h variant.h porder.h mach.h
+summary.o: summary.c dip.h conf.h port.h variant.h porder.h mach.h \
+ functions.h
+bgreet.o: bgreet.c
+deddump.o: deddump.c dip.h conf.h port.h variant.h
+delgame.o: delgame.c port.h dip.h conf.h variant.h
+flock.o: flock.c port.h
+fmtwho.o: fmtwho.c port.h
+ign.o: ign.c
+pdip.o: pdip.c
+rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h
+# DEPENDENCIES MUST END AT END OF FILE
+# IF YOU PUT STUFF HERE IT WILL GO AWAY
+# see make depend above

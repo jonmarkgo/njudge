@@ -1,0 +1,33 @@
+> My judge has recently started reporting time warp, bailout executed whenever
+> I send it mail.  Does anyone know what this is about?
+
+Hmmm, I just answered this one:
+
+Date: Tue, 19 Oct 93 10:10:55 -0700
+From: Judge Dash Request <jdr@u.washington.edu>
+Message-Id: <9310191710.AA19114@dewey.cac.washington.edu>
+To: xxxxx@xxx.xxxxx.xxx.xxx.xx
+Subject: Re:  Diplomacy time warp at uws
+
+Each time the judge runs it sets the "Process" and "Start" times for
+the "control" game.  It uses these fields to determine if there is a
+"time warp".  The current time must be between the Start time and the
+Process time which it will be if the judge runs regularly.  You can
+change the Process time for game control in your dip.master file to
+something in the future to get back on track.  Note: When setting the
+time fields in the dip.master file, you can either change the large
+integer if you know how many seconds past Jan 1st 1970 GMT you want
+(not likely) or you can change the text representation of the time
+but you have to remember to remove the large parenthetical number (just
+chop off the end of the line, the judge will recalculate the integer
+representation which makes processing quicker).
+
+The reason for the time warp check is that really nasty things happened
+when the clock got messed up on my system (set a year in advance) before
+the NoNMR code was implemented.  Everyone who hadn't gotten their orders
+in for whatever phase their game was at became CD and we couldn't simply
+set things back because the rest of the people had their orders revealed.
+Even with the NoNMR code it would bad, but not quite so messy.
+
+-Ken
+

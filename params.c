@@ -1,0 +1,446 @@
+/*
+ * $Log$
+ * Revision 1.3  1997/02/16 20:43:18  davidn
+ * Additions to dipent structure and associated code, to allow duplex variants.
+ * Command is "set players n".
+ *
+ * Revision 1.2  1996/11/13 23:16:56  rpaar
+ * Changed the loop range in printlevel to 1 <= x <= nlevel instead of 0 <= x <= nlevel.
+ * Changed return strcap("undefined") to return ("Undefined")
+ *
+ * Revision 1.1  1996/10/20 12:29:45  rpaar
+ * Morrolan v9.0
+ *
+ */
+
+/*
+ *  params.c -- Print Game Parameters
+ *
+ *  Copyright (C) 1987, Ken Lowe
+ *
+ *  Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+ *  Maryland, all rights reserved; used with permission.
+ *
+ *  Redistribution and use in source and binary forms are permitted
+ *  provided that it is for non-profit purposes, that this and the 
+ *  above notices are preserved and that due credit is given to Mr.
+ *  Lowe.
+ *
+ *  REVISION HISTORY
+ *      DATE        NAME         REASON
+ *      ----------- ------------ -----------------------------------------------
+ *      ?? ??? 1987 K.Lowe       Original development.
+ *      ?? Apr 1994 T.Ruelle     Add printlevel() procedure.
+ *      23 May 1994 C.Marcus,Jr. Add print_params() procedure; clarify text for
+ *                               press flags.
+ *      29 Dec 1996 David Norman no_of_players added to dipent
+ */
+
+#include <stdlib.h>
+#include <string.h>
+#include "dip.h"
+#include "functions.h"
+
+/*  Access types.  */
+
+char *accesses[] =
+{0, "any", "different", "same"};
+
+int avalue[] =
+{0, A_ANY, A_DIFF, A_SAME};
+
+int naccess = nentry(accesses);
+
+/*  Levels.  */
+
+char *levels[] =
+{0, "any", "novice", "advanced", "intermediate", "amateur", "expert"};
+
+int lvalue[] =
+{0, L_ANY, L_NOVICE, L_ADVANCED, L_INTERMEDIATE, L_AMATEUR, L_EXPERT};
+
+int nlevel = nentry(levels);
+
+static void print_params(FILE * outf, char *line);
+
+/****************************************************************************
+NAME:  params
+
+DESCRIPTION
+    This procedure prints out the game parameters, either for a 'list' command
+    or after a change has been made to one or more parameters.
+
+REVISION HISTORY
+    DATE        NAME         REASON
+    ----------- ------------ ---------------------------------------------------
+    ?? ??? 1987 K.Lowe       Original development.
+    ?? Apr 1994 T.Ruelle     Add amateur level; use printlevel() to print level.
+    23 May 1994 C.Marcus,Jr. Use print_params() to print lines (to allow for
+                             long lines, if many flags set); clarify text for
+                             press flags.
+    22 Dec 1994 L.Richardson Added the Index parameter display.
+
+INTERFACE DEFINITION
+    Calling Sequence:
+        params(fp);
+
+    Inputs:
+        fp := File pointer to which parameters are to be written
+
+    Outputs:
+        Parameters written to specified file
+
+ALGORITHM
+    Write move phase processing information to file.
+    Write retreat phase processing information to file.
+    Write adjustment phase processing information to file.
+    Write general information to file.
+    Write variant information to file.
+    Write flag information to file.
+    Write press information to file.
+    Write cataloging information and victory condition to file.
+****************************************************************************/
+
+void params(FILE * fp)
+{
+	char line[256];		/* Line buffer */
+	char *temp;		/* Pointer to buffer to be freed */
+
+	/* Write information for move, retreat, and adjustment phases (deadlines,
+	   processing days, etc.).  */
+
+	putseq(fp, "  Move", &dipent.movement);
+	putseq(fp, "  Retreat", &dipent.retreat);
+	putseq(fp, "  Adjust", &dipent.builds);
+
+	/* General information (access, level, moderated, rated, dedication). */
+
+	sprintf(line, "  Access:  %s-site",
+		(temp = strcap(accesses[dipent.access])));
+	free(temp);
+	sprintf(&line[strlen(line)], ", Level: %s",
+		(temp = printlevel(dipent.level)));
+	free(temp);
+	if (dipent.flags & F_MODERATE) {
+		strcat(line, ", Moderated");
+	}
+	if (dipent.flags & F_NORATE) {
+		strcat(line, ", Unrated");
+	}
+	if (dipent.dedicate) {
+		sprintf(&line[strlen(line)], ", Dedication: %d", dipent.dedicate);
+	}
+	strcat(line, ".");
+	print_params(fp, line);
+
+	/* Variant & option information. */
+
+	sprintf(line, "  Variant: %s", (temp = strcap(variants[dipent.variant])));
+	free(temp);
+	if (dipent.flags & F_GUNBOAT) {
+		strcat(line, ", Gunboat");
+	}
+	if (dipent.flags & F_NOSHOW) {
+		strcat(line, ", No Show");
+	}
+	if (dipent.flags & F_BLIND) {
+		strcat(line, ", Blind");
+	}
+	if (dipent.flags & F_AFRULES) {
+		strcat(line, ", A/F Rules");
+	}
+	strcat(line, ".");
+	print_params(fp, line);
+
+	/*  Flag information.  */
+
+	sprintf(line, "  Flags:   ");
+	if (dipent.flags & F_NONMR) {
+		strcat(line, "NoNMR");
+	} else {
+		strcat(line, "NMR");
+	}
+	if (dipent.flags & F_NOLIST) {
+		strcat(line, ", NoList");
+	}
+	if (dipent.flags & F_QUIET) {
+		strcat(line, ", Quiet");
+	}
+	if (dipent.flags & F_NOREVEAL) {
+		strcat(line, ", NoReveal");
+	}
+	if (dipent.flags & F_PROXY) {
+		strcat(line, ", Proxy");
+	} else {
+		strcat(line, ", NoProxy");
+	}
+	if (dipent.flags & F_NODIAS) {
+		strcat(line, ", NoDIAS");
+	} else {
+		strcat(line, ", DIAS");
+	}
+	if (!(dipent.flags & F_GRACEDAYS)) {
+		strcat(line, ", StrictGrace");
+	}
+	if (dipent.flags & F_STRWAIT) {
+		strcat(line, ", StrictWait");
+	}
+	if (dipent.flags & F_MACH) {
+		if (dipent.flags & F_NODICE) {
+			strcat(line, ", NoDice");
+		} else {
+			if (dipent.flags & F_NOFAMINE) {
+				strcat(line, ", NoFamine");
+			} else {
+				strcat(line, ", Famine");
+			}
+			if (dipent.flags & F_NOPLAGUE) {
+				strcat(line, ", NoPlague");
+			} else {
+				strcat(line, ", Plague");
+			}
+			if (dipent.flags & F_NOLOANS) {
+				strcat(line, ", NoLoans");
+			} else {
+				strcat(line, ", Loans");
+			}
+			if (dipent.flags & F_NOASSASS) {
+				strcat(line, ", NoAssassination");
+			} else {
+				strcat(line, ", Assassination");
+			}
+			if (dipent.flags & F_NOSPECIAL) {
+				strcat(line, ", NoSpecial");
+			} else {
+				strcat(line, ", Special");
+			}
+		}
+		if (dipent.flags & F_NOADJ) {
+			strcat(line, ", NoAdjacency");
+		} else {
+			strcat(line, ", Adjacency");
+		}
+	}
+	strcat(line, ".");
+	print_params(fp, line);
+
+	/*  Press information.  */
+
+	sprintf(line, "  Press:   ");
+	switch (dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) {
+	case (F_NOWHITE | F_GREY | F_DEFWHITE):
+		strcat(line, "Undefined");
+		break;
+	case (F_NOWHITE | F_GREY):
+		strcat(line, "Grey");
+		break;
+	case (F_NOWHITE | F_DEFWHITE):
+		strcat(line, "Undefined");
+		break;
+	case (F_NOWHITE):
+		strcat(line, "None");
+		break;
+	case (F_GREY | F_DEFWHITE):
+		strcat(line, "White/Grey");
+		break;
+	case (F_GREY):
+		strcat(line, "Grey/White");
+		break;
+	case (F_DEFWHITE):
+		strcat(line, "Undefined");
+		break;
+	case (0):
+		strcat(line, "White");
+		break;
+	}
+
+	if ((dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) != F_NOWHITE) {
+		switch (dipent.flags & (F_OBWHITE | F_OBNONE)) {
+		case (F_OBWHITE | F_OBNONE):
+			strcat(line, ", Undefined");
+			break;
+		case (F_OBWHITE):
+			strcat(line, ", White observers");
+			break;
+		case (F_OBNONE):
+			strcat(line, ", No observers (except to Master)");
+			break;
+		case (0):
+			break;
+		}
+
+		if (dipent.flags & F_NOPARTIAL) {
+			strcat(line, ", No Partial (except to Master)");
+		} else {
+			switch (dipent.flags & (F_FAKE | F_DEFFAKE)) {
+			case (F_FAKE | F_DEFFAKE):
+				strcat(line, ", Partial Fakes Broadcast by default");
+				break;
+			case (F_FAKE):
+				strcat(line, ", Partial may be Faked");
+				break;
+			case (F_DEFFAKE):
+				strcat(line, ", Partial always Fakes Broadcast");
+				break;
+			case (0):
+				strcat(line, ", Partial Allowed, No Fake");
+				break;
+			}
+		}
+	} else {
+		strcat(line, " (except to Master)");
+	}
+	strcat(line, ".");
+	print_params(fp, line);
+
+	/* EP and Miller/Boardman numbers; number of centres needed for win
+	 * (these are short enough not to need print_params(), so print them
+	 * directly to fp).
+	 */
+
+	if (dipent.epnum[0] != '\0') {
+		fprintf(fp, "  EP#  :   %s.\n", dipent.epnum);
+	}
+	if (dipent.bn_mnnum[0] != '\0') {
+		if (strlen(dipent.bn_mnnum) > 7) {
+			fprintf(fp, "  Miller Number: %s.\n", dipent.bn_mnnum);
+		} else {
+			fprintf(fp, "  Boardman Number: %s.\n", dipent.bn_mnnum);
+		}
+	}
+	fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
+
+	/* No of centres added. DAN. */
+	if (dipent.no_of_players != dipent.np) {
+		fprintf(fp, "  Number of Players: %d.\n", dipent.no_of_players);
+	}
+	/* Added the Index value, which indicates a measure of how far along the
+	   game has progressed. */
+
+	if (!(dipent.flags & F_MACH)) {
+		int squares = 0, index, centers;
+
+		/*  Loop on the total number of players signed on to the game
+		   (including observers) to ensure that we get everybody!  */
+		for (index = 0; index < dipent.n; index++) {
+			centers = dipent.players[index].centers;
+			squares += centers * centers;
+		}
+		fprintf(fp, "  Index:   %-3d\n", squares / dipent.np);
+	}
+	return;
+}
+
+/*****************************************************************************
+NAME:  printlevel
+
+DESCRIPTION
+    This procedure returns the printable word that corresponds to the constant
+    'level'.  This function uses Curt Marcus' strcap() function (in lib.c), and
+    thus it is the caller's responsibility to free the string returned by this
+    function.
+
+REVISION HISTORY
+    DATE        NAME         REASON
+    ----------- ------------ ---------------------------------------------------
+    ?? Apr 1994 T.Ruelle     Original development.
+
+INTERFACE DEFINITION
+    Calling Sequence:
+        string = printlevel(level);
+
+    Inputs:
+        level := Integral value for level
+
+    Outputs:
+        string := Pointer to buffer containing capitalised string value for
+            level
+
+ALGORITHM
+    Loop through list of level values:
+        If level value matches given level, return capitalised string.
+    Endloop.
+    Return capitalised string "Undefined".
+***************************************************************************/
+
+char *printlevel(int level)
+{
+	int x;
+
+	/* Loop through list of level values: If level value matches given level,
+	   return capitalized string.  */
+
+	for (x = 1; x < nlevel; ++x) {
+		if (lvalue[x] == level) {
+			return strcap(levels[x]);
+		}
+	}
+
+	return ("Undefined");
+}
+
+/**************************************************************************
+NAME:  print_params
+
+DESCRIPTION
+    This procedure takes a line of output text, breaks it into pieces of a
+    defined size or smaller (breaking only at spaces), and prints it to the
+    specified output file.  An additional newline is added at the end of the
+    line.  It is assumed that there are no imbedded newlines in the line before
+    processing starts (except possibly the last character, if a following blank
+    line is desired).
+
+    This procedure is only intended for printing parameter lists, and indents
+    broken lines accordingly.  Do not use this procedure for printing anything
+    else.
+
+REVISION HISTORY
+    DATE        NAME         REASON
+    ----------- ------------ ---------------------------------------------------
+    23 May 1994 C.Marcus,Jr. Original development (cloned from print_line()).
+
+INTERFACE DEFINITION
+    Calling Sequence:
+        print_params(outf, &line);
+
+    Inputs:
+        outf := File pointer to output file
+        line := Character string to be printed
+
+    Outputs:
+        line := Possibly garbaged character string, with imbedded nulls
+        Text written to specified output file.
+
+ALGORITHM
+    Loop until length of last segment is less than cutoff point:
+        Starting from cutoff point, search backward for last space, print up to
+            that point, and insert a newline and the necessary indentation for
+            the next line.
+    Endloop.
+    Print the remainder of the line (with terminating newline).
+*******************************************************************************/
+
+void print_params(FILE * outf, char *line)
+{
+	char *head, *tail;	/* Ptrs. to ends of string segment */
+	char newline[] = "\n           ";	/* Newline plus indentation for next */
+
+/*  Loop until length of last segment is less than cutoff point:  Starting
+   from cutoff point, search backward for last space, print up to that point,
+   and insert a newline and the necessary indentation for the next line.  */
+
+	for (head = line, tail = line + CUTOFF_LENGTH;
+	     strlen(head) > CUTOFF_LENGTH;
+	     head = tail + 1, tail = head + CUTOFF_LENGTH) {
+		while (!isspace(*tail))
+			--tail;
+		*tail = '\0';
+		fputs(head, outf);
+		fputs(newline, outf);
+	}
+
+/*  Print the remainder of the line (with terminating newline).  */
+
+	fprintf(outf, "%s\n", head);
+	return;
+}

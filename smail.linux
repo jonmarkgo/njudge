@@ -1,0 +1,13 @@
+#!/bin/csh
+# /bin/sh  (Note: /bin/sh fails to work if N files are open)
+#
+#  Invoked as smail file subject address
+#
+setenv FROM xxxx.judge.igo.org
+date >>mail.log
+echo "===== mail sent to $3/$2" >>mail.log
+/bin/head -10 $1 >>mail.log
+cat dip.msg $1 > /tmp/dip.reply
+/bin/mail -s "$2" </tmp/dip.reply $3
+rm -f /tmp/dip.reply
+rm -f dip.xfail

@@ -1,0 +1,188 @@
+Greetings from the Diplomacy* Adjudicator!!                  July 20, 1991.
+master
+
+To become a master for a particular game, you must be signed on as the only
+player and then use the "become master" command.  Thus to create a new
+Youngstown variant game called "older" with yourself as master send the
+following text to the judge:
+
+   create ?older <password> youngstown
+   become master
+
+If anyone else is signed on to the game you will not be allowed to become
+master.  If you wish to relinquish your master slot to another person the
+best way is to just give him your password and then he can submit a request
+containing:
+
+   signon molder <oldpassword>
+   set password <newpassword>
+   set address
+
+If you wish to become the master for an existing game that has other players
+and/or observers signed on or if you would like to become a secondary master
+you should contact the administrator of the adjudicator.
+
+To set up a "private" game you can use the "set nolist" command immediately
+after creating the game:
+
+   create ?older <password> youngstown
+   set nolist
+   become master
+
+The nolist setting will prevent any announcements about the game to be
+distributed to anyone not signed onto the game.  People can still use the
+"list older" command to get a status of the game, but a "list" command
+that lists all current games will not display this game.  People cannot
+find out about the game unless they've been told.  This is useful for
+games that you want to set up as "by invitation only".  Once the invited
+players have signed on and powers have been assigned you can use the "set
+list" command to allow other people to begin seeing the game.  Note that
+you don't have to be the master in such a game, it could be unmoderated
+with you as a player if you wish.  The point demonstrated here is that
+the "set nolist" must appear before the "become master" or before another
+player signs on since either of those actions would generate an
+announcement on a "listed" game.
+
+Once you have become the master for a game you can sign on to your game using
+the "m<name>" syntax and use the following commands:
+
+   become <power>
+     This allows you to submit orders for a particular power if, for
+     example, the player for that power gets disconnected from the network
+     and calls you on the phone to give you orders.  Note that when you
+     use the become command the password for the power is written to the
+     reply file and the reply file is sent back to both you and the true
+     owner of the power.  For this reason (and other implementation
+     details) you can only use one become command per mail message.
+     CAVEAT: If you forget about this and try to do something like:
+
+        become russia              \
+        army rum support bul-ser    \
+        army sev-ukr                 \
+                                      \  *** DON'T DO THIS! ***
+        become turkey                 /
+        army bul-rum                 /
+        fleet bla support bul-rum   /
+        army arm-sev               /
+
+     the Russian player will see the orders you're trying to submit for
+     Turkey (since they'll be displayed followed by "The unit in xxxx is 
+     not owned by Russia") and he might possibly get wise to a stab.
+
+     Actually, all commands following a "become" command submitted by a
+     nonmaster will be ignored to prevent the above potential disaster.
+
+     The become command is not really necessary to submit a power's orders.
+     Orders for units belonging to one or more powers can be submitted as
+     the master, but the true owner of the power will not receive the
+     confirmation reply from the judge.  Orders for multiple units can
+     be specified on the same line, but you shouldn't mix orders for units
+     belonging to multiple powers on the same line.  Also note that the
+     "orders have been received" flag will NOT get set for a particular
+     power if their orders were submitted by the master without the become
+     command.  It this case, it may be necessary to use the process command
+     to get the phase processed.
+
+
+   process [phase]
+     This forces the judge to process orders immediately with whatever
+     it has in its list.  Partial or nonexistant orders do not cause 
+     powers to be considered in civil disorder.  This can be useful
+     after a rollback command or if you want to not wait for a player
+     for some particular reason.  If the optional phase is specified,
+     the process command will be ignored unless that is indeed the
+     current phase.  Specifying the phase allows you to avoid potential
+     disaster if the judge processed the phase shortly ahead of getting
+     your request.  Without it, your command would process the subsequent
+     phase which could potentially expose orders that players had pending.
+     A typical phase specificiation might be "fall 1905 retreat".
+
+
+   rollback turn
+     This allows you to roll the game back to the specified turn number.
+     The turn number is displayed in all the reports and lists, starting
+     at 001 for spring movement of 1901 and incrementing for each actual
+     phase that's played.  Retreats and adjustments that are not played do
+     not increment the turn number.  History is kept for at least a month,
+     but it may not be possible to go back too far -- this command is
+     intended to go back one phase for the case where one person's orders
+     get messed up and need to be resubmitted.  Orders for intermediate
+     turns that were skipped over should remain intact, but if the change
+     in processing causes a retreat phase to [not] be required the previous
+     orders may wind up being meaningless.  Any pending orders that existed
+     will also be reprocessed so if they were revised by hand the first time
+     the replayed phase was processed the revisions may get lost.
+
+   set [un]moderated
+     This command sets or clears the flag that disallows the other players
+     from adjusting the deadlines and other parameters associated with the
+     game.  By default the moderated flag will be enabled when the you
+     first become master.  Clearing the flag with "set unmoderated" will
+     allow the players to control the game while still giving you the
+     ability to use the other commands accessible only to the master.
+
+   set [no]proxy
+     This command sets or clears the flag that allows one player to give
+     control of one or more of his units to another player.
+
+   set comment text
+     This command sets or clears the text that appears in the brief listing
+     format.  The text consists of the remainder of the line.  A null text
+     field will clear the brief comment.  The brief comment should be less
+     than 60 characters.
+
+   set comment begin
+     If the text of the comment is the keyword "begin" the remainder of 
+     the mail message up to a signoff command will be used for the full 
+     comment.  Placing a signoff command directly after the "set comment 
+     begin" command will clear the full comment.
+
+   set all press
+     This command sets the flag that will cause all partial press between
+     the players to be copied (silently) to you as well.  This is useful
+     in a gunboat game to see what devious plans the players are preparing.
+     It is not too useful in non-gunboat games as players may communicate
+     directly rather than going through the judge so you may miss traffic.
+     Note, if you use this option you must pay careful attention so that
+     you don't leak any information to the other players.
+
+   set normal press
+     This command clears the "all press" flag.
+
+See the file "index" for a complete list of the rest of the flags that
+you can set or clear as the master.
+
+The reply that you get back from the judge after signing on as master
+(unless you relinquish the master status by using the become command)
+will include the [partial] orders that the players have submitted.  It
+is assumed that if you are taking the role of master that you will not
+leak this information to the wrong people.
+
+As a special note about finding replacement players, the proper way to
+get a new player signed on is to allow him to submit the signon himself
+for an abandoned power.  You can use the become command to resign the
+old player, but if you use "set address" and "set password" the judge 
+won't properly update the internal tables that indicate who is playing
+that power.  The dedication ratings and site access info may not reflect
+what is really happening if the player doesn't go through the taking
+over of the power himself.  It is possible to submit mail to the judge
+and make it look like it came from the player, however.  The judge only
+pays attention to the last "Reply-To: " line that it finds in the mail,
+or if there isn't a Reply-To, then to the last "From: " that it finds.
+Thus you can submit a message to the judge that looks like:
+
+    Reply-To: user@host.domain.org
+    signon xname password
+
+to ensure that that player gets signed on properly.  You won't, however,
+get a reply from the judge (it will go to the player) so you're really
+operating blind if you do this.  It is preferred to have the player do
+the signon himself.
+
+For further information, see the files "ep.house.rules" and "how2gm"
+which are available via mail to the judge.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

@@ -1,0 +1,78 @@
+This file describes the set players command, which can be used to create
+duplex games.
+
+Set Players sets the number of players (not powers) in the game. This
+number must be at least 1, and can be as large as the number of powers
+in the variant.  When the number is only 1, it is generally only useful
+for a GM who wants to use the judge to adjudicate a game being
+run off-the-judge.  If this command is not used at all, the default
+setting is equal to the number of powers in the variant.
+
+When the number of players is set to some number less than the number
+of powers, the game will begin when that number of players signs on
+to the game.
+
+The judge assigns the players their first powers based on their
+preference lists.  Players are allocated a second power based on their
+initial preferences over the unassigned powers.  This process is
+repeated for as many rounds as it takes to assign all the powers in the
+game.  If there is ever a round of power allocation in which there are
+more players than powers left to assign, the judge randomly chooses
+which players receive an extra power.
+
+        Tips on using SET PLAYERS number:
+
+When a player receives multiple powers, he/she must sign on
+as each power separately, so a player assigned Germany and Austria
+cannot order the German units while signed on as Austria or vice versa.
+
+If the game is gunboat, then players will not know which other
+powers are being played by a single player. It is therefore recommended
+that they not send press from more than one power at the same time.
+
+Gunboat games run with fewer players than powers should also use the
+quiet flag, so that the pairings can not be inferred from which powers
+are late simultaneously. Also, builds and disbands are listed in the
+order that they are sent in, and so it is recommended that players not
+send in builds and disbands for all their powers at the same time.
+
+        An example of the SET PLAYERS number command in action:
+
+e.g. Youngstown 4 players, i.e., the master has SET PLAYERS 4
+
+The powers in the variant are: ACEFGIJNRT
+
+Player 1 pref: ACGNREJTFI
+Player 2 pref: CAIGJENRFT
+Player 3 pref: EJNAIFTRGC
+Player 4 pref: FENITGCRJA
+
+So player 1 gets Austria, Player 2 China, Player 3 England
+and Player 4 France.  The preference lists become :
+
+Player 1 pref: GNRJTI
+Player 2 pref: IGJNRT
+Player 3 pref: JNITRG
+Player 4 pref: NITGRJ
+
+So player 1 also gets Germany, Player 2 Italy, Player 3 Japan and
+Player 4 India.
+
+There are now only two powers left, so the judge randomly picks players
+1 and 4 to get them. There preference lists are :
+
+Player 1 pref: RT
+Player 4 pref: TR
+
+So player 1 gets Russia and Player 4 gets Turkey
+
+So the full line up is :
+Player 1 : Austria, Germany, Russia
+Player 2 : China, Italy
+Player 3 : England, Japan
+Player 4 : France, India, Turkey
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.
