@@ -6,6 +6,12 @@
 #
 # TODO : detection of charset from the players and of Quoted-printable 
 #
+# Takes parameters:
+# $1: File to send
+# $2: Subject
+# $3: Email of destination
+# $4: Njudge software version
+#
 setenv FROM @USER@@@DOMAIN@
 # FROM=u.washington.edu export FROM
 date >>mail.log
@@ -23,6 +29,7 @@ Comments: Using sendmail
 Organization: TBD
 X-Mailer: script shell from njudge @VERSION@
 X-Njudge: YES
+X-Njudge-Version: $4
 `cat dip.msg $1 dip.footer`
 EOF
 
