@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.24  2003/05/05 23:22:45  nzmb
+ * Change so that the Judge now looks in GAME_DIR when deciding whether or not
+ * a new game is going to duplicate an already used name.
+ *
  * Revision 1.23  2003/05/02 22:52:28  millis
  * Added support for neutrals
  *
@@ -159,19 +163,32 @@ FILE *OpenDataFile(char *line, char *type)
  FILE *fp;
 
  if ((dipent.flags & F_BLIND ) && (dipent.xflags & F_WINGS)) {
+     /* Bug 130, try to open first with %s.name */
+     sprintf(line, "data/%s_bw.%s", type, variants[dipent.variant]);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
      sprintf(line, "data/%s_bw.%d", type, dipent.variant);
      if ( (fp = fopen(line,"r")) != NULL) return fp;
  }
 
  if (dipent.flags & F_WINGS) {
+     /* Bug 130, try to open first with %s.name */
+     sprintf(line, "data/%s_w.%s", type, variants[dipent.variant]);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
      sprintf(line, "data/%s_w.%d", type, dipent.variant);
      if ( (fp = fopen(line,"r")) != NULL) return fp;
  }
 
  if (dipent.flags & F_BLIND) {
+     /* Bug 130, try to open first with %s.name */
+     sprintf(line, "data/%s_b.%s", type, variants[dipent.variant]);
+     if ( (fp = fopen(line,"r")) != NULL) return fp;
      sprintf(line, "data/%s_b.%d", type, dipent.variant);
      if ( (fp = fopen(line,"r")) != NULL) return fp;
  }
+
+  /* Bug 130, try to open first with %s.name */
+  sprintf(line, "data/%s.%s", type, variants[dipent.variant]);
+  if ( (fp = fopen(line,"r")) != NULL) return fp;
 
   sprintf(line, "data/%s.%d", type, dipent.variant);
   fp = fopen(line,"r");
