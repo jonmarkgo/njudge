@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2003/01/05 00:06:43  millis
+ * Fix bug 90
+ *
  * Revision 1.6  2002/12/22 02:02:24  millis
  * corrected bug 56 (making storms at end of Fall)
  *
@@ -190,7 +193,7 @@ void fam_plag(int t)
 
 			fprintf(rfp, "\nProvinces struck: ");
 			s = buf;
-			for (p = 1; p < npr; p++) {
+			for (p = 1; p <= npr; p++) {
 			        if (t == STORM && !water(p))
 					continue;  /* No storms on land! */
 				if (t!= STORM && water(p))
