@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/10/20 12:11:16  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.5.2.1  2001/10/15 00:36:05  ustv
  * Added Ancient_Med variant
  *
@@ -96,6 +99,7 @@ enum {
         V_sailho_crowded,       /* 29 SailHo crowded                 */
 	V_sailho,		/* 30 SailHo			     */
 	V_ancient_med,		/* 31 Ancient_Med			     */
+	V_crowded_1898,		/* 32 crowded_1898		     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
@@ -153,6 +157,7 @@ enum {
     case V_sailho:	dipent.np = 4; dipent.vp = 9; break; \
     case V_sailho_crowded: dipent.np = 6; dipent.vp = 10; break; \
     case V_ancient_med: 	dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
+    case V_crowded_1898: dipent.np = 11; dipent.vp = 18; break; \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \

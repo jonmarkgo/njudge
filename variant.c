@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/10/20 12:11:16  miller
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ *
  * Revision 1.6.2.2  2001/10/20 00:53:08  dedo
  * Removed compile warnings
  *
@@ -77,6 +80,7 @@ char *variants[] =
 	"sailho_crowded",	/* Sailhoi, crowded		   */
 	"sailho",		/* Sailho, 			   */
 	"ancient_med",		/* Ancient medieteraenean	   */
+	"crowded_1898",		/* crowded powers, 1898 style      */
 	/** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
@@ -119,6 +123,7 @@ int vvalue[] =
         V_sailho_crowded,       /* 29 SailHo crowded                 */
         V_sailho,               /* 30 SailHo                         */
 	V_ancient_med,		/* 31 Ancient_Med		     */
+	V_crowded_1898,		/* 32 crowded_1898		     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND,		/* Blind movement option           */
@@ -226,7 +231,8 @@ char *pletter[] =
     ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWCDxxxxx?xOM",                          /* Sailho2_Crowded Diplomacy     */
     ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNSEWxxxxxxx?xOM",                          /* SailHo2 Diplomacy             */
     ".xxxxxxExxxxxxxxxxxxxxxxPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCxRG?xOM",                          /* AncMed Diplomacy 	       */
-/** ADD NEW VARIANTS ABOVE THIS LINE! **/
+    ".ABxxxxxxExFGxxxxIxLxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM", /* crowded_1898 */
+ /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
 
 /*  Starting phase.  */
@@ -265,5 +271,6 @@ char *sphase[] =
 	"S1901M",               /* SailHo2 Diplomacy               */
 	"S1901M",               /* Sailho2_Crowded Diplomacy       */
 	"S0001M",		/* Ancient_Med Diplomacy		   */
+	"S1899M",		/* crowded_1898 Diplomacy	   */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
