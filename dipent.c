@@ -1,6 +1,10 @@
 
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added handling of new XF_:FLAGS , and absence data elements in master.dip
+ * Used gerenric flags to handle variants (not specificif tests)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -93,7 +97,7 @@ int getdipent(FILE * fp)
 		if ((dipent.variant == V_h31)
                     || (dipent.variant == V_h32)
                     || (dipent.variant == V_classical)
-                    || (dipent.variant = V_chaos)) {
+                    || (dipent.variant == V_chaos)) {
 			dipent.xflags |= XF_BUILD_ANYCENTRES;
 		}
 		if (dipent.variant == V_aberration) dipent.xflags |= XF_BUILD_ONECENTRE;
