@@ -4,4 +4,3 @@ find . -name "[MTP]*" -atime +90 -exec rm {} \;
 ./flock ./dip.log
 ./newlogs
 ./flock
-./bgreet
