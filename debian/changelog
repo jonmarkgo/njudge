@@ -105,8 +105,3 @@ njudge (0.8.3-1) unstable; urgency=low
   * Initial Release.
 
  -- Jaldhar H. Vyas <jaldhar@braincells.com>  Mon, 27 Oct 1997 22:23:41 -0500
-
-Local variables:
-mode: debian-changelog
-add-log-mailing-address: "jaldhar@braincells.com"
-End:
