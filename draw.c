@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added handling of new XF_:FLAGS , and absence data elements in master.dip
+ * Used gerenric flags to handle variants (not specificif tests)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -214,6 +218,7 @@ int process_draw(void)
 
 	time(&now);
 	fprintf(dfp, "Draw declared: %s\n", ctime(&now));
+
 	sprintf(line, "Game '%s' has been %s ", dipent.name,
 		strlen(participants) == 1 ? "conceded to" : "declared a draw between");
 	sprintf(line2, "The game was %s ",
@@ -231,6 +236,10 @@ int process_draw(void)
 			}
 		}
 	}
+
+	sprintf(subjectline, "%s:%s - %s %s: %s", JUDGE_CODE, dipent.name, dipent.phase, 
+		strlen(participants) == 1 ? "Game Conceded to" : "Draw Declared", participants);
+
 	dipent.phase[6] = 'X';
 
 	strcat(line, ". Congratulations on a game well-played.");
