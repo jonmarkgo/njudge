@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2003/05/02 23:15:20  millis
+ * Added in definitions for Neutral player
+ *
  * Revision 1.13  2003/04/02 20:11:19  christ
  * Typos
  *
@@ -134,10 +137,10 @@ enum {
 
 /* Do not exceed byte limit as these are used in char arrays */
 #define WILD_PLAYER  114  /* First non-player player ordinal               */
-#define NEUTRAL	     115  /* Nutral power 				   */
-#define AUTONOMOUS   116  /* Non-player ordinal                            */
-#define OBSERVER     117  /* Non-player ordinal                            */
-#define MASTER       118  /* Last Non-player ordinal                       */
+#define NEUTRAL	     (WILD_PLAYER +1) /* Neutral power 			   */
+#define AUTONOMOUS   (NEUTRAL +1)     /* Non-player ordinal                */
+#define OBSERVER     (AUTONOMOUS +1)  /* Non-player ordinal                */
+#define MASTER       (OBSERVER +1)    /* Last Non-player ordinal           */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
