@@ -343,19 +343,19 @@ mod/bgs SET ANY DISBAND                                                {1.4.0}
         for units that are to be kept).  Opposite of "SET NORMAL DISBAND", see
         below.
 
-mod/	SET [NO] APPROVAL					       {1.6.0}
-	Add/remove the requirement for the master to approve new players before
-	they can submit moves. 
+mod/	  SET [NO] APPROVAL                                              {1.6.0}
+        Add/remove the requirement for the master to approve new players
+        before they can submit moves. 
 
-	Actual approval is via the 'set approve' command (see below).
+	  Actual approval is via the 'set approve' command (see below).
 
-mod/	SET [NOT] APPROVE[D] powerlist				       {1.6.0}
-	Disapprove/approve a player from making moves. Disapproved players will
-	have any move orders rejected by the judge. A list of power letters to
-	be processed follows.
+mod/	SET [NOT] APPROVE[D] powerlist                                   {1.6.0}
+        Disapprove/approve a player from making moves. Disapproved players
+        will have any move orders rejected by the judge. A list of power
+        letters to be processed follows.
 	
-	One use is for foreign-language press games, to allow the master to
-	check first if a new player really can speak the required language.
+        One use is for foreign-language press games, to allow the master to
+        check first if a new player really can speak the required language.
  
 mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
         Disables/enables optional assassination rules.
@@ -369,7 +369,7 @@ mod/   !SET [NO] AUTO CREATE                                           {1.4.1}
         with identical parameters when the current one finishes (in a draw or
         victory), except that the new game will be set to 'NoList'. Fails if a 
         sequence number cannot be added/incremented on current game name.
-	{In reality, no functionality has yet been added for this command.}
+        {In reality, no functionality has yet been added for this command.}
 
 mod/bgs SET [NO] AUTO DISBAND                                          {0.8.9}
         Disables/enables the autodisband rule.  This rule when enables means
