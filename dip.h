@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.43  2004/01/05 13:54:51  millis
+ * Added extra_centres definition
+ *
  * Revision 1.42  2004/01/05 13:49:33  millis
  * Added missing definition for extra_centre
  *
@@ -336,7 +339,7 @@
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
-#define X2F_PRESS_OPTIONS 	(X2F_TOUCHPRESS & X2F_MUSTORDER)
+#define X2F_PRESS_OPTIONS 	(X2F_TOUCHPRESS | X2F_MUSTORDER)
 /* Do not display Colonial, Preference and Mach-only flags */
 #define X2F_PRINT_OPTIONS 	(~X2F_PRESS_OPTIONS & ~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS)
 
@@ -377,7 +380,7 @@ typedef struct Sequence {
 
 
 /* This will clear out non-essential status for a new player */
-#define NewPlayerSF(i) dipent.players[i].status &= (SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
+#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
@@ -445,6 +448,7 @@ struct dipent {
 	int extra_centres;	/* !0 if X2F_INITIAL_CENTRES set */
 };
 
+#define IS_DUPLEX(dipent) (dipent.np != dipent.no_of_players)
 #define MAXUSER 8000
 
 struct dedication {
