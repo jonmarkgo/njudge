@@ -1,5 +1,14 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Many changes, including -
+ *   Reminding players to make moves when close to deadline
+ *   Special handling for blind games
+ *   Passing of '-C' option for specifying dip.conf path
+ *   Informaing all masters when a time-warp was detected
+ *   Handling of NOLATEPRESS and MANUALSTART flags
+ *   Adding automatic wati for all players in a build phase of a transform game
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -108,47 +117,49 @@ void inform_party_of_blind_turn( int player_index, char *turn_text)
 {
 	char line[150];
 
+/* ito be made configureable */
+	char *rfile = "dip.reply";
+
 	if (Dflg)
               rfp = stdout;
-         else if (!rfp && !(rfp = fopen(rfile, "w"))) {
+         else if (!(rfp = fopen(rfile, "w"))) {
 	        perror(rfile);
                 bailout(1);
 	}
 
+	fprintf(rfp, "Blind turn %s has occurred.\n\n", turn_text);
+	
 	switch (dipent.players[player_index].power)
 	{
 		case MASTER:
-			fprintf(rfp, "Blind turn %s has occurred.\nIt is your responsability to inform affected player(s).\n", turn_text);
+			fprintf(rfp, "It is your responsability to inform affected player(s).\n");
 			break;
 
 		case OBSERVER:
-			fprintf(rfp, "Blind turn %s has occurred.\n", turn_text);
 			break;
 
 		default:
 			if (dipent.players[player_index].centers > 0) {
 			    /* Player still has some interest */
-			    fprintf(rfp,"Blind turn %s has occurred.\n",turn_text);
 			    if (dipent.players[player_index].status & SF_MOVE) {
 				fprintf(rfp,"A move is expected from you. The master should contact you shortly.\n");
 			    } else {
 				fprintf(rfp,"The master should send your results shortly.\n");
 			    }
 			} else {
-			    fprintf(rfp,"Blind turn %s has occured.\n",turn_text);
+			    /* What more does a dead player want to know?! */
 			}
 	}
+	fclose(rfp);
 
-	sprintf(line, "%s %s 'Diplomacy results %s %s' '%s'",
+	sprintf(line, "%s %s 'Diplomacy blind results %s %s' '%s'",
                               SMAIL_CMD, rfile, 
 			      dipent.name, turn_text, dipent.players[player_index].address);
         if (*(dipent.players[player_index].address) != '*' && !Dflg) {
                                 execute(line);
            }
-
-	fclose(rfp);
-
 }			
+
 
 /****************************************************************************/
 
@@ -359,8 +370,8 @@ void init(int argc, char **argv)
 			fprintf(stderr, "  The directory specifies where we'll find our data.\n");
 			fprintf(stderr, "  -a Don't mess with the at queue.\n");
 			fprintf(stderr, "  -A Don't remove anything from the at queue.\n");
-			fprintf(stderr, "  -C <8sdirectory> Directory where dip.conf is.\n");
-			fprintf(stderr, "  -c<CONFIG>=<value> Set <CONFIG< variable to <value>.\n");
+			fprintf(stderr, "  -C <sudirectory> Directory where dip.conf is.\n");
+			fprintf(stderr, "  -c<CONFIG>=<value> Set <CONFIG> variable to <value>.\n");
 			fprintf(stderr, "  -D increments the debugging flag.\n");
 			fprintf(stderr, "  -i Use <filename> for input.\n");
 			fprintf(stderr, "  -q quick mode, just process mail.\n");
@@ -1085,7 +1096,7 @@ int process(void)
 
 /*
  * This looks as good a place as any to clear draw flags...
- *    (Positron, 11 Mar 1993)
+ *    (P Ùositron, 11 Mar 1993)
  */
 			dipent.players[i].status &= ~SF_DRAW;
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) {
@@ -1095,7 +1106,7 @@ int process(void)
 				execute(line);
 			    }
 			}
-			if (dipent.flags & F_BLIND) {
+			if (dipentlags & F_BLIND) {
 			    /* Ooops, it's a blind variant */
 			    /* Special routine to work out what to tell who */
 			    inform_party_of_blind_turn(i, phase);
