@@ -1,42 +1,41 @@
-The following bugs were outstanding as of 1.5.2
+The following bugs were outstanding as of 1.5.3
 
 --------------------
 
-ID  Sev  Pri  Plt  Owner  State  Result  Summary  
-131  maj  P3  All  millis@faztek.org  REOP   Judge sometime hangs-up with empty dip.input file  
-215  maj  P3  All  judgekeeper@braincells.com  ASSI   when doing an upgrade from 1.2.0, some map files are not ...  
-217  maj  P3  All  judge-maint@diplom.org  NEW   Judge bailout can be caused with bad from: address  
-240  maj  P3  All  judge-maint@diplom.org  NEW   Prevent registration cross-linking  
-91  nor  P3  All  judge-maint@diplom.org  NEW   Keep duplexed powers together  
-117  nor  P3  All  judge-maint@diplom.org  ASSI   Can't turn off Transformation options  
-149  nor  P3  All  MachFix@yahoogroups.com  NEW   Allow Mach games to be conceeded  
-186  nor  P3  All  judge-maint@diplom.org  NEW   Must order does not allow press when should  
-212  nor  P3  All  tim@gem.win.co.nz  ASSI   Announce when abandoned player has returned to NMR game  
-218  nor  P3  All  judge-maint@diplom.org  NEW   Set command(s) follwed by 'become' do not work  
-219  nor  P3  All  judge-maint@diplom.org  NEW   Wrong phase name in output of terminated game  
-226  nor  P3  All  judge-maint@diplom.org  ASSI   Pause command has some quirks  
-233  nor  P3  All  judge-maint@diplom.org  NEW   Player cannot resume abandoned position in a multiplex game  
-238  nor  P3  All  judge-maint@diplom.org  NEW   Colonial: Verbose Suez Canal warnings  
-35  min  P3  All  judge-maint@diplom.org  NEW   Player with unusable builds must waive  
-40  min  P3  All  MachFix@yahoogroups.com  ASSI   Sort out summary report spacing  
-100  min  P3  All  judge-maint@diplom.org  NEW   Wrong person sent termination  
-102  min  P3  All  tim@gem.win.co.nz  ASSI   Setting game start date does NOT affect the first turn  
-103  min  P3  All  judge-maint@diplom.org  NEW   Summary incorrect  
-104  min  P3  All  judge-maint@diplom.org  NEW   Only prompt for adjustments if homes still need to be dec...  
-109  min  P3  All  judge-maint@diplom.org  ASSI   Better errors & documentation on Build transform  
-123  min  P3  All  judge-maint@diplom.org  NEW   SET ALLOW|DENY MASTER works when it shouldn't  
-128  min  P3  All  judge-maint@diplom.org  NEW   press to none  
-132  min  P3  All  judge-maint@diplom.org  NEW   Deadline falls during "set absence" period  
-145  min  P3  All  judge-maint@diplom.org  NEW   Change "problem generating summary" error  
-135  min  P3  All  judge-maint@diplom.org  REOP   auto-advance deadline only when all players replaced  
-177  min  P3  All  millis@faztek.org  NEW   Summer-time alterations not working  
-183  min  P3  All  judge-maint@diplom.org  NEW   Build order "a edi" rejected when phased.  
-200  min  P3  All  judge-maint@diplom.org  NEW   set absence and press shows for master  
-221  min  P3  All  judge-maint@diplom.org  NEW   set [no]show does nothing  
-227  min  P3  All  judge-maint@diplom.org  NEW   Implement NoBlankPress functionality  
-235  min  P3  All  judge-maint@diplom.org  NEW   Version command prints out the results twice  
-237  min  P3  All  judge-maint@diplom.org  NEW   Allow syntax of order confirmation/reporting to be valid ...  
-239  min  P3  All  judge-maint@diplom.org  NEW   Whogame does not work with multiple emails  
-241  min  P3  All  judge-maint@diplom.org  NEW   Iamalso to accept only one email  
-35 bugs found. 
+ID   Sev   Pri   Plt   Owner   State   Result   Summary
+131 maj P3 All millis@faztek.org REOP Judge sometime hangs-up with empty dip.input file
+215 maj P3 All judgekeeper@braincells.com ASSI when doing an upgrade from 1.2.0, some map files are not ...
+217 maj P3 All judge-maint@diplom.org NEW Judge bailout can be caused with bad from: address
+91 nor P3 All judge-maint@diplom.org NEW Keep duplexed powers together
+117 nor P3 All judge-maint@diplom.org ASSI Can't turn off Transformation options
+149 nor P3 All MachFix@yahoogroups.com NEW Allow Mach games to be conceeded
+186 nor P3 All judge-maint@diplom.org NEW Must order does not allow press when should
+218 nor P3 All judge-maint@diplom.org NEW Set command(s) follwed by 'become' do not work
+219 nor P3 All judge-maint@diplom.org NEW Wrong phase name in output of terminated game
+226 nor P3 All judge-maint@diplom.org ASSI Pause command has some quirks
+233 nor P3 All judge-maint@diplom.org NEW Player cannot resume abandoned position in a multiplex game
+238 nor P3 All judge-maint@diplom.org NEW Colonial: Verbose Suez Canal warnings
+35 min P3 All judge-maint@diplom.org NEW Player with unusable builds must waive
+40 min P3 All MachFix@yahoogroups.com ASSI Sort out summary report spacing
+100 min P3 All judge-maint@diplom.org NEW Wrong person sent termination
+102 min P3 All tim@gem.win.co.nz ASSI Setting game start date does NOT affect the first turn
+103 min P3 All judge-maint@diplom.org NEW Summary incorrect
+104 min P3 All judge-maint@diplom.org NEW Only prompt for adjustments if homes still need to be dec...
+109 min P3 All judge-maint@diplom.org ASSI Better errors & documentation on Build transform
+123 min P3 All judge-maint@diplom.org NEW SET ALLOW|DENY MASTER works when it shouldn't
+128 min P3 All judge-maint@diplom.org NEW press to none
+132 min P3 All judge-maint@diplom.org NEW Deadline falls during "set absence" period
+145 min P3 All judge-maint@diplom.org NEW Change "problem generating summary" error
+135 min P3 All judge-maint@diplom.org REOP auto-advance deadline only when all players replaced
+177 min P3 All millis@faztek.org NEW Summer-time alterations not working
+183 min P3 All judge-maint@diplom.org NEW Build order "a edi" rejected when phased.
+200 min P3 All judge-maint@diplom.org NEW set absence and press shows for master
+221 min P3 All judge-maint@diplom.org NEW set [no]show does nothing
+227 min P3 All judge-maint@diplom.org NEW Implement NoBlankPress functionality
+235 min P3 All judge-maint@diplom.org NEW Version command prints out the results twice
+237 min P3 All judge-maint@diplom.org NEW Allow syntax of order confirmation/reporting to be valid ...
+239 min P3 All judge-maint@diplom.org NEW Whogame does not work with multiple emails
+243 min P3 All judge-maint@diplom.org NEW Wrong email title sent
 
+
+33 bugs found. 

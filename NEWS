@@ -1,4 +1,4 @@
-The following bugs were fixed in 1.5.2
+The following bugs were fixed in 1.5.3
 
 (ordered by Severity)
 
@@ -7,18 +7,9 @@ The following bugs were fixed in 1.5.2
 
 
 ID   Sev   Pri   Plt   Owner   State   Result   Summary
-230  cri  P3  All  millis@faztek.org  RESO  FIXE  Judge crashes with unknown power in assassinate line  
-236  cri  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Dislodged and detroyed unit not removed from game  
-225  maj  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Coastal restrictions not enforced on Conversion  
-220  nor  P3  All  judge-maint@diplom.org  RESO  FIXE  Games set to ManualProcess are not processed with 'proces...  
-228  nor  P3  All  millis@faztek.org  RESO  FIXE  Touch press: master cannot send press  
-223  nor  P3  All  judge-maint@diplom.org  RESO  FIXE  Give an error with phases prior to current phase  
-188  min  P3  All  judge-maint@diplom.org  RESO  FIXE  Wrong email title in rejected absence request  
-31  min  P3  All  tim@gem.win.co.nz  RESO  FIXE  Deadline warnings occur after game has terminated  
-211  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  x2flags shown as blank  
-158  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  Deadline reminder timing is off  
-222  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  "CD Ratio" error text  
-224  tri  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Missing '.' on build turn result lines  
+224 tri P3 All MachFix@yahoogroups.com RESO FIXE Missing '.' on build turn result lines
+212 nor P3 All tim@gem.win.co.nz RESO FIXE Announce when abandoned player has returned to NMR game
+240 maj P3 All tim@gem.win.co.nz RESO FIXE Prevent registration cross-linking
+241 min P3 All tim@gem.win.co.nz RESO FIXE Iamalso to accept only one email
 
-12 bugs found. 
-
+4 bugs found. 
