@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/01/06 18:48:43  davidn
+ * Changes to allow game creator to be automatically made master
+ *
  * Revision 1.3  2000/11/14 14:27:37  miller
  * Small changes for Blind/Wings setup data files, also handling of JK signon from
  * any email account, adjustment of takeover countries as according to game settings (deadline that is)
@@ -537,14 +540,13 @@ int mail_signon(char *s)
 						fprintf(rfp, "that is indeed the case or else use 'get form'.\n\n");
 					}
 					if (userid != dipent.players[i].userid && dipent.players[i].userid) {
-						char *s, *t;
-						if (!(s = strchr(raddr, '@')) ||
-						    !(t = strchr(dipent.players[i].address, '@')) ||
-						    s - raddr != t - dipent.players[i].address ||
-						    strncasecmp(dipent.players[i].address, raddr, s - raddr)) {
-							fprintf(xfp, "Orders for %s in '%s' submitted by %s\n",
+					        /* See if sender is part of player's email adress 
+						   in case player has email1,email2 and sends from either */
+						if (!(strstr(dipent.players[i].address, raddr)))
+						{
+						    fprintf(xfp, "Orders for %s in '%s' submitted by %s\n",
 								powers[dipent.players[i].power], dipent.name, raddr);
-							fprintf(xfp, "instead of %s.\n", dipent.players[i].address);
+						    fprintf(xfp, "instead of %s.\n", dipent.players[i].address);
 						}
 					}
 				}
