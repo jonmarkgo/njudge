@@ -2,7 +2,7 @@
 
                  Installation-HOWTO for the Diplomacy judge
 
-                                 v.1.5.1.0
+                                 v.1.5.1.1
               [1]Christophe Courtois (christophe@courtois.cc)
 
                              [2]1 Introduction
@@ -59,15 +59,18 @@
                  [53]11.4 Patching or upgrading source code
                    [54]11.5 Recompiling and installation
                        [55]11.6 Relaunching the judge
-                                [56]12 Misc
-                            [57]12.1 The author
-                              [58]12.2 Thanks
-                    [59]12.3 Copyright and boring stuff
+                                [56]12 Links
+                                [57]13 Misc
+                            [58]13.1 The author
+                              [59]13.2 Thanks
+                    [60]13.3 Copyright and boring stuff
      _________________________________________________________________
 
                                 1 Introduction
 
 1.1 History
+
+   - 1.5.1.1 : September 2003
 
    - 1.5.1.0 : August 2003
 
@@ -93,7 +96,7 @@
    The reference version is now the HTML guide. The text should be
    automatically generated against the HTML.
    Anyway, the last version of this file should always be in the last CVS
-   snapshot of the judge at [60]http://www.njudge.org/.
+   snapshot of the judge at [61]http://www.njudge.org/.
 
 1.3 Why?
 
@@ -116,7 +119,7 @@
    installing the judge (versions: 0.8.6-FROG, 0.8.7, 0.8.9, 1.0.0,
    1.1.1, 1.3.0-pre, 1.3.2, 1.5.1). Comments, advice, corrections
    [including spelling and grammar, I'm not a native English speaker] are
-   [61]welcomed (in French, English or German)!
+   [62]welcomed (in French, English or German)!
 
    This guide is focused on the installation on Linux, but should be okay
    for most Unices. If you know of some platform-specific installation
@@ -151,11 +154,11 @@
    The judge does compile on FreeBSD-x86, Darwin-ppc (and then on
    MacOS X); I don't know if some judges use these systems.
    There was some discussion on a Win32 port. Maybe is it possible to use
-   [62]Cygwin to run a judge on Windows.
+   [63]Cygwin to run a judge on Windows.
 
    - As development tools, you'll need gcc, and to be on the safe side at
    least version 2.50 of autoconf and 1.7 of automake. If your
-   system/distribution does not have it, you can get them on [63]GNU.org.
+   system/distribution does not have it, you can get them on [64]GNU.org.
    (If you have a Debian Woody, you'll have to install the autoconf and
    automake1.7 package from the testing distribution).
    If these tools are too old, you can obtain some very strange
@@ -178,31 +181,31 @@
    for friends? candidate for the biggest running judge? just for fun?
 
    - Decide what name you'll give to your judge. Theoretically, it should
-   begin by the ISO code of the country it is in. [64]FROG is in France,
-   [65]ALEX should have been in Albania, USEF is in the United States and
+   begin by the ISO code of the country it is in. [65]FROG is in France,
+   [66]ALEX should have been in Albania, USEF is in the United States and
    so on.
 
-   - Not necessary for a private judge: Send a mail to [66]Nicholas
+   - Not necessary for a private judge: Send a mail to [67]Nicholas
    Fitzpatrick (nfitz@sentex.net) to tell him that you want to open a
-   judge, and ask him to bless its name and add it in [67]its list of
+   judge, and ask him to bless its name and add it in [68]its list of
    judges
 
    - If you want your judge to go more or less public and Nicholas is
-   okay with the name, you can add it on the [68]DipPouch Judge
+   okay with the name, you can add it on the [69]DipPouch Judge
    Registration Form
    (http://devel.diplom.org/DipPouch/Email/registration.html) to make it
    easier for people to register on your judge.
 
    - Subscribe to the judge-keepers mailing-list (send a mail to
-   [69]majordomo@diplom.org with 'help' in the body). It is actually a
+   [70]majordomo@diplom.org with 'help' in the body). It is actually a
    judge maintenance mailing list. The JKs just happen to all be there.
    There are archives of this list available on Alain Tesio's website:
-   [70]http://www.floc.net/exarch/judgemaint.html
+   [71]http://www.floc.net/exarch/judgemaint.html
 
 2.2 Getting the source code or the package
 
    Download the source of the judge from the net :
-   [71]http://www.njudge.org/ is the official download site from Millis
+   [72]http://www.njudge.org/ is the official download site from Millis
    Miller and should indicate which is the last official judge version
    available, and give you a link to download it.
 
@@ -221,8 +224,8 @@
    some, they are out of date.
 
    - If you're lucky enough to work with a Debian Linux, you have a
-   package by [72]Jaldhar H. Vyas available at Braincells:
-   [73]http://src.braincells.com/debian/woody/njudge/
+   package by [73]Jaldhar H. Vyas available at Braincells:
+   [74]http://src.braincells.com/debian/woody/njudge/
    See below (section 4.) how to install it. You can skip the Unix
    configuration and the compilation below. Your judge will use the
    'judge' user name, and will be installed directly in /home/judge (no
@@ -241,7 +244,7 @@
    (like foo.com, toto.fr, bar.edu), which can be obtained only with a
    permanent IP. If the box has no permanent IP address (like most
    personal computers on xDSL or cable), it is possible to use dynamic
-   DNS (for example [74]Dyndns.org) to have an address anybody on the net
+   DNS (for example [75]Dyndns.org) to have an address anybody on the net
    can write to. Or you can hack something (with fetchmail for example)
    to retrieve mail every 10 minutes from a 'real' account (good thing
    for a disconnected judge).
@@ -292,10 +295,10 @@
 2.4 Configure before compilation
 
    - The judge uses the GNU Autotools (automake, autoconf) as its build
-   system (thanks for that, [75]Jaldhar ;-) automake and autoconf are
+   system (thanks for that, [76]Jaldhar ;-) automake and autoconf are
    pretty much standard on Unix-like systems these days but if your
    vendor or distribution does not provide them, you can download them
-   from [76]ftp://ftp.gnu.org/pub/gnu/. You will need at least version
+   from [77]ftp://ftp.gnu.org/pub/gnu/. You will need at least version
    2.50 of autoconf.
 
    - Some modifications (including changing the judge version if you
@@ -332,11 +335,14 @@
    ./.configure fails by telling you it didn't find sendmail, search for
    it yourself with find / -name sendmail -print, and add another
    parameter to the script: --with-sendmail=/path_where_sendmail_is.
-   Thank you for [77]telling us this unknown path, it will be added in
+   Thank you for [78]telling us this unknown path, it will be added in
    the script in the next version
    . If the ./configure finds it, but the compilation fails by not
-   finding it itself, upgrade to automake 1.7 and begin from a fresh
-   tarball again (anyway, I had to do that).
+   finding it itself, you may have to:
+     * try to launch automake and aclocal and try ./configure and make
+       all again,
+     * or upgrade to automake 1.7 and begin from a fresh tarball again
+       (anyway, I had to do that).
 
    - (This should not be necessary on new judges) Verify permissions and
    change them if necessary to be able to write to the files.
@@ -434,7 +440,7 @@
 2.7 sendmail problems
 
    Some people had problems with some sendmail configuration (especially
-   with [78]Red Hat Linux). If you use smrsh, place a symbolic link to
+   with [79]Red Hat Linux). If you use smrsh, place a symbolic link to
    rdip in the /etc/smrsh/ dir. Also make sure only the owner has write
    permission to the .forward file.
    (Briefly: smrsh allows only programs from a unique directory to call
@@ -536,8 +542,8 @@
    - To avoid compiling yourself, you can get the Debian package from
    Jaldhar Vyas.
    Download the version suitable for your architecture from
-   [79]http://www.njudge.org/ if it is available there, or from
-   [80]http://src.braincells.com/debian/woody/njudge/, and (as root) use
+   [80]http://www.njudge.org/ if it is available there, or from
+   [81]http://src.braincells.com/debian/woody/njudge/, and (as root) use
    dpkg to install it, or add the lines given on the site to your
    /etc/apt/sources.list, run apt-get update and apt-get install it.
    It is still to be considered experimental.
@@ -975,7 +981,7 @@
    what it contains.
    The judge crashes at the first time, in dipent.c Check that the
    dip.master file was not generated with a bad format in dip.control
-   (see [81]5.5).
+   (see [82]5.5).
    The judge crashes when you try a new variant Look in install.log what
    variants are installed. Check that all files (source and compiled) are
    there.
@@ -998,7 +1004,7 @@
    whatever you want there and add silly comments. (Be careful not to
    break software like DipChief or web observers...). If you want to add
    variants, see documentation in the judge code, in
-   [82]VariantsHOWTO.html or [83]njudgemapdatahowto.htm.
+   [83]VariantsHOWTO.html or [84]njudgemapdatahowto.htm.
 
    You can read README.hackers if you change the code.
 
@@ -1113,15 +1119,36 @@
    - Go into the 'dip/' directory, unlock the judge ('flock') and test
    it!
 
-                                    12 Misc
+                                   12 Links
 
-12.1 The author
+     * The [85]archives of the judge-maint mailing-list, courtesy from
+       Alain Tésio.
+     * The official njudge site: [86]Njudge.org.
+       You'll find on this site (and sometimes in the same tarball than
+       the current file):
+          + a [87]guide to help building variants on njudge v1.x (NB:
+            work in progress!),
+          + [88]How to build a Diplomacy Judge Map Data file by Sergio
+            Lidsell
+          + some [89]documentation of the building of maps for
+            [90]floc.net,
+          + a [91]full CVS view of the judge code,
+          + a sum-up from Millis of [92]a recent discussion on a possible
+            njudge v.2.
+     * A Diplomacy Judge user manual on the [93]Russ Blau Diplomacy page.
+     * The worlwide main resource on Diplomacy: The [94]DipPouch.
+     * An [95]history of njudge by [96]Millis Miller, the current main
+       maintener.
+
+                                    13 Misc
+
+13.1 The author
 
    The author is 29 years old, writes SQL all day long for big
    corporations to eat and pay the mortgage, and is trying to learn Java,
    C and PHP (The most difficult part is to find some time for it...)
 
-12.2 Thanks
+13.2 Thanks
 
    Many parts of this HowTo are cut-and-pasted from README and INSTALL
    files, from source code and from mails of the judge-maint mailing
@@ -1131,7 +1158,7 @@
    all my questions on the judge, and the members of the judge-maint
    mailing-list.
 
-12.3 Copyright and boring stuff
+13.3 Copyright and boring stuff
 
    Permission is granted to make and distribute copies of this text
    provided the copyright notice and this permission notice are preserved
@@ -1152,7 +1179,7 @@
    (no translation known for the moment).
      _________________________________________________________________
 
-   [84]Valid HTML 4.01! 
+   [97]Valid HTML 4.01! 
 
 References
 
@@ -1213,35 +1240,48 @@ References
   54. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#11.5
   55. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#11.6
   56. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#12
-  57. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#12.1
-  58. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#12.2
-  59. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#12.3
-  60. http://www.njudge.org/
-  61. mailto:christophe+insthowto@courtois.cc
-  62. http://www.cygwin.org/
-  63. http://www.gnu.org/
-  64. http://frog.born2play.org/
-  65. http://www.courtois.cc/alex/
-  66. mailto:nfitz@sentex.net
-  67. http://www.sentex.ca/~nfitz/judge.codes
-  68. http://devel.diplom.org/DipPouch/Email/registration.html
-  69. mailto:majordomo@diplom.org
-  70. http://www.floc.net/exarch/judgemaint.html
-  71. http://www.njudge.org/
-  72. http://www.braincells.com/jaldhar/
-  73. http://src.braincells.com/debian/woody/njudge/
-  74. http://www.dyndns.org/
-  75. http://www.braincells.com/jaldhar/
-  76. ftp://ftp.gnu.org/pub/gnu/
-  77. mailto:judge-maint@devel.diplom.org
-  78. http://www.redhat.com/
-  79. http://www.njudge.org/
-  80. http://src.braincells.com/debian/woody/njudge/
-  81. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#5.5
-  82. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.htm
-  83. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
-  84. http://validator.w3.org/check/referer
+  57. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#13
+  58. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#13.1
+  59. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#13.2
+  60. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#13.3
+  61. http://www.njudge.org/
+  62. mailto:christophe+insthowto@courtois.cc
+  63. http://www.cygwin.org/
+  64. http://www.gnu.org/
+  65. http://frog.born2play.org/
+  66. http://www.courtois.cc/alex/
+  67. mailto:nfitz@sentex.net
+  68. http://www.sentex.ca/~nfitz/judge.codes
+  69. http://devel.diplom.org/DipPouch/Email/registration.html
+  70. mailto:majordomo@diplom.org
+  71. http://www.floc.net/exarch/judgemaint.html
+  72. http://www.njudge.org/
+  73. http://www.braincells.com/jaldhar/
+  74. http://src.braincells.com/debian/woody/njudge/
+  75. http://www.dyndns.org/
+  76. http://www.braincells.com/jaldhar/
+  77. ftp://ftp.gnu.org/pub/gnu/
+  78. mailto:judge-maint@devel.diplom.org
+  79. http://www.redhat.com/
+  80. http://www.njudge.org/
+  81. http://src.braincells.com/debian/woody/njudge/
+  82. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html#5.5
+  83. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.htm
+  84. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
+  85. http://www.floc.net/exarch/judgemaint.html
+  86. http://www.njudge.org/
+  87. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/VariantsHOWTO.html?rev=HEAD&content-type=text/html
+  88. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudgemapdatahowto.htm?rev=HEAD&content-type=text/html
+  89. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/HowToFloc.html?rev=HEAD&content-type=text/html
+  90. http://www.floc.net/
+  91. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/
+  92. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudge2-discussion.html?rev=HEAD&content-type=text/html
+  93. http://members.cox.net/russblau/
+  94. http://www.diplom.org/
+  95. http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html
+  96. http://C.webring.com/hub?ring=millisring&id=1&hub
+  97. http://validator.w3.org/check/referer
 
    Hidden links:
-  85. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
-  86. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
+  98. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
+  99. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html

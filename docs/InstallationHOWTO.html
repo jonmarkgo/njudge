@@ -19,12 +19,12 @@
 </head>
 <body>
 
-<!--  Please do not edit this text with anything else than an SCII editor -
+<!--  Please do not edit this text with anything else than an ASCII editor -
 I want this code to stay clean and W3C compliants. Thanks - Christophe -->
 
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.5.1.0
+<p align=center>v.1.5.1.1
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
 <table align=center width="80%" summary="Summary"><tr valign=top><td>
@@ -85,10 +85,11 @@ I want this code to stay clean and W3C compliants. Thanks - Christophe -->
 <br><a href="#11.4">11.4 Patching or upgrading source code</a>
 <br><a href="#11.5">11.5 Recompiling and installation</a>
 <br><a href="#11.6">11.6 Relaunching the judge</a>
-<br><a href="#12">12 Misc</a>
-<br><a href="#12.1">12.1 The author</a>
-<br><a href="#12.2">12.2 Thanks</a>
-<br><a href="#12.3">12.3 Copyright and boring stuff</a>
+<br><a href="#12">12 Links</a>
+<br><a href="#13">13 Misc</a>
+<br><a href="#13.1">13.1 The author</a>
+<br><a href="#13.2">13.2 Thanks</a>
+<br><a href="#13.3">13.3 Copyright and boring stuff</a>
 <br><a href="#"></a>
 </small>
 </td></tr></table>
@@ -99,6 +100,7 @@ I want this code to stay clean and W3C compliants. Thanks - Christophe -->
 
 <h2><a name="1.1">1.1 History</a></h2>
 
+<p>- 1.5.1.1 : September 2003
 <p>- 1.5.1.0 : August 2003
 <p>- 1.3.2.x : March-May 2003
 <br>- 1.3.0-pre : December 2002
@@ -355,8 +357,13 @@ seems to provide a compatibility mode, it is sometimes not easy to find, and oft
 and add another parameter to the script: <tt>--with-sendmail=/path_where_sendmail_is</tt>.
 Thank you for <a href="mailto:judge-maint@devel.diplom.org">telling us</a> this unknown path,
 it will be added in the script in the next version </p>.  If the <tt>./configure</tt> finds it,
-but the compilation fails by not finding it itself, upgrade to <tt>automake 1.7</tt> and begin
-from a fresh tarball again (anyway, I had to do that).
+but the compilation fails by not finding it itself, you may have to:
+<ul disc=circle>
+<li>try to launch <tt>automake</tt> and <tt>aclocal</tt> and try <tt>./configure</tt> and
+<tt>make all</tt> again,</li>
+<li>or upgrade to <tt>automake 1.7</tt> and begin from a fresh tarball again (anyway, I had to do that).</li>
+</ul>
+
 
 <p>- (This should not be necessary on new judges) Verify permissions
 and change them if necessary to be able to write to the files.
@@ -1123,16 +1130,50 @@ you won't break anything. It was not the case before 0.8.10 :-)
 
 <p>- Go into the '<tt>dip/</tt>' directory, unlock the judge ('<tt>flock</tt>') and test it!
 
+<h1><a name="12">12 Links</a></h1>
 
-<h1><a name="12">12 Misc</a></h1>
+<ul type="circle">
+<li>The <a href="http://www.floc.net/exarch/judgemaint.html">archives of the
+judge-maint mailing-list</a>, courtesy from Alain Tésio.
+</li>
+<li>The official njudge site: <a href="http://www.njudge.org/">Njudge.org</a>.
+<br>You'll find on this site (and sometimes in the same tarball than the current file):
+<ul type="disc">
+<li>a <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/VariantsHOWTO.html?rev=HEAD&content-type=text/html">
+guide to help building variants</a> on njudge v1.x (NB: work in progress!),</li>
+<li><a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudgemapdatahowto.htm?rev=HEAD&content-type=text/html">
+How to build a Diplomacy Judge Map Data file</a> by Sergio Lidsell</li>
+</li>
+<li>some <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/HowToFloc.html?rev=HEAD&content-type=text/html">
+documentation of the building of maps</a> for
+<a href="http://www.floc.net/">floc.net</a>,</li>
+<li>a <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/">full CVS
+view</a> of the judge code,</li>
+<li>a sum-up from Millis of <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudge2-discussion.html?rev=HEAD&content-type=text/html">
+a recent discussion on a possible njudge v.2.</a></li>
+</ul>
 
-<h2><a name="12.1">12.1 The author</a></h2>
+</li>
+
+<li>A Diplomacy Judge user manual on the
+<a href="http://members.cox.net/russblau/">Russ Blau Diplomacy page</a>.</il>
+
+<li>The worlwide main resource on Diplomacy: The <a href="http://www.diplom.org/">DipPouch</a>.</li>
+<li>An <a href="http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html">
+history of njudge</a> by <a href="http://C.webring.com/hub?ring=millisring&id=1&hub">
+Millis Miller</a>, the current main maintener.</li>
+
+</ul>
+
+<h1><a name="13">13 Misc</a></h1>
+
+<h2><a name="13.1">13.1 The author</a></h2>
 
 <p> The author is 29 years old, writes SQL all day long for big
 corporations to eat and pay the mortgage, and is trying to learn Java, C and PHP
 (The most difficult part is to find some time for it...)
 
-<h2><a name="12.2">12.2 Thanks</a></h2>
+<h2><a name="13.2">13.2 Thanks</a></h2>
 
 <p> Many parts of this HowTo are cut-and-pasted from <tt>README</tt> and <tt>INSTALL</tt> files,
 from source code and from mails of the judge-maint mailing list.
@@ -1140,7 +1181,7 @@ from source code and from mails of the judge-maint mailing list.
 <p> Thanks to Philippe Lalande, JK of Frog, who was soooooo patient with
 all my questions on the judge, and the members of the judge-maint mailing-list.
 
-<h2><a name="12.3">12.3 Copyright and boring stuff</a></h2>
+<h2><a name="13.3">13.3 Copyright and boring stuff</a></h2>
 
 <p> Permission is granted to make and distribute copies of this text
 provided the copyright notice and this permission notice are preserved on all copies.
