@@ -2,7 +2,7 @@ Greetings from the Diplomacy* Adjudicator!!                     18 Jul, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
-with a brief description.  It is current as of njudge version 1.4.1.
+with a brief description.  It is current as of njudge version 1.5.0.
 
 For information on how to enter Diplomacy orders, get the file 'syntax' (see
 "GET file", below).
@@ -95,21 +95,21 @@ any/bgs CREATE ?name password [variant] [option [option ...]]
         "SET VARIANT" command, below.  Get file 'master' for more detail on
         creating games.
 
-ply/	DIARY [option [option]]
+ply/	DIARY [option [option]]                                        {1.5.0}
 	Diaries allow a player to record his thoughts during the game for
 	broadcast at the end of the game.  If the diary command is given
 	with no options, it will default to "diary record". Options are:
 
-	record: "diary record" begins a new, numbered diary entry. The
-	Judge will read until encountering "endpress", "endbroadcast",
-	or "signoff" (just like a normal press entry).
-	list: When a player issues "diary list", the Judge will return
+	RECORD: "DIARY RECORD" begins a new, numbered diary entry. The
+	Judge will read until encountering "ENDPRESS", "ENDBROADCAST",
+	or "SIGN OFF" (just like a normal press entry).
+	LIST: When a player issues "DIARY LIST", the Judge will return
 	a numbered list of his created entries, and the date and time they
 	were created.
-	read [number]: Issuing "diary read" allows a player to read an
+	READ [number]: Issuing "DIARY READ" allows a player to read an
 	entry he has already made. The number of the entry to read must
-	be specified (it can be obtained from "diary list").
-	delete [number]: Deletes the specified diary entry numbers. Note
+	be specified (it can be obtained from "DIARY LIST").
+	DELETE [number]: Deletes the specified diary entry numbers. Note
 	that diary entries are not reused, so it's possible to have
 	"holes" in the numbering scheme if any entry but the most recent
 	one is deleted.
@@ -121,8 +121,8 @@ mod/    EJECT power|email                                              {0.8.9}
         work to resign observers too.  The "EJECT power" form will not work if
         more than one person is signed on to the specified power.
 
-ply/    END BROADCAST
-        END PRESS
+ply/    ENDBROADCAST
+        ENDPRESS
         Terminate a Press or Broadcast message.  Note that either form of this
         command will terminate either kind of message.
 
@@ -207,25 +207,13 @@ ply/    LIST
         currently signed on game.
 
 any/    MAP name [n]
-        [Deprecated: this command is disabled by default on new Judges,
-        although it can be enabled by the Judgekeeper.  It may not be
-        supported in future versions.]
-
-        Send a postscript map of the current status of the game.  Not all
-        variants are supported.  The "n" option sends the file in plain
-        postscript format instead of uuencoded, compressed ps format.
-
-        Rather than use this command, you can obtain maps of any game on
-        "public" Judges in multiple formats from Alain Tésio's outstanding
+        This command is disabled as of version 1.5.0 (but listed here to
+        inform users of earlier versions).  You can obtain maps of any game
+        on "public" Judges in multiple formats from Alain Tésio's outstanding
         "Diplomacy tools" site, http://www.floc.net/
 
 any/    MAP * [n]
-        [Deprecated: see previous entry.]
-        This command must prefix a LIST output from any judge and will produce
-        a map based on that output.  The "*" is real and is not replaced.  The
-        "n" option is as above.  The LIST output supplied must *not* have any
-        characters added to the beginning of the line; e.g., the comment (">")
-        character.
+        [Disabled: see previous entry.]
 
 adm/    NOCONTROL
         Prevents broadcast message from actually being sent.  For debugging.
