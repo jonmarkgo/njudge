@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2002/11/09 13:27:10  millis
+ * Fixed bug 40, ownership of province incorrect in MAach2
+ *
  * Revision 1.12  2002/08/28 21:12:29  millis
  * Only notify for city onwership change if city has a value
  *
@@ -676,6 +679,8 @@ int ma_process_output(int pt, char phase)
 
 	case 'M':		/* Movement */
 		expout(pt);
+		if (processing && !(dipent.xflags & XF_MACH2))
+                    newowner();  /* For Mach, calculate ownership changes before */
 		retreats = ma_moveout(pt);
 		if (processing) {	/* Advance to retreats or next phase */
 			if (retreats)
