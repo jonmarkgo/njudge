@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.50  2003/08/26 23:54:32  millis
+ * Fix bug 188
+ *
  * Revision 1.49  2003/08/23 09:59:47  russblau
  * deleted commented-out keywords
  *
@@ -1561,7 +1564,7 @@ void mail_setp(char *s)
 				fprintf(rfp,"The CD ratio is already %.3f.\n", dipent.rrded);
 			} else if(f < temprat) {
 				fprintf(rfp,"set resrat %.3f\n",f);
-				fprintf(rfp,"You may not set a minimum CD ratio lower than your own.\n");
+				fprintf(rfp,"You may not set a maximum CD ratio lower than your own.\n");
 				fprintf(rfp,"Use 'get dedication' to check your record.\n");
 			} else {
 				dipent.rrded = f;

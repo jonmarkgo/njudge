@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.32  2003/08/12 23:04:10  millis
+ * Fix bug 216
+ *
  * Revision 1.31  2003/07/23 00:11:43  millis
  * Bug 192
  *
@@ -1089,7 +1092,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 	{
 		if(!msg_header_done)
 			msg_header(rfp);
-		fprintf(rfp,"Sorry, game '%s' requires a minimum CD ratio of %.3f.\n", 
+		fprintf(rfp,"Sorry, game '%s' requires a maximum CD ratio of %.3f.\n", 
 			dipent.name,dipent.rrded);
 		fprintf(rfp,"You are currently rated %.3f.\n",res_rat);
 		return -1;
