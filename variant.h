@@ -1,8 +1,5 @@
 /*
  * $Log$
- * Revision 1.3  2001/04/15 21:28:30  miller
- * Added new variants
- *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Specify for each variant if it is a homeCentre, OneCentre or AnyCentre game.
  * This makes it clearer for the player (who will see this always in a game listing) as well as removing specific tests in the code. Plus now any variant uses this only as a default - a game setup can change this if required/wanted.
@@ -102,10 +99,10 @@ enum {
 #define LPOWER        24	/* Length of the longest power name              */
 
 /* Do not exceed byte limit as these are used in char arrays */
-#define WILD_PLAYER  252  /* First non-player player ordinal               */
-#define AUTONOMOUS   253  /* Non-player ordinal                            */
-#define OBSERVER     254  /* Non-player ordinal                            */
-#define MASTER       255  /* Last Non-player ordinal                       */
+#define WILD_PLAYER  113  /* First non-player player ordinal               */
+#define AUTONOMOUS   114  /* Non-player ordinal                            */
+#define OBSERVER     115  /* Non-player ordinal                            */
+#define MASTER       116  /* Last Non-player ordinal                       */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
@@ -126,7 +123,7 @@ enum {
     case V_britain:     dipent.np =  7; dipent.vp = 19; break;          \
     case V_1898:        dipent.np =  7; dipent.vp = 18; break;          \
     case V_crowded:     dipent.np = 11; dipent.vp = 18; break;          \
-    case V_machiavelli: dipent.np =  8; dipent.vp = 15; break;          \
+    case V_machiavelli: dipent.np =  8; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; break;          \
     case V_fleet_rome:  dipent.np =  7; dipent.vp = 18; break;          \
     case V_shift_right: dipent.np =  7; dipent.vp = 18; break;          \
     case V_shift_left:  dipent.np =  7; dipent.vp = 18; break;          \
