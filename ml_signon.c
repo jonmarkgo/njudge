@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2003/01/15 13:59:27  millis
+ * Removed Dipstats
+ *
  * Revision 1.16  2003/01/14 13:51:38  millis
  * Merges from USTV
  *
@@ -542,7 +545,6 @@ int mail_signon(char *s)
 				pcontrol++;
 			}
 		}
-		StatLog(STAT_GAME, "%s\n",&name[1]);
 		return 0;
 
 	} else {
@@ -756,7 +758,6 @@ int mail_signon(char *s)
 			        /* It is the master, show him the current preferences */
 				ShowPreferences(rfp);
 			}
-			StatLog(STAT_GAME,"%s\n", &name[1]);
 			return 0;
 		}
 		/* Show any requested absences */
@@ -800,7 +801,6 @@ int mail_signon(char *s)
 		}
 		fputs("X-marker\n", ofp);
 	}
-	StatLog(STAT_GAME, "%s\n", &name[1]);
 	return 0;
 }
 
