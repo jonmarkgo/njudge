@@ -1,6 +1,7 @@
 Canada:			0
 U.S.A:			0
 USA:			0
+United States:		0
 Egypt:			20
 South Africa:		27
 FRG:			30
@@ -12,6 +13,7 @@ Belgium:		32
 France:			33
 Monaco:			33
 Spain:			34
+Portugal:		351
 Hungary:		36
 Croatia:		38
 Italy:			39
@@ -20,6 +22,7 @@ England:		44
 UK:			44
 United Kingdom:		44
 Scotland:		44
+Wales:			44
 Denmark:		45
 Sweden:			46
 Norway:			47
