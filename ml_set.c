@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2003/05/05 11:52:49  millis
+ * Slight text improvement
+ *
  * Revision 1.40  2003/05/03 23:33:50  millis
  * Fix bug 150 (NO_GARRISONS flag)
  *
@@ -1078,7 +1081,7 @@ void mail_setp(char *s)
          SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY,
          SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
          SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
-	 SET_MONEY, SET_NOMONEY, SET_NOMONEY, 
+	 SET_MONEY, SET_NOMONEY, SET_NOMONEY,
 	 SET_MOVEDISBAND, SET_NOMOVEDISBAND, SET_NOMOVEDISBAND,
 	 SET_BASIC, SET_ADVANCED,
 	 SET_DUALITY, SET_NODUALITY, SET_NODUALITY,
@@ -3506,15 +3509,19 @@ void mail_setp(char *s)
 		case SET_MONEY:
 			CheckMach();
                         CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETOFF,
-                                                "Game now has money.\n", CATF_INVERSE);
+                                                "Game now has money, loans, assassinations and special units.\n",
+						 CATF_INVERSE);
+			dipent.flags &= ~(F_NOLOANS | F_NOASSASS | F_NOSPECIAL);
 			break;
 
 		case SET_NOMONEY:
                         CheckMach();
                         CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Money", CATF_SETON,
-                                                "Game now does not have money.\n", CATF_INVERSE);
-                        break;
-		
+                            "Game now does not have money, loans, assassinations and special units.\n",
+			     CATF_INVERSE);
+			dipent.flags |= (F_NOLOANS | F_NOASSASS | F_NOSPECIAL);
+ 			break;
+
 		case SET_MOVEDISBAND:
                         if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Disband!\n\n",
@@ -3539,10 +3546,10 @@ void mail_setp(char *s)
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Basic", CATF_SETON,
                                                 "Game is now in basic settings.\n", CATF_INVERSE);
-			
-			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice", 
+			dipent.flags |= (F_NOLOANS | F_NOASSASS | F_NOSPECIAL);
+			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice",
 				 	   CATF_SETON,
-					   "Dice disabled.\n", CATF_INVERSE); 
+					   "Dice disabled.\n", CATF_INVERSE);
                         break;
 
 
@@ -3550,6 +3557,7 @@ void mail_setp(char *s)
 			CheckMach();
 			CheckAndToggleFlag(&dipent.xflags, XF_NOMONEY, "Advanced", CATF_SETOFF,
                                                 "Game is now in advanced settings.\n", CATF_INVERSE);
+			dipent.flags &= ~(F_NOLOANS | F_NOASSASS | F_NOSPECIAL);
 			CheckAndToggleFlag(&dipent.flags, F_NODICE, "NoDice",
 					   CATF_SETOFF,
 					   "Dice enabled.\n", CATF_INVERSE);
@@ -3559,7 +3567,7 @@ void mail_setp(char *s)
 		case SET_SUMMER:
 			if (CheckNotStarted(NULL))
 			{
-			    if (dipent.flags & F_MACH) 
+			    if (dipent.flags & F_MACH)
                                 CheckAndToggleFlag(&dipent.x2flags, X2F_NOSUMMER, "NoSummer", CATF_SETOFF,
                                                 "Game now has summer turns.\n", CATF_NORMAL);
 			    else
