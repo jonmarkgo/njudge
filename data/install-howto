@@ -183,7 +183,7 @@ modifications fail. Move it elsewhere, in ~/archives for example.
 
  - Browse the files you have obtained. You can read the README.* or docs/README.*
 files now, even if you don't understand everything now. (Some of them are clearly
-out-of-date).
+out-of-date; they are usuelly in docs/archives/).
 
  - Create a new directory in the judge's home for the compiled judge. It
 will contain binaries, judge configuration files, games, maps... The
@@ -536,7 +536,17 @@ Start      Sun Jan 06 14:05:45 2002
 
 5. What are these files?
 
-5.1 Binaries
+5.1 Documentation
+
+ The docs/ directory contains documentation, README files on many
+subjects, and perhaps a brand new Administrator Guide the day it is
+done. 
+ The archives/ subdirectory contains files which are out-of-date
+but may be useful for old versions of the judge, for migrating, or for
+historical purpose.
+
+
+5.2 Binaries
 
  - rdip : Its purpose is to read in mail and copy it to a file
 for later processing, it is invoked by incoming mail.
@@ -568,7 +578,7 @@ textual map files.
 
  - summary : Creates the summary of a game.
 
-5.2 Shell scripts
+5.3 Shell scripts
 
  - diprun : This is the script which is called by 'at' and launches rdip
 
@@ -590,7 +600,7 @@ looking the at queue with the command 'atq').
 mail.log files into compressed *.Z files. (You can use 'uncompress'
 to extract them).
 
-5.3 Parameter and data files
+5.4 Parameter and data files
 
 (See content for more information)
 
@@ -619,7 +629,7 @@ allowed.
 
  - dip.dedicate (binary dedication database)
 
-5.4 Maps and 'data' directory
+5.5 Maps and 'data' directory
 
  - map.n         : Compiled data files, one for each variant.
  - map.<variant_name> : Real map source files
@@ -630,7 +640,7 @@ any other information, text or joke there!!)
  - data/*        : Other files that can get by the players by
 the 'get' command (help files...)
 
-5.5 Games
+5.6 Games
 
  - Dxxx/ : All the data of the game xxx is stored in this
 directory.
@@ -670,7 +680,7 @@ the countries were assigned). This is used in the summary.
 result. This is used in the summary. If this file has been created, it
 will be deleted if another turn processes.
 
-5.6 Log files
+5.7 Log files
 
  - install.log : Logs all variant map files compiled with cmap.
 
@@ -695,7 +705,7 @@ become huge!
  - stats : Statistics directory (if enabled by STATS_FLAG=1 in
 dip.conf). See README.statitics
 
-5.7 Temporary files
+5.8 Temporary files
 
  - dip.incoming : File containing the last mail received or processed.
  - dip.lock1, dip.lock2 : Used internally by flock.
@@ -710,12 +720,12 @@ if smail works.)
  - dip.result
  - dip.temp   : Used for mail construction.
 
-5.8 Files created or left behind by a crashed judge:
+5.9 Files created or left behind by a crashed judge:
 
  - zforward : See README.bailout. After a judge crash, .forward is
 renamed to zforward, and the judge won't accept to run.
 
-5.9 Other files
+5.10 Other files
 
  - xforward : When healing a dead judge, zforward must be renamed to
 xforward. See README.bailout.
@@ -729,6 +739,7 @@ README.plyrdata I put in with my changes).
  - /var/spool/mail/<user_name> : System spool file where the mail for
 the judge is stacked when the .forward file is not there. (The exact
 path may change according to your system and distribution).
+
 
 6. Testing the judge, first game
 
@@ -752,7 +763,7 @@ REGISTER
 Name: Maréchal Joffre
 Country:France
 Site:Verdun
-Email:joffre@armee_francaise.mil.fr
+Email:joffre@etat_major.mil.fr
 Age: 142
 Phone:0123456789
 END
