@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.13  2002/06/10 22:07:02  millis
+   ** Small fix to init_build(), that was counting gateway units as units
+   **
    ** Revision 1.12  2002/05/17 11:34:26  miller
    ** Fixed small bug for CheckOwnedOK() returning bad value
    **
@@ -140,9 +143,11 @@ void init_build(void)
 		one_owned[p] = 0;
 		nu[p] = 0;
 		lu[p] = 0;
-		for (i = 1; i <= npr; i++)
+		for (i = 1; i <= npr; i++) {
+			if (gateway(i)) continue; /* Gateways don't count */
 			if (pr[i].owner == p && pr[i].blockaded == 0)
 				nu[p]++;
+		}
 		for (i = 1; i <= nunit; i++)
 			if (unit[i].owner == p && !gateway(unit[i].loc))
 				nu[p]--;
