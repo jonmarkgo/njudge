@@ -1,12 +1,20 @@
-#!/bin/sh
-cd /users/judge/dip
-flock dip.log
-# find . -size 0 -exec rm {} \;
+#! /bin/sh
+# This script is either invoked by cron or by atd depending on whether you
+# create a cron job or let the atrun script schedule it using at.
+
+cd /home/judge/dip
 find . -name "[MTP]*" -atime +90 -exec rm {} \;
+./flock dip.log
 ./newlogs
-flock
-at 2am dipclean
-date | grep Sun > /dev/null
-if [ "$status" -eq 0 ] ;  then
-bgreet
-fi
+./flock
+
+# If today is Sunday then check for birthdays. This should only be
+# run once a week otherwise people get the birthday greeting more 
+# than once since bgreet checks for the next week not for the current 
+# day.
+
+#date | grep Sun > /dev/null
+#if [ "$status" -eq 0 ] ;  then
+#if [ $? -eq 0 ] ;  then
+#	./bgreet
+#fi
