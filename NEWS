@@ -1,6 +1,6 @@
 This is a new functionality release.
 
-The following bugs were fixed in 1.7.0
+The following bugs were fixed in 1.7.1
 
 (ordered by Severity)
 
@@ -8,48 +8,11 @@ The following bugs were fixed in 1.7.0
 ----------------------
 
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
-323 	min 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Can't set deadline at end of month when Daylight Saving T...
-132 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Deadline falls during "set absence" period
-193 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Add an 'approval' mechanism for players
-206 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Do not reveal abandoned powers/allow takeover
-247 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Extra dots shown in a 'secret', duplex game late warning
-267 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Pass email character set to destination
-278 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Spam crashed the judge
-285 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Special custodian accounts are not being informed
-298 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Deadline advanced when still got abandoned players
-299 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Dont show deadline/move details on terminated game
-305 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Eliminated player cannot rejoin game
-306 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Don't send email to nobody
-316 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Power incorrectly has to disband in wings variant
-322 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Wrong results being reported when using proxy
-329 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Permit changes of settings during a game
-332 	nor 	P3 	Oth 	judge-maint@diplom.org 	RESO 	FIXE 	Move status revealed on a 'list' in secret game
-335 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Make 'Any-Site' default for short listing
-340 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Absence information file confusing
-343 	enh 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Specify number of misisng players on startup
-215 	maj 	P3 	All 	judgekeeper@braincells.com 	RESO 	FIXE 	when doing an upgrade from 1.2.0, some map files are not ...
-302 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Mach2 game allowed A Venice to be built
-86 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Add Airlifts
-91 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Keep duplexed powers together
-117 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Can't turn off Transformation options
-151 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Allow game to have varying number of powers
-226 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Pause command has some quirks
-233 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Player cannot resume abandoned position in a multiplex game
-286 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Artillery units cannot be convoyed
-287 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Artillery supports sometimes are not allowed
-297 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Intimate Diplomacy
-303 	cri 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Machiavelli game crashes when trying to ajudicate build turn
-311 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Add new header to emails to indicate a judge is sending
-328 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Add portage flag
-336 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Make draws & concessions work properly for duplex games
-339 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Build transformations games with too many builds
-341 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Don't show eliminated powers in Intimate
-342 	enh 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Remove Bidding phase in Intimate, when no autonomous powe...
-344 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Winning conditions != number of centres
-123 	min 	P3 	All 	russblau@imapmail.org 	RESO 	FIXE 	SET ALLOW|DENY MASTER works when it shouldn't
-308 	nor 	P3 	All 	russblau@imapmail.org 	RESO 	FIXE 	Error parsing powerlist in SET APPROVE command
-310 	min 	P3 	All 	russblau@imapmail.org 	RESO 	FIXE 	Wrong error message when using inverted flag logic
-290 	nor 	P3 	All 	tim@gem.win.co.nz 	RESO 	FIXE 	Blind players can guess fleet locations
-291 	enh 	P3 	All 	tim@gem.win.co.nz 	RESO 	FIXE 	Give error if corresponding report.* or seed.* file missing
-307 	tri 	P3 	All 	tim@gem.win.co.nz 	RESO 	FIXE 	Incorrect Judge on diary broadcasts.
-44 bugs found. 
+347 	cri 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Njudge 1.7.0 treats all games as NMR
+346 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Duplex games 'set address' only changes one address
+352 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate processes first turn with no bank balance
+326 	nor 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Cannot rollback to first intimate turn or reprocess it
+350 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate: too many powers showed as late/abandoned
+345 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Changing address in 'Intimate' changes controlled players...
+349 	min 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Intimate: Victory incorrectly shown on results
+7 bugs found. 

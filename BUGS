@@ -1,37 +1,40 @@
-The following bugs were outstanding as of 1.7.0
+The following bugs were outstanding as of 1.7.1
 
 --------------------
 
-282   	maj   	P3   	All   	judge-maint@diplom.org   	REOP   	  	'::' summary lines sometimes not sent
+33 bugs found.
+ID 	Sev 	Pri 	Plt 	Assignee 	Status 	Resolution 	Summary
+282 	maj 	P3 	All 	judge-maint@diplom.org 	REOP 		'::' summary lines sometimes not sent
+131 	nor 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
+149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
+186 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Must order does not allow press when should
+218 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Set command(s) followed by 'become' do not work
 238 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Colonial: Verbose Suez Canal warnings
+239 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Whogame does not work with multiple emails
+252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
 253 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		signons with password=«judge» don't work
 256 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Abandoned player can't signon due to low dedication
 257 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Masters not warned on deadline shift after bailout recovery
 259 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline advanced for no apparent reason
-300 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		History incorrectly shows press message
-239 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Whogame does not work with multiple emails
-292 	nor 	P3 	All 	judgekeeper@braincells.com 	NEW 		Alter smail & atrun to use paths
-149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
-252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
 269 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		unstart not working for Machiavelli games
-131 	nor 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
-186 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Must order does not allow press when should
-218 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Set command(s) followed by 'become' do not work
+292 	nor 	P3 	All 	judgekeeper@braincells.com 	NEW 		Alter smail & atrun to use paths
+300 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		History incorrectly shows press message
 35 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player with unusable builds must waive
+40 	min 	P3 	All 	millis@faztek.org 	NEW 		Sort out summary report spacing
 100 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Wrong person sent termination
 103 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Summary incorrect
 104 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Only prompt for adjustments if homes still need to be dec...
+109 	min 	P3 	All 	millis@faztek.org 	NEW 		Better errors & documentation on Build transform
 128 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		press to none
+177 	min 	P3 	All 	millis@faztek.org 	NEW 		Summer-time alterations not working
 200 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set absence and press shows for master
 221 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set [no]show does nothing
 227 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Implement NoBlankPress functionality
+243 	min 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Wrong email title sent
 266 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Send summary to HallKeeper if game changes to Reveal
+304 	min 	P3 	All 	judgekeeper@braincells.com 	NEW 		cmap invoked unecessarily in make process
 330 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		No summary file before game start causes termination prob...
 337 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		delgame does not show real games path
-304 	min 	P3 	All 	judgekeeper@braincells.com 	NEW 		cmap invoked unecessarily in make process
-40 	min 	P3 	All 	millis@faztek.org 	NEW 		Sort out summary report spacing
-109 	min 	P3 	All 	millis@faztek.org 	NEW 		Better errors & documentation on Build transform
-177 	min 	P3 	All 	millis@faztek.org 	NEW 		Summer-time alterations not working
-243 	min 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Wrong email title sent
 255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
-32 bugs found. 
+351 	tri 	P3 	All 	judgekeeper@braincells.com 	NEW 		Date error on FreeBSD
+33 bugs found. 
