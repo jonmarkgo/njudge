@@ -1,5 +1,8 @@
  /*
  * $Log$
+ * Revision 1.12  2003/06/20 23:25:37  millis
+ * Fix bug 180, missing press messages (due to too much stack variables)
+ *
  * Revision 1.11  2003/02/25 07:46:14  nzmb
  * Small change to make it impossible to vote for a draw or concession if the game
  * is over.
@@ -433,6 +436,9 @@ int process_draw(void)
 		SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
 	execute(line);
 
+	/* send eog diaries */
+	send_diary();
+
 	broadcast = 1;
 	return 1;
 }
@@ -561,6 +567,9 @@ int process_conc(void)
                 SMAIL_CMD, GAME_DIR, dipent.name,powers[dipent.players[largest].power],
 		dipent.name, HALL_KEEPER);
         execute(line);
+
+	/* send diaries */
+	send_diary();
                         
         broadcast = 1;
 	return 1;

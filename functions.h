@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.19  2003/06/22 04:10:19  nzmb
+ * Added code to allow users to record diary entries, read them, and delete them
+ * if they make a mistake. The diaries will be broadcast when the games end (this
+ * part is not as of now, yet written).
+ *
  * Revision 1.18  2003/05/03 23:09:47  millis
  * added missing prototype for ExtraCentres()
  *
@@ -335,3 +340,4 @@ int strncasecmp(char *s1, char *s2, register int n);
 /* defined in tm_xpress.c */
 int process_ppress(void);
 void process_diary(char *cmd);
+void send_diary(void);

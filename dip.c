@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.39  2003/05/13 00:07:25  millis
+ * Bug 110, move on process deadline by 24 hours on bailout recovery
+ *
  * Revision 1.38  2003/05/12 23:23:45  millis
  * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
  *
@@ -1449,6 +1452,11 @@ int process(void)
 					      SMAIL_CMD, dipent.name, BN_CUSTODIAN);
 			}
 			execute(line);
+
+			/*
+			 * This seems as good a place as any to send out EOG diaries
+			 */
+			send_diary();
 
 			/*
 			 * Force regeneration of the summary file if it's a gunboat game.

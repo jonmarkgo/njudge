@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.3  2003/06/22 04:10:23  nzmb
+ * Added code to allow users to record diary entries, read them, and delete them
+ * if they make a mistake. The diaries will be broadcast when the games end (this
+ * part is not as of now, yet written).
+ *
  * Revision 1.2  2002/07/17 11:48:11  millis
  * Added Log to header
  *
@@ -212,12 +217,18 @@ void list_entries(void)
 		{
 			sprintf(fname,"%s%s/diary-%c-%d", GAME_DIR,
 				dipent.name, pabbr, i);
-			stat(fname, &statbuf);
-			mod_tm = localtime(&(statbuf.st_mtime));
-			fprintf(rfp, "Entry #%d: modified %s %d, %d %d:%d\n",
-				i, months[mod_tm->tm_mon],
-mod_tm->tm_mday, 1900 + mod_tm->tm_year,
-				mod_tm->tm_hour, mod_tm->tm_min); 
+			if(stat(fname, &statbuf) != -1)
+			{
+				mod_tm = localtime(&(statbuf.st_mtime));
+				fprintf(rfp, "Entry #%d: modified %s %d, %d %02d:%02d\n",
+					i, months[mod_tm->tm_mon + 1],
+					mod_tm->tm_mday, 1900 + mod_tm->tm_year,
+					mod_tm->tm_hour, mod_tm->tm_min); 
+			}
+			else
+			{
+				nentries++;
+			}
 		}
 		fprintf(rfp,"\n\n");
 	}
@@ -245,4 +256,56 @@ int get_numentries(char *gamename, char pabbr)
 	}
 
 	return nentries;
+}
+
+void send_diary(void)
+{
+	/*
+	 * send each diary out at the end of the game.
+	 */
+	int i, j, k, ndiaries;
+	char subjectln[256];
+	char diary_fl[256];
+	char line[1000];
+	char pabbr;
+	struct stat sbuf;
+
+	for(i = 0; i < dipent.n; i++)
+	{
+		/*
+		 * cycle through all the players who may have
+		 * left diaries
+		 */
+		if(dipent.players[i].power < 0)
+			continue;
+		pabbr = dipent.pl[dipent.players[i].power];
+		ndiaries = get_numentries(dipent.name, pabbr);
+		if(ndiaries < 0)
+			/* error don't send anything */
+			ndiaries = 0;
+
+		for(j = 0; j < ndiaries; j++)
+		{
+			/* send all diaries */
+			sprintf(subjectln, "NZMB:%s diary #%d from %c",
+				dipent.name, j, pabbr);
+			sprintf(diary_fl, "%s%s/diary-%c-%d", GAME_DIR,
+				dipent.name, pabbr, j);
+			if(stat(diary_fl, &sbuf) == -1)
+			{
+				ndiaries++;
+				continue;
+			}
+
+			for(k = 0; k < dipent.n; k++)
+			{
+				/* to everyone */
+				if(dipent.players[k].power < 0)
+					continue;
+				sprintf(line, "%s %s \"%s\" %s", SMAIL_CMD,
+					diary_fl, subjectln, dipent.players[k].address);
+				execute(line);
+			}
+		}
+	}
 }
