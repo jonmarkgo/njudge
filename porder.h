@@ -1,10 +1,13 @@
 /*
  * $Log$
+ * Revision 1.8  2002/04/15 12:55:45  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.7  2001/10/29 23:41:34  miller
  * Fixed reoccurring chaos bug (use centre() macro not 'x' to test province)
  *
  * Revision 1.6  2001/10/20 12:11:14  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.5.2.1  2001/10/15 00:15:04  ustv
  * Added handling for 2nd type field, comments and Colonial settings
@@ -67,7 +70,7 @@
 #define CMAP_SIZE   5
 
 #define bribe(c)        (c == 'b' || c == 'd' || c == 'g')
-#define water(p)	(pr[p].type == 'w' || pr[p].type == 'v')
+#define water(p)	(pr[p].type == 'w' || pr[p].type == 'v' || pr[p].type == 'h')
 #define water2(p)	(water(p) || pr[p].type2 == 'w')
 #define centre(p)       ((pr[p].type == 'x') || (pr[p].type >= 'A' && pr[p].type <= 'Z') || (pr[p].type >= '0' && pr[p].type <= '9'))
 #define railway(p)      (pr[p].type == 'r')
@@ -88,6 +91,7 @@ extern struct province {
 	short flags;		/* Flags for province                         */
 	int blockaded;		/* set to non-zero when centre is blockaded   */
 	int gconv;		/* Mach: Non-zero if garrison converteddd     */
+	int new_owner;		/* For setup, the new owner of province	      */
 } pr[NPROV + 1];
 
 extern int npr;			/* Actual number of provinces                 */
@@ -198,6 +202,7 @@ extern char *get_prov();
 extern char *get_stype();
 extern char *get_type();
 extern char *lookfor();
+extern char *get_index( char*, int *);
 
 #endif
 
