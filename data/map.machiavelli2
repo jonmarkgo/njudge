@@ -1,6 +1,5 @@
 #Machiavelli 2 map file. Balance of Power scenario.
-#Rev. 3.  Feb. 22nd 2003.  Mach1/2 abbr. 'cross-compatible'.
-#         Mes-Otr xc-moves added. Sal port fortress removed.
+#Rev. 3a. Jul 21st 2003.
 #First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
@@ -220,17 +219,19 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
     11: Arezz Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
     12: Trent Herze ----- Pisto ----- ----- ----- Corsi ----- Patri Saluz
 
+#Initial income differs from AH setup (I6V9L6P4N4T4A1F2) due to technical reasons.
+#The formula used is AHInitial-(IncomeAtSetup-MaintenanceAtSetup)=NjudgeInitial
 Variable Income:  City         dice   1  2  3  4  5  6 Initial
                   Austria       1     1  2  3  3  4  4   3
                   Florence      2     1  2  3  3  4  5   6 
                   Marseilles    1     1  2  3  4  5  6   4
-                  Genoa         1     1  2  2  3  3  4   3
+                  Genoa         1     1  2  2  3  3  4   0
                   Milan         1     2  3  3  4  4  5   4
                   Naples        1     1  2  2  3  3  4   3
                   Rome          1     2  3  3  4  5  6   4
                   Durazzo       1     1  2  3  4  5  6   4
                   Venice        2     2  3  3  4  4  5   7
-# End of Variable Income.
+#End of Variable Income.
 
 Ownership (city) ordering:
    avi mar swi tur slz sav cor gen mon pav cre mil trt tyr aus hun crn cro

@@ -1,5 +1,5 @@
 #Machiavelli 2 map file. Spanish Preponderance scenario Alternate Setup
-#Rev. 1c.  Mar. 9th 2003.
+#Rev. 1d.  Jul. 21st 2003.
 #First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
@@ -219,12 +219,14 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
     11: Arezz Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
     12: Trent Herze ----- Pisto ----- ----- ----- Corsi ----- Patri Saluz
 
+#Initial income differs from AH setup (F1A4P4L3V6T3) due to technical reasons.
+#The formula used is AHInitial-(IncomeAtSetup-MaintenanceAtSetup)=NjudgeInitial
 Variable Income:  City         dice   1  2  3  4  5  6 Initial
-                  Austria       1     1  2  3  3  4  4   6
+                  Austria       1     1  2  3  3  4  4   5
                   Florence      1     1  2  3  3  4  5   3
                   Marseilles    1     1  2  3  4  5  6   4
-                  Genoa         1     1  2  2  3  3  4   3
-                  Naples        1     1  2  2  3  3  4   3
+                  Genoa         1     1  2  2  3  3  4   0
+                  Naples        1     1  2  2  3  3  4   0
                   Rome          1     2  3  3  4  5  6   4
                   Durazzo       1     1  2  3  4  5  6   4
                   Venice        1     2  3  3  4  4  5   4

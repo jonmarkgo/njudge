@@ -1,5 +1,5 @@
 #Machiavelli 2 map file.  Struggle for Dominance 1
-#Rev. 1c.  Mar. 9th 2003 Variable income + IOS
+#Rev. 1d.  Jul. 21st 2003
 #First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
@@ -219,18 +219,19 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
     11: Arezz Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
     12: Trent Herze ----- Pisto ----- ----- ----- Corsi ----- Patri Saluz
 
-#AH initial income F11, A0, P4, L6, V9, T4
+#Initial income differs from AH setup (F11A0P4L6V9T4) due to technical reasons.
+#The formula used is AHInitial-(IncomeAtSetup-MaintenanceAtSetup)=NjudgeInitial
 Variable Income:  City         dice   1  2  3  4  5  6 Initial
                   Austria       1     1  2  3  3  4  4   3
                   Florence      2     1  2  3  3  4  5   6
-                  Marseilles    1     1  2  3  4  5  6   7
-                  Genoa         1     1  2  2  3  3  4   2
-                  Milan         1     2  3  3  4  4  5   2
-                  Naples        1     1  2  2  3  3  4   1
+                  Marseilles    1     1  2  3  4  5  6   12
+                  Genoa         1     1  2  2  3  3  4   0
+                  Milan         1     2  3  3  4  4  5   0
+                  Naples        1     1  2  2  3  3  4   0
                   Rome          1     2  3  3  4  5  6   4
                   Durazzo       1     1  2  3  4  5  6   4
                   Venice        2     2  3  3  4  4  5   7
-# End of Variable Income.
+#End of Variable Income.
 
 Ownership (city) ordering:
    avi mar swi tur slz sav cor gen mon pav cre mil trt tyr aus hun crn cro
