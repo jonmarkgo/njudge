@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.27  2004/06/12 13:00:35  alange
+	 * Fixed logic error in safety code from previous commit.
+	 *
 	 * Revision 1.26  2004/06/11 21:01:06  alange
 	 * Bug 132: Cleaned up absence and deadline calculation. No more recursion.
 	 *
@@ -1529,35 +1532,117 @@ void PrintTwoColTable( char * title, char *power_col, char *other_col ) {
 
 }
 
-/* Add a player address to the ban list */
-void AutoBanPlayer(char *gname, char *addr)
+/* Return a power's player number */
+int PlayerNumber( int index)
 {
+    int i;
+    int ret_index = 1;
+    static int p_index[MAXPLAYERS];
+    for (i=0; i < dipent.n; i++) {
+	if (dipent.players[i].controlling_power == 0 && dipent.players[i].power < WILD_PLAYER) {
+	    p_index[i] = ret_index;
+	    ret_index++; 
+	} else
+	    p_index[i] = 0;
+    }
+	  
+    if (dipent.players[index].controlling_power == 0) { 
+        return  p_index[index];
+    } else {
+	return (p_index[FindPower(dipent.players[index].controlling_power)]);
+    }
 
-   FILE *ban_fptr;
-   char *ptr;
-   int count = 0;
-   time_t now;
-   static char last_game[sizeof(dipent.name)] = {'\0'};
+    /* Shouldn't have got here, but a 'be safe' return value */
+    return 0;
+}
 
-   ban_fptr = fopen( "players.DENY", "a");
+/* return a string for someone@somewhere, depending on the game type */
+char *SomeoneText( int index)
+{
+    static char rets[21];
+    
+    if (!(dipent.x2flags & X2F_SECRET)) {
+	if (dipent.xflags & F_INTIMATE) {
+	    if (dipent.players[index].controlling_power != 0) {
+		return NOBODY;
+	    } else {
+		sprintf(rets, "someone%d@somewhere", PlayerNumber(index));
+		return rets;
+	    }
+	
+	} else if (IS_DUPLEX(dipent)) {
+	     sprintf(rets, "someone%d@somewhere", PlayerNumber(index));
+	     return rets;
+	} else {
+	    return someone;
+	}
+    } else {
+        return someone;
+    }
 
-   if (ban_fptr == (FILE *) NULL) 
-	bailout(E_FATAL);
+    /* Won't get here */
 
-   if (!strcmp(last_game, gname)) {
-	strcpy(last_game, gname);
-	time(&now);
-	fprintf(ban_fptr, 
-	        "\n#Autoban added player from game %s on %s", 
-	        gname, 
-		ctime(&now));
-   }
+    return "";
 
-   while ( (ptr = GetAddressPart(count++, addr))) {
-        if (*ptr != '*' && !strcmp(NOBODY, ptr)) {
-           fprintf(ban_fptr, "=%s", ptr);
-        }
-   }
+}
 
-   fclose(ban_fptr);
+/* Return index of controlling power, if there is one */
+int RealPlayerIndex(int index)
+{
+    int ret_index;
+    if (dipent.players[index].controlling_power == 0)
+        return index;
+    else
+	ret_index = FindPower(dipent.players[index].controlling_power);
+    if (ret_index >= dipent.n)
+	return index;
+    else
+	return ret_index;
+}
+
+/* See if a player is dead, including his controlled powers */
+int IsPlayerDead(int index)
+{
+    int i;
+    int ret = 1;
+    index = RealPlayerIndex(index);
+
+    for (i = 0; i < dipent.n && ret == 1; i++)
+        if (i == index || (dipent.players[i].controlling_power !=0 &&
+		          FindPower(dipent.players[i].controlling_power) == index)) {
+	    if (!(dipent.players[i].status & SF_DEAD))
+	        ret = 0;
+	}
+
+    return ret;
+}
+
+/* Show the Treasury */
+void PrintTreasury(int pt, int power_bid_total[], int processing, int predict)
+{
+    int i, ii, p;
+
+    if (predict)
+        PrintTwoColTable("Future Treasury Totals", "Power", "Balance");
+    else
+        PrintTwoColTable("Treasury Totals", "Power", "Balance");
+     /* Print out treasury */
+
+     for (i = 0; i < dipent.n; i++) {
+          if (dipent.players[i].controlling_power != 0) continue;
+              p = dipent.players[i].power;
+              if (p >= WILD_PLAYER) continue;
+          if  (processing || pt == p || pt == MASTER) {
+               fprintf(rfp, "%s: ", powers[p]);
+
+               for (ii = strlen(powers[p]); ii < LPOWER; ii++)
+                    putc(' ', rfp);
+
+	        fprintf(rfp, "%d",  ducats[p].treasury);
+	       if (power_bid_total != NULL)
+	           fprintf(rfp, " - %d = %d.\n",  power_bid_total[p], ducats[p].treasury - power_bid_total[p]);
+	       fprintf(rfp,".\n");
+           }
+           if (processing && power_bid_total) ducats[p].treasury -= power_bid_total[p];
+     }
 }

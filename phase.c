@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2004/05/22 08:56:52  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.13  2003/07/21 21:37:45  millis
  * Fix bug 199 (phased waits not working correctly)
  *
@@ -112,7 +115,7 @@ int phase(char *s)
 #endif 				/* notdef */
 	s1 = *dipent.phase == 'S' ? 0 : *dipent.phase == 'U' ? 1 : 2;
 	y1 = atoi((dipent.phase) + 1);
-	p1 = (i = dipent.phase[5]) == 'M' ? 1 : i == 'R' ? 2 : 3;
+	p1 = (i = dipent.phase[5]) == 'M' ? 1 : i == 'R' ? 2 :  i == 'B' ? 3 : 4;
 
 	i = toupper(ss[0]);
 	if (i == 'S' || i == 'U') {
@@ -330,6 +333,14 @@ int phase_syntax(int phase, char *s)
                                 else return 0;
 			}
 			break;
+
+		case 4:
+			if (!(dipent.flags & F_MACH) && (dipent.flags & F_INTIMATE)){
+			    if (bid_syntaxcheck(s,CHECKFORIF, NULL)) return E_WARN;
+			       else return 0;
+			}
+			break;
+
 		default:
 			break;
 	}

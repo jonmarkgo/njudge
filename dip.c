@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.51  2004/05/23 15:53:40  millis
+ * Restored inadvertently deleted 1.49 and 1.48 changes.
+ *
  * Revision 1.50  2004/05/22 08:53:14  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -1560,7 +1563,8 @@ int process(void)
 			fprintf(rfp, "\nThe next phase of '%s' will be %s for %s of %4.4s.\n",
 				dipent.name,
 				dipent.phase[5] == 'M' ? "Movement" :
-				dipent.phase[5] == 'R' ? "Retreats" : "Adjustments",
+				dipent.phase[5] == 'R' ? "Retreats" : 
+				dipent.phase[5] == 'A' ? "Bids" : "Adjustments",
 				dipent.phase[5] == 'A' ? "Year" :
 				dipent.phase[5] == 'B' ? "Winter" :
 				dipent.phase[0] == 'F' ? "Fall" :
@@ -1577,7 +1581,7 @@ int process(void)
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
-					if (dipent.players[i].power != MASTER &&
+					if (dipent.players[i].power < WILD_PLAYER &&
 					  !(dipent.players[i].status & SF_DEAD) &&
 					    dipent.players[i].controlling_power == 0) {
 					/* A real player, set wait status */

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2004/06/11 17:27:48  millis
+   ** Bug 297: Minor change to not show zero bids in results
+   **
    ** Revision 1.3  2004/06/09 22:05:09  millis
    ** More fixes for Bug 297, Intimate Diplomacy
    **
@@ -19,8 +22,7 @@
    **
    **  Redistribution and use in source and binary forms are permitted
    **  provided that it is for non-profit purposes, that this and the
-   **  above notices are preserved and that due credit is given to Mr.
-   **  Lowe.
+   **  above notices are preserved.
    **
  */
 
@@ -190,9 +192,12 @@ int bid_syntaxcheck(char *in_text, int precheck, char *out_string)
 		if (canpreprocess(s))  return 0;
 	}
 
+	bidin(&s, 0, 1);
+
 	return 0;
 }
-int bidin(char **s, int p)
+
+int bidin(char **s, int p, int syntaxcheck)
 {
 /*  Read build orders in from input file.  */
 
@@ -226,7 +231,7 @@ int bidin(char **s, int p)
 	}
 
 
-	for (i = 0; i < dipent.n && !bid_power; i++) {
+	for (i = 0; i < dipent.n && !bid_power && !syntaxcheck; i++) {
 	    if (dipent.players[i].power == pow ) {
                 if (dipent.players[i].controlling_power == 0) {
                     errmsg("Cannot bid to control %s", *s);
@@ -237,7 +242,7 @@ int bidin(char **s, int p)
             }
         }
 	
-        if (!bid_power) {
+        if (!bid_power && !syntaxcheck) {
             errmsg("Unable to find power %s", *s);
             return E_WARN;
 	}
@@ -248,7 +253,8 @@ int bidin(char **s, int p)
             return E_WARN;
         }
 
-	bids[p][pow] = p1;
+	if (!syntaxcheck)
+	    bids[p][pow] = p1;
 
 	return 0;
 
@@ -325,25 +331,29 @@ void bidout(int pt)
                         (dipent.players[i].controlling_power != 0 || (dipent.x2flags & X2F_SECRET))&& 
 			bids[p][p1] >= 0) {
 
-	                fprintf(rfp, "%s: ", powers[p]);
-			for (i = strlen(powers[p]); i < LPOWER; i++)
-			    putc(' ', rfp);
-			if (bids[p][p1] == 0 && !predict && !processing)
-		             fprintf(rfp, "No bid made for %s.",  powers[p1]);
-			else if (bids[p][p1] > 0) 
-			    fprintf(rfp, "Bid for control of %s is %d.",
-		                powers[p1], bids[p][p1]);
+	                if (bids[p][p1] > 0 || (!predict && !processing)) {
+			    fprintf(rfp, "%s: ", powers[p]);
+			    for (i = strlen(powers[p]); i < LPOWER; i++)
+			        putc(' ', rfp);
+			    if (bids[p][p1] == 0 && !predict && !processing)
+		                fprintf(rfp, "No bid made for %s.",  powers[p1]);
+			    else 
+			        fprintf(rfp, "Bid for control of %s is %d.",
+		                    powers[p1], bids[p][p1]);
+			}
 
-			if (processing || predict) {
-			    if (result[p][p1]) {
-				fprintf(rfp, " (*failed*)");
+			if (bids[p][p1] > 0) {
+		            if (processing || predict) {
+			        if (result[p][p1] && bids[p][p1] > 0) {
+				    fprintf(rfp, " (*failed*)");
+				}
 			    }
 			}
-			putc('\n', rfp);
-			    
-
-                        one_printed++;
-                        bid_total += bids[p][p1];
+			if ((!predict && !processing) || bids[p][p1] > 0) {
+			    putc('\n', rfp);
+                            one_printed++;
+			    bid_total += bids[p][p1];
+			}
                     }
                 }
             }
@@ -402,26 +412,8 @@ void bidout(int pt)
 		
 	    putc('\n', rfp);
 
-	    if (predict) 
-		PrintTwoColTable("Future Treasury Totals", "Power", "Balance");
-	    else 
-	        PrintTwoColTable("Treasury Totals", "Power", "Balance");
-	    /* Print out treasury */
+	    PrintTreasury(pt, power_bid_total, processing, predict);
 
-	    for (i = 0; i < dipent.n; i++) {
-	    	if (dipent.players[i].controlling_power != 0) continue; 
-		p = dipent.players[i].power;
-		if (p >= WILD_PLAYER) continue;
-		if  (processing || pt == p || pt == MASTER) {
-		    fprintf(rfp, "%s: ", powers[p]);
-
-                    for (ii = strlen(powers[p]); ii < LPOWER; ii++)
-                        putc(' ', rfp);
-                    fprintf(rfp, "%d - %d = %d.\n", ducats[p].treasury,
-			    power_bid_total[p], ducats[p].treasury - power_bid_total[p]);
-		}
-		if (processing) ducats[p].treasury -= power_bid_total[p];
-	    }
 	}
     }
 

@@ -1,5 +1,12 @@
 /*
  * $Log$
+ * Revision 1.26  2004/06/16 07:54:50  nzmb
+ * A couple of changes to improve the interaction between rdip and bailout, and
+ * make rdip a bit more fault tolerant:
+ * (1) rdip now handles SIGPIPE and bails the judge out gracefully should it
+ *     occur (previously, things died in mysterious and unpleasant ways).
+ * (2) Fixed segfaults that occured when rdip calls bailout.
+ *
  * Revision 1.25  2004/05/22 10:31:33  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -145,6 +152,11 @@ void MailOut(char *out_line, char *address);
 char *get_coast(char * coast_string, int *coast);
 void PrintTwoColTable( char * title, char *power_col, char *other_col );
 int PowerControlledBy( int p);
+char *SomeoneText( int index);
+int RealPlayerIndex(int index);
+int IsPlayerDead(int index);
+void PrintTreasury(int pt, int power_bid_total[], int processing, int predict);
+	
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int, int);
@@ -191,7 +203,7 @@ void process_input(int pt, char phase, int player);
 int ownership(int new_type);
 
 /* defined in st_bid.c */
-int bidin(char **s, int p);
+int bidin(char **s, int p, int syntaxcheck);
 void bidout(int pt);
 int bid_syntaxcheck(char *s, int precheck, char *out_string);
 

@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.29  2004/05/23 22:48:12  millis
+   ** Fix for Intimate, show default disbands for controlled powers
+   **
    ** Revision 1.28  2004/05/22 08:51:02  millis
    ** Bug 297: Add Intimate Diplomacy
    **
@@ -485,7 +488,7 @@ int buildin(char **s, int p)
 			p = pr[p1].owner;
 		}
 	}
-	if (dipent.flags & F_INTIMATE) {
+	if (IS_DUPLEX(dipent)) {
 	    /* See if I am ordering for one of my controlled powers */
 	    /* Either in its province or one of its units */
 	    p2 = pr[p1].owner;
@@ -1141,6 +1144,10 @@ void buildout(int pt)
       for (p1 = 1;  p1<= npr && processing; p1++) {
             if (pr[p1].unit )
                 pr[p1].unit_held = 1;
-        }
+      }
+
+      if (processing && dipent.flags & F_INTIMATE)
+          PrintTreasury(pt, NULL, processing, predict);
+
 }	        
 /****************************************************************************/

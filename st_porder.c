@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.27  2004/06/15 23:50:29  millis
+  ** Bug 297: fixed problem with using dipent.np and not dipent.n
+  **
   ** Revision 1.26  2004/06/15 23:48:37  millis
   ** Bug 297: fix a problem with detecting intimate victory
   **
@@ -682,7 +685,7 @@ void process_input(int pt, char phase, int player)
 			switch (phase) {
 			case 'A':
 				SetupIntimateTreasury();
-				status = bidin(&s, p);
+				status = bidin(&s, p, 0);
 				break;
 			case 'B':
 				status = buildin(&s, p);

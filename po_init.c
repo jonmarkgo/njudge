@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.21  2004/06/05 09:00:32  millis
+ * Bug 297 : problems with calculating effective bids fixed
+ *
  * Revision 1.20  2004/06/03 22:57:48  millis
  * Bug 297 - fix for Intimate where not marking player as needing
  * to make moves (status value was being lost)
@@ -785,12 +788,13 @@ int gamein(void)
 		pr[p].unit_held = 0;  /* if no units, can't be same unit holding! */
 	}
 
-	if (dipent.flags & F_INTIMATE) {
+	if (IS_DUPLEX(dipent)) {
 		UpdateUnitControllers();
 
-       		for (p = 1; p <= NPOWER; p++)
-           	    for (p1= 1; p1 <= NPOWER; p1++)
-               		bids[p][p1] = 0;
+		if (dipent.flags & F_INTIMATE)
+       		    for (p = 1; p <= NPOWER; p++)
+           	        for (p1= 1; p1 <= NPOWER; p1++)
+               		    bids[p][p1] = 0;
 	}
 
 	return err;
@@ -1029,7 +1033,7 @@ int gameout(void)
 			if (dipent.phase[5] == 'A' && dipent.flags & F_INTIMATE) 
 			    if (dipent.players[u].controlling_power == 0 && 
 				!(dipent.players[u].status & SF_DEAD) &&
-				ducats[u].treasury > 0)
+				ducats[dipent.players[u].power].treasury > 0)
 			        dipent.players[u].status |= (SF_MOVE | SF_WAIT); /* Bid phase, player can bid */
 		} else {
 			dipent.players[u].units = 0;
