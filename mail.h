@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.7  2003/06/22 04:10:22  nzmb
+   ** Added code to allow users to record diary entries, read them, and delete them
+   ** if they make a mistake. The diaries will be broadcast when the games end (this
+   ** part is not as of now, yet written).
+   **
    ** Revision 1.6  2003/05/24 23:57:15  millis
    ** Bug 97, removed Generic Handling code
    **
@@ -55,7 +60,8 @@ extern int Dflg;
 extern int more_orders;
 extern int control;
 
-int signedon;			/* Nonzero if player signed on                  */
+int signedon;			/* Nonzero if player signed on                  
+				   +1 if game has started, -1 if not            */
 int i_am_really_master;		/* Non-zero if really a master signed on	*/
 int i_am_really_jk;		/* Non-zero if really a jk signed on		*/
 int starting;			/* Nonzero if quorum has been reached           */
