@@ -1,4 +1,4 @@
-Install-HOWTO for the Diplomacy judge
+Installation-HOWTO for the Diplomacy judge
 
 v.1.0.1.6
 
@@ -962,8 +962,8 @@ if you have an account on devel.diplom.org, or download a whole new
 source code tarball in a *new* source directory.
 
  - Anyway, you must copy the defaults.inc and Makefile.defines
-from your current judge into the new source directory, and compile 
-from there. Don't forget to read the install-howto of this
+from your current judge into the new source directory, and compile
+from there. Don't forget to read the Installation-HOWTO of this
 new version to be sure that the important configuration files to move across
 both versions are the same (judge mainteners try to do it).
  - dip.conf is the configuration file, stored in the judge directory,
