@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.48  2004/03/28 09:52:12  millis
+ * Fix bug 282 (reset msg_header_done on closing rfp file)
+ *
  * Revision 1.47  2004/02/14 23:32:11  millis
  * Allow use of fixed time via parameter (for debugging)
  *
@@ -1507,15 +1510,10 @@ int process(void)
 			}
 
 			{
-				if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
-					sprintf(line, "dip.temp 'MNC: Victory in game %s'",
-					      dipent.name);
-					MailOut(line, MN_CUSTODIAN);
-				} else {
-					sprintf(line, "dip.temp 'BNC: Victory in game %s'",
-					      dipent.name);
-					MailOut(line, BN_CUSTODIAN);
-				}
+				InformCustodians(dipent.name,
+						 "%s '%s: Victory in game %s'",
+						 dipent.variant, 
+						 dipent.flags & F_GUNBOAT);
 			}
 
 			/*

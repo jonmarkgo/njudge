@@ -1,5 +1,8 @@
  /*
  * $Log$
+ * Revision 1.14  2003/07/17 00:01:29  millis
+ * Use MailOut to send emails
+ *
  * Revision 1.13  2003/06/29 21:37:41  nzmb
  * Made EOG draw entries broadcasted at the end of the game.
  *
@@ -401,15 +404,10 @@ int process_draw(void)
 	fclose(ofp);
 
 	{
-		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
-			sprintf(line, "dip.temp 'MNC: Draw in game %s'",
-				dipent.name);
-			MailOut(line, MN_CUSTODIAN); 
-		} else {
-			sprintf(line, "dip.temp 'BNC: Draw in game %s'",
-				dipent.name);
-			MailOut(line, BN_CUSTODIAN);
-		}
+		InformCustodians(dipent.name,
+				 "%s '%s: Draw in game %s'",
+				 dipent.variant,
+				 dipent.flags & F_GUNBOAT);
 	}
 
 	/*
@@ -543,17 +541,11 @@ int process_conc(void)
 	fclose(ofp);
 
 	/* Now we must notify the various custodians of the concession. */
-	{
-        	if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
-                        sprintf(line, "dip.temp 'MNC: Concession in game %s'",
-                                dipent.name);
-			MailOut(line, MN_CUSTODIAN);
-                } else {
-                        sprintf(line, "dip.temp 'BNC: Concession in game %s'",
-                                dipent.name);
-			MailOut(line, BN_CUSTODIAN);
-		}
-        }
+	InformCustodians(dipent.name,
+	                 "%s '%s: Concession in game %s'",
+		         dipent.variant,
+		         dipent.flags & F_GUNBOAT);
+	
 	/* Regenerate the summary */
 	if (dipent.flags & F_GUNBOAT) {
                 sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);

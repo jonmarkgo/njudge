@@ -1637,21 +1637,10 @@ void mail_igame(void)
 	}
 	fclose(ofp);
 
-	{
-		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-			sprintf(line, "%s dip.temp 'MNC: Game %s starting' '%s'",
-				SMAIL_CMD, dipent.name, MN_CUSTODIAN);
-		else
-			sprintf(line, "%s dip.temp 'BNC: Game %s starting' '%s'",
-				SMAIL_CMD, dipent.name, BN_CUSTODIAN);
-	}
-	execute(line);
-
-	/*
-	 * TODO add in a GAME_START_NOTIFY config or something 
-	 * similar here.  This is where the ep custodian had been
-	 * notified
-	 */
+	InformCustodians(dipent.name,
+	                 "%s '%s: Game %s starting'",
+	                  dipent.variant,
+	                  dipent.flags & F_GUNBOAT);
 
 	/*
 	 *  If this is a Machiavelli game we need to process the first build
