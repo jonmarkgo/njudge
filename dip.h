@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.34  2003/08/14 12:46:26  millis
+ * Fix bug 211
+ *
  * Revision 1.33  2003/08/10 15:27:50  millis
  * Fix bug 25 (Add TouchPress)
  *
@@ -302,7 +305,7 @@
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
-#define X2F_PRESS_OPTIONS 	(X2F_TOUCHPRESS & X2F_LATEPRESS & X2F_MUSTORDER)
+#define X2F_PRESS_OPTIONS 	(X2F_TOUCHPRESS & X2F_MUSTORDER)
 /* Do not display Colonial, Preference and Mach-only flags */
 #define X2F_PRINT_OPTIONS 	(~X2F_PRESS_OPTIONS & ~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS)
 

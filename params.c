@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.33  2003/08/14 12:46:26  millis
+ * Fix bug 211
+ *
  * Revision 1.32  2003/08/10 15:27:52  millis
  * Fix bug 25 (Add TouchPress)
  *
@@ -236,7 +239,6 @@ void params(FILE * fp)
 	char temp1[50];		/* Temp number buffer */
 	char *temp;		/* Pointer to buffer to be freed */
 	int first_flag;		/* say if first entry in list */
-	int press_rest = 0;	/* any press restrictions? */
 	/* Write information for move, retreat, and adjustment phases (deadlines,
 	   processing days, etc.).  */
 
@@ -705,8 +707,8 @@ void params(FILE * fp)
 
 	if (!first_flag) 
 		strcat(line,".");
-
-	if ((dipent.x2flags & (X2F_PRESS_OPTIONS)))
+	
+	if ((dipent.x2flags & (X2F_PRESS_OPTIONS)) || (dipent.xflags & XF_NOLATEPRESS))
 	    print_params(fp, line);
 	
 
