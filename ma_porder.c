@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/08/27 23:56:10  millis
+ * Added better victory display (fixing Mach victory bug)
+ *
  * Revision 1.10  2002/08/27 22:27:52  millis
  * Updated for automake/autoconf functionality
  *
@@ -243,6 +246,8 @@ static void newowner(void)
 				continue;
 			t = buf;
 			for (p = 1; p <= npr; p++) {
+				if (!cityvalue(p))
+                                    continue;
 				if (pr[p].cown == u && ncown[p] != 0 && ncown[p] != u) {
 					if (t != buf)
 						*t++ = ',';
