@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!               4th June 2002
+Greetings from the Diplomacy* Adjudicator!!              28th December 2002
 index.
 
 (Note: New commands for this judge version are marked with an '!'.
@@ -287,6 +287,11 @@ mod/aft!SET [NO]ATTACK TRANSFORM
 	Transformations on attacked but not dislodged units will fail/work. 
 	See file 'transform' for more details.
  
+mod/aft*SET [NO]BCENTERS
+mod/aft*SET [NO]BCENTRES
+	Enable/disable the display of ALL owned centres (not just those of the
+	power sending the command). Default disbled.
+
 mod/aft!SET BLANKBOARD
         Set the game to start in a build phase, with no units, so that players
 	can place a different initial stating unit position.
