@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.9  2001/06/24 05:19:25  nzmb
+ * Added inteface to player data database so player records are recorded,
+ * and also provided option of have D_LATE applied at the deadline or
+ * (default) 24 hours later.
+ *
  * Revision 1.8  2001/05/12 07:57:56  greg
  * added Mario Becroft's dedication problem fix
  *
@@ -187,7 +192,7 @@ void inform_party_of_blind_turn( int player_index, char *turn_text)
 			      dipent.name, turn_text, dipent.players[player_index].address);
         if (*(dipent.players[player_index].address) != '*' && !Dflg) {
                                 execute(line);
-           }
+        }
 }			
 
 
@@ -529,8 +534,7 @@ void master(void)
                 }
 
 		if (time_warp) {
-#define WARP_FILE "./dip.warp"
-			/* A global tiem-warp was detected: inform all found masters of this */
+			/* A global time-warp was detected: inform all found masters of this */
 			ibmfp = fopen(WARP_FILE, "w");
 			if (ibmfp != NULL) {
 			    fprintf(ibmfp, "A time warp was detected. Check that your game deadlines");
