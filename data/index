@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     28 Mar, 2004
+Greetings from the Diplomacy* Adjudicator!!                     12 May, 2004
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -11,6 +11,9 @@ A number in {curly braces} near the right margin following a command indicates
 the earliest Judge version in which the command was implemented.  If no number
 is listed, then the command is believed to work on all Judge versions
 currently in use, although this has not been verified.
+
+Commands prefixed by '!' have been incompletely implemented (as explained in
+the description).
 
 Each command is preceded by a code that indicates who can execute the command
 and (where applicable) additional restrictions on when the command can be
@@ -361,11 +364,12 @@ mod/bgs SET [NO] ATTACK TRANSFORM                                      {0.8.9}
         Transformations on attacked but not dislodged units will fail/work.
         Get file 'transform' for more details.
 
-mod/    SET [NO] AUTO CREATE                                           {1.4.1}
+mod/   !SET [NO] AUTO CREATE                                           {1.4.1}
         Instructs the Judge (or cancel an instruction) to create a new game 
         with identical parameters when the current one finishes (in a draw or
         victory), except that the new game will be set to 'NoList'. Fails if a 
         sequence number cannot be added/incremented on current game name.
+	{In reality, no functionality has yet been added for this command.}
 
 mod/bgs SET [NO] AUTO DISBAND                                          {0.8.9}
         Disables/enables the autodisband rule.  This rule when enables means
@@ -385,7 +389,7 @@ mod/bgs SET [NO] AUTO START                                            {0.8.9}
 mod/mac SET [NO] BANK[ERS]
         Equivalent to "SET [NO] LOANS".
 
-mod/bgs!SET [NO] BCENTERS|BCENTRES
+mod/bgs SET [NO] BCENTERS|BCENTRES
         Enable/disable the display of ALL owned centres (not just those of
         the power sending the command) in "Blind" variant.  Default disabled.
 
