@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2002/12/11 16:13:16  millis
+ * Added new flag to set up autonomous garrisons in every fort (for Mach)
+ *
  * Revision 1.14  2002/11/13 23:18:19  millis
  * Bug 43, change ownership prior to movement in MAch games
  *
@@ -482,7 +485,7 @@ int victory(void)
 		dipent.vp = maxcen + 1;
 		fprintf(rfp, "\nWinning Centers changed to %d to avoid a draw.\n\n",
 			dipent.vp);
-		fprintf(bfp, "\nIf you want a draw than vote for it.\n");
+		fprintf(bfp, "\nIf you want a draw then vote for it.\n");
 		broadcast = 1;
 	}
 	if (numwin == 1) {

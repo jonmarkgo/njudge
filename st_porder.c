@@ -1,5 +1,8 @@
-/*
+  /*
   ** $Log$
+  ** Revision 1.9  2002/08/27 23:56:11  millis
+  ** Added better victory display (fixing Mach victory bug)
+  **
   ** Revision 1.8  2002/05/11 09:15:35  greg
   ** Minor bug fixes
   ** - fixed subjectline for absence requests
@@ -140,8 +143,10 @@ int ownership(void)
 		if (dipent.pl[tmpi] == 'x')
 			continue;
 		if (np[tmpi] >= maxcen)
+		{
 			numwin++;
 			victor = tmpi;
+		}
 	}
 	if (numwin > 1) {
 		dipent.vp = maxcen + 1;
@@ -372,7 +377,12 @@ int process_output(int pt, char phase)
 	case 'R':		/* Retreats */
 		retreatout(pt);
 		if (processing)
+		{
+			fprintf(log_fp,"Processing retreat.\n");
+			fprintf(log_fp,"before victor: %d\n", victor);
 			next_phase();
+			fprintf(log_fp,"After next phase, victor %d.\n",victor);
+		}
 		break;
 
 	default:
