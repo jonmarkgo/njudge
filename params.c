@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2003/05/24 22:55:44  millis
+ * Bug 142, allow use of AutoCreate flag
+ *
  * Revision 1.29  2003/05/09 09:44:51  millis
  * Added display of Mach2 flag
  *
@@ -691,6 +694,7 @@ void params(FILE * fp)
 	}
 
 	if(press_rest == 1)
+		strcat(line, ".");
 		print_params(fp, line);
 
 	/* EP and Miller/Boardman numbers; number of centres needed for win
