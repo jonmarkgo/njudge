@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -24,7 +27,7 @@
 #include "mach.h"
 #include "functions.h"
 
-#define convoyable(p) (1)
+#define convoyable(p) (water(p) | (dipent.xflags & XF_COASTAL_CONVOYS))
 
 /*
  * Input processing of the regular movement orders
@@ -35,6 +38,7 @@ int ma_movein(char **s, int p)
 	/* int p; Power specification */
 
 	char c, order, *t;
+	char cc; /* MLM 12/06/2001 remember unit type for convert order */
 	int i, j, p1, p2, u, u1, u2, c1, c2, bl;
 	unsigned char *bp;
 
@@ -191,6 +195,14 @@ int ma_movein(char **s, int p)
 			       "and final destination of an army.");
 			return E_WARN;
 		}
+		/* MLM 27/5/001 Mach2 convoy: costal convoys not allowed */
+		if (!(dipent.xflags & XF_COASTAL_CONVOYS)) {
+		    if (order == 'c' && !water(unit[u].loc) && !is_venice(unit[u].loc)) {
+			errmsg("No costal convoys permitted!\n");
+			return E_WARN;
+		    }
+		}
+
 		c1 = 0;
 		if (order == 's' &&
 		    ((is_garrison(u) && p1 != p2) ||
@@ -227,6 +239,10 @@ int ma_movein(char **s, int p)
 		}
 		if (!is_sieged(p1)) {
 			errmsg("No siege in progress in %s.\n", pr[p1].name);
+			return E_WARN;
+		}
+		if (dipent.xflags & XF_NOLIFT_SIEGE) {
+			errmsg("No need: any non-besiege order will lift siege in this game.\n");
 			return E_WARN;
 		}
 		break;
@@ -326,38 +342,50 @@ int ma_movein(char **s, int p)
 
 
 	case 'v':		/* convert */
-		*s = get_type(*s, &c);
-		if (is_garrison(u) && c == 'x') {
+		*s = get_type(*s, &cc);
+		if (is_garrison(u) && cc == 'x') {
 			if (has_port(p1)) {
 				errmsg("Conversion must specify army or fleet in port.\n");
 				return E_WARN;
 			} else {
-				c = 'A';
+				cc = 'A';
 			}
-		} else if (!is_garrison(u) && c != 'x' && c != 'G') {
+		} else if (!is_garrison(u) && cc != 'x' && cc != 'G') {
 			errmsg("Fleets and armies can only convert to garrisons.\n");
 			return E_WARN;
 		}
-		if (unit[u].type == c) {
+		if (unit[u].type == cc) {
 			errmsg("The %s in %s already is %s.\n", utype(unit[u].type),
-			       pr[p1].name, autype(c));
+			       pr[p1].name, autype(cc));
 			return E_WARN;
 		}
-		if (c == 'x')
-			c = 'G';
+		if (cc == 'x')
+			cc = 'G';
 
 		if (!has_fortress(p1)) {
 			errmsg("No fortress or fortified city in %s.\n", pr[p1].name);
 			return E_WARN;
 		}
-		if (c == 'F' && !has_port(p1)) {
+		if (cc == 'F' && !has_port(p1)) {
 			errmsg("%s is not a port.  Can only convert to an army.\n",
 			       pr[p1].name);
 			return E_WARN;
 		}
+		/* MLM 12/06/2001 do not allow fleets to convert if not a port */
+		if (c== 'F' && !has_port(p1)) {
+			errmsg("%s is not a port.  Cannot convert.\n",
+				pr[p1].name);
+			return E_WARN;
+		}
+		/* MLM 21/6/2001 check if allowed to convert */
+		if (!PermittedMachUnit(p, cc, unit[u].stype, PP_BUILD)) {
+			errmsg("Conversion is not permitted for this power.\n");
+			return E_WARN;
+		}
+
 		p2 = p1;
-		u2 = c;
-		c2 = c == 'F' ? XC : MV;
+		u2 = cc;
+		c2 = cc == 'F' ? XC : MV;
 		break;
 
 
@@ -402,6 +430,8 @@ int ma_moveout(int pt)
 #define DOSIEGE	    7
 #define BLOCKED	    8
 #define BAD_CONVOY  9
+#define SELF_BESIEGE 10
+#define VENICE_REBEL 11		/* Venice in rebellion fails movement in */
 #define DISLODGED       32	/* added on */
 #define MAYBE_NO_CONVOY 33	/* no message */
 
@@ -415,7 +445,9 @@ int ma_moveout(int pt)
 	 "siege in progress",
 	 "siege required",
 	 "blocked",
-	 "WARN: check convoy"};
+	 "WARN: check convoy",
+	 "self-besiege, siege lifted",
+	 "failed, destination in rebellion"};
 
 
 	for (p = 1; p <= npr; p++) {
@@ -465,13 +497,15 @@ int ma_moveout(int pt)
 		p = unit[u].loc;
 		switch (unit[u].order) {
 		case 'b':	/* BESIEGE ORDER */
-			if (!has_garrison(p) && !has_crebellion(p))
+			if ((!has_garrison(p) && !has_crebellion(p)))
 				result[u] = VOID;
+			if ((has_garrison(p) && unit[pr[p].gunit].owner == unit[u].owner))
+				result[u] = SELF_BESIEGE;
 			break;
 		case 'v':	/* CONVERT ORDER */
 			/* A besieged unit can not convert */
 			if (is_garrison(u)) {
-				if (is_sieged(p))
+				if (is_sieged(p) && unit[pr[p].gunit].owner != unit[u].owner)
 					result[u] = BESIEGE;
 			} else {
 				/* 
@@ -485,8 +519,10 @@ int ma_moveout(int pt)
 			break;
 		default:
 			/* All other commands */
-			if (is_sieged(p) && !is_garrison(u) && unit[u].order != 'l')
-				result[u] = BESIEGE;
+			if (is_sieged(p) && !is_garrison(u) && unit[u].order != 'l'
+			    && unit[pr[p].gunit].owner != unit[u].owner)
+				if (!(dipent.xflags & XF_NOLIFT_SIEGE))
+					result[u] = BESIEGE;
 		}
 	}
 
@@ -495,7 +531,7 @@ int ma_moveout(int pt)
 	   **  skip to the report generation.
 	 */
 
-	if (!processing) {
+	if (!processing && !predict) {
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].proxy != 0 && unit[u].order == 'n')
 				unit[u].owner = 0;
@@ -597,6 +633,13 @@ int ma_moveout(int pt)
 				result[u2] = CUT;
 				support[unit[u2].unit] -= supval(u2);
 			}
+			/* MLM 22/6/2001 Also block moves on attempt to enter 
+			   rebelling Venice */
+			if (unit[u].order == 'm' && 
+			    pr[unit[u].dest].flags & PF_VENICE &&
+			    has_rebellion(unit[u].dest) && 
+			     pr[unit[u].dest].owner == unit[u].owner)
+				result[u]= VENICE_REBEL;
 		}
 
 /*  Pass 2a.1: Check for support cut from "support needed" units */
@@ -961,7 +1004,7 @@ int ma_moveout(int pt)
 				fprintf(rfp, " CONVOY ");
 				if ((i = unit[u2 = unit[u].unit].owner) != p)
 					fprintf(rfp, "%s ", owners[i]);
-				else if (!processing && unit[u2].dest != unit[u].dest)
+				else if (!processing && !predict && unit[u2].dest != unit[u].dest)
 					result[u] = BAD_CONVOY;
 				fprintf(rfp, "Army %s -> %s", pr[unit[u2].loc].name,
 					pr[unit[u].dest].name);
@@ -978,7 +1021,7 @@ int ma_moveout(int pt)
 			case 'm':
 				if ((s = unit[u].convoy)) {
 					while (*s) {
-						if (!processing && unit[*s].owner == unit[u].owner &&
+						if (!processing && !predict && unit[*s].owner == unit[u].owner &&
 						    (unit[*s].order != 'c' || unit[*s].unit != u ||
 						     unit[*s].dest != unit[u].dest)) {
 							result[u] = BAD_CONVOY;
@@ -1040,7 +1083,7 @@ int ma_moveout(int pt)
 
 /*  Pass 7: Print out retreats.  */
 
-	if (processing) {
+	if (processing || predict) {
 		i = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
@@ -1122,7 +1165,9 @@ int ma_moveout(int pt)
 			   **  Clear the siege in process flag if lifted.
 			 */
 
-			else if (unit[u].order == 'l' && !result[u]) {
+			else if ((unit[u].order == 'l' && !result[u]) || 
+				(result[u] == SELF_BESIEGE) ||
+				(dipent.xflags & XF_NOLIFT_SIEGE)) {
 				remove_siege(unit[u].loc);
 			}
 		}
@@ -1186,13 +1231,15 @@ int ma_moveout(int pt)
 					   ** 1) There should be a fortress.
 					   ** 2) It should be unoccupied.
 					   ** 3) Free of rebellion.
+					   ** 3a) not Venice
 					   ** 4) And if we are a fleet, it should have a port.
 					 */
 					if (has_fortress(unit[u].loc) &&
 					    !has_garrison(unit[u].loc) &&
 					  !has_crebellion(unit[u].loc) &&
+					  !is_venice(unit[u].loc) &&
 					    (has_port(unit[u].loc) || unit[u].type == 'A')) {
-						if (!i++) {
+						if (!i++ || dipent.xflags & XF_GCONVERT_ANYTIME) {
 							sprintf(t, " can convert to a Garrison");
 							while (*t)
 								t++;
