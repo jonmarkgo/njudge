@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Aug 31, 2004
+Greetings from the Diplomacy* Adjudicator!!                Oct 17, 2004
 Rules.machiavelli2
 
 
@@ -21,6 +21,7 @@ Differences between 1995 edition and older:
      6)  Adjacency rules for bribes differ somewhat.
      7)  The map (fewer provinces and sea areas; no fortresses).
      8)  Venice rules.
+     9)  Winning conditions
 
 'Tech note'. Mach2 also has two optional rules that are *not implemented*
 on the judge these are:
@@ -28,20 +29,28 @@ on the judge these are:
      2)  Strategic movement
 For information about this see appendix 1 at the end.
 
-'Tech note 2'. Conquest and use of home countries is actually an optional
-rule in Mach2. But in judge play the Mach1 implementation is kept.
+
+WINNING  **IMPORTANT DIFFERENCE**
+In Machiavelli2 *only the number of controlled cities* are counted.  
+There is *no* requirement to control another home country.
 
 
-CONTROL OF PROVINCES AND CITIES  **IMPORTANT DIFFERENCE**
+CONTROL OF PROVINCES, CITIES AND HOME COUNTRIES  **IMPORTANT DIFFERENCE**
 You gain control as per standard Diplomacy.  That is: you must have one
-of your units in the province (or city) at the end the of fall turn. (If
+of your units in the province (or city) at the end of the fall turn. (If
 one player controls the city and another the province nobody has control.)
 
-This also means that conquest of another home country or elimination is
-not checked for until after the end of fall.
+This also means that conditions for winning or elimination are not checked 
+for until after the end of fall.
+
+Home country conquest are done as in Classic Machiavelli (see 
+rules.machiavelli); i.e. cities can be used for builds.
 
 'Tech note'. The original rules define control changes to occur at the
 start of the spring turn.
+
+'Tech note 2'. Conquest of and use of home countries is actually an 
+optional rule in Mach2.
 
 
 MOVEMENT (retreats, sieges, and convoys)  **IMPORTANT DIFFERENCES**
@@ -57,7 +66,8 @@ converting to or from garrison.
 The default setting for coastal convoys is: *not allowed*, which is 
 contrary to the earlier editions.  As this is a game flag you may change it.
 
-SPECIAL UNITS
+
+SPECIAL UNITS  **IMPORTANT DIFFERENCE**
 Any country cannot buy any special unit.
 Austria, Turkey and Venice may own Elite Professionals.
 Florence, Milan, Papacy and Venice may own Citizen’s Militia.
@@ -105,7 +115,10 @@ VARIOUS
 1)  Rebellions
 The rules on rebellions follow the judge rulings in rules.machiavelli.
 
-2)  Support
+2)  Assassinations
+The rules on assassinations follow the judge rulings in rules.machiavelli.
+
+3)  Support
 Support is cut as explained in rules.machiavelli.
 
 'Tech note'.  The rules errata state that multistrength units have their
@@ -113,7 +126,7 @@ support broken on a point by point basis.  I.e. only one strength point
 is cut by a one strength point unit thus leaving the 2nd strength point
 intact for support.  This is *not* implemented by the judge.
 
-3)  Scenarios
+4)  Scenarios
 No 'Expansion of States 1385-1425' scenario.  Fixed amounts of starting
 money.  Minor differences in setup due to the differing maps.
 
@@ -181,4 +194,6 @@ v1.1b 22nd February 2003. Clarified rules for bribes and adj. Notes
 v1.2  20th July 2003. Note on conversion of besieged units and straits. 
       Author Sergio Lidsell.
 v1.2b 25th August 2004. Removed incorrect disband note. Auth S Lidsell.
-v1.3 31st August 2004. Clarified Venice sea area effects. Auth S Lidsell.
+v1.3  17th October 2004. Venice sea area effects, winning conditions, 
+      handling of home country conquest and assassination rules 
+      clarified. Author Sergio Lidsell.
