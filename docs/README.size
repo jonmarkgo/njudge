@@ -1,0 +1,31 @@
+README.size
+-----------
+
+You will only be interested in this if moving an existing judge from one
+platform to another, but, if you do, this might save you a lot of time!
+
+
+As a result of problems experienced when moving from one hardware platform
+to another, where the size of integer and long values changed, I have 
+created a size check mechanism.
+
+The file .size.dat holds the sizes of the following three data types:
+ short, int, long
+
+The makefile call the executable 'size_check' which will fail if this file
+exists with different values.
+
+Also, the dip executalbe has a SizeCheck() function which will also cause a 
+bailout if these numbers do not match (it allows a non-existent file).
+
+In case you do have problems with migrating from one platform to another 
+where sizes change (in my case, it was Intel to Alpha) two helper programs
+can be used to help migrate the affected data file dip.ded:
+
+ded_to_ascii: Creates a text file from dip.ded (run on source machine)
+ascii_to_ded: Creates a new dip.ded file from text file (run on target)
+
+
+
+-Millis Miller 15th April 2002
+
