@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Added a few extra glags and a couple of defines to force password of resigned payers to a bad value
+   **
    ** Revision 1.1  1998/02/28 17:51:14  david
    ** Initial revision
    **
@@ -53,6 +56,7 @@ int broad_params;		/* Non zero if changed params need broadcasting */
 int read_phase;			/* > zero if future phase processing            */
 int moreaddr;			/* Non zero when address continued on 2nd line  */
 int create;			/* Non zero when processing create command      */
+int predict;			/* Non zero when predicting move results        */
 int msg_header_done;		/* Message header has/hasn't been written out   */
 char baddr[80];			/* Optional additional broadcast recipient      */
 char raddr[80];			/* Reply mail address from mail header          */
