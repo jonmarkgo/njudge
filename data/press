@@ -42,6 +42,9 @@ command.  The keywords are:
         Observers can post press with the same restrictions as regular
 	players.  This is the default and does not show up on list output.
 
+   Observer partial:
+	Observers can post both broadcast and partial press.
+
    Observer white:
         Observers cannot post grey press.  In a game that only allows grey
 	press from players, press from observers will show up as white press.
