@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/04/15 21:28:30  miller
+ * Added new variants
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Specify for each variant if it is a homeCentre, OneCentre or AnyCentre game.
  * This makes it clearer for the player (who will see this always in a game listing) as well as removing specific tests in the code. Plus now any variant uses this only as a default - a game setup can change this if required/wanted.
@@ -98,10 +101,11 @@ enum {
 #define MAX_POWERS    36	/* Max. powers in a single game (letters+digits) */
 #define LPOWER        24	/* Length of the longest power name              */
 
-#define WILD_PLAYER  256  /* First non-player player ordinal               */
-#define AUTONOMOUS   257  /* Non-player ordinal                            */
-#define OBSERVER     258  /* Non-player ordinal                            */
-#define MASTER       259  /* Last Non-player ordinal                       */
+/* Do not exceed byte limit as these are used in char arrays */
+#define WILD_PLAYER  252  /* First non-player player ordinal               */
+#define AUTONOMOUS   253  /* Non-player ordinal                            */
+#define OBSERVER     254  /* Non-player ordinal                            */
+#define MASTER       255  /* Last Non-player ordinal                       */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
