@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!         11th October, 2002
+Greetings from the Diplomacy* Adjudicator!!              Feb. 22, 2003
 Rules.machiavelli2
 
 
@@ -16,7 +16,7 @@ Differences between 1995 edition and older:
      1)  The rules concerning control.
      2)  You can *always* retreat into cities.
      3)  You need *not* lift a siege to move off.
-     4)  Coastal convoys not allowed.
+     4)  Coastal convoys not allowed by default.
      5)  Restrictions on special units.
      6)  Adjacency rules for bribes differ somewhat.
      7)  The map (fewer provinces and sea areas; no fortresses).
@@ -27,6 +27,9 @@ on the judge these are:
      1)  Excommunication
      2)  Strategic movement
 For information about this see appendix 1 at the end.
+
+'Tech note 2'. Conquest and use of home countries is actually an optional
+rule in Mach2. But in judge play the Mach1 implementation is kept.
 
 
 CONTROL OF PROVINCES AND CITIES  **IMPORTANT DIFFERENCE**
@@ -66,7 +69,8 @@ maintain it.  See appendix 3 for the settings in the map file.
 
 BRIBES AND ADJACENCY
 Bribes may be directed into any province adjacent to a province that
-you *control* or have a unit in.
+you *control* or have a unit in. Notice that this is not implemented, 
+and that the procedure in rules.machiavelli is followed.
 
 
 IMPORTANT MAP CHANGES
@@ -131,21 +135,7 @@ Players move beginning with the player owning most cities and end
 with the player owning the fewest.  If tied a 1d6 is rolled.
 
 
-APPENDIX 2 -- MAIN DIFFERENCES BETWEEN OLDER VERSIONS OF MACH
-
-Differences between AH 1980 and 1983 (the first 2nd edition) editions.
-1)  No money lenders -- no bank (this must surely be a misprint in my
-    rules)
-2)  Necessary to control both city and province to gain the additional
-    "city/province" variable income roll.
-3)  Balance of Power scenario.  Papal home country includes Tivoli.
-    Control of Naples or Milan city and province awards 1d6 variable
-    income roll.
-4)  Struggle for Dominance I scenario.  Control of Genoa or Florence city
-    and province awards 1d6 variable income roll.
-
-
-APPENDIX 3 -- HOW TO DEFINE UNIT LIMITS
+APPENDIX 2 -- HOW TO DEFINE UNIT LIMITS
 Add the below at the end of the map file.  Note that you must know of
 the *power letter used on the judge* and that you must add an entry for
 *every* country.  The control letters correspond to: x=allowed,
@@ -168,4 +158,8 @@ ALL RIGHTS RESERVED.
 
 REVISION HISTORY
 v1 12th of December 2001. Author Sergio Lidsell.
-v1b Oct 11th 2002. Venice rules corrected and clarified. Author S Lidsell.
+v1.1 11th of October 2002. Venice rules corrected. Auth S Lidsell.
+v1.1a 16th of January 2003. Note re. home country conq. Auth S Lidsell.
+v1.1b 22nd of February 2003. Clarified rules for bribes and adj. Notes 
+      on differences between pre-mach2 editions moved to 
+      rules.machiavelli. Author Sergio Lidsell.
