@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2004/05/22 09:01:45  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.21  2004/02/14 23:32:11  millis
  * Allow use of fixed time via parameter (for debugging)
  *
@@ -144,13 +147,13 @@ int getdipent(FILE * fp)
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x%d%x", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x%d%x%d", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
 		   &dipent.xflags, &dipent.max_absence_delay,
 		   &dipent.x2flags, &dipent.num_homes,
-		   &dipent.x3flags);
+		   &dipent.x3flags, &dipent.powers);
 	switch (i) {
 
 	    case 7:
@@ -187,6 +190,8 @@ int getdipent(FILE * fp)
 
 	    case 14:
 		dipent.x3flags = 0;
+		dipent.wait = 0;
+		dipent.powers = dipent.np;
 		/* F_PROXY became F_INTIMATE */
 	        if (dipent.flags & F_INTIMATE) {
 		    dipent.flags &= ~F_INTIMATE;
@@ -202,6 +207,9 @@ int getdipent(FILE * fp)
                 }
 
 	    case 15:
+		dipent.powers = dipent.np;
+
+	    case 16:
 		/* All ok, exit out */
 		break;  /* Dont forget to remove this if adding new cases! */
 
@@ -226,10 +234,13 @@ int getdipent(FILE * fp)
 	if (tempvp != 0)
 		dipent.vp = tempvp;
 
+	if (dipent.powers == 0)
+		dipent.powers = dipent.np;
+
 	if (tempplayers != 0) {
 		dipent.no_of_players = tempplayers;
 	} else {
-		dipent.no_of_players = dipent.np;
+		dipent.no_of_players = dipent.powers;
 	}
 
 	while (fgets(line, sizeof(line), fp) && *line != '-') {
@@ -303,6 +314,10 @@ int getdipent(FILE * fp)
 
 		case 'T':
 			sscanf( &(line[26]),"%f", &dipent.rrded);
+			break;
+
+		case 'W':
+			gettime(line, &dipent.wait);
 			break;
 
 		case '_':
@@ -401,7 +416,7 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d %x\n", 
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d %x %d\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
@@ -409,7 +424,8 @@ void putdipent(FILE * fp, int dopw)
 		dipent.max_absence_delay,
                 dipent.x2flags, /* This indicates version 0.8.9 onwards */
 		dipent.num_homes, /* This indicates version 1.1.1 onwards */
-		dipent.x3flags    /* This indicates version 1.7 onwards */
+		dipent.x3flags,    /* This indicates version 1.7 onwards */
+		dipent.powers	/* Also new for version 1.7 onwards */
 		
 	);
 
@@ -425,6 +441,10 @@ void putdipent(FILE * fp, int dopw)
 	if (dipent.grace)
 		fprintf(fp, "Grace     %24.24s (%ld)\n",
 			ctime(&dipent.grace), dipent.grace);
+	if (dipent.wait)
+		fprintf(fp, "Wait      %24.24s (%ld)\n",
+				ctime(&dipent.wait), dipent.wait);
+
 	fprintf(fp, "Ontime rat. min %.3f\n",dipent.orded);
         fprintf(fp, "T = resignation ratio max %.3f\n",dipent.rrded);
         fprintf (fp,"Yet_Applied_deadline? %d\n",
@@ -462,8 +482,6 @@ void newdipent(char *name, int variant)
 
 	char dir[50];
 
-	/* TODO allow an arbitrary prefix.  E.g. "games/" */
-	/*   done - greg  :-)  */
 	sprintf(dir, "%s%s", GAME_DIR, name);
 	mkdir(dir, 0777);
 	strncpy(dipent.name, name, sizeof(dipent.name));
@@ -482,6 +500,7 @@ void newdipent(char *name, int variant)
 	dipent.deadline = 0;
 	dipent.start = 0;
 	dipent.grace = 0;
+	dipent.wait = 0;
 	dipent.movement.clock = D_MOVE_CLOCK;
 	dipent.movement.mint = D_MOVE_MINT;
 	dipent.movement.next = D_MOVE_NEXT;
@@ -505,6 +524,7 @@ void newdipent(char *name, int variant)
 	dipent.rrded = 1.000;
 	dipent.dedapplied = 0;
 	dipent.no_of_players = dipent.np;
+	dipent.powers = dipent.np;
 	dipent.max_absence_delay = D_MAX_ABSENCE_DELAY;
         dipent.has_natives = GetNativeIndex();
 }

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2004/07/04 03:10:44  millis
+ * Display new irregular and portage flags
+ *
  * Revision 1.40  2004/05/22 08:56:52  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -320,12 +323,18 @@ void params(FILE * fp)
 		strcat(line, ", Intimate");
 	    }
 	}	
+	
 	if (IS_DUPLEX(dipent)) {
 	    strcat(line, ", Duplex");
 	    if (!(dipent.x2flags & X2F_SECRET)) {
 	        sprintf(temp1," %d/%d", dipent.no_of_players,dipent.np);
 	        strcat(line,temp1);
 	    }
+	}
+
+	if (dipent.powers != dipent.np) {
+	        sprintf(temp1, ", Powers: %d", dipent.powers);
+	        strcat(line, temp1);
 	}
 
 	if (dipent.x2flags & X2F_IRREGULAR)

@@ -708,6 +708,16 @@ mod/    SET [NO] POSTAL PRESS                                          {1.2.0}
         Turns postal press on/off.  Postal press is press published with the
         results of the turn.  See command "POSTAL PRESS" for more details.
 
+mod/bgs SET POWERS number					       {1.7.0}
+	Sets the number of powers (not players) in the game. When the number
+	of players is greater, this will be adjusted down. Using this command
+	will result in a game playing with fewer powers than designed, so,
+	for example, 'set powers 5' in a standard game will mean that two 
+	powers will not appear: their units will be missing and their centres
+	open for capture as per a normal neutral supply centre.
+	This is more intended for variants where the number of powers can be
+	variable and does not affect game balance.
+
 ply/bgs SET PREFERENCE list
         To establish a preference list for power assignment.  Should appear
         immediately after an initial SIGNON entering a forming game.  Can be

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.61  2004/07/13 00:14:11  millis
+ * Allow Transformation to be switched off (Bug 117)
+ *
  * Revision 1.60  2004/07/08 22:20:46  millis
  * Bug 91: small changes to improve status handling and show only
  * real player information to master
@@ -554,6 +557,8 @@ void mail_setp(char *s)
 	static char part_list[sizeof(broad_list)];  /* Temporary store for powers */
 	int part_list_count = 0;
 	int bad_cmd = 0;
+	int *val;
+	char *text;
 
 #define SET_ADD		1
 #define PRV_ADD		'a'
@@ -913,6 +918,8 @@ void mail_setp(char *s)
 #define PRV_PORTAGE	  'm'
 #define SET_NOPORTAGE	  178
 #define PRV_NOPORTAGE	  'm'
+#define SET_POWERS	  179
+#define PRV_POWERS	  'm'
 
 
 /***********************************************************************
@@ -1026,7 +1033,7 @@ void mail_setp(char *s)
 	    "touch press", "no touch press",
 	    "approval", "no approval",
 	    "approved", "approve", "not approved", "not approve",
-	    "portage", "no portage"
+	    "portage", "no portage", "powers"
 	};
 
 	static unsigned char action[] = {
@@ -1120,7 +1127,7 @@ void mail_setp(char *s)
 	    SET_TOUCHPRESS, SET_NOTOUCHPRESS,
 	    SET_APPROVAL, SET_NOAPPROVAL,
 	    SET_APPROVED, SET_APPROVED, SET_NOTAPPROVED, SET_NOTAPPROVED,
-	    SET_PORTAGE, SET_NOPORTAGE
+	    SET_PORTAGE, SET_NOPORTAGE, SET_POWERS
 	};
 
 	static char privs[] = {
@@ -1212,7 +1219,7 @@ void mail_setp(char *s)
 	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS,
             PRV_APPROVAL, PRV_NOAPPROVAL,
             PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED,
-	    PRV_PORTAGE, PRV_NOPORTAGE
+	    PRV_PORTAGE, PRV_NOPORTAGE, PRV_POWERS
 	};
 
 	chk24nmr = 0;
@@ -1911,6 +1918,7 @@ void mail_setp(char *s)
                                         fprintf(rfp, "Concession not set.\n");
                                 } else {
 					fprintf(rfp, "Concession to '%s' set.\n", t);
+					strcpy(dipent.players[player].pref, t);
 					dipent.players[player].status |= SF_CONC;
 					process_conc();
 			}
@@ -2615,26 +2623,55 @@ void mail_setp(char *s)
 			break;
 
 		case SET_NO_PLAYERS:
+		case SET_POWERS:
+
+			if (action[i] == SET_NO_PLAYERS) {
+			    val = &dipent.no_of_players;
+			    text = "layer";
+			} else {
+			    val = &dipent.powers;
+			    text = "ower";
+			}
+
 			i = atoi(s);
-			while (isdigit(*s))
-				s++;
-			if (i == dipent.no_of_players) {
-				fprintf(rfp, "Set Players %d: It already was!\n", i);
+                        while (isdigit(*s))
+                              s++;
+
+			if (dipent.seq[0] != 'x') {
+			    fprintf(rfp, "Game '%s' has already started: not allowed to change number of p%ss!\n\n",
+			            text, dipent.name);
+			    break;
+			}
+			
+			if (i == *val) {
+				fprintf(rfp, "Set P%ss %d: It already was!\n", text, i);
 			} else if ((i < 1) || (i > dipent.np)) {
 				fprintf(rfp,
-					"Set Players %d: Must be in the range 1 to %d for this variant\n",
-					i, dipent.np);
+					"Set P%ss %d: Must be in the range 1 to %d for this variant\n",
+					text, i, dipent.np);
 			} else {
-				dipent.no_of_players = i;
-				fprintf(rfp, "Number of Players for game '%s' set to %d.\n",
-				      dipent.name, dipent.no_of_players);
-				pprintf(cfp, "%s%s as %s in '%s' set the number of players to %d.\n",
+				*val =  i;
+				fprintf(rfp, "Number of P%ss for game '%s' set to %d.\n",
+				      text, dipent.name, *val);
+				pprintf(cfp, "%s%s as %s in '%s' set the number of p%ss to %d.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
-				      dipent.name, dipent.no_of_players);
-				fprintf(bfp, "%s as %s in '%s' set the number of players to %d.\n",
+				      dipent.name, text, *val);
+				fprintf(bfp, "%s as %s in '%s' set the number of p%ss to %d.\n",
 					xaddr, PRINT_POWER,
-				      dipent.name, dipent.no_of_players);
+				      dipent.name, text, *val);
+				if (dipent.no_of_players > dipent.powers) {
+				    dipent.no_of_players = dipent.powers;
+				    fprintf(rfp, "Number of Players adjusted down to %d.\n",
+					    dipent.powers);
+				     pprintf(cfp, "%s%s as %s in '%s' set the number of players to %d.\n",
+					     NowString(),
+					      xaddr, powers[dipent.players[player].power],
+					     dipent.name,  dipent.no_of_players);
+				     fprintf(bfp, "%s as %s in '%s' set the number of players to %d.\n",
+				              xaddr, PRINT_POWER,
+					       dipent.name, dipent.no_of_players);
+				}
 				CheckForGameStart();
 				broadcast = 1;
 
