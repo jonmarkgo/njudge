@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.35  2004/11/24 12:29:31  millis
+** Fix Bug 385 (Portage game hangs judge and coasts not working correctly)
+**
 ** Revision 1.34  2004/07/10 07:18:22  nzmb
 ** Final tweaks to new convoy code. Fixes bug #290.
 **
@@ -1244,9 +1247,9 @@ static void DoMoves( void)
                                         }
 					/* See if convoying to half area */
 					c1=0;
-					valid_move(*s, unit[*s].dest, &c1, &bl);
+					valid_move(pr[*s].unit, *s, &c1, &bl);
 					if (c1 == HX) support[u] -= 0.5;
-					last_type[u] = unit[*s].type; /* Remember last unit convoying/airlifting */
+					last_type[u] = unit[pr[*s].unit].type; /* Remember last unit convoying/airlifting */
                                 }
                         } else if (unit[u].order == 'm' ) {
 
