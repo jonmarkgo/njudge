@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.52  2004/09/06 22:08:17  millis
+ * Bug363 Allow more than one victor
+ *
  * Revision 1.51  2004/09/03 13:30:17  millis
  * Added use of AlliedWin value.
  *
@@ -368,7 +371,7 @@
 #define X2F_IRREGULAR		0x20000000 /* Game settings were changed in play */
 #define X2F_PORTAGE		0x40000000 /* Game has armies able to convoy */
 
-#defibe X3F_NOALLIEDWIN	0x1 /* If set, duplex game cannot end with an allied win */
+#defibe X3F_ALLIEDWIN	0x1 /* If set, duplex game can end with an allied win */
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
