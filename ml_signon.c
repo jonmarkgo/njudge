@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/05/09 06:38:28  greg
+ * added subjectlines
+ *
  * Revision 1.5  2001/04/15 21:21:22  miller
  * Only send warning for different emails if not a substring
  *
@@ -181,7 +184,7 @@ int mail_signon(char *s)
 		variant = V_STANDARD;
 		flags = 0;
 		while (*s) {
-			s = lookfor(s, variants, NVARIANT + NVAROPTS, &i);
+			s = lookforv(s, variants, NVARIANT + NVAROPTS, &i);
 			if (!i) {
 				if (!msg_header_done)
 					msg_header(rfp);

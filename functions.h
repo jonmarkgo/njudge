@@ -44,6 +44,7 @@ void AddProvinceToOrder(char *text, int place);
 void AddUnitProvinceToOrder(char *text, int unit, int place);
 void AddPowerToOrder(char *text, int power);
 void AddOrderToOrder(char *text, int order);
+char *lookforv(char *l, char *w[], int len, int *n, int exact_word);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);

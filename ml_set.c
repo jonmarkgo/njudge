@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/05/14 22:58:21  miller
+ * Corrected transformation setting/display. Also disabled Mach1,2,3 flags (to be removed later for good).
+ *
  * Revision 1.4  2001/05/10 08:33:25  greg
  * added subjectlines
  *
@@ -1517,7 +1520,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_VARIANT:
-			s = lookfor(s, variants, NVARIANT + NVAROPTS, &i);
+			s = lookforv(s, variants, NVARIANT + NVAROPTS, &i,1);
 			if (!i) {
 				fprintf(rfp, "Invalid variant: %s", s);
 				fputs("Valid variants are:\n", rfp);

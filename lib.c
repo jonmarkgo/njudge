@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.4  2001/05/30 21:16:46  miller
+ * better lookfor fix
+ *
  * Revision 1.3  2001/05/30 21:03:48  miller
  * Lookfor will terminate search only if string has really ended
  *
@@ -395,6 +398,10 @@ int *coast;			/* OUTPUT: The specified coast */
 
 char *lookfor(char *l, char *w[], int len, int *n)
 {
+    return lookforv(l, w, len, n, 0);
+}
+char *lookforv(char *l, char *w[], int len, int *n, int exact_word)
+{
 
 	/*
 	 *  Look for a phrase in a table of phrases. The phrases are lower case
@@ -429,7 +436,7 @@ char *lookfor(char *l, char *w[], int len, int *n)
 			}
 		}
 
-		if (!*t && (!*s || isspace(*s) || strchr("(;/,)",*s))) {
+                if (!*t && (!exact_word || ((!*s || isspace(*s) || strchr("(;/,)",*s))))) {
 			*n = i;
 			while (isspace(*s))
 				s++;
