@@ -1,5 +1,12 @@
 /*
  * $Log$
+ * Revision 1.4  2004/06/16 07:54:49  nzmb
+ * A couple of changes to improve the interaction between rdip and bailout, and
+ * make rdip a bit more fault tolerant:
+ * (1) rdip now handles SIGPIPE and bails the judge out gracefully should it
+ *     occur (previously, things died in mysterious and unpleasant ways).
+ * (2) Fixed segfaults that occured when rdip calls bailout.
+ *
  * Revision 1.3  2002/08/27 22:27:44  millis
  * Updated for automake/autoconf functionality
  *
@@ -58,8 +65,12 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 		if (!stat(BAILOUT_PLAN, &sbuf))
 			rename(BAILOUT_PLAN, PLAN);
 		inform_rgd();
-		rename(FORWARD, KEEPOUT);
-		rename(YFORWARD, FORWARD);
+	/* If KEEPOUT already exists, we've already crashed. No need to do again. */
+		if (stat(KEEPOUT, &sbuf))
+		{
+			rename(FORWARD, KEEPOUT);
+			rename(YFORWARD, FORWARD);
+		}
 		if(dolog)
 		{
 			fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", FORWARD,
