@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.5  2002/02/25 13:44:10  miller
+   ** Fixed country ownership bug
+   **
    ** Revision 1.4  2002/02/25 11:51:52  miller
    ** Various updates for Machiavelli bug fixes
    **
@@ -121,9 +124,9 @@ void ma_ownership(void)
 	char *s, buf[1024];
 
 	int u=1,l=2;
-	int nc[NPOWER+1];
+	int nc[NPOWER+2];
 	int first_country;
-	int owned_country[NPOWER+1];
+	int owned_country[NPOWER+2];
 	int one_owned;
         int x;
 

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2002/12/22 02:02:24  millis
+ * corrected bug 56 (making storms at end of Fall)
+ *
  * Revision 1.5  2002/02/25 11:51:51  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -227,7 +230,8 @@ void fam_plag(int t)
 					}
 				}
 				for (p = 1; p <= npr; p++) {
-					remove_infection(p);
+                                        if (t != STORM || water(p))
+					    remove_infection(p);
 				}
 			}
 		}
