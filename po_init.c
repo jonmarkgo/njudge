@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2004/06/01 23:16:18  millis
+ * Fix bug 316 (incorrect blockaded centres)
+ *
  * Revision 1.18  2004/05/22 08:52:22  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -976,11 +979,18 @@ int gameout(void)
 	 *  Indicate who needs to get their orders in next phase.
 	 */
 
+	 /* Firstly, initialse the player status */
+         for (u = 0; u < dipent.n; u++) {
+                if (dipent.players[u].power < 0)
+                        continue;
+
+	        dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT | SF_BROAD_SENT);
+	}
+
 	for (u = i = 0; u < dipent.n; u++) {
 		if (dipent.players[u].power < 0)
 			continue;
 
-		dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT | SF_BROAD_SENT);
 		if ((p = dipent.players[u].power) <= NPOWER) {
 			dipent.players[u].units = nu[p];
 			if (dipent.flags & F_MACH)
