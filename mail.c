@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.58  2003/09/14 00:18:28  millis
+ * Fix bug 223
+ *
  * Revision 1.57  2003/09/09 19:57:09  nzmb
  * Fixed Bug 31 -- the time to deadline/grace expiration messages are no
  * longer printed for terminated games, and neither are the "orders not
@@ -1044,7 +1047,7 @@ int mail(void)
 						if (system(line)) {
 							if (!msg_header_done)
 								msg_header(rfp);
-							fprintf(rfp, "Problem generating summary for game '%s'.\n", name);
+							fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n", name);
 							break;
 						}
 						sprintf(line, "%s%s/summary", GAME_DIR, name);
@@ -1990,7 +1993,7 @@ int mail(void)
 								dipent.variant, dipent.name);
 							fflush(log_fp);
 							if (system(line)) {
-								fprintf(rfp, "Problem generating summary for game '%s'.\n",
+								fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n",
 									dipent.name);
 								break;
 							}
