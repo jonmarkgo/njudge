@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.44  2003/09/09 19:57:08  nzmb
+ * Fixed Bug 31 -- the time to deadline/grace expiration messages are no
+ * longer printed for terminated games, and neither are the "orders not
+ * received ... you will be considered late/abandoned" message. The list of
+ * entered orders is still displayed, though.
+ *
  * Revision 1.43  2003/08/25 14:39:35  millis
  * Fixed bug 220
  *
@@ -1345,8 +1351,9 @@ int process(void)
 
 					if (*(dipent.players[i].address) != '*' && !Dflg &&
 					    !(dipent.players[i].status & SF_RESIGN)) {
-						sprintf(line, "dip.result '%s:%s - %s Waiting for Replacements: %s'",
+						sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
 							JUDGE_CODE, dipent.name, dipent.phase,
+							(dipent.flags & F_NOLIST) ? "NoList" : "",
 							(dipent.x2flags & X2F_SECRET) ? "?" : late);
 						MailOut(line, dipent.players[i].address);
 					}
