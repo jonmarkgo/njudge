@@ -107,7 +107,7 @@ and ask him to bless its name and add it in its list of judges
 ( http://www.sentex.ca/~nfitz/judge.codes )
 
  - If you want your judge to go more or less public and Nicholas is okay
-with the name, you can add it on the Dippouch Judge Registration Form
+with the name, you can add it on the DipPouch Judge Registration Form
 to make it easier for people to register on your judge:
 http://devel.diplom.org/DipPouch/Email/registration.html.
 
@@ -139,7 +139,7 @@ njudge-0.8.X and dipsrc-9XXX files if you find some, they are out of date)
 
  - If you're lucky enough to work with a Debian Linux, you have a
 package available at Braincells: http://src.braincells.com/debian/woody/njudge/
-  See below (sectiopn 4.) how to install it.  You can skip the
+  See below (section 4.) how to install it.  You can skip the
 Unix configuration and the compilation below.  Your judge will use the
 'judge' user name, and will be installed directly in /home/judge (no dip/
 binary directory).
@@ -210,7 +210,7 @@ the binaries directly under /home/judge.
 
  - The judge uses the GNU Autotools (automake, autoconf) as its build system
 (thanks for that, Jaldhar ;-) automake and autoconf are pretty much standard
-on Unixlike systems these days but if your vendor or distribution does not
+on Unix-like systems these days but if your vendor or distribution does not
 provide them, you can download them from ftp://ftp.gnu.org/pub/gnu/.
 You will need at least version 2.50 of autoconf.
 
@@ -252,30 +252,31 @@ and change them if necessary to be able to write to the files.
 
  - The following targets exist in the Makefile, with their use:
 
-all:            Rebuild all programs
+all:            Rebuild all programs
 ascii_to_ded:   Convert text file ded.txt to dip.ded
 ded_to_ascii:	Convert dip.ded to text file
-dip:            Rebuild dip program
-cmap:           Rebuild cmap program
-summary:        Rebuild summary program
-deddump:        Rebuild dedump program
-delgame:        Rebuild delgame program (to erase permanentely a game)
-flock:          Rebuild flock program (used for locking of dip.log)
-fmtwho:         Rebuild fmtwho program
-ign:            Rebuild ign program
-pdip:           Rebuild pdip program (no longer used?)
-rdip:           Rebuild rdip program
-install:        build and install a judge (Note: this will DELETE
-                any existing judge data files, so do NOT use on an
-                existing judge installation)
-upgrade:        Rebuild all the programs and install them in correct
-                directory (used principally for updating a running
-                judge)
+dip:            Rebuild dip program
+cmap:           Rebuild cmap program
+summary:        Rebuild summary program
+deddump:        Rebuild deddump program
+delgame:        Rebuild delgame program (to erase permanentely a game)
+flock:          Rebuild flock program (used for locking of dip.log)
+fmtwho:         Rebuild fmtwho program
+ign:            Rebuild ign program
+pdip:           Rebuild pdip program (no longer used?)
+rdip:           Rebuild rdip program
+install:        build and install a judge (Note: this will check if dip.master 
+                file exists and refuse to run if so, avoiding inadvertently
+                deleting an existing njudge installation.)
+upgrade:        Rebuild all the programs and install them in correct
+                directory (used principally for updating a running
+                judge)
 install-strip, upgrade-strip :
 		Same as above, with smaller binary files.
-flist:          Rebuild the help file "flist"
-dist:           Build an update distribution (calls targz)
-clean:          Remove all output files
+remap:          Force binary map files to be regenerated if required
+flist:          Rebuild the help file "flist"
+dist:           Build an update distribution (calls targz)
+clean:          Remove all output files
 magic:		Used to generate .magic.dat file (for random seed).
 size_check:	Builds executable that checks sizes of char, int
 		and long (to give error if judge ported to a
@@ -299,7 +300,7 @@ alex@christophecourtois.org, so I gave there:
 
 setenv FROM christophecourtois.org
 
- - The judge uses dip.msg (it it exists) as as a header for all messages.
+ - The judge uses dip.msg (if it exists) as a header for all messages.
 You can create such a file with any content you like.
 
  - If you want to use a footer, you will have to create a file named
@@ -347,7 +348,7 @@ with Red Hat Linux). If you use smrsh, place a symbolic link to rdip
 in the /etc/smrsh/ dir. Also make sure only the owner has write
 permission to the .forward file.
  (Briefly: smrsh allows only programs from a unique directory to call
-sendmail, allowing the system administrator to choose the set of
+sendmail, allowing the system administrator to choose the set of
 acceptable commands).
 
 
@@ -383,7 +384,7 @@ and one on another queue, and then search by queue.
      at -q b -f diprun $2 $3 $4
      rm -f dip.xfail
 
-2.9 defaults.inc.in: changing default paramters
+2.9 defaults.inc.in: changing default parameters
 
  - This file contains judge default parameters that can't be change
 without recompiling the judge.
@@ -483,7 +484,7 @@ avoid mail loops); you can keep the name 'judge' if this is its name.
    * SPECIAL_PW (the password for the judge-keeper, keep it for
 yourself!).
 
- - Optionnaly, you can decide in which directory must go all running games
+ - Optionally, you can decide in which directory must go all running games
 by setting the GAME_DIR variable.  You MUST create the directory before
 running the judge.
 
@@ -543,7 +544,7 @@ your system (especially the first line) (yes, it's a bug).
 
  In the home directory of the judge, a file '.forward' must be created.
 It is normally enough to rename the 'xxxx-forward' file (where xxxx is
-your judge name) in the dip/ directory.  It was genereated when compiling.
+your judge name) in the dip/ directory.  It was generated when compiling.
 It will redirect automagically all the incoming mails to the judge program.
 
  It must contain one line (there is no leading space and a comma at the
@@ -555,7 +556,7 @@ beginning). For example:
 according to your needs, but the install process normally makes it for you).
 
  Some judges (FROG for example) don't use this file and call procmail
-to make some processing instead of or before lauching the judge program
+to make some processing instead of or before launching the judge program
 (mainly logging). Ask on the judge-keepers list (especially to Philippe
 Lalande) for more information.
 
@@ -566,7 +567,7 @@ to the configuration of your system, it can be faulty (although it may
 be corrected on 1.3.0 judges).
  Check that:
  - it does not contain AM or PM
- - that months are Jan, Feb, Mar, Apr, May, Jul, Aug, Sep, Oct, Noc, Dec,
+ - that months are Jan, Feb, Mar, Apr, May, Jul, Aug, Sep, Oct, Nov, Dec,
 and nothing else (see source file jm.c). If your computer is not
 English-speaking, and does not put a capital at the beginning, it will
 bail out.
@@ -616,9 +617,6 @@ judge has bailed out and mail has stacked up in the spool queue.
 dip directory. Lock the judge by entering 'flock dip.log'. It will
 remind you every 5 minutes on your console that the judge is locked.
 To unlock the judge, just execute 'flock'.
-
- - bgreet : Seems to be a program to find the anniversary of players
-[Not in use anymore on most judges; I'm not even sure it still works.]
 
  - deddump : Dump/load the binary dedication file to/from a text file.
 
@@ -690,7 +688,7 @@ allowed.
 6.5 Maps and 'data' directory
 
  - map.n         : Compiled data files, one for each variant.
- - map.<variant_name> : Real map source files
+ - data/map.<variant_name> : Real map source files
  - data/info     : Help file sent to players
  - data/seed.n   : Initial position of units on the map
  - data/report.n : Initial position report in a game. (You can put
@@ -724,7 +722,7 @@ them eventually.
 
  - Dxxx/archive : This is the archive of broadcasts and game information
 that an observer would see for any given game.  This information can be
-retrieved with the the HISTORY command.
+retrieved with the HISTORY command.
 
  - Dxxx/info : Information about the game, which can be set with the SET
 COMMENT command. This information is shown in the summary, and in the
@@ -778,7 +776,7 @@ dip.conf). See README.statistics
  - dip.xcontrol
  - dip.xfail: If it exists, the judge bails out (used to check
 if smail works.)
- - dip.tmast: temporay backup file of dip.master.
+ - dip.tmast: temporary backup file of dip.master.
  - dip.reply
  - dip.result
  - dip.temp   : Used for mail construction.
@@ -786,7 +784,7 @@ if smail works.)
 6.9 Files created or left behind by a crashed judge:
 
  - zforward : See README.bailout. After a judge crash, .forward is
-renamed to zforward, and the judge won't accept to run.
+renamed to zforward, and the judge won't be run by an incoming email.
 
 6.10 Other files
 
@@ -823,10 +821,10 @@ standard judge), the number of registered players and running games.
  - Register as a new player. In case you had forgotten the syntax:
 
 REGISTER
-Name: Maréchal Joffre
-Country:France
-Site:Verdun
-Email:joffre@etat_major.mil.fr
+Name: Mar‰chal Joffre
+Country: France
+Site: Verdun
+Email: joffre@etat_major.mil.fr
 Age: 142
 Phone:0123456789
 END
@@ -886,7 +884,7 @@ back with 'adjust <user_id> <increase>' later (anyway, JKs are not
 supposed to play real games on their own judge :-)
 
  - Move everything, make convoys (now, you can freely make a Lvn-Syr
-convoy :-). Try phase orders. Try the proxys.
+convoy :-). Try phase orders. Try proxy orders.
 
  - Check that dedication evolves when you give orders.
 
@@ -909,10 +907,10 @@ These are some problems and solutions:
 
  - Nothings happen when sending something to the judge and in dip.log,
 the judge complains he didn't find rm, date, echo... and other commands:
-This is a PATH problem.  Be careful : The script juges csh as a
-shell, and not bash as often.  Check '.cshrc' in the home directory.
+This is a PATH problem.  Be careful : The script uses csh as a
+shell, and not bash that often.  Check '.cshrc' in the home directory.
 Check that mail and head are in the locations defined in
-Makefile.defines (to avoid a reinstallation, add symbolic links).
+Makefile (to avoid a reinstallation, add symbolic links).
 
  - Judges makes a bailout:  The judge can send to the judgekeeper a
 message saying 'Bailout executed'.  It means that the judge died.  It has
@@ -931,13 +929,13 @@ what variants are installed. Check that all files (source and compiled)
 are there.
 
  - For other problems, read all the log files, the answer must be there.
-dip.log contains what came to the judge and the actions it tried to to,
+dip.log contains what came to the judge and the actions it tried to do,
 mail.log contains all mails sent. At the very beginning, you have to
 check the existence of all files (including dip.master, dip.whois...)
 And don't forget to read README.bailout.
 
 
-9. Other customizations
+9. Other customisations
 
  - You can change the text in dip.msg and dip.footer anyway you want,
 these are just files added at the beginning or the end of mails sent by
@@ -946,7 +944,7 @@ the judge.
  - The report.* files in data/ are the beginning positions sent to
 the judge when a game begins. They're just text and you can change
 whatever you want there and add silly comments. (Be careful not to
-break software like Dipchief or web observers...)
+break software like DipChief or web observers...)
 
  - You can read README.hackers if you change the code.
 
@@ -1016,7 +1014,7 @@ to re-run automake/autoconf.
 the new source directory, and compile from there. Don't forget to read
 the INSTALL and InstallationHOWTO files of this new version to be sure
 that the important configuration files to move across both versions
-are the same (judge mainteners try to do it).
+are the same (judge maintainers try to do it).
 
  - dip.conf is the configuration file, stored in the judge directory,
 and will not be overwritten. Please check that the new version doesn't
@@ -1060,7 +1058,7 @@ part is to find some time for it...)
 
 12.2 Thanks
 
- Many parts of this Howto are cut-and-pasted from README files, from
+ Many parts of this HowTo are cut-and-pasted from README files, from
 source code, from mails of the judge-maint mailing list, from INSTALL file
 from Jaldhar H. Vyas.
 
@@ -1088,5 +1086,6 @@ redistribution, in the interest of keeping things up-to-date (you could
 send me a copy of the thing you're making while you're at it).
  Translators are also advised to contact the author before translating
 (no translation known for the moment).
+
 
 
