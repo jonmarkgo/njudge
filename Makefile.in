@@ -115,7 +115,6 @@ noinst_HEADERS = conf.h  \
 		config.h \
 		dip.h   \
 		diplog.h   \
-		dipstats.h   \
 		functions.h \
 		hashtable.h \
 		mach.h \
@@ -138,7 +137,6 @@ dip_SOURCES = assign.c \
 		dip.c \
 		dipent.c \
 		diplog.c \
-		dipstats.c \
 		draw.c \
 		global.c \
 		hashtable.c \
@@ -330,7 +328,6 @@ delgame_DEPENDENCIES =
 delgame_LDFLAGS =
 am_dip_OBJECTS = assign.$(OBJEXT) bailout.$(OBJEXT) common.$(OBJEXT) \
 	conf.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) diplog.$(OBJEXT) \
-	dipstats.$(OBJEXT) draw.$(OBJEXT) global.$(OBJEXT) \
 	hashtable.$(OBJEXT) history.$(OBJEXT) jm.$(OBJEXT) \
 	lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
 	ma_expenses.$(OBJEXT) ma_famplag.$(OBJEXT) \
@@ -416,7 +413,6 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/conf.Po ./$(DEPDIR)/ded_to_ascii.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/deddump.Po ./$(DEPDIR)/delgame.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dip.Po ./$(DEPDIR)/dipent.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/diplog.Po ./$(DEPDIR)/dipstats.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/draw.Po ./$(DEPDIR)/flock.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fmtwho.Po ./$(DEPDIR)/global.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/hashtable.Po ./$(DEPDIR)/history.Po \
@@ -622,7 +618,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dip.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dipent.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diplog.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dipstats.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/draw.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/flock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmtwho.Po@am__quote@

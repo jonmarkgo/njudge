@@ -34,7 +34,6 @@ noinst_HEADERS=	conf.h  \
 		config.h \
 		dip.h   \
 		diplog.h   \
-		dipstats.h   \
 		functions.h \
 		hashtable.h \
 		mach.h \
@@ -56,7 +55,6 @@ dip_SOURCES=	assign.c \
 		dip.c \
 		dipent.c \
 		diplog.c \
-		dipstats.c \
 		draw.c \
 		global.c \
 		hashtable.c \
