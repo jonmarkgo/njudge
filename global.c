@@ -4,6 +4,10 @@
 #include "dip.h"
 #include "mach.h"
 
+/* name and place of config file */
+char *CONFIG_FILE ="dip.conf";
+char *CONFIG_DIR = ".";
+
 struct dipent dipent;
 FILE *log_fp;			/* General log/interlock file                   */
 FILE *rfp;			/* Reply file pointer                           */
@@ -74,5 +78,8 @@ char *rflg = NULL;		/* -r name: randomizer for die rolls            */
 int sflg = 0;			/* -s sequence: test adjudication               */
 int vflg = 0;			/* -v: verbose, issue all error messages        */
 int xflg = 0;			/* -x: no incoming mail on stdin                */
+char *inname = NULL;
+FILE *inp;
 
 int control = 0;
+
