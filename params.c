@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/06/24 06:05:35  nzmb
+ * Made it so new dedication settings appear in game parameters.
+ *
  * Revision 1.4  2001/05/14 23:00:56  miller
  * Added NoAttackTrans flag
  *
@@ -163,12 +166,6 @@ void params(FILE * fp)
 
 	sprintf(line, "  Variant: %s", (temp = strcap(variants[dipent.variant])));
 	free(temp);
-	if (dipent.flags & F_MACH && dipent.xflags & XF_MACH3) 
-	    strcat(line,"-3");
-	else if (dipent.flags & F_MACH && dipent.xflags & XF_MACH1)
-            strcat(line,"-1");
-        else if (dipent.flags & F_MACH && dipent.xflags & XF_MACH2)
-            strcat(line,"-2");
 
 	if (dipent.flags & F_GUNBOAT) {
 		strcat(line, ", Gunboat");
@@ -380,6 +377,9 @@ void params(FILE * fp)
         }
 	if (dipent.xflags & XF_BLANKPRESS) {
                 strcatf(line, "BlankPress",&first_flag);
+        }
+        if (dipent.xflags & XF_COASTAL_CONVOYS) {
+                strcatf(line, "CostalConvoy", &first_flag);
         }
 
 	if (first_flag != 1) {
