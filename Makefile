@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.27  2002/05/14 09:59:52  njudge
+# Updated to properly exclude CVS sub-directories (specified in 'xfile')
+#
 # Revision 1.26  2002/05/13 12:28:32  greg
 # Tweaked Makefile
 #
@@ -146,7 +149,7 @@ FILES=	${SRCDIR}/Makefile ${SRCDIR}/Makefile.version ${SRCDIR}/README ${SRCDIR}/
 	${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
 	${SRCDIR}/data/* ${SRCDIR}/starter.flist \
 	${SRCDIR}/rundipmap ${SRCDIR}/docs/* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
-	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base
+	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base 
 
 SIZE_FILE= ${DESTDIR}/.size.dat
 
@@ -422,49 +425,31 @@ ${INSTALLDIR}/runlistmap: runlistmap
 ${INSTALLDIR}/newlogs: newlogs
 	cp newlogs ${INSTALLDIR}/newlogs
 
-dist: tarZ targz tarbz2 
-
-tarZ: ../njudge-${JVERSION}.tar.Z 
+dist: targz 
 
 targz: ../njudge-${JVERSION}.tar.gz 
 
-tarbz2: ../njudge-${JVERSION}.tar.bz2 
-
 tar: ../njudge-${JVERSION}.tar
 
-../njudge-${JVERSION}.tar: ${FILES} xfile
-	tar -Xcf xfile ../njudge-${JVERSION}.tar ${FILES}
-
-
-../njudge-${JVERSION}.tar.Z: ../njudge-${JVERSION}.tar
-	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
-	compress -f ../njudge-${JVERSION}.tar
-	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
+../njudge-${JVERSION}.tar: ${FILES} ${SRCDIR}
+	tar -cf ../njudge-${JVERSION}.tar ${FILES} ${SRCDIR}/xfile
 
 ../njudge-${JVERSION}.tar.gz: ../njudge-${JVERSION}.tar
 	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
-	gzip -f ../njudge-${JVERSION}.tar
-	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
+	gzip -f ../njudge-${JVERSION}.tar 
+	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar 
 
-../njudge-${JVERSION}.tar.bz2: ../njudge-${JVERSION}.tar
-	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
-	bzip2 -f ../njudge-${JVERSION}.tar
-	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
+dist1: targz1
+
+targz1:  ../njudge-${JVERSION}.tar.gz
+	cd .. 
+	tar -X xfile -cfz njudge-${JVERSION}.tar.gz njudge/* 
+
 
 
 loglink: 
 	rm -f ${DESTDIR}/data/log
 	ln -f -s `pwd`/data/log ${DESTDIR}/data/log
-
-more: 
-	rm -f morefil
-	(more ${FILES} > morefil)
-
-list: 
-	rm -f listing
-	-for i in ${FILES}; do \
-		expand $$i | pr -h $$i | sed 's/^/       /' >> listing; \
-	done
 
 clean: 
 	rm -f a.out core dip Datamake *.o *~
