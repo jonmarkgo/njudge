@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/04/15 21:21:22  miller
+ * Add SET_(NO)ATTACKTRANS flag settings
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * ENORMOUS number of changes, including:
  *  - Checks to warn if trying to set 'silly' options  (for example, Mach options in non-Mach game, press options in nopress game etc.)
@@ -882,6 +885,9 @@ void mail_setp(char *s)
 
 	chk24nmr = 0;
 	while (*s) {
+		if (subjectline[0] == '\0')
+			sprintf(subjectline, "%s:%s - %s Parameter Change", JUDGE_CODE, dipent.name, dipent.phase);
+
 		s = lookfor(t = s, keys, nentry(keys), &i);
 		sprintf(stat_text, "%3.3d %s", action[i], dipent.name);
 		StatLog(STAT_COMMAND,"%s\n", stat_text);
@@ -907,6 +913,8 @@ void mail_setp(char *s)
 				dipent.players[player].address);
 			if (!(dipent.flags & F_GUNBOAT) ||
 			    dipent.players[player].power == MASTER) {
+				sprintf(subjectline, "%s:%s - %s Player Address Change: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[dipent.players[player].power]);
+
 				mfprintf(bfp,
 					 "The return address for %s in game '%s' has been changed\nto %s.\n\n",
 					 powers[dipent.players[player].power], dipent.name,
@@ -937,6 +945,7 @@ void mail_setp(char *s)
 			else {
 				sequence *seq;
 				dipent.deadline = dates;
+				sprintf(subjectline, "%s:%s - %s Deadline Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
 				fprintf(rfp, "Deadline set to %s.\n", ptime(&dates));
 				/* WAS mfprintf  1/95 BLR */
 				fprintf(bfp, "%s as %s set the deadline\n", xaddr, PRINT_POWER);
@@ -984,6 +993,8 @@ void mail_setp(char *s)
 				fprintf(rfp, "%sGrace date cannot be earlier than deadline.\n\n", t);
 			} else {
 				dipent.grace = dates;
+				sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
+				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 				/* WAS mfprintf  1/95 BLR */
 				fprintf(bfp, "%s as %s set the grace period\n", xaddr, PRINT_POWER);
@@ -1926,6 +1937,8 @@ void mail_setp(char *s)
 					xaddr, PRINT_POWER,
 					dipent.name, dipent.vp);
 				broadcast = 1;
+				sprintf(subjectline, "%s:%s - %s Winning Centers Changed to %d",
+					JUDGE_CODE, dipent.name, dipent.phase, dipent.vp);
 			}
 			break;
 
