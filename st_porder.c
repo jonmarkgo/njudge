@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.2  1996/11/07 08:01:09  rpaar
    ** Changed fprintf(bfp, "If you want a draw,..." to fprintf(rfp,...
    **
@@ -70,7 +73,12 @@ int ownership(void)
 					*s++ = ',';
 					*s++ = ' ';
 				}
-				strcpy(s, pr[n].name);
+				if (pr[n].blockaded) {
+					sprintf(s, "(%s)", pr[n].name);
+					np[i]--; /* Blockaded provinces don't count */
+				} else {
+					strcpy(s, pr[n].name);
+				}
 				while (*s)
 					s++;
 			}
@@ -112,7 +120,7 @@ int ownership(void)
 		if (np[i] > nu[i]) {
 			for (p = 1; p <= npr; p++) {
 				if (pr[p].owner == i
-				    && (pr[p].type == dipent.pl[i] || pr[p].type == 'X')
+				    && (pr[p].type == dipent.pl[i] || pr[p].type == 'x')
 				    && (!(u = pr[p].unit) || unit[u].loc != p)) {
 					need_order[i]++;
 					if (statusval >= 0)
@@ -200,7 +208,7 @@ static void newowner(void)
 	int p;
 
 	for (n = 1; n <= nunit; n++) {
-		if (unit[n].owner && pr[p = unit[n].loc].type != 'l' && !water(p)) {
+		if (unit[n].owner && pr[p = unit[n].loc].type != 'l' && !water(p) && unit[n].type != 'W') {
 			pr[p].owner = unit[n].owner;
 		}
 	}
@@ -214,8 +222,9 @@ void process_input(int pt, char phase)
 
 	for (u = 1; u <= nunit; u++)
 		unit[u].order = 'n';
-	if (phase == 'B')
-		init_build();
+
+	init_build();
+
 
 	do {
 		if (preprocess(&s, &p))
