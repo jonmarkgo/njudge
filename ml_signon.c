@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.42  2004/07/25 16:13:43  millis
+ * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+ * return in duplex) and Bug 206 (allow takeover of unknown abandoned
+ * countries)
+ *
  * Revision 1.41  2004/05/22 09:23:48  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -197,7 +202,7 @@
 
 #define ADMINISTRATOR	'@'
 
-static int NewGameSignon(char *password);
+static int NewGameSignon(char *password, int master);
 
 
 static int GetFirstAbandonedPower(char *power_letter)
@@ -544,7 +549,7 @@ int mail_signon(char *s)
 		xaddr = raddr;
 
 	if ((dipent.seq[0] == 'x' || dipent.phase[6] == 'X') && name[0] == '?' ) {
-	    NewGameSignon(password);
+	    NewGameSignon(password, master);
 	} else {
 
 	        if (name[0] == '?') {
@@ -1741,7 +1746,7 @@ int chkpref(char *s, int wp[WILD_PLAYER], int wv[WILD_PLAYER])
 
 }
 
-int NewGameSignon(char *password)
+int NewGameSignon(char *password, int master)
 {
 
 	int i, n, userid, siteid, level;
