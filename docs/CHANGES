@@ -1,8 +1,11 @@
-(10 June 2002)
-Changed st_build.c that was counting gateway units for build purposes.
-(31 May 2002)
-Change to ma_build.c to allow venice builds to change mind
-Change to ma_porder.c to fix problem with provinces stayin unowned
+1.2.0 (17th July 2002)
+Fixed bug that was causing the judge to segment fault when writing to the
+   xcontrol file 
+Fixed bug that was incorrectly rejecting some valid pregame signons
+(both in ml_signon.c)
+Added [no]mustorder flag
+Added postalpress
+Prevention of conditional orders in blind games
 
 1.1.1 (17th May 2002)
 Fixed transform build error  (st_build.c)
