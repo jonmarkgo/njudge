@@ -33,7 +33,9 @@ Adjustment orders:
 <remove> [<type>] <s-prov>
 <transform> <type> <s-prov>
 <waive>
+*<waive> <country>
 
+*This form for duplex games only.
 
 Where:
 
@@ -55,6 +57,7 @@ Where:
 <transforms> = "transforms to", "transform to", "transform", "transforms",
 		   "trafo", "tr".
 <transform>  = "transform", "transforms", "trafo"
+<country>    = Full country name or signon letter
 
     NOTES: "wing" units, "proxy" orders and "transform" orders can only be
            used if the moderator has enabled the corresponding variant
