@@ -6,6 +6,9 @@ Table of contents
 
 Introduction
 Structure of the map file
+     Why do I need this ?
+     What is the map file
+     What is the seed file (appendix 2)
 The additional options
 The province data list
      The area types
@@ -36,16 +39,42 @@ Revision history
 Thanks
 
 
-
 Introduction
-This "how-to" is meant to help players create a correct map.[variant name] file for any new variants they create for the Diplomacy Judge (n-judge).  I wrote this because I got frustrated of not being able to find any concise and correct documentation on how to do this.  The latest version of this file should always be in the njudge CVS repository at www.njudge.org.
-
-Also see the Christophe Courtois documentation on how to create a new variant, with the needed 'seed.<variant_name>' (which contains the setup data) and 'report.<variant_name>' (which contains a default welcome text) files and other needed files and changes to the nJudge.
 
 The current version of this document includes all (bar any errors) options supported by nJudge software version 1.5.x.
 
 
+Why do I need this ?
+
+This "how-to" is meant to help Diplomacy and Machiavelli players create a correct map file for variants they create for the Diplomacy Judge (n-judge).  I wrote this because I got frustrated of not being able to find any concise and correct documentation on how to do this. The latest version of this file should always be in the njudge CVS repository at www.njudge.org.
+
+To submit a new variant for play/playtesting you contact the judge-keeper and send him a map-file and a seed-file.
+
+
+What is a map-file
+
+The map file ('map.<variant name>') is used to define the area characteristics for the nJudge software. Such as home country definition, official name and abbreviations, whether it is land or sea and much more. For Machiavelli you also define incomes and disasters.
+
+
+What is the seed-file
+
+The seed-file ('seed.<variant_name>') defines in what areas any units are present and the current area ownerships, as those may differ from the home countries even at start. It has been separated from the map file as the same map file may be used for different start setups.
+
+The seed file structure is in short:
+<season><start year><phase>
+<power letter><:|m>' '<unit letter>' '<full province name or abbreviation as defined in the map file>
+-1
+<supply center and ownership* and other data at game start in map file area order>
+-1
+
+Where ' ' = space character and text within <> is to be replaced by the data. The <> are not part of the file format. [] is optional. See Appendix 2 for some seed file samples.
+*The so called null ownership/contested record.
+
+For a complete description of this see Christophe Courtois documentation for judge-keepers on how to create and add a new variant to the nJudge.
+
+
 Structure of the map file
+
 The map file must be named 'map.<variant_name>' (without the quotes of course).
 The map data file is divided in three parts. Each of which is terminated by a line containing only '-1' (without the quotes). Comments may precede each block. Comments must begin with a '#'. The parts are:
 
@@ -70,6 +99,7 @@ Example:
 
 
 The additional options
+
 These vary. See samples for Diplomacy and Machiavelli below.
 
 Structure of the Diplomacy map data file with all options
@@ -540,10 +570,54 @@ Storms:   2     3     4     5     6     7     8     9    10    11    12
     12: wts   ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 
+Appendix 2. Seed file examples.
+
+SC ownership defined by unit start positions.
+
+S1901M
+A: A Budapest
+E: F London
+-1
+-1
+
+Notice the absence of data between the -1's.
+
+
+SC ownership defined in seed file.
+
+In this case the game starts with the builds (nothing is owned), thus there is only the SC ownership data.
+
+F1900B
+-1
+....A....BC..DEF..GH.I....J...K..LN.PQ.RST...U.V..W.X.YZ0..1234.56.... 78.9..
+-1
+
+In this case F(rance) starts with 5 units but does only own 4 SC's (which also happen to be the home SC's).
+
+S1425M
+B: A Dijon
+B: A Flanders
+B: A Luxembourg
+B: F Holland
+E: A Calais
+E: A Guyenne
+E: A Normandy
+E: F English Channel
+E: F London
+F: A Dauphine
+F: A Orleanais
+F: A Paris
+F: A Toulouse
+F: A Provence
+-1
+........E...FEB.B.EB..E.B..E..FF.......F.
+-1
+
+
 Revision history
 v. 1.00,  June 25th by Sergio Lidsell.
 v. 1.00b,  October 20th by Sergio Lidsell. Minor corrections and additions.
-v. 1.5, July 29th by Sergio Lidsell. Added Machiavelli disaster table samples. Added ref. to the variant how to. Some content corrections and added an index. Changed the version number to make it correspond to the nJudge version.
+v. 1.5, July 29th by Sergio Lidsell. Added index, Machiavelli disaster table and seed file samples. Added seed file info and ref. to the 'variant how to'. Very minor content corrections. Changed the version number to make it correspond to the nJudge version.
 
 
 Thanks
