@@ -10,6 +10,7 @@ Gregory A.Greenman	: Many things
 David Kovar		: Many things
 Dietmar Kulsch		: German translation coordinator (DEAC)
 Philippe Lalande	: Some code from FROG
+Alan Lange		: Changes to date handling
 Ken Lowe		: Original development, coded 90% of the judge, from 1987; and others things like NMR/NoNMR
 David Norman		: Many fixes, duplex code, countless variants
 C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
@@ -25,8 +26,11 @@ Nathan Wagner		: (1997)
 Contributed to other parts of the development than the code:
 Russell Blau		: data help files and command text rationalisation
 Christophe Courtois	: documentation, data/ cleaning
+Sergio Lidsell		: Mach variant files and help texts
 Alain Tesio		: observer and judge-maint archives on floc.net
 Jaldhar H. Vyas		: autoconfiscation and debian packaging.
+
+
 
 -----------------------------------------------------------------------
 People or pseudonyms found in the source code or logs but who are they?
