@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!              Feb. 22, 2003
+Greetings from the Diplomacy* Adjudicator!!                July 20, 2003
 Rules.machiavelli2
 
 
-YOU MUST ALSO READ RULES.MACHIAVELLI
+YOU MUST ALSO READ RULES.MACHIAVELLI 
 
 
 INTRODUCTION
@@ -44,14 +44,18 @@ not checked for until the end of fall.
 start of the spring turn.
 
 
-MOVEMENT (retreats, sieges, and convoys)
+MOVEMENT (retreats, sieges, and convoys)  **IMPORTANT DIFFERENCES**
 A unit can always retreat into a city, even if it can retreat into
 another province.
 You may disband a unit instead of retreat it.
 A unit need not issue a lift siege order to be able to move away from
 an ongoing siege.
+Conversions are treated as attacks, thus lesser besiegeing units cannot
+block conversions.
 The default setting for coastal convoys is: *not allowed*, which is 
 contrary to the earlier editions.  As this is a game flag you may change it.
+Only a fleet *already present* in Messina can block moves, support and 
+transport (convoys).
 
 
 SPECIAL UNITS
@@ -157,9 +161,11 @@ ALL RIGHTS RESERVED.
 
 
 REVISION HISTORY
-v1 12th of December 2001. Author Sergio Lidsell.
-v1.1 11th of October 2002. Venice rules corrected. Auth S Lidsell.
-v1.1a 16th of January 2003. Note re. home country conq. Auth S Lidsell.
-v1.1b 22nd of February 2003. Clarified rules for bribes and adj. Notes 
+v1 12th December 2001. Author Sergio Lidsell.
+v1.1 11th October 2002. Venice rules corrected. Auth S Lidsell.
+v1.1a 16th January 2003. Note re. home country conq. Auth S Lidsell.
+v1.1b 22nd February 2003. Clarified rules for bribes and adj. Notes 
       on differences between pre-mach2 editions moved to 
       rules.machiavelli. Author Sergio Lidsell.
+v1.2  20th July 2003. Note on conversion of besieged units and straits. 
+      Author Sergio Lidsell.
