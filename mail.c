@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.51  2003/07/15 22:47:07  millis
+ * Fix Bug 185 (call smail for each email individually)
+ *
  * Revision 1.50  2003/07/15 16:16:48  millis
  * Make null mail 'nobody'
  *
@@ -1650,7 +1653,6 @@ int mail(void)
                                         pprintf(cfp, "%s%s as %s has paused game '%s'.\n", NowString(),
                                                 xaddr, powers[dipent.players[player].power], dipent.name);
 
-                                        /* WAS mfprintf  1/95 BLR */
                                         fprintf(bfp, "%s as %s has paused game '%s'.\n",
                                                 xaddr, powers[dipent.players[player].power], dipent.name);
                                         fprintf(mbfp, "%s as %s has paused game '%s'.\n",
@@ -1659,7 +1661,7 @@ int mail(void)
                                         sprintf(subjectline, "%s:%s - %s Game Paused", JUDGE_CODE, dipent.name, dipent.phase);
 
                                     break;
-
+/** Setup not yet working, disabled 
                                 case SETUP:
                                     if (!PRIVOK) {
                                         fprintf(rfp, "Sorry, game '%s' is moderated.  ", dipent.name);
@@ -1674,7 +1676,6 @@ int mail(void)
                                         pprintf(cfp, "%s%s as %s has entered setup mode for game '%s'.\n", NowString(),
                                                 xaddr, powers[dipent.players[player].power], dipent.name);
 
-                                        /* WAS mfprintf  1/95 BLR */
                                         fprintf(bfp, "%s as %s has entered setup mode for game '%s'.\n",
                                                 xaddr, powers[dipent.players[player].power], dipent.name);
                                         fprintf(mbfp, "%s as %s has entered setup mode for game '%s'.\n",
@@ -1683,7 +1684,7 @@ int mail(void)
                                         sprintf(subjectline, "%s:%s - %s Game in Setup", JUDGE_CODE, dipent.name, dipent.phase);
 
                                     break;
-
+***/
 				case TERMINATE:
 					/* Allow termination of unstarted games */
 					if (dipent.seq[0] == 'x') {
