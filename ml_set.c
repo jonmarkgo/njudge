@@ -119,6 +119,8 @@ char * SetSubkey(int act, char *s);
 
 #define CheckWings() if (!(dipent.flags & F_WINGS)) fprintf(rfp, "Game '%s' has no wings, option is useless.\n\n", dipent.name);
 
+#define DRAW_VOTE 1
+#define CONC_VOTE 2
 /***** Show the curent preference settings 
 ** Note: Caller DID check this is the master calling this routine?!
 **
@@ -1541,7 +1543,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_DRAW:
-			if (check_can_vote(player, "draw"))
+			if (check_can_vote(player, DRAW_VOTE))
 				break;
 			if (dipent.flags & F_NODIAS) {
 
@@ -1572,7 +1574,7 @@ void mail_setp(char *s)
 			}
 			break;
 		case SET_NODRAW:
-			if (check_can_vote(player, "draw"))
+			if (check_can_vote(player,DRAW_VOTE))
 				break;
 			if (dipent.flags & F_NODIAS)
 				fprintf(rfp, "You will now only accept a concession.\n");
@@ -1582,7 +1584,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_CONC:
-			if(check_can_vote(player, "concession"))
+			if(check_can_vote(player, CONC_VOTE))
 				break;
 			if(dipent.flags & F_NODIAS)
 			{
@@ -1608,7 +1610,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_NOCONC:
-			if (check_can_vote(player, "concession"))
+			if (check_can_vote(player, CONC_VOTE))
                                 break;
 			fprintf(rfp,"You will no longer accept a concession to the largest power on the board.\n");
                         dipent.players[player].status &= ~SF_CONC;
