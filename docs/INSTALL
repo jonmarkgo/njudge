@@ -1,3 +1,4 @@
  For the installation of a brand new judge or the upgrade from
-an old judge, please read the InstallationHOWTO  directory.
+an old judge, please read the InstallationHOWTO file.
+ No, it's not as easy as make;make install.
  -- C.Courtois, 09th Feb. 2002

@@ -1,7 +1,7 @@
  This is the list of all people having contributed in the code base:
 
 [This is only the skeleton of the file, as I don't know who did that in the 
-12 past years - some digging in CHANGES still to be done]
+12 past years - some digging in CHANGES and log (in archives/) still to be done]
 
 M. Becroft		: plyrdata (with Tim Miller)
 Chris Brand		: (1997) mail.c modifications
@@ -26,8 +26,8 @@ Contributed to other parts of the development than the code:
 Christophe Courtois	: documentation, data/ cleaning
 Alain Tesio		: observer and judge-maint archives on floc.net
 
-
-Found in the source code or logs but who are they?
+-----------------------------------------------------------------------
+People or pseudonyms found in the source code or logs but who are they?
 
 Positron
 BLR
