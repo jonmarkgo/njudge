@@ -1,4 +1,4 @@
-The following bugs were fixed in 1.5.1
+The following bugs were fixed in 1.5.2
 
 (ordered by Severity)
 
@@ -7,13 +7,18 @@ The following bugs were fixed in 1.5.1
 
 
 ID   Sev   Pri   Plt   Owner   State   Result   Summary
+230  cri  P3  All  millis@faztek.org  RESO  FIXE  Judge crashes with unknown power in assassinate line  
+236  cri  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Dislodged and detroyed unit not removed from game  
+225  maj  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Coastal restrictions not enforced on Conversion  
+220  nor  P3  All  judge-maint@diplom.org  RESO  FIXE  Games set to ManualProcess are not processed with 'proces...  
+228  nor  P3  All  millis@faztek.org  RESO  FIXE  Touch press: master cannot send press  
+223  nor  P3  All  judge-maint@diplom.org  RESO  FIXE  Give an error with phases prior to current phase  
+188  min  P3  All  judge-maint@diplom.org  RESO  FIXE  Wrong email title in rejected absence request  
+31  min  P3  All  tim@gem.win.co.nz  RESO  FIXE  Deadline warnings occur after game has terminated  
+211  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  x2flags shown as blank  
+158  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  Deadline reminder timing is off  
+222  tri  P3  All  judge-maint@diplom.org  RESO  FIXE  "CD Ratio" error text  
+224  tri  P3  All  MachFix@yahoogroups.com  RESO  FIXE  Missing '.' on build turn result lines  
 
-205   maj   P3   All   judge-maint@diplom.org   RESO   FIXE   blind game tells how many units/centres abandoned game has     
-213   maj   P3   All   MachFix@yahoogroups.com   RESO   FIXE   Mach2 games not correctly marking units as dislodged     
-216   maj   P3   All   judge-maint@diplom.org   RESO   FIXE   Takeover of abandoned positions not working correctly     
-204   nor   P3   All   millis@faztek.org   RESO   FIXE   Cannot retreat to HighSeas space if already occupied     
-209   nor   P3   All   MachFix@yahoogroups.com   RESO   FIXE   flags set incorrectly if city value outside range     
-214   nor   P3   All   millis@faztek.org   RESO   FIXE   Retreats to High Seas spaces result in units destroyed     
-25   enh   P5   All   judge-maint@diplom.org   RESO   FIXE   Add touch press\
+12 bugs found. 
 
-7 bugs found. 
