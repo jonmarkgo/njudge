@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.65  2004/03/28 09:52:13  millis
+ * Fix bug 282 (reset msg_header_done on closing rfp file)
+ *
  * Revision 1.64  2003/12/20 07:05:30  nzmb
  * Changed judge so that the original message sent to it is echoed back only
  * when either the sender is registered with a judge or it contains a valid
@@ -2604,6 +2607,8 @@ void msg_header(FILE * fp)
 	char *temp;
 	
 	if (fp == rfp && msg_header_done) return; /* Already done, so exit */
+
+	fprintf(fp, "\n");  /* Bug 280, add always a blank line before judge messages */
 
 	/* The 4-letter Judge code (or "XXXX" if no code assigned yet).  */
 
