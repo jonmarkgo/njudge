@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2004/10/23 21:08:59  millis
+ * Fix Bug 375, Mach2 allow besieged to dislodge
+ *
  * Revision 1.26  2004/05/22 08:58:22  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -1166,10 +1169,13 @@ int ma_moveout(int pt)
  */
 /*                              pr[unit[u2].loc].name, u2, u); */
 					    if (is_sieged(unit[u].loc)) {
-						if (result[u2] < DISLODGED)
+					        if (!(dipent.xflags & XF_BESEIGED_CAN_DISLODGE) ||
+						    (support[u] >= support[u2])) {
+						    if (result[u2] < DISLODGED)
 							result[u2] += DISLODGED;
-						unit[u2].status = 'r';
-						bounce++;
+						    unit[u2].status = 'r';
+						    bounce++;
+						}
 					    } else {
 					         if (!result[u2] && unit[u2].order != 'd' &&
                                                      !(dipent.xflags & XF_BESEIGED_CAN_DISLODGE))
