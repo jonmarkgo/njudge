@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.3  1997/03/16 06:53:13  rpaar
  *
  * Revision 1.2  1996/11/05 23:11:36  rpaar
@@ -27,15 +30,17 @@
 #include "mail.h"
 #include "functions.h"
 #include "conf.h"
+#include "dipstats.h"
+#include "diplog.h"
 
 static int junkmail = 0;	/* Non zero if no reply to be sent            */
 static int command = 0;		/* Non zero if some intelligable command found */
 static int skipping = 0;	/* Non zero if skipping rest of input         */
 static int movement = 0;	/* Non zero if movement orders received       */
 static char subject[80];	/* Reply mail subject                         */
-static char line[150];		/* Temporary line buffer                      */
+static char line[1024];		/* Temporary line buffer                      */
 static char temp[40];		/* Temporary file name                        */
-static char rdcom[50];		/* Temp file for executing rundipmap          */
+static char rdcom[256];		/* Temp file for executing rundipmap          */
 static int press_number = 0;	/* Number for distinct press filenames */
 
 /* Comment this out if you don't want the MAP command */
@@ -77,6 +82,7 @@ static int press_number = 0;	/* Number for distinct press filenames */
 /* #define DEDICATE  34 */
 #define WHOGAME   35
 /* #define DEDGAME   36 */
+#define PROMOTE   37
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -117,7 +123,8 @@ static char *commands[] =
  "version", "history",
  "summary", "status",
  "terminate", "resume", "become",
- "process", "roll back", "map"
+ "process", "roll back", "map",
+ "promote"
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -129,12 +136,96 @@ static int cvalue[] =
  VERSION, HISTORY,
  SUMMARY, SUMMARY,
  TERMINATE, RESUME, BECOME,
- PROCESS, ROLLBACK, MAP
+ PROCESS, ROLLBACK, MAP,
+ PROMOTE
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
 
 static int address_not_in_list(char *reply_address, char *players_addresses);
+
+/*
+ * Try to resign passed power (Master command)
+ * retruns id in player array, else -1
+ */
+
+#define RP_INVALID (-1)
+#define RP_MULTIPLE (-2)
+#define RP_BLANK (-3)
+#define RP_NOT_FOUND (-4)
+/*
+ * Try to resign passed power by email address (Master command)
+ */
+int FindByEmail(char *power_text)
+{
+        int i;
+        int found = 0;
+        int found_index = -1;
+
+        for (i = 0; i < dipent.n; i++) {
+                if (strstr(dipent.players[i].address,power_text) != NULL) {
+                        found++;
+                        found_index = i;
+                }
+        }
+
+        switch (found) {
+            case 0:  /* nothing found */
+                found_index = RP_NOT_FOUND;
+                break;
+
+           case 1: /* only one found */
+                break; /* and will return found index */
+
+           default:
+                found_index = RP_MULTIPLE;
+	}
+        return found_index;
+}
+
+/*
+ * Try to resign passed power (Master command)
+ * retruns id in player array, else -1
+ */
+
+int ResignPower(char *power_text)
+{
+	int i,n;
+	int found = 0;
+        int found_index = RP_INVALID; 
+
+        if (GetOneWord(power_text) == 0) return RP_BLANK;
+	
+	/* If an '@' in string, it must be email, so check player addresses */
+        if (strstr(power_text, "@") != NULL) return FindByEmail(power_text);
+	
+	get_power(power_text, &n);
+	if (n==0) n = power(*power_text);
+	if (0 >= n ) return RP_INVALID; /* bad return, cannot be no-one */
+	/* See if this power is found */
+	for (i = 0; i < dipent.n; i++) {
+          if (dipent.players[i].power == n)
+	  {
+                  found++;
+		  found_index = i;
+	  }
+	}
+
+	switch (found) 
+	{
+		case 0:  /* No mtch found */
+		return RP_INVALID;
+
+		case 1:
+		return found_index;
+		
+		default:
+		return RP_MULTIPLE;
+	}
+
+
+	return 0==1; /* temp return */
+}
 
 /*
  *  Mail: Process a mail file sent to the Diplomacy judge.
@@ -144,12 +235,14 @@ int mail(void)
 {
 
 	int i, j, k, l, n, got_reply, got_resent, not_eof, full;
+	int ret = 0; /* return code for shorthand */
 	int done_headers;
 	char *s, *t;
 	FILE *check, *termfp, *dfp, *qfp;
 	long now;
-
+	int resign_index;
 	char uuenc;
+	char *whotext;
 
 	someone = "someone@somewhere";
 
@@ -172,6 +265,7 @@ int mail(void)
 	skipping = 0;
 	*baddr = '*';
 
+
 /*  Scan the mail file for something recognizable  */
 
 	got_reply = got_resent = 0;
@@ -182,7 +276,7 @@ int mail(void)
 		bailout(1);
 	}
 	done_headers = 0;
-	while (fgets(line, sizeof(line), stdin)) {
+	while (fgets(line, sizeof(line), inp)) {
 		fputs(line, log_fp);
 		fputs(line, ifp);
 		if (skipping)
@@ -230,8 +324,28 @@ int mail(void)
 			} else {
 				if (*line == '~')
 					fputc('~', rfp);
+				if (!master_press && !broad_skip && dipent.flags & F_SHORTHAND && !(dipent.flags & F_MACH))
+				{
+				    /* OK, it is a shorthand game. Now see if shorthand press is to be used */
+				    /* If at the start, no press is allowed */
+				    /* If at the end, normal press is allowed */
+    				    /* If in the game, only shorthand press is allowed */
+				    if (dipent.seq[0] == 'x' ) {
+					fprintf(rfp,"No press allowed in shorthand before game starts - message ignored.\n");
+					broad_skip = 1;
+				    } else {
+				        if (dipent.phase[6] != 'X' ) {
+					    if (*line == '~')  { 
+						ret += mail_shorthand(&line[1]);
+					    } else {
+					      ret += mail_shorthand(line);  /* Convert to shorthand press (if enabled) */
+				 	    }
+				        }
+					/* else will allow press as normal */
+				    }
+				}
 				fputs(line, rfp);
-				if (broad_read) {
+				if (broad_read && ret == 0 && !broad_skip) {
 					if (*line == '~') {
 						fputc('~', bfp);
 						fputc('~', mbfp);
@@ -258,6 +372,8 @@ int mail(void)
 				create = moreaddr = 0;
 				switch (pvalue[i]) {
 				case FROM:	/*  From: */
+				       StatLog(STAT_EMAIL,s);
+				       DIPINFO(s);
 					if (got_reply)
 						break;
 				case REPLY:	/*  Reply-To: */
@@ -272,7 +388,7 @@ int mail(void)
 					if (!is_allowed(GLOBAL_PLAYER)) {
 						fprintf(rfp, "You have been blacklisted from this judge.\n");
 						fprintf(rfp, "Please contact the judge keeper if you want to dispute this decision.\n");
-						while (fgets(line, sizeof(line), stdin)) {
+						while (fgets(line, sizeof(line), inp)) {
 							fputs(line, log_fp);
 							fputs(line, ifp);
 						}
@@ -344,20 +460,27 @@ int mail(void)
 						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
 						return E_FATAL;
 					}
-					if ((nfp = fopen("dip.tmast", "w")) == NULL) {
-						fprintf(rfp, "Error opening dip.tmast master file.\n");
+					if ((nfp = fopen(TMASTER_FILE, "w")) == NULL) {
+						fprintf(rfp, "Error opening %s master file.\n",
+							TMASTER_FILE);
 						return E_FATAL;
 					}
 					if ((i = mail_signon(s))) {
 						fclose(mfp);
 						fclose(nfp);
 						fputs("Bad signon, skipping remainder:\n", log_fp);
-						while (fgets(line, sizeof(line), stdin)) {
+						while (fgets(line, sizeof(line), inp)) {
 							fputs(line, log_fp);
 							fputs(line, ifp);
 						}
 						mail_reply(i);
 						return 0;
+					}
+					dipent.players[player].status &= ~SF_RESIGN;
+					if (dipent.players[player].power == MASTER) {
+						i_am_really_master = 1;
+					} else {
+						i_am_really_master = 0;
 					}
 					if (!msg_header_done)
 						msg_header(rfp);
@@ -380,7 +503,7 @@ int mail(void)
 					command++;
 					rfile = "data/info";
 					fputs("Help command found, skipping remainder:\n", log_fp);
-					while (fgets(line, sizeof(line), stdin)) {
+					while (fgets(line, sizeof(line), inp)) {
 						fputs(line, log_fp);
 						fputs(line, ifp);
 					}
@@ -411,8 +534,8 @@ int mail(void)
 						*t = '\0';
 						if ((tfp = fopen(temp, "r"))) {
 							fclose(tfp);
-							sprintf(line, "./smail %s 'Diplomacy file %s' '%s'",
-								temp, temp, raddr);
+							sprintf(line, "%s %s 'Diplomacy file %s' '%s'",
+								SMAIL_CMD, temp, temp, raddr);
 							execute(line);
 							fprintf(rfp, "File %s sent.\n\n", temp);
 							listflg++;
@@ -449,7 +572,7 @@ int mail(void)
 							fprintf(rfp, "The 'map *' command is not supported on this judge\n");
 						} else {
 							fclose(tfp);
-							strcpy(rdcom, "./runlistmap ");
+							sprintf(rdcom, "%s", RUNLISTMAP_CMD);
 							if (uuenc == 'n')
 								strcat(rdcom, "n ");
 							else
@@ -457,7 +580,7 @@ int mail(void)
 
 							tfp = fopen("map.list", "w");
 							rewind(tfp);
-							while (fgets(line, sizeof(line), stdin)) {
+							while (fgets(line, sizeof(line), inp)) {
 								fputs(line, tfp);
 							}
 							fclose(tfp);
@@ -466,7 +589,7 @@ int mail(void)
 
 							if ((tfp = fopen("map.out", "r"))) {
 								fclose(tfp);
-								sprintf(line, "./smail map.out 'Diplomacy map request' '%s'",
+								sprintf(line, "%s map.out 'Diplomacy map request' '%s'", SMAIL_CMD,
 								  raddr);
 								execute(line);
 								fprintf(rfp, "\nMap request sent.\n");
@@ -526,7 +649,7 @@ int mail(void)
 							}
 							fclose(rfp);
 							rfp = tfp;
-							strcpy(rdcom, "./rundipmap ");
+							sprintf(rdcom, "%s", RUNDIPMAP_CMD);
 							if (uuenc == 'n')
 								strcat(rdcom, "n ");
 							else
@@ -540,8 +663,8 @@ int mail(void)
 							execute(rdcom);
 							if ((tfp = fopen("map.out", "r"))) {
 								fclose(tfp);
-								sprintf(line, "./smail map.out 'Diplomacy map for %s' '%s'",
-									name, raddr);
+								sprintf(line, "%s map.out 'Diplomacy map for %s' '%s'",
+									SMAIL_CMD, name, raddr);
 								execute(line);
 								fprintf(rfp, "\nMap of game '%s' sent.\n", name);
 								if (uuenc != 'n') {
@@ -698,9 +821,10 @@ int mail(void)
 						}
 						fclose(mfp);
 
-						sprintf(line, "./summary -%s%slv%d %s", not_eof &&
+						sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, not_eof &&
 							(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)
-							&& dipent.flags & F_GUNBOAT ? "g" : "",
+							&& dipent.flags & F_GUNBOAT ? "g" : "", 
+							dipent.flags & F_BLIND ? "b" : "",
 							dipent.flags & F_QUIET ? "q" : "",
 							not_eof ? dipent.variant : V_STANDARD, name);
 						fflush(log_fp);
@@ -729,7 +853,7 @@ int mail(void)
 					command++;
 					if (!msg_header_done)
 						msg_header(rfp);
-					if ((i = newuser(raddr, stdin))) {
+					if ((i = newuser(raddr, inp))) {
 						mail_reply(i);
 						return (i);
 					}
@@ -781,11 +905,12 @@ int mail(void)
 					}
 					fclose(mfp);
 
-					if (!not_eof)
+					if (!not_eof) {
 						if (*name)
 							fprintf(rfp, "There is no game '%s' active.\n", name);
 						else
 							fprintf(rfp, "Whogame what game?\n");
+					}
 
 					break;
 
@@ -852,7 +977,7 @@ int mail(void)
 
 				case HISTORY:
 					command++;
-					history(s);
+					history(s,dipent.players[player].power);
 					break;
 
 				case FIXID:
@@ -934,8 +1059,8 @@ int mail(void)
 						*t = '\0';
 						if ((tfp = fopen(temp, "r"))) {
 							fclose(tfp);
-							sprintf(line, "./smail %s 'Diplomacy file %s' '%s'",
-								temp, temp, raddr);
+							sprintf(line, "%s %s 'Diplomacy file %s' '%s'",
+								SMAIL_CMD, temp, temp, raddr);
 							execute(line);
 							fprintf(rfp, "File %s sent.\n\n", temp);
 							listflg++;
@@ -956,43 +1081,80 @@ int mail(void)
 					 */
 
 				case RESIGN:
-					if (any_broadcast && broad_part) {
+					if (dipent.players[player].power == MASTER) 
+					{
+						while (isspace(*s)) ++s;
+					
+						resign_index = ResignPower(s);
+						switch (resign_index) {	
+						    case RP_BLANK:
+							fprintf(rfp, "Master MUST specify who is to be resigned.\n\n");
+							mail_reply(E_WARN);
+							return(E_WARN);
+							break;
+						    case RP_INVALID:
+					                fprintf(rfp, 
+								"Power '%s' not recognized.\n\n", s);
+							mail_reply(E_WARN);
+							return E_WARN;
+							break;
+						    case RP_NOT_FOUND:
+							fprintf(rfp,
+                                                                "Email '%s' not found in this game.\n\n", s);
+                                                        mail_reply(E_WARN);
+                                                        return E_WARN;
+                                                        break;
+					  	    case RP_MULTIPLE:
+							fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
+                                                        mail_reply(E_WARN);
+                                                        return E_WARN;
+							break;
+							
+						}
+					
+					} else {
+					    resign_index = player;
+					    if (any_broadcast && broad_part) {
 						send_press();
 						open_press();
-					}
-					if (!strcmp(dipent.players[player].address, "*")) {
+					    }
+					    if (!strcmp(dipent.players[player].address, "*")) {
 						fprintf(rfp, "You are no longer a player in this game.\nYou may not resign again!\n\n");
 						break;
+					    }
 					}
-					fprintf(rfp, "%s has resigned from game '%s'.\n\n",
-						powers[dipent.players[player].power], dipent.name);
-					/* WAS mfprintf  1/95 BLR */
+					    dipent.players[resign_index].status |= SF_RESIGN;
+					    fprintf(rfp, "%s has resigned from game '%s'.\n\n",
+						powers[dipent.players[resign_index].power], dipent.name);
+					    /* WAS mfprintf  1/95 BLR */
 					fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
 					   ((dipent.flags & F_GUNBOAT) &&
-					    (dipent.players[player].power != MASTER))
+					    (dipent.players[resign_index].power != MASTER))
 						? someone
-					: dipent.players[player].address,
-						powers[dipent.players[player].power], dipent.name);
+					: dipent.players[resign_index].address,
+						powers[dipent.players[resign_index].power], dipent.name);
 					fprintf(mbfp, "%s has resigned %s\nas %s in game '%s'.\n\n", raddr,
-					  dipent.players[player].address,
-						powers[dipent.players[player].power], dipent.name);
+					  dipent.players[resign_index].address,
+						powers[dipent.players[resign_index].power], dipent.name);
 					broad_signon = 1;
-					if (dipent.players[player].power != OBSERVER) {
+					if (dipent.players[resign_index].power != OBSERVER) {
 						pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
 							NowString(),
-							powers[dipent.players[player].power], dipent.name, dipent.phase,
-							dipent.players[player].units, dipent.players[player].centers);
+							powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
+							dipent.players[resign_index].units, dipent.players[resign_index].centers);
 						pcontrol++;
 					}
-					strcpy(dipent.players[player].address, "*");
-					strcpy(dipent.players[player].password, "GONE");
-					dipent.players[player].status |= SF_ABAND;
-					if (dipent.players[player].power == WILD_PLAYER)
+					/* strcpy(dipent.players[resign_index].address, "*"); */
+					strcpy(dipent.players[resign_index].password, GOING_PWD); 
+					/* Code moved to enda of function  mlm 05/Dec/99 
+					dipent.players[resign_index].status |= SF_ABAND;
+					if (dipent.players[resign_index].power == WILD_PLAYER)
 						dipent.seq[1]--;
-					if (dipent.players[player].power >= WILD_PLAYER) {
-						dipent.players[player].power = -1;
+					if (dipent.players[resign_index].power >= WILD_PLAYER) {
+						dipent.players[resign_index].power = -1;
 					}
-					dipent.players[player].siteid = 0;
+					dipent.players[resign_index].siteid = 0;
+					*/
 					break;
 
 					/*
@@ -1025,11 +1187,12 @@ int mail(void)
 					break;
 
 				case TERMINATE:
+					/* Allow termination of unstarted games */
 					if (dipent.seq[0] == 'x') {
-						fprintf(rfp, "Terminate on unstarted game ignored.  ");
-						fprintf(rfp, "Use 'resign'.\n");
-						break;
+				        /* Allow termination of unstarted games
+*/	
 					}
+                                        
 					if (dipent.phase[6] == 'X') {
 						fprintf(rfp, "Terminate on completed game ignored.\n");
 						break;
@@ -1040,10 +1203,37 @@ int mail(void)
 						break;;
 					}
 					fprintf(rfp, "You have terminated game '%s'.  ", dipent.name);
-					fprintf(rfp, "Use the 'resume' command to start\n");
-					fprintf(rfp, "it back up.  The game will self destruct ");
-					fprintf(rfp, "if no one signs on for one week.\n");
+					if (dipent.seq[0] == 'x') {
+					      fprintf(rfp,"The game will self destruct in one week.\n");
 
+                                            mfprintf(bfp, "%s as %s has terminated ",
+                                                 xaddr, powers[dipent.players[player].power]);
+                                        mfprintf(bfp, "game '%s'.  ", dipent.name);
+                                        mfprintf(bfp, "The game will self-destruct in  one week.\n");
+					/* If game was list, set nolist */
+					    if (!(dipent.flags & F_NOLIST)) {
+					      fprintf(rfp,"\nNote: game has also been forced 'nolist'.\n");
+				              dipent.flags |= F_NOLIST;	
+					    }
+					    qfp = NULL; /* to remove warning */
+					}	
+					else {
+					 fprintf(rfp, "Use the 'resume' command to start\n");
+                                        fprintf(rfp, "it back up.  The game will self destruct ");
+                                        fprintf(rfp, "if no one signs on for one week.\n");
+					mfprintf(bfp, "%s as %s has terminated\n",
+                                                 xaddr, powers[dipent.players[player].power]);
+					if (dipent.xflags & XF_NORESUME) {
+						whotext = "Any master";
+					} else {
+						whotext = "Anyone";
+					}
+                                        mfprintf(bfp, "game '%s'.  %s who signs on can restart ",
+                                                 dipent.name, whotext);
+                                        mfprintf(bfp, "the game by using\n");
+                                        mfprintf(bfp, "the 'resume' command.  The game will self-");
+                                        mfprintf(bfp, "destruct if no one signs\non for one week.\n");
+					/* Only inform people if game had already started! */
 					/* Open file for sending to custodians */
 					if ((qfp = fopen("dip.temp", "w")) == NULL) {
 						fprintf(log_fp,
@@ -1052,21 +1242,16 @@ int mail(void)
 					}
 					msg_header(qfp);
 
-					mfprintf(bfp, "%s as %s has terminated\n",
-						 xaddr, powers[dipent.players[player].power]);
-					mfprintf(bfp, "game '%s'.  Anyone who signs on can restart ",
-						 dipent.name);
-					mfprintf(bfp, "the game by using\n");
-					mfprintf(bfp, "the 'resume' command.  The game will self-");
-					mfprintf(bfp, "destruct if no one signs\non for one week.\n");
 					pprintf(cfp, "%s%s as %s has terminated\n",
 						NowString(), xaddr, powers[dipent.players[player].power]);
 					pprintf(cfp, "game '%s'.\n", dipent.name);
 					pprintf(qfp, "%s as %s has terminated\n",
 						xaddr, powers[dipent.players[player].power]);
 					pprintf(qfp, "game '%s'.\n", dipent.name);
+					}
 					dipent.phase[6] = 'X';
 
+					if ( dipent.seq[0] != 'x') {
 					fclose(qfp);
 
 					/* Open draw file (for summary) */
@@ -1092,12 +1277,12 @@ int mail(void)
 					{
 						if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
 							sprintf(line,
-								"./smail dip.temp 'MNC: Termination in %s' '%s'",
-								dipent.name, MN_CUSTODIAN);
+								"%s dip.temp 'MNC: Termination in %s' '%s'",
+								SMAIL_CMD, dipent.name, MN_CUSTODIAN);
 						else
 							sprintf(line,
-								"./smail dip.temp 'BNC: Termination in %s' '%s'",
-								dipent.name, BN_CUSTODIAN);
+								"%s dip.temp 'BNC: Termination in %s' '%s'",
+								SMAIL_CMD, dipent.name, BN_CUSTODIAN);
 					}
 					execute(line);
 
@@ -1122,7 +1307,7 @@ int mail(void)
 										     || dipent.flags & F_NOREVEAL)) ? "g" : "";
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
-						sprintf(line, "./summary -%s%s%slv%d %s", mflg, gflg,
+						sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
 							dipent.flags & F_QUIET ? "q" : "", dipent.variant,
 							dipent.name);
 						system(line);
@@ -1130,10 +1315,10 @@ int mail(void)
 
 					/*  Mail summary to HALL_KEEPER */
 
-					sprintf(line, "./smail D%s/summary 'HoF: Termination in %s' '%s'"
-						,dipent.name, dipent.name, HALL_KEEPER);
+					sprintf(line, "%s D%s/summary 'HoF: Termination in %s' '%s'"
+						, SMAIL_CMD ,dipent.name, dipent.name, HALL_KEEPER);
 					execute(line);
-
+					}
 					broadcast = 1;
 					break;
 
@@ -1141,6 +1326,10 @@ int mail(void)
 					if (dipent.phase[6] != 'X' || !strcmp(dipent.name, "control")) {
 						fprintf(rfp, "Resume on active game ignored.\n");
 						break;
+					}
+					if ((dipent.xflags & XF_NORESUME) && !PRIVOK ) {
+					    fprintf(rfp, "Only the master is allowed to resume this game.\n\n");
+					    return E_WARN;
 					}
 					dipent.phase[6] = '\0';
 					deadline((sequence *) NULL, 1);
@@ -1189,7 +1378,47 @@ int mail(void)
 						dipent.players[i].status &= ~SF_DRAW;
 					broadcast = 1;
 					break;
+				
+				case PROMOTE: 
+					/* Make an observer a (joint) master */
+					if (dipent.players[player].power != MASTER) {
+						fprintf(rfp, "Sorry, but only masters can promote observers.\n");
+						mail_reply(E_WARN);
+						return(E_WARN);
+					}
+					GetOneWord(s);
+					i = FindByEmail(s);
+                                        switch (i) {
+                                                    case RP_BLANK:
+                                                        fprintf(rfp, "Master MUST specify who is to be promoted.\n\n");
+                                                        mail_reply(E_WARN);
+                                                        return(E_WARN);
+                                                        break;
+                                                    case RP_NOT_FOUND:
+                                                        fprintf(rfp,
+                                                                "Email '%s' not found in this game.\n\n", s);
+                                                        mail_reply(E_WARN);
+                                                        return E_WARN;
+                                                        break;
+                                                    case RP_MULTIPLE:
+                                                        fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
+                                                        mail_reply(E_WARN);
+                                                        return E_WARN;
+                                                        break;
+					}
+					dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
+					fprintf(rfp, "%s is now also a Master for game '%s'.\n",
+                                                      dipent.players[i].address, dipent.name);
+					fprintf(bfp," %s is now also a Master for game '%s'.\n",
+                                                      dipent.players[i].address, dipent.name);
+					fprintf(mbfp," %s is now also a Master for game '%s'.\n",
+                                                      dipent.players[i].address, dipent.name);
+                                        pprintf(cfp, "%s%s is now also a Master for game '%s'.\n", NowString(),
+                                                                 dipent.players[i].address, dipent.name);
+					broad_signon = 1; /* Tell the world of the happy news! */
+					break;
 
+	
 				case BECOME:
 					if (dipent.players[player].power != MASTER) {
 						if (dipent.n == 1 && dipent.players[player].power == WILD_PLAYER) {
@@ -1222,7 +1451,7 @@ int mail(void)
 						n = power(*s);
 
 					if (0 >= n || n >= WILD_PLAYER) {
-						fprintf(rfp, "Become unknown power: %s", s);
+						fprintf(rfp, "Become error: unknown power- %s", s);
 						break;
 					}
 					for (i = 0; i < dipent.n; i++)
@@ -1234,8 +1463,7 @@ int mail(void)
 						break;
 					}
 					fprintf(rfp, "Master %s assuming identity of %s.\n", raddr, powers[n]);
-					fprintf(rfp, "Password %s; Address %s.\n\n",
-					      dipent.players[i].password,
+					fprintf(rfp, "Password not shown; Address %s.\n\n",
 					      dipent.players[i].address);
 					player = i;
 					break;
@@ -1254,7 +1482,7 @@ int mail(void)
 					dipent.start -= 24 * 60 * 60;
 					for (i = 0; i < dipent.n; i++)
 						dipent.players[i].status &= ~(SF_WAIT | SF_MOVE | SF_WAIT);
-					dipent.players[0].status |= SF_PROCESS;
+					dipent.players[0].status |= SF_PROCESS | SF_TURNGO;
 					fprintf(rfp, "Phase %s of '%s' will be processed immediately.\n\n",
 					      dipent.phase, dipent.name);
 					break;
@@ -1321,6 +1549,7 @@ int mail(void)
 						fclose(tfp);
 					}
 					fputs("X-marker\n", ofp);
+					UpdateBlockades();
 					break;
 
 				case SUMMARY:
@@ -1335,8 +1564,9 @@ int mail(void)
 
 						sprintf(line, "D%s/%ssummary", dipent.name, mflg);
 						if (!(tfp = fopen(line, "r"))) {
-							sprintf(line, "./summary -%s%s%slv%d %s", mflg, gflg,
+							sprintf(line, "%s -C %s -%s%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
 								dipent.flags & F_QUIET ? "q" : "",
+								dipent.flags & F_BLIND ? "b" : "",
 								dipent.variant, dipent.name);
 							fflush(log_fp);
 							if (system(line)) {
@@ -1360,7 +1590,7 @@ int mail(void)
 					break;
 
 				case REGISTER:
-					if (newuser(raddr, stdin) == E_FATAL) {
+					if (newuser(raddr, inp) == E_FATAL) {
 						mail_reply(E_FATAL);
 						return E_FATAL;
 					}
@@ -1397,14 +1627,22 @@ int mail(void)
 					break;
 
 				case HISTORY:
-					history(s);
+					history(s, dipent.players[player].power);
 					break;
 
 				case PHASE:
-					if (!(read_phase = phase(s)))
-						break;
-
-					/* FALL THRU */
+					if (signedon > 0) {
+					    if (!(read_phase = phase(s)))
+					    {
+						fprintf(rfp, "Invalid phase %s specified - phase ignored.\n\n", s);
+					    } else {
+						fprintf(pfp, "%c: %s",
+                                                                   dipent.pl[dipent.players[player].power], line);
+					    }
+					} else fprintf(rfp,"Cannot phase when not signed on.\n\n");
+					
+				        break;
+				
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
 						if (read_phase == 0) {
@@ -1412,9 +1650,12 @@ int mail(void)
 							fprintf(ofp, "%c: %s",
 								dipent.pl[dipent.players[player].power], line);
 						} else if (read_phase > 0) {
-							phase_syntax(read_phase, line);
-							fprintf(pfp, "%c: %s",
-								dipent.pl[dipent.players[player].power], line);
+							if (phase_syntax(read_phase, line)) {
+							    fprintf(rfp,"Invalid phase order rejected: -> %s", s);
+							} else {
+							    fprintf(pfp, "%c: %s",
+								   dipent.pl[dipent.players[player].power], line);
+						        }
 						}
 					}
 				}
@@ -1491,12 +1732,17 @@ int mail(void)
 					fprintf(rfp, "grace is %s.\n\n", ptime(&dipent.grace));
 				} else {
 					dipent.players[player].status &= ~SF_MOVED;
-					fprintf(rfp, "\n\nOrders not received for all units.  If complete ");
-					fprintf(rfp, "orders are not\n");
-					fprintf(rfp, "received by %s, you will ", ptime(&dipent.deadline));
-					fprintf(rfp, "be considered late.\n");
+					if (time(NULL) > dipent.deadline) {
+						 fprintf(rfp, "\n\nNote: you are LATE and orders are still not");
+						 fprintf(rfp, " received for all units.\n");
+					} else {
+					    fprintf(rfp, "\n\nOrders not received for all units.  If complete ");
+					    fprintf(rfp, "orders are not\n");
+					    fprintf(rfp, "received by %s, you will ", ptime(&dipent.deadline));
+					    fprintf(rfp, "be considered late.\n");
+					}
 					if (dipent.flags & F_NONMR) {
-						fprintf(rfp, "You will be considered abandoned if nothing is ");
+						fprintf(rfp, "You will be considered abandoned if all orders\nare not ");
 						fprintf(rfp, "received by\n%s.\n\n", ptime(&dipent.grace));
 					} else {
 						fprintf(rfp, "The partial orders will be processed if nothing ");
@@ -1506,8 +1752,13 @@ int mail(void)
 			} else {
 				dipent.players[player].status |= SF_MOVED;
 				if (dipent.players[player].status & SF_WAIT) {
-					fprintf(rfp, "\n\nYou have set 'wait' status so orders will not be ");
-					fprintf(rfp, "processed\nbefore %s.\n\n", ptime(&dipent.deadline));
+					fprintf(rfp, "\n\nYou have set 'wait' status");
+					if (time(NULL) <= dipent.deadline) {
+						fprintf(rfp, " so orders will not be ");
+						fprintf(rfp, "processed\nbefore %s.\n\n", ptime(&dipent.deadline));
+					} else {
+						fprintf(rfp,".");
+					}
 				}
 			}
 		} else {
@@ -1515,9 +1766,11 @@ int mail(void)
 			fprintf(rfp, "\n\n%d error%s encountered.\n\n", i, i == 1 ? "" : "s");
 			if (dipent.players[player].status & SF_MOVE) {
 				long then;
-				fprintf(rfp, "Unless error-free orders are received by the deadline ");
-				fprintf(rfp, "of\n%s you will be considered late.\n",
-					ptime(&dipent.deadline));
+				if (time(NULL) <= dipent.deadline) {
+				    fprintf(rfp, "Unless error-free orders are received by the deadline ");
+				    fprintf(rfp, "of\n%s you will be considered late.\n",
+					    ptime(&dipent.deadline));
+				}
 
 				then = dipent.grace - ((dipent.flags & F_NONMR) ? 0 : 24 * HRS2SECS);
 				if (more_orders) {
@@ -1578,7 +1831,7 @@ int mail(void)
 		fclose(mfp);
 		ferrck(nfp, 2003);
 		fclose(nfp);
-		rename("dip.tmast", MASTER_FILE);
+		rename(TMASTER_FILE, MASTER_FILE);
 	}
 	/* TODO not sure what to return here, i'll return a one in hopes that that
 	 * will work */
@@ -1605,7 +1858,8 @@ void open_press(void)
 		bailout(1);
 	}
 	broadcast = broad_part = broad_allbut = broad_read = broad_skip =
-	    broad_signon = broad_params = 0;
+	    broad_signon = broad_params = 
+	    broadcast_master_only = broadcast_absence_adjust = 0;
 	for (i = 0; i < sizeof(broad_list); broad_list[i++] = '\0');
 	if (++press_number == 10000)
 		press_number = 0;
@@ -1639,7 +1893,7 @@ void mail_reply(int err)
 	fclose(ifp);
 
 	if (err == E_FATAL) {
-		sprintf(line, "./smail %s 'Diplomacy Error' '%s'", rfile, GAMES_MASTER);
+		sprintf(line, "%s %s 'Diplomacy Error' '%s'", SMAIL_CMD, rfile, GAMES_MASTER);
 		execute(line);
 		bailout(E_FATAL);
 	}
@@ -1651,7 +1905,7 @@ void mail_reply(int err)
 	else
 		s = raddr;
 	if (*s && *s != '*' && !Dflg) {
-		sprintf(line, "./smail %s 'Re: %s' '%s'", rfile, subject, s);
+		sprintf(line, "%s %s 'Re: %s' '%s'", SMAIL_CMD, rfile, subject, s);
 		if ((i = execute(line))) {
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, s);
 		}
@@ -1659,7 +1913,8 @@ void mail_reply(int err)
 	if (*raddr != '*' && address_not_in_list(s, raddr) && !Dflg) {
 
 		/* TODO make the ./smail configurable */
-		sprintf(line, "./smail %s 'Re: %s' '%s'", rfile, subject, raddr);
+		/* done ;-) */
+		sprintf(line, "%s %s 'Re: %s' '%s'", SMAIL_CMD, rfile, subject, raddr);
 		if ((i = execute(line))) {
 			/* TODO, why not just have execute() write it's errors to the log */
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, raddr);
@@ -1693,6 +1948,12 @@ void msg_header(FILE * fp)
 			fprintf(fp, " Gunboat");
 		if (dipent.flags & F_BLIND)
 			fprintf(fp, " Blind");
+		if (dipent.flags & F_AFRULES)
+			fprintf(fp, " A/F Rules");
+		if (dipent.flags & F_SHORTHAND)
+			fprintf(fp, " Shorthand");
+		if (dipent.flags & F_WINGS)
+			fprintf(fp, " Wings");
 		fprintf(fp, "\n");
 		free(temp);
 
@@ -1773,11 +2034,12 @@ void send_press(void)
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
+			/* Don't broadcast to those with nobroad set */
+			if (dipent.players[i].status & SF_NOBROAD) continue;
 
 			if ((i != player || dipent.players[i].power == MASTER) &&
 			    *dipent.players[i].address != '*') {
-				if (broad_part && (dipent.players[i].power != MASTER
-						   || !(dipent.players[i].status & SF_PRESS))) {
+				if (broad_part && !(dipent.players[i].status & SF_PRESS)) {
 					for (s = broad_list; *s; s++)
 						if (power(*s) == dipent.players[i].power)
 							break;
@@ -1785,15 +2047,25 @@ void send_press(void)
 						continue;
 				}
 				if (dipent.players[i].power == MASTER) {
-					sprintf(line, "./smail %s 'Diplomacy notice: %s' '%s'",
-						mbfile, dipent.name, dipent.players[i].address);
-				} else {
-					sprintf(line, "./smail %s 'Diplomacy notice: %s' '%s'",
-						bfile, dipent.name, dipent.players[i].address);
-				}
-				if ((j = execute(line))) {
-					fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
-					   j, dipent.players[i].address);
+					broadcast_master_only = 0; /* We're sending to master anyway */
+					sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
+						SMAIL_CMD, mbfile, dipent.name, dipent.players[i].address);
+				       if ((j = execute(line))) {
+                                        fprintf(log_fp, "Error %d sending master broadcast message to %s.\n",
+                                           j, dipent.players[i].address);
+                                }
+
+				} else if (!master_only_press ||
+					  (master_only_press && dipent.players[i].power == power(broad_list[0]))) {
+					/* send if not master only press or if master-only but this is the
+					   destination power */
+					sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
+						SMAIL_CMD, bfile, dipent.name, dipent.players[i].address);
+				    if ((j = execute(line))) {
+                                        fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
+                                           j, dipent.players[i].address);
+                                    }
+
 				}
 			}
 		}
@@ -1805,8 +2077,8 @@ void send_press(void)
 		 */
 
 		if (*baddr != '*') {
-			sprintf(line, "./smail %s 'Diplomacy notice: %s' '%s'",
-				bfile, dipent.name, baddr);
+			sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
+				SMAIL_CMD, bfile, dipent.name, baddr);
 			if ((j = execute(line)))
 				fprintf(log_fp, "Error %d sending broadcast message to %s.\n", j, baddr);
 		}
@@ -1825,6 +2097,36 @@ void send_press(void)
 			archive(bfile, line);
 		}
 	}
+
+	/* OK, let's look for resigning players and mark them as resigned
+	 * (left this late so that they get notice of resignation if master
+	 * did it for them!
+         */
+	for (i = 0; i < dipent.n; i++) {
+		if (!strcmp(dipent.players[i].password,GOING_PWD)) {
+                     dipent.players[i].status |= SF_ABAND;
+                     if (dipent.players[i].power == WILD_PLAYER)
+                         dipent.seq[1]--;
+                     if (dipent.players[i].power >= WILD_PLAYER) {
+                             dipent.players[i].power = -1;
+                     }
+                     dipent.players[i].siteid = 0;
+		     strcpy(dipent.players[i].password,GONE_PWD);
+	             strcpy(dipent.players[i].address,"*");
+		}
+		/* Let's also take advantage and see if a master-only
+		   message should be sent */
+		if (broadcast_master_only && dipent.players[i].power == MASTER ) {
+                     sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
+                              SMAIL_CMD, mbfile, dipent.name, dipent.players[i].address);
+                     if ((j = execute(line))) {
+                            fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
+                                    j, dipent.players[i].address);
+                     }
+		}
+	}
+		
+
 	return;
 }
 
