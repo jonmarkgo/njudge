@@ -357,17 +357,27 @@ Additional considerations about Piombino and Messina
         turn as a hostile fleet attempts to use the straits, the hostile fleet
         suffers all effects described in a) above.
      e) If a garrison successfully converts to a fleet it will block a hostile 
-        fleet.  The hostile fleet will suffer all effects described in a) above.
+        fleet the same turn it converted.  The hostile fleet will suffer all 
+        effects described in a) above.
      f) If a fleet converts to a garrison it will *not* block a hostile
         fleet in the same turn as it converts. 
-     g) Adjacency for bribe purposes is not affected by blocking fleets.
+     g) If a fleet moving away is bounced back into Piombino or Messina it will 
+        block a hostile fleet.  The hostile fleet will suffer all effects 
+        described in a) above.
+     h) A retreating fleet will suffer all effects described in a) above.  But 
+        a fleet *retreating into* Piombino or Messina, will *not* block other 
+        fleets retreating through the straits (in the same turn).
+     i) Adjacency for bribe purposes is not affected by blocking fleets. 
 
 What essentially happens is that the straits become 'land' for all fleet 
 purposes.
 
-Note that in Machiavelli 2 rule 1d) above is not applicable, as only fleets 
-that are *already present* in the province (Messina only in that case) affect 
+Note that in Machiavelli 2 rules 1d-e above are not applicable, as only fleets
+that are *already present* in the province (Messina only in this case) affect 
 the straits.
+
+'Tech note': It would really have been much simpler if Battleline or Avalon 
+Hill had added an Intercept order type for this situation. Alas they did not.
 
 2) Croatia and Provence
 These provinces have a north and south coast that are treated just like the 

@@ -2,7 +2,7 @@ Greetings from the Diplomacy* Adjudicator!!                July 20, 2003
 Rules.machiavelli2
 
 
-YOU MUST ALSO READ RULES.MACHIAVELLI 
+YOU MUST ALSO READ RULES.MACHIAVELLI
 
 
 INTRODUCTION
@@ -50,13 +50,13 @@ another province.
 You may disband a unit instead of retreat it.
 A unit need not issue a lift siege order to be able to move away from
 an ongoing siege.
-Conversions are treated as attacks, thus lesser besiegeing units cannot
-block conversions.
+Conversions are treated as attacks, thus besiegeing units of lesser 
+strength cannot block conversions.
+Only a fleet *already present* in Messina can block moves, support and 
+transport (convoys).  The fleet will *not* be able to block if it is 
+converting to or from garrison.
 The default setting for coastal convoys is: *not allowed*, which is 
 contrary to the earlier editions.  As this is a game flag you may change it.
-Only a fleet *already present* in Messina can block moves, support and 
-transport (convoys).
-
 
 SPECIAL UNITS
 Any country cannot buy any special unit.
