@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030922;23095200">
+	<META NAME="CHANGED" CONTENT="20030923;21581700">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -29,7 +29,7 @@
 of e-mail format of Diplomacy electronic Judges</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
-<P CLASS="western">Version 0.1-0.2 Christophe Courtois - September
+<P CLASS="western">Version 0.1-0.3 Christophe Courtois - September
 2003</P>
 <P CLASS="western"><BR><BR>
 </P>
@@ -72,7 +72,7 @@ tool depend on it, please tell me (christophe@courtois.cc).</P>
 			<LI><P CLASS="western">Bad signon</P>
 			<LI><P CLASS="western">Game starts</P>
 			<LI><P CLASS="western">Press to players</P>
-			<LI><P CLASS="western">Results of turns</P>
+			<LI><P CLASS="western">Movement results</P>
 			<LI><P CLASS="western">Player(s) is/are late or abandoned</P>
 			<LI><P CLASS="western">Parameters of the game</P>
 			<LI><P CLASS="western">Administrative e-mails about options change</P>
@@ -119,16 +119,17 @@ characters in the player's messages, the header and the footer, but
 the judge itself writes pure ASCII English.</P>
 <P CLASS="western"><I>(ISO-8859-15 would be possible for Western
 Europe, but some obsolete software would default to ASCII instead of
-ISO-8859-1). </I>
+ISO-8859-1, so it's not used.). </I>
 </P>
 <H2 CLASS="western">Subject</H2>
 <P CLASS="western">The subject of the e-mail has often changed in
 recent njudges. It must not be taken into account by the judge, and
 is only for human use.</P>
 <H2 CLASS="western">Judge header</H2>
-<P CLASS="western">The judge may add a header at the beginning of the
-e-mail, whose text and size is totally free. It can potentially
-contain some informations which could fool parsers...</P>
+<P CLASS="western">At the judge keeper's discretion, the judge may
+add a header at the beginning of the e-mail, whose text and size is
+totally free. It can potentially contain some informations which
+could fool parsers...</P>
 <H2 CLASS="western">Judge footer</H2>
 <P CLASS="western">The judge may add a footer at the end of the
 e-mail, with the same provisions as the header.</P>
@@ -145,7 +146,7 @@ e-mail, with the same provisions as the header.</P>
 	njudge code.</P>
 </OL>
 <UL>
-	<LI><P CLASS="western">Each line begins by twice two dots (<FONT FACE="Courier New">::</FONT>),
+	<LI><P CLASS="western">Each line begins by two colons (<FONT FACE="Courier New">::</FONT>),
 	followed by a blank space.</P>
 	<LI><P CLASS="western">First line :</P>
 	<UL>
@@ -183,7 +184,8 @@ e-mail, with the same provisions as the header.</P>
 		<LI><P CLASS="western">'<FONT FACE="Courier New">Deadline: </FONT>'
 		[10 characters, space included]</P>
 		<LI><P CLASS="western">Phase of the game [<FONT COLOR="#ff0000">TO
-		SOLVE: see exact format and allowed length</FONT>]</P>
+		SOLVE: see exact format and allowed length</FONT>]. If game is not
+		started, this is the first phase.</P>
 		<LI><P CLASS="western">followed by a space</P>
 		<LI><P CLASS="western">Deadline date as given by the <FONT FACE="Courier New">ptime
 		</FONT>function, in English (code in <FONT FACE="Courier New">jm.c</FONT>).
@@ -192,7 +194,8 @@ e-mail, with the same provisions as the header.</P>
 			<LI><P CLASS="western">If the deadline is not yet known (game has
 			not started), it is by default at 00:00:00, Jan. 1<SUP>st</SUP>
 			1970 (judge timezone time)</P>
-			<LI><P CLASS="western">Following fields are separated by a space:</P>
+			<LI><P CLASS="western">Following fields are separated by a space
+			(this is the default format for dates):</P>
 			<UL>
 				<LI><P CLASS="western">Day of week (3 letters, lowercase with
 				first uppercase)</P>
@@ -275,17 +278,185 @@ Preference list 'FTGIEA' set.</PRE><P CLASS="western">
 <P CLASS="western">This is the e-mail that all players receive when
 enough players have subscribed, and the judge or the master starts
 the game.</P>
-<P CLASS="western"><FONT COLOR="#ff0000">TO BE CONTINUED...</FONT></P>
+<P CLASS="western">The parts are:</P>
+<UL>
+	<UL>
+		<LI><P CLASS="western">Message header, as described above.</P>
+		<LI><P CLASS="western">A blank line</P>
+		<LI><P CLASS="western">The message &ldquo;You have been selected as
+		XXXXX in game 'yyyyy' of Diplomacy.', where XXXXX is the power name
+		(lowercase with first letter uppercase), and yyyy the game name
+		(lowercase). (NB : Note the difference : <I>You have been</I><SPAN STYLE="font-style: normal">
+		instead of </SPAN><I>You've been</I><SPAN STYLE="font-style: normal">
+		for power selection). The power may be Observer or Master.</SPAN></P>
+		<LI><P CLASS="western" STYLE="font-style: normal">A blank line.</P>
+		<LI><P CLASS="western" STYLE="font-style: normal">The message &ldquo;The
+		following players are in this game:&rdquo; followed by all players,
+		master and observer of the game, one on each line, in this format:</P>
+		<UL>
+			<LI><P CLASS="western" STYLE="font-style: normal">Five spaces</P>
+			<LI><P CLASS="western" STYLE="font-style: normal">The power name
+			(or Master or Observer), with a colon.</P>
+			<LI><P CLASS="western" STYLE="font-style: normal">From the 19<SUP>th</SUP>
+			character, the e-mail address of the player (or
+			<FONT FACE="Courier New"><A HREF="mailto:someone@somewhere.com">someone@somewhere.com</A>
+			</FONT>if the game is gunboat).</P>
+		</UL>
+		<LI><P CLASS="western" STYLE="font-style: normal">A blank line</P>
+		<LI><P CLASS="western" STYLE="font-style: normal">The following
+		part describes the starting positions of the game. In njudge 1.x,
+		it is not computer-generated but is copied from the report <FONT FACE="Courier New">file</FONT>
+		in the judge <FONT FACE="Courier New">data</FONT> directory. To
+		avoid breaking tools, it should follow this format (some variants
+		as Chaos don't):</P>
+		<UL>
+			<LI><P CLASS="western" STYLE="font-style: normal">Message
+			&ldquo;Starting positions for &rdquo;, and the first season name.</P>
+			<LI><P CLASS="western" STYLE="font-style: normal">A blank line</P>
+			<LI><P CLASS="western" STYLE="font-style: normal">For each power:</P>
+			<UL>
+				<LI><P CLASS="western" STYLE="font-style: normal">For each unit
+				of this power, a line with:</P>
+				<UL>
+					<LI><P CLASS="western" STYLE="font-style: normal">Power name, a
+					colon, one or two spaces</P>
+					<LI><P CLASS="western" STYLE="font-style: normal">The unit name
+					(usually &ldquo;Fleet&rdquo; or &ldquo;Army&rdquo;)</P>
+					<LI><P CLASS="western" STYLE="font-style: normal">A point.</P>
+				</UL>
+			</UL>
+		</UL>
+		<LI><P CLASS="western" STYLE="font-style: normal">Two blank lines</P>
+		<LI><P CLASS="western"><SPAN STYLE="font-style: normal">The message
+		&ldquo;The deadline for the first orders is &ldquo;, and the date
+		with the usual format [<I>official 1.x judges</I>].<BR>OR<BR>The
+		message &ldquo;The deadline for the first movement orders is &ldquo;,
+		and the date with the usual format [<I>seen at least on Frog, a
+		0.8.6 judge</I>].</SPAN></P>
+		<P CLASS="western" STYLE="font-style: normal"></P>
+	</UL>
+</UL>
+<P CLASS="western">Example :</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Judge:
+FROG  Game: Azur  Variant: Standard Gunboat</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Deadline:
+S1901M Tue Dec 11 2001 23:30:00 +0100  </FONT></FONT>
+</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>You have
+been selected as Master in game 'azur' of Diplomacy.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The
+following players are in this game:</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Master:
+     christophe@courtois.cc</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Austria:
+    ericmonge@yahoo.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>England:
+    ecoencas@chello.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>France:
+     sderdi@yahoo.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Germany:
+    ygster@worldonline.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Italy: 
+     osteegen@hotmail.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Russia:
+     alfred_dupuis@yahoo.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Turkey:
+     pcazz@yahoo.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   FLebee@club-internet.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   dlagoutt@noos.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   nicolas.hudebine@free.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   alligators427@mac.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   observer@floc.net</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   havnor@hotmail.com</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   xavconst@club-internet.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   sylfred@worldonline.fr</FONT></FONT></P>
+<P CLASS="western">     <FONT FACE="Courier New"><FONT SIZE=2>Observer:
+   bruno_de_fleurian@yahoo.com</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Starting
+position for Spring of 1901.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army  Vienna.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army  Budapest.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Trieste.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Fleet London.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Fleet Edinburgh.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Army  Liverpool.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: 
+Army  Paris.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: 
+Army  Marseilles.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: 
+Fleet Brest.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army  Berlin.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army  Munich.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet Kiel.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy:  
+Army  Rome.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy:  
+Army  Venice.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy:  
+Fleet Naples.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: 
+Army  Moscow.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: 
+Army  Warsaw.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: 
+Fleet St Petersburg (south coast).</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: 
+Fleet Sevastopol.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey: 
+Army  Constantinople.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey: 
+Army  Smyrna.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey: 
+Fleet Ankara.</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
 <P CLASS="western"><BR><BR>
 </P>
-<OL START=6>
-	<LI><H1 CLASS="western">Other e-mails</H1>
-</OL>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The deadline
+for the first movement orders is Tue Dec 11 2001 23:30:00 +0100.</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
 <OL START=7>
+	<LI><H1 CLASS="western">Movement results</H1>
+	<LI><H1 CLASS="western">Other e-mails</H1>
 	<LI><H1 CLASS="western">Open points</H1>
 </OL>
 <UL>
