@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2003/05/24 23:57:15  millis
+ * Bug 97, removed Generic Handling code
+ *
  * Revision 1.26  2003/05/24 23:42:22  millis
  * Fix bug 32, do not show signon if game terminated
  *
@@ -654,6 +657,11 @@ int mail_signon(char *s)
 				}
 				if (mail_access(i, userid, siteid, level, &j))
 					return E_WARN;
+
+				if (dipent.players[i].flags & SF_DEAD) {
+					fprintf(rfp, "Player is eliminated - takeover not allowed.\n");
+					return E_WARN;
+				}
 
 				if (j >= 0)
 					dipent.players[j].power = -1;	/* Remove him as observer */
