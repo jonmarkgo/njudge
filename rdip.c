@@ -76,15 +76,20 @@
 char line[1024];
 char line1[1024];
 static struct stat sbuf;
+static short badmail = 0;
 
 static int Aflg, xflg, bflg;
 int Dflg;
 
-/* kill the judge cleanly if we should ever receive a SIGPIPE here... */
+/*
+ * If we receive a SIGPIPE it means that the Judge couldn't handle the mail
+ * (usually a bad From:) and died early. If so, we set the bad mail flag
+ * and keep on truckin'.
+ */
 void handle_sigpipe(int signo)
 {
-	fprintf(stderr, "rdip caught signal %d -- bailing out.\n", signo);
-	rdip_bailout(E_FATAL);
+	fprintf(stderr, "rdip caught signal %d -- assuming bad mail and skipping over it.\n", signo);
+	badmail = 1;
 }	
 
 /* Will retry the lock several times before giving up */
@@ -294,7 +299,8 @@ int main(int argc, char **argv)
 	while (fgets(line, sizeof(line), fp)) {
 		if (!strncmp(line, "From ", 5)) {
 			if (pfp) {
-				pclose(pfp);
+				if(!badmail)
+					pclose(pfp);
 				pfp = NULL;
 			}
 			if (!(pfp = popen(line1, "w"))) {
@@ -302,22 +308,26 @@ int main(int argc, char **argv)
 				exit(1);
 			}
 			fputs(line, stdout);
+			badmail = 0;	/* reset badmail flag */
 		}
 		if (!pfp) {
 			fprintf(stderr, "First line doesn't look like From.\n");
 			fputs(line, stderr);
 			exit(1);
 		}
-		fputs(line, pfp);
+		if(!badmail)
+			fputs(line, pfp);
 	}
 
 	fclose(fp);
-	if (pfp) {
+	if (pfp && !badmail) {
 		dipstat = pclose(pfp);
 		if (dipstat >> 8) {
-			perror("pclose");
-			rdip_bailout(E_FATAL);
-			exit(dipstat >> 8);
+			if(!badmail)
+			{
+				rdip_bailout(E_FATAL);
+				exit(dipstat >> 8);
+			}
 		}
 		pfp = (FILE *) NULL;
 	}
@@ -325,7 +335,6 @@ int main(int argc, char **argv)
 	 *  9) Reobtain the interlock on dip.lock1.
 	 */
 
-	fprintf(stderr, "TDBG: @ step 9\n");
 	fd1 = open(LOCK1, O_RDWR | O_CREAT, 0666);
 	if (fd1 < 0) {
 		perror(LOCK1);
