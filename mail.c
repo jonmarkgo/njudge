@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.48  2003/06/22 04:10:20  nzmb
+ * Added code to allow users to record diary entries, read them, and delete them
+ * if they make a mistake. The diaries will be broadcast when the games end (this
+ * part is not as of now, yet written).
+ *
  * Revision 1.46  2003/05/24 23:57:14  millis
  * Bug 97, removed Generic Handling code
  *
@@ -2757,6 +2762,7 @@ void send_press(void)
 	char line[1024];
 	char *s;
 	int i, j;
+	int lmdone, lbdone;   /* state variables on whether lenlimit has been called on bfile and mbfile */
 
 	/*
 	 * If parameters have been changed, copy the new parameters to the
@@ -2804,6 +2810,7 @@ void send_press(void)
 	 * master-broadcast file, of course).
 	 */
 
+	lmdone = lbdone = 0;
 	if (signedon && any_broadcast && control < 1000) {
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
@@ -2823,18 +2830,36 @@ void send_press(void)
 				if (dipent.players[i].power == MASTER && 
 				    !(dipent.players[i].status & SF_RESIGN)) {
 					broadcast_master_only = 0; /* We're sending to master anyway */
+
+					if(!lmdone) {
+						sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, mbfile, mbfile);
+						system(line);
+						sprintf(line, "mv %s.tmp %s", mbfile, mbfile);
+						system(line);
+						lmdone = 1;
+					}
+
 					sprintf(line, "%s %s '%s' '%s'",
 						SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
 
 				       if ((j = execute(line))) {
                                         fprintf(log_fp, "Error %d sending master broadcast message to %s.\n",
                                            j, dipent.players[i].address);
-                                }
+                                	}
 
 				} else if (!master_only_press ||
 					  (master_only_press && dipent.players[i].power == power(broad_list[0]))) {
 					/* send if not master only press or if master-only but this is the
 					   destination power */
+				
+					if(!lbdone) {
+						sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, bfile, bfile);
+						system(line);
+						sprintf(line, "mv %s.tmp %s", bfile, bfile);
+						system(line);
+						lbdone = 1;
+					}
+
 					sprintf(line, "%s %s '%s' '%s'",
 						SMAIL_CMD, bfile, subjectline, dipent.players[i].address);
 
