@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.23  2004/01/04 11:34:35  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.22  2003/09/14 08:25:13  millis
  * Fix bug 225
  *
@@ -178,7 +181,7 @@ int canpreprocess(char *s);
 
 /* defined in st_porder.c */
 int process_output(int pt, char phase);
-void process_input(int pt, char phase);
+void process_input(int pt, char phase, int player);
 int ownership(void);
 
 /* defined in st_build.c */
@@ -239,7 +242,7 @@ void expout(int pt);
 
 /* defined in ma_porder.c */
 int victory(void);
-void ma_process_input(int pt, char phase);
+void ma_process_input(int pt, char phase, int player);
 int ma_process_output(int pt, char phase);
 
 /* defined in ma_famplag.c */
