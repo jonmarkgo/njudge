@@ -1,6 +1,17 @@
 
 /*
    ** $Log$
+   ** Revision 1.11  2002/05/11 09:15:34  greg
+   ** Minor bug fixes
+   ** - fixed subjectline for absence requests
+   ** - fixed phase length, so it's no longer hard coded for responses
+   ** - partial fix for unusable builds, players with only unusable builds
+   **    will no longer be flagged as having orders due, however players
+   **    with some usable builds will need to waive any unusable builds,
+   **    also, if one or more players have unusable builds, but no
+   **    player has usable builds, the build phase will process after
+   **    a short delay
+   **
    ** Revision 1.10  2002/04/15 12:55:46  miller
    ** Multiple changes for blind & Colonial & setup from USTV
    **
@@ -75,14 +86,14 @@ int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
 	if (pr[p1].blockaded) {
             errmsg("Cannot transform wing as it is blockading %s.\n",
                                 pr[p1].name);
-                        return E_WARN;
+                        return 0;
         }
 
         if (water(p1)) {
                     errmsg("Cannot transform %s while %s water.\n",
                                 utype(unit[u].type),
                                 unit[u].type == 'F' ? "in" : "over");
-                    return E_WARN;
+                    return 0;
         }
 
         if (type == 'x') {
