@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  2002/05/04 02:06:18  nzmb
+ * Added code to display the time left until the deadline and grace at the
+ * bottom of their reply whenever a player signs on.
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -104,6 +108,19 @@ char *ptime(time_t * time)
 	lt = localtime(time);
 	strftime(text, sizeof(text), "%a %b %d %Y %H:%M:%S %z", lt);
 	return text;
+}
+
+char *abs_time(time_t * time)
+{
+        /*
+         *  Return a time in format understandable as a deadline.
+         */
+        static char text[32];
+        struct tm *lt;
+
+        lt = localtime(time);
+        strftime(text, sizeof(text), "%b %d %Y %H:%M:%S", lt);
+        return text;
 }
 char *timeleft(time_t *deadline)
 {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2003/01/15 13:59:26  millis
+ * Removed Dipstats
+ *
  * Revision 1.30  2003/01/14 13:51:37  millis
  * Merges from USTV
  *
@@ -3197,12 +3200,36 @@ void mail_setp(char *s)
 				fprintf(mbfp," to \n%s.\n\n", ptime(&datee));
 				fprintf(mbfp,"A master must approve this as it exceeds game limit of %d.\n\n",
 					dipent.max_absence_delay);
+				fprintf(mbfp,"To approve, send the following commands:\n");
+				fprintf(mbfp,"BECOME %c\n", pletter[dipent.variant][dipent.players[player].power]);
+				fprintf(mbfp,"SET ABSENCE %s", abs_time(&dates));
+				fprintf(mbfp," TO %s\n\n", abs_time(&datee));
 				broadcast_master_only = 1;
 				s="";
 				break;
 			}
+			for (i=0; i < MAX_ABSENCES; i++) {
+			    if (((dipent.players[player].absence_start[i] <=  dates &&
+				  dipent.players[player].absence_end[i] >=  dates) ||
+				 (dipent.players[player].absence_start[i] <=  datee &&
+                                  dipent.players[player].absence_end[i] >=  datee)) &&
+				dipent.players[player].absence_start[i] != 0 ) {
+				fprintf(rfp, "Requested absence from %s",  ptime(&dates));
+				fprintf(rfp," to %s is inside\n", ptime(&datee));
+				fprintf(rfp, " existing absence from %s",
+					ptime(&dipent.players[player].absence_start[i]));
+				fprintf(rfp, " to %s.\n\n", 
+					 ptime(&dipent.players[player].absence_end[i]));
+
+				fprintf(rfp, "Please cancel existing absence first, via 'SET NOABSENCE %s'.\n\n",
+					abs_time(&dipent.players[player].absence_start[i]));
+				s="";
+				break;
+			    }
+			}
+
 			for (i=0; i < MAX_ABSENCES && dipent.players[player].absence_start[i] != 0; i++) ;
-			if (dipent.players[player].absence_start[i] == 0) {
+			if (dipent.players[player].absence_start[i] == 0 && *s) {
 				dipent.players[player].absence_start[i] = dates;
 				dipent.players[player].absence_end[i] = datee;
 				dipent.players[player].absence_count++;
@@ -3215,11 +3242,14 @@ void mail_setp(char *s)
 				fprintf(mbfp, "%s as %s requested absence from %s to\n",
 				raddr, PRINT_POWER, ptime(&dates));
 				fprintf(mbfp,"%s.\n\n", ptime(&datee));
+				fprintf(mbfp,"Note: this will automatically action, you do not have to do anything.\n\n");
 				broadcast_master_only = 1;
 			} else {
+			    if (*s) {
 				fprintf(rfp, "Too many absences requested.\n\n");
 				s = "";
 				break;
+			    }
 			}
 
 			s="";

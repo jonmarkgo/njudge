@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2003/01/13 22:29:48  millis
+ * Merged from ustv
+ *
  * Revision 1.14  2002/12/28 00:02:54  millis
  * Fixed bug 77, adding wrap_char() function
  *
@@ -137,6 +140,7 @@ int countgames(void);
 /* defined in jm.c */
 int jm(char *p, long *t);
 char *ptime(time_t * t);
+char *abs_time(time_t * t);
 char *timeleft(time_t *deadline);
 
 /* defined in po_errmsg.c */
