@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2003/07/17 00:01:29  millis
+ * Use MailOut to send emails
+ *
  * Revision 1.11  2003/07/13 00:31:04  millis
  * Bug 189 fix, make line[] a static
  *
@@ -237,10 +240,11 @@ void phase_pending(void)
 				case WAIT:
 					if (!skip) {
 						if (dipent.flags & F_STRWAIT) {
-							if (dipent.players[n].status & SF_MOVE)
-								dipent.players[n].status |= SF_WAIT;
-							else
-								dipent.players[n].status |= SF_WAIT;
+						    if (dipent.players[n].status & SF_MOVE) {
+							dipent.players[n].status |= SF_WAIT;
+						    }
+						} else {
+						    dipent.players[n].status |= SF_WAIT;
 						}
 						continue;
 					}
