@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.6  2004/06/27 11:00:11  millis
+   ** Bug 297: Changed to prevent oversized bids
+   **
    ** Revision 1.5  2004/06/27 01:50:22  millis
    ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
    ** and correct turns not processing, plus more information printed.
@@ -258,8 +261,8 @@ int bidin(char **s, int p, int syntaxcheck)
         }
 
         if (!syntaxcheck) {
-           if (ducats[p].treasury < p1) {
-               errmsg("Amount %d is larger than your treasury %d.\n");
+           if (p1 > 9999) {
+               errmsg("Get real - no-one has THAT much money!\n");
                return E_WARN;
            }
 
