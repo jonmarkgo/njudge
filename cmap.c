@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/01/13 22:38:50  millis
+ * merged in from ustv
+ *
  * Revision 1.9  2002/12/17 13:30:02  millis
  * Corrected some path settings
  *
@@ -188,8 +191,9 @@ int main(int argc, char *argv[])
 				if (*t < '0' || '7' < *t) {
 					fprintf(stderr, "Bad city value %c for %s.\n", *t, pr[npr].name);
 					err++;
-				}
-				pr[npr].flags = (*t++ - '0');	/* Number of city points */
+					pr[npr].flags = 0; /* Default to '0' */
+				} else
+					pr[npr].flags = (*t++ - '0');	/* Number of city points */
 
 				if (*t == 'f' || *t == 'P')
 					pr[npr].flags |= PF_FORTRESS;	/* Province is fortifiable */
