@@ -20,4 +20,7 @@ if ($arg eq "purge")
   qx/rm -rf $destdir/;
 }
 
-
+my $temp="set -e\nset -- @ARGV\n" . << 'EOF';
+#DEBHELPER#
+EOF
+system ($temp) / 256 == 0 or die "Problem with debhelper scripts: $!";
