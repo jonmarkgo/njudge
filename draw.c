@@ -1,5 +1,9 @@
  /*
  * $Log$
+ * Revision 1.11  2003/02/25 07:46:14  nzmb
+ * Small change to make it impossible to vote for a draw or concession if the game
+ * is over.
+ *
  * Revision 1.10  2003/02/12 07:46:06  nzmb
  * Fixed several bugs in the concession handling code, including a severe one
  *
@@ -53,7 +57,7 @@
 
 int check_can_vote(int i, int flag)
 {
-	char *s;
+	char *s = NULL;
 
 	if(flag == 1)
         {
@@ -158,7 +162,7 @@ int chkdraw(char *to_check)
 
 int chkconc(char *to_check)
 {
-	int i, j;
+	int i, j=0;
         int errcnt = 0;
                         
         for (i = 0; i < strlen(to_check); i++) {
@@ -240,7 +244,7 @@ int acceptable(char *, int, char *, char);
 
 int process_draw(void)
 {
-	char survivors[MAXPLAYERS + 1], participants[MAXPLAYERS + 1],
+	static char survivors[MAXPLAYERS + 1], participants[MAXPLAYERS + 1],
 	 line[1024], line2[1024], *s, *t;
 	int i, j, found = 0;
 	long now;
@@ -443,7 +447,7 @@ int process_conc(void)
 	int largest = -1;
 	int i;
 	char *s, *t;
-	char line[1024],line2[1024];
+	static char line[1024],line2[1024];
 	FILE *ofp, *dfp;
 	long now;
 

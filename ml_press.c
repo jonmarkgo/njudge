@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.6  2002/06/11 16:26:19  nzmb
+ *
+ * Added set [no]mustorder to require players to submit avalid set of orders
+ * before they may send press (to be used in conjunction with set wait).
+ *
  * Revision 1.5  2002/04/06 17:14:08  nzmb
  *
  * Changed ml_press.c so that press from late players isn't blocked when the game is over (again)!
@@ -183,7 +188,7 @@ void mail_press(char *s, int need_opts)
  */
 	int bad_cmd = 0,	/* Is this a bad command? */
 	 have_opts = 0;		/* Have we processed any options? */
-	char fake_list[sizeof(broad_list)],	/* List of fake destination powers */
+	static char fake_list[sizeof(broad_list)],	/* List of fake destination powers */
 	 game_name[32],		/* " in <name>:" string buffer */
 	 line[1024],		/* Line to be sent to other players */
 	 mline[1024],		/* Line to be sent to Master */
