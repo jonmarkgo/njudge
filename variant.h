@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/04/02 20:11:19  christ
+ * Typos
+ *
  * Revision 1.12  2002/12/30 15:27:59  millis
  * Add Duality flag default for colonial games (because of Cebu)
  *
@@ -131,9 +134,10 @@ enum {
 
 /* Do not exceed byte limit as these are used in char arrays */
 #define WILD_PLAYER  114  /* First non-player player ordinal               */
-#define AUTONOMOUS   115  /* Non-player ordinal                            */
-#define OBSERVER     116  /* Non-player ordinal                            */
-#define MASTER       117  /* Last Non-player ordinal                       */
+#define NEUTRAL	     115  /* Nutral power 				   */
+#define AUTONOMOUS   116  /* Non-player ordinal                            */
+#define OBSERVER     117  /* Non-player ordinal                            */
+#define MASTER       118  /* Last Non-player ordinal                       */
 
 /** UPDATE DEFINES AS NECESSARY ABOVE **/
 
