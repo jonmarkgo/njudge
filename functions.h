@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2003/05/03 23:09:47  millis
+ * added missing prototype for ExtraCentres()
+ *
  * Revision 1.17  2003/05/02 21:30:03  millis
  * Added an artilery support funciton
  *
@@ -331,3 +334,4 @@ int strncasecmp(char *s1, char *s2, register int n);
 
 /* defined in tm_xpress.c */
 int process_ppress(void);
+void process_diary(char *cmd);

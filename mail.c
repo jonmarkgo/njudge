@@ -272,6 +272,7 @@ char *mail_r2file;
 #define COND            45      /* -- Tamas -- 2002-06-11 -- */
 #define POSTALPRESS	46
 #define FORCE_BEGIN	47
+#define DIARY           48
 
 /* Note: in both prelim and commands below, a blank character means
  * that whitespace is optional in the user input; a '#' character
@@ -291,8 +292,8 @@ static char *prelim[] =
  "no control", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fix id",
- "map", "sign off", "-- \n", "record", "info player"
- ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
+ "map", "sign off", "-- \n", "record", "info player",
+ "if", "else", "endif"        /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
 	"ded#" */ };
 
@@ -309,8 +310,8 @@ static int pvalue[] =
  NOCONTROL, ADJUST,
  _VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
- MAP, SIGNOFF, SIGNOFF, RECORD, INFOPLAYER 
- , COND, COND, COND                   /* -- Tamas -- 2002-06-11 -- */
+ MAP, SIGNOFF, SIGNOFF, RECORD, INFOPLAYER, 
+ COND, COND, COND                   /* -- Tamas -- 2002-06-11 -- */
  /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 static char *commands[] =
@@ -327,7 +328,8 @@ static char *commands[] =
  "eject", "record", "info player", "unstart",
  "set", "pause", "suspend", "postal press", 
  "force begin", 
- "if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
+ "if", "else", "endif",   
+ "diary"
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -344,7 +346,8 @@ static int cvalue[] =
  EJECT, RECORD, INFOPLAYER, UNSTART,
  SET, PAUSE, PAUSE, POSTALPRESS,
  FORCE_BEGIN,
- COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
+ COND, COND, COND,
+ DIARY
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 
@@ -596,6 +599,31 @@ int mail(void)
 			}
 			continue;
 		}
+
+		if(diary_read || diary_skip) {
+			if(!strcasecmp(s, "signoff\n") ||
+			   !strcasecmp(s, "sign off\n") ||
+			   !strcasecmp(s, "-- \n")) {
+				skipping++;
+			}
+			else if(!strcasecmp(s, "endpress\n") ||
+				!strcasecmp(s, "endbroadcast\n")) {
+				fprintf(rfp, "\nEnd of diary entry.\n\n");
+				if(!diary_skip)
+					fclose(diaryfp);
+				diary_read = diary_skip = 0;
+				diary_done = 1;
+			} else {
+				fputs(line, rfp);
+				if(!diary_skip)
+				{
+					fputs(line,mbfp);
+					fputs(line,diaryfp);
+				}
+			}
+			continue;
+		}
+
 
 		/*  If we're reading or skipping press, get out and set 'skipping' flag if
 		   we see 'signoff' alone on a line.  */
@@ -1555,23 +1583,27 @@ int mail(void)
 
 				case PRESS:
 				case BROADCAST:
-					if (any_broadcast || ppress_done) 
+					if (any_broadcast || ppress_done || diary_done) 
 					{
 						send_press();
 						open_press();
 						if(ppress_done)
 							ppress_done = 0;
+						if(diary_done)
+							diary_done = 0;
 					}
 					mail_press(s, (cvalue[i] == PRESS ? 1 : 0));
 					break;
 
 				case POSTALPRESS:
-					if(any_broadcast || ppress_done)
+					if(any_broadcast || ppress_done || diary_done)
 					{
 						send_press();
 						open_press();
 						if(ppress_done)
 							ppress_done = 0;
+						if(diary_done)
+							diary_done = 0;
 					}
 					process_ppress();
 					break;
@@ -2236,6 +2268,19 @@ int mail(void)
 					sprintf(x, "%s%s/T001", GAME_DIR, dipent.name);
 					remove(x);
 
+					break;
+
+				case DIARY:
+					if(any_broadcast || ppress_done || diary_done)
+					{
+						send_press();
+						open_press();
+						if(ppress_done)
+							ppress_done = 0;
+						if(diary_done)
+							diary_done = 0;
+					}
+					process_diary(s);
 					break;
 
 				case FORCE_BEGIN:

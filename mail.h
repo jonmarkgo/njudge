@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.6  2003/05/24 23:57:15  millis
+   ** Bug 97, removed Generic Handling code
+   **
    ** Revision 1.5  2002/07/16 18:14:22  nzmb
    ** Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
    **
@@ -85,6 +88,9 @@ int master_only_press;		/* Set to 1 if press only for master's eyes     */
 int ppress_read;		/* set to 1 if reading postal press */
 int ppress_skip;		/* set to 1 if skipping postal press */
 int ppress_done;		/* control variable */
+int diary_read;			/* control for diaries */
+int diary_skip;
+int diary_done;
 
 char Mfile[40];			/* Movement orders file name                    */
 char Tfile[40];			/* Temporary movement orders file name          */
@@ -98,6 +104,7 @@ FILE *mail_ifp;			/* Incoming message (copy thereof) file pointer */
 FILE *mail_pfp;			/* Future phase file pointer                    */
 FILE *mail_tfp;			/* Temporary file pointer                       */
 FILE *mail_ppfp;		/* postal press file pointer*/
+FILE *diaryfp;			/* diary file pointer */
 char mail_bfile[20];		/* Name of broadcast file                       */
 char mail_mbfile[20];		/* Name of master broadcast file                */
 char *mail_rfile;		/* Name of reply file                           */
