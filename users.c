@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.13  2003/10/12 06:16:20  nzmb
+ * Fixed bugs 240 & 241. You now cannot iamalso yourself to more than one
+ * registration. Also if you try to do iamalso address1,address2 the Judge
+ * will tell you to only iamalso yourself to one place.
+ *
  * Revision 1.12  2003/02/28 20:16:47  nzmb
  * Changed the name of resignation ratio to CD ratio, to avoid confusion with
  * Doug Massey's DRR.
@@ -61,6 +66,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <sys/stat.h>
 
 #include "config.h"
@@ -1239,6 +1245,12 @@ int cmpaddr(char *addr, char *list)
 {
 
 	register char *s, *t, c = 0, d = 0, k;
+
+	/* do some sanity checking on the inputs */
+	if(addr[0] == '\0' || list[0] == '\0')
+		return 0;
+	if(!isalnum(addr[0]) || !isalnum(list[0]))
+		return 0;
 
 	s = list;
 	while (*s) {
