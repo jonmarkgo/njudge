@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2003/05/03 23:33:49  millis
+ * Fix bug 150 (NO_GARRISONS flag)
+ *
  * Revision 1.16  2003/01/13 18:19:41  millis
  * Merge from ustv
  *
@@ -1342,6 +1345,13 @@ int ma_moveout(int pt)
 				remove_siege(unit[u].loc);
 			}
 		}
+
+		/* Bug 126, correct the units in province, setting to zero if unit is not really there */
+		for (p = 1; p <= npr; p++)
+                    if (unit[pr[p].unit].loc != p)
+                        pr[p].unit = 0;
+                    if (unit[pr[p].gunit].loc != p)
+                        pr[p].gunit = 0;
 
 		if (bounce)
 			fprintf(rfp, "\n\nThe following units were dislodged:\n\n");
