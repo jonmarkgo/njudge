@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.12  2003/10/26 18:39:11  millis
+ * Refix bug 224
+ *
  * Revision 1.11  2003/09/13 22:59:28  millis
  * Fix bug 224
  *
@@ -105,7 +108,7 @@ int ma_buildin(char **s, int p)
 		}
 		if (type == 'A') {
 			c1 = MV;
-			if (pr[p1].type & PF_VENICE && dipent.xflags & XF_MACH2) {
+			if (is_venice(p1) && dipent.xflags & XF_MACH2) {
 			        errmsg("Armies not allowed in %s.\n", pr[p1].name);
 				return E_WARN;
 			}
