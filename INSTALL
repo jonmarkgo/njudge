@@ -9,6 +9,10 @@
 SOURCE INSTALL
 ==============
 
+   The system the judge is to be run on needs to have the followinf software
+   installed:  C Shell, Perl 5.005 or higher, and Sendmail or an MTA with a
+   compatible interface to Sendmail such as Exim or Postfix.
+
    The judge uses GNU autotools in order to configure itself appropriately on 
    your system.
 
@@ -23,7 +27,7 @@ SOURCE INSTALL
      `configure' itself.
 
      By default it will set up the judge in /home/judge as user judge with 
-     an email address of judge@localhost.
+     an email address of judge@localhost and sendmail in /usr/sbin.
      If you chose a different user and directory in step 1, or if judge 
      email should come from a different domain, you can give the configure 
      script flags to override the defaults.  The flags are:
@@ -31,11 +35,13 @@ SOURCE INSTALL
      --with-dir=DIR
      --with-user=NAME
      --with-domain=DOMAIN
+     --with-sendmail=SENDMAIL
 
      for example to set up the judge in /home/jaldhar/dip as user 
-     jaldhar and email judge@braincells.com, you would do:
+     jaldhar and email judge@braincells.com and sendmail in /usr/ucb, you 
+     would do:
 
-     ./configure --with-dir=/home/jaldhar/dip --with-user=jaldhar --with-domain=braincells.com
+     ./configure --with-dir=/home/jaldhar/dip --with-user=jaldhar --with-domain=braincells.com --with-sendmail=/usr/ucb
 
      There are many other flags you can give (type './configure --help' 
      for a full list) but these are the main ones you're likely to use.
@@ -73,4 +79,4 @@ SOURCE INSTALL
 If you need to tweek the source itself before installing it, see 
 docs/README.hackers.
 
-Jaldhar H. Vyas <jaldhar@braincells.com> Mon, 12 Aug 2002 00:41:55 -0400
+Jaldhar H. Vyas <judgekeeper@braincells.com> Fri, 09 May 2003 14:19:00 -0400
