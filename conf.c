@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/01/06 18:48:07  davidn
+ * Changes to allow game creator be automatically made master
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added new dip.conf variables
  *
@@ -119,6 +122,11 @@ int conf_init(void)
 	conf_set("STATS_FLAG", "0");
 	conf_set("STATS_DIR", "./stats");
 	conf_set("AUTO_MASTER","no");
+
+/* Default custodians for sailho (other variants will default to nothing */
+	conf_set("sailho_CUSTODIAN", "tarzan_monkeyman@bigfoot.com");
+	conf_set("sailho_crowded_CUSTODIAN", "tarzan_monkeyman@bigfoot.com"); 
+
 	return 1;
 }
 
