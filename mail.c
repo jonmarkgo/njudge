@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.38  2003/03/31 08:19:51  nzmb
+ * Fix to previous fix, should be two dashes, space, and newline counts as
+ * signoff.
+ *
  * Revision 1.37  2003/03/29 11:31:14  nzmb
  * Made two dashes (--) followed by a newline the moral equivalent of signoff
  * -- fixes bug #60.
@@ -2175,16 +2179,6 @@ int mail(void)
 					remove(x);
 
 					break;
-/*-------------------------------------------------------------*
- *--  Modified by Tamas  --------------  2002-06-11  ----------*
- *-------------------------------------------------------------*/
-				case COND:
-                                        if (dipent.flags & F_BLIND) {
-                                          fprintf(rfp, "Conditionals are not supported in blind variant. ");
-                                          fprintf(rfp, "Rejected: %s\n", line);
-                                          break;
-                                        }
-/*---------------------------------------------  Tamas End  ---*/
 
 				case FORCE_BEGIN:
 					if (dipent.players[player].power != MASTER) {
@@ -2212,6 +2206,19 @@ int mail(void)
               				starting++;
 
 					break;
+
+/*-------------------------------------------------------------*
+ *--  Modified by Tamas  --------------  2002-06-11  ----------*
+ *-------------------------------------------------------------*/
+                                case COND:
+                                        if (dipent.flags & F_BLIND) {
+                                          fprintf(rfp, "Conditionals are not supported in blind variant. ");
+                                          fprintf(rfp, "Rejected: %s\n", line);
+                                          break;
+                                        }
+/*---------------------------------------------  Tamas End  ---*/
+
+/**---- Intentional lack of "break;" - do NOT insert code here ----**/
 
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
