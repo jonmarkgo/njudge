@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                8th July 2001
+Greetings from the Diplomacy* Adjudicator!!                26th July 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
@@ -296,7 +296,7 @@ mod/aft SET [NO]CD
         Same as "set [no]nmr".
 
 mod/aft SET CENTERS number
-        Set the number of centers required to win the game to "number".
+	Set the number of centers required to win the game to "number".
 	This will cause the game to end when the first player reaches this
 	number of winning centers. If more than one player reaches this
 	value, then it is advanced to one more center than the top
@@ -411,7 +411,7 @@ mod/mac SET [NO]LOANS
 mod/aft+SET[NO]MACH2
 	Disables/enables Machiavelli 2nd Edition (1995) rules.
 
-aft*SET [NO]MANUALPROCESS
+mod/aft*SET [NO]MANUALPROCESS
 	Disables/enables the requirement that the turn will only occur 
 	when the master executes the 'PROCESS' command.
 
