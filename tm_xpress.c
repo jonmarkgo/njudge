@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2003/07/12 01:48:43  nzmb
+ * Master now gets notified when a player enters a new diary entry.
+ *
  * Revision 1.4  2003/06/29 21:37:43  nzmb
  * Made EOG draw entries broadcasted at the end of the game.
  *
@@ -73,7 +76,10 @@ void process_diary(char *cmd)
 	int read = 0;	 /* read a specified entry */
 	int delete = 0;  /* delete a specified entry */
 	int entry = -1;	 /* number of entry to perform action on */
+	int record = 0;
 
+	if(cmd[0] == '\0')
+		record++;
 	ch = strchr(cmd,'\n');
 	if(ch)
 		*ch = '\0'; /* remove any newline */
@@ -85,7 +91,7 @@ void process_diary(char *cmd)
 		*ch = '\0';  /* make the first arg its own null terminated string */
 	}
 
-	if(!strcasecmp(cmd, "record"))
+	if(record || !strcasecmp(cmd, "record"))
 	{
 		/* record a new diary entry */
 		new_diary_entry();
