@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/04/16 04:29:59  millis
+ * Fix Bug 65
+ *
  * Revision 1.21  2003/02/18 14:00:46  millis
  * Added some new type defines
  *
@@ -256,6 +259,8 @@
 #define X2F_NOSUMMER		0x80000 /* In Mach, to disable the summer turn */
 #define X2F_SUMMER		0x80000 /* In non-Mach, to enable a summer turn */
 #define X2F_NOGARRISONS		0x100000 /* In Mach, to disable garrisons */
+
+#define X2F_AUTOCREATE		0x200000 /* When game ends, start another one */
 
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
