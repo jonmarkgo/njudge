@@ -1,4 +1,4 @@
-The following bugs were fixed in 1.4.1
+The following bugs were fixed in 1.4.2
 
 (ordered by Severity)
 
@@ -15,10 +15,12 @@ Comp
 Vers
 Summary
 
-170   maj   Mac   judge-maint@diplom.org   RESO   FIXE   zpblind.c does not compile on OS X     
-165   nor   All   judge-maint@diplom.org   RESO   FIXE   Colonial Trans Siberian Railroad Adjudication Error     
-97   min   All   judge-maint@diplom.org   RESO   FIXE   More useful error message on bad create command     
-32   tri   All   judge-maint@diplom.org   RESO   FIXE   Shows 'signed on' message even though game is terminated     
-130   enh   All   judge-maint@diplom.org   RESO   FIXE   Seed.<number> and report.<number> should be seed.<variant...
+180   cri   P3   All   judge-maint@diplom.org   RESO   FIXE   Message text is not sent in multiple press emails
+160 maj P3 All judgekeeper@braincells.com RESO FIXE nothing happens with "make remap"
+173 nor P3 All MachFix@yahoogroups.com RESO FIXE Last province being missed in famine display
+174 nor P3 All millis@faztek.org RESO FIXE Alter target 'remap' to ALWAYS regenerate map files
+181 nor P3 All judge-maint@diplom.org RESO FIXE bailout recovery message printed for each game
+166 min P3 All tim@gem.win.co.nz RESO FIXE Error flag set for non-moving player
 
-5 bugs found. 
+
+6 bugs found. 
