@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.48  2004/05/22 09:39:43  millis
+ * Repleaced inadvertently lost changes from 1.46 and 1.45
+ *
  * Revision 1.47  2004/05/22 08:54:04  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -351,6 +354,8 @@
 #define X2F_PROXY		0x4000000 /* Game allows proxy orders */
 #define X2F_NODIAS		0x8000000 /* Game has NODIAS settings */
 #define X2F_STRWAIT		0x10000000 /* Only players with moves can place waits */
+#define X2F_IRREGULAR		0x20000000 /* Game settings were changed in play */
+#define X2F_PORTAGE		0x40000000 /* Game has armies able to convoy */
 
 
 /* Define for X2F flags for params.c to display */
@@ -362,6 +367,7 @@
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
 #define GAME_PAUSED           (dipent.phase[6] == 'P')
 #define GAME_SETUP            (dipent.phase[6] == 'S')
+#define HAS_PORTAGE	      (dipent.x2flags & X2F_PORTAGE)
 
 /* Following is when everyone alive can move in a build turn */
 #define XF_ALTBUILD (XF_ANYDISBAND | XF_TRANS_BUILD)
