@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2002/12/23 01:43:31  millis
+ * Really fixed Bug 69 (incorrect change)
+ *
  * Revision 1.12  2002/12/22 02:13:25  millis
  * Fixed bugs 54, 67 & 69
  *
@@ -605,6 +608,9 @@ int ma_moveout(int pt)
 				}
 			}
 			break;
+		case 'd':
+			/* Bug 2, can disband at any time */
+			break;
 		default:
 			/* All other commands */
 			if (is_sieged(p) && !is_garrison(u) && unit[u].order != 'l'
@@ -1101,8 +1107,8 @@ int ma_moveout(int pt)
 						unit[u2].status = 'r';
 						bounce++;
 					    } else {
-					        if (!result[u2])
-						    result[u2] = BESIEGE;
+					         if (!result[u2] && unit[u2].order != 'd')
+>                                                   result[u2] = BESIEGE; /* Bug2, must not be disbanding */
 					    }
 					}
 				}
