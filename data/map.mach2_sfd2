@@ -221,12 +221,12 @@ Plague:   2     3     4     5     6     7     8     9    10    11    12
 
 #AH initial income F2, T3, I2, A5, P4, V9
 Variable Income:  City         dice   1  2  3  4  5  6 Initial
-                  Austria       1     1  2  3  3  4  4   2
+                  Austria       1     1  2  3  3  4  4   3
                   Florence      1     1  2  3  3  4  5   0
-                  Marseilles    1     1  2  3  4  5  6   0
+                  Marseilles    1     1  2  3  4  5  6   2
                   Genoa         1     1  2  2  3  3  4   0
-                  Milan         1     2  3  3  4  4  5   8
-                  Naples        1     1  2  2  3  3  4   0
+                  Milan         1     2  3  3  4  4  5   2
+                  Naples        1     1  2  2  3  3  4   2
                   Rome          1     2  3  3  4  5  6   4
                   Durazzo       1     1  2  3  4  5  6   4
                   Venice        2     2  3  3  4  4  5   7
