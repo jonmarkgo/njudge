@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.17  2003/05/02 21:52:08  millis
+  ** Better fix for the HOMETRANSFER flag
+  **
   ** Revision 1.16  2003/05/02 18:19:21  millis
   ** More for Bug 137, Optional summer turns
   **
@@ -342,7 +345,7 @@ static void next_phase(void)
 				next_year();
 		}
 	} else {
-	 	if ((dipent.xflags & X2F_SUMMER) && dipent.phase[0] != 'U') 
+	 	if ((dipent.x2flags & X2F_SUMMER) && dipent.phase[0] != 'U') 
 		    dipent.phase[0] = 'U';
 		else
 		    dipent.phase[0] = 'F';
