@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.28  2004/07/04 03:25:25  millis
+** Fix bug 328, implement Portage variant
+**
 ** Revision 1.26  2004/05/22 08:51:46  millis
 ** Bug 297: Add Intimate Diplomacy
 **
@@ -617,26 +620,25 @@ int movein(char **s, int p)
 		    return E_WARN;
 		}
 
-	 if (!(dipent.flags & F_BLIND)) {
-		 if (!(u2)) {
-			errmsg("No unit present %s %s.\n",
-			 water(p2) ? "in the" : "in", pr[p2].name);
-			return E_WARN;
-		 }
-		 if ((order == 'a' || order == 'c') &&
-			!(dipent.flags & F_BLIND) && 
-			unit[u2].type != 'A' && unit[u2].type != 'R' && 
-			!(HAS_PORTAGE && unit[u2].type == 'F')) {
-			errmsg("The specified unit is of a type that cannot be %sed.\n",
-			 order == 'c' ? "convoy" : "airlift");
-			return E_WARN;
-		 }
-		 if ((c != 'x' && c != unit[u2].type && !(dipent.flags & F_BLIND))) {
-			errmsg("The unit %s %s is %s, not %s.\n",
-			 mov_type(p2,u2), pr[p2].name,
-			 autype(unit[u2].type), autype(c));
-			return E_WARN;
-		 }
+		if (!(dipent.flags & F_BLIND)) {
+			if (!(u2)) {
+				errmsg("No unit present %s %s.\n",
+				 water(p2) ? "in the" : "in", pr[p2].name);
+				return E_WARN;
+			}
+			if ((order == 'a' || order == 'c') &&
+			    unit[u2].type != 'A' && unit[u2].type != 'R' && 
+			    !(HAS_PORTAGE && unit[u2].type == 'F')) {
+				errmsg("The specified unit is of a type that cannot be %sed.\n",
+				 order == 'c' ? "convoy" : "airlift");
+				return E_WARN;
+		 	}
+			if ((c != 'x' && c != unit[u2].type)) {
+				errmsg("The unit %s %s is %s, not %s.\n",
+				 mov_type(p2,u2), pr[p2].name,
+				 autype(unit[u2].type), autype(c));
+				return E_WARN;
+			}
 		}
 		if (order == 'c' && !StrictConvoy(p2))
 		{
