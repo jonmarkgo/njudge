@@ -288,7 +288,7 @@ subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = smail
+CONFIG_CLEAN_FILES = smail dipclean
 bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) pdip$(EXEEXT) \
 	size_check$(EXEEXT) cmap$(EXEEXT) summary$(EXEEXT) \
 	deddump$(EXEEXT) delgame$(EXEEXT) flock$(EXEEXT) \
@@ -465,8 +465,8 @@ HEADERS = $(noinst_HEADERS)
 DIST_COMMON = README $(dist_data_DATA) $(dist_doc_DATA) \
 	$(noinst_HEADERS) AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in aclocal.m4 config.guess config.h.in config.sub \
-	configure configure.ac depcomp install-sh missing mkinstalldirs \
-	smail.in
+	configure configure.ac depcomp dipclean.in install-sh missing \
+	mkinstalldirs smail.in
 SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
 
 all: $(BUILT_SOURCES) config.h
@@ -508,6 +508,8 @@ $(srcdir)/config.h.in:  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 distclean-hdr:
 	-rm -f config.h stamp-h1
 smail: $(top_builddir)/config.status smail.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+dipclean: $(top_builddir)/config.status dipclean.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)

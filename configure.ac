@@ -35,5 +35,5 @@ AC_PATH_PROG(PERL, perl)
 dnl Checks for functions
 AC_CHECK_FUNCS(strdup) 
 
-AC_OUTPUT(Makefile smail)
+AC_OUTPUT(Makefile smail dipclean)
 

@@ -265,8 +265,8 @@ install-data-hook: flist magic
 	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 
-# smail.in is already automatically included as are top-level docs like COPYING
-#  etc.
+# smail.in and dipclean.in are  already automatically included as are 
+top-level docs like COPYING etc.
 distclean-local:
 	-rm -rf autom4te.cache
 
