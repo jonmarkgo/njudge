@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.53  2003/07/19 13:11:59  millis
+ * Bug 197, remove map command
+ *
  * Revision 1.52  2003/07/17 00:04:00  millis
  * *** empty log message ***
  *
@@ -228,7 +231,6 @@ static int movement = 0;	/* Non zero if movement orders received		*/
 static char subject[80];	/* Reply mail subject				*/
 static char line[1024];		/* Temporary line buffer			*/
 static char temp[40];		/* Temporary file name				*/
-static char rdcom[256];		/* Temp file for executing rundipmap		*/
 static int press_number = 0;	/* Number for distinct press filenames 		*/
 static int errorflag = 0;	/* Is the error flag set?			*/
 
@@ -522,13 +524,12 @@ int mail(void)
 	FILE *check, *termfp, *dfp, *qfp;
 	long now;
 	int resign_index;
-	char uuenc;
 	char *whotext;
 	char x[30];
 	char cmdline[64];
 	PLYRDATA_RECORD record;
-	time_t now2;
 	static unsigned int no_of_infop = 0;
+	time_t now_time;
 
 	someone = "someone@somewhere";
 
@@ -844,11 +845,9 @@ int mail(void)
 					if (!msg_header_done)
 						msg_header(rfp);
 
-					/* TODO: fix this to use a time_t rather than an int.
-					 * will probably require another auto variable */
-					time((time_t *) & i);
-					if (ded[dipent.players[player].userid].md < i - 24 * 60 * 60) {
-						ded[dipent.players[player].userid].md = i;
+					time(&now_time);
+					if (ded[dipent.players[player].userid].md < now_time - 24 * 60 * 60) {
+						ded[dipent.players[player].userid].md = now_time;
 						if ((tfp = fopen("motd", "r"))) {
 							while (fgets(line, sizeof(line), tfp)) {
 								fputs(line, rfp);
@@ -1622,7 +1621,6 @@ int mail(void)
 							MailOut(line, BN_CUSTODIAN);
 						}
 					}
-					execute(line);
 
 					/*
 					 * Force regeneration of the summary file if it's
@@ -2676,10 +2674,6 @@ void send_press(void)
 					sprintf(line, "%s '%s'", mbfile, subjectline);
                                         MailOut(line, dipent.players[i].address);
 
-				       if ((j = execute(line))) {
-                                        fprintf(log_fp, "Error %d sending master broadcast message to %s.\n",
-                                           j, dipent.players[i].address);
-                                	}
 
 				} else if (!master_only_press ||
 					  (master_only_press && dipent.players[i].power == power(broad_list[0]))) {
