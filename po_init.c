@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.2  1998/03/01 12:54:16  davidn
+ * Second fix to allow w and x to be power letters.
+ * Fix was needed in two places, and was originally only put in one.
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -34,6 +38,40 @@
 
 static int variant = 0;		/* The currently loaded variant */
 
+void UpdateBlockades()
+{
+	int i,u;
+	
+	
+	for (u = 0; u<dipent.np; u++) {
+               	dipent.players[u].centres_blockaded = 0;
+       	}
+
+        if ((dipent.flags & F_WINGS)){
+                /* Firstly, set all provinces to 'unblockaded' */
+                for (i = 1; i <= npr ;i++) {
+                        pr[i].blockaded = 0;
+                }
+                /* Now, go through all units and set to blockaded if occupied by an
+                   enemy wing
+                 */
+                 for (u = 1; u <= nunit; u++) {
+                        if (unit[u].status == ':' &&
+			    pr[unit[u].loc].owner != 0 ) {
+                                /* only non-retreating, existing  units */
+                                if (
+//				    pr[unit[u].loc].type == 'x' &&
+				    unit[u].type == 'W' && 
+				    unit[u].owner != pr[unit[u].loc].owner) {
+					i = FindPower(pr[unit[u].loc].owner);
+                                       	++dipent.players[i].centres_blockaded;
+                                	pr[unit[u].loc].blockaded = 1;
+				}
+                        }
+                }
+        }
+}
+
 int po_init(void)
 {
 
@@ -42,7 +80,6 @@ int po_init(void)
  */
 
 	int i, n;
-
 	err = 0;
 
 	for (i = 1; i < WILD_PLAYER; i++)
@@ -59,6 +96,7 @@ int po_init(void)
 			pr[i].home = n;
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
+			pr[i].blockaded = 0;
 			pr[i].flags &= PF_CONSTANT;
 		}
 	} else {
@@ -131,7 +169,7 @@ int po_init(void)
 		po_chkmov();
 		hpx = hp;
 	}
-
+	UpdateBlockades();
 	return err;
 }
 
@@ -232,6 +270,8 @@ int gamein(void)
 			unit[nunit].coast = MV;
 		else if (c == 'F')
 			unit[nunit].coast = XC;
+		else if (c == 'W')
+			unit[nunit].coast = MV;
 		else {
 			fprintf(rfp, "Invalid type %c for unit %d.\n", c, nunit);
 			err++;
@@ -510,7 +550,9 @@ int gamein(void)
 		}
 	}
 	fclose(ifp);
-
+      
+        UpdateBlockades();
+ 
 	return err;
 }
 
@@ -537,6 +579,7 @@ int gameout(void)
 	fprintf(ifp, "%s\n", dipent.phase);
 	fprintf(log_fp, "Writing %s for %s.\n", line, dipent.phase);
 
+	UpdateBlockades();
 
 	/*
 	 *  Write out the location of each unit.
@@ -667,19 +710,25 @@ int gameout(void)
 			dipent.players[u].units = nu[p];
 			dipent.players[u].centers = (dipent.flags & F_MACH) ? ducats[p].treasury
 			    : np[p];
+			/* Mark player as dead if he is */
+			if (!(dipent.flags & F_MACH)) {
+				if (dipent.players[u].centers <= 0) dipent.players[u].status |= SF_DEAD;			     }
 			if (need_order[p])
 				dipent.players[u].status |= SF_MOVE;
 		} else {
 			dipent.players[u].units = 0;
 			dipent.players[u].centers = 0;
 		}
+		/* In any case, reset the Late and Remind flags */
+		dipent.players[u].status &=  ~(SF_LATE | SF_REMIND);
 		if ((0 < p && p <= NPOWER)
 		|| (p == MASTER && (dipent.flags & F_MODERATE) && !i++)) {
-			fprintf(ifp, "%-9.9s %4x %2d %2d %3d %5d %4d %s\n", powers[p],
+			fprintf(ifp, "%-9.9s %4x %2d %2d %3d %5d %4d %s %4d %2d\n", powers[p],
 			dipent.players[u].status, dipent.players[u].units,
 				dipent.players[u].centers, dipent.players[u].userid,
 				dipent.players[u].siteid, ded[dipent.players[u].userid].r,
-				dipent.players[u].address);
+				dipent.players[u].address, 
+				dipent.players[u].late_count, dipent.players[u].centres_blockaded);
 		}
 	}
 	fprintf(ifp, "-2\n");
