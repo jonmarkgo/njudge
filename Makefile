@@ -180,14 +180,14 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	rm -f data/RCS
 	cp -p data/* ${INSTALLDIR}/data
 #FIXME
-	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
-	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
-	fi; 
+#	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+#	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
+#	fi; 
 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
 #FIXME
-	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
-	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \  
-	fi;
+#	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+#	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \  
+#	fi;
 	cp dip.conf $(DESTDIR)/dip.conf
 	touch ${DESTDIR}/dip.msg
 	@chmod 640 ${DESTDIR}/dip.msg
@@ -214,9 +214,9 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 
 remap: cmap
 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
-	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
-	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
-	fi; 
+#	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+#	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
+#	fi; 
 
 upgrade: Datamake dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
 	 remap pdip rdip summary deddump recdump delgame flock ign flist magic
