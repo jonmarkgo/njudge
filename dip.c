@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.45  2003/12/28 00:13:38  millis
+ * Fix bug 229 (display on email title if game with abandoned players is NoList)
+ *
  * Revision 1.44  2003/09/09 19:57:08  nzmb
  * Fixed Bug 31 -- the time to deadline/grace expiration messages are no
  * longer printed for terminated games, and neither are the "orders not
@@ -419,6 +422,7 @@ void init(int argc, char **argv)
 	struct stat sbuf;
 	FILE *fptr;
 	char *t;
+	char *datetime;
 
 	inp = stdin; /* default */
 
@@ -509,7 +513,6 @@ void init(int argc, char **argv)
                                         fprintf(stderr, "File name must follow i option.\n");
                                         goto usage;
                                 }
-				i++;
 				s = " ";
 				break;
 
@@ -544,6 +547,23 @@ void init(int argc, char **argv)
 				s = " ";
 				break;
 
+
+			case 'T':
+			        if (*++s) {
+			            datetime = s;
+			        } else if (++i < argc)
+			            datetime = argv[i];
+				else {
+				    fprintf(stderr, "Date-time must follow T option.\n");
+				    goto usage;
+			        }
+				if (mail_date(&datetime, &dip_time, 1, stderr)) {
+				    fprintf(stderr, "Invalid date-time %s specified.\n", datetime);
+				    goto usage;
+			        }
+			        s = " ";
+			        break;
+					
 			case 't':
 				tflg = 0;
 				if (isdigit(*(s + 1)))
@@ -566,20 +586,26 @@ void init(int argc, char **argv)
 				xflg++;
 				break;
 
+			case ' ':
+				break; /* Ignore spaces */
+
 			default:
 				goto usage;
 		    }
 		} else {
 		      usage:
-			fprintf(stderr, "Usage: [/directory/]%s [-C <directory>] [-c<CONFIG>=<value>] [-aADqvx] [-sseq] [-tvar] [-d directory] [-i<filename>] [-r name]\n", nflg);
+			fprintf(stderr, "Usage: [/directory/]%s [-C <directory>] [-c<CONFIG>=<value>] [-d<date>] [-aADqvx] [-sseq] [-tvar] [-d directory] [-i<filename>] [-r name]\n", nflg);
 			fprintf(stderr, "  The directory specifies where we'll find our data.\n");
 			fprintf(stderr, "  -a Don't mess with the at queue.\n");
 			fprintf(stderr, "  -A Don't remove anything from the at queue.\n");
 			fprintf(stderr, "  -C <sudirectory> Directory where dip.conf is.\n");
 			fprintf(stderr, "  -c<CONFIG>=<value> Set <CONFIG> variable to <value>.\n");
 			fprintf(stderr, "  -D increments the debugging flag.\n");
+			fprintf(stderr, "  -d change current directory.\n");
 			fprintf(stderr, "  -i Use <filename> for input.\n");
 			fprintf(stderr, "  -q quick mode, just process mail.\n");
+			fprintf(stderr, "  -T Used <date-time> string as current date & time.\n");
+			fprintf(stderr, "  -t force variant var.\n");
 			fprintf(stderr, "  -v Verbose, issue all error messages.\n");
 			fprintf(stderr, "  -x no input, don't read stdin for mail.\n");
 			fprintf(stderr, "  -r Original name for randomizer (Machiavelli).\n");

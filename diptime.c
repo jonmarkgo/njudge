@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.1  2004/01/02 10:03:00  millis
+   ** *** empty log message ***
+   **
  */
 
 /*  diptime.c
@@ -20,7 +23,8 @@ time_t diptime(time_t *dtime)
 	    *dtime = now_time;
 	return now_time;
     } else {
-	*dtime = dip_time;
+	if (dtime != NULL)
+	    *dtime = dip_time;
 	return dip_time;
     }
 }
