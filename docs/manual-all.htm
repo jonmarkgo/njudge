@@ -1,0 +1,4237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html>
+<head>
+<title>The Diplomacy Judge User's Manual</title>
+<link href="http://members.cox.net/russblau/dipman.css" type="text/css" rel="stylesheet">
+</head>
+<body vlink="#800080" link="#0000ff">
+<p class="covertop">The njudge Diplomacy&trade; Adjudicator</p>
+<h1>The Diplomacy Judge User's Manual</h1>
+<p class="author">by Russell M. Blau<br>
+First Edition<br>
+(njudge version 1.4.0)<br>
+May 12, 2003
+(with corrections as of May 21, 2003)</p>
+<hr>
+<p><b>The Diplomacy Judge User's Manual</b></p>
+<p>Copyright &copy; 2003 by Russell M. Blau. This material may be
+distributed only subject to the terms and conditions set forth in
+the Open Publication License, V1.0 or later (the latest version
+is presently available at <a href=
+"http://www.opencontent.org/openpub/">http://www.opencontent.org/openpub/</a>).</p>
+<p>The njudge software described in this manual was originally
+authored by Ken Lowe, and is owned by David C. Kovar.
+Redistribution and use in source and binary forms are permitted
+provided that it is for non-profit purposes, that this and the
+above notices are preserved and that due credit is given to Mr.
+Lowe.</p>
+<p>Diplomacy&trade; is a trademark of Avalon Hill, a division of
+Hasbro, Inc.</p>
+<hr>
+<h2>Table of Contents</h2>
+<p class="toc1">1.&nbsp;&nbsp;&nbsp;<a href="#introduction">Introduction</a></p>
+<p class="toc2">1.1.&nbsp;&nbsp;&nbsp;<a href="#aboutthejudge">About the
+Judge</a></p>
+<p class="toc2">1.2.&nbsp;&nbsp;&nbsp;<a href="#aboutthismanual">About this
+Manual</a></p>
+<p class="toc3">1.2.1.&nbsp;&nbsp;&nbsp;<a href="#howinformationis">How
+Information is Presented in this Manual</a></p>
+<p class="toc3">1.2.2.&nbsp;&nbsp;&nbsp;<a href=
+"#terminology">Terminology</a></p>
+<p class="toc2">1.3.&nbsp;&nbsp;&nbsp;<a href="#wheretofind">Where to Find
+Further Information</a></p>
+<p class="toc2">1.4.&nbsp;&nbsp;&nbsp;<a href=
+"#translations">Translations</a></p>
+<p class="toc1">2.&nbsp;&nbsp;&nbsp;<a href="#introductiontothe">Introduction to
+the Judge</a></p>
+<p class="toc2">2.1.&nbsp;&nbsp;&nbsp;<a href="#quickstartfor">Quick Start for
+New Users</a></p>
+<p class="toc2">2.2.&nbsp;&nbsp;&nbsp;<a href=
+"#communicatingwiththe">Communicating with the Judge</a></p>
+<p class="toc2">2.3.&nbsp;&nbsp;&nbsp;<a href="#whatdoi">What Do I Do If the
+Judge is Down?</a></p>
+<p class="toc2">2.4.&nbsp;&nbsp;&nbsp;<a href="#dateformats">Date
+Formats</a></p>
+<p class="toc1">3.&nbsp;&nbsp;&nbsp;<a href="#userregistrationand">User
+Registration and Administrative Commands</a></p>
+<p class="toc2">3.1.&nbsp;&nbsp;&nbsp;<a href="#thesinglemost">The Single Most
+Important Judge Command</a></p>
+<p class="toc2">3.2.&nbsp;&nbsp;&nbsp;<a href="#userhelpcommands">User Help
+Commands</a></p>
+<p class="toc2">3.3.&nbsp;&nbsp;&nbsp;<a href="#playerinformationand">Player
+Information and Registration Commands</a></p>
+<p class="toc2">3.4.&nbsp;&nbsp;&nbsp;<a href="#gameinformationcommands">Game
+Information Commands</a></p>
+<p class="toc1">4.&nbsp;&nbsp;&nbsp;<a href="#creatingobservingand">Creating,
+Observing and Joining Games</a></p>
+<p class="toc1">5.&nbsp;&nbsp;&nbsp;<a href="#deadlinesanddedication">Deadlines
+and Dedication (or, Get Your Orders in on Time!)</a></p>
+<p class="toc2">5.1.&nbsp;&nbsp;&nbsp;<a href="#thedeadlinesystem">The Deadline
+System</a></p>
+<p class="toc2">5.2.&nbsp;&nbsp;&nbsp;<a href="#dedicationsystems">Dedication
+Systems</a></p>
+<p class="toc1">6.&nbsp;&nbsp;&nbsp;<a href="#enteringorders">Entering
+Orders</a></p>
+<p class="toc2">6.1.&nbsp;&nbsp;&nbsp;<a href="#moveretreatand">Move, Retreat,
+and Adjustment Orders for the Current Phase</a></p>
+<p class="toc2">6.2.&nbsp;&nbsp;&nbsp;<a href="#convoyroutesmust">Convoy Routes
+Must Be Specified</a></p>
+<p class="toc2">6.3.&nbsp;&nbsp;&nbsp;<a href="#submittingordersfor">Submitting
+Orders for Future Phases</a></p>
+<p class="toc1">7.&nbsp;&nbsp;&nbsp;<a href="#otherplayercommands">Other Player
+Commands</a></p>
+<p class="toc2">7.1.&nbsp;&nbsp;&nbsp;<a href="#generalcommands">General
+Commands</a></p>
+<p class="toc2">7.2.&nbsp;&nbsp;&nbsp;<a href=
+"#deadlinerelatedcommands">Deadline-Related Commands</a></p>
+<p class="toc2">7.3.&nbsp;&nbsp;&nbsp;<a href=
+"#drawconcessioncommands">Draw/Concession Commands</a></p>
+<p class="toc2">7.4.&nbsp;&nbsp;&nbsp;<a href="#presscommands">Press
+Commands</a></p>
+<p class="toc1">8.&nbsp;&nbsp;&nbsp;<a href="#creatingandmastering">Creating and
+Mastering Standard Games</a></p>
+<p class="toc2">8.1.&nbsp;&nbsp;&nbsp;<a href=
+"#changingmoderationstatus">Changing Moderation Status</a></p>
+<p class="toc2">8.2.&nbsp;&nbsp;&nbsp;<a href="#masteronlycommands">Master-only
+Commands</a></p>
+<p class="toc2">8.3.&nbsp;&nbsp;&nbsp;<a href="#standardgamemoderation">Standard
+Game Moderation Commands</a></p>
+<p class="toc2">8.4.&nbsp;&nbsp;&nbsp;<a href="#gameaccesssettings">Game Access
+Settings</a></p>
+<p class="toc2">8.5.&nbsp;&nbsp;&nbsp;<a href="#presssettings">Press
+Settings</a></p>
+<p class="toc2">8.6.&nbsp;&nbsp;&nbsp;<a href=
+"#deadlinerelatedsettings">Deadline-related Settings</a></p>
+<p class="toc1">9.&nbsp;&nbsp;&nbsp;<a href=
+"#configuringvariantgames">Configuring Variant Games</a></p>
+<p class="toc2">9.1.&nbsp;&nbsp;&nbsp;<a href="#generalvariantsettings">General
+Variant Settings</a></p>
+<p class="toc2">9.2.&nbsp;&nbsp;&nbsp;<a href="#machiavellisettings">Machiavelli
+Settings</a></p>
+<p class="toc1">10.&nbsp;&nbsp;&nbsp;<a href="#judgekeepercommands">Judgekeeper
+Commands</a></p>
+<p class="toc1">11.&nbsp;&nbsp;&nbsp;<a href="#alphabeticalindexof">Alphabetical
+Index of Commands</a></p>
+<hr>
+<h2><a name="introduction">1. Introduction</a></h2>
+<h3><a name="aboutthejudge">1.1 About the Judge</a></h3>
+<p>This is a guide to using the Diplomacy&trade; Adjudicator,
+better known as the <b>Judge</b>, an automated program for the
+on-line play of the strategy game Diplomacy&trade;, published by
+Hasbro, and many of its variants.</p>
+<p>This manual only covers Judges using the "<b>njudge</b>"
+software, distributed from the Njudge Project (see <a href=
+"#wheretofind">section 1.3</a>). These are not the only computer
+adjudicator programs in existence; you can get information about
+others from the sources listed below. You can also play Diplomacy
+on-line through human adjudicators, or by postal mail, or even
+(believe it or not!) face-to-face.</p>
+<p>Diplomacy played via e-mail has existed for almost as long as
+e-mail has been available to the private consumer. There are
+several groups, such as the AOL Diplomacy group, the
+well-regarded CompuServe Diplomacy group, and the Cat23 group
+that have organized to run games over the web not using the Judge
+system. But it is the Judge system that defines a good portion of
+the Internet hobby, and has probably influenced more of its
+development than anything else. (There is also a system called
+the "<b>DPJudge</b>", which has a WWW interface and uses
+different software than the Ken Lowe judges, although it is an
+outgrowth of the email Judge system. This manual does not cover
+the DPJudge.)</p>
+<p>The initial Judge code was written by Ken Lowe in the late
+1980s as a project to test his understanding of the C programming
+language. The code has since been and continues to be improved
+upon by the hard work of several different programmers. Ken Lowe
+also set up and acted as judgekeeper for the first Judge, USWA.
+USWA carried the hobby for several years assisted by one or two
+other Judges, until it folded, causing concern that the Judge
+hobby would die with it. Fortunately, though, other hobbyists
+came through and set up Judges. At this writing, there are over a
+dozen public judges in operation world-wide, including several
+for non-English-speaking players.</p>
+<p>Each Judge is operated independently by a volunteer
+administrator, known as the <b>Judgekeeper</b>, and is identified
+by a four-letter code (such as "USWA" in the previous paragraph).
+At the moment, each Judge is a completely autonomous system.
+Users must register with each Judge separately, and communicate
+with each Judge separately. In particular, different Judges may
+be running different versions of the <b>njudge</b> software, so
+commands that work on one Judge will not necessarily work on all
+others. Where possible, this manual will indicate the software
+version in which each command was introduced.</p>
+<p>Finally, using the Judge requires some knowledge of the rules
+of Diplomacy. The Diplomacy rules themselves are copyrighted by
+Hasbro, and are available (at this writing) at <a href=
+"http://www.hasbro.com/common/instruct/Diplomacy.PDF">http://www.hasbro.com/common/instruct/Diplomacy.PDF</a>.
+However, this manual does not cover either the rules or the
+strategy of Diplomacy.</p>
+<h3><a name="aboutthismanual">1.2 About this Manual</a></h3>
+<p>This document is called the User's Manual because it is
+designed for users, not for system administrators. This manual is
+intended as a useful reference for anyone who masters, plays in,
+or observes games on a Judge. However, new users may find it
+easier to start with the introductory Guide to the Judge,
+available by sending the command "<a class="plaintext" href=
+"#GET">GET guide</a>" in a message to the Judge.</p>
+<p>The purpose of this manual is to list all the commands that
+users may send to the Judge, provide examples of proper and
+improper usage of the commands, and explain what kinds of errors
+may occur and how to fix them. It is <i>not</i> a guide to how to
+play the game of Diplomacy. <a href="#wheretofind">Section
+1.3</a> lists many useful resources for players on strategy,
+tactics, variants, and other game-related information.</p>
+<h4><a name="howinformationis">1.2.1 How Information is Presented
+in this Manual</a></h4>
+<p>The following chapters of this manual include examples of
+commands to the Judge. To make the examples clearer, they will
+always be displayed in a distinctive style. Commands to send to
+the Judge will appear like this:</p>
+<p class="plaintext">GET filename</p>
+<p>Words shown in ALL CAPS, like "<span class=
+"plaintext">GET</span>" in the example above, are <b>keywords</b>
+that should be typed exactly as they appear. Words shown in lower
+case, like "<span class="plaintext">filename</span>" in the
+example, are placeholders that you replace with specific
+information (in this example, the name of a file you want the
+Judge to send you). The use of upper and lower case in these
+examples is only for the purpose of distinguishing between
+keywords and non-keywords; the actual commands can be typed in
+either upper- or lower-case (with one exception; see <a href=
+"#thedeadlinesystem">section 5.1</a>).</p>
+<p>Also, the Judge generally ignores spacing between keywords,
+so, for instance, "<a class="plaintext" href=
+"#SETWAIT">SET NOWAIT</a>" works just as well as "<span class=
+"plaintext">SET NO WAIT</span>" or even "<span class=
+"plaintext">SETNOWAIT</span>". (But inserting spaces inside a
+keyword, like "<span class="plaintext">SET N O WAIT</span>", will
+cause an error!) This was not always true on versions before
+1.4.0, so if a multi-word command that looks right, like "<a
+class="plaintext" href="#IAMALSO">I AM ALSO</a>", causes a
+mysterious error message, try the same command without spaces
+(<span class="plaintext">IAMALSO</span>) and see if it works that
+way.</p>
+<p>Items in square brackets are optional. Words separated by
+vertical bars (|) indicate a choice of one of the words. Again,
+these symbols are only shown to explain the proper syntax. Users
+do not type in the square brackets or vertical bars!</p>
+<p>Most command options are self-explanatory. "<span class=
+"plaintext">name</span>" means the name of a game, which must be
+no more than 8 alphanumeric characters. "<span class=
+"plaintext">email</span>" means a valid email address. "<span
+class="plaintext">power</span>" means the name (not just the
+first letter) of one of the powers in the game, which depends on
+the variant being played. The letter "<span class=
+"plaintext">p</span>" will be used where the initial of a power
+is required.</p>
+<p><b>Caution:</b> whenever any setting is described in this
+manual as the "default," that means only that it is set that way
+in the software as provided from <a href=
+"http://www.njudge.org/">http://www.njudge.org/</a> - however,
+any Judgekeeper can change the default for games created on his
+system, and Masters can change those defaults for individual
+games. When in doubt, check the game listing (see <a class=
+"plaintext" href="#LIST">LIST</a>, <a href=
+"#gameinformationcommands">section 3.4</a>) to see what settings
+are actually in effect.</p>
+<p>A number in braces {like this} in the right-hand margin after
+the command definition (or in the left-hand margin in some
+browers) indicates the first Judge version number in which the
+command appeared. If this number is absent, then the command is
+believed to be available in all currently used Judge versions
+(although this has not been verified). [Note: some commands
+marked as version {0.8.9} may actually have been introduced in
+versions 0.8.8 or 0.8.7, but this makes no real difference since
+no public Judge is running either of those two versions at this
+time.] There are also a few Judges running customized software
+not based on the <b>njudge</b> code; these Judges are unlikely to
+accept the commands shown with a version number in this Manual.
+To find which Judges are running which versions of the software,
+see <a href=
+"http://gem.win.co.nz/judge/judgevers.html">http://gem.win.co.nz/judge/judgevers.html</a>.</p>
+<p>Examples that illustrate an entire email communication with
+the Judge will be shown as illustrated below, but will not follow
+the upper- and lower-case convention discussed above:</p>
+<p class="example">To: usxx@judgesite.com<br>
+Subject: Help Me Please<br>
+<br>
+sign on rhappy password<br>
+press to m<br>
+Please help me! I don't know what I'm doing!<br>
+endpress<br>
+sign off</p>
+<p>Finally, examples of responses from the Judge will be shown as
+in the following illustration (most mail headers have been
+omitted in the interest of clarity):</p>
+<p class="judgesays">From: &lt;usxx@judgesite.com&gt;<br>
+To: &lt;player@address.com&gt;<br>
+Subject: USXX:happy - F1905M Deadline Adjustment to: Fri Feb 14
+2003 23:30:00 -0500<br>
+Date: Tuesday, February 11, 2003 3:11 PM<br>
+<br>
+All unmoderated games will be removed.<br>
+Judge address is usxx@judgesite.com<br>
+New Registrations will be reviewed for completeness and<br>
+removed without notice if determined incomplete.<br>
+<br>
+master@domain.tld as Master set the deadline<br>
+for game 'happy' to Fri Feb 14 2003 23:30:00 -0500.</p>
+<h4><a name="terminology">1.2.2 Terminology</a></h4>
+<p>Here are a few commonly-used terms that you should be familiar
+with:</p>
+<dl>
+<dt><b>Judge</b></dt>
+<dd>The Diplomacy adjudicator computer program.</dd>
+<dt><b>Judgekeeper</b> (also "JK" or "administrator")</dt>
+<dd>A human being who administers the Judge software.</dd>
+<dt><b>Master</b> (also "Gamemaster" or "GM")</dt>
+<dd>A human being, not necessarily the same person as the
+Judgekeeper, who is in charge of a particular game being played
+on the Judge.</dd>
+<dt><b>Observer</b></dt>
+<dd>A person who is not playing in a game, but who receives the
+game reports and, in some cases, may be able to communicate with
+the players through the Judge.</dd>
+<dt><b>Player</b></dt>
+<dd>A person who is participating in a game being run on the
+Judge.</dd>
+<dt><b>Power</b></dt>
+<dd>One of the positions (7 in a standard game) played in a game
+being run on the Judge. Please note that "power" identifies the
+position being played, while "player" identifies the individual
+playing that position.</dd>
+</dl>
+<h3><a name="wheretofind">1.3 Where to Find Further
+Information</a></h3>
+<p>The most complete source of information about the online
+Diplomacy hobby is the Diplomatic Pouch website, at <a href=
+"http://www.diplom.org/">http://www.diplom.org/</a>. Click on
+"Online Resources" for a comprehensive index of documents and
+links to other sites covering all aspects of the hobby.</p>
+<p>The rules of Diplomacy are available (at this writing) from
+Hasbro at <a href=
+"http://www.hasbro.com/common/instruct/Diplomacy.PDF">http://www.hasbro.com/common/instruct/Diplomacy.PDF</a></p>
+<p>A list of Judges that are open to the public, their e-mail
+addresses, their Judgekeepers, and their available games, can be
+found at <a href=
+"http://www.diplom.org/openings/openings.html">http://www.diplom.org/openings/openings.html</a>.
+The Diplomacy Pouch also maintains a Game Queue system at <a
+href=
+"http://www.diplom.org/DP-cgi/setqueue">http://www.diplom.org/DP-cgi/setqueue</a>,
+where you can sign up for a new game.</p>
+<p>For Judge players, Alain T&eacute;sio's Diplomacy Tools at <a
+href="http://www.floc.net/">http://www.floc.net/</a> are
+indispensable. This site allows you to retrieve a map of the
+current position of any game on any public Judge; game history
+and list information; and stored maps of previous moves. You can
+also set up a customized page that keeps track of all your games,
+including deadlines (converted into your local time zone), maps,
+results, and even a link to send mail to the Judge. Many tasks
+can be performed more quickly and easily using these tools than
+by using Judge commands!</p>
+<p>For more information about the <b>njudge</b> software itself,
+to report bugs, or to participate in development, see the Njudge
+Project webpage, <a href=
+"http://www.njudge.org/">http://www.njudge.org/</a>.</p>
+<p>To find which Judges are running which versions of the
+software, see <a href=
+"http://gem.win.co.nz/judge/judgevers.html">http://gem.win.co.nz/judge/judgevers.html</a>.</p>
+<h3><a name="translations">1.4 Translations</a></h3>
+<p>At this time, we are not aware of any translations of this
+Manual into other languages. If any translations are provided, we
+will list them here in future editions.</p>
+<hr>
+<br>
+<h2><a name="introductiontothe">2. Introduction to the
+Judge</a></h2>
+<h3><a name="quickstartfor">2.1 Quick Start for New
+Users</a></h3>
+<p>If you have never used the Judge before, don't worry - you
+don't have to read this entire Manual before you start playing.
+However, there are some basics you need to understand.</p>
+<ul>
+<li>Read sections <a href="#aboutthejudge">1.1</a>, <a href=
+"#communicatingwiththe">2.2</a>, <a href="#whatdoi">2.3</a>, and
+<a href="#thesinglemost">3.1</a> so that you understand what the
+Judge is, what it does, and what it doesn't do.</li>
+<li>Read <a href="#wheretofind">section 1.3</a> and take a look
+at the various resources listed there. Especially, check out the
+Judge Openings List and the Game Queue page, if you want to find
+a game that you can join quickly.</li>
+<li>Read about the <a class="plaintext" href=
+"#REGISTEREND">REGISTER</a> command in <a href=
+"#playerinformationand">section 3.3</a>. Then, when you are ready
+to play, you can register on the Judge that is hosting your
+game.</li>
+<li>Read about the <a class="plaintext" href="#SIGNON">SIGN
+ON</a> command in <a href="#creatingobservingand">section 4</a>.
+You will need to use this to join a game.</li>
+<li>If you are joining a new game, rather than taking over a
+replacement position, then you will probably want to use the <a
+class="plaintext" href="#SETPREFERENCE">SET PREFERENCE</a>
+command in <a href="#generalcommands">section 7.1</a>.</li>
+<li>Read <a href="#thedeadlinesystem">section 5.1</a> so that you
+understand how deadlines are set, and why it is important to pay
+attention to them.</li>
+<li>If you have played Diplomacy face-to-face or in other
+settings, you probably already know how to write your orders, but
+you might want to review <a href="#moveretreatand">section
+6.1</a> to see what formats the Judge will accept. You should
+definitely read <a href="#convoyroutesmust">section 6.2</a>, too,
+because sooner or later you are going to be involved in a convoy
+order.</li>
+<li>Finally, skim through <a href="#otherplayercommands">section
+7</a> to see other commands that you might need to use during a
+game. The most important ones to understand are <a class=
+"plaintext" href="#SETWAIT">SET WAIT</a>, <a class="plaintext"
+href="#SETABSENCE">SET ABSENCE</a>, and the <a class="plaintext"
+href="#PRESS">PRESS</a> commands in <a href=
+"#presscommands">section 7.4</a>. Don't worry about "color
+options" and "fake options" at this point; just read the basics
+about how to send a press message to one or more other players,
+including the "delivery options" section.</li>
+</ul>
+<p>Finally, the Judge itself provides a more extensive guide for
+new users. Send an e-mail message to your favorite Judge (running
+version 1.4.0 or higher) containing the line "<span class=
+"plaintext"><a href="#GET">GET</a> GUIDE</span>" in the body.</p>
+<h3><a name="communicatingwiththe">2.2 Communicating with the
+Judge</a></h3>
+<p>The Judge is an <b>e-mail based</b> system. All communications
+to and from the Judge are sent by e-mail. There is no direct WWW
+access to a Judge, although Judge information can be retrieved
+and viewed through several WWW sites. In order to use a Judge,
+therefore, you must have e-mail access and you must obtain the
+e-mail address of a Judge (see <a href="#wheretofind">section
+1.3</a>).</p>
+<p>It is <i>highly recommended</i> that you use a mail program or
+system that allows you to send plain-text messages (also known as
+ASCII or Unformatted Text in some software), as the Judge cannot
+process any messages that contain HTML tags, MIME encoding, or
+other non-text commands. However, most problems with formatted
+mail can be avoided by religious use of the <a class="plaintext"
+href="#SIGNOFF">SIGN OFF</a> command (see <a href=
+"#thesinglemost">section 3.1</a>).</p>
+<p>If the Judge is functioning correctly, it should send a reply
+to every e-mail message sent to it. The reply is ordinarily sent
+to the address found in the <i>last</i> Reply-to: header
+contained in the received mail message. Usually this will be the
+same address that your message was sent from, but some users may
+wish to receive the Judge replies at a different address. You may
+be able to change your Reply-to address using your mail software;
+alternatively, however, you can simply type a return address at
+the beginning of your message, using the following format:</p>
+<p class="level1text"><span class="plaintext">REPLY-TO:
+username@domain.tld</span></p>
+<p>If you are getting unwanted duplicate replies from the Judge,
+see <a class="plaintext" href="#SETADDRESS">SET ADDRESS</a> in <a
+href="#generalcommands">section 7.1</a>.</p>
+<p>Commands to the Judge are entered in the body of the mail
+message. The Judge does not process the subject line, but does
+echo it back in its reply so that you can easily tell which reply
+corresponds to which outgoing message.</p>
+<h3><a name="whatdoi">2.3 What Do I Do If the Judge is
+Down?</a></h3>
+<p>Yes, it does happen sometimes: you send a message to the
+Judge, and no reply comes back; or, a deadline goes by but you
+receive no results, no late notice, nothing at all. There can be
+a couple of explanations for this.</p>
+<p>It could mean (a) the Judge is down, in which case it will
+usually process your message when it comes back up; (b) your mail
+didn't reach the Judge in the first place, which could be due to
+a problem with your ISP or some intermediate system in the
+Internet mail relay system; or (c) the Judge did send you a
+message but you didn't receive it for one of the reasons
+suggested in (b). Some "anti-spam" programs have been known to
+falsely identify particular Judges as spam senders and block mail
+messages from them without warning. If this happens to you, you
+can either complain to your ISP or find another ISP for sending
+and receiving email.</p>
+<p>A good way to check whether the problem is with your email or
+with the Judge is to view the Judge Openings List (see <a href=
+"#wheretofind">section 1.3</a>), which will report the last time
+each Judge's listing was updated. If your Judge's time is not
+about the same as all the others', then there is something wrong
+with the Judge. At this point, the Judgekeeper will already have
+been sent an email from the Openings List alerting him to the
+problem, so there is no need for you to contact him directly. You
+may also wish to check the rec.games.diplomacy newsgroup to see
+if there is any announcement about the Judge's status.</p>
+<p>If the Judge is down, <i>don't</i> continue to send mail to
+it; wait until it responds to the messages you have already sent.
+At best, sending repeated messages will flood your inbox with a
+huge volume of replies when the Judge revives, and may delay
+processing of games. At worst, you may end up having the wrong
+commands recorded, because the Judge may not receive your
+messages in the same order as you sent them. The best thing to do
+is just wait until the Judge is restored, even though this can be
+nerve-wracking for some people. You may be recorded as "late" if
+a deadline expires during the time the Judge is down, but any
+Master will surely forgive such an offense, and if it is an
+isolated incident then the effect on your dedication ratings will
+be minimal.</p>
+<p>If you are a Master and the Judge goes down for an extended
+period, it is usually best to wait until it is restored before
+trying to "fix" any problems. If you send commands to change
+deadlines, for example, the Judge may process the pending turn
+before it gets to your <a class="plaintext" href=
+"#SETDEADLINE">SET DEADLINE</a> command, so that you could
+inadvertently change the deadline for the <i>next</i> phase. One
+thing that you can do while the Judge is down, however, is to
+send a <a class="plaintext" href="#SETLIST">SET NO LIST</a>
+command if your game is public. If the deadline and grace period
+should expire during the outage, this will prevent the game from
+being listed publicly, and prevent any of your players' positions
+from being taken over by a replacement. Once the Judge is
+restored, you can then set an appropriate new deadline.</p>
+<h3><a name="dateformats">2.4 Date Formats</a></h3>
+<p>Several Judge commands involve the use of dates. The Judge
+accepts dates from users only in a few specific formats. If you
+are using a Judge that has been modified to accept non-English
+commands, you should check with the Judgekeeper to determine
+whether the date strings have also been changed.</p>
+<p>Dates may include one or more of the following elements:</p>
+<ul>
+<li>A weekday, which must be one of these three-letter
+abbreviations:<br>
+ 
+<div class="plaintext" style="MARGIN-LEFT: 1em">SUN | MON | TUE |
+WED | THU | FRI | SAT</div>
+</li>
+<li>A month, which must be one of these three-letter
+abbreviations:<br>
+ 
+<div class="plaintext" style="MARGIN-LEFT: 1em">JAN | FEB | MAR |
+APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC</div>
+</li>
+<li>A day of the month (a number from 1 to 31, inclusive),
+optionally followed by a comma;</li>
+<li>A four-digit year</li>
+<li>A numeric time using the 24-hour clock format "hh:mm"</li>
+</ul>
+<p>In general, these elements may appear in any order. So, for
+example, "<span class="plaintext">Jun 15 23:30</span>" and "<span
+class="plaintext">23:30 15 Jun</span>" are equivalent (and, for
+that matter, "<span class="plaintext">Jun 23:30 15</span>" works
+too, even though this syntax makes no sense to humans).</p>
+<p>If the weekday is used, then the month and numeric day may not
+be used. The weekday is converted into the next date (after the
+current date) that falls on that day of the week. So, if today is
+a Tuesday, "<span class="plaintext">Tue</span>" refers to the day
+one week from today.</p>
+<p>If no year is specified, the current year is assumed
+<i>unless</i> the month specified is earlier than the current
+month and is no more than six months away; in that case, the
+following year will be assumed. So, if it is currently December,
+"<span class="plaintext">10 Jan</span>" is assumed to refer to
+the next year; but if it is currently February, the same date
+will be assumed to refer to a date in the past.</p>
+<p>If a day number but no month is specified, the next date with
+that day number will be used. If today is June 1, then "<span
+class="plaintext">15</span>" without any month will be assumed to
+refer to June 15. If today is June 20, however, the same command
+will refer to July 15.</p>
+<p>If a month but no day is specified, the first day of the month
+will be assumed, unless it is the current month, in which case
+the current day will be assumed.</p>
+<p>If no weekday, month, day, or year is specified, the current
+day is assumed (except for the <a class="plaintext" href=
+"#HISTORY">HISTORY</a> command, see <a href=
+"#gameinformationcommands">section 3.4</a>).</p>
+<p>If no time is specified, a default time will be assumed, which
+depends on the specific command being executed.</p>
+<p>All dates and times are based on the clock settings of the
+computer system that the Judge is running on; usually, this is
+the local time zone of the Judge system.</p>
+<p>Dates are used in the commands: <a class="plaintext" href=
+"#HISTORY">HISTORY</a>, <a class="plaintext" href=
+"#SETABSENCE">SET ABSENCE</a>, <a class="plaintext" href=
+"#SETDEADLINE">SET DEADLINE</a>, <a class="plaintext" href=
+"#SETGRACE">SET GRACE</a>, <a class="plaintext" href=
+"#SETSTART">SET START</a>.</p>
+<hr>
+<br>
+<h2><a name="userregistrationand">3. User Registration and
+Administrative Commands</a></h2>
+<p>Before you can join or observe a game on a Judge, you must be
+a registered user of the Judge. There are a few commands,
+however, that anyone can use even if they are not registered
+(obviously, one of these is the command to register
+yourself).</p>
+<h3><a name="thesinglemost">3.1 The Single Most Important Judge
+Command</a></h3>
+<p>In this manual, <b>the last shall be first</b>; thus, we begin
+with the <i>last</i> command that should appear in every message
+you send to a Judge:</p>
+<p class="command"><a name="SIGNOFF">SIGN OFF</a></p>
+<p class="level1text">Indicates the end of commands in a message
+to the Judge. This prevents your signature file (or taglines
+inserted by your e-mail provider) from being interpreted as
+orders and/or being sent out as part of a press message. If this
+command is not used, the Judge will attempt to parse all
+characters in the mail message until the end of the file is
+reached. You should develop a habit of including this line at the
+end of <i>every</i> message you send to the Judge.</p>
+<h3><a name="userhelpcommands">3.2 User Help Commands</a></h3>
+<p class="command"><a name="GET">GET file</a><br>
+<a name="SEND">SEND [ME] file</a></p>
+<p class="level1text">The Judge will send the file 'file' by
+return mail. In the rest of this document, single quotes will be
+used to signify the names of help files.</p>
+<p class="level1text">Get file 'flist' for a complete list of
+available files. Get file 'info' for a description of the more
+important files. Both of these files are included in the new user
+package, which you can retrieve with the next command:</p>
+<p class="command"><a name="GETPACKAGE">GET PACKAGE</a></p>
+<p class="level1text">Get the new user package of files. These
+files are generally sent automatically to new users at the time
+they register with a Judge (see command <a class="plaintext"
+href="#REGISTEREND">REGISTER</a> in <a href=
+"#playerinformationand">section 3.3</a>), but they can be
+specifically requested with this command. These files are the
+ones that all new users should read before attempting any Judge
+Diplomacy games.</p>
+<p class="command"><a name="HELP">HELP</a></p>
+<p class="level1text">The file 'info' is sent by return mail, and
+any other text following this line in the email message is
+ignored. This is equivalent to <span class="plaintext"><a href=
+"#GET">GET</a> INFO</span> followed by <a class="plaintext" href=
+"#SIGNOFF">SIGN OFF</a>. <b>Exception</b>: If this command
+appears <i>after</i> a <a class="plaintext" href="#SIGNON">SIGN
+ON</a> or equivalent command (see <a href=
+"#creatingobservingand">section 4</a>), then the Judge will
+process additional text following the <span class=
+"plaintext">HELP</span> command.</p>
+<p class="command"><a name="VERSION">VERSION [level]</a></p>
+<p class="level1text">Retrieve the current version of the Judge
+software. The optional <span class="plaintext">level</span>
+specification is not currently used, but in some future version
+may generate a log of changes since the specified version.</p>
+<h3><a name="playerinformationand">3.3 Player Information and
+Registration Commands</a></h3>
+<p class="command"><a name="GETDEDICATION">GET DEDICATION</a></p>
+<p class="level1text">Equivalent to <a class="plaintext" href=
+"#INFOPLAYER">INFO PLAYER</a> (see below) for the address of the
+user sending the command. (Note: before version 1.0.0, returned
+only the player's numerical dedication rating.)</p>
+<p class="command"><a name="GETWHOIS">GET WHOIS</a></p>
+<p class="level1text">Retrieve the entire registration database
+(this command may be disabled by the Judgekeeper, and is disabled
+on many Judges). See <a class="plaintext" href="#WHOIS">WHO
+IS</a>, below, to retrieve registration data for one or more
+users.</p>
+<p class="command"><a name="IAMALSO">I AM ALSO email</a></p>
+<p class="level1text">Associate the existing registration
+information for <span class="plaintext">email</span> (which must
+be an email address that is <i>already registered</i> with this
+Judge) with the new mail address from which this command is sent.
+If your return address changes, you can use this command to tell
+the Judge that you are the same person without having to resubmit
+a complete form. You must send this command <i>from</i> the
+<i>new</i> address, and use your <i>old</i> address in the <span
+class="plaintext">email</span> position.</p>
+<p class="command"><span class="versioncode">{1.0.0}</span><a
+name="INFOPLAYER">INFO PLAYER email</a></p>
+<p class="level1text">The Judge will send the current player data
+information (games played, deadlines missed, positions abandoned,
+etc.) for the given e-mail address. See <a href=
+"#dedicationsystems">section 5.2</a> for an explanation of the
+dedication statistics contained in this information. (Unlike <a
+class="plaintext" href="#WHOIS">WHO IS</a>, below, this command
+requires a <i>complete</i> email address.)</p>
+<p class="command"><a name="REGISTEREND">REGISTER ... END</a></p>
+<p class="level1text">Register as a Judge user. Only registered
+users may join or create games. Optionally, users can register on
+many Judges by using the Web form at <a href=
+"http://devel.diplom.org/Email/registration.html">http://devel.diplom.org/Email/registration.html</a>,
+rather than using this command.</p>
+<p class="level1text">This is a multi-line command. The first
+line must be "<span class="plaintext">REGISTER</span>" and the
+last line must be "<span class="plaintext">END</span>"; all lines
+in-between are in the form "<span class="plaintext">field:
+value</span>". To see the specific fields included in the
+registration database, get file 'form'. This file contains a
+template that users can edit and send back to the Judge.</p>
+<p class="level1text">The default house rules (get file
+'house.rules') require that all users provide, at a minimum, a
+correct Name (first and last) Address (containing at least city
+and state/province/postal code), Country, Email address and
+Level. (The Level field must have one of the following values:
+Novice, Amateur, Intermediate, Advanced, Expert. See <a class=
+"plaintext" href="#SETLEVELANY">SET LEVEL</a>, <a href=
+"#thedeadlinesystem">section 5.1</a>.) Moderators of particular
+games may have additional requirements.</p>
+<p class="level1text">If the field "<span class=
+"plaintext">package: yes</span>" is included in the registration,
+the Judge will send the new user package of files (see <a class=
+"plaintext" href="#GETPACKAGE">GET PACKAGE</a>, <a href=
+"#userhelpcommands">section 3.2</a> ).</p>
+<p class="level1text">The registration information is associated
+with the mail address from which it is received. (See <a href=
+"#introductiontothe">section 2</a>.) A user may update his/her
+registration data at any time by sending a new <span class=
+"plaintext">REGISTER</span> command from the same mail address.
+(Important: changing the Email field in your registration does
+not change the address the Judge will reply to, or associate your
+registration with that email address. To associate your existing
+registration with a new address, use <a class="plaintext" href=
+"#IAMALSO">I AM ALSO</a>, above. To receive Judge messages at a
+different address, use <a class="plaintext" href=
+"#SETADDRESS">SET ADDRESS</a>, <a href="#generalcommands">section
+7.1</a>.)</p>
+<p class="command"><a name="WHO">WHO email [email ...]</a><br>
+<a name="WHOIS">WHO IS email [email ...]</a></p>
+<p class="level1text">Retrieve registration information for
+particular players. Each can be either a complete or partial
+address; all registered mail addresses that start with the
+characters matching <span class="plaintext">email</span> will be
+listed. For example, the command "<span class="plaintext">WHO IS
+m</span>" will list all users who have an email address that
+starts with "m". However, <span class="plaintext">email</span>
+cannot be omitted entirely. This command sends the user's
+complete registration form (which can be used as a template for a
+new or revised registration).</p>
+<h3><a name="gameinformationcommands">3.4 Game Information
+Commands</a></h3>
+<p>Note: each of the following commands (except "<a class=
+"plaintext" href="#MAP">MAP *</a>") may be used after signing on
+to a particular game, without the "<span class=
+"plaintext">name</span>" specification, to receive information
+about the signed-on game.</p>
+<p class="command"><a name="HISTORY">HISTORY name [FROM date] [TO
+date] [LINES n]</a><br>
+HISTORY name EXCLSTART turnId [EXCLEND turnId] [BROAD]</p>
+<p class="level1text">Retrieve (by email) history information for
+the specified game. The history information is all the messages
+that an observer would have seen had he been signed on for the
+time period. This includes turn results, broadcast press, and
+informational notices (deadline adjustments, late notices, etc.),
+but <i>not</i> any partial press. You may find it easier to
+retrieve this information from Alain T&eacute;sio's exceptional
+"Diplomacy tools" site, <a href=
+"http://www.floc.net/">http://www.floc.net/</a>. (Note: the
+history is not available in unfinished Blind games, except to a
+Master.)</p>
+<p class="level1text">The command "<span class=
+"plaintext">HISTORY name</span>" without any other arguments will
+retrieve all history for the period from one week ago (real time)
+to the present, up to a maximum of 1000 lines. Other command
+specifications can be used to change the time period covered and
+the length of the response, as follows:</p>
+<p class="level1text"><span class="plaintext">(Syntax
+1)</span></p>
+<p class="level1text"><span class="plaintext">HISTORY name [FROM
+date] [TO date] [LINES n]</span></p>
+<p class="level2text">This form retrieves the history information
+for the specified game ("name") for the specified time period (in
+real time rather than game time). For the valid "<span class=
+"plaintext">date</span>" formats, see <a href=
+"#dateformats">section 2.4</a>. If "<span class="plaintext">FROM
+date</span>" is omitted, the start of the period is the current
+system time minus 7 days. If "<span class="plaintext">TO
+date</span>" is omitted, the end of the period is the current
+system time. If a date is specified but does not include a time
+of day, the time period begins or ends at midnight on the
+specified date.</p>
+<p class="level2text">To get the earliest part of the history (or
+the whole history), use a date that is known to be earlier than
+the game start date. 1 Jan 1990 (or Jan 1, 1990) is usually
+sufficient for this purpose.</p>
+<p class="level2text">The "<span class="plaintext">lines</span>"
+option can be used to limit (or increase) the number of lines
+that will be returned by the adjudicator. The default is
+1000.</p>
+<p class="level2text">Examples:</p>
+<p class="example">history foo from Jan 1, 2003</p>
+<p class="level2text">This will return history of game "foo"
+starting at midnight on Jan 1, 2003, up to the end of the records
+(the present date) or 1000 lines, whichever comes first.</p>
+<p class="example">history foo from Jan 1, 1990 to Dec 31, 2002
+23:59 lines 5000</p>
+<p class="level2text">This will return history of game "foo" from
+the start of the game up to a minute before midnight on Dec 31,
+2002, or 5000 lines, whichever comes first.</p>
+<p class="example">history foo to Dec 31, 2002 23:59</p>
+<p class="level2text">This will <i>not</i> perform as expected -
+if the start date is not specified, it defaults to the current
+system time minus seven days. Since the end date is before the
+start date, it will be ignored. Therefore, this command will
+produce the same results as "<span class="plaintext">HISTORY
+foo</span>" with no arguments.</p>
+<p class="level1text"><span class="plaintext">(Syntax
+2)</span></p>
+<p class="level1text"><span class="plaintext">HISTORY name
+EXCLSTART turnId [EXCLEND turnId] [BROAD]</span></p>
+<p class="level2text">Retrieves the history information for the
+specified game excluding specific phases. The keyword "<span
+class="plaintext">EXCLSTART</span>" is not optional. The returned
+history contains turns from start of game to (but not including)
+the <span class="plaintext">EXCLSTART</span> turn, and (if
+specified) from the <span class="plaintext">EXCLEND</span> turn
+to the end of the stored history.</p>
+<p class="level2text">The format for <span class=
+"plaintext">'turnId'</span> is: SYYYYP where:</p>
+<p class="level2hang">S - the season (ex: 'S' for Spring, or 'F'
+for Fall) (some variants may have other seasons)</p>
+<p class="level2hang">Y - each digit in the game year. (e.g.,
+1901, 1425, 1999)</p>
+<p class="level2hang">P - Phase (e.g., 'M' for Movement Phase,
+'B' for builds, 'R' for Retreats)</p>
+<p class="level2text">Some examples of valid <span class=
+"plaintext">turnIDs</span>:</p>
+<p style="MARGIN-LEFT: 3em"><span class="plaintext">S1902M</span>
+(Spring 1902 Movement Phase)</p>
+<p style="MARGIN-LEFT: 3em"><span class="plaintext">F1999B</span>
+(Fall 1999 Adjustment (Builds) Phase)</p>
+<p class="level2text">No checking is done to determine whether
+the <span class="plaintext">turnIDs</span> given are actually
+found in the game. The default action for erroneous <span class=
+"plaintext">turnIds</span> is to return a history for the entire
+game. If the <span class="plaintext">EXCLSTART turnID</span> is
+invalid, the <span class="plaintext">EXCLEND turnID</span> will
+be ignored.</p>
+<p class="level2text">Examples (assuming that "foo" is a Standard
+game):</p>
+<p class="example">history foo exclstart S9999M</p>
+<p class="level2text">Returns the complete history.</p>
+<p class="example">history foo exclstart S1903M</p>
+<p class="level2text">Returns the history for game-years 1901 and
+1902 only.</p>
+<p class="example">history foo exclstart S1899M exclend
+F1905B</p>
+<p class="level2text">Returns the history from game-year 1906 to
+the end of the records.</p>
+<p class="level2text">By default, this version of the command
+retrieves only phase results. However, if a draw notice is found
+outside the excluded set of phases, the draw notice will be
+included.</p>
+<p class="level2text">The optional "<span class=
+"plaintext">BROAD</span>" specifier will cause broadcasts and
+other notices to be included in the history. In the worst case,
+with the <span class="plaintext">BROAD</span> command, the
+returned message can be anywhere from 200 Kb to as much as 1 Mb.
+(<b>Beware</b> using this flag!)</p>
+<p class="command"><a name="LIST">LIST [FULL|name]</a></p>
+<p class="level1text">Retrieve the current status of the
+specified game, including players, unit positions and supply
+center holdings. (Among other things, this can be useful to
+determine which players are late in sending their orders at a
+particular time.) If the command <span class=
+"plaintext">LIST</span> without a name is given <i>before</i>
+signing on to a game, the Judge sends a short list of all current
+games. The <span class="plaintext">LIST FULL</span> version sends
+a detailed report including the player list of each game.</p>
+<p class="command">MAP name [N]</p>
+<p><i>[Deprecated: this command is disabled by default on new
+Judges, although the Judgekeeper can enable it. It may not be
+supported in future versions.]</i></p>
+<p class="level1text">Retrieve a postscript map of the current
+status of the game. Not all variants are supported. The "<span
+class="plaintext">N</span>" option sends the file in plain
+postscript format instead of uuencoded, compressed ps format.
+Rather than use this command, you can obtain maps of any game in
+multiple formats from Alain T&eacute;sio's outstanding "Diplomacy
+tools" site, <a href=
+"http://www.floc.net/">http://www.floc.net/</a></p>
+<p class="command"><a name="MAP">MAP * [N]</a></p>
+<p><i>[Deprecated: see previous entry.]</i></p>
+<p class="level1text">This command must be followed by a <a
+class="plaintext" href="#LIST">LIST</a> output from any judge and
+will produce a map based on that output. The "*" is real and is
+not replaced. The "<span class="plaintext">N</span>" option is as
+above. The <a class="plaintext" href="#LIST">LIST</a> output
+supplied must <i>not</i> have any characters added to the
+beginning of the line, such as the comment ("&gt;")
+character.</p>
+<p class="command"><a name="SUMMARY">SUMMARY name</a></p>
+<p class="level1text">Retrieve an historical summary of the
+specified game indicating who took what power over when and which
+supply centers each power owned throughout the game.</p>
+<p class="command"><a name="WHOGAME">WHOGAME name [FULL]</a></p>
+<p class="level1text">Retrieve registration database information
+(see <a class="plaintext" href="#WHO">WHO,</a> <a href=
+"#playerinformationand">section 3.3</a>) for all players
+associated with game '<span class="plaintext">name</span>'. If
+the game is Gunboat, this command can only be used by a signed-on
+moderator. The optional <span class="plaintext">FULL</span>
+argument will return information for observers and alternates as
+well, while the default only returns information for the players
+and moderator(s).</p>
+<hr>
+<br>
+<h2><a name="creatingobservingand">4. Creating, Observing and
+Joining Games</a></h2>
+<p><b>Note</b>: only one of the commands in this section may be
+used, once, in each message to the Judge. Further, the only
+commands that can appear <i>before</i> one of the commands in
+this section are the ones listed in <a href=
+"#userregistrationand">section 3</a>.</p>
+<p class="command"><a name="CREATE">CREATE ?name password
+[variant] [option [option ...]]</a></p>
+<p class="level1text">Create a new game on the Judge. The "<span
+class="plaintext">?</span>" character is required. This command
+will fail, of course, if the game "<span class=
+"plaintext">name</span>" already exists, or if the Judge is not
+allowing creation of new games. The game will be Standard unless
+a variant and/or options are specified. The <span class=
+"plaintext">variant</span> and <span class=
+"plaintext">option</span> specifications for this command are the
+same as those accepted by the <a class="plaintext" href=
+"#SETVARIANT">SET VARIANT</a> command, <a href=
+"#creatingandmastering">section 8</a>.</p>
+<p class="level1text">In most cases the person creating the game
+will also want to act as Master. See <a href=
+"#changingmoderationstatus">section 8.1</a> for how to do
+this.</p>
+<p class="command"><a name="SIGNON">SIGN ON ? password</a></p>
+<p class="level1text">Enter the next available game that is
+forming. Make sure to leave a space after the "<span class=
+"plaintext">?</span>" character.</p>
+<p class="command">SIGN ON ?name password [variant] [option
+[option ...]]</p>
+<p class="level1text">Enter a particular game that is forming. Do
+<i>not</i> leave a space after the "<span class=
+"plaintext">?</span>" character. The <span class=
+"plaintext">variant</span> and <span class=
+"plaintext">option</span> specifications are required if, and
+only if, these options were used in the <a class="plaintext"
+href="#CREATE">CREATE</a> or <a class="plaintext" href=
+"#SETVARIANT">SET VARIANT</a> command. Only registered users may
+sign on to a forming game. <b>Note</b>: You must include the
+<span class="plaintext">variant</span> and <span class=
+"plaintext">option</span> specifications <i>every</i> time you
+sign on before the game starts. You can sign on more than once
+during the pre-game period, for example, to check the game
+listing, to change your preference list, or to send a press
+message to the Master. Each time you do so, you must use the full
+syntax shown above including the "<span class=
+"plaintext">?</span>" and all variant options.</p>
+<p class="command">SIGN ON pname password</p>
+<p class="level1text">Sign onto an existing power that you own,
+or take over an abandoned power. Only registered users may take
+over an abandoned power. However, any user may <span class=
+"plaintext">SIGN ON</span> to an existing position if they use
+the correct password. This allows you to access your games from a
+secondary email account. If the <span class="plaintext">SIGN
+ON</span> command does not come from the player's mail address of
+record, a copy of the Judge's response will be sent to that
+address as a precaution against cheating. (If you are getting
+unwanted duplicate responses because your return address does not
+match what the Judge has on file for you, use the <a class=
+"plaintext" href="#SETADDRESS">SET ADDRESS</a> command; see <a
+href="#generalcommands">section 7.1</a>.)</p>
+<p class="command"><a name="OBSERVE">OBSERVE name
+password</a><br>
+SIGN ON oname password<br>
+<a name="WATCH">WATCH name password</a></p>
+<p class="level1text">Become an observer. An observer will
+receive the same game reports and broadcasts as the players. The
+ability of observers to send press themselves is controlled by
+flags set by the moderator (<a href="#presssettings">section
+8.5</a>).</p>
+<hr>
+<br>
+<h2><a name="deadlinesanddedication">5. Deadlines and Dedication
+(or, Get Your Orders in on Time!)</a></h2>
+<h3><a name="thedeadlinesystem">5.1 The Deadline System</a></h3>
+<p>The Judge system administers deadlines for all games. Unless
+otherwise specified, orders will be processed on the following
+schedule. These default settings may be changed by the
+Judgekeeper, and may be further changed for individual games by a
+Master, or by any player in an unmoderated game.</p>
+<pre>
+Move    clock 1410 min 12.00 next 71.00 grace 167.00 delay 0.50 days -MTWTF-
+Retreat clock   -1 min  0.00 next 23.00 grace  71.00 delay 0.50 days -MTWTF-
+Adjust  clock   -1 min  0.00 next 23.00 grace  71.00 delay 0.50 days -MTWTF-
+</pre>
+<p>Each value goes with the keyword <i>before</i> it, not after.
+(So the first line means "clock 1410"; "min 12.00"; etc. -
+<i>not</i> "clock 1410 min" or "12.00 next".) The meanings of the
+various settings are as follows:</p>
+<dl>
+<dt><b>clock</b></dt>
+<dd>If non-negative, indicates the minutes past midnight to which
+the new deadline will be set. 1410 is eleven thirty pm. If
+negative, this parameter is ignored, and the new deadline is set
+at exactly "next" hours after the time the previous phase was
+processed.</dd>
+<dt><b>min</b></dt>
+<dd>Indicates the minimum number of hours that can elapse between
+the previous phase and the new phase. Thus, in the above example,
+there will be at least 12 hours after a build or retreat phase
+before the movement orders will be processed. This parameter has
+no real use other than to prevent a runaway situation if all of
+the powers in a game were to go CD.</dd>
+<dt><b>next</b></dt>
+<dd>Indicates the number of hours after the previous phase is
+processed that the new deadline will be set. This may be
+increased to fit into the values of the 'clock' and/or 'days'
+parameters. In the default case, movement orders are three days
+after the previous phase. However, because of the "clock"
+setting, the deadline will be advanced to 11:30 p.m. on the third
+day; and, because of the "days" setting, if the third day falls
+on a weekend it will slide to Monday.</dd>
+<dd>(<b>Note</b>: the "next" interval is specified as 71 hours,
+rather than 72, because of the interaction between "next" and
+"clock". The Judge does not process seasons instantaneously. If
+the Spring 1901 phase is processed, for example, at 11:35 pm
+Monday, then a "next 72.0" setting would require the next
+deadline to be at 11:35 pm Thursday; but, since "clock" requires
+that the deadline be exactly at 11:30 pm, this would push the
+deadline forward to Friday.)</dd>
+<dd>In any event, the next deadline should never be earlier than
+the deadline from the most recently processed phase (thus, for
+example, if the moderator manually extends the current deadline
+for two weeks to allow for a player absence, but then the turn is
+processed because the absent player was nice enough to submit
+orders before he left, the next deadline will still be
+approximately two weeks away). The only exception to this is if
+the moderator manually resets the deadline to an earlier
+time.</dd>
+<dt><b>grace</b></dt>
+<dd>Indicates the number of hours the adjudicator will wait after
+the deadline expires if not everyone has gotten their orders in
+yet. In the default case, a grace period of one week after the
+initial deadline is allowed. When the deadline comes up, a
+reminder message will be sent to everyone who hasn't gotten their
+orders in and a notice will be sent to the other players and
+observers in the game indicating who is late. Another reminder
+will be sent to the late parties, and a notice to all other
+participants, every day.</dd>
+<dd>If the game is set "NoNMR" (the default), the Judge will wait
+for orders until the end of the grace period. Then, a notice will
+be sent to all players and observers in that game indicating that
+the late power has been abandoned. Abandoned powers may be taken
+over by anyone not already playing a power in the game merely by
+signing on with any password. No orders will be processed until
+the late power returns or is taken over.</dd>
+<dd>If the game is set "NMR," the power will be deemed abandoned
+if orders have not been received by 24 hours <i>before</i> the
+end of the grace period. If you are running an NMR game,
+therefore, your grace periods must be at least 24 hours and
+normally should be at least 48. At the end of the grace period,
+if complete orders still have not been received, either from the
+original player or a replacement, the power will be declared in
+"Civil Disorder" and the phase will be processed with incomplete
+orders. On subsequent phases powers marked CD will not be
+considered when deciding whether the deadline should slide. When
+a valid <a class="plaintext" href="#SIGNON">SIGN ON</a> is
+received, the CD and/or abandoned status will be cleared.</dd>
+<dd>As with the deadline, the program should never set a grace
+period that is earlier than the grace period from the last
+processed season, although a moderator can change this
+manually.</dd>
+<dt><b>delay</b></dt>
+<dd>Indicates the number of hours after the last required orders
+have been received before the orders will be processed. The
+default is 0.5 hours, so that if all powers get their orders in
+before the deadline, the orders will be processed thirty minutes
+later. This gives people a little time to change their mind after
+orders are submitted.</dd>
+<dt><b>days</b></dt>
+<dd>Specifies which days of the week are valid for the setting of
+the initial deadline. An uppercase letter indicates that that day
+of the week is okay. If the letter is lowercase, then the
+deadline is delayed until after noon. A dash indicates that the
+deadline cannot fall on that day of the week. Unless the
+"StrictGrace" flag has been set, the grace period also will be
+extended to a day that is valid for the initial deadline.
+<b>Warning</b>: this parameter is an exception to the general
+rule that adjudicator commands are not case-sensitive!</dd>
+</dl>
+<p>These parameters can be changed by a moderator using the <span
+class="plaintext">SET</span> command. For example:</p>
+<p class="example">SET MOVES NEXT 48.0 DELAY 1.0<br>
+SET BUILDS DELAY 1.0</p>
+<p>These commands will (a) set the default move deadline to (at
+least) 48 hours after the previous phase was processed, and (b)
+require a one-hour delay after the last player submits (timely)
+move and build orders before the turn can be processed. These
+commands will not change the deadlines for the currently pending
+phase. See <a href="#deadlinerelatedsettings">section
+8.6</a>.</p>
+<p>In addition, a moderator can use the following commands to
+override the standard deadline settings for the current phase
+only: <a class="plaintext" href="#SETDEADLINE">SET DEADLINE</a>;
+<a class="plaintext" href="#SETGRACE">SET GRACE</a>; <a class=
+"plaintext" href="#SETSTART">SET START</a>. See <a href=
+"#deadlinerelatedsettings">section 8.6</a>.</p>
+<p>Orders can be sent in any time before the deadline. If
+multiple movement orders are received for the same unit, the most
+recent one received will override the earlier one. Attempting to
+build or remove too many units during the adjustment phase will
+cause the earliest received build/remove requests to be ignored.
+Thus you can send in preliminary movement or adjustment orders
+immediately and then send in revised orders after you change your
+mind from diplomatic talks. Beware, though, that if everyone gets
+their orders in before the deadline, the orders may be processed
+before you have a chance to get your revised orders in.</p>
+<p>If you include a <a class="plaintext" href="#SETWAIT">SET
+WAIT</a> command with your orders, you can avoid having your
+orders processed before the deadline. When you've decided that
+your orders are final, you can send in a message with a <span
+class="plaintext">SET NO WAIT</span> command to allow the orders
+to be processed as soon as the delay period expires and everyone
+else has their orders in. Remember that <a class="plaintext"
+href="#SETWAIT">SET WAIT</a> is cleared when the orders are
+processed, so you have to explicitly set it again (if you want
+it) for each phase.</p>
+<p>If the reply mail to any order indicates that there was an
+error or you have a unit that you did not supply an order for or
+you didn't explicitly specify all your builds, remove or
+retreats, the flag indicating that your orders have been received
+will not be set. Note that all builds must be specified or
+explicitly <span class="plaintext">WAIVE</span>'d before the
+adjudicator will consider your build orders complete, unless it
+is impossible to build all units (<i>e.g.</i>, five supply
+centers taken in a single year or no vacant home centers). An
+error free set of orders will be required to set the "has
+submitted orders" status. If no error free orders have been
+received by the time the grace period expires in an "NMR" game,
+the partial orders will be processed and the CD status will be
+set for your power. See the discussion on grace periods above for
+more info on what happens when you miss a deadline and taking
+over abandoned powers.</p>
+<h3><a name="dedicationsystems">5.2 Dedication Systems</a></h3>
+<p>"Dedication" refers to a player's history of submitting moves
+on time and playing each position out to the bitter end. Doing
+this is <b>good</b>; sending orders late and abandoning your
+position when the game is going against you are <b>bad</b>.
+Playing Diplomacy is a group effort and can take quite a while to
+complete (as you know if you've played face-to-face); nobody
+wants to play with someone who just disappears in the middle of
+the game.</p>
+<p>The Judge tracks player dedication in three ways. System (1)
+tracks all games ever played on the Judge (unless the Judgekeeper
+has reset the data files). Systems (2) and (3), which are newer,
+only track turns played since they were installed on the Judge
+(which varies by Judge, but was no earlier than 2002).</p>
+<p class="level1hang">(1) The original dedication system, which
+has some flaws but is being maintained for continuity, is based
+on a point system.  The default values, which like all Judge defaults can be changed by a particular Judgekeeper, are as follows:</p>
+<p class="level2text">+3 points for getting your orders in on
+time.</p>
+<p class="level2text">-1 point for each "deadline missed"
+reminder the judge sends you.</p>
+<p class="level2text">-50 points for becoming abandoned.</p>
+<p class="level2text">-100 points for missing the grace period
+and going CD.</p>
+<p class="level1text">There is no penalty for resigning before a
+deadline, if you submit complete orders <i>before</i> you resign.
+However, you will continue to receive the -1 point penalty every
+day that your power remains abandoned after the deadline. If your
+power goes CD after you've resigned without anyone else taking
+the power over, you will receive the CD penalty as well (this is
+to discourage you from resigning when you're down to a few units
+which could be used to affect the final outcome of the game, but
+you've just lost interest).</p>
+<p class="level1hang">(2) The "ontime ratio" system. In this
+system players are rated based on what percentage of their total
+turns they have submitted on time. We use the following
+formula:</p>
+<pre>
+                  Turns Submitted Ontime
+         Rating = ----------------------
+                     Total turns due 
+</pre>
+<p class="level1text">Therefore each player has a rating between
+0.0 and 1.0, with higher rankings being better than lower
+ones.</p>
+<p class="level1hang">(3) The "CD ratio" system, which compares
+the number of times a player has gone into Civil Disorder
+(<i>i.e.</i>, failed to submit complete orders by the end of the
+grace period, regardless of whether the game was NMR or not), to
+the number of games he has started. We use the following
+formula:</p>
+<pre>
+                             Times in Civil Disorder
+         Rating = ----------------------------------------------
+                  Games started + abandoned positions taken over 
+</pre>
+<p class="level1text">Again ratings range from 0.0 to 1.0, but in
+this case lower ratings (fewer missed grace periods) are
+preferable. (Actually, a player who is really sloppy about
+deadlines could theoretically achieve a ratio above 1.0, but we
+won't dwell on such an unhappy possibility.)</p>
+<p>GMs or others creating games can restrict who is eligible to
+sign on to the game based on dedication ratings, using the
+commands <a class="plaintext" href="#SETDEDICATION">SET
+DEDICATION</a>, <a class="plaintext" href="#SETONTIMERAT">SET
+ONTIMERAT</a>, and <a class="plaintext" href="#SETRESRAT">SET
+RESRAT</a>. See <a href="#gameaccesssettings">section
+8.4</a>.</p>
+<p>To see dedication rating information for yourself or any other
+player, see the commands <a class="plaintext" href=
+"#INFOPLAYER">INFO PLAYER</a> and <a class="plaintext" href=
+"#GETDEDICATION">GET DEDICATION</a>, <a href=
+"#playerinformationand">section 3.3</a>.</p>
+<hr>
+<br>
+<h2><a name="enteringorders">6. Entering Orders</a></h2>
+<h3><a name="moveretreatand">6.1 Move, Retreat, and Adjustment
+Orders for the Current Phase</a></h3>
+<p>Following a <a class="plaintext" href="#SIGNON">SIGN ON</a>
+command, a player may submit orders for his power for the current
+phase simply by typing those orders in the body of the mail
+message. Multiple orders can be entered on one line by separating
+them with commas or semicolons.</p>
+<p>Most orders can be written the same way they are customarily
+written in face-to-face games, using the abbreviations shown in
+the Diplomacy rulebook. <b>Warning</b>: the syntax for convoys is
+different than in the standard Diplomacy rules. See <a href=
+"#convoyroutesmust">section 6.2</a>. Also, unlike standard
+Diplomacy, the Judge does not require or permit you to specify
+the power that owns a unit you are supporting or convoying. (So
+you would just write "A Ven S A Tri" rather than "A Ven S
+Austrian A Tri".) And, again unlike standard Diplomacy, the Judge
+will not accept orders that are impossible or badly-written (like
+A Par-Mun, or F Nth S Philadelphia-Boston), or for units that you
+don't actually control. Instead, erroneous orders will raise the
+"error flag," and orders will not be processed until the errors
+are corrected.</p>
+<p>If you have submitted any orders for the current phase, the
+Judge will list these orders in its reply to every message you
+send to it, until the phase is processed. It is <i>highly</i>
+recommended that players check the orders in the Judge reply to
+make sure their orders have been parsed as they intended, and to
+make sure that all units have been ordered!</p>
+<p>The following is an exhaustive list of the order syntax
+recognized by the Judge. Some of these order formats may only be
+used in variant games. Items in [square brackets] are
+optional.</p>
+<p>Movement orders:</p>
+<div class="level1text"><span class="plaintext">[&lt;type&gt;]
+&lt;s-prov&gt; &lt;holds&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;moves&gt; &lt;d-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;moves&gt; &lt;c-prov&gt;
+&lt;moves&gt; &lt;c-prov&gt; ... &lt;moves&gt; &lt;d-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;support&gt; [&lt;type&gt;]
+&lt;s-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;support&gt; [&lt;type&gt;]
+&lt;s-prov&gt; &lt;moves&gt; &lt;d-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;convoy&gt; [&lt;type&gt;]
+&lt;s-prov&gt; &lt;moves&gt; &lt;d-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;proxy&gt; &lt;power&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;transforms&gt; &lt;type&gt;<br>
+</span></div>
+<p>Retreat orders:</p>
+<div class="level1text"><span class="plaintext">[&lt;type&gt;]
+&lt;s-prov&gt; &lt;moves&gt; &lt;d-prov&gt;<br>
+[&lt;type&gt;] &lt;s-prov&gt; &lt;disband&gt;<br>
+</span></div>
+<p>Adjustment orders:</p>
+<div class="level1text"><span class="plaintext">&lt;build&gt;
+&lt;type&gt; &lt;s-prov&gt;<br>
+&lt;remove&gt; [&lt;type&gt;] &lt;s-prov&gt;<br>
+&lt;transform&gt; &lt;type&gt; &lt;s-prov&gt;<br>
+&lt;waive&gt;<br>
+</span></div>
+<p>The symbols used in these definitions are defined as
+follows:</p>
+<div class="level1plain">
+<div class="syntaxterm">&lt;type&gt;</div>
+<div class="syntaxdef">= "army", "a", "fleet", "f", "wing", "w"
+or &lt;empty&gt;.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;s-prov&gt;</div>
+<div class="syntaxdef">= Source province.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;d-prov&gt;</div>
+<div class="syntaxdef">= Destination province.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;c-prov&gt;</div>
+<div class="syntaxdef">= Intermediate water province in a convoy
+route.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;power&gt;</div>
+<div class="syntaxdef">= Power name or abbreviation of two or
+more characters.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;holds&gt;</div>
+<div class="syntaxdef">= "h", "hold", "holds", "stand",
+"stands".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;moves&gt;</div>
+<div class="syntaxdef">= "-", "-&gt;", "m", "move", "moves",
+"move to", "moves to".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;support&gt;</div>
+<div class="syntaxdef">= "s", "support", "supports".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;convoy&gt;</div>
+<div class="syntaxdef">= "c", "convoy", "convoys", "transport",
+"transports", "t", "fast ferry", "ferry", "ff", "f".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;proxy&gt;</div>
+<div class="syntaxdef">= "p", "proxy", "proxy to".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;disband&gt;</div>
+<div class="syntaxdef">= "d", "disband", "disbands".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;build&gt;</div>
+<div class="syntaxdef">= "b", "build" or &lt;empty&gt;.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;remove&gt;</div>
+<div class="syntaxdef">= "r", "remove", "d", "disband" or
+&lt;empty&gt;.</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;waive&gt;</div>
+<div class="syntaxdef">= "w", "waive".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;transforms&gt;</div>
+<div class="syntaxdef">= "transforms to", "transform to",
+"transform", "transforms", "trafo", "tr".</div>
+</div>
+<div class="level1plain">
+<div class="syntaxterm">&lt;transform&gt;</div>
+<div class="syntaxdef">= "transform", "transforms",
+"trafo".</div>
+</div>
+<p class="level1text"><b>Note</b>: "wing" units, "proxy" orders
+and "transform" orders can only be used if the moderator has
+enabled the corresponding variant setting.</p>
+<p>Province names can be abbreviated or can be spelled out. Valid
+abbreviations can be found in the 'map' file for the variant you
+are playing (use the command "<span class="plaintext">GET
+MAP</span>" for the standard map, or "<span class="plaintext">GET
+map.xxx</span>" for variant map "xxx"). Coasts can be specified
+by following the province name with one of the following:</p>
+<div class="level1plain">
+<div class="syntaxterm">&lt;coast&gt;</div>
+<div class="syntaxdef">= "/nc", "(nc)", "/north coast", "(north
+coast)"</div>
+</div>
+<br>
+<p>replacing 'north' or 'n' with another valid direction if
+appropriate.</p>
+<p><b>Warning</b>: if you do not specify a coast for a fleet
+moving to a destination province that contains coasts (including
+an order to support such a move), the Judge will arbitrarily add
+a coast to the order (namely, the first one on its list). This
+may lead to unintended results!</p>
+<p>Here are some examples of valid orders (assuming that the
+player actually controls the units given in the orders):</p>
+<p><b>Movement phase orders:</b></p>
+<p class="example">A Ber -&gt; Kie<br>
+A Ser m Rum<br>
+Lon-Nth<br>
+F Kiel moves to Berlin<br>
+Par H<br>
+F Rome Stands<br>
+A MUN S F KIE-BER<br>
+A Brest supports Paris<br>
+F Sev S A Ser M Rum</p>
+<p>Note that, as in the example "Lon-Nth", it is not necessary to
+specify the unit type, but since Nth is a sea space the order
+will be rejected if the unit in Lon is not actually a fleet.</p>
+<p><b>Retreat phase orders:</b></p>
+<p class="example">F Kiel m Den<br>
+A Rum-Bul<br>
+Par -&gt; Pic<br>
+Mun disbands</p>
+<p>As these examples show, retreats are written exactly like
+movement orders, except when you are disbanding a unit.</p>
+<p><b>Adjustment phase orders:</b></p>
+<p class="example">build A Lon<br>
+F StP/sc<br>
+remove A Tun</p>
+<p>The order for "F StP/sc" will be interpreted as either a build
+or a removal, depending on whether the power has more supply
+centers than units, or vice versa.</p>
+<p>Note the difference between disband orders in a retreat phase,
+and removal orders in an adjustment phase. In a retreat phase,
+the word "disband" is required and comes <i>after</i> the unit
+type and location; in an adjustment phase, the word "disband" or
+"remove" is optional and, if used, comes <i>before</i> the unit
+type and location.</p>
+<p>Similarly, the syntax for transform orders (<i>which are used only in variant games</i>) depends on whether it is a movement or an adjustment phase.  In a move phase, the unit location comes first, followed by the transform command, then the new unit type.  In an adjustment phase, however, the transform command comes first, followed by the new unit type, then the location.  Examples (assuming, in each case, that the player currently has a fleet in Brest and an army in Spain, and that the current game settings permit the desired transformations):</p>
+<p><b>Movement phase:</b></p>
+<p class="example">F Brest transforms to Army<br>
+Spain trafo F (sc)</p>
+<p><b>Adjustment phase:</b></p>
+<p class="example">Transform A Brest<br>
+trafo f spa/sc</p>
+<p>In both cases, the order will fail if the player does not specify the new unit type (because this command is supported in variants that recognize other unit types besides armies and fleets); however, specifying the old unit type is never required, and is not permitted in the adjustment phase.  The transformation of the army in Spain to a fleet will also fail unless the player specifies which coast the fleet is to be placed on.  Finally, please note that while transform orders can be abbreviated as "<span class="plaintext">trafo</span>", they cannot be abbreviated as "<span class="plaintext">t</span>" because that abbreviation is reserved for convoy orders.</p>
+<p>Revisions to orders can be sent in any time before the phase
+is processed. Orders may be processed before the deadline unless
+the <a class="plaintext" href="#SETWAIT">SET WAIT</a> command has
+been used (see <a href="#deadlinerelatedcommands">section 7.2</a>). The last valid order for a particular unit will be honored.
+For Adjustment phases, if you submit more build orders than you
+can use, the last one(s) received will be honored. If no valid
+order is received for a particular unit in an NMR game, it will
+be listed in the reports as "No order processed".</p>
+<h3><a name="convoyroutesmust">6.2 Convoy Routes Must Be
+Specified</a></h3>
+<p>Unlike human adjudicators, the Judge requires that convoy
+routes be specified. (Get file 'rules' for complete details on
+differences between the Judge and the standard rules.) To do a
+convoy, you must order each participating fleet to convoy the
+army, and also must order the army to follow a specific convoy
+route. For example:</p>
+<center>
+<table cellspacing="0" cellpadding="0" width="75%" summary=
+"Examples of correct and incorrect convoy ordering formats."
+border="0">
+<tbody>
+<tr>
+<th style=
+"PADDING-LEFT: 2em; VERTICAL-ALIGN: top; TEXT-ALIGN: left; TEXT-DECORATION: underline">
+RIGHT</th>
+<th style=
+"PADDING-LEFT: 3.5em; VERTICAL-ALIGN: top; TEXT-ALIGN: left; TEXT-DECORATION: underline">
+WRONG</th>
+</tr>
+<tr>
+<td class="correct"><br>
+A Lon-Nth-Nwy<br>
+F Nth C A Lon-Nwy</td>
+<td class="wrong"><br>
+A Lon-Nwy<br>
+F Nth C A Lon-Nwy</td>
+</tr>
+<tr>
+<td class="correct"><br>
+A Bre-Mid-Wes-Lyo-Mar<br>
+F Mid C A Bre-Mar<br>
+F Wes C A Bre-Mar<br>
+F Lyo C A Bre-Mar</td>
+<td class="wrong"><br>
+A Bre-Mar<br>
+F Mid C A Bre-Mar<br>
+F Wes C A Bre-Mar<br>
+F Lyo C A Bre-Mar</td>
+</tr>
+</tbody>
+</table>
+</center>
+<br>
+<p>The "wrong" column is correct according to the standard rules
+of Diplomacy and the usual practice in human-adjudicated games,
+but on the Judge it will raise the error flag!</p>
+<p>The convoying fleets do not have to belong to the same power
+as the army, or as each other; but if the route specified for the
+army does not match up exactly with the fleet orders, the convoy
+will fail. As shown above, only the army has to specify the
+entire route; the fleets only need to give the origin and
+destination.</p>
+<p>The Judge generally does not check the "reasonableness" of a
+convoy order, because of the complexity of checking all possible
+units along all possible convoy paths. Convoy orders will be
+accepted as long as the convoying fleet and the convoyed army
+actually exist, and the destination is a (land) province defined
+in the map file, unless the optional StrictConvoy flag is set
+(see <a href="#standardgamemoderation">section 8.3</a> ).</p>
+<h3><a name="submittingordersfor">6.3 Submitting Orders for
+Future Phases</a></h3>
+<p>Orders can be submitted for future phases using the following
+commands:</p>
+<p class="command"><a name="CLEAR">CLEAR</a></p>
+<p class="level1text">Clear any pending orders entered with the
+<a class="plaintext" href="#PHASE">PHASE</a> command. (Note:
+there is no way to clear orders entered for the current phase.)
+This clears both conditional and non-conditional future
+orders.</p>
+<p class="command"><a name="PHASE">PHASE &lt;season&gt;
+&lt;year&gt; &lt;phase&gt;</a></p>
+<p class="level1text">Only the first letter of the season or
+phase are significant:</p>
+<p class="level2text"><span class="plaintext">&lt;season&gt; =
+"Spring", "Summer", "Fall" or "Winter".<br>
+&lt;phase&gt; = "Movement", "Retreat", "Adjustment" or
+"Build".</span></p>
+<p class="level1text">For example:</p>
+<p class="example">sign on Fexample password<br>
+Phase S 1903 M<br>
+A Bre-Par<br>
+A Par-Bur<br>
+sign off</p>
+<p class="level1text">The orders following the <span class=
+"plaintext">PHASE</span> directive will be collected and saved
+until the indicated phase occurs. Some syntax checking will be
+done on the orders, but the full list of errors can't be
+determined until the actual phase occurs. That error list will be
+mailed to you when the orders are processed. If any pending
+orders are found for a particular phase, your power will get the
+"orders have been received" status automatically whether or not
+there were any errors or if the orders are incomplete. All orders
+until the next <span class="plaintext">PHASE</span> directive or
+the end of the mail message will be saved for the specified
+phase. Note that only orders are saved. In particular, <i>press
+messages cannot be delayed</i> for later transmission. An
+exception to this is that the <span class="plaintext">SET</span>
+<span class="plaintext">WAIT</span> and <span class=
+"plaintext">SET NO WAIT</span> directives will be propagated to
+the future phase. Your pending orders will be listed in replies
+to intervening order submissions.</p>
+<p class="level1text">As noted above, please be aware that
+subsequent build orders will override earlier ones if more build
+orders are received than you have supply centers. Thus, when
+submitting orders for future build phases, you should list your
+builds in reverse order of preference in case you don't get as
+many supply centers as you were expecting.</p>
+<div class="command"><a name="IF">IF &lt;condition&gt;
+[THEN]</a><br>
+<div class="level1text">&lt;orders&gt;</div>
+[ELSE IF &lt;condition&gt;] [THEN]<br>
+<div class="level1text">&lt;orders&gt;</div>
+[ELSE]<br>
+<div class="level1text">&lt;orders&gt;</div>
+[ENDIF]</div>
+<p class="level1text">Submit conditional orders. These statements
+can only be used after a <a class="plaintext" href=
+"#PHASE">PHASE</a> command; they cannot be used for the current
+phase's orders. The <span class="plaintext">THEN</span>'s are
+optional for old Fortran programmers. The conditions are of the
+form:</p>
+<p class="level1text"><span class="plaintext">&lt;condition&gt; =
+[NOT] [&lt;power&gt;] [&lt;type&gt;] &lt;prov&gt;</span></p>
+<p class="level1text">Conditions may be combined with the
+keywords "<span class="plaintext">AND</span>" and "<span class=
+"plaintext">OR</span>" evaluated left to right. You can use
+parenthesis to change the precedence. The condition evaluates to
+"true" if a unit of the specified type belonging to the specified
+power is present (or not) in the specified province at the
+beginning of the specified phase. The province must be specified,
+but the type and power are optional and interpreted as "any" if
+not specified. The power, type and province can be specified in
+any order. Powers can be abbreviated to two or more characters or
+spelled out. For example:</p>
+<p class="example">PHASE Fall 1905 Movement<br>
+IF NOT French Army Ruhr AND (Russian Prussia OR Russian
+Silesia)<br>
+Kiel -&gt; Berlin<br>
+Munich support Kiel -&gt; Berlin<br>
+ELSE<br>
+Kiel -&gt; Ruhr<br>
+Munich support Kiel -&gt; Ruhr<br>
+ENDIF</p>
+<p class="level1text">Conditional statements can be nested with
+expected results. The end of a line closes off all parentheses
+and the end of the mail message closes all open <span class=
+"plaintext">IF</span>s without an error being reported. (As with
+all other examples, the white space above is just for
+illustration and is not required.)</p>
+<hr>
+<br>
+<h2><a name="otherplayercommands">7. Other Player
+Commands</a></h2>
+<p>The commands in this section must follow a valid <a class=
+"plaintext" href="#SIGNON">SIGN ON</a> command, and may be used
+by any player. Unless otherwise noted, these commands are also
+available to Masters. Observers may also use the <a class=
+"plaintext" href="#SETADDRESS">SET ADDRESS</a>, <a class=
+"plaintext" href="#SETPASSWORD">SET PASSWORD</a>, and <a class=
+"plaintext" href="#RESIGN">RESIGN</a> commands, and any press
+commands that have been enabled by the Master.</p>
+<p>These commands will only affect the game for which the player
+signed on in the same message. If, for example, you want to
+change your password or return address in more than one game, you
+need to send a separate message for each game.</p>
+<h3><a name="generalcommands">7.1 General Commands</a></h3>
+<p class="command"><a name="RESIGN">RESIGN</a><br>
+<a name="WITHDRAW">WITHDRAW</a></p>
+<p class="level1text">Withdraw from the game. This must be the
+<i>last</i> command in the message to be effective; so if you
+want to broadcast a farewell message, do so before you enter the
+<span class="plaintext">RESIGN</span> command. A Master cannot
+<span class="plaintext">RESIGN</span>. See command <a class=
+"plaintext" href="#EJECT">EJECT</a>, <a href=
+"#masteronlycommands">section 8.2</a>.</p>
+<p class="command"><a name="SETADDRESS">SET ADDRESS
+[email]</a></p>
+<p class="level1text">Change where your game reports go. If you
+don't specify an address, the address from the mail headers
+(specifically, the <i>last</i> Reply-To: header encountered) will
+be used. If you sign on and the address in the mail headers does
+not match the reporting address you will get two replies, one to
+each address. This can be fixed by using <span class=
+"plaintext">SET ADDRESS</span> with no reply address specified.
+You can also specify multiple addresses separated by commas, but
+no spaces, to receive reports at two (or more) addresses.
+Example:</p>
+<p class="example">SET ADDRESS email1,email2</p>
+<p class="command"><a name="SETPASSWORD">SET PASSWORD
+new_password</a></p>
+<p class="level1text">Change your password. Passwords must
+contain only alphanumeric characters.</p>
+<p class="command"><a name="SETPREFERENCE">SET PREFERENCE
+list</a></p>
+<p class="level1text">Record a preference list for power
+assignment. May only be used before powers are assigned (of
+course), and should appear immediately after an initial <span
+class="plaintext">SIGN ON</span> when entering a forming game. A
+player may indicate that he has an equal preference for two or
+more powers by enclosing them in square brackets. For example,
+"<span class="plaintext">SET PREFERENCE E[FGR][TAI]</span>" would
+indicate that the player's first choice is England; after that,
+he would prefer any of France, Germany, or Russia equally; and
+after that would take any of the remaining powers. If the list is
+a single asterisk ("<span class="plaintext">SET PREFERENCE
+*</span>"), then a random power will be assigned if allowed by
+the game settings (see <a class="plaintext" href=
+"#SETPRFBOTH">SET PRFBOTH</a>, <a href=
+"#standardgamemoderation">section 8.3</a> ). If this command is
+not used or the list is empty, the player will be assigned a
+random power only <i>after</i> all players who have submitted
+preferences have received their assignments (unless the game is
+set to require random assignment for all powers, see <a class=
+"plaintext" href="#SETPRFRAND">SET PRFRAND</a>, <a href=
+"#standardgamemoderation">section 8.3</a>, in which case this
+command has no effect).</p>
+<h3><a name="deadlinerelatedcommands">7.2 Deadline-Related
+Commands</a></h3>
+<p class="command"><span class="versioncode">{0.8.7}</span><a
+name="SETABSENCE">SET [NO] ABSENCE start_date [TO
+end_date]</a><br>
+<span class="versioncode">{0.8.7}</span><a name="SETHOLIDAY">SET
+[NO] HOLIDAY[S] start_date [TO end_date]</a><br>
+<span class="versioncode">{0.8.7}</span><a name="SETVACATION">SET
+[NO] VACATION[S] start_date [TO end_date]</a></p>
+<p class="level1text">Request or cancel an absence period. Does
+not affect the deadline for the current phase, but no subsequent
+deadlines will be set during the absence period. Neither <span
+class="plaintext">start_date</span> nor <span class=
+"plaintext">end_date</span> can be before the current date. If
+<span class="plaintext">end_date</span> is before <span class=
+"plaintext">start_date</span>, the command will be ignored. If
+<span class="plaintext">end_date</span> is omitted, an absence
+period of 24 hours is assumed. If absences are overlaid, they
+count as separate absences. However, Judge versions 1.4.0 and
+higher will reject attempts to set overlapping absences.</p>
+<p class="level1text">Observers and eliminated (inactive) players
+cannot set absences. Masters can.</p>
+<p class="level1text"><span class="plaintext">SET NO
+ABSENCE</span> cancels one pending absence period. The <span
+class="plaintext">end_date</span> is ignored. The first absence
+found that includes <span class="plaintext">start_date</span> is
+cancelled.</p>
+<p class="level1text">Setting an absence never extends the
+<i>current</i> deadline; it only takes effect when a turn is
+processed, if the <i>next</i> deadline using the normal settings
+would fall after <span class="plaintext">start_date</span>. A
+player who is going away needs to either submit their orders for
+the phase that is pending at <span class=
+"plaintext">start_date</span> before they leave, pick a <span
+class="plaintext">start_date</span> that is early enough so that
+this won't be a problem, or ask the Master to extend the current
+deadline. (Understandably, Masters may be unhappy if you choose
+the last option.) It is also recommended (though not required)
+that <span class="plaintext">start_date</span> and <span class=
+"plaintext">end_date</span> be days on which deadlines normally
+fall; for example, in a weekdays-only game, setting an absence to
+start or end on a Saturday or Sunday may yield undesired
+results.</p>
+<p class="level1text"><span class="plaintext">Start_date</span>
+and <span class="plaintext">end_date</span> may use any of the
+date/time formats described in <a href="#quickstartfor">section
+2.1</a>. Examples of valid date formats:</p>
+<p class="example">set absence Jan 1 to Jan 15<br>
+set absence 24 Jun to 3 Jul<br>
+set absence Sat to Tue</p>
+<p class="level1text">Note that the last example will not work if
+it is sent on Saturday, Sunday or Monday, as the Judge will
+interpret "Sat" as the following Saturday, and "Tue" as meaning
+'this coming Tuesday', not 'Tuesday next week' as the player
+seems to intend; the Judge will reject the absence because it
+appears to end before it begins. It is therefore better in most
+cases to specify the dates.</p>
+<p class="level1text">Only a maximum of three (3) absences can be
+pending at any given time for a single player. Once an absence
+expires, however, it is removed from memory and its "slot"
+becomes available for another request. If you need to change a
+previously-set absence, first <span class="plaintext">use SET NO
+ABSENCE</span> to remove the old one, then use <span class=
+"plaintext">SET ABSENCE</span> to set the correct dates.
+Otherwise, you will use up two of your slots.</p>
+<p class="level1text">Each absence request will generate an
+informative message to the Master, and he will also see the
+pending future absences every time he sends a message for the
+game (along with pending orders).</p>
+<p class="level1text">If an absence request exceeds the game
+limit (see command <a class="plaintext" href="#SETMAXABSENCE">SET
+MAX ABSENCE</a> in <a href="#deadlinerelatedsettings">section
+8.6</a> ), a message will be sent to the Master who must manually
+activate the absence for it to take effect. Generally, the Master
+should do this by using the <a class="plaintext" href=
+"#BECOME">BECOME power</a> command (see <a href=
+"#masteronlycommands">section 8.2</a> ) and setting the absence
+for the player, as this allows the player to cancel or change the
+absence later if desired. (Also, the Master, like each player,
+has only three absence "slots," and might use them all up setting
+absences for other players.) The <span class="plaintext">MAX
+ABSENCE</span> setting is ignored if the absence is set by a
+Master, even using <a class="plaintext" href=
+"#BECOME">BECOME</a>.</p>
+<p class="command"><a name="SETWAIT">SET [NO] WAIT</a></p>
+<p class="level1text">Sets/clears the wait flag. If the Master or
+any (eligible) player has this flag set, orders will not be
+processed before the deadline. See also <a class="plaintext"
+href="#SETSTRICTWAIT">SET STRICT WAIT</a>, <a href=
+"#standardgamemoderation">section 8.3</a>. This flag is
+automatically cleared when orders are actually processed (not
+necessarily at the deadline), and must be set again for the next
+phase.</p>
+<h3><a name="drawconcessioncommands">7.3 Draw/Concession
+Commands</a></h3>
+<p class="command"><span class="versioncode">{0.8.10}</span><a
+name="SETCONC">SET CONC[EDE] p</a><br>
+<span class="versioncode">{0.8.10}</span>SET NO CONC[EDE]</p>
+<p class="level1text">Cast a vote for or against a concession (if
+the moderator has enabled this command; see <a class="plaintext"
+href="#SETCONCESSION">SET [NO] CONCESSION</a>, <a href=
+"#standardgamemoderation">section 8.3</a>). Replace "p" with the
+initial of the power you wish to concede to. Even though you may
+only concede to the largest power on the board, the Judge
+requires you to specify the power to be sure you really know to
+whom you are conceding. <span class="plaintext">SET NO
+CONCEDE</span> is only necessary to clear a previously-ordered
+concession, since a concession can only be approved by unanimous
+vote.</p>
+<p class="level1text">Concessions are cleared every time orders
+are processed, so you need to re-set a concession (if you still
+want it) every phase.</p>
+<p class="level1text">Note: The only valid forms of these
+commands were "<span class="plaintext">SET [NO] CONC</span>"
+until version 1.4.0, which added the "<span class="plaintext">SET
+[NO] CONCEDE</span>" forms.</p>
+<p class="command"><a name="SETDRAW">SET DRAW [powerlist]</a><br>
+SET NO DRAW</p>
+<p class="level1text">Cast a vote in an automated draw. The <span
+class="plaintext">powerlist</span> option is only valid if the
+game is set NoDIAS. Any draw vote, DIAS or NoDIAS, is good for
+one phase only. All draw votes are cleared at the end of a phase,
+so you need to cast your vote again every phase (if you still
+want to agree to a draw). It is normally not necessary to use
+<span class="plaintext">SET NO DRAW</span> unless you change your
+mind in the middle of a phase, since no draw can be passed
+without consent of all active players.</p>
+<p class="level1text">The term "DIAS" means "Draws Include All
+Survivors". By default, all games are DIAS. The moderator can
+change this with the <span class="plaintext"><a href=
+"#SETDIAS">SET [NO] DIAS</a></span> commands. See <a href=
+"#standardgamemoderation">section 8.3</a>. In a DIAS game, a
+surviving player cannot be excluded from a draw. In a NoDIAS
+game, a surviving player may give up his right to be included in
+a draw. In either case, unanimous approval of surviving players
+is required for a draw to be passed.</p>
+<p class="level1text">In a DIAS game, a player may cast his vote
+for a draw by issuing the command <span class="plaintext">SET
+DRAW</span>. He may withdraw earlier approval by issuing the
+command <span class="plaintext">SET NO DRAW</span>. If at any
+time all surviving players agree to a DIAS draw, the game will be
+immediately terminated (without waiting for the next deadline),
+and all participants in the game will be informed of the
+result.</p>
+<p class="level1text">The situation for NoDIAS games is a bit
+more complex. To vote for a NoDIAS draw, a player issues the
+command <span class="plaintext">SET</span> <span class=
+"plaintext">DRAW powerlist</span>, where <span class=
+"plaintext">powerlist</span> is a list of the identifiers for the
+powers he wishes included in the draw. When a player gives
+approval to <span class="plaintext">powerlist</span> and <span
+class="plaintext">powerlist</span> includes his own power, he is
+also implicitly approving any subset of <span class=
+"plaintext">powerlist</span> that also includes his power. On the
+other hand, when a player gives approval to <span class=
+"plaintext">powerlist</span> and <span class=
+"plaintext">powerlist</span> does <i>not</i> include his own
+power, he is implicitly approving any subset of <span class=
+"plaintext">powerlist</span>, <i>and</i> any subset of <span
+class="plaintext">powerlist</span> plus his own power.</p>
+<p class="level1text">For example, if Austria issued the command
+<span class="plaintext">SET DRAW AEG</span>, he is approving the
+draws AEG, AG, AE, or A. Note that by including himself in his
+draw list, he is assuring that he cannot be excluded from a draw.
+If Austria issues <span class="plaintext">SET DRAW A</span>, he
+is accepting <i>any</i> draw as long as it includes him. If
+Austria issues <span class="plaintext">SET DRAW FT</span>, he is
+approving FT, F, T, AFT, AF, AT, or A.</p>
+<p class="level1text">If, under these rules, more than one draw
+is approved by all players, the draw including the most players
+passes.</p>
+<p class="level1text">In a NoDIAS game, <span class=
+"plaintext">SET NODRAW</span> is equivalent to the command <span
+class="plaintext">SET DRAW</span> x, where x is the power issuing
+the command. This means that the player will only accept a
+concession to himself.</p>
+<p class="level1text">Here are a few examples of the NoDIAS draw
+mechanism in action. The players listed are assumed to be the
+only survivors.</p>
+<p class="level2text">France: SET DRAW AEF<br>
+England: SET DRAW AEF<br>
+Austria: SET DRAW AEF<br>
+Results in a three-way draw between Austria, England, and
+France.</p>
+<p class="level2text">France: SET DRAW AE<br>
+England: SET DRAW AEF<br>
+Austria: SET DRAW AEF<br>
+Results in a three-way draw between Austria, England, and
+France.</p>
+<p class="level2text">France: SET DRAW AE<br>
+England: SET DRAW AEF<br>
+Austria: SET DRAW AE<br>
+Results in a two-way draw between Austria and England.</p>
+<p class="level2text">France: SET DRAW AEF<br>
+England: SET DRAW AE<br>
+Austria: SET DRAW AE<br>
+This game does not end in a draw.</p>
+<p class="level2text">France: SET DRAW A<br>
+England: SET DRAW A<br>
+Austria: SET NODRAW<br>
+Results in a concession to Austria.</p>
+<h3><a name="presscommands">7.4 Press Commands</a></h3>
+<p class="command"><a name="BROADCAST">BROADCAST [color-option]
+[delivery-option] [fake-option]</a><br>
+<a name="PRESS">PRESS</a> [color-option] [delivery-option]
+[fake-option]</p>
+<p class="level1text">Send a press message. Note that at least
+one of delivery-option or fake-option <i>must</i> be included
+after <span class="plaintext">PRESS</span> (to specify who will
+receive the message), but not after <span class=
+"plaintext">BROADCAST</span> (which automatically goes to all
+players and observers). The adjudicator will send as press any
+text that it encounters until it reaches a line containing one
+(and only one) of the keywords <a class="plaintext" href=
+"#ENDBROADCAST">ENDBROADCAST</a>, <a class="plaintext" href=
+"#ENDPRESS">ENDPRESS</a>, or <a class="plaintext" href=
+"#SIGNOFF">SIGN OFF</a> by itself. In particular, it will ignore
+any orders or other command keywords appearing in the text of
+press.</p>
+<p class="level1text">The types of press allowed depend on the
+game settings. Press messages can be sent to one or more
+individual players, or can be broadcast to all players and
+observers. <b>White press</b> refers to messages sent to other
+players which indicates who it is from. <b>Grey press</b> is sent
+out anonymously; the sender may sign his own, or someone else's,
+name to it, but the Judge will not verify the source of the
+message. In addition, the game settings can allow press sent to
+individual people to be faked to appear as a broadcast message to
+all people or to an alternate set of people. Finally, <b>Postal
+Press</b> is delayed until after the results of the current phase
+have been processed (while all other press is sent
+immediately).</p>
+<p class="level1text">The results of the <a class="plaintext"
+href="#LIST">LIST</a> command will indicate, among other things,
+the types of press allowed in a particular game. Possible
+settings are:</p>
+<p class="level1text">None:</p>
+<p class="level2text">No press at all is allowed, except press to
+and from the Master.</p>
+<p class="level1text">White:</p>
+<p class="level2text">Only white press is allowed in this
+game.</p>
+<p class="level1text">Grey:</p>
+<p class="level2text">Only grey press is allowed in this game
+(however, press to the Master will always be sent as white
+press).</p>
+<p class="level1text">White/Grey:</p>
+<p class="level2text">Both white and grey press are allowed. By
+default press will be white (press to the Master will always be
+sent as white press).</p>
+<p class="level1text">Grey/White:</p>
+<p class="level2text">Both white and grey press are allowed. By
+default press will be grey (however, press to the Master will
+always be sent as white).</p>
+<p class="level1text">-------</p>
+<p class="level1text">Observer any:</p>
+<p class="level2text">Observers can post press with the same
+restrictions as regular players. This is the default and does not
+show up on list output.</p>
+<p class="level1text">Observer white:</p>
+<p class="level2text">Observers cannot post grey press. In a game
+that only allows grey press from players, press from observers
+will show up as white press.</p>
+<p class="level1text">Observer none:</p>
+<p class="level2text">Observers cannot post press at all, except
+to the Master.</p>
+<p class="level1text">-------</p>
+<p class="level1text">Partial Allowed:</p>
+<p class="level2text">Players may send messages to any one or
+more other players.</p>
+<p class="level1text">No Partial:</p>
+<p class="level2text">Only broadcast messages to all players can
+be sent. Press to individual players is disallowed, except press
+to the Master only. This option is only useful in Gunboat
+variants where the identities of the other players are
+unknown.</p>
+<p class="level1text">-------</p>
+<p class="level1text">No Fake:</p>
+<p class="level2text">Messages sent to individuals cannot appear
+as broadcast messages or vice versa, nor can messages sent to one
+group of individuals appear as though it was sent to an alternate
+group.</p>
+<p class="level1text">Partial may be Faked:</p>
+<p class="level2text">Messages sent to individuals can appear as
+broadcast messages or can appear as though they were sent to an
+alternate group.</p>
+<p class="level1text">Partial Fakes Broadcast by Default:</p>
+<p class="level2text">Messages sent to individuals will appear as
+broadcast messages to all players unless otherwise specified.</p>
+<p class="level1text">Partial Fakes Broadcast:</p>
+<p class="level2text">All messages, whether broadcast or to
+individuals, will appear as though they were a broadcast message
+to all players.</p>
+<p class="level1text">-------</p>
+<p class="level1text">PostalPress:</p>
+<p class="level2text">Players may send delayed (broadcast-only)
+messages that will not be distributed until after the current
+phase is processed. This may be enabled in addition to, or in
+lieu of, other forms of press.</p>
+<p class="level1text">The press setting values listed above can
+also be used by a moderator as command keywords, after the <span
+class="plaintext">SET</span> command, to change the types of
+allowable press. See <a href="#gameaccesssettings">section
+8.4</a>. For example:</p>
+<p class="example">SET GREY, PARTIAL FAKES BROADCAST</p>
+<p class="level1text">would mean that all press (except to or
+from the Master) would appear to be a grey broadcast message,
+even if it is actually sent to only one player. (The press
+settings that appear in the <a class="plaintext" href=
+"#LIST">LIST</a> results will not be in exactly the same format
+as shown above; for example, the "Observers None" setting would
+appear as "No Observers".)</p>
+<p class="level1text">Note: If fake press is allowed in a game,
+press to the Master will <i>not</i> be faked, and you will get
+scolded if you try.</p>
+<p class="level1text">By default, games are "White, Partial
+Allowed, No Fake, No PostalPress".</p>
+<p class="level1text"><u>Options</u></p>
+<p class="level1text">The <span class=
+"plaintext">BROADCAST</span> command without options is
+equivalent to "<span class="plaintext">PRESS TO ALL</span>"; that
+is, the message will be sent to all players. However, using the
+<span class="plaintext">PRESS</span> command without any options
+will result in no message being sent. This is to prevent
+accidental broadcasts, which can result in your secret attack
+plans being sent to the entire game. Finally, if <span class=
+"plaintext">BROADCAST</span> <i>is</i> followed by options, it is
+treated exactly the same as a <span class=
+"plaintext">PRESS</span> command (so if, for some odd reason, you
+wrote "<span class="plaintext">BROADCAST TO G</span>", the
+message would go only to Germany and not to the entire game).</p>
+<p class="level1text">(1) color-options</p>
+<p class="level1text"><span class="plaintext">WHITE | UNANONYMOUS
+| UNANONYMOUSLY</span></p>
+<p class="level2text">The message is sent out with your power and
+return address specified. This is only necessary if white and
+grey press are both allowed and grey is the default.</p>
+<p class="level1text"><span class="plaintext">GREY | ANONYMOUS |
+ANONYMOUSLY</span></p>
+<p class="level2text">The message is sent out with no indication
+as to the originator. This is only necessary if white and grey
+press are both allowed and white is the default.</p>
+<p class="level1text">(2) delivery-options</p>
+<p class="level1text"><span class="plaintext">TO list<br>
++list</span></p>
+<p class="level2text">The message will be sent only to the list
+of powers specified. The list consists of the single character
+identifier for the powers combined as a single word. Thus "<span
+class="plaintext">PRESS TO FRG</span>" would send the message to
+France, Russia and Germany in a Standard game. In most variants
+the first letter of the power is usually the character (but not
+always; for instance, India in the Youngstown variant is N rather
+than I since the latter is used to represent Italy). The special
+characters O and M are interpreted Observer and Master
+respectively in all variants.</p>
+<p class="level2text"><b>Warning:</b> only use initials in the
+list; you may be dismayed if you type "<span class=
+"plaintext">PRESS TO Turkey</span>", because the Judge will try
+to interpret "Turkey" as a list of initials. In a Standard game,
+this will result in an error message, because U, K, and Y are not
+valid power initials; in some variants, however, you might end up
+sending a message to six players!</p>
+<p class="level1text"><span class="plaintext">TO ALL BUT list<br>
+-list</span></p>
+<p class="level2text">The message is sent to all powers
+<i>except</i> those specified in the list. Note that since all
+press that can be read by Observers is archived in the game's
+history file, a message sent "<span class="plaintext">PRESS TO
+ALL BUT R</span>" (for example) will be available to Russia by
+means of the History command. Use "<span class="plaintext">PRESS
+TO ALL BUT RO</span>" to be sure that the message isn't archived.
+Also, remember that a Master is able (if he wants) to read all
+press regardless of how it is addressed.</p>
+<p class="level1text">(3) Fake options</p>
+<p class="level1text">The Judge's "fake press" options are not
+often used, and as a result are not widely understood. "Fake"
+press is press with a forged "To" line; you cannot use these
+options to make it look like press came <i>from</i> someone else.
+To hide the origin of press, you have to use the "<span class=
+"plaintext">GREY</span>" color-option.</p>
+<p class="level1text">The main use of "fake" press is to try to
+fool certain players into thinking that other players did or did
+not see your message when that is not the case. For example, you
+could send a partial press only to one player but make it look
+like a broadcast; or you could send a partial press to France and
+Germany addressed only to France (so that France doesn't know
+Germany also saw it). Some combinations of these options will
+work but not make much sense; for instance, if you send a message
+to Italy and it says "Press to Turkey" at the top, he will
+obviously know it is faked.</p>
+<p class="level1text"><span class="plaintext">[NO] FAKE
+[BROADCAST]</span></p>
+<p class="level2text">The message is faked (or not) as a
+broadcast message to all players. The "<span class="plaintext">NO
+FAKE</span>" option is needed only in a game that has the
+"Partial Fake Broadcast by Default" setting.</p>
+<p class="level1text"><span class="plaintext">FAKE [PARTIAL]
+delivery-option</span></p>
+<p class="level2text">The message is faked as going to the set of
+people specified even though it may be a broadcast message or be
+a message sent to an alternate set of people. The delivery-option
+may be any of the forms listed in the previous section.</p>
+<p class="level2text">For fake press, you must first specify the
+real recipients of the press (if not specified, a broadcast is
+assumed), then put the word "<span class="plaintext">FAKE</span>"
+followed by the addressees to be named in the message header
+(again, if not specified, it is assumed that a fake broadcast is
+intended). For example, "<span class="plaintext">PRESS FAKE TO
+FRG</span>" will be interpreted as a broadcast message to
+everyone that is faked as going to France, Russia and Germany
+rather than a message going to France, Russia and Germany that is
+faked as a broadcast. If the latter was intended the keyword
+"<span class="plaintext">FAKE</span>" can be placed at the end as
+in "<span class="plaintext">PRESS TO FRG FAKE</span>" or the
+keyword "<span class="plaintext">BROADCAST</span>" must be
+specified as in "<span class="plaintext">PRESS FAKE BROADCAST TO
+FRG</span>". As an example in a Grey press game allowing fake
+broadcasts, Italy might start off the game by posting the
+following press message:</p>
+<p class="example">PRESS TO ALL BUT G FAKE BROADCAST<br>
+This is Germany and I think you all are wimps. I bet I can win
+even if you all gang up against me.<br>
+<br>
+-Kaiser Bill<br>
+ENDPRESS</p>
+<p class="level2text">Everyone but Germany would get a press
+message with a header of "Broadcast message in 'gamename':".
+[Remember, however, that if Germany thinks to issue a <a class=
+"plaintext" href="#HISTORY">HISTORY</a> command, he can see this
+in the history archive. If this is undesirable, the command here
+should read "<span class="plaintext">PRESS TO ALL BUT GO FAKE
+BROADCAST</span>".] Then in the same (or a separate) message to
+the adjudicator (since there can be more than one press message
+per mail message) Italy could issue:</p>
+<p class="example">PRESS TO R<br>
+This is Austria, boy that Germany sure is obnoxious. Let's go all
+out against him!<br>
+<br>
+-Ferdinand<br>
+SIGNOFF</p>
+<p class="level2text">Russia would get the message with a header
+of "Message to Russia in 'gamename':". Of course, none of this
+would work if the game was White press since Italy's name would
+be in the header. If it was White/Grey, Italy would have to throw
+in the "<span class="plaintext">GREY</span>" keyword to get the
+effect, but even then (or if the game was Grey/White) it wouldn't
+quite be the same since if Germany really meant to be so
+obnoxious why wouldn't he just send the messages out as white
+press?</p>
+<p class="level1text">Press to the Master only is always allowed,
+no matter what the press settings are, so that requests for
+deadline extensions, or any other message needing the Master's
+attention, can be sent without having to resort to direct email
+outside of the game. Likewise, a Master can always issue press
+commands, to communicate with the players.</p>
+<p class="level1text">There are some commands that cause the
+Judge to send messages to all the players (<i>e.g.</i>, changing
+your return address in a non-gunboat game). If one of these
+commands has been processed and a partial, faked partial or grey
+press message is attempted, the Judge will send out the notice(s)
+as separate messages, to all players, and the partial, faked, or
+grey press will be sent as designated.</p>
+<p class="command"><a name="ENDBROADCAST">ENDBROADCAST</a><br>
+<a name="ENDPRESS">ENDPRESS</a></p>
+<p class="level1text">Terminate a Press or Broadcast message.
+Note that either form of this command will terminate either kind
+of message. This command <i>must</i> appear on a line by itself,
+or else it will be treated as part of the text of the message.
+Unlike most commands, these words <i>cannot</i> contain a space
+after the letters "<span class="plaintext">END</span>". Likewise,
+if "<span class="plaintext">SIGN</span> <span class=
+"plaintext">OFF</span>" is being used to terminate a press
+message (not recommended), it must appear on a line by
+itself.</p>
+<p class="command"><span class="versioncode">{1.2.0}</span><a
+name="POSTALPRESS">POSTAL PRESS</a></p>
+<p class="level1text">Send a delayed broadcast. If postal press
+is enabled, this command will append the lines following it to
+the postal press file, until an <a class="plaintext" href=
+"#ENDPRESS">ENDPRESS</a>, <a class="plaintext" href=
+"#ENDBROADCAST">ENDBROADCAST</a>, or <a class="plaintext" href=
+"#SIGNOFF">SIGN OFF</a> is encountered. When the orders process,
+the postal press file is mailed to everyone signed on to the
+game. All Postal Press is sent to all players and observers;
+there are no "partial" or fake options.</p>
+<hr>
+<br>
+<h2><a name="creatingandmastering">8. Creating and Mastering
+Standard Games</a></h2>
+<p>The commands in this section are used to "moderate" games;
+that is, control various game settings affecting deadlines,
+press, etc. Usually, these commands are issued by a Master, who
+is a non-participant in the game. However, the Judge also is
+configured to run "unmoderated" games, in which any of the
+players can change some of the game settings. Many Judges do not
+allow unmoderated games, so check with the Judgekeeper before
+attempting to start this type of game. The term "moderator" means
+either a Master in a moderated game, or any player in an
+unmoderated game.</p>
+<h3><a name="changingmoderationstatus">8.1 Changing Moderation
+Status</a></h3>
+<p class="command"><a name="BECOMEMASTER">BECOME MASTER</a></p>
+<p class="level1text">When a game is created, the user who
+created it is (under the default settings) signed on as a player.
+To make the game moderated and become a Master, the user should
+include this command immediately after the <a class="plaintext"
+href="#CREATE">CREATE</a> command. The Judgekeeper can modify the
+default settings so that the person who creates a game
+automatically becomes a Master, in which case this command is
+unnecessary; however, it does no harm to use it anyway.</p>
+<p class="command"><a name="SETMODERATE">SET MODERATE[D]</a></p>
+<p class="level1text">Changes a game from unmoderated to
+moderated. This is set by default by the "<a class="plaintext"
+href="#BECOMEMASTER">BECOME MASTER</a>" command.</p>
+<p class="command"><a name="SETUNMODERATE">SET
+UNMODERATE[D]</a></p>
+<p class="level1text">Can only be issued by a Master. Changes the
+game from moderated to unmoderated. As noted above, many
+Judgekeepers do not permit unmoderated games.</p>
+<h3><a name="masteronlycommands">8.2 Master-only
+Commands</a></h3>
+<p>The commands in this section can only be issued by a Master,
+and therefore cannot be used at all in unmoderated games.</p>
+<p class="command"><a name="BECOME">BECOME power</a></p>
+<p class="level1text">Allows the moderator for a game to assume
+the identity of a particular power. The <span class=
+"plaintext">power</span> specification may be spelled out or
+abbreviated. Any commands following this will be interpreted as
+if they had been submitted by the specified power; this allows a
+Master, for example, to change a player's password or to submit
+orders for a power. As a result, no Master-only commands
+(including another <span class="plaintext">BECOME</span>) can
+follow a <span class="plaintext">BECOME</span> command.</p>
+<p class="level1text">The player for "power" will receive a
+message from the Judge advising him that the Master used the
+<span class="plaintext">BECOME</span> command and confirming all
+commands entered by the Master. <b>Warning</b>: this message will
+include Master commands that preceded the <span class=
+"plaintext">BECOME</span> command. Masters therefore should not
+use any commands in the same message as a <span class=
+"plaintext">BECOME</span> that they wouldn't want the player to
+see.</p>
+<p class="level1text">The <span class="plaintext">BECOME</span>
+command is useful in a number of situations. One use is to submit
+commands for a particular power if, for example, the player for
+that power gets disconnected from the network and calls the
+Master on the phone to give his orders.</p>
+<p class="level1text">(Note, however, that a Master can submit
+orders for any unit in the game without using the <span class=
+"plaintext">BECOME</span> command. Orders for multiple units can
+be specified on the same line, separated by commas or semicolons;
+but you shouldn't mix orders for units belonging to multiple
+powers on the same line. This technique is used in some variants
+to allow the Master to manipulate the players' orders in some way
+before entering them into the Judge. In other situations, the
+<span class="plaintext">BECOME</span> command is preferred,
+because otherwise the true owner of the power will not receive
+the confirmation reply from the Judge. Also, the "orders have
+been received" flag will <i>not</i> be set for a particular power
+if their orders were submitted by the Master without the <span
+class="plaintext">BECOME</span> command. It this case, it may be
+necessary to use the <a class="plaintext" href=
+"#PROCESS">PROCESS</a> command to get the phase processed.)</p>
+<p class="level1text">You can also use the <span class=
+"plaintext">BECOME</span> command to <a class="plaintext" href=
+"#SETABSENCE">SET ABSENCE</a> for a player, either because the
+player isn't clear on how to do it themselves, or because their
+requested absence exceeds the current <a class="plaintext" href=
+"#SETMAXABSENCE">MAX ABSENCE</a> setting. The <span class=
+"plaintext">MAX</span> <span class="plaintext">ABSENCE</span>
+setting does not apply to absences entered by the Master using
+the <span class="plaintext">BECOME</span> command. However,
+Masters should avoid approving unusually long delays without the
+consent of the players (anything over two weeks is generally
+considered "unusually long," although this depends on the
+expectations of players in a particular game).</p>
+<p class="level1text">The <span class="plaintext">BECOME</span>
+command does not reveal the power's password to the Master
+(except on some older versions of the Judge software). However,
+the Master can use the <a class="plaintext" href=
+"#SETPASSWORD">SET PASSWORD</a> command after <span class=
+"plaintext">BECOME</span> to set a new password for a player who
+has lost or forgotten theirs. Example:</p>
+<p class="example">signon mexample password<br>
+press to X<br>
+Your new password will be "iforgot" (without the quotation
+marks.)<br>
+-- Master<br>
+endpress<br>
+become X<br>
+set password iforgot<br>
+signoff</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="EJECT">EJECT power|email</a></p>
+<p class="level1text">Resign a particular power. This is the only
+command a Master may use to resign himself. If an email address
+is specified, the command will work to resign observers too. The
+"<span class="plaintext">EJECT</span> power" form will not work
+if more than one person is signed on to the specified power
+(which can occur if there is more than one Master or more than
+one Observer in a game).</p>
+<p class="command"><span class="versioncode">{1.4.0}</span><a
+name="FORCEBEGIN">FORCE BEGIN</a></p>
+<p class="level1text">Forces a game to begin, even if not enough
+players are signed on. The missing players will be filled in by
+'dummy players' that are already abandoned (to allow real people
+to sign on).</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="PREDICT">PREDICT</a></p>
+<p class="level1text">Will send to the Master a prediction of the
+current turn, using partial orders already entered.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="PROMOTE">PROMOTE email</a></p>
+<p class="level1text">Promote the Observer with the specified
+email address to a Master. A game may have more than one Master
+at any time. This will not work unless "<span class=
+"plaintext">email</span>" is already recognized as the email
+address of an Observer in the game.</p>
+<p class="command"><a name="PROCESS">PROCESS [season year
+phase]</a></p>
+<p class="level1text">Direct the Judge to process orders
+immediately with whatever it has in its list. Partial or
+nonexistent orders do not cause powers to be considered in civil
+disorder. This can be useful after a <a class="plaintext" href=
+"#ROLLBACK">ROLLBACK</a> command or if you want to not wait for a
+player for some particular reason. If the optional (but highly
+recommended) phase is specified, the <span class=
+"plaintext">PROCESS</span> command will be ignored unless that is
+indeed the current phase. Specifying the phase allows you to
+avoid potential disaster if the Judge processed the desired phase
+shortly ahead of getting your request. Without it, your command
+would process the next phase, which could potentially expose
+orders that players had pending. A typical "<span class=
+"plaintext">season year phase</span>" specification might be
+"<span class="plaintext">fall 1905 retreat</span>".</p>
+<p class="command"><a name="ROLLBACK">ROLLBACK
+[turn_number]</a></p>
+<p class="level1text">Roll the game back to the specified turn
+number. The turn number is displayed in all the reports and
+lists, starting at 001 for spring 1901 moves (in a Standard game)
+and incrementing for each actual phase that's played. Retreats
+and adjustments that are not played do not increment the turn
+number. If <span class="plaintext">turn_number</span> is omitted,
+the game will be rolled back to the immediately preceding turn.
+Specifically, this command will roll back the game to its state
+immediately <i>before</i> <span class=
+"plaintext">turn_number</span> was processed, so if you want to
+roll the game back to the very start you could use "<span class=
+"plaintext">ROLLBACK 001</span>". By contrast, "<span class=
+"plaintext">ROLLBACK 002</span>" would return a Standard game to
+the state that existed after Spring 1901 Moves but before Fall
+1901 Moves.</p>
+<p class="level1text">History is kept for at least a month, but
+it may not be possible to go back too far - this command is
+intended to go back one phase for the case where one person's
+orders get messed up and need to be resubmitted. Orders for
+intermediate turns that were skipped over should remain intact,
+but those previous orders may wind up being meaningless based on
+changes in the results of the reprocessed turn. Any pending
+orders that existed will also be reprocessed so if they were
+revised by hand the first time the replayed phase was processed
+the revisions may get lost.</p>
+<p class="level1text">Most Masters make it a policy never to
+rollback a turn except to correct an adjudication error (which is
+rare). If you do rollback a turn, you should immediately enter
+the necessary corrections to orders and <a class="plaintext"
+href="#PROCESS">PROCESS</a> the turn again.</p>
+<p class="command"><a name="SETALLPRESS">SET ALL PRESS</a></p>
+<p class="level1text">This command will cause all partial press
+between the players to be copied (silently) to each Master as
+well. This is useful in games involving novice players to help in
+identifying and correcting common mistakes. It is also useful as
+a precaution against cheating. Note, however, that in non-gunboat
+games players may communicate directly rather than going through
+the Judge, so you may miss traffic. If you use this option you
+must pay careful attention so that you don't leak any information
+to the other players.</p>
+<p class="command"><a name="SETNORMALPRESS">SET NORMAL
+PRESS</a></p>
+<p class="level1text">This command clears the "All Press"
+flag.</p>
+<p class="command"><a name="SETQUIET">SET [NO] QUIET</a></p>
+<p class="level1text">If enabled, no announcements about player
+abandonment, power takeovers and such will be broadcast to the
+other players or observers. Its purpose is to prevent information
+from being disclosed in gunboat games, particularly tournaments
+where multiple games may lose the same player.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETWATCHALLPRESS">SET [NO] WATCH ALL PRESS</a></p>
+<p class="level1text">If enabled, allows Observers to use the <a
+class="plaintext" href="#SETALLPRESS">SET ALL PRESS</a> command
+to see partial press between players. Use with caution, for
+obvious reasons.</p>
+<p class="command"><span class="versioncode">{1.1.0}</span><a
+name="UNSTART">UNSTART</a></p>
+<p class="level1text">Return the game to the position immediately
+prior to the start of the game. Powers will be unassigned and the
+game will be flagged <a href="#SETMANUALSTART">Manual Start</a>.
+Games can only be unstarted if no turns have yet processed. This
+can be useful if a player is ejected or resigns; the game can be
+unstarted, so a replacement can enter a preference list rather
+than have to take whichever power is left.</p>
+<h3><a name="standardgamemoderation">8.3 Standard Game Moderation
+Commands</a></h3>
+<p>Most of the <span class="plaintext">SET</span> commands in
+this section (and in all following sections relating to game
+moderation) will generate a message that will be sent to all
+people involved in the game indicating that you've been mucking
+around with the game parameters. Everyone active in the game
+should agree before standard game settings are adjusted. A Master
+has discretion to extend deadlines for particular turns upon
+request; a Master ordinarily should not, however, shorten the
+deadline without player consent.</p>
+<p class="command"><a name="RESUME">RESUME</a></p>
+<p class="level1text">Restart a completed or terminated game. Any
+player can resume a game unless a Master has used the <a class=
+"plaintext" href="#SETRESUME">SET NO RESUME</a> command, in which
+case this command is only available to Masters.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETAUTOSTART">SET [NO] AUTO START</a><br>
+<span class="versioncode">{0.8.9}</span><a name=
+"SETMANUALSTART">SET [NO] MANUAL START</a></p>
+<p class="level1text">Determine whether the game will
+automatically start when it has enough players signed on. <span
+class="plaintext">AUTO START</span> (the default) is equivalent
+to <span class="plaintext">NO MANUAL START</span>; and vice
+versa. If game was <span class="plaintext">MANUAL START</span>
+and ready to go, then <span class="plaintext">SET AUTO
+START</span> will start it.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETAUTOPROCESS">SET [NO] AUTO PROCESS</a><br>
+<span class="versioncode">{0.8.9}</span><a name=
+"SETMANUALPROCESS">SET [NO] MANUAL PROCESS</a></p>
+<p class="level1text">Determine whether turns will be processed
+automatically, or only when the moderator executes the <a class=
+"plaintext" href="#PROCESS">PROCESS</a> command. <span class=
+"plaintext">SET AUTO PROCESS</span> (the default) is equivalent
+to <span class="plaintext">SET NO MANUAL PROCESS</span>, and vice
+versa.</p>
+<p class="command"><a name="SETBN">SET BN|BNC [NUMBER]
+number</a><br>
+<a name="SETEP">SET EP number</a><br>
+<a name="SETMN">SET MN|MNC [NUMBER] number</a></p>
+<p class="level1text">All of these commands are now obsolete, and
+are retained for compatibility only. They were used to record
+information used to track games in various rating systems
+(Boardman numbers, which were used to track postal and email
+standard Diplomacy games; Electronic Protocol numbers, which were
+used to track email games only; and Miller numbers, which were
+used to track postal and email variant games). None of these
+numbering systems are currently being maintained. These commands
+could be used only after receiving a number from the number
+custodian.</p>
+<p class="command"><a name="SETCD">SET [NO] CD</a><br>
+<a name="SETNMR">SET [NO] NMR</a></p>
+<p class="level1text">Sets or clears the NMR flag. If set, the
+Judge will process orders after the grace period even if all
+powers have not yet submitted complete ones. Default is "NoNMR".
+See <a href="#thedeadlinesystem">section 5.1</a> for more
+details.</p>
+<p class="command"><a name="SETCOMMENTBEGIN">SET COMMENT
+BEGIN</a></p>
+<p class="level1text">Sets the comment that appears in the full
+listing format. The full comment consists of the rest of the
+input mail message up to (an optional) <span class=
+"plaintext">SIGN OFF</span> command.</p>
+<p class="command"><a name="SETCOMMENT">SET COMMENT text</a></p>
+<p class="level1text">Sets the comment that appears in the brief
+listing format. The text string should be under 60 characters in
+length.</p>
+<p class="command"><span class="versioncode">{0.8.10}</span><a
+name="SETCONCESSIONS">SET [NO] CONCESSIONS</a></p>
+<p class="level1text">Disables/enables concessions in DIAS games.
+Enabled by default. See <a href="#drawconcessioncommands">section
+7.3</a>.</p>
+<p class="command"><a name="SETDIAS">SET [NO] DIAS</a></p>
+<p class="level1text">Disables/enables requirement that all draws
+must include all survivors. Default is "DIAS". See <a href=
+"#drawconcessioncommands">section 7.3</a>.</p>
+<p class="command"><a name="SETLIST">SET [NO] LIST</a><br>
+<a name="SETPUBLIC">SET PUBLIC</a><br>
+<a name="SETPRIVATE">SET PRIVATE</a></p>
+<p class="level1text">Enables/disables public listing of the
+game. If a game is set <span class="plaintext">NO LIST</span>
+(the default) then only people who know about it will be able to
+see it. Useful for "by invitation only" games. <span class=
+"plaintext">PUBLIC</span> is equivalent to <span class=
+"plaintext">LIST</span>, and <span class=
+"plaintext">PRIVATE</span> is equivalent to <span class=
+"plaintext">NO LIST</span>.</p>
+<p class="command"><span class="versioncode">{1.1.0}</span><a
+name="SETPRFBOTH">SET PRFBOTH</a><br>
+<span class="versioncode">{1.1.0}</span><a name="SETPRFLIST">SET
+PRFLIST</a><br>
+<span class="versioncode">{1.1.0}</span><a name="SETPRFRAND">SET
+PRFRAND</a></p>
+<p class="level1text">Determine whether the Judge will assign
+powers exclusively using the preference lists entered by the
+players (<span class="plaintext">PRFLIST</span> - this is the
+default); randomly assign powers to all players (<span class=
+"plaintext">PRFRAND</span>); or assign a random power to any
+player that requests it, and powers according their preference
+lists to all other players (<span class=
+"plaintext">PRFBOTH</span>). See <a class="plaintext" href=
+"#SETPREFERENCE">SET PREFERENCE</a> in <a href=
+"#generalcommands">section 7.1</a>.</p>
+<p class="command"><a name="SETPROXY">SET [NO] PROXY</a></p>
+<p class="level1text">Clear/set the flag that allows one player
+to give control of one or more of his units to another player.
+Default is "<span class="plaintext">NO</span> <span class=
+"plaintext">PROXY</span>". See <a href="#moveretreatand">section
+6.1</a> for proxy syntax.</p>
+<p class="command"><a name="SETRATED">SET [UN]RATED</a></p>
+<p class="level1text">Designate a game as rated or unrated. By
+default moderated games are rated and unmoderated games are
+unrated. Unrated games will not affect the players' dedication
+rating. This flag may also be read by third-party rating
+systems.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span> <a
+name="SETRESUME">SET [NO] RESUME</a></p>
+<p class="level1text">If enabled (default), any player can resume
+a terminated game. If disabled, only a Master can. This flag is
+on by default because the Judge creates all games as unmoderated
+by default; however, there is probably no good reason to leave it
+on in a moderated game.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETSTRICTCONVOY">SET [NO] STRICT CONVOY</a></p>
+<p class="level1text">If enabled, disallows "implausible"
+convoys. This is disabled by default, so fleets can be ordered to
+convoy any army to any province defined in the map file. If set,
+only convoys that could conceivably succeed may be ordered. (As
+of the current version, the plausibility checking is rather
+minimal; it only rejects convoys if either the origin or
+destination province has no adjacent sea spaces.)</p>
+<p class="command"><a name="SETSTRICTWAIT">SET [NO] STRICT
+WAIT</a></p>
+<p class="level1text">Determines the ability of players to use
+the <a class="plaintext" href="#SETWAIT">SET WAIT</a> command. If
+<span class="plaintext">STRICT WAIT</span> is set, only players
+who have moves currently required will be allowed to use <span
+class="plaintext">SET WAIT</span>. If <span class=
+"plaintext">NO</span> <span class="plaintext">STRICT WAIT</span>
+is set (default), any currently active player can use <span
+class="plaintext">SET WAIT</span>.</p>
+<p class="command"><a name="TERMINATE">TERMINATE</a></p>
+<p class="level1text">Declare the game over without a resolution.
+If the game has not started, it will be ended and no one can ever
+sign onto it again.</p>
+<h3><a name="gameaccesssettings">8.4 Game Access
+Settings</a></h3>
+<p>The commands below can be used to restrict who is permitted as
+a player in a particular game.</p>
+<p class="command"><a name="SETACCESSANYSITE">SET ACCESS
+ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]</a></p>
+<p class="level1text">Restrict which users can sign on, based on
+the "Site" field in the player registration database. <span
+class="plaintext">ANY</span> is the default. Since the "site"
+setting is dependent on what users put in their registration
+forms, this command is no longer widely used.</p>
+<p class="command"><a name="SETALLOWPLAYER">SET ALLOW PLAYER
+[-]email</a></p>
+<p class="level1text">Add an address to the "allow" list for the
+game; or, using the "-" prefix, remove an address from that list.
+<b>Important</b>: if an "allow" list exists for a game, then
+<i>only</i> addresses on that list will be able to sign on as a
+player or observer. This can be used to set up an invitation-only
+game. <b>Warning</b>: putting a player on the "allow" list does
+<i>not</i> have the same effect as removing him from the "deny"
+list! See <a class="plaintext" href="#SETDENYPLAYER">SET DENY
+PLAYER</a>, below.</p>
+<p class="command"><a name="SETDEDICATION">SET DEDICATION
+minimum</a></p>
+<p class="level1text">Restricts access to the game to those
+people with a dedication point rating equal to or greater than
+the indicated <span class="plaintext">minimum</span> level. Note:
+setting the level to 0 or higher will prevent any
+newly-registered player from joining the game. The <span class=
+"plaintext">minimum</span> level can not be higher than the
+moderator's current dedication rating. The default setting is
+-10000. See <a href="#dedicationsystems">section 5.2</a>.</p>
+<p class="command"><a name="SETDENYPLAYER">SET DENY PLAYER
+[-]email</a></p>
+<p class="level1text">Add an address to the "deny" list for the
+game; or, using the "-" prefix, remove an address from that list.
+Any address on this list will be unable to sign on as a player or
+observer. Note that the "deny" list is not checked if an "allow"
+list exists.</p>
+<p class="command"><a name="SETLEVELANY">SET LEVEL
+ANY|NOVICE|AMATEUR|INTERMEDIATE|ADVANCED|EXPERT</a></p>
+<p class="level1text">Restricts access to a particular class of
+player. The three official classes are Novice, Intermediate, and
+Expert. Amateur means either Novice or Intermediate, and Advanced
+means either Intermediate or Expert. "Any" of course means any
+class of player may play (and is the default). Players can change
+their classification (if they feel their level has changed) by
+re-registering. See command <a class="plaintext" href=
+"#REGISTER">REGISTER</a> in <a href=
+"#playerinformationand">section 3.3</a>.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETONTIMERAT">SET ONTIMERAT minimum</a></p>
+<p class="level1text">Restricts access to the game to those
+people with an ontime ratio equal to or greater than the
+indicated <span class="plaintext">minimum</span> level. The <span
+class="plaintext">minimum</span> level can not be higher than the
+moderator's. The default setting is 0, which allows any user to
+play. This setting will not affect a newly-registered player,
+since that player by definition has a "perfect" ratio (0/0). See
+<a href="#dedicationsystems">section 5.2</a>.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETRESRAT">SET RESRAT maximum</a></p>
+<p class="level1text">Restricts access to the game to those
+people with a Civil Disorder ratio lower than or equal to the
+indicated <span class="plaintext">maximum</span> level. The <span
+class="plaintext">maximum</span> level can not be lower than the
+moderator's. The default setting is 1.0, which allows any user to
+play. This setting will not affect a newly-registered player,
+since that player by definition has a "perfect" ratio (0/0). See
+<a href="#dedicationsystems">section 5.2</a>.</p>
+<h3><a name="presssettings">8.5 Press Settings</a></h3>
+<p>The following commands can be used by a moderator to enable or
+disable various types of press. More detailed descriptions of
+each type of press are in <a href="#presscommands">section
+7.4</a>. The default settings are "<span class=
+"plaintext">WHITE</span>" and "<span class="plaintext">PARTIAL
+MAY BE FAKED</span>", and as noted below.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETBLANKPRESS">SET [NO] BLANK PRESS</a></p>
+<p class="level1text">Disables/enables players to send blank
+press messages. Usually not very useful to enable.</p>
+<p class="command"><span class="versioncode">{1.4.0}</span><a
+name="SETBROADCAST">SET [NO] BROADCAST [PRESS]</a><br>
+<span class="versioncode">{0.8.9}</span><a name=
+"SETNORMALBROADCAST">SET [NO] NORMAL BROADCAST</a></p>
+<p class="level1text">Disables/enables receiving broadcast press
+messages (does not affect any player's ability to <i>send</i>
+broadcasts). This command can be used by Observers as well as
+Masters. Enabled by default.</p>
+<p class="command"><a name="SETNOFAKE">SET NO FAKE
+[BROADCAST]</a></p>
+<p class="level1text">Disallow all fake press.</p>
+<p class="command"><a name="SETGREY">SET GREY [PRESS]</a><br>
+<a name="SETNOWHITE">SET NO WHITE [PRESS]</a></p>
+<p class="level1text">Sets press option to grey only;
+<i>i.e.</i>, the Judge will not identify the sender of any press
+messages (except to/from a Master).</p>
+<p class="command"><a name="SETGREYWHITE">SET GREY/WHITE
+[PRESS]</a></p>
+<p class="level1text">Sets press option to grey by default with
+white allowed. Players will have to use the <span class=
+"plaintext">WHITE</span> keyword to send white press.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETLATEPRESS">SET [NO] LATE PRESS</a></p>
+<p class="level1text">Disables/enables players who are marked as
+late from sending any press (except to a Master). Disabled by
+default.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETMINORPRESS">SET [NO] MINOR PRESS</a></p>
+<p class="level1text">Disables/enables the sending of press
+message during minor phases (retreats and builds). Face-to-face
+(and many postal) games commonly do not allow minor phase
+negotiations, Judge games historically have, so this is enabled
+by default. Cannot be changed once the game is in progress.</p>
+<p class="command"><span class="versioncode">{1.2.0}</span><a
+name="SETMUSTORDER">SET [NO] MUST ORDER</a></p>
+<p class="level1text">If enabled, players cannot send any press
+(except to a Master) until they have submitted valid orders.
+Disabled by default. If you use this setting, you should warn all
+players to use <span class="plaintext">SET WAIT</span> after
+submitting their initial orders, until they finish
+negotiating.</p>
+<p class="command"><a name="SETNOPRESS">SET NO PRESS</a><br>
+<a name="SETNONE">SET [PRESS] NONE</a></p>
+<p class="level1text">Disables all press/broadcast messages
+(except to/from a Master).</p>
+<p class="command"><a name="SETOBSERVERANY">SET OBSERVER
+ANY|NO|WHITE [PRESS]</a></p>
+<p class="level1text">Restrict the types of press messages that
+Observers can send. The options are as follows:</p>
+<p class="level2hang"><span class="plaintext">ANY</span> -
+Observers can send press subject to the same restrictions as
+regular players (this is the default).</p>
+<p class="level2hang"><span class="plaintext">NO</span> -
+Disallows all press from observers.</p>
+<p class="level2hang"><span class="plaintext">WHITE</span> -
+Observers may send white, but not grey, press messages.</p>
+<p class="command"><a name="SETPARTIAL">SET [NO] PARTIAL
+[PRESS]</a></p>
+<p class="level1text">Disables/enables the ability to send
+non-broadcast messages to individual powers. Enabled by default.
+(Partial press to and from the moderator is always enabled.)
+<span class="plaintext">SET PARTIAL</span> without any modifiers
+(see next two commands) allows partial press but does not change
+any of the "fake" settings.</p>
+<p class="command"><a name="SETPARTIALFAKESBROADCAST">SET PARTIAL
+FAKES BROADCAST [BY DEFAULT]</a></p>
+<p class="level1text">All messages, whether broadcast or partial
+(except to/from a Master), will appear as though they were a
+broadcast message to all players. If, and only if, <span class=
+"plaintext">BY DEFAULT</span> is included, then players may use
+fake-options (as explained in <a href="#presscommands">section
+7.4</a> ) to make their messages appear as non-broadcasts.</p>
+<p class="command"><a name="SETPARTIALMAY">SET PARTIAL MAY [BE
+FAKED]</a></p>
+<p class="level1text">Partial press messages will be faked only
+if the sender expressly uses a fake-option.</p>
+<p class="command"><span class="versioncode">{1.2.0}</span><a
+name="SETPOSTALPRESS">SET [NO] POSTAL PRESS</a></p>
+<p class="level1text">Turns postal press on or off. Disabled by
+default. Postal press is press published with the results of the
+turn.</p>
+<p class="command"><a name="SETWHITE">SET WHITE [PRESS]</a><br>
+<a name="SETNOGREY">SET NO GREY [PRESS]</a></p>
+<p class="level1text">Sets press option to white only. All press
+will disclose the identity of the sender, and the <span class=
+"plaintext">GREY</span> option will not be accepted.</p>
+<p class="command"><a name="SETWHITEGREY">SET WHITE/GREY
+[PRESS]</a></p>
+<p class="level1text">Sets press option to white by default; grey
+press may be sent by expressly using the <span class=
+"plaintext">GREY</span> keyword.</p>
+<h3><a name="deadlinerelatedsettings">8.6 Deadline-related
+Settings</a></h3>
+<p class="command"><a name="SETDEADLINE">SET DEADLINE
+date</a></p>
+<p class="level1text">Change the deadline for the current phase.
+This can be either earlier or later than the previously-set
+deadline, but a moderator should have a very good reason before
+setting it earlier. If the new deadline is later than the old
+one, the grace period will automatically be extended to the
+appropriate interval after the new deadline. The reverse is not
+true, however; if the deadline is moved to an earlier date, the
+grace period will not automatically change. See <a href=
+"#quickstartfor">section 2.1</a> for the available <span class=
+"plaintext">date</span> formats.</p>
+<p class="command"><a name="SETGRACE">SET GRACE date</a></p>
+<p class="level1text">Change the grace period for the current
+phase. This can be either earlier or later than the
+previously-set grace period, but cannot be earlier than the
+current deadline.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETLATECOUNT">SET [NO] LATE COUNT</a></p>
+<p class="level1text">Disables/enables late counting. Disabled by
+default. If enabled, every time a player is late the late
+messages will include a count of the number of times this player
+has been late in the game. This counter will be reset when a new
+player takes over.</p>
+<p class="command"><span class="versioncode">{0.8.7}</span><a
+name="SETMAXABSENCE">SET MAX ABSENCE number</a></p>
+<p class="level1text">Sets the maximum absence duration that a
+player can set, in days. Default is 15. This does not apply to
+absences set by a Master. The <span class=
+"plaintext">number</span> can be set no higher than 31 and no
+lower than 0. See <span class="plaintext">SET</span> <span class=
+"plaintext">ABSENCE</span> in <a href=
+"#deadlinerelatedcommands">section 7.2</a> for further
+details.</p>
+<p class="command"><a name="SETMOVE">SET MOVE setting value
+[setting value ...]</a><br>
+<a name="SETRETREAT">SET RETREAT setting value [setting value
+...]</a><br>
+<a name="SETADJUST">SET ADJUST setting value [setting value
+...]</a></p>
+<p class="level1text">Change the default deadline calculations
+for the game. The "setting" specification may be any of the
+following: <span class="plaintext">CLOCK, MIN, NEXT, GRACE,
+DELAY, DAYS</span>. See <a href="#thedeadlinesystem">section
+5.1</a> for explanation of each setting. These settings will
+affect the calculation of all future deadlines, but will not
+affect the current phase.</p>
+<p class="command"><a name="SETSTART">SET START date</a></p>
+<p class="level1text">Change the earliest date/time at which
+orders can be processed for the current phase. If <span class=
+"plaintext">date</span> is later than the current deadline, the
+deadline will also be extended to <span class=
+"plaintext">date</span>. This command is rarely used, since it is
+usually easier for the moderator to use <a class="plaintext"
+href="#SETWAIT">SET WAIT</a>.</p>
+<p class="command"><a name="SETSTRICTGRACE">SET [NO] STRICT
+GRACE</a></p>
+<p class="level1text">Determines whether the "days" setting will
+apply to the grace period. If enabled, the grace setting will be
+applied as an <i>absolute</i> time interval after the deadline.
+If disabled (default), then grace periods will be extended, if
+necessary, to conform to the "days" setting. For example, if a
+game has deadlines on weekdays only and a 24-hour grace period,
+the default setting would set the grace period for Monday if the
+deadline is on Friday. However, the Strict Grace flag would cause
+the grace period to expire on Saturday in this situation.</p>
+<hr>
+<br>
+<h2><a name="configuringvariantgames">9. Configuring Variant
+Games</a></h2>
+<p>The Judge is capable of adjudicating a wide variety of
+variants of the standard Diplomacy game. Some of these are "rules
+variants" using the standard map with modified rules
+(<i>e.g.</i>, different types of units, different number of
+powers, different starting positions, etc.). Other variants
+include a different map as well as non-standard rules.</p>
+<p>For a list of all variants currently supported by a particular
+Judge, send the command "<span class="plaintext"><a href=
+"#SIGNON">SIGN ON</a> ? password XXX</span>" (where "<span class=
+"plaintext">XXX</span>" can be anything that is <i>not</i> a
+valid variant name). Most variants have an "info" file that
+describes the variant, which can be obtained by sending the
+command "<span class="plaintext"><a href="#GET">GET</a>
+INFO.variant</span>", where <span class=
+"plaintext">variant</span> is a valid variant name.</p>
+<p>The Judge also recognizes a few "variant options" that can be
+combined with any variant (including the Standard "variant").
+These also have their own <span class=
+"plaintext">INFO.option</span> files.</p>
+<p>The variant can be specified either by including it in the <a
+class="plaintext" href="#CREATE">CREATE</a> command, see <a href=
+"#creatingobservingand">section 4</a>, or by using the following
+commands before the game starts.</p>
+<p class="command"><a name="SETVARIANT">SET VARIANT
+variant|option</a></p>
+<p class="level1text">To change the variant of a game, or add an
+optional rule. This can only be done before the powers are
+assigned and before the requisite number of players for the new
+variant type have signed on. <span class="plaintext">SET</span>
+<span class="plaintext">VARIANT</span> can only be used to set
+one option per command (unlike <a class="plaintext" href=
+"#CREATE">CREATE</a>). Note: if the game has been set as a
+variant and it is desired to un-set this, use "<span class=
+"plaintext">SET VARIANT STANDARD</span>".</p>
+<p class="command"><a name="SETNOTVARIANT">SET NOT VARIANT
+option</a></p>
+<p class="level1text">Disable the specified optional rule. This
+command can only be used to remove options, not to change the
+underlying variant type. To change the variant itself, use <a
+class="plaintext" href="#SETVARIANT">SET VARIANT</a>.</p>
+<h3><a name="generalvariantsettings">9.1 General Variant
+Settings</a></h3>
+<p>The following commands can be used either in conjunction with
+a pre-packaged variant, or to "roll your own" variant on an
+existing map by modifying various rules. Since these commands
+alter the nature of the game, they can only be issued by a
+moderator before the game has begun. Unless otherwise noted, all
+these optional rules are disabled by default (that is, the
+default setting is "NO" or "NORMAL").</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETANYCENTER">SET ANY CENTER[S]|CENTRE[S]</a></p>
+<p class="level1text">Allows a power to build in any owned (home
+or non-home) center during a build phase.</p>
+<p class="command"><a name="SETANYDISBAND">SET ANY DISBAND</a>
+{not yet implemented}</p>
+<p class="level1text">Allow powers to disband any unit during a
+build phase (and thus gain the option to rebuild on a buildable
+center if desired). A 'wait' is set for all active players during
+the build phase. Opposite of <a class="plaintext" href=
+"#SETNORMALDISBAND">SET NORMAL DISBAND</a>, see below.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETATTACKTRANSFORM">SET [NO] ATTACK TRANSFORM</a></p>
+<p class="level1text">Transformations on attacked but not
+dislodged units will fail/work. See <a class="plaintext" href=
+"#SETTRANSFORM">SET TRANSFORM</a>, below, for an explanation of
+the transformation options.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETAUTODISBAND">SET [NO] AUTO DISBAND</a></p>
+<p class="level1text">If enabled, units are automatically
+disbanded when dislodged; <i>i.e.</i>, no retreats are
+permitted.</p>
+<p class="command"><a name="SETBCENTERS">SET [NO]
+BCENTERS|BCENTRES</a></p>
+<p class="level1text">Enable/disable the display of <i>all</i>
+owned centers (not just those of the power sending the command)
+in "Blind" variant.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETBLANKBOARD">SET BLANK BOARD</a><br>
+<span class="versioncode">{0.8.9}</span><a name=
+"SETEMPTYBOARD">SET EMPTY BOARD</a></p>
+<p class="level1text">Set the game to start in a build phase,
+with no units, so that players can choose a different initial
+stating unit position. Has no effect on variants that already
+start in a build phase (such as Chaos).</p>
+<p class="command"><a name="SETCENTERS">SET CENTERS
+number</a></p>
+<p class="level1text">Set the number of centers required to win
+the game to <span class="plaintext">number</span>. This will
+cause the game to end when the first player reaches this number
+of winning centers. If more than one player reaches this value in
+the same year, then it is increased to one more center than the
+top players have. The players can still end the game before the
+victory condition is achieved, using the <a class="plaintext"
+href="#SETDRAW">SET DRAW</a> command.</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETCOASTALCONVOYS">SET [NO] COASTAL CONVOYS</a></p>
+<p class="level1text">Disables/enables fleets in coastal
+provinces from participating in a convoy. Default enabled for
+Machiavelli games, disabled for all other variants (including
+Machiavelli2).</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETDISBAND">SET [NO] DISBAND</a></p>
+<p class="level1text">If enabled, players can voluntarily disband
+a unit during a normal movement phase. Default enabled for
+Machiavelli, disabled for Machiavelli2 and all other
+variants.</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETDUALITY">SET [NO] DUALITY</a></p>
+<p class="level1text">Disables/enables provinces with dual
+behaviour (both land and water). This is only available as an
+option in certain variants (including Standard) where it is coded
+into the map file. Get file 'duality' for more details.</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETGATEWAYS">SET [NO] GATEWAYS</a></p>
+<p class="level1text">Disables/enables gateways. This can only be
+used in a variant that has this option coded into its map file.
+Get file 'info.colonial' for an example and explanation.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETHOMECENTER">SET HOME CENTER[S]|CENTRE[S]</a></p>
+<p class="level1text">Allow builds to be made only in the
+building power's home centers during build phase. (Default
+setting for Standard games.) See also <a class="plaintext" href=
+"#SETANYCENTER">SET ANY CENTER</a>, above; <a class="plaintext"
+href="#SETONECENTER">SET ONE CENTER</a>, below.</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETHONGKONG">SET [NO] HONG KONG</a></p>
+<p class="level1text">Disables/enables "HongKong" rule. Can only
+be used in a variant that has this option coded into its map
+file. Get file 'info.colonial' for an example and
+explanation.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETNORMALDISBAND">SET NORMAL DISBAND</a></p>
+<p class="level1text">Uses the standard rules for disbands on a
+build turn; <i>i.e.</i>, a power can only disband when it has
+more units than centers. Opposite of <a class="plaintext" href=
+"#SETANYDISBAND">SET ANY DISBAND</a>, above.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETONECENTER">SET ONE CENTER[S]|CENTRE[S]</a></p>
+<p class="level1text">Allow a power to build in any owned
+(non-home) center during a build phase, as long as one home
+center is still owned.</p>
+<p class="command"><a name="SETPLAYERS">SET PLAYERS
+number</a></p>
+<p class="level1text">Sets the number of players (not powers) in
+the game. When the number of players is set to less than the
+number of powers, the game will begin when that number of players
+signs on to the game, assigning excess powers evenly among the
+players, thus enabling players to play multiple powers. Get file
+'info.duplex' for more information and an example. (It is not
+meaningful to set this value to more than the number of powers in
+the game.)</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETRAILWAYS">SET [NO] RAILWAYS</a></p>
+<p class="level1text">Disables/enables railways. Can only be used
+in a variant that has this option coded into its map file. Get
+file 'info.colonial' for an example and explanation.</p>
+<p class="command"><a name="SETREVEAL">SET [NO] REVEAL</a></p>
+<p class="level1text">This setting is <i>enabled</i> by default.
+If disabled, the player list will not be revealed in <a class=
+"plaintext" href="#SUMMARY">SUMMARY</a> output after the game
+terminates. This is useful for gunboat tournaments where player
+lists may be the same in multiple games. It is not useful in a
+non-Gunboat game since the player identities will already be
+known.</p>
+<p class="command"><span class="versioncode">{1.1.0}</span><a
+name="SETSECRET">SET [NO] SECRET</a></p>
+<p class="level1text">If enabled, the number of players (not
+powers) in the game will not be revealed to the players or
+observers. This is intended for use in duplex games.</p>
+<p class="command"><a name="SETSHOW">SET [NO] SHOW</a></p>
+<p class="level1text">This setting is <i>enabled</i> by default,
+except in Gunboat games. If it is disabled, changes to game
+settings will appear to be made by 'someone@somewhere'.
+Otherwise, the changer will have their email shown.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETTRANSFORM">SET [NO] TRANSFORM [transform-option
+[transform-option]]</a><br>
+<span class="versioncode">{0.8.9}</span>SET [NO] TRAFO
+[transform-option [transform-option]]</p>
+<p class="level1text">Enables or disables unit transformation
+orders (<i>e.g.</i>, changing an army to a fleet, etc.),
+according to <span class="plaintext">'transform-option'</span>.
+The command must include either the <span class=
+"plaintext">NO</span> flag or a <span class=
+"plaintext">transform-option</span>, but not both. The available
+options are as follows:</p>
+<p class="level1text"><span class="plaintext">NONE</span>
+(equivalent <span class="plaintext">to SET NO TRANSFORM</span>);
+or</p>
+<p class="level1text"><span class="plaintext">when:where</span>,
+in which</p>
+<p class="level2text"><span class="plaintext">when</span> is
+either <span class="plaintext">MOVE</span> or <span class=
+"plaintext">BUILD; and</span></p>
+<p class="level2text"><span class="plaintext">where</span> is one
+of:</p>
+<p class="level3text"><span class=
+"plaintext">HOME[CENTRE|CENTER]<br>
+ONE[CENTRE|CENTER]<br>
+ANY[CENTRE|CENTER]<br>
+ANYWHERE<br>
+NONE</span></p>
+<p class="level1text"><span class="plaintext">CENTRE</span> and
+<span class="plaintext">CENTER</span> are interchangeable (and
+optional). <span class="plaintext">ANY</span> is assumed to be an
+abbreviation for <span class="plaintext">ANYCENTER</span>, so
+<span class="plaintext">ANYWHERE</span> must be spelled out in
+full if used.</p>
+<p class="level1text">If you omit the <span class=
+"plaintext">"when"</span> specification, it defaults to <span
+class="plaintext">BUILD</span>. So, "<span class="plaintext">SET
+TRANSFORM :ANYCENTER</span>" is the same as "<span class=
+"plaintext">SET TRANSFORM BUILD:ANYCENTER</span>".</p>
+<p class="level1text">If you omit the <span class=
+"plaintext">"where"</span> specification, it defaults to <span
+class="plaintext">HOMECENTER</span>. So, "<span class=
+"plaintext">SET TRANSFORM MOVE</span>" is equivalent to "<span
+class="plaintext">SET TRANSFORM MOVE:HOMECENTER</span>".</p>
+<p class="level1text">"<span class="plaintext">SET TRANSFORM
+where</span>" without a ":" will return an error message.</p>
+<p class="level1text"><span class="plaintext">SET</span> <span
+class="plaintext">TRANSFORM</span> <span class=
+"plaintext">NONE</span> and <span class="plaintext">SET</span>
+<span class="plaintext">NO TRANSFORM</span> do not work correctly
+in njudge versions 1.3.1 and earlier. Once transform options are
+turned on in these versions, there is no way to turn them off
+(except by manual editing of the game file by the
+Judgekeeper)!</p>
+<p class="level1text">If activated, the transform options operate
+as follows:</p>
+<p class="level1text"><u>"When" options</u>:</p>
+<p class="level2hang"><span class="plaintext">MOVE</span>: Allows
+transformations in a move phase where permitted by the "where"
+option. A unit that is ordered to transform is deemed to be
+holding, and may receive support from other units to hold. If the
+unit is dislodged, the order to transform fails. If a unit is
+attacked but not dislodged, the result depends on the setting of
+the Attack Transform option (see <a class="plaintext" href=
+"#SETATTACKTRANSFORM">SET [NO] ATTACK TRANSFORM</a>, above).</p>
+<p class="level2hang"><span class="plaintext">BUILD</span>:
+Allows transformations in a build phase where permitted by the
+"where" option. Because it may be possible for a player who
+otherwise has no adjustments required to transform a unit in a
+build phase, an automatic 'wait' is placed on the build phase if
+this option is set.</p>
+<p class="level1text"><u>"Where" options</u>:</p>
+<p class="level2hang"><span class="plaintext">HOME CENTER</span>:
+Transformations are allowed during the specified phase only for
+units on a player's home centers.</p>
+<p class="level2hang"><span class="plaintext">ONE CENTER</span>:
+Transformations are allowed during the specified phase in any
+center as long as the player owns at least one home center.</p>
+<p class="level2hang"><span class="plaintext">ANY CENTER</span>:
+Transformations are allowed during the specified phase in any
+center.</p>
+<p class="level2hang"><span class="plaintext">ANYWHERE</span>:
+Transformations are allowed during the specified phase in any
+land province (units can never transform at sea). However, wings
+that are blockading may not transform during a build phase. Of
+course, an army may not transform into a fleet unless it is in a
+coastal province.</p>
+<p class="level2hang"><span class="plaintext">NONE</span>: No
+transformations are allowed during the specified phase.</p>
+<p class="level1text">See <a href="#moveretreatand">section
+6.1</a> for the syntax of transformation orders. Note, in
+particular, that the type of unit to be transformed into must
+always be specified (because this option can be used in games
+with Wing units).</p>
+<h3><a name="machiavellisettings">9.2 Machiavelli
+Settings</a></h3>
+<p>Machiavelli&trade; is a complex variant of Diplomacy, set in
+Renaissance Italy, that was commercially published by Battleline
+Games and later acquired by Avalon Hill. Machiavelli games have a
+variety of scenarios and optional rules that can be implemented
+on the Judge. These commands can only be issued by a moderator
+before the game starts. Get file 'info.machiavelli' for more
+specific information on standard and optional rules for this
+variant.</p>
+<p class="command"><a name="SETADJACENT">SET [NO]
+ADJACENT|ADJACENCY</a></p>
+<p class="level1text">Disables/enables optional rule that allows
+bribes from nonadjacent players.</p>
+<p class="command"><a name="SETASSASSINS">SET [NO]
+ASSASSINS|ASSASSINATION[S]</a></p>
+<p class="level1text">Disables/enables optional assassination
+rules.</p>
+<p class="command"><a name="SETBANK">SET [NO] BANK[ERS]</a><br>
+<a name="SETLOANS">SET [NO] LOANS</a></p>
+<p class="level1text">Disables/enables optional rules allowing
+players to borrow money from the bank.</p>
+<p class="command"><a name="SETDICE">SET [NO] DICE</a></p>
+<p class="level1text">Disables/enables optional rules that
+introduce random events into the game: variable income, bank
+loans, assassinations, famine and plague.</p>
+<p class="command"><a name="SETFAMINE">SET [NO] FAMINE</a></p>
+<p class="level1text">Disables/enables optional famine rules.</p>
+<p class="command"><span class="versioncode">{0.8.9}</span><a
+name="SETFORT">SET [NO] FORT[RESS]</a></p>
+<p class="level1text">Disables/enables optional fortress
+rules.</p>
+<p class="command"><span class="versioncode">{1.0.2}</span><a
+name="SETMACH2">SET [NO] MACH2</a></p>
+<p class="level1text">Disables/enables Machiavelli 2nd Edition
+(1995) rules. If disabled (default), Machiavelli 1st edition
+rules apply.</p>
+<p class="command"><span class="versioncode">{0.8.11}</span><a
+name="SETMONEY">SET [NO] MONEY</a></p>
+<p class="level1text">Disables/enables money. Without money,
+Machiavelli is similar to normal Diplomacy, where you need to own
+one city for each unit built.</p>
+<p class="command"><a name="SETPLAGUE">SET [NO] PLAGUE</a></p>
+<p class="level1text">Disables/enables optional plague rules.</p>
+<p class="command"><a name="SETSPECIAL">SET [NO] SPECIAL</a></p>
+<p class="level1text">Disables/enables optional rules that allow
+double strength units.</p>
+<p class="command"><span class="versioncode">{1.0.2}</span><a
+name="SETSTORM">SET [NO] STORM[S]</a></p>
+<p class="level1text">Disables/enables storms. Works as per
+plague, except causes fleets at sea to be eliminated randomly (in
+a storm).</p>
+<hr>
+<br>
+<h2><a name="judgekeepercommands">10. Judgekeeper
+Commands</a></h2>
+<p>These commands are listed solely for completeness. Further
+documentation on these commands is included with the
+<b>njudge</b> software distribution.</p>
+<p class="command"><a name="ADJUST">ADJUST userid
+increment</a></p>
+<p class="level1text">The <span class=
+"plaintext">increment</span> is added to the player's dedication
+rating.</p>
+<p class="command"><a name="FIXID">FIXID siteid site_name</a></p>
+<p class="level1text">Sets all players who have registered with
+the specified site name to have a <span class=
+"plaintext">siteid</span> as indicated. By default all users get
+their area code times 100 as a <span class=
+"plaintext">siteid</span> and must be fixed to some non- even
+multiple of 100.</p>
+<p class="command"><a name="NOCONTROL">NOCONTROL</a></p>
+<p class="level1text">Prevents broadcast messages from actually
+being sent. For debugging.</p>
+<p class="command"><span class="versioncode">{1.0.0}</span><a
+name="RECORD">RECORD userid field value special_pw</a></p>
+<p class="level1text">Adjusts the given user's record field (in
+the "plyrdata" file) given by <span class=
+"plaintext">field</span> to a new value given by <span class=
+"plaintext">value</span>. Fields are 1 for ontime, 2 for total, 3
+for start, 4 for resignations, and 5 for takeovers. The <span
+class="plaintext">special_pw</span> is defined in dip.conf.</p>
+<p class="command"><a name="SETALLOWMASTER">SET ALLOW
+MASTER|PLAYER [-]email</a><br>
+<a name="SETDENYMASTER">SET DENY MASTER|PLAYER [-]email</a></p>
+<p class="level1text">These work like the <a class="plaintext"
+href="#SETALLOWPLAYER">SET ALLOW PLAYER</a> and <a class=
+"plaintext" href="#SETDENYPLAYER">SET DENY PLAYER</a> commands
+for individual games, but when issued by the Judgekeeper in the
+special "control" game, they determine who can play in (or, if
+the <span class="plaintext">MASTER</span> option is used, who can
+create) <i>any</i> game on the Judge.</p>
+<hr>
+<br>
+<h2><a name="alphabeticalindexof">11. Alphabetical Index of
+Commands</a></h2>
+<p>Following is a list of all commands available on the Judge,
+except those limited to the Judgekeeper. Each command is indexed
+by the section number in which it is described in this manual. In
+compiling this index, optional flags that reverse the meaning of
+a "<span class="plaintext">SET</span>" command (such as "<span
+class="plaintext">SET [NO] something</span>") have been
+omitted.</p>
+<table cellspacing="0" cellpadding="7" width="687" summary=
+"alphabetic index of Judge commands" border="0">
+<tbody>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#ADJUST">ADJUST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETGREY">SET GREY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#BECOME">BECOME</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETGREYWHITE">SET GREY/WHITE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#BECOMEMASTER">BECOME MASTER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#changingmoderationstatus">8.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETHOLIDAY">SET HOLIDAY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedcommands">7.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#BROADCAST">BROADCAST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presscommands">7.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETHOMECENTER">SET HOME CENTER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#CLEAR">CLEAR</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#submittingordersfor">6.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETHONGKONG">SET HONG KONG</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#CREATE">CREATE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#creatingobservingand">4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETLATECOUNT">SET LATE COUNT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#EJECT">EJECT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETLATEPRESS">SET LATE PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#ENDBROADCAST">ENDBROADCAST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presscommands">7.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETLEVELANY">SET LEVEL</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#ENDPRESS">ENDPRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presscommands">7.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETLIST">SET LIST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#FIXID">FIXID</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETLOANS">SET LOANS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#GET">GET</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#userhelpcommands">3.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMACH2">SET MACH2</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#GETDEDICATION">GET DEDICATION</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMANUALPROCESS">SET MANUAL PROCESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#GETPACKAGE">GET PACKAGE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#userhelpcommands">3.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMANUALSTART">SET MANUAL START</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#GETWHOIS">GET WHOIS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMAXABSENCE">SET MAX ABSENCE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#HELP">HELP</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#userhelpcommands">3.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMINORPRESS">SET MINOR PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#HISTORY">HISTORY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameinformationcommands">3.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMN">SET MN</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#IAMALSO">I AM ALSO</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMODERATE">SET MODERATE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#changingmoderationstatus">8.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#IF">IF</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#submittingordersfor">6.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMONEY">SET MONEY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#INFOPLAYER">INFO PLAYER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMOVE">SET MOVE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#LIST">LIST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameinformationcommands">3.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETMUSTORDER">SET MUST ORDER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#MAP">MAP</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameinformationcommands">3.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNMR">SET NMR</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#NOCONTROL">NOCONTROL</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNOFAKE">SET NO FAKE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#OBSERVE">OBSERVE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#creatingobservingand">4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNOPRESS">SET NO PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#PHASE">PHASE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#submittingordersfor">6.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNONE">SET NONE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#POSTALPRESS">POSTAL PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presscommands">7.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNORMALBROADCAST">SET NORMAL BROADCAST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#PREDICT">PREDICT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNORMALDISBAND">SET NORMAL DISBAND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#PRESS">PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presscommands">7.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETNORMALPRESS">SET NORMAL PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#PROCESS">PROCESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETOBSERVERANY">SET OBSERVER ANY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#PROMOTE">PROMOTE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETONECENTER">SET ONE CENTER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#RECORD">RECORD</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETONTIMERAT">SET ONTIMERAT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#REGISTEREND">REGISTER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPARTIAL">SET PARTIAL</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#RESIGN">RESIGN</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalcommands">7.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPARTIALFAKESBROADCAST">SET PARTIAL FAKES
+BROADCAST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#RESUME">RESUME</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPARTIALMAY">SET PARTIAL MAY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#ROLLBACK">ROLLBACK</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPASSWORD">SET PASSWORD</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalcommands">7.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SEND">SEND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#userhelpcommands">3.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPLAGUE">SET PLAGUE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETABSENCE">SET ABSENCE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedcommands">7.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPLAYERS">SET PLAYERS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETACCESSANYSITE">SET ACCESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPOSTALPRESS">SET POSTAL PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETADDRESS">SET ADDRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalcommands">7.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPREFERENCE">SET PREFERENCE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalcommands">7.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETADJACENT">SET ADJACENT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPRFBOTH">SET PRFBOTH</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETADJUST">SET ADJUST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPRFLIST">SET PRFLIST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETALLPRESS">SET ALL PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPRFRAND">SET PRFRAND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETALLOWMASTER">SET ALLOW</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPRIVATE">SET PRIVATE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETALLOWPLAYER">SET ALLOW PLAYER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPROXY">SET PROXY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETANYCENTER">SET ANY CENTER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETPUBLIC">SET PUBLIC</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETANYDISBAND">SET ANY DISBAND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETQUIET">SET QUIET</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETASSASSINS">SET ASSASSINS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETRAILWAYS">SET RAILWAYS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETATTACKTRANSFORM">SET ATTACK TRANSFORM</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETRATED">SET RATED</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETAUTODISBAND">SET AUTO DISBAND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETRESRAT">SET RESRAT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETAUTOPROCESS">SET AUTO PROCESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETRESUME">SET RESUME</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETAUTOSTART">SET AUTO START</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETRETREAT">SET RETREAT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBANK">SET BANK</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETREVEAL">SET REVEAL</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBCENTERS">SET BCENTERS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSECRET">SET SECRET</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBLANKBOARD">SET BLANK BOARD</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSHOW">SET SHOW</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBLANKPRESS">SET BLANK PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSPECIAL">SET SPECIAL</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBN">SET BN</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSTART">SET START</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETBROADCAST">SET BROADCAST</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSTORM">SET STORM</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCD">SET CD</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSTRICTCONVOY">SET STRICT CONVOY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCENTERS">SET CENTERS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSTRICTGRACE">SET STRICT GRACE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCOASTALCONVOYS">SET COASTAL CONVOYS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETSTRICTWAIT">SET STRICT WAIT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCOMMENT">SET COMMENT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETTRANSFORM">SET TRANSFORM</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCOMMENTBEGIN">SET COMMENT BEGIN</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETUNMODERATE">SET UNMODERATE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#changingmoderationstatus">8.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCONC">SET CONCEDE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#drawconcessioncommands">7.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETVACATION">SET VACATION</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedcommands">7.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETCONCESSIONS">SET CONCESSIONS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETVARIANT">SET VARIANT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#configuringvariantgames">9</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDEADLINE">SET DEADLINE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETWAIT">SET WAIT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedcommands">7.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDEDICATION">SET DEDICATION</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETWATCHALLPRESS">SET WATCH ALL PRESS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDENYMASTER">SET DENY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#judgekeepercommands">10</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETWHITE">SET WHITE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDENYPLAYER">SET DENY PLAYER</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameaccesssettings">8.4</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SETWHITEGREY">SET WHITE/GREY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#presssettings">8.5</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDIAS">SET DIAS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SIGNOFF">SIGN OFF</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#thesinglemost">3.1</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDICE">SET DICE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SIGNON">SIGN ON</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#creatingobservingand">4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDISBAND">SET DISBAND</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#SUMMARY">SUMMARY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameinformationcommands">3.4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDRAW">SET DRAW</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#drawconcessioncommands">7.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#TERMINATE">TERMINATE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETDUALITY">SET DUALITY</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#UNSTART">UNSTART</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#masteronlycommands">8.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETEMPTYBOARD">SET EMPTY BOARD</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#VERSION">VERSION</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#userhelpcommands">3.2</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETEP">SET EP</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#standardgamemoderation">8.3</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#WATCH">WATCH</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#creatingobservingand">4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETFAMINE">SET FAMINE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#WHO">WHO</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETFORT">SET FORT</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#machiavellisettings">9.2</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#WHOIS">WHO IS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#playerinformationand">3.3</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETGATEWAYS">SET GATEWAYS</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalvariantsettings">9.1</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#WHOGAME">WHOGAME</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#gameinformationcommands">3.4</a></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="41%">
+<p><a href="#SETGRACE">SET GRACE</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#deadlinerelatedsettings">8.6</a></p>
+</td>
+<td valign="top" width="5%"></td>
+<td valign="top" width="41%">
+<p><a href="#WITHDRAW">WITHDRAW</a></p>
+</td>
+<td valign="top" width="6%">
+<p align="right"><a href="#generalcommands">7.1</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
+
+
