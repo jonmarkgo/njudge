@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/05/02 23:15:19  millis
+ * Added in definitions for Neutral player
+ *
  * Revision 1.12  2002/12/28 01:08:09  millis
  * Bug 57, Add colonial96 variant
  *
@@ -179,7 +182,7 @@ char *powers[] =
 	"North","South","East","West","Cyprus","Dissentos",
 	"Syria","Carthage","Macedon","Rome","Greece",
 	//** ADD NEW POWERS ABOVE THIS LINE! **/
-	"a power","Autonomous","Observer","Master"};
+	"a power", "Neutral", "Autonomous","Observer","Master"};
 
 /*  Owner names (i.e., possessive form of power names).  */
 
