@@ -40,6 +40,7 @@ SRCS = 	assign.c \
 		jm.c \
 		lib.c \
 		ma_build.c \
+		ma_build_basic.c \
 		ma_expenses.c \
 		ma_famplag.c \
 		ma_movement.c \
@@ -429,7 +430,8 @@ assign.o: assign.c dip.h conf.h port.h variant.h
 bailout.o: bailout.c dip.h conf.h port.h variant.h diplog.h
 common.o: common.c dip.h conf.h port.h variant.h porder.h
 conf.o: conf.c conf.h hashtable.h
-dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h
+dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h \
+ plyrdata.h
 dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
  defaults.inc functions.h diplog.h
 diplog.o: diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
@@ -442,6 +444,8 @@ jm.o: jm.c functions.h dip.h conf.h port.h variant.h
 lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
 ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h
+ma_build_basic.o: ma_build_basic.c dip.h conf.h port.h variant.h \
+ functions.h porder.h
 ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
 ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
@@ -467,12 +471,12 @@ ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
 ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
  functions.h
 ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
- dipstats.h diplog.h
+ dipstats.h diplog.h plyrdata.h
 ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
- ml_signon.h functions.h dipstats.h
+ ml_signon.h functions.h dipstats.h plyrdata.h
 params.o: params.c dip.h conf.h port.h variant.h functions.h
-phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
 plyrdata.o: plyrdata.c plyrdata.h
+phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
 po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
  functions.h porder.h
 po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
@@ -494,7 +498,8 @@ st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
  porder.h
 strcasecmp.o: strcasecmp.c
 strdup.o: strdup.c
-users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h
+users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h \
+ plyrdata.h
 variant.o: variant.c dip.h conf.h port.h variant.h
 version.o: version.c dip.h conf.h port.h variant.h functions.h
 cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
@@ -508,7 +513,7 @@ flock.o: flock.c port.h
 fmtwho.o: fmtwho.c functions.h dip.h conf.h port.h variant.h
 ign.o: ign.c
 pdip.o: pdip.c
-recdump.o: recdump.c 
+recdump.o: recdump.c plyrdata.h
 rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
