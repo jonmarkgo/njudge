@@ -93,12 +93,14 @@ commands which are almost synonymous:
 
    BROADCAST [options]          -or-            PRESS options
 
-If no options are specified *and the broadcast command was used* the
-message will be sent to all players.
-
-[In other words, using the command "press" without any options will result
-in no message being sent.  This is to prevent accidental broadcasts, which
-can result in your secret attack plans being sent to the entire game.]
+By default, the BROADCAST command without options is equivalent to "PRESS TO
+ALL"; that is, the message will be sent to all players.   However, using the
+PRESS command without any options will result in no message being sent. 
+This is to prevent accidental broadcasts, which can result in your secret
+attack plans being sent to the entire game.  Finally, if BROADCAST *is*
+followed by options, it is treated exactly the same as a PRESS command (so
+if, for some odd reason, you wrote "BROADCAST TO G", the message would go
+only to Germany and not to the entire game).
 
 The message can be terminated in one of four ways: the commands "SIGNOFF",
 "ENDPRESS", or "ENDBROADCAST" appearing alone on a line, or by the end of
@@ -140,15 +142,17 @@ The options available when sending press are:
 
         BE CAREFUL - only use initials in the list; you may be dismayed if
         you type "PRESS TO Turkey", because the Judge will try to interpret
-        "Turkey" as a list of initials, and will send your message to 
-        Turkey, Russia, and England (in a Standard game).
+        "Turkey" as a list of initials.  In a standard game, this will result
+        in an error message, because U, K, and Y are not valid power
+        initials; in some variants, however, you might end up sending a
+        message to six players!
 
    TO ALL BUT list | -list
         As above except the message is sent to the complement of the
         list specified.  Note that since all press that can be read by
         Observers is archived in the game's history file, a message sent
         'PRESS TO ALL BUT r' (for example) will be available to Russia by
-        means of the History command.  Use 'press to all but ro%' to be
+        means of the History command.  Use 'PRESS TO ALL BUT ro' to be
         sure that the message isn't archived.
 
    [NO]FAKE [BROADCAST]
@@ -184,7 +188,7 @@ Everyone but Germany would get a Diplomacy Notice message with a header
 that read "Broadcast message in game xxxx:".  [Remember, however, that if
 Germany thinks to issue a "HISTORY" command, he can see this in the history
 archive.  If this is undesirable, the command here should read 'PRESS TO
-ALL BUT GO% FAKE BROADCAST'.]  Then in the same (or a separate) message to
+ALL BUT go FAKE BROADCAST'.]  Then in the same (or a separate) message to
 the adjudicator (since there can be more than one press message per mail
 message) Italy could issue:
 
@@ -195,20 +199,19 @@ message) Italy could issue:
    -Ferdinand
    SIGNOFF
 
-Russia would get the message with a header of "Message to Russia in xxxx:". 
-Of course this trick wouldn't work if the game was White press since Italy's
-name would be in the header.  If it was White/Grey Italy would have to
-throw in the "GREY" keyword to get the effect, but even then (or if the
-game was Grey/White) it wouldn't quite be the same since if Germany
+Russia would get the message with a header of "Message to Russia in gamename:".  Of course this trick wouldn't work if the game was White press
+since Italy's name would be in the header.  If it was White/Grey Italy would
+have to throw in the "GREY" keyword to get the effect, but even then (or if
+the game was Grey/White) it wouldn't quite be the same since if Germany
 really meant to be so obnoxious why wouldn't he just send the messages
 out as white press?
 
 Press to the Master only is always allowed, no matter what the press settings
 are, so that requests for deadline extensions, or any other message needing
-the Master's attention, can be sent without having to resort to direct eMail
+the Master's attention, can be sent without having to resort to direct email
 outside of the game.  This can be very useful if a player and the Game Master
 are on nodes that cannot communicate directly, although both can communicate
-with the Judge.  Likewise, the Master can always issue press commands, to
+with the Judge.  Likewise, a Master can always issue press commands, to
 facilitate communicating with the players (to announce that he's going to be
 unavailable for a while, to respond to a player's message to him, or to ask
 a player a question).

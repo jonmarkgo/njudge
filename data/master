@@ -1,21 +1,24 @@
-Greetings from the Diplomacy* Adjudicator!!                     3 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                 19 February, 2003
 master
 
 
 Note: see file 'index' for a fuller list of available commands, and an
       explanation of the syntax conventions used in this document.
 
-To become a master for a particular game, you must be signed on as the only
+To become a Master for a particular game, you must be signed on as the only
 player and then use the "BECOME MASTER" command.  Thus, to create a new
-Youngstown variant game called "older" with yourself as master, send the
+Youngstown variant game called "older" with yourself as Master, send the
 following text to the judge:
 
    CREATE ?older <password> youngstown
    BECOME MASTER
 
 If anyone else is signed on to the game you will not be allowed to become
-master.  If you wish to relinquish your master slot to another person, or have a co-master, have that person sign on as an Observer, and then use the PROMOTE command to make that person a Master.  After that is done, you can safely
-EJECT yourself without interrupting the game.
+Master this way. However, a game can have two or more Masters. If you wish to
+relinquish your Master slot to another person, or have a co-master, have that
+person sign on as an Observer, and then use the PROMOTE command to make that
+person a Master.  After that is done, you can safely EJECT yourself without
+interrupting the game.
 
 If you wish to become the Master for an existing game that has other players
 and/or observers signed on you should ask the Master to follow the PROMOTE
@@ -37,44 +40,70 @@ find out about the game unless they've been told.  This is useful for
 games that you want to set up as "by invitation only".  Once the invited
 players have signed on and powers have been assigned you can use the "SET
 LIST" command to allow other people to begin seeing the game.  Note that
-you don't have to be the master in such a game, it could be unmoderated
+you don't have to be the Master in such a game, it could be unmoderated
 with you as a player if you wish.  The point demonstrated here is that
 the "SET NOLIST" must appear before the "BECOME MASTER" or before another
 player signs on since either of those actions would generate an
-announcement on a "listed" game.
+announcement on a "listed" game.  (On many judges, however, "NoList" is the
+default for newly-created games.)
 
-Once you have become the master for a game you can sign on to your game using
+Once you have become the Master for a game you can sign on to your game using
 the "m<name>" syntax and use the following commands:
 
-   BECOME <power>
+   BECOME power
      This allows you to submit commands for a particular power if, for
      example, the player for that power gets disconnected from the network
      and calls you on the phone to give you orders.  You can also submit
-     other commands for this player; for example, you could submit a draw vote
-     for a reluctant player after following the "draw clock" house rule.
+     other commands for this player; for example, you could submit a draw 
+     vote for a reluctant player after following the "draw clock" house rule.
 
-     Note that you can only use one "BECOME" command per mail message.  All
-     commands following a "BECOME" command submitted by a nonmaster will be
-     ignored to prevent potential disaster.  (Otherwise the first player whose
-     identity you have assumed could see the commands you were issuing for the
-     second player.)
+     Note that you can only use one "BECOME" command per mail message.
+     (Otherwise the first player whose identity you have assumed could see
+     the commands you were issuing for the second player.)  Likewise, no
+     other Master-only commands will be processed following a "BECOME"
+     command; all commands will be interpreted as if they came from the
+     power, not from the Master.  The "power" name may be abbreviated or
+     spelled out in full.
 
-     The "BECOME" command is not necessary to submit a power's orders.
+     The player for "power" will receive a message from the Judge advising
+     him that the Master used the "BECOME" command and confirming all
+     commands entered by the Master.  WARNING:  this message will include
+     Master commands that preceded the BECOME command.  Masters therefore
+     should not use any commands in the same message as a BECOME that they
+     wouldn't want the player to see.
+
+     The BECOME command is not necessary to submit a power's orders.
      Orders for units belonging to one or more powers can be submitted as
-     the master, but the true owner of the power will not receive the
+     the Master, but the true owner of the power will not receive the
      confirmation reply from the judge.  Orders for multiple units can
-     be specified on the same line, separated by commas or semicolons; but you
-     shouldn't mix orders for units belonging to multiple powers on the same
-     line.  Also note that the "orders have been received" flag will NOT get set
-     for a particular power if their orders were submitted by the master without
-     the become command.  It this case, it may be necessary to use the process
-     command to get the phase processed.
+     be specified on the same line, separated by commas or semicolons; but
+     you shouldn't mix orders for units belonging to multiple powers on the
+     same line.  Also note that the "orders have been received" flag will NOT
+     get set for a particular power if their orders were submitted by the
+     Master without the BECOME command.  It this case, it may be necessary to
+     use the PROCESS command to get the phase processed.
 
      You can also use the "BECOME" command to "SET ABSENCE" for a player, 
      either because the player isn't clear on how to do it themselves, or
      because their requested absence exceeds the current MAXABSENCE setting. 
      The MAXABSENCE setting does not apply to absences entered by the Master
      using the BECOME command.
+
+     The "BECOME" command does not reveal the power's password to the Master
+     (except on some older versions of the Judge software).  However, the
+     Master can use the "SET PASSWORD" command after "BECOME" to change the
+     password for a player who has lost or forgotten their password.
+     Example:
+
+       signon mexample password
+       press to X
+       Your new password will be "iforgot" (without the quotation marks.)
+       -- Master
+       endpress
+       become X
+       set password iforgot
+       signoff
+
 
    PROCESS [season year phase]
      This forces the judge to process orders immediately with whatever
@@ -90,28 +119,35 @@ the "m<name>" syntax and use the following commands:
      pending. A typical "season year phase" specification might be "fall 1905
      retreat".
 
-   ROLLBACK turn_number
+   ROLLBACK [turn_number]
      This allows you to roll the game back to the specified turn number.
      The turn number is displayed in all the reports and lists, starting
      at 001 for spring movement of 1901 and incrementing for each actual
-     phase that's played.  Retreats and adjustments that are not played do
-     not increment the turn number.  History is kept for at least a month,
-     but it may not be possible to go back too far -- this command is
-     intended to go back one phase for the case where one person's orders
-     get messed up and need to be resubmitted.  Orders for intermediate
-     turns that were skipped over should remain intact, but if the change
-     in processing causes a retreat phase to [not] be required the previous
-     orders may wind up being meaningless.  Any pending orders that existed
-     will also be reprocessed so if they were revised by hand the first time
-     the replayed phase was processed the revisions may get lost.
+     phase that's played. Retreats and adjustments that are not played do
+     not increment the turn number. If turn_number is omitted, the game will
+     be rolled back to the immediately preceding turn. Specifically, this
+     command will roll back the game to its state immediately before
+     turn_number was processed, so if you want to roll the game back to the
+     very start you could use "ROLLBACK 1".  By contrast, "ROLLBACK 2" will
+     return a Standard game to the state that existed after Spring 1901 Moves
+     but before Fall 1901 Moves.
+
+     History is kept for at least a month, but it may not be possible to go
+     back too far -- this command is intended to go back one phase for the
+     case where one person's orders get messed up and need to be resubmitted.
+     Orders for intermediate turns that were skipped over should remain
+     intact, but those previous orders may wind up being meaningless based on
+     changes in the results of the reprocessed turn.  Any pending orders that
+     existed will also be reprocessed so if they were revised by hand the
+     first time the replayed phase was processed the revisions may get lost.
 
    SET [UN]MODERATED
      This command sets or clears the flag that disallows the other players
      from adjusting the deadlines and other parameters associated with the
      game.  By default the moderated flag will be enabled when the you
-     first become master.  Clearing the flag with "SET UNMODERATED" will
+     first become Master.  Clearing the flag with "SET UNMODERATED" will
      allow the players to control the game while still giving you the
-     ability to use the other commands accessible only to the master.
+     ability to use the other commands accessible only to the Master.
 
    SET [NO]PROXY
      This command sets or clears the flag that allows one player to give
@@ -144,18 +180,18 @@ the "m<name>" syntax and use the following commands:
      This command clears the "all press" flag.
 
 See the file 'index' for a complete list of the rest of the flags that
-you can set or clear as the master.
+you can set or clear as the Master.
 
-The reply that you get back from the judge after signing on as master
-(unless you relinquish the master status by using the become command)
+The reply that you get back from the judge after signing on as Master
+(unless you relinquish the Master status by using the BECOME command)
 will include the [partial] orders that the players have submitted.  It
-is assumed that if you are taking the role of master that you will not
+is assumed that if you are taking the role of Master that you will not
 leak this information to the wrong people.
 
 As a special note about finding replacement players, the proper way to
 get a new player signed on is to allow him to submit the SIGNON himself
 for an abandoned power.  You can always EJECT the old player, but
-if you then BECOME that power and use "set address" and "set password"
+if you then BECOME that power and use "SET ADDRESS" and "SET PASSWORD"
 to set it up for the new player, the judge won't properly update the internal
 tables that indicate who is playing that power.  The dedication ratings and
 site access info may not reflect what is really happening if the player
