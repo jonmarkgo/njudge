@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2002/12/28 00:52:18  millis
+ * Proper fix to CR 17
+ *
  * Revision 1.29  2002/11/13 22:26:58  millis
  * Bug 23, don't show missing players in a secret game
  *
@@ -1470,7 +1473,7 @@ int process(void)
 		        /* let's do postal press */
 			/* TODO: tidy this code up */ 
 			sprintf(pppath, "%s%s/ppress-%s", GAME_DIR, dipent.name, phase);
-		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != ENOENT))
+		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
 	    		    sprintf(ppline, "%s %s%s/ppress-%s '%s:%s - %s game press' '%s'",
 	        		SMAIL_CMD, GAME_DIR, dipent.name, phase,
 				JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
@@ -1479,7 +1482,7 @@ int process(void)
 			{
 			    if(!(dipent.flags & F_BLIND) || dipent.players[i].power == MASTER)
 				execute(line);
-			    if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != ENOENT))
+			    if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
 				execute(ppline);
 			}
 
