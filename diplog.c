@@ -11,9 +11,14 @@ void opendiplog( char *x, int level, int priv)
     if (!SYSLOG_FLAG) return;
 
     openlog( x, level, priv);
+#ifdef HAS_ON_EXIT
     on_exit(dipexit, 0L);
+#else
+    atexit(dipexit);
+#endif
 }
 
+#ifdef HAS_ON_EXIT
 void dipexit(int exit_code, void *ignore_me)
 {
     if (!SYSLOG_FLAG) return;
@@ -26,6 +31,15 @@ void dipexit(int exit_code, void *ignore_me)
 
     CLOSEDIPLOG();
 }
+#else
+void dipexit()
+{
+    if (!SYSLOG_FLAG) return;
+
+        DIPINFO("Exit");
+    CLOSEDIPLOG();
+}
+#endif
 
 static void diplog(int level, char *fmt, ...)
 {
