@@ -1,5 +1,10 @@
   /*
   ** $Log$
+  ** Revision 1.30  2004/07/25 16:13:44  millis
+  ** Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
+  ** return in duplex) and Bug 206 (allow takeover of unknown abandoned
+  ** countries)
+  **
   ** Revision 1.29  2004/07/11 23:32:08  millis
   ** Bug297: Improved Intimate victory checking.
   **
@@ -381,13 +386,16 @@ int ownership(int new_flag, int *status)
 	   for (i = 0; i < dipent.n; i++) {
 	       p = dipent.players[i].power;
 	       if (p >= WILD_PLAYER) continue;
+	       if ((dipent.flags & F_INTIMATE) &&
+		   (dipent.players[i].centers == 0 && dipent.players[i].units == 0))
+		    continue;  /* Eliminated power, don't show! */
 	       fprintf(rfp, "%s: ", powers[p]);
 	       for (ii = strlen(powers[p]); ii < LPOWER; ii++)
 	           putc(' ', rfp);
 	       if (dipent.flags & F_INTIMATE) {
 	           if (dipent.players[i].controlling_power == 0)
 		       fprintf(rfp, "%s", powers[p]);
-	           else
+	           else 
 		       fprintf(rfp, "%s", powers[dipent.players[i].controlling_power]);
 	       } else {
 	           if (p_list[p])
