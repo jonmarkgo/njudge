@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2003/01/13 22:15:03  millis
+ * ustv merge
+ *
  * Revision 1.27  2003/01/07 23:41:36  millis
  * Fix bug 93
  *
@@ -268,7 +271,7 @@ static int cvalue[] =
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
  EJECT, RECORD, INFOPLAYER, UNSTART,
- SETUP, PAUSE, , PAUSE, POSTALPRESS,
+ SETUP, PAUSE, PAUSE, POSTALPRESS,
  FORCE_BEGIN,
  COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
@@ -2174,25 +2177,6 @@ int mail(void)
 
 					break;
 
-/*-------------------------------------------------------------*
- 
- *--  Modified by Tamas  --------------  2002-06-11  ----------*
- 
- *-------------------------------------------------------------*/
- 
-                 case COND:
- 
-                     if (dipent.flags & F_BLIND) {
- 
-                      fprintf(rfp, "Conditionals are not supported in blind variant. ");
- 
-                      fprintf(rfp, "Rejected: %s\n", line);
- 
-                      break;
- 
-                     }
- 
- /*---------------------------------------------  Tamas End  ---*/
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
 						if (read_phase == 0) {
