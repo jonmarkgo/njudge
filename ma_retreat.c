@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -159,7 +162,7 @@ void ma_retreatout(int pt)
 
 	/*  Pass one, check for conflicts. */
 
-	if (processing) {
+	if (processing || predict) {
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].status == 'r') {
 				if (unit[u].order == 'm') {
@@ -228,6 +231,8 @@ void ma_retreatout(int pt)
 			} else if (unit[u].order == 'v') {
 				fprintf(rfp, " CONVERT TO Garrison");
 				unit[u].type = 'G';
+				/* MachMLM 28/4/01 Update ownership */
+				pr[unit[u].loc].gunit = u;  
 
 			} else {
 				more_orders++;
