@@ -100,10 +100,10 @@ AM_CFLAGS = -pipe -Wall
 MAIL = @_MAIL_@
 
 bin_PROGRAMS = dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind bgreet recdump
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump
 
 
-bin_SCRIPTS = atrun dipclean diprun newlogs rundipmap runlistmap smail
+bin_SCRIPTS = atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
 
 
 # all headers except defaults.h this one has a special make rule below
@@ -184,8 +184,6 @@ dip_SOURCES = assign.c \
 
 
 ascii_to_ded_SOURCES = ascii_to_ded.c
-
-bgreet_SOURCES = bgreet.c
 
 cmap_SOURCES = cmap.c \
 		jm.c \
@@ -288,7 +286,7 @@ bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) pdip$(EXEEXT) \
 	size_check$(EXEEXT) cmap$(EXEEXT) summary$(EXEEXT) \
 	deddump$(EXEEXT) delgame$(EXEEXT) flock$(EXEEXT) \
 	fmtwho$(EXEEXT) ign$(EXEEXT) ded_to_ascii$(EXEEXT) \
-	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) bgreet$(EXEEXT) \
+	ascii_to_ded$(EXEEXT) zpblind$(EXEEXT) \
 	recdump$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
@@ -297,11 +295,6 @@ ascii_to_ded_OBJECTS = $(am_ascii_to_ded_OBJECTS)
 ascii_to_ded_LDADD = $(LDADD)
 ascii_to_ded_DEPENDENCIES =
 ascii_to_ded_LDFLAGS =
-am_bgreet_OBJECTS = bgreet.$(OBJEXT)
-bgreet_OBJECTS = $(am_bgreet_OBJECTS)
-bgreet_LDADD = $(LDADD)
-bgreet_DEPENDENCIES =
-bgreet_LDFLAGS =
 am_cmap_OBJECTS = cmap.$(OBJEXT) jm.$(OBJEXT) lib.$(OBJEXT) \
 	bailout.$(OBJEXT) conf.$(OBJEXT) strdup.$(OBJEXT) \
 	variant.$(OBJEXT) hashtable.$(OBJEXT) global.$(OBJEXT) \
@@ -410,7 +403,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/ascii_to_ded.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/assign.Po ./$(DEPDIR)/bailout.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/bgreet.Po ./$(DEPDIR)/cmap.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/cmap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/common.Po ./$(DEPDIR)/conf.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ded_to_ascii.Po ./$(DEPDIR)/deddump.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/delgame.Po ./$(DEPDIR)/dip.Po \
@@ -451,7 +444,7 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
-DIST_SOURCES = $(ascii_to_ded_SOURCES) $(bgreet_SOURCES) $(cmap_SOURCES) \
+DIST_SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) \
 	$(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) \
 	$(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) \
 	$(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) \
@@ -469,7 +462,7 @@ DIST_COMMON = README $(dist_data_DATA) $(dist_doc_DATA) \
 	Makefile.in aclocal.m4 config.guess config.h.in config.sub \
 	configure configure.ac depcomp install-sh missing mkinstalldirs \
 	smail.in
-SOURCES = $(ascii_to_ded_SOURCES) $(bgreet_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
+SOURCES = $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(ign_SOURCES) $(pdip_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
 
 all: $(BUILT_SOURCES) config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -538,9 +531,6 @@ clean-binPROGRAMS:
 ascii_to_ded$(EXEEXT): $(ascii_to_ded_OBJECTS) $(ascii_to_ded_DEPENDENCIES) 
 	@rm -f ascii_to_ded$(EXEEXT)
 	$(LINK) $(ascii_to_ded_LDFLAGS) $(ascii_to_ded_OBJECTS) $(ascii_to_ded_LDADD) $(LIBS)
-bgreet$(EXEEXT): $(bgreet_OBJECTS) $(bgreet_DEPENDENCIES) 
-	@rm -f bgreet$(EXEEXT)
-	$(LINK) $(bgreet_LDFLAGS) $(bgreet_OBJECTS) $(bgreet_LDADD) $(LIBS)
 cmap$(EXEEXT): $(cmap_OBJECTS) $(cmap_DEPENDENCIES) 
 	@rm -f cmap$(EXEEXT)
 	$(LINK) $(cmap_LDFLAGS) $(cmap_OBJECTS) $(cmap_LDADD) $(LIBS)
@@ -613,7 +603,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ascii_to_ded.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/assign.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bailout.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bgreet.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/conf.Po@am__quote@

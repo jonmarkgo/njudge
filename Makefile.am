@@ -23,9 +23,9 @@ AWK=@AWK@
 LN_S=@LN_S@
 
 bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
-	fmtwho ign ded_to_ascii ascii_to_ded zpblind bgreet recdump
+	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump
 
-bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail
+bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
 
 # all headers except defaults.h this one has a special make rule below
 
@@ -104,8 +104,6 @@ dip_SOURCES=	assign.c \
 		defaults.h
 
 ascii_to_ded_SOURCES=	ascii_to_ded.c
-
-bgreet_SOURCES=	bgreet.c
 
 cmap_SOURCES=	cmap.c \
 		jm.c \
