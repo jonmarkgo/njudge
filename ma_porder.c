@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/05/05 23:30:20  millis
+ * One & too many!
+ *
  * Revision 1.21  2003/04/16 04:33:12  millis
  * Implement bug 65
  *
@@ -424,7 +427,7 @@ static void newowner(void)
 			fprintf(rfp, "\n%s has gained control of %s's original home territory.\n",
 				powers[j], powers[i]);
 
-			for (p = 1; p < npr; p++) {
+			for (p = 1; p <= npr; p++) {
 				if (pr[p].type == dipent.pl[i]) {
 					pr[p].home = j;
 				}
@@ -578,7 +581,7 @@ void income(int mindie)
 	}
 
 	/* income from provinces and cities */
-	for (p = 1; p < npr; p++) {
+	for (p = 1; p <= npr; p++) {
 		if (!water(p)) {
 			/*
 			   ** My explanation of the rules is:
