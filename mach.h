@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:51:14  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -19,9 +22,9 @@
 /* this include is only needed for NPROV and NPOWER */
 #include "porder.h"
 
-#define F_FORTRESS	0	/* Anticipating the fortress variant */
 #define FAMINE	1
 #define PLAGUE	2
+#define STORM 3
 #define MAX_LOAN	25	/* Maximum amount to loan */
 
 #define PF_unused2     0x2000	/* Unused flag number 2 (maxflag, see init)   */
@@ -32,6 +35,7 @@
 #define PF_FAMINE      0x0100	/* Province is famined                        */
 #define PF_PORT        0x0080	/* Province has a port city                   */
 #define PF_FORTRESS    0x0040	/* City is fortified or has fortress          */
+#define PF_VENICE      0x0020   /* Province is Venice (or like Venice)        */
 #define PF_VALUE       0x0007	/* Number of points for major city (mask)     */
 #define PF_CONSTANT    0x00FF	/* Portion of flags that are constant         */
 
@@ -66,8 +70,41 @@ extern short payments[NPOWER + 1][NPOWER + 1];	/* Who is paying whom what  */
 extern short borrow[NPOWER + 1][2];	/* How much from bank       */
 extern unsigned char allies[NPOWER + 1][NPOWER + 1];	/* Who is allowing whom     */
 
+
+/* the permitted unit types in Mach, see section 'L' in map file */
+#define P_ARMY          0
+#define P_FLEET         1
+#define P_GARRISON	2
+#define MAX_UNIT_TYPES  (P_GARRISON +1)  /* Max types allowed in machiavelli */
+
+/* The unit type types, used as bit masks */
+#define P_NORMAL        0
+#define P_CITIZEN       1
+#define P_MERC          2
+#define P_PROF          3
+#define MAX_SPEC_TYPES  (P_PROF +1)
+
+/* The various permitted ownership times of unit type types */
+#define P_ANYTIME       'x'  /* This unit type can be built or bribed freely */
+#define P_BUILD         'b'  /* This unit type can only be built             */
+#define P_BUY           'p'  /* This unit type can only be purchased        */
+#define P_NEVER         '.'  /* This unit type can never be owned            */
+
+/* THe equivalent masks for the above */
+#define PP_ANYTIME      0x3
+#define PP_BUILD	0x2
+#define PP_BUY 		0x1
+#define PP_NEVER 	0x0
+
+struct p_unit {
+char power_letter;
+int permissions[MAX_UNIT_TYPES];
+};
+
 extern int ftab[12 - 1][12 - 1];	/* Machiavelli famine province list           */
 extern int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list           */
+extern int stab[12 - 1][12 - 1];        /* Machiavelli storm province list            */
+extern struct p_unit permitted_units[MAXPLAYERS]; /* Mach permitted units for a country 	      */
 
 #define PFTAB(name) int (*name)[12-1]
 
@@ -81,6 +118,7 @@ extern int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list           *
 #define has_port(p)				(pr[p].flags & PF_PORT)
 #define is_infected(p)			(pr[p].flags & PF_FAMINE)
 #define is_sieged(p)			(pr[p].flags & PF_SIEGE)
+#define is_venice(p)                    (pr[p].flags & PF_VENICE)
 
 #define remove_rebellion(p)		(pr[p].flags &= ~(PF_REBELLION|PF_CREBELLION))
 #define set_crebellion(p)		(pr[p].flags |= PF_CREBELLION)
@@ -99,3 +137,4 @@ extern int ptab[12 - 1][12 - 1];	/* Machiavelli plague province list           *
 #define NO_PLAGUE				(dipent.flags & F_NOPLAGUE)
 #define NO_FAMINE				(dipent.flags & F_NOFAMINE)
 #define NO_DICE					(dipent.flags & F_NODICE)
+#define NO_STORMS			(!(dipent.xflags & XF_STORMS))
