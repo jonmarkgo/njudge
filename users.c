@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.7  2001/12/29 20:38:04  nzmb
+ *
+ * Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
+ * stable.
+ *
  * Revision 1.6  2001/07/15 09:20:56  greg
  * added support for game directories in a sub directory
  *
@@ -675,10 +680,10 @@ int send_dedication(char *raddr)
 	fprintf(rfp, "User ID: %d\n\n", userid);
 	fprintf(rfp, "Current dedication: %d\n", ded[userid].r);
 	fprintf(rfp, "Turns ontime: %lu\n",get_data(userid,ontime));
-	fprintf(rfp, "Turns total: %lu.\n",get_data(userid,total));
+	fprintf(rfp, "Turns total: %lu\n",get_data(userid,total));
 	fprintf(rfp, "Games started: %lu\nPositions taken over: %lu\n",
 		get_data(userid,started),get_data(userid,tookover));
-	fprintf(rfp, "Resignations %lu\n",get_data(userid,resigned));
+	fprintf(rfp, "Resignations: %lu\n",get_data(userid,resigned));
 	if(get_data(userid,total) == 0)
 	{
 		fprintf(rfp, "Played 0 turns; a perfect timeliness record.\n");
@@ -686,7 +691,7 @@ int send_dedication(char *raddr)
 	else
 	{
 		orat = 1.0 * get_data(userid,ontime)/get_data(userid,total);
-		fprintf(rfp, "Ontime ratio: %.3f.\n", orat);
+		fprintf(rfp, "Ontime ratio: %.3f\n", orat);
 	}
 	if(get_data(userid,started) == 0 && get_data(userid,tookover) == 0)
 	{
@@ -695,7 +700,7 @@ int send_dedication(char *raddr)
 	else
 	{
 		rrat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
-		fprintf(rfp, "Resignation ratio: %.3f.\n\n", rrat);
+		fprintf(rfp, "Resignation ratio: %.3f\n\n", rrat);
 	}
 	/* TODO i'm not sure what to return here, was no return at all -- nw */
 	return 0;
