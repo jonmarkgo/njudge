@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2003/05/02 22:22:59  millis
+ * Added artillery/cannon strings
+ *
  * Revision 1.5  2003/01/14 13:56:46  millis
  * Updated with ustv merged changed
  *
@@ -308,7 +311,7 @@ char *get_power(char *l, int *o)
 	*o = 0;
 	while (isspace(*l))
 		l++;
-	for (n = 0, s = l; isalnum(*s) || *s == '-'; s++, n++);
+	for (n = 0, s = l; isalnum(*s) || *s == '-' || *s == '_' ; s++, n++);
 	if (n < 2)
 		return l;
 	for (i = 1; i < WILD_PLAYER; i++) {
