@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2002/02/25 11:51:52  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.3  2001/10/20 12:11:13  miller
  * Merged in changes from DEMA and USTV
  *
@@ -53,8 +56,10 @@ void set_rebellion(int prov)
 		set_crebellion(prov);
 	/*
 	   ** This assumes rebellion always affects the province
+	  ** True for all provinces except Venice
 	 */
-	set_prebellion(prov);
+	if (!(pr[prov].flags & PF_VENICE))
+	    set_prebellion(prov);
 }
 
 /*
