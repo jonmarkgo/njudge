@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/01/15 13:47:42  millis
+ * Fixed compile error
+ *
  * Revision 1.21  2003/01/14 13:56:46  millis
  * Updated with ustv merged changed
  *
@@ -516,6 +519,26 @@ void params(FILE * fp)
 	if (dipent.extra_centres != 0) {
                 sprintf(temp1,"ExtraCentres: %d", dipent.extra_centres);
                 strcatf(line, temp1, &first_flag);
+        }
+
+        if (dipent.x2flags & X2F_NEUTRALS) {
+                strcatf(line, "Neutrals", &first_flag);
+        }
+
+        if (dipent.x2flags & X2F_RIVERS) {
+                strcatf(line, "Rivers", &first_flag);
+        }
+
+        if (dipent.x2flags & X2F_HOMETRANSFER) {
+                strcatf(line, "HomeTransfer", first_flag);
+        }
+
+        if (dipent.x2flags & X2F_CAVALRY) {
+                strcatf(line, "Cavalry", first_flag);
+        }
+
+        if (dipent.xflags & X2F_ARTILLERY) {
+                strcatf(line, "Artillery", first_flag);
         }
 
 	if (dipent.flags & F_BLIND) {
