@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.29  2004/07/04 03:25:24  millis
+	 * Fix bug 328, implement Portage variant
+	 *
 	 * Revision 1.28  2004/06/27 01:50:21  millis
 	 * Futher Intimate fixes (Bug 297) specifically to allow phased orders
 	 * and correct turns not processing, plus more information printed.
@@ -1085,8 +1088,10 @@ int despace(char *intext)
 
 void display_one_absences(int pindex, FILE *fptr)
 {
-	int i = pindex;
+	int i;
 	int k;
+
+	i = RealPlayerIndex(pindex);
 
         if (dipent.players[i].absence_count > 0) {
            for (k = 0; k < MAX_ABSENCES;k++) {

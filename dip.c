@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.53  2004/07/04 03:28:12  millis
+ * Bug 97: don't make each power have to move if duplex and supress
+ * extra 'reminder' messages.
+ *
  * Revision 1.52  2004/06/27 01:50:21  millis
  * Futher Intimate fixes (Bug 297) specifically to allow phased orders
  * and correct turns not processing, plus more information printed.
@@ -1084,11 +1088,11 @@ int process(void)
 						dipent.name, powers[dipent.players[i].power]);
 
 
-					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[RealPlayerIndex(i)].power]);
+					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
 
 					if (!(dipent.players[RealPlayerIndex(i)].status & SF_LATE)) {
-					    dipent.players[RealPlayerIndex(i)].status |= SF_LATE;
-					    dipent.players[RealPlayerIndex(i)].late_count++; /* bump up the late count */
+					    dipent.players[i].status |= SF_LATE;
+					    dipent.players[i].late_count++; /* bump up the late count */
 					}
 					if (dipent.xflags & XF_LATECOUNT) {
 						if (!(dipent.x2flags & X2F_SECRET))
@@ -1229,8 +1233,7 @@ int process(void)
 					}
 #endif
 					if (*(dipent.players[i].address) != '*' &&
-					    !(dipent.players[i].status & SF_RESIGN) &&
-					    dipent.players[i].controlling_power == 0) {
+					    !(dipent.players[i].status & SF_RESIGN)) {
 						if (dipent.players[i].power == MASTER) {
 							sprintf(line, "dip.mlate '%s:%s - %s Late Notice: %s'",
 								JUDGE_CODE, dipent.name, dipent.phase, late);
@@ -1300,7 +1303,8 @@ int process(void)
 				continue;
 
 			if (*(dipent.players[i].address) != '*' &&
-			    !(dipent.players[i].status & SF_RESIGN)) {
+			    !(dipent.players[i].status & SF_RESIGN) &&
+			     RealPlayerIndex(i) == i) {
 				sprintf(line, "dip.result '%s'", subjectline);
 				MailOut(line, dipent.players[i].address);
 			}
@@ -1325,9 +1329,10 @@ int process(void)
 		/* Dietmar Kulsch change 10/10/2000 to avoid players going
 		 * abandoned when they submit error orders
 		 */
-				if ((!(dipent.players[i].status & SF_PART)) && WAITING(dipent.players[i].status)) {
+				if ((!(dipent.players[RealPlayerIndex(i)].status & SF_PART)) && WAITING(dipent.players[RealPlayerIndex(i)].status)) {
 					dipent.players[i].status |= SF_CD;
-					if (!(dipent.flags & F_NORATE)) {
+					if (!(dipent.flags & F_NORATE) &&
+					    RealPlayerIndex(i) == i) {
 						put_data(dipent.players[i].userid,resigned);
 						ded[dipent.players[i].userid].r += D_CD;
 						fprintf(log_fp, dedfmt, D_CD, dipent.players[i].userid,
@@ -1349,7 +1354,8 @@ int process(void)
 					continue;
 
 				if ((dipent.players[i].status & SF_MOVE) &&
-				    !(dipent.players[i].status & SF_CD)) {
+				    !(dipent.players[i].status & SF_CD) &&
+				    RealPlayerIndex(i) == i) {
 					put_data(dipent.players[i].userid,ontime);
 					put_data(dipent.players[i].userid,total);
 					ded[dipent.players[i].userid].r += D_ONTIME;
@@ -1363,7 +1369,7 @@ int process(void)
 				if (dipent.players[i].power < 0)
 					continue;
 
-				if ((dipent.players[i].status &
+				if ((dipent.players[RealPlayerIndex(i)].status &
 				     (SF_MOVE | SF_MOVED | SF_PART)) == SF_MOVE) {
 					if (!(dipent.x2flags & X2F_SECRET)) {
 						fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
@@ -1412,8 +1418,9 @@ int process(void)
 					if (dipent.players[i].power < 0)
 						continue;
 
-					if (*(dipent.players[i].address) != '*' && !Dflg &&
-					    !(dipent.players[i].status & SF_RESIGN)) {
+					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' && !Dflg &&
+					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
+					    RealPlayerIndex(i) == i) {
 						sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
 							JUDGE_CODE, dipent.name, dipent.phase,
 							(dipent.flags & F_NOLIST) ? "NoList" : "",
@@ -1442,9 +1449,10 @@ int process(void)
 					sprintf(line, "dip.result '%s:%s - %s Turn Waiting'",
 					  JUDGE_CODE, dipent.name, dipent.phase);
 
-					if (*(dipent.players[i].address) != '*' &&
-					    !(dipent.players[i].status & SF_RESIGN))
-						MailOut(line, dipent.players[i].address);
+					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' &&
+					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
+					      RealPlayerIndex(i) == i)
+						MailOut(line, dipent.players[RealPlayerIndex(i)].address);
 				}
 				dipent.process = now + 24 *60 *60;  /* Remind each day */
 				dipent.dedapplied = dedtest;
@@ -1523,7 +1531,8 @@ int process(void)
 				if (dipent.players[i].power < 0)
 					continue;
 
-				if (*(dipent.players[i].address) != '*' && !Dflg) {
+				if (*(dipent.players[i].address) != '*' && !Dflg && 
+				    RealPlayerIndex(i) == i ) {
 					sprintf(line, "dip.victory '%s:%s - %s Victory: %c'",
 					  JUDGE_CODE, dipent.name, phase, dipent.pl[victor]);
 					MailOut(line, dipent.players[i].address);
@@ -1593,11 +1602,11 @@ int process(void)
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
-					if (dipent.players[i].power < WILD_PLAYER &&
-					  !(dipent.players[i].status & SF_DEAD) &&
-					    dipent.players[i].controlling_power == 0) {
+					if (dipent.players[RealPlayerIndex(i)].power < WILD_PLAYER &&
+					  !(dipent.players[RealPlayerIndex(i)].status & SF_DEAD) &&
+					    dipent.players[RealPlayerIndex(i)].controlling_power == 0) {
 					/* A real player, set wait status */
-						dipent.players[i].status |= SF_WAIT;
+						dipent.players[RealPlayerIndex(i)].status |= SF_WAIT;
 					}
 			    }
 			}
@@ -1644,7 +1653,8 @@ int process(void)
 				JUDGE_CODE, dipent.name, phase);
 
 			if (*(dipent.players[i].address) != '*' && !Dflg &&
-					    !(dipent.players[i].status & SF_RESIGN)) 
+					    !(dipent.players[i].status & SF_RESIGN) &&
+					    RealPlayerIndex(i) == i) 
 			{
 			    if(!(dipent.flags & F_BLIND) || dipent.players[i].power == MASTER)
 				MailOut(line, dipent.players[i].address);
