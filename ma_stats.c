@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -80,7 +83,7 @@ void balance(int pt, int next, int listflg)
 					s++;
 			}
 			if (pt == MASTER) {
-				fprintf(rfp, "  %s:%*s", powers[p], 10 - strlen(powers[p]), "");
+				fprintf(rfp, "  %s:%*s", powers[p], (int) (10 - strlen(powers[p])), "");
 				i = 13;
 			} else {
 				fputs("  ", rfp);
