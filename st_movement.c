@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.20  2003/06/04 23:17:22  millis
+** Fix bug 165, mis-ajudication over TSR
+**
 ** Revision 1.19  2003/05/12 02:05:25  millis
 ** Small text correction
 **
@@ -659,6 +662,8 @@ int movein(char **s, int p)
 				 water(p2) ? "the " : "", pr[p2].name);
 				return E_WARN;
 			}
+			if (unit[u].type != 'F')
+			    c2 = MV;  /* Non-fleets cannot move to coasts */
 		}
 		if (dipent.phase[0] == 'F' && pr[p1].type == 'v' && unit[u].type != 'W') {
 			errmsg("Invalid order for fall in the %s.\n", pr[p1].name);
