@@ -1,5 +1,15 @@
 /*
  * $Log$
+ * Revision 1.9  2002/03/05 23:05:47  miller
+ * Fixed Machiavelli summary problem
+ *
+ * Revision 1.8  2002/02/03 03:45:43  nzmb
+ * Fixed bug in plyrdata.c and readded some concession
+ *  handler code to summary.c
+ *
+ * Revision 1.7  2001/10/20 12:11:16  miller
+ * Merged in changes from DEMA and USTV CVS
+ *
  * Revision 1.6.2.1  2001/10/15 22:30:45  ustv
  * Added display of duality stuff
  *
@@ -694,6 +704,23 @@ int main(int argc, char **argv)
 			fputs(line, ifp);
 		fclose(tfp);
 	}
+    /*
+ 
+     * or concession ...
+ 
+     */
+ 
+     sprintf(line, "%s/%s/conc", GAME_DIR, dipent.name);
+ 
+     if((tfp = fopen(line, "r"))) {
+ 
+         while(fgets(line, sizeof(line), tfp))
+ 
+             fputs(line, ifp);
+ 
+         fclose(tfp);
+ 
+     }
 	/*
 	 *  Comments if any are next.
 	 */
