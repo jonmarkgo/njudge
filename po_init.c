@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.2  1997/03/12 21:33:31  davidn
  * Fix to allow w and x to be handled correctly as power letters in
  * variants, without clshing with neutral scs and water provinces.
@@ -89,7 +92,7 @@ int po_init(void)
 			pr[i].move = (unsigned char *) &heap[cmap[CMAP_MOVE]];
 			pr[i].type = cmap[CMAP_TYPE];
 			pr[i].flags = cmap[CMAP_FLAG];
-			n = pr[i].type == 'l' ? 0 : power(pr[i].type);
+			n = islower(pr[i].type) ? 0 : power(pr[i].type);
 			pr[i].owner = n;
 			pr[i].cown = n;
 			pr[i].home = n;
