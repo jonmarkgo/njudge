@@ -2,8 +2,11 @@
 
                  Creating variants for the Diplomacy judge
 
-                                   v.0.2
+                                   v.0.3
               [1]Christophe Courtois (christophe@courtois.cc)
+     _________________________________________________________________
+
+This documentation is not finished and may contain many errors.
      _________________________________________________________________
 
                              [2]1 Introduction
@@ -68,6 +71,8 @@
    I'll try to sum up here most knowledge on variants creation, beginning
    by the basic ones, made from existing maps. I won't cover variants
    with new rules not yet implemented in the judge.
+
+   All this was tested on a njudge v.1.3.2-pre from April 2003.
 
                           2 What you can and must do
 
@@ -290,14 +295,102 @@
    They are useful only for the players, who will get them with get
    info.<variant>. The judge itself doesn't need them.
 
-3.4 Variant.h
+3.4 Variant.c and variant.h
 
-   A variant must be declared in this file. The variant number is set up
-   there.
+   These two files are part of the source code of the judge. Any
+   modification implies that that judge must be recompiled. Here follows
+   all possible modifications in these files, in the order where you'll
+   meet them in the code.
+
+  3.4.1 Variant.c: Variants array
+
+   In variant.c, search char *variants[]: this array contains the user
+   names of the variants. You must add yours at the end, BEFORE the name
+   of the variant modifiers. Don't forget the comma.
+
+  3.4.2 Variant.c: VValue array
+
+   Just after that, you must define another line of the array vvalue.
+
+  3.4.3 Variant.c: Powers array
+
+   If you add any power name, add it at the end of the array powers.
+
+  3.4.4 Variant.c: Owners array
+
+   - If you have add any power, add the possessive form in the array
+   owners, in the same order.
+
+  3.4.5 Variant.c: pletter array
+
+   - The pletter contains the abbreviations (F for France, 9 for Warsaw
+   in a chaos...) for the powers in your variant. You must add a line
+   even if no new power name was added. For a simple variant, you can cut
+   and paste the line of another variant.
+
+   If new power were added, ALL lines of all variants must be expanded.
+
+  3.4.6 Variant.c: Sphase array
+
+   - The sphase array contains the start season of the variant. It must
+   be the same one as in the seed file that you have created.
+
+  3.4.7 Variant.h: Variants array
+
+   In variant.h, in the first enum field, you must add a new V_ line. If
+   you didn't count it before, this array's comments contain each variant
+   number, that you must use for seed and report files.
+
+  3.4.8 Variant.h: magic numbers
+
+   You may have to update these 'magic numbers' if you really have to,
+   especially the second one if you find something more insane than a
+   chaos (and you'll have to find yourself if lowercase letters are OK
+   for power names...):
+   /** UPDATE DEFINES AS NECESSARY BELOW **/
+   #define NVAROPTS 4 /* Number of variant options
+   (blind/gunboat/shorthand/a/f) */
+   #define MAX_POWERS 36 /* Max. powers in a single game (letters+digits)
+   */
+   #define LPOWER 24 /* Length of the longest power name */
+
+  3.4.9 Variant.h: SETNP macro and default modifiers
+
+   The macro SETNP contains the default behaviour of your variant: number
+   of players, victory points. You must add a line for yours too.
+
+   The line for the standard (7 players by default, 18 centers to win)
+   is:
+
+   case V_STANDARD: dipent.np = 7; dipent.vp = 18; break; \
+
+   Many variant modifiers can be added as the default setup of the
+   variant. Most can be overriden at game creation by a SET commande.
+   These many modifiers are defined in the file dip.h. Some well known
+   are:
+     * XF_BUILD_ANYCENTRES: a power can build on any center, like in a
+       Chaos variant. Same as the moderator command SET ANY
+       CENTRE[S]|CENTER[S].
+     * XF_BUILD_ONECENTRE: the player can build anywhere, but needs to
+       own at least one home center, like in Classical or Aberration.
+     * XF_COASTAL_CONVOYS: allows coastal convoys, like in Machiavelli.
+       Same as the moderator command SET [NO] COASTAL CONVOYS.
+
+   Other more or less useful modifiers are: XF_MANUALPROC,
+   XF_NOMINORPRESS, XF_AUTODISBAND, XF_ANYDISBAND...
+
+   Don't forget the \ at the end of the line.
+
+starter.flist
+
+   This file lists almost all files from data/. You must add there your
+   info, seed, report files.
 
                                   4 Examples
 
 4.1 H32 (Hundred) Wings
+
+  4.1.1 Setup
 
    H32 (Hundred Years War) with wings seems at first sight stupid, but I
    think the game would be changed by it. We need for this the seed_w
@@ -327,19 +420,132 @@
        France: Wing Toulouse.
        France: Army (unpaid and angry) Provence.
 
-4.2 Fleet in Marseille
-
-4.3 Switzerland
-
-   Let's imagine that Switzerland is a territory like any other one.
-
-4.4 Chess
+   Add seed_w.22 and report_w.22 to starter.flist in the source file
+   directory.
 
    For this small variant, you don't need anything more. You can test it
    immediately:
 
    create ?testh32w password h32 wings
    set players 1
+
+  4.1.2 Test
+
+   Create a new game by sending to the judge:
+
+   create ?test password h32 wings
+   set players 1
+
+   And as Burgundy, you'll be able to send your planes from Flanders
+   directly to London.
+
+4.2 Test variant
+
+  4.2.1 Setup
+
+   This variant is called Mytest and aims to be almost the same as the
+   standard.
+
+   - See in variant.h what is the biggest variant number. It is 34
+   (colonial96) for my 1.3.2-pre judge, so it will be variant number 35.
+   Create seed.35 and report.35 by copying seed.1 and report.1. Adjust
+   this value if you have another judge with more or less variants.
+
+   - Create the info.mytest file.
+
+   - Add the following lines in the variants array of variant.c:
+
+   "colonial96", /* Colonial 1996 Diplomacy */
+   "mytest", /* Test !!!! */
+   /** ADD NEW VARIANTS ABOVE THIS LINE! **/
+
+   - In the vvalue array:
+
+   V_colonial96, /* 34 Colonial 1996 variant */
+   V_mytest, /* 35 Test */
+   /** ADD NEW VARIANTS ABOVE THIS LINE! **/
+
+   - The powers and owners don't change.
+
+   - Add a line similar to the one of the standard variant to the pletter
+   array:
+
+   ".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM", /* Colonial 1996
+   Diplomacy */
+   ".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM", /* MyTest variant
+   */
+   /** ADD NEW VARIANTS ABOVE THIS LINE! **/
+
+   - The start season in sphase must be the same as in the seed file:
+
+   "S1870M", /* Colonial 1996 Diplomacy */
+   "S1901M", /* My test */
+   /** ADD NEW VARIANTS ABOVE THIS LINE! **/
+
+   - In variant.h, expand the enum this way:
+
+   V_colonial96, /* 34 Colonial 1996 Diplomacy */
+   V_mytest, /* 35 my test */
+   /** ADD NEW VARIANTS ABOVE THIS LINE! **/
+   NVARIANT /* Last variant + 1 */
+
+   - In the SETNP macro, add this line (here we'll have 7 players, 10
+   victory points only; disband is allowad at any turn, and a retreat
+   leads automatically to a disband):
+
+   case V_mytest: dipent.np = 7; dipent.vp = 10; dipent.xflags |=
+   XF_ANYDISBAND ; dipent.xflags |=XF_AUTODISBAND ;break; \
+
+   - It's over for the code modification.
+
+  4.2.2 Installation
+
+   You should read the upgrade documentation (for example my
+   [44]Installation guide) to avoid losing your specific configuration
+   and some mail of you have an active judge. Basically, you have to do
+   this:
+
+   **** FIXME ***** A VALIDER !!!!!! (histoire avec num de vrsion)
+
+   - The quick and dirty way is to modify directly the Makefile (change
+   the VERSION variable from it standard version to 1.3.2+custom variants
+   for example), and install info.mytest, seed.35 and report.35 into the
+   data/ directory of your current running judge.
+
+   - The Right Way, compulsory if you have are coming from a fresh
+   tarball, is to :
+
+   - change the version number in configure.ac (see README.hackers for
+   details):
+   AC_INIT("njudge", 1.3.2.020030413+variants) ; or change the Makefile
+   after lauching
+
+   - add your variant files to the starter.flist.
+
+   - You must get the smail.in and defaults.inc.in from your old judge
+   source if they are not standard.
+
+   - Then compile and upgrade. On my system it means:
+
+   ./configure --with-dir=/home/alex/dip --with-user=alex
+   --with-domain=christophecourtois.org
+   make all
+   make upgrade
+
+  4.2.3 Test
+
+   Create the game:
+
+   create ?foobar password mytest
+   set players 1
+
+4.3 Switzerland
+
+   Let's imagine that Switzerland is a territory like any other one.
+
+4.4 Chess
 
                                   5 floc.net
 
@@ -454,6 +660,7 @@ References
   41. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2
   42. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
   43. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
+  44. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
 
    Hidden links:
-  44. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html
+  45. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html
