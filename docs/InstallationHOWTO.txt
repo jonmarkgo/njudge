@@ -2,7 +2,7 @@
 
                  Installation-HOWTO for the Diplomacy judge
 
-                                 v.1.3.2.0
+                                 v.1.3.2.1
               [1]Christophe Courtois (christophe@courtois.cc)
 
                              [2]1. Introduction
@@ -337,6 +337,9 @@
 
    - Warning : dip.msg and dip.footer must be configured AFTER the
    installation.
+   Think to remove the useless blank lines in them. Don't try to add too
+   much and take the risk to break some tools relying on the judge e-mail
+   format.
 
    - The smail script may need other modifications. For example, Greg
    Greenman had some problem on USTX with the mails headers with
@@ -986,21 +989,31 @@ atrun script
    playing with judge source code modifications, as it sometimes involves
    to re-run automake/autoconf.
 
-   - Anyway, you must copy the defaults.inc from your current judge into
-   the new source directory, and compile from there. Don't forget to read
-   the INSTALL and InstallationHOWTO.html files of this new version to be
-   sure that the important configuration files to move across both
-   versions are the same (judge maintainers try to do it).
+   - If you use a new source directory (when upgrading), you won't
+   compile without making a './configure' again. You should use the same
+   parameters and it will spit the same Makefile. But if you have changed
+   them before, you must get the smail.in and defaults.inc.in from your
+   old judge source.
+   Don't forget to read the INSTALL and InstallationHOWTO.html files of
+   this new version to be sure that the important configuration files to
+   move across both versions are the same (judge maintainers try to do
+   it).
 
-   - dip.conf is the configuration file, stored in the judge directory,
-   and will not be overwritten. Please check that the new version doesn't
-   contain new parameters.
+   - dip.conf is the configuration file, stored in the binaries
+   directory, and will not be overwritten. Please check that the new
+   version doesn't contain new parameters. Other customisation files
+   (dip.msg, dip.footer...) won't be overwritten.
 
    - Add any new file that the judge would need (variants...). Be very
    careful of including files of the form foo.[0-9x] in the data/
    directory. The tools that maintain the flist handle them in a
    different way, which can produce some really weird results.
    See README.hackers too.
+
+   - Lauch the configure. In my example :
+
+   ./configure --with-dir=/home/alex/dip --with-user=alex
+   --with-domain=christophecourtois.org
 
    - If you just want to rebuild the map files (because e.g. you added a
    new variant,) type 'make remap'.
