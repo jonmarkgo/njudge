@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.63  2004/07/26 23:17:24  millis
+ * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
+ * All other uses of date function stay unaltered.
+ *
  * Revision 1.62  2004/07/25 16:07:15  millis
  * Bug 151, allow less powers than variant default.
  *
@@ -1249,12 +1253,19 @@ void mail_setp(char *s)
 				if (*s)
 					fprintf(rfp, "Invalid return address specified: %s", s);
 				/* Change all player's address records */
-				for (i = 0; i < dipent.n; i++) 
-				    if (i == player || dipent.players[i].controlling_power == dipent.players[player].power)
-				        for (t = raddr, s = dipent.players[i].address; (*s++ = *t++););
+				for (i = 0; i < dipent.n; i++)
+                                    if (i == player)
+                                        for (t = raddr, s = dipent.players[i].address; (*s++ = *t++););
 			}
 			fprintf(rfp, "Setting return address to %s.\n\n",
 				dipent.players[player].address);
+			for (i = 0; i < dipent.n; i++) {
+                                if ((dipent.players[i].controlling_power == dipent.players[player].power &&
+                                     !(dipent.flags & F_INTIMATE))) {
+                                strcpy(dipent.players[i].address, dipent.players[player].address);
+                            }
+                        }
+
 			if (!(dipent.flags & F_GUNBOAT) ||
 			    dipent.players[player].power == MASTER) {
 				sprintf(subjectline, 
@@ -1265,7 +1276,9 @@ void mail_setp(char *s)
 				t = subjectline + strlen(subjectline);
 			     /* Notify of all player's address changes */
 			        for (i = 0; i < dipent.n; i++) {
-				    if (i == player || dipent.players[i].controlling_power == dipent.players[player].power) {
+					if (i == player || (dipent.players[i].controlling_power == dipent.players[player].power &&
+                                                        !(dipent.flags & F_INTIMATE))) {
+
 				        *t++ =  dipent.pl[dipent.players[i].power];
 					*t = '\0';
 					
