@@ -3,12 +3,12 @@
 #
 #  Invoked as smail file subject address
 #
-setenv FROM eff.org
+setenv FROM test_judge
 # FROM=u.washington.edu export FROM
 date >>mail.log
 echo "===== mail sent to $3/$2" >>mail.log
-/usr/ucb/head -10 $1 >>mail.log
-cat dip.msg $1 > /tmp/dip.reply
-/usr/ucb/mail -s "$2" </tmp/dip.reply $3
-rm -f /tmp/dip.reply
+/usr/bin/head -10 $1 >>mail.log
+cat dip.msg $1 > dip.reply1
+/bin/mail -s "$2" <dip.reply1 $3
+rm -f dip.reply1
 rm -f dip.xfail
