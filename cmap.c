@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/12/11 14:46:47  millis
+ * Restore version 1.5
+ *
  * Revision 1.6  2002/08/27 22:27:44  millis
  * Updated for automake/autoconf functionality
  *
@@ -725,6 +728,7 @@ int main(int argc, char *argv[])
 			 */
 
 			case '\n':
+			case '\r':
 			case '#':
 			case ' ':
 				break;
