@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.75  2004/10/23 21:27:43  millis
+ * Bug 374, skip rest of input if 'become' command fails
+ *
  * Revision 1.74  2004/10/12 01:14:51  alange
  * Fix typo in case MAP: message
  *
@@ -2775,6 +2778,12 @@ void send_press(void)
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
+			/* Defensive programming: clear the SF_PRESS flag if not master and not
+			 * globally enabled for Bug 395 */
+
+			if (!(dipent.xflags & XF_WATCHPRESS) && dipent.players[i].power != MASTER)
+			    dipent.players[i].status &= ~SF_PRESS;
+
 			/* Don't broadcast to those with nobroad set */
 			if (dipent.players[i].status & SF_NOBROAD & !broad_part) continue;
 
