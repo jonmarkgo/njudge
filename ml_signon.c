@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2003/05/01 14:41:47  millis
+ * Fixed small compile bug
+ *
  * Revision 1.21  2003/04/27 15:45:04  millis
  * Fixed Bug 5 (allowing game to be Force begun without all players)
  *
@@ -132,6 +135,7 @@
 #include "variant.h"
 #include "functions.h"
 #include "plyrdata.h"
+#include "porder.h"
 
 char *generic_names[] =
 {"b*", "c*", "d*", "e*", "f*", "g*",
@@ -213,7 +217,6 @@ int mail_signon(char *s)
 	while (isspace(*s))
 		s++;
 	while (*s && !isspace(*s) && t < password + sizeof(password) - 1) {
-		/* TODO: add in a check for non alphanumerics here */
 		if (!isalnum(*s) && t > name) {
 			fprintf(rfp, "Passwords must only contain alphanumeric characters.  Found a '%c'\n", *s);
 			return E_WARN;
@@ -1061,6 +1064,7 @@ void mail_igame(void)
 	long now;
 	FILE *fp, *dfp;
 	sequence seq;
+	int p;
 
 
 #define UNAVAILABLE_PREFERENCE INT_MAX
@@ -1332,6 +1336,18 @@ void mail_igame(void)
 	    if (!(dipent.xflags & XF_BLANKBOARD) || line[1] != ':') 
 		    fputs(line, ofp);
 	}
+
+	if (dipent.x2flags & X2F_NEUTRALS)  {
+	   /* We've got Neutrals so set them up */
+	    for (p = 1; p <= npr; p++) {
+		if (pr[p].type == 'x') {
+		    sprintf(line, "=: A %s\n", pr[p].name);
+		    fputs(line, ofp);
+		}
+	    }
+	}
+
+	
 	fclose(tfp);
 	fclose(ofp);
 
@@ -1362,8 +1378,6 @@ void mail_igame(void)
 			}
 		}
 		fprintf(ofp, "\n\nThe following players are in this game:\n");
-		/* TODO: reorder the powers alphabetically to avoid people knowing
-	           that first person signing on got first power etc */
 		for (j = 0; j < dipent.n; j++) {
 			if (dipent.players[j].power < 0)
 				continue;
