@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/05/14 23:00:56  miller
+ * Added NoAttackTrans flag
+ *
  * Revision 1.3  2000/11/18 21:12:14  miller
  * Fixed ONECENTRE bug
  *
@@ -151,6 +154,8 @@ void params(FILE * fp)
 	if (dipent.dedicate) {
 		sprintf(&line[strlen(line)], ", Dedication: %d", dipent.dedicate);
 	}
+	strcat(line, ".");
+	sprintf(&line[strlen(line)], " Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",dipent.orded,dipent.rrded);
 	strcat(line, ".");
 	print_params(fp, line);
 
