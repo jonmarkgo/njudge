@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.28  2004/05/22 08:51:02  millis
+   ** Bug 297: Add Intimate Diplomacy
+   **
    ** Revision 1.27  2004/01/04 11:34:35  millis
    ** Implement Bug #262 (ExtraCentres for 1900 Steamroller)
    **
@@ -1064,7 +1067,7 @@ void buildout(int pt)
 		    FindPower(p) < dipent.n) {
 			nu[p]++;
 			unit[u].owner = 0;
-			if (processing || pt == p || pt == MASTER) {
+			if (processing || pt == p || pt == MASTER || PowerControlledBy(p) == pt) {
 				fprintf(rfp, "%s: ", powers[p]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
@@ -1097,7 +1100,7 @@ void buildout(int pt)
             if ( pr[p1].type != pletter[dipent.variant][pr[p1].home] &&
                 PossibleHomeCentre(pletter[dipent.variant][pr[p1].home])) {
                  assumed[p]++;
-                 if (pp == p && (processing || pt == p || pt == MASTER)) {
+                 if (pp == p && (processing || pt == p || pt == MASTER || PowerControlledBy(p) == pt)) {
                     one_printed++;
                     fprintf(rfp, "\n%s: ", powers[p]);
                                 for (i = strlen(powers[p]); i < LPOWER; i++)
@@ -1113,7 +1116,7 @@ void buildout(int pt)
         /* Now show pending moves for home centre declarations */
         one_printed = 0;
         for (p = 1; p <= NPOWER && (dipent.x2flags & X2F_MORE_HOMES); p++) {
-            if (p != dipent.has_natives && (processing || pt == p || pt == MASTER )) {
+            if (p != dipent.has_natives && (processing || pt == p || pt == MASTER || PowerControlledBy(p) == pt )) {
                 p_index = FindPower(p);
                 if (dipent.players[p_index].centers <=0 &&
                     dipent.players[p_index].units <= 0)
