@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.16  2003/06/19 23:27:55  millis
+ * Bug 181, bailout recovery only for control game, and adjust deadlines
+ * for non-control games.
+ *
  * Revision 1.15  2003/05/14 19:01:22  millis
  * Don't adjust mach files in 'A' season on bailout
  *
@@ -120,6 +124,7 @@ int getdipent(FILE * fp)
 	unsigned char line[1000];
 	char *s; 
 	char *malloc();
+	static int recover_print = 0;
 
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
@@ -337,10 +342,11 @@ int getdipent(FILE * fp)
 	       } 
 
 	} else {
-	    if (bailout_recovery) {
+	    if (bailout_recovery && !recover_print) {
                     sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
                         execute(line);
                     DIPNOTICE("Bailout recovery detected.");
+		    recover_print = 1;
 	    }
         }
 	return 1;
