@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.13  2004/05/09 19:02:45  millis
+ * Fixed bug 302 (prevent armies being built in Mach2 in Venice)
+ *
  * Revision 1.12  2003/10/26 18:39:11  millis
  * Refix bug 224
  *
@@ -287,7 +290,7 @@ int ma_buildin(char **s, int p)
 void ma_buildout(int pt)
 {
 	int n, u, p, i, c1;
-	char mastrpt_pr[MAXPLAYERS];
+	char mastrpt_pr[NPOWER+1];
 
 	if (err)
 		fputc('\n', rfp);
@@ -299,7 +302,7 @@ void ma_buildout(int pt)
 
 	fprintf(rfp, "\n");
 	if (pt == MASTER) {
-		for (u = 0; u < MAXPLAYERS; u++)
+		for (u = 0; u < NPOWER+1; u++)
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
