@@ -1,0 +1,702 @@
+The following bugs were fixed in 1.4.0
+
+(ordered by Severity)
+
+
+----------------------
+
+
+ID
+Sev
+Reporter
+State
+Product
+Comp
+Vers
+Summary
+
+58
+blo
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.0
+cmap.c should be altered for new make environment?
+
+67
+blo
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+1.3.0
+Mach game with two units in same location and bad province owners
+
+21
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Mach2 games allowing Armies in Venice
+
+22
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Rebellion occurs in Machivalli in Venice province
+
+23
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Secret game showing missing players
+
+28
+maj
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+unspe
+Besieged garrison not eliminated on assassination of owner
+
+30
+maj
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+unspe
+Failed support from rebellion unit
+
+47
+maj
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+1.3.0
+Incorrect ownership with proxied orders
+
+44
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+1.3.0
+plyrdata corrupt generation
+
+51
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+1.2.0
+Suez canal mistakenly counts as a province
+
+54
+maj
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+unspe
+Unit allowed to retreat to a space in rebellion (WRONG!)
+
+69
+maj
+fblesa@posta.unizar.es
+RESO
+njudge
+dip-Mach
+unspe
+ownership incorrectly returned to his original owner prior to move adjudication.
+
+56
+maj
+millis@faztek.org
+RESO
+New vari
+Machiave
+unspe
+Do storms work at the right time?
+
+57
+maj
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+Blind game shows too much
+
+2
+maj
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+unspe
+Mach Disband bug
+
+90
+maj
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+unspe
+Problems with summary display (famine and strange character)
+
+108
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+super-long line in mail crashes judge
+
+126
+maj
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+1.3.1
+Ownership Control change error bug in mach games
+
+153
+maj
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.2
+make upgrade fails to install files
+
+48
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+1.2.0
+infoplayer crashes judge for a large list of emails (>= 244)
+
+122
+maj
+russblau@imapmail.org
+RESO
+njudge
+dip
+unspe
+"become" command reveals Master commands to player
+
+155
+maj
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+1.3.2
+Unit incorrectly offered retreat to attacker's space.
+
+156
+maj
+millis@faztek.org
+RESO
+njudge
+dip
+1.3.2
+Blind game does not send termination on victory correctly
+
+12
+nor
+millis@faztek.org
+RESO
+njudge
+Document
+unspe
+Update Mach2 Venice dislodge description
+
+26
+nor
+millis@faztek.org
+VERI
+njudge
+Makefile
+1.3.0
+Make upgrade doesn't remake targets correctly
+
+41
+nor
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+1.2.0
+Mach2 ownership problem
+
+43
+nor
+millis@faztek.org
+VERI
+njudge
+dip-Mach
+unspe
+Ownership not changed prior to move ajudication
+
+45
+nor
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.0
+Make not compatible with Perl 5.00503
+
+3
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Mach victory bug
+
+79
+nor
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+unspe
+Don't show special type on retreat results
+
+62
+nor
+millis@faztek.org
+RESO
+njudge
+Makefile
+unspe
+cmap and dependencies not working correctly
+
+71
+nor
+christophe@courtois.cc
+RESO
+njudge
+Makefile
+1.3.0
+Dipclean script does not use judge path
+
+93
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+1.3.1
+Unwanted press getting to master
+
+6
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Detect returning player
+
+81
+nor
+MichaelWalma@netscape.net
+RESO
+njudge
+dip
+unspe
+atrun date wrong for dates in next year
+
+106
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+1.2.0
+Assorted problems with concessions
+
+129
+nor
+millis@faztek.org
+RESO
+njudge
+Makefile
+unspe
+Make ./configure check for correct Perl version
+
+141
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+1.3.1
+Force begin command inadvertently invoked
+
+99
+nor
+tim@gem.win.co.nz
+RESO
+njudge
+dip
+1.3.1
+"withdraw" doesn't resign players
+
+125
+nor
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+unspe
+nomoney flag does not disable loans, special and assassination
+
+118
+nor
+russblau@imapmail.org
+RESO
+njudge
+dip
+1.3.2
+Build transform in non-supply center doesn't work
+
+133
+nor
+millis@faztek.org
+RESO
+njudge
+dip
+1.3.1
+Process command doesn't work when game is on manualprocess
+
+98
+nor
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.0
+Data file dependencies not working
+
+42
+min
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+1.2.0
+Storms flag not shown
+
+46
+min
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.0
+Adjust forward creation
+
+38
+min
+millis@faztek.org
+RESO
+njudge
+Makefile
+1.3.0
+Installed exectuables are not being stripped
+
+53
+min
+diptool@hagenah.de
+VERI
+njudge
+dip
+1.2.0
+Several minor starting position and map bugs
+
+70
+min
+fblesa@posta.unizar.es
+RESO
+njudge
+dip-Mach
+unspe
+no empty line between last city changing hands and movement results.
+
+75
+min
+millis@faztek.org
+RESO
+njudge
+dip
+1.1.1
+Masters don't see each others messages
+
+87
+min
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Mach: master gets unnecessary error mesages on build phase
+
+96
+min
+millis@faztek.org
+RESO
+njudge
+Document
+unspe
+Improve transform documentation
+
+10
+min
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Prevent overlapping absence requests
+
+134
+min
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+Order the results for home centre assuming
+
+29
+tri
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+unspe
+Rebellion results not indicated when having no effect
+
+121
+tri
+millis@faztek.org
+RESO
+njudge
+dip
+1.1.1
+Missing line-feed on grace timeout warning
+
+140
+tri
+thorfinn+dip@tertius.net.au
+RESO
+njudge
+dip
+unspe
+movement results is reported as "results" whilst adjustments and retreat results are reported as "orders"
+
+36
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+1.2.0
+Change 'blacklist' message if person is not specifically black-listed
+
+77
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Don't break on wrap for country names in centre list on owned centres
+
+17
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add no bcentres option
+
+59
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add colonial 96 variant
+
+63
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add better description of convoy ordering
+
+13
+enh
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+Add blitzkrieg2 & cannon units.
+
+16
+enh
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+Add Maharajah Diplomacy
+
+14
+enh
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+Add Rum Variant
+
+19
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add inital centres for power, that count-down as time passes.
+
+33
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add an "armed neutrals" flag
+
+15
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Add ability for multiple units in one space
+
+82
+enh
+millis@faztek.org
+RESO
+njudge
+Document
+unspe
+Make InstallHOWTO HTML version
+
+65
+enh
+sigge.lidsell@riksdagen.se
+RESO
+njudge
+dip-Mach
+unspe
+Mach: summer Turn Suppression Flag
+
+5
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Allow Game start with missing players
+
+137
+enh
+millis@faztek.org
+RESO
+New vari
+Standard
+unspe
+add summer turn option
+
+8
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+anyDisband
+
+150
+enh
+millis@faztek.org
+RESO
+njudge
+dip-Mach
+unspe
+Add NOGARRISONS flag
+
+73
+enh
+markus@johalla.de
+RESO
+njudge
+dip
+unspe
+wish: use UT instead of local judge time
+
+60
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+Use '--' to automatically act as a signoff
+
+110
+enh
+millis@faztek.org
+RESO
+njudge
+dip
+unspe
+On recovery from bailout, don't process turns
+
+76 bugs found. 
