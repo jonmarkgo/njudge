@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.36  2003/03/28 21:30:34  nzmb
+ * Added extra newline before grace period display -- resolves bug #121
+ *
  * Revision 1.35  2003/03/21 20:25:04  russblau
  * Allow space in "sign off" when used to terminate a press message (to be
  * consistent with usage in other contexts).
@@ -246,7 +249,7 @@ static char *prelim[] =
  "no control", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fix id",
- "map", "sign off", "record", "info player"
+ "map", "sign off", "--\n", "record", "info player"
  ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
 	"ded#" */ };
@@ -264,13 +267,13 @@ static int pvalue[] =
  NOCONTROL, ADJUST,
  _VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
- MAP, SIGNOFF, RECORD, INFOPLAYER 
+ MAP, SIGNOFF, SIGNOFF, RECORD, INFOPLAYER 
  , COND, COND, COND                   /* -- Tamas -- 2002-06-11 -- */
  /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
- "setup", "sign off", "resign", "withdraw",
+ "setup", "sign off", "--\n", "resign", "withdraw",
  "broadcast", "press", "phase", "clear",
  "register", "i am also",
  "who game", "who is#", "who#",
@@ -287,7 +290,7 @@ static char *commands[] =
 
 static int cvalue[] =
 {0, LIST, HELP, GET, GET, GET,
- SETUP, SIGNOFF, RESIGN, RESIGN,
+ SETUP, SIGNOFF, SIGNOFF, RESIGN, RESIGN,
  BROADCAST, PRESS, PHASE, CLEAR,
  REGISTER, IAMALSO,
  WHOGAME, WHOIS, WHOIS,
@@ -523,7 +526,8 @@ int mail(void)
 		if(ppress_read || ppress_skip)
 		{
 			if(!strcasecmp(s,"signoff\n") ||
-			   !strcasecmp(s,"sign off\n"))
+			   !strcasecmp(s,"sign off\n") ||
+                           !strcasecmp(s,"--\n"))
 				skipping++;
 			else if(!strcasecmp(s,"endpress\n") ||
 			        !strcasecmp(s,"endbroadcast\n"))
@@ -555,7 +559,8 @@ int mail(void)
 
 		if (broad_read || broad_skip) {
 			if (!strcasecmp(s, "signoff\n") ||
-			    !strcasecmp(s, "sign off\n")) {
+			    !strcasecmp(s, "sign off\n") ||
+                            !strcasecmp(s, "--\n")) {
 				skipping++;
 
 				/*
