@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/04/15 12:55:42  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.8  2002/02/25 11:51:50  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -116,8 +119,10 @@ void process_input(int pt, char phase);
 int ownership(void);
 
 /* defined in st_build.c */
+int buildin_td(char **s, int p);
 int buildin(char **s, int p);
 void init_build(void);
+void buildout_td(int pt);
 void buildout(int pt);
 int build_syntaxcheck(char *s, int precheck, char *out_string);
 

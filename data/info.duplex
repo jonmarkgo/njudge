@@ -12,13 +12,18 @@ When the number of players is set to some number less than the number
 of powers, the game will begin when that number of players signs on
 to the game.
 
-The judge assigns the players their first powers based on their
-preference lists.  Players are allocated a second power based on their
-initial preferences over the unassigned powers.  This process is
-repeated for as many rounds as it takes to assign all the powers in the
-game.  If there is ever a round of power allocation in which there are
-more players than powers left to assign, the judge randomly chooses
+If preference lists are used, the judge assigns the players their first
+powers based on their preference lists.  Players are allocated a second
+power based on their initial preferences over the unassigned powers.  This
+process is repeated for as many rounds as it takes to assign all the powers
+in the game.  If there is ever a round of power allocation in which there
+are more players than powers left to assign, the judge randomly chooses
 which players receive an extra power.
+
+If the game is SET PRFRAND, all powers are assigned randomly. This is
+useful because some players might infer that Italy or Austria is part of
+a duplex, since many people place those two powers last on their
+preference lists.
 
         Tips on using SET PLAYERS number:
 
@@ -28,7 +33,13 @@ cannot order the German units while signed on as Austria or vice versa.
 
 If the game is gunboat, then players will not know which other
 powers are being played by a single player. It is therefore recommended
-that they not send press from more than one power at the same time.
+that they not send press from more than one power at the same time. The
+game should also be set secret. Otherwise, the pairings will be shown in
+the game's summary.
+
+If the number of players is intended to be a secret, then the game
+should be set secret. This will prevent the judge from revealing any
+information about how many players are in the game.
 
 Gunboat games run with fewer players than powers should also use the
 quiet flag, so that the pairings can not be inferred from which powers

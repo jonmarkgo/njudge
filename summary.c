@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2002/03/05 23:38:50  miller
+ * Replaced lost changes revison 1.8
+ *
  * Revision 1.9  2002/03/05 23:05:47  miller
  * Fixed Machiavelli summary problem
  *
@@ -653,7 +656,11 @@ int main(int argc, char **argv)
 				if (gflg && p != MASTER) {
 					if (strncmp(names[i], "Somebody #", 10)) {
 						strcpy(addrs[i], "someone@somewhere");
-						sprintf(names[i], "Somebody #%d", k++);
+						if (dipent.x2flags & X2F_SECRET) {
+							sprintf(names[i], "Somebody   ");
+						} else {
+							sprintf(names[i], "Svmebody #%d", k++);
+						}
 					}
 				}
 				addrs[i][120 - 14 - 1 - 2 - lname - 3] = '\0';

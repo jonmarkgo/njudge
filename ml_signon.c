@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2001/11/12 11:12:54  miller
+ * Fix to correct res_rat if over 1.0
+ *
  * Revision 1.10  2001/08/31 02:05:22  greg
  * added "Ready to Start" subjectline for manual start games
  * and fixed subjectline problems with preference changes
@@ -480,8 +483,12 @@ int mail_signon(char *s)
 		} else {
 			if (dipent.seq[0] == 'x' && dipent.phase[6] != 'X' ) {
 				n = dipent.no_of_players - (dipent.seq[1] - '0');
-				fprintf(rfp, "You'll be notified when %d more player%s sign%s on.\n",
-				n, n == 1 ? "" : "s", n == 1 ? "s" : "");
+
+				if (!(dipent.x2flags & X2F_SECRET)) {
+					fprintf(rfp, "You'll be notified when %d more player%s sign%s on.\n",
+					n, n == 1 ? "" : "s", n == 1 ? "s" : "");
+				}
+
 				n = dipent.seq[1] - '0';
 			} else {
 				n = dipent.np;
@@ -499,7 +506,9 @@ int mail_signon(char *s)
 				broad_signon = 1;
 			}
 
-			fprintf(rfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+			if (!(dipent.x2flags & X2F_SECRET)) {
+				fprintf(rfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+			}
 			fprintf(rfp, ".\n\n");
 			if (dipent.n != 1) {
 				pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
@@ -717,8 +726,9 @@ int mail_signon(char *s)
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Game '%s' hasn't started up yet.\n", dipent.name);
-			fprintf(rfp, "You'll be notified when %d more people sign on.\n",
-			   dipent.no_of_players - (dipent.seq[1] - '0'));
+			if (!(dipent.x2flags & X2F_SECRET) || (n == MASTER))
+				fprintf(rfp, "You'll be notified when %d more people sign on.\n",
+				   dipent.no_of_players - (dipent.seq[1] - '0'));
 			if (n== MASTER) {
 			        /* It is the master, show him the current preferences */
 				ShowPreferences(rfp);
@@ -731,7 +741,7 @@ int mail_signon(char *s)
 			display_absence(n, rfp);
 		}
 
-		/* Don't allw signon on unstarted but terminated game */
+		/* Don't allow signon on unstarted but terminated game */
 		if (dipent.phase[6]=='X' && dipent.seq[0] == 'x') {
                     fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
                     return E_WARN;
@@ -975,8 +985,14 @@ void mail_igame(void)
  *  The game file is created and messages are sent to each player.
  */
 
-	char line[150];
+	char line[150],
+	availpowers[WILD_PLAYER],	/* List of powers not yet randomly assigned */
+	*pref[WILD_PLAYER],		/* Adjusted pref lists for players */
+	assdpowers[WILD_PLAYER] = "",	/* List of powers that have been randomly assigned */
+	*cptr;				/* Character pointer */
 	int i, j, k, n;
+	int unassigned;		/* Number of powers not yet randomly assigned */
+	int randoms = 0;		/* Number of powers to be assigned randomly */
 	int wp[WILD_PLAYER];	/* Whether this is a power ordinal in this variant */
 	int mx[WILD_PLAYER];	/* Index to which power was assigned to this player */
 	int wv[WILD_PLAYER][WILD_PLAYER];	/* Array derived from player preferences */
@@ -990,19 +1006,29 @@ void mail_igame(void)
 	FILE *fp, *dfp;
 	sequence seq;
 
+
 #define UNAVAILABLE_PREFERENCE INT_MAX
+
 	/* Preference value for an already taken power */
 
 	for (i = 0; i < WILD_PLAYER; i++)
 		for (j = 0; j < WILD_PLAYER; j++)
 			wv[i][j] = 0;
 
-	/*
-	 *  Pick a random power for those not yet specified.
-	 */
+	j = 0;
 
-	for (i = 1; i < WILD_PLAYER; i++)
-		wp[i] = dipent.pl[i] != 'x' ? 1 : 0;
+	for (i = 1; i < WILD_PLAYER; i++) {
+		if (dipent.pl[i] == 'x') {
+			wp[i] = 0;
+		} else {
+			wp[i] = 1;
+			availpowers[j++] = dipent.pl[i];
+		}
+	}
+
+	availpowers[j] = '\0';
+
+	unassigned = j;
 
 	for (i = 0; i < dipent.n; i++) {
 		if (dipent.players[i].power < 0)
@@ -1013,9 +1039,55 @@ void mail_igame(void)
 		}
 	}
 
+	for (i = 0; i < dipent.n; i++) {
+		if (dipent.players[i].power == WILD_PLAYER) {
+			pref[i] = (char *) malloc(WILD_PLAYER);
+
+			if (dipent.x2flags & X2F_PREFRANDONLY) {
+				*pref[i] = '*';
+				randoms++;
+			} else {
+				if (dipent.x2flags & X2F_PREFRANDALLOW) {
+					if (*dipent.players[i].pref == '*') {
+						randoms++;
+					}
+					strcpy(pref[i], dipent.players[i].pref);
+				} else {
+					if (*dipent.players[i].pref == '*') {
+						*pref[i] = '\0';
+					} else {
+						strcpy(pref[i], dipent.players[i].pref);
+					}
+				}
+			}
+		}
+	}
+
+	for (i = 0; i < randoms; i++) {
+		j = rand() % unassigned--;
+
+		assdpowers[i] = availpowers[j];
+		memmove(&availpowers[j], &availpowers[j+1],WILD_PLAYER - j);
+	}
+
+	j = 0;
+
 	for (i = n = 0; i < dipent.n; i++) {
 		if (dipent.players[i].power == WILD_PLAYER) {
-			chkpref(dipent.players[i].pref, wp, wv[n++]);
+			if (*pref[i] == '*') {
+				*pref[i]++ = assdpowers[j++];
+				*pref[i]-- = '\0';
+			} else {
+				for (k = 0; k < randoms; k++) {
+					cptr = strchr(pref[i], assdpowers[k]);
+
+					if (cptr != NULL) {
+						memmove(cptr, cptr + 1, WILD_PLAYER - (cptr + 1 - pref[i]));
+					}
+				}
+			}
+
+			chkpref(pref[i], wp, wv[n++]);
 		}
 	}
 
@@ -1035,6 +1107,14 @@ void mail_igame(void)
 	number_of_players = n;
 
 	assignment(wv, n, dipent.np, mx);
+
+/* Free memory allocated for prefs */
+
+	for (i = 0; i < dipent.n; i++) {
+		if (dipent.players[i].power == WILD_PLAYER) {
+			free(pref[i]);
+		}
+	}
 
 	for (i = k = 0; i < dipent.n; i++) {
 		if (dipent.players[i].power < 0)
@@ -1275,6 +1355,7 @@ void mail_igame(void)
 	}
 	sprintf(line, "%s:%s - %s Game Starting", JUDGE_CODE, dipent.name, dipent.phase);
 	archive("dip.temp", line);
+
 
 /*
  * Record start date for the summary

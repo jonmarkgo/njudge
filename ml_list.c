@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.6  2001/07/15 09:17:15  greg
+   ** added support for game directories in a sub directory
+   **
    ** Revision 1.5  2001/05/13 17:18:42  greg
    ** took off ")" at line 224
    **
@@ -86,9 +89,12 @@ void mail_listit(void)
 	else if (dipent.seq[0] == 'x') {
 
 		n = dipent.no_of_players - (dipent.seq[1] - '0');
-		fprintf(rfp, "Game '%s' is waiting for %d%s player%s to sign on.\n",
-		dipent.name, n, n == dipent.no_of_players ? "" : " more",
-			n == 1 ? "" : "s");
+
+		if (!(dipent.flags & F_QUIET)) {
+			fprintf(rfp, "Game '%s' is waiting for %d%s player%s to sign on.\n",
+			dipent.name, n, n == dipent.no_of_players ? "" : " more",
+				n == 1 ? "" : "s");
+		}
 
 	} else if (dipent.phase[6] == 'X') {
 		ok_for_blind = 1; /* Game over, so ok to show all for blind */
@@ -159,7 +165,7 @@ void mail_listit(void)
 		fprintf(rfp, "\nThe following players are signed up for game '%s':\n",
 			dipent.name);
 		lates = abandons = 0;
-		/* TODO: Reorder so that you can't tell which power signed on first */
+
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
@@ -188,35 +194,53 @@ void mail_listit(void)
 					s = f & SF_PART ? "part" : "late";
 				}
 			}
-			fprintf(rfp, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);
+
+			sprintf(line, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);
+
+/*			fprintf(rfp, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);*/
 			if (ok_for_blind && 
 			     (dipent.players[i].units || dipent.players[i].centers)) {
 				ccount = dipent.players[i].centers-dipent.players[i].centres_blockaded;
-				fprintf(rfp, "%2d/%d%s",
+				sprintf(line, "%s%2d/%d%s",
+					line,
 					dipent.players[i].units, 
 					ccount,
 					dipent.players[i].centers < 10 ? " " : "");
+
+/*
+ *				fprintf(rfp, "%2d/%d%s",
+ *					dipent.players[i].units, 
+ *					ccount,
+ *					dipent.players[i].centers < 10 ? " " : "");
+ */
 			} else
-				fputs("     ", rfp);
+				strcat(line, "     ");
+/*				fputs("     ", rfp); */
 
 			/* Now display late count if either master or not quiet/late_count */
 		        if ((dipent.xflags & XF_LATECOUNT) ) {	
 				if ((dipent.players[i].power >= 0 && dipent.players[i].power < WILD_PLAYER) &&
 				    ((signedon && (dipent.players[player].power == MASTER || player == i)) || (!(dipent.flags & F_QUIET)))) 
-				    fprintf(rfp, " %2d ", dipent.players[i].late_count); 
+					sprintf(line, "%s %2d ", line, dipent.players[i].late_count);
+/*					fprintf(rfp, " %2d ", dipent.players[i].late_count);  */
 				else
-				    fprintf(rfp, "   ");
+					strcat(line, "   ");
+/*					fprintf(rfp, "   "); */
 			}
 			else
-				fprintf(rfp, "   ");
+				strcat(line, "   ");
+/*				fprintf(rfp, "   "); */
 			
 			if (signedon && (dipent.players[player].power == MASTER || player == i)) {
 				if (dipent.players[i].status & SF_PRESS)
-					fprintf(rfp,"*");
+					strcat(line, "*");
+/*					fprintf(rfp,"*"); */
 				else
-					fprintf(rfp," ");
+					strcat(line, " ");
+/*					fprintf(rfp, " "); */
 			} else {
-				fprintf(rfp," ");
+				strcat(line, " ");
+/*				fprintf(rfp, " "); */
 			}
 
 	
@@ -225,31 +249,58 @@ void mail_listit(void)
 			    && dipent.players[i].userid <= nded)
 /*			    && ded[dipent.players[i].userid].r */
 			    && (0 != strcmp(dipent.players[i].password,GONE_PWD)))
-				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r);
+				sprintf(line, "%s%4d", line, ded[dipent.players[i].userid].r);
+/*				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r); */
 			else
-				fputs("    ", rfp);
+				strcat(line, "    ");
+/*				fputs("    ", rfp); */
 
 			if (dipent.flags & F_GUNBOAT
 			    && dipent.players[i].power != MASTER
 			    && (!signedon || dipent.players[player].power != MASTER)
 			    && ((signedon && player != i)
 			|| strcasecmp(raddr, dipent.players[i].address)))
-				fprintf(rfp, " %s\n", someone);
+				sprintf(line, "%s %s\n", line, someone);
+/*				fprintf(rfp, " %s\n", someone); */
 			else
-				fprintf(rfp, " %s\n", dipent.players[i].address);
+				sprintf(line, "%s %s\n", line, dipent.players[i].address);
+/*				fprintf(rfp, " %s\n", dipent.players[i].address); */
+
+			if (!(dipent.x2flags & X2F_SECRET) ||
+			  (dipent.seq[0] != 'x') ||
+			  (signedon && dipent.players[player].power == MASTER) ||
+			  (dipent.players[i].power == MASTER) ||
+			  !(strcasecmp(raddr, dipent.players[i].address)))
+				fprintf(rfp, line);
+
+		}
+
+		if ((dipent.seq[0] == 'x') &&
+		  (dipent.x2flags & X2F_SECRET) &&
+		  !(signedon && dipent.players[player].power == MASTER)) {
+			fprintf(rfp, "\n  Other players kept secret.\n");
 		}
 
 		if (dipent.flags & F_QUIET && (lates || abandons)) {
 			fputs("\n", rfp);
-			if (lates)
-				fprintf(rfp, "%d power%s late.  ",
-				    lates, lates == 1 ? " is" : "s are");
-			if (abandons)
-				fprintf(rfp, "%d power%s abandoned.",
-					abandons, abandons == 1 ? " is" : "s are");
-			fputs("\n", rfp);
+			if (lates) {
+				if (dipent.x2flags & X2F_SECRET)
+					fprintf(rfp, "One or more powers are late.\n");
+				else
+					fprintf(rfp, "%d power%s late.\n", lates, lates == 1 ? " is" : "s are");
+			}
+			if (abandons) {
+				if (dipent.x2flags & X2F_SECRET)
+					fprintf(rfp, "One or more powers are abandoned.\n");
+				else
+					fprintf(rfp, "%d power%s abandoned.\n", abandons, abandons == 1 ? " is" : "s are");
+			}
+
+/*			fputs("\n", rfp); */
 		}
 	}
+
+
 	fputs("\n", rfp);
 
 }

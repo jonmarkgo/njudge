@@ -1,10 +1,13 @@
 /*
  * $Log$
+ * Revision 1.11  2002/04/15 12:55:45  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.10  2002/02/25 11:51:53  miller
  * Various updates for Machiavelli bug fixes
  *
  * Revision 1.9  2001/10/20 12:11:14  miller
- * Merged in changes from DEMA and USTV 
+ * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
  *
  * Revision 1.8.2.2  2001/10/20 00:52:20  dedo
  * Correctedcompile error
@@ -78,6 +81,7 @@
 #include <string.h>
 #include "dip.h"
 #include "functions.h"
+#include "mail.h"
 
 /*  Access types.  */
 
@@ -284,9 +288,6 @@ void params(FILE * fp)
 			} else {
 				strcat(line, ", Plague");
 			}
-			if (dipent.xflags & XF_STORMS) {
-				strcat(line, ", Storms");
-			}
 			if (dipent.flags & F_NOLOANS) {
 				strcat(line, ", NoLoans");
 			} else {
@@ -455,6 +456,16 @@ void params(FILE * fp)
 	strcat(line,temp1);
 	print_params(fp,line);
 
+
+       /*  x2Flag information.  */
+        sprintf(line, "  x2Flags:  ");
+	first_flag = 1;
+	if (dipent.x2flags & X2F_SECRET)
+                strcatf(line, "Secret.", &first_flag);
+
+	if (!first_flag)
+		print_params(fp, line);
+
 	/*  Press information.  */
 
 	sprintf(line, "    Press:  ");
@@ -548,10 +559,24 @@ void params(FILE * fp)
 			fprintf(fp, "  Boardman Number: %s.\n", dipent.bn_mnnum);
 		}
 	}
+
+	fprintf(fp, "  Power Assignments: ");
+	if (dipent.x2flags & X2F_PREFRANDONLY) {
+		fprintf(fp, "Assigned Randomly Only\n");
+	} else {
+		if (dipent.x2flags & X2F_PREFRANDALLOW) {
+			fprintf(fp, "By Preference List or Randomly\n");
+		} else {
+			fprintf(fp, "By Preference List Only\n");
+		}
+	}
+
 	fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
 
 	/* No of centres added. DAN. */
-	if (dipent.no_of_players != dipent.np) {
+	if ((dipent.no_of_players != dipent.np) &&
+	   ((!(dipent.x2flags & X2F_SECRET) || (signedon && (dipent.players[player].power == MASTER) && !broad_params)) ||
+	   (dipent.phase[6] == 'X'))) {
 		fprintf(fp, "  Number of Players: %d.\n", dipent.no_of_players);
 	}
 	/* Added the Index value, which indicates a measure of how far along the

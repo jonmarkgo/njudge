@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2002/04/15 12:55:41  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.19  2002/04/09 10:54:38  miller
  * Add check before resending abandoned messages
  *
@@ -758,6 +761,7 @@ void CheckRemindPlayer( int player, long one_quarter)
 int process(void)
 {
 	int i, n, v;
+/*	int latecnt = 0;*/
 	int dedtest; /* Buffer variable for dipent.dedapplied. */
 	time_t now, then;
 	FILE *dfp, *gfp,
@@ -824,7 +828,13 @@ int process(void)
 								bailout(1);
 							} else {
 								msg_header(lfp);
+
+								if (dipent.x2flags & X2F_SECRET) {
+									fprintf(lfp, "Diplomacy game '%s' is waiting for orders from one or more powers",
+										dipent.name);
+								}
 							}
+
 							if (!(mlfp = fopen("dip.mlate", "w"))) {
 								perror("dip_process: dip.mlate");
 								bailout(1);
@@ -834,10 +844,12 @@ int process(void)
 						}
 					}
 
+					if (!(dipent.x2flags & X2F_SECRET)) {
+						fprintf(lfp, "Diplomacy game '%s' is waiting for %s's orders",
+							dipent.name, dipent.flags & F_QUIET ? "some power"
+							: powers[dipent.players[i].power]);
+					}
 
-					fprintf(lfp, "Diplomacy game '%s' is waiting for %s's orders",
-						dipent.name, dipent.flags & F_QUIET ? "some power"
-						: powers[dipent.players[i].power]);
 					fprintf(mlfp, "Diplomacy game '%s' is waiting for %s's orders",
 						dipent.name, powers[dipent.players[i].power]);
 
@@ -849,9 +861,10 @@ int process(void)
 					    dipent.players[i].late_count++; /* bump up the late count */
 					}
 					if (dipent.xflags & XF_LATECOUNT) {
-						fprintf(lfp, ": %d time%s late",
-							dipent.players[i].late_count,
-							dipent.players[i].late_count == 1 ? "" : "s" );
+						if (!(dipent.x2flags & X2F_SECRET))
+							fprintf(lfp, ": %d time%s late",
+								dipent.players[i].late_count,
+								dipent.players[i].late_count == 1 ? "" : "s" );
 						fprintf(mlfp, ": %d time%s late",
 							dipent.players[i].late_count,
 							dipent.players[i].late_count == 1 ? "" : "s" );
@@ -866,9 +879,14 @@ int process(void)
 			late[n] = '\0';
 			then = dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60);
 
-			fputs(n == 1 ? "\nThis power" : "\nThese powers", lfp);
-			fputs(now < then ? " will be" :
-			      n == 1 ? " is now" : " are now", lfp);
+			if (dipent.x2flags & X2F_SECRET) {
+				fputs("\nThese powers", lfp);
+				fputs(now < then ? " will be" : " are now", lfp);
+			} else {
+				fputs(n == 1 ? "\nThis power" : "\nThese powers", lfp);
+				fputs(now < then ? " will be" : n == 1 ? " is now" : " are now", lfp);
+			}
+
 			fputs(" considered abandoned and free for takeover", lfp);
 
 			fputs(n == 1 ? "\nThis power" : "\nThese powers", mlfp);
@@ -881,7 +899,12 @@ int process(void)
 					fputs(".\n", lfp);
 					fputs(".\n", mlfp);
 				} else {
-					fputs(n == 1 ? ".\nIt" : ".\nThey", lfp);
+					if (dipent.x2flags & X2F_SECRET) {
+						fputs(".\nThey", lfp);
+					} else {
+						fputs(n == 1 ? ".\nIt" : ".\nThey", lfp);
+					}
+
 					fputs(" will be considered in civil disorder if orders are ", lfp);
 					fprintf(lfp, "not received\nby %s.\n", ptime(&dipent.grace));
 
@@ -978,14 +1001,15 @@ int process(void)
 							execute(line);
 						} else {
 							sprintf(line, "%s dip.late '%s%s:%s - %s Late Notice: %s' '%s'",
-								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
+								SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, 
+									(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
 							execute(line);
 						}
 					}
 				}
 			}
 			if (n) {
-				sprintf(line, "%s:%s - %s Late Notice: %s", JUDGE_CODE, dipent.name, dipent.phase, late);
+				sprintf(line, "%s:%s - %s Late Notice: %s", JUDGE_CODE, dipent.name, dipent.phase, (dipent.x2flags & X2F_SECRET) ? "?" : late);
 				archive("dip.late", line);
 			}
 			if (n == -1) {
@@ -1104,10 +1128,12 @@ int process(void)
 
 				if ((dipent.players[i].status &
 				     (SF_MOVE | SF_MOVED | SF_PART)) == SF_MOVE) {
-					fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
-					fprintf(rfp, "to take over the abandoned %s.\n",
-					dipent.flags & F_QUIET ? "power" :
-					powers[dipent.players[i].power]);
+					if (!(dipent.x2flags & X2F_SECRET)) {
+						fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
+						fprintf(rfp, "to take over the abandoned %s.\n",
+						  dipent.flags & F_QUIET ? "power" :
+						  powers[dipent.players[i].power]);
+					}
 					pprintf(cfp, "%sDiplomacy game '%s' is waiting for someone ", NowString(), dipent.name);
 					pprintf(cfp, "to take over the abandoned\n");
 					pprintf(cfp, "%s with %d of %d units on the board (%s).\n",
@@ -1119,9 +1145,15 @@ int process(void)
 					n++;
 				}
 			}
+
 			/* Only send warning if process time passed */
 			if (n && (dipent.process < now)) {
 				late[n] = '\0';
+
+				if (dipent.x2flags & X2F_SECRET) {
+					fprintf(rfp, "Diplomacy game '%s' is waiting for someone ", dipent.name);
+					fprintf(rfp, "to take over the abandoned power(s).\n");
+				}
 
 				dipent.process = now + 48 * 60 * 60;
 
@@ -1134,7 +1166,8 @@ int process(void)
 
 					if (*(dipent.players[i].address) != '*' && !Dflg) {
 						sprintf(line, "%s dip.result '%s:%s - %s Waiting for Replacements: %s' '%s'",
-							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
+							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, 
+							(dipent.x2flags & X2F_SECRET) ? "?" : late, dipent.players[i].address);
 
 						execute(line);
 					}

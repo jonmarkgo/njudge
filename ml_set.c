@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2002/04/15 12:55:44  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.19  2002/02/25 12:35:14  miller
  * mall compile error fix
  *
@@ -137,6 +140,8 @@ void ShowTransformSettings(FILE* rfp);
 char * SetSubkey(int act, char *s);
 
 #define SETFLAGS(set,mask) dipent.flags = (dipent.flags & ~(mask)) | (set)
+
+#define SETX2FLAGS(set,mask) dipent.x2flags = (dipent.x2flags & ~(mask)) | (set)
 
 #define CheckMach() if (!(dipent.flags & F_MACH)) fprintf(rfp, "Game '%s' is not Machiavelli, option is useless.\n\n", dipent.name);
 
@@ -315,11 +320,16 @@ int absence_delay(int max_delay, long delay_period)
 /* This function is supposed to separate two dates into two strings */
 /* If only one date string is found, the second one is blanked */
 
-void break_date_into_two( char * instring, char *s1, char *s2)
+void break_date_into_two(char * instring, char *s1, char *s2)
 {
 	char *t;
+	char *c;
+
 	strcpy(s1, instring);
 	*s2 = '\0';
+
+	for (c = s1; *c != '\n'; c++)
+		*c = tolower(*c);
 
 	t = strstr(s1,"to");
 	if (t) {
@@ -333,11 +343,10 @@ void break_date_into_two( char * instring, char *s1, char *s2)
 
 void mail_setp(char *s)
 {
-
 	int i, k, chk24nmr;
 	float f,temprat; /* Used in ratio dedication systems. */
         int passOK;  /* used to see if password string is alright on setpass */
-	char c, *t, *temp,*s1;
+	char c, *t, *temp,*s1, *u;
 	sequence seq;
 	long dates, datee;
 	struct tm *tm, *localtime();
@@ -644,9 +653,18 @@ void mail_setp(char *s)
 #define PRV_STORM	  'm'
 #define SET_NOSTORM	  148
 #define PRV_NOSTORM	  'm'
-#define SET_NOTVARIANT    149
+#define SET_PREFLIST	  149
+#define PRV_PREFLIST	  'm'
+#define SET_PREFBOTH	  150
+#define PRV_PREFBOTH	  'm'
+#define SET_PREFRAND	  151
+#define PRV_PREFRAND	  'm'
+#define SET_SECRET	  152
+#define PRV_SECRET	  'm'
+#define SET_NOSECRET	  153
+#define PRV_NOSECRET	  'm'
+#define SET_NOTVARIANT    154
 #define PRV_NOTVARIANT    'm'
-
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -777,8 +795,10 @@ void mail_setp(char *s)
 	 "no railways", "no railway", "norailways", "norailway",
 	 "storms", "storm",
 	 "nostorms", "nostorm", "no storms", "no storm",
+	 "prflist", "prfboth", "prfrand",
+	 "secret",
+	 "nosecret", "no secret"
          "not variant", "notvariant"
- 
  	};
 
 
@@ -915,6 +935,10 @@ void mail_setp(char *s)
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
 	SET_STORM, SET_STORM,
 	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
+/*	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, */
+	SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
+	SET_SECRET,
+	SET_NOSECRET, SET_NOSECRET,
 	SET_NOTVARIANT, SET_NOTVARIANT
     };
 
@@ -1052,9 +1076,11 @@ void mail_setp(char *s)
 	PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY, PRV_NORAILWAY,
 	PRV_STORM, PRV_STORM,
 	PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM, PRV_NOSTORM,
+	PRV_PREFLIST, PRV_PREFBOTH, PRV_PREFRAND,
+	PRV_SECRET,
+	PRV_NOSECRET, PRV_NOSECRET,
         PRV_NOTVARIANT, PRV_NOTVARIANT
-
-};
+	};
 
 	chk24nmr = 0;
 	while (*s) {
@@ -1238,8 +1264,7 @@ void mail_setp(char *s)
 				fprintf(rfp, "You may not change the preference list after the game %s",
 					"begins.\n");
 			} else {
-/*				if (subjectline[0] == '\0') {*/
-				if (strstr(subjectline, "New Player Signon") == NULL) {
+				if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL)) {
 					sprintf(subjectline, "%s:%s - %s Preference Change", JUDGE_CODE, dipent.name, dipent.phase);
 				}
 
@@ -1251,19 +1276,63 @@ void mail_setp(char *s)
 				if (!*t || *t == '\n') {
 					fprintf(rfp, "Preference list cleared.\n");
 					*dipent.players[player].pref = '\0';
-				} else if (chkpref(t, NULL, NULL)) {
-					fprintf(rfp, "Preference list '%s' not set.\n", t);
-					if (*dipent.players[player].pref) {
-						fprintf(rfp, "Preference list remains '%s'.\n",
-							dipent.players[player].pref);
-					}
+/*				} else if (chkpref(t, NULL, NULL)) {
+ *					fprintf(rfp, "Preference list '%s' not set.\n", t);
+ *					if (*dipent.players[player].pref) {
+ *						fprintf(rfp, "Preference list remains '%s'.\n",
+ *							dipent.players[player].pref);
+ *					} */
 				} else {
-					fprintf(rfp, "Preference list '%s' set.\n", t);
-					strcpy(dipent.players[player].pref, t);
-					fprintf(mbfp,"Player %s changed preference list.\n\n",raddr);
+					u = t;
 
-					ShowPreferences(mbfp);
-					broadcast_master_only = 1;  /* Only master(s) are told of this */
+					if (dipent.x2flags & X2F_PREFRANDONLY) {
+						if (*u++ == '*' && (!*u || *u == '\0' || *u == '\n')) {
+							fprintf(rfp, "Preference list '%s' set.\n", t);
+							strcpy(dipent.players[player].pref, t);
+							fprintf(mbfp,"Player %s changed preference list.\n\n",raddr);
+
+							ShowPreferences(mbfp);
+							broadcast_master_only = 1;  /* Only master(s) are told of this */
+						} else {
+							fprintf(rfp, "Preference list '%s' not set.\n", t);
+							if (*dipent.players[player].pref) {
+								fprintf(rfp, "Preference list remains '%s'.\n",
+									dipent.players[player].pref);
+							}
+						}
+					} else {
+						if (dipent.x2flags & X2F_PREFRANDALLOW) {
+							if ((*u++ == '*' && (!*u || *u == '\0' || *u == '\n')) || !(chkpref(t, NULL, NULL))) {
+								fprintf(rfp, "Preference list '%s' set.\n", t);
+								strcpy(dipent.players[player].pref, t);
+								fprintf(mbfp,"Player %s changed preference list.\n\n",raddr);
+
+								ShowPreferences(mbfp);
+								broadcast_master_only = 1;  /* Only master(s) are told of this */
+							} else {
+								fprintf(rfp, "Preference list '%s' not set.\n", t);
+								if (*dipent.players[player].pref) {
+									fprintf(rfp, "Preference list remains '%s'.\n",
+										dipent.players[player].pref);
+								}
+							}
+						} else {
+							if (!chkpref(t, NULL, NULL)) {
+								fprintf(rfp, "Preference list '%s' set.\n", t);
+								strcpy(dipent.players[player].pref, t);
+								fprintf(mbfp,"Player %s changed preference list.\n\n",raddr);
+
+								ShowPreferences(mbfp);
+								broadcast_master_only = 1;  /* Only master(s) are told of this */
+							} else {
+								fprintf(rfp, "Preference list '%s' not set.\n", t);
+								if (*dipent.players[player].pref) {
+									fprintf(rfp, "Preference list remains '%s'.\n",
+										dipent.players[player].pref);
+								}
+							}
+						}
+					}
 				}
 			}
 			break;
@@ -3228,7 +3297,46 @@ void mail_setp(char *s)
 					   "", CATF_INVERSE);
 			break;
 
-*/	
+*/
+		case SET_PREFLIST:
+			if ((dipent.seq[0] != 'x') && !starting) {
+				fprintf(rfp, "The preference settings cannot be changed after the game has started.\n");
+			} else {
+				SETX2FLAGS(0, X2F_PREFRANDALLOW);
+				SETX2FLAGS(0, X2F_PREFRANDONLY);
+				broad_params = 1;
+			}
+			break;
+
+		case SET_PREFBOTH:
+			if ((dipent.seq[0] != 'x') && !starting) {
+				fprintf(rfp, "The preference settings cannot be changed after the game has started.\n");
+			} else {
+				SETX2FLAGS(X2F_PREFRANDALLOW, X2F_PREFRANDALLOW);
+				SETX2FLAGS(0, X2F_PREFRANDONLY);
+				broad_params = 1;
+			}
+			break;
+
+		case SET_PREFRAND:
+			if ((dipent.seq[0] != 'x') && !starting) {
+				fprintf(rfp, "The preference settings cannot be changed after the game has started.\n");
+			} else {
+				SETX2FLAGS(X2F_PREFRANDALLOW, X2F_PREFRANDALLOW);
+				SETX2FLAGS(X2F_PREFRANDONLY, X2F_PREFRANDONLY);
+				broad_params = 1;
+			}
+			break;
+
+		case SET_SECRET:
+			SETX2FLAGS(X2F_SECRET, X2F_SECRET);
+			broad_params = 1;
+			break;
+
+		case SET_NOSECRET:
+			SETX2FLAGS(0, X2F_SECRET);
+			broad_params = 1;
+			break;
 
 		default:
 			fprintf(rfp, "Invalid command: set %s\n", t);

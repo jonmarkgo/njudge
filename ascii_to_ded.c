@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  2002/04/11 23:49:00  miller
+   ** First draft.
+   **
 
   */
 
@@ -30,7 +33,7 @@ int main()
 
     for (i = 0; i < nded; i++)
     {
-       fscanf(ind, "%d %d %d %ld %ld %ld\n", 
+       fscanf(ind, "%hd %hd %hd %ld %ld %ld\n", 
 	&ded[i].r, &ded[i].i1, &ded[i].i2, 
 	&ded[i].ls, &ded[i].md, &ded[i].d0);
 /*

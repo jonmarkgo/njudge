@@ -1,7 +1,7 @@
 Greetings from the Diplomacy* Adjudicator!!                25th Feb 2002
 index.
 
-(Note: New commands for this judge version are marked with an '*'.
+(Note: New commands for this judge version are marked with an '!'.
        Still to be implemented ones are marked with a '+'.)
 
 This is an alphabetical list of all the commands that the adjudicator will
@@ -47,7 +47,7 @@ any/aft BROADCAST [options] ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
 any/aft CLEAR
         To clear any pending orders entered with the PHASE command.
 
-mod/aft*EJECT power-or-email
+mod/aft!EJECT power-or-email
         A master-only command to resign a particular power. This can be done at
         any time by the master. The master MUST use this form to resign himself.
         The <power-or-email> specification can also be an email address, and will
@@ -145,7 +145,7 @@ any/any IAMALSO address
 		  are the same person without having to resubmit a complete form.
 		  The address specified must be one that was registered previously.
 
-any/any*INFOPLAYER address
+any/any!INFOPLAYER address
 	Prints out the current dedication and plyrdata info for the given 
 	e-mail address.
 
@@ -184,7 +184,7 @@ any/aft PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.
 
-mod/aft*PREDICT
+mod/aft!PREDICT
 	Will send to the master a prediction of the current turn, using partial
 	orders already entered.
 	
@@ -193,10 +193,10 @@ any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
         may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or the
         end of the (incoming) mail message.  See file 'press'.
 
-mod/aft*PROMOTE address
+mod/aft!PROMOTE address
 	To promote the observer with the specified address to also be a master.
 
-adm/pre*RECORD userid plyrdata_field value SPECIAL_PW
+adm/pre!RECORD userid plyrdata_field value SPECIAL_PW
         Adjusts the given user's plyrdata record field given by field to a
         new value givden by value. Fields are 1 for ontime, 2 for total, 3
 	for start, 4 for resignations, and 5 for tookovers. The SPECIAL_PW
@@ -220,7 +220,7 @@ mod/aft ROLLBACK turn
 any/any SEND [ME] file
         Equivalent to "get file".
 
-any/aft*SET [NO]ABSENCE start_date [TO end_date]
+any/aft!SET [NO]ABSENCE start_date [TO end_date]
 	Cancel/request an absence period. See file 'absence' for details.
 
 mod/aft SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
@@ -234,13 +234,13 @@ any/aft SET ADDRESS  [reply_address]
         address you will get two replies, one to each address.  This can
         be fixed by using "set address" with no reply address specified.
 
-mod/aft*SET ALL PRESS
+mod/aft!SET ALL PRESS
 	To request that all partial press be sent to you as the moderator
 	of the game as well as to the intended recipients.  Use "SET NORMAL
 	PRESS" to disable this feature. Can be extended to observers if a 
 	SET WATCH ALLPRESS was previously sent.
 
-mod/aft*SET ANYCENTRE[S]
+mod/aft!SET ANYCENTRE[S]
 	SET ANYCENTER[S]
 	Override variant settings so that a power can build in any owned
 	centre/center during a build phase.
@@ -251,20 +251,20 @@ mod/aft+SET ANYDISBAND
 	A 'wait' is set for all active players during the build phase.
 	Opposite of SET NORMAL DISBAND, see below.
 
-mod/aft*SET [NO]ATTACK TRANSFORM
+mod/aft!SET [NO]ATTACK TRANSFORM
 	Disallow/allow transformations if a unit suffers an unsupported
 	attck.
 	See file 'transform' for more details about transformation games.
 
-mod/aft*SET AUTOPROC[ESS]
+mod/aft!SET AUTOPROC[ESS]
 	Lets the judge automatically process turns when possible. It is 
 	equivalent to SET NOMANUALPROCESS, see below.
 
-mod/aft*SET AUTOSTART
+mod/aft!SET AUTOSTART
 	Allows a game to automatically start when it has a quorum. It is 
 	equivalent to SET NOMANUALSTART, see below.
 
-mod/aft*SET [NO]AUTODISBAND
+mod/aft!SET [NO]AUTODISBAND
 	Disables/enables the autodisband rule. This rule when enables means
 	that units are automatically disbanded when dislodged, i.e. no 
 	retreats are permitted.
@@ -276,11 +276,11 @@ mod/mac SET [NO]ADJACENCY
 mod/mac SET [NO]ASSASSINATIONS
         Disables/enables optional assassination rules.
 
-mod/aft*SET [NO]ATTACK TRANSFORM
+mod/aft!SET [NO]ATTACK TRANSFORM
 	Transformations on attacked but not dislodged units will fail/work. 
 	See file 'transform' for more details.
  
-mod/aft*SET BLANKBOARD
+mod/aft!SET BLANKBOARD
         Set the game to start in a build phase, with no units, so that players
 	can place a different initial stating unit position.
 	Can only be set before the game begins, and has no effect on games
@@ -313,7 +313,7 @@ mod/aft SET CENTERS number
 	players have. If a draw is acceptable then a vote is required
 	using the SET DRAW command.
 
-mod/aft*SET [NO]COASTAL CONVOYS
+mod/aft!SET [NO]COASTAL CONVOYS
 	Disables/enables fleets in coastal provinces from participatin in
 	a convoy. Default enabled for Machiavelli games, disabled for all
 	other variants.
@@ -336,12 +336,12 @@ mod/aft SET DEDICATION level
 	level can not be higher than the Moderator's current dedication
 	rating.  See file 'deadlines'.
 
-mod/aft*SET ONTIMERAT level
+mod/aft!SET ONTIMERAT level
 	Restricts access to the game to those people with an ontime ratio
 	equal then or greater than the indicated level. The indicated
 	level can not be higher than the moderator's.
 
-mod/aft*SET RESRAT level
+mod/aft!SET RESRAT level
 	Restricts access to the game to those people with a resignation
 	ratio lower than or equal to the indicated level. The indicated
 	level can not be lower than the moderator's.
@@ -350,11 +350,11 @@ mod/aft SET [NO]DIAS
         Disables/enables requirement that all draws must include all
         survivors. See file 'draws'.
 
-mod/aft*SET [NO]CONCESSIONS
+mod/aft!SET [NO]CONCESSIONS
 	Disables/enables concessions in DIAS games. See file
 	'concessions'.
 
-any/aft*SET [NO]CONC [P]
+any/aft!SET [NO]CONC [P]
         Cast a vote for or against a concession. See file 'concessions'.
 
 mod/mac SET [NO]DICE
@@ -362,17 +362,17 @@ mod/mac SET [NO]DICE
         the game: Variable income, bank loans, assassinations, famine and 
         plague.
 
-mod/aft*SET [NO]DISBAND
+mod/aft!SET [NO]DISBAND
 	Disabled/enables the use of a disband order during a normal movement
 	phase. 
 
 any/aft SET [NO]DRAW [powerlist]
         Cast a vote in an automated draw. See file 'draws'.
 
-mod/aft*SET [NO]DUALITY
+mod/aft!SET [NO]DUALITY
 	Disables/enables provinces with dual behaviour (both land and water).
 
-mod/aft*SET EMPTYBOARD
+mod/aft!SET EMPTYBOARD
 	The same as SET BLANKBOARD, see above.
 
 mod/aft SET EP number
@@ -392,7 +392,7 @@ mod/aft SET EP number
 mod/mac SET [NO]FAMINE
         Disables/enables optional famine rules.
 
-mod/mac*SET [NO]FORT[RESS]
+mod/mac!SET [NO]FORT[RESS]
         Disables/enables optional fortress rules.
 
 mod/aft+SET [NO]GATEWAYS
@@ -408,24 +408,24 @@ mod/aft SET GREY/WHITE [PRESS]
         Sets press option to grey by default with white allowed.  See file
         'press'.
 
-any/aft*SET [NO]HOLIDAY[S]
+any/aft!SET [NO]HOLIDAY[S]
 	Same as SET [NO]ABSENCE.
 
-mod/aft*SET HOMECENTRE[S]
+mod/aft!SET HOMECENTRE[S]
 	SET HOMECENTER[S]
 	Override game settings to allow builds to be made only in designated
 	power's home centres/centers during build phase.
 
-mod/aft*SET [NO]HONGKONG
+mod/aft!SET [NO]HONGKONG
 	Disables/Enables "HongKong" rule. See file 'hongkong'.
 
-mod/aft*SET [NO]LATECOUNT
+mod/aft!SET [NO]LATECOUNT
 	Disables/enables late counting. If enabled, every time a player is
 	late the late messages will include a count of the number of times
 	this player has been late in the game. This counter will be reset
 	when a new player takes over.	
 
-mod/aft*SET [NO]LATEPRESS
+mod/aft!SET [NO]LATEPRESS
 	Disables/enables players who are marked as late from sending any
 	press (except to the master).
 
@@ -447,22 +447,22 @@ mod/mac SET [NO]LOANS
 mod/aft+SET[NO]MACH2
 	Disables/enables Machiavelli 2nd Edition (1995) rules.
 
-aft*SET [NO]MANUALPROCESS
+mod/aft!SET [NO]MANUALPROCESS
 	Disables/enables the requirement that the turn will only occur 
 	when the master executes the 'PROCESS' command.
 
-mod/aft*SET [NO]MANUALSTART
+mod/aft!SET [NO]MANUALSTART
 	Disables/enables the requriement that the game will only start 
-	when the master allows. If game was NOMANUALSTART and ready to go,
+	when the master allows. If game was MANUALSTART and ready to go,
 	the SET NOMANUALSTART will start it.
 
-mod/aft*SET MAXABSENCE number
+mod/aft!SET MAXABSENCE number
 	Sets the maximum absence that will be accepted automatically from
 	a player in valid turn days.
 	The parameter <number> can be set no higher than 31 and no lower 
 	than 0. See file 'absence' for further details.
 
-mod/aft*SET [NO]MINORPRESS
+mod/aft!SET [NO]MINORPRESS
 	Disables/enables the sending of press message during minor phases
 	(retreats and builds). FTF games commonly do not allow minor phase
 	press, Judge games historically have. 
@@ -485,7 +485,7 @@ mod/aft SET MN|MNC [NUMBER] number
 any/aft SET MODERATE
         Changes a game from unmoderated to moderated.
 
-mod/mac*SET [NO]MONEY
+mod/mac!SET [NO]MONEY
 	Disables/enables money in Machiavelli games. Without money,
 	Machiavelli is similar to normal Diplomacy, where you need to own
 	one city for each unit built.
@@ -508,7 +508,7 @@ mod/aft SET NOLIST
         be able to see it.  Useful for "by invitation only" games.  See
         also "set list" and file 'master'.
 
-any/aft*SET [NO]BROADCAST PRESS
+any/aft!SET [NO]BROADCAST PRESS
 	Disables/enables receiving broadcast press messages. 
 	Only possible for observers or moderators.
 
@@ -516,7 +516,7 @@ any/aft SET NORMAL PRESS
 	Disables the "SET ALL PRESS" option where all partial press is sent
 	to you as the moderator or observer of a game.
 
-mod/aft*SET NORMAL DISBAND
+mod/aft!SET NORMAL DISBAND
         Uses the standard rules for disbands on a build turn, i.e. can
         only disband when power has more units than centres. 
 	Opposite of SET ANYDISBAND (see above).
@@ -531,7 +531,7 @@ mod/aft SET OBSERVER NO [PRESS]
 mod/aft SET OBSERVER WHITE [PRESS]
         Disallows observers and alternates from submitting grey press.
 
-mod/aft*SET ONECENTRE[S]
+mod/aft!SET ONECENTRE[S]
 	SET ONECENTER[S]
 	Override variant settings so that a power can build in any owned
 	centre/center during a build phase, as long as one home centre is
@@ -584,6 +584,23 @@ any/aft SET PREFERENCE list
         appear immediately after an initial signon entering a forming
         game.  Can be modified up until the powers are actually assigned.
 
+	If the list is a single asterisk ("*"), then a random power will
+	be assigned, if the game is SET PRFBOTH or SET PRFRAND.
+
+mod/aft!SET PRFBOTH
+	To have the judge assign a random power to any player that requests
+	it, and powers according their preference lists to all other
+	players.
+
+mod/aft!SET PRFLIST
+	(This is the default.)
+
+	To have the judge assign powers exclusively using the preference
+	lists entered by the players.
+
+mod/aft!SET PRFRAND
+	To have the judge randomly assign powers to all players.
+
 mod/aft SET PRIVATE
         Equivalent to "set nolist".
 
@@ -611,12 +628,17 @@ mod/aft SET [NO]REVEAL
 	flag is useful for gunboat tournaments where player lists may
 	be the same in multiple games.
 
-mod/aft* SET [NO]RESUME
+mod/aft!SET [NO]RESUME
 	Enables/disables players from resuming a game. If enabled, any player
 	can resume a terminated game. If disabled, only the moderator can.
 
+mod/aft!SET [NO]SECRET
+	Sets the "secret" flag. This flag prevents any information about
+	the number of players in the game from being revealed to the 
+	players or observers. It is intended for use in duplex games.
+
 mod/aft SET [NO]SHOW
-	If a game is set to NoShow, chnages to game settings will appear
+	If a game is set to NoShow, changes to game settings will appear
 	to be made by 'someone@somewhere'. Otherwise, the changer will
 	have their email shown.
 
@@ -638,12 +660,12 @@ mod/aft SET [NO]STRICTWAIT
 	will be allowed to set wait.  If NOSTRICTWAIT is set (default), any
 	currently active player can set wait.
 
-mod/aft*SET TRANSFORM <transform-option>
+mod/aft!SET TRANSFORM <transform-option>
 	SET TRAFO <transform-option>
 	Enables unit transformations, according to the passed <transform-option>. 
 	See file 'transform' for details.
 
-mod/aft*SET NOTRANSFORM 
+mod/aft!SET NOTRANSFORM 
 	SET NOTRAFO
 	Disables the transformation of units. 
 
@@ -654,7 +676,7 @@ mod/aft SET UNRATED
         Changes a game from rated to unrated.  Unrated games will not
 	affect the players' dedication rating.
 
-any/aft*SET [NO]VACATION[S]
+any/aft!SET [NO]VACATION[S]
 	Same as SET [NO]ABSENCE.
 
 mod/aft SET VARIANT variant [options]         
@@ -668,7 +690,7 @@ any/aft SET WAIT
         Specifies that orders should not be processed until the deadline.
         See also "set nowait".
 
-mod/aft*SET [NO]WATCH ALLPRESS
+mod/aft!SET [NO]WATCH ALLPRESS
 	Disable/enable observers to also use the 'SET ALL PRESS' command to
 	see partial press between players. Use with caution to avoid gunboat
 	security breaches.
@@ -680,7 +702,7 @@ mod/aft SET WHITE/GREY [PRESS]
         Sets press option to white by default with grey allowed.  See
         file 'press'.
 
-any/aft SIGNOFF                       
+any/any SIGNOFF                       
         To indicate the end of useful text.  The signoff command is used
         to prevent your signiture file from being interpreted as orders
         and/or being sent out as part of a press message.
@@ -695,7 +717,7 @@ any/pre SIGNON ? password
 any/pre SIGNON ?xxxx password [variant] 
         To enter a particular game that is forming.
 
-mod/mac*SET [NO]STORM[S]
+mod/mac!SET [NO]STORM[S]
 	Disables/enables storms. Works as per plague, except causes fleets
 	at sea to be eliminated randomly (in a storm).
 
@@ -713,6 +735,16 @@ any/aft SUMMARY
 mod/aft TERMINATE
         To declare the game over. If the game has not started, it will be
 	ended and no-one can ever sign onto it again.
+
+mod/aft!UNSTART
+	To return the game to the position immediately prior to the start
+	of the game. Powers will be unassigned and the game will be flagged
+	manualstart. Games can only be unstarted if no turns have yet
+	processed.
+
+	This can be useful if a player is ejected or resigns; the game can
+	be unstarted, so a replacement can enter a preference list rather
+	than have to take whichever power left.
 
 any/pre VERSION [level]   
         To see the current version of the software.  If the optional level

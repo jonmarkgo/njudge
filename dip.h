@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/04/15 12:55:42  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.10  2002/02/25 11:51:50  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -179,10 +182,13 @@
 #define XF_CITY_ONLY_VICTORY    XF_MACH2  /* Only need to win cities for victory */
 
 /* Extra 2 flags */
-#define X2F_RAILWAYS 0x1	/* allows railways */
-#define X2F_HONGKONG 0x2
-#define X2F_GATEWAYS 0x4
+#define X2F_RAILWAYS		0x1	/* allows railways */
+#define X2F_HONGKONG		0x2
+#define X2F_GATEWAYS		0x4
 #define X2F_COLONIAL (X2F_RAILWAYS | X2F_HONGKONG | X2F_GATEWAYS)
+#define X2F_PREFRANDALLOW	0x8
+#define X2F_PREFRANDONLY	0x10
+#define X2F_SECRET		0x20
 
 
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
@@ -236,8 +242,8 @@ typedef struct PLAYER {
 	int centres_blockaded;  /* Number of centres this power has blockaded */
 	int late_count;		/* number of times this player has gone late  */
 	int absence_count;	/* Number of active absence requests          */
-	long absence_start[MAX_ABSENCES]; /* Start of each absence period   */
- 	long absence_end[MAX_ABSENCES];  /* End of each absence period     */
+	long absence_start[MAX_ABSENCES]; /* Start of each absence period     */
+ 	long absence_end[MAX_ABSENCES];  /* End of each absence period        */
 	long absence_total;	/* Total absence time requested in game       */
 	char password[30];	/* Player's password                          */
 	char address[100];	/* Player's electronic mail address           */
@@ -250,7 +256,7 @@ struct dipent {
 	char name[9];		/* Game name                                    */
 	char seq[11];		/* Game sequence number                         */
 	char phase[10];		/* Game phase of the form F1901M                */
-	char comment[70];	/* Comment associated with game                         */
+	char comment[70];	/* Comment associated with game                 */
 	char epnum[20];		/* Electronic Protocol number                   */
 	char bn_mnnum[20];	/* Boardman/Miller number                       */
 	int access;		/* Access:  A_ANY, A_DIFF or A_SAME (site)      */
@@ -258,12 +264,12 @@ struct dipent {
 	int level;		/* Level:   L_ANY, L_NOVICE, L_EXPERIENCED      */
 	int flags;		/* Flags:   F_NONMR                             */
 	int xflags;		/* Extra flags: XF_*				*/
-	int x2flags;		/* More extra flags */
+	int x2flags;		/* More extra flags                             */
 
 	int dedicate;		/* Minimum dedication requirement               */
-	float orded;	        /* Minimum ontime ratio requirement       */
-	float rrded;            /* Maximum resignation ratio requirement  */
-	int dedapplied;         /* Have we applied dedication / taken stats yet? */		
+	float orded;	        /* Minimum ontime ratio requirement             */
+	float rrded;            /* Maximum resignation ratio requirement        */
+	int dedapplied;         /* Have we applied dedication / taken stats yet?*/		
 	long process;		/* Time to process this entry                   */
 	long start;		/* Minimum time before processing this entry    */
 	long deadline;		/* Current deadline to process this entry       */
@@ -276,8 +282,8 @@ struct dipent {
 	int vp;			/* Number of victory points required            */
 	char *pl;		/* Power significant letter                     */
 	Player players[MAXPLAYERS];	/* The players involved in the game     */
-	int no_of_players;	/* The number of players in the game    */
-	int max_absence_delay;  /* the maximum number of turns for absences    */
+	int no_of_players;	/* The number of players in the game            */
+	int max_absence_delay;  /* the maximum number of turns for absences     */
 	/* DAN 903 Line added */
 };
 

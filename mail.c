@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2002/04/15 12:55:44  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.15  2002/01/08 21:22:01  miller
  * Redid GG fix for JUDGE_CODE != 4
  *
@@ -95,49 +98,50 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 /* Comment this out if you don't want the MAP command */
 #define MAP_COMMAND
 
-#define FROM      1
-#define GET       2
-#define HELP      3
-#define LIST      4
-#define REPLY     5
-#define SET       6
-#define SIGNOFF   7
-#define SIGNON    8
-#define SUBJECT   9
-#define OBSERVE   10
-#define RESIGN    11
-#define BROADCAST 12
-#define PHASE     13
-#define CLEAR     14
-#define TERMINATE 15
-#define RESUME    16
-#define BECOME    17
-#define REGISTER  18
-#define WHOIS     19
-#define FIXID     20
-#define IAMALSO   21
-#define NOCONTROL 22
-#define ADJUST    23
-#define JUNKMAIL  24
-#define PROCESS   25
-#define ROLLBACK  26
-#define VERSION   27
-#define CREATE    28
-#define SUMMARY   29
-#define HISTORY   30
-#define MAP       31
-#define PRESS     32
-#define RESENT    33
-/* #define DEDICATE  34 */
-#define WHOGAME   35
-/* #define DEDGAME   36 */
-#define PROMOTE   37
-#define PREDICT 38
-#define EJECT   39
-#define RECORD  40
+#define FROM      	1
+#define GET       	2
+#define HELP      	3
+#define LIST      	4
+#define REPLY     	5
+#define SET       	6
+#define SIGNOFF   	7
+#define SIGNON    	8
+#define SUBJECT   	9
+#define OBSERVE   	10
+#define RESIGN    	11
+#define BROADCAST 	12
+#define PHASE     	13
+#define CLEAR     	14
+#define TERMINATE 	15
+#define RESUME    	16
+#define BECOME    	17
+#define REGISTER  	18
+#define WHOIS     	19
+#define FIXID     	20
+#define IAMALSO   	21
+#define NOCONTROL 	22
+#define ADJUST    	23
+#define JUNKMAIL  	24
+#define PROCESS   	25
+#define ROLLBACK  	26
+#define VERSION   	27
+#define CREATE    	28
+#define SUMMARY   	29
+#define HISTORY   	30
+#define MAP       	31
+#define PRESS     	32
+#define RESENT    	33
+/* #define DEDICATE  	34 */
+#define WHOGAME   	35
+/* #define DEDGAME   	36 */
+#define PROMOTE   	37
+#define PREDICT 	38
+#define EJECT   	39
+#define RECORD  	40
 #define INFOPLAYER	41
-#define SETUP   42
-#define PAUSE   43
+#define UNSTART		42
+#define SETUP		43
+#define PAUSE		44
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -182,7 +186,7 @@ static char *commands[] =
  "terminate", "resume", "become",
  "process", "roll back", "map",
  "promote", "predict",
- "eject", "record", "infoplayer",
+ "eject", "record", "infoplayer", "unstart",
  "setup", "suspend" 
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
@@ -197,7 +201,7 @@ static int cvalue[] =
  TERMINATE, RESUME, BECOME,
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
- EJECT, RECORD, INFOPLAYER,
+ EJECT, RECORD, INFOPLAYER, UNSTART,
  SETUP, PAUSE
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
@@ -363,7 +367,8 @@ int mail(void)
 	char *whotext;
 	char x[30];
 	PLYRDATA_RECORD record;
-	
+FILE *xfp;
+
 	someone = "someone@somewhere";
 
 	starting = msg_header_done = 0;
@@ -1902,6 +1907,69 @@ int mail(void)
 					}
 					break;
 				
+				case UNSTART:
+					if (dipent.players[player].power != MASTER) {
+						fprintf(rfp, "Only the master can use the unstart command.\n\n");
+						break;
+					}
+					if (dipent.seq[0] == 'x') {
+						fprintf(rfp, "The game may not be unstarted because it has not yet started.\n\n");
+						break;
+					}
+
+					if (strcmp(dipent.seq, "001")) {
+						fprintf(rfp, "The game may not be unstarted after a phase has processed.\n\n");
+						break;
+					}
+
+					sprintf(subjectline, "%s:%s - %s Unstart", JUDGE_CODE, dipent.name, dipent.phase);
+
+					fprintf(rfp, "Game '%s' unstarted.\n\n", dipent.name);
+					mfprintf(bfp, "Game '%s' unstarted by %s.\n\n", dipent.name, raddr);
+					broadcast = 1;
+
+					for (i = 0, j = 0, k = 0; i < dipent.n; i++) {
+						if (!(dipent.players[i].status & SF_RESIGN)) {
+							for (l = 0, n = 0; l < j; l++) {
+								n |= (dipent.players[l].userid == dipent.players[i].userid);
+							}
+
+							if (!n) {
+								dipent.players[j] = dipent.players[i];
+
+								if ((dipent.players[j].power != MASTER) && (dipent.players[j].power != OBSERVER)) {
+									dipent.players[j].power = WILD_PLAYER;
+									dipent.players[j].status = 0;
+									dipent.players[j].units = 0;
+									dipent.players[j].centers = 0;
+									k++;
+								}
+
+								j++;
+							}
+						}
+					}
+
+					dipent.n = j;
+					dipent.deadline = 0;
+					dipent.start = 0;
+					dipent.grace = 0;
+
+					sprintf(dipent.seq, "x%i", k);
+					dipent.xflags |= XF_MANUALSTART;
+					signedon = -1;
+
+					sprintf(x, "%s%s/G001", GAME_DIR, dipent.name);
+					remove(x);
+					sprintf(x, "%s%s/M001", GAME_DIR, dipent.name);
+					remove(x);
+					sprintf(x, "%s%s/P001", GAME_DIR, dipent.name);
+					remove(x);
+					sprintf(x, "%s%s/T001", GAME_DIR, dipent.name);
+					remove(x);
+
+					break;
+
 				default:	/* Assume this is a movement order */
 					if (signedon > 0) {
 						if (read_phase == 0) {
@@ -1926,8 +1994,9 @@ int mail(void)
 	if (broad_read || broad_skip)
 		fprintf(rfp, "\nEnd of message.\n\n");
 
-	if (starting)
+	if (starting) {
 		mail_igame();
+	}
 
 	if (listflg && signedon)
 		mail_listit();
@@ -1942,6 +2011,7 @@ int mail(void)
 			fprintf(rfp, "Fatal errors encountered.  Entire order discarded.\n");
 			mail_reply(E_FATAL);
 		}
+
 		if (dipent.players[player].power == MASTER) {
 			int j;
 
@@ -1969,7 +2039,6 @@ int mail(void)
 				}
 			}
 		}
-
 
 		if (rename(Tfile, Mfile)) {
 			fprintf(rfp, "Error renaming %s to %s.\n", Tfile, Mfile);
@@ -2049,6 +2118,7 @@ int mail(void)
 				}
 			}
 		}
+
 		deadline((sequence *) NULL, 0);
 
 		for (i = 0; fgets(line, sizeof(line), pfp);) {
@@ -2100,6 +2170,7 @@ int mail(void)
 		fclose(nfp);
 		rename(TMASTER_FILE, MASTER_FILE);
 	}
+
 	/* TODO not sure what to return here, i'll return a one in hopes that that
 	 * will work */
 	return 1;
@@ -2332,7 +2403,9 @@ void send_press(void)
 	 * broadcast it only to the master.
 	 */
 
-	if (dipent.flags & F_QUIET && broad_signon) {
+	if (broad_signon &&
+	   ((dipent.flags & F_QUIET && dipent.seq[0] != 'x') ||
+	   (dipent.x2flags & X2F_SECRET))) {
 		broad_list[0] = dipent.pl[MASTER];
 		broad_list[1] = '\0';
 		broad_part = 1;
