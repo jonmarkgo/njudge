@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2002/12/28 21:25:25  millis
+ * Fixed typo
+ *
  * Revision 1.14  2002/12/28 00:11:36  millis
  * Fixed bug 2, so that disbands can happen even if under siege
  *
@@ -1360,7 +1363,7 @@ int ma_moveout(int pt)
 				has_other_retreat = 0;
 				if (!is_garrison(u) && !(dipent.xflags & XF_AUTODISBAND)) {
 					for (s = pr[unit[u].loc].move; (p = *s++); s++) {
-						if (!contest[p] && (*s >> 4) == unit[u].coast && (*s & 0x0f) != MX
+						if (!contest[p] && (((unsigned char) *s) >> 4) == unit[u].coast && (*s & 0x0f) != MX
 						    && (!(u2 = pr[p].unit)	/* XI: can't retreat to */
 						     ||(unit[u2].loc != p	/* attackers origin.    */
 							&& unit[u2].loc != unit[u].loc))
