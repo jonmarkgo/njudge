@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2003/05/03 16:16:35  millis
+ * Missed a Neutral definition.
+ *
  * Revision 1.13  2003/05/02 23:15:19  millis
  * Added in definitions for Neutral player
  *
@@ -101,6 +104,7 @@ char *variants[] =
 	"crowded_1898",		/* crowded powers, 1898 style      */
         "machiavelli2",         /* Mach2                           */
 	"colonial96",           /* Colonial 1996 Diplomacy         */
+	"minorpower",		/* Minor powers Diplomacy	   */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	"gunboat",		/* Gunboat (anonymous) option      */
 	"blind",		/* Blind movement option           */
@@ -146,6 +150,7 @@ int vvalue[] =
 	V_crowded_1898,		/* 32 crowded_1898		     */
         V_machiavelli2,         /* 33 Machiavelli2                   */
 	V_colonial96,		/* 34 Colonial 1996 variant	     */
+	V_minorpower,		/* Minor powers Diplomacy	     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	F_GUNBOAT,		/* Gunboat (anonymous) option      */
 	F_BLIND /*| F_QUIET*/,	/* Blind movement option           */
@@ -256,6 +261,7 @@ char *pletter[] =
     ".ABxxxxxxExFGxxxxIxLxxNxxxRxxSTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?=xOM", /* crowded_1898 */
     ".AxxxxxxxxLFxxxxxxxxINxPxxxxxxTxVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?=&OM",                          /* Machiavelli2 1454              */
     ".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?=xOM",                          /* Colonial 1996 Diplomacy            */
+    ".xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxBCxxFGHxJKxxPxxxxUVWXYZxx234x6x8xxxxxxxxxxxxxxxxxxxxxxxxxxxx?=xOM",                          /* Minor power            */
  /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };
 
@@ -298,5 +304,6 @@ char *sphase[] =
 	"S1899M",		/* crowded_1898 Diplomacy	   */
         "F1453A",               /* Machiavelli2 1454               */
         "S1870M",               /* Colonial 1996 Diplomacy         */
+	"F1900B",		/* Minor powers Diplomacy	   */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 };

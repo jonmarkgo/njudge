@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2003/07/15 12:11:13  millis
+ * Make non-player ordinals relative
+ *
  * Revision 1.14  2003/05/02 23:15:20  millis
  * Added in definitions for Neutral player
  *
@@ -126,6 +129,7 @@ enum {
 	V_crowded_1898,		/* 32 crowded_1898		     */
         V_machiavelli2,         /* 33 Mach2                          */
         V_colonial96,           /* 34 Colonial 1996 Diplomacy        */
+	V_minorpower,		/* 35 Minor power diplomacy	     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
@@ -187,6 +191,7 @@ enum {
     case V_crowded_1898: dipent.np = 11; dipent.vp = 18; break; \
     case V_machiavelli2: dipent.np =  8; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
     case V_colonial96:    dipent.np =  7; dipent.vp = 30; dipent.xflags |= XF_PROV_DUALITY; break;          \
+    case V_minorpower:    dipent.np = 19; dipent.vp = 18; break; \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
