@@ -1,3 +1,22 @@
+2002-12-31 00:14  jaldhar
+
+	* njudge.spec, debian/changelog: Updated version number for
+	release.
+
+2002-12-31 00:10  jaldhar
+
+	* bgreet.c, docs/AUTHORS, docs/CHANGES, docs/INSTALL, docs/LICENSE,
+	docs/README, docs/TODO, docs/archives/README.JudgeKeeper,
+	docs/archives/README.duplex, docs/archives/README.first-install,
+	docs/archives/README.fixids, docs/archives/README.gotchas,
+	docs/archives/README.ignore, docs/archives/README.makefile,
+	docs/archives/README.old, docs/archives/log: Removed obsolete
+	files.
+
+2002-12-30 23:31  jaldhar
+
+	* ChangeLog: Updated ChangeLog.
+
 2002-12-30 22:01  jaldhar
 
 	* Makefile.am, Makefile.in: Fixed missing comment character in
