@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added support for wing units
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -112,7 +115,7 @@ char *get_action(char *l, char *a)
  * and why we immediately terminate the string pointed to by d
  */
 
-char *get_amount(char *l, char *d)
+char *get_amount(char *l, int *d)
 {
 
 	/*  Look for an amount of money  */
@@ -151,7 +154,7 @@ char *get_amount(char *l, char *d)
 
 }
 
-char *get_duration(char *l, char *d)
+char *get_duration(char *l, int *d)
 {
 
 	/*
