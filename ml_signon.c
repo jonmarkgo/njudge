@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2003/01/16 22:52:24  millis
+ * Removed STAT function
+ *
  * Revision 1.17  2003/01/15 13:59:27  millis
  * Removed Dipstats
  *
@@ -633,6 +636,26 @@ int mail_signon(char *s)
 				strcpy(baddr, dipent.players[i].address);
 				strcpy(dipent.players[i].address, raddr);
 				strcpy(dipent.players[i].password, password);
+				if (dipent.players[i].userid == userid) {
+				    /* Same player is returning, do not reset anything */
+
+                                    sprintf(subjectline, "%s:%s - %s Returning Player Signon: %c", 
+					JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+
+                                    fprintf(bfp, "%s has returned as %s in game '%s'.\n",
+                                        xaddr, powers[n], dipent.name);
+                                    fprintf(mbfp, "%s has returned as %s in game '%s'.\n",
+                                        raddr, powers[n], dipent.name);
+                                    pprintf(cfp, "%s%s has returned as %s in game '%s'.\n", NowString(),
+                                        xaddr, powers[n], dipent.name);
+				    player = i;
+                                    signedon = 1;
+				    listflg = 0;
+				    if (!msg_header_done)
+                                        msg_header(rfp);
+				    break;  /* jump out */
+				}
+
 				dipent.players[i].userid = userid;
 				dipent.players[i].siteid = siteid;
 				dipent.players[i].late_count = 0;  /* reset old late_count */
