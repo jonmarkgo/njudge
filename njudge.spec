@@ -1,6 +1,6 @@
 Summary: Internet Diplomacy Adjudicator
 Name: njudge
-Version: 1.4.2
+Version: %{version}
 Release: 1
 Group: Games
 Copyright: free for non-commercial use.  See COPYING for details.
