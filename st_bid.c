@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.7  2004/06/28 17:47:34  millis
+   ** Limit bids only to 9999 or less
+   **
    ** Revision 1.6  2004/06/27 11:00:11  millis
    ** Bug 297: Changed to prevent oversized bids
    **
@@ -238,9 +241,9 @@ int bidin(char **s, int p, int syntaxcheck)
 	}
 
 
-	for (i = 0; i < dipent.n && !bid_power && !syntaxcheck; i++) {
+	for (i = 0; i < dipent.n && !bid_power; i++) {
 	    if (dipent.players[i].power == pow ) {
-                if (dipent.players[i].controlling_power == 0) {
+                if (dipent.players[i].controlling_power == 0 || dipent.players[i].centers == 0) {
                     errmsg("Cannot bid to control %s", *s);
                     return E_WARN;
                 } else {
