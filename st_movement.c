@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.8  2001/05/14 23:08:49  miller
+** Remove DOS ^M
+**
 ** Revision 1.7  2001/05/09 05:59:50  greg
 ** minor bug fix
 **
@@ -279,6 +282,9 @@ int movein(char **s, int p)
 	}
 	u1 = pr[p1].unit;
 	u = u1;
+	/* p3 and c3 initialisation */
+	p3 = p1;
+	c3 = c1;
 	if (!u) {
 		errmsg("No %s present %s %s.\n", utype(c),
 		 water(p1) ? "in the" : "in", pr[p1].name);
