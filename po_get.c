@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2003/01/14 13:56:46  millis
+ * Updated with ustv merged changed
+ *
  * Revision 1.4.2.1  2003/01/13 16:04:55  millis
  * ustv latest versions
  *
@@ -364,6 +367,7 @@ char *get_type(char *l, char *t)
 	 "army", "a#",
 	 "fleet", "f#",
 	 "garrison", "g#",
+	 "artillery", "cannon", "r#",
 	 "unit",
 	 "spy"};
 
@@ -373,6 +377,7 @@ char *get_type(char *l, char *t)
 	 'A', 'A',
 	 'F', 'F',
 	 'G', 'G',
+	 'R', 'R', 'R', 
 	 'U',
 	 'S'};
 
@@ -382,6 +387,7 @@ char *get_type(char *l, char *t)
 	 F_ANY, F_ANY,
 	 F_ANY, F_ANY,
 	 F_MACH, F_MACH,
+	 F_ANY, F_ANY, F_ANY,
 	 F_ANY,
 	 F_BLIND};
 
