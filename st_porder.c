@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.2  2000/11/14 14:27:37  miller
+   ** Small changes for blockade calculations
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -63,7 +66,7 @@ int ownership(void)
 		while (*s)
 			s++;
 		*s++ = ':';
-		for (p = strlen(powers[i]) + 2; p < 12; p++)
+		for (p = strlen(powers[i]) + 2; p < GetMaxCountryStrlen() +2; p++)
 			*s++ = ' ';
 		for (p = 0, n = 1; n <= npr; n++) {
 			if ((pr[n].type == 'x' || !islower(pr[n].type)) &&
@@ -88,7 +91,7 @@ int ownership(void)
 			continue;
 
 		strcpy(s, ".\n");
-		wrap(rfp, buf, 0, 11);
+		wrap(rfp, buf, 0, GetMaxCountryStrlen()+1);
 	}
 
 	statusval = 0;
@@ -136,7 +139,7 @@ int ownership(void)
 		}
 		p = strlen(powers[i]) + 1;
 		fprintf(rfp, "%s:", powers[i]);
-		while (p++ < 10)
+		while (p++ < GetMaxCountryStrlen() )
 			putc(' ', rfp);
 		l = np[i] >= nu[i] ? np[i] - nu[i] : nu[i] - np[i];
 		fprintf(rfp, "%2d Supply center%s %2d Unit%s  %s %2d unit%s.",
