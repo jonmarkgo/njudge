@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.10  2001/08/31 02:05:22  greg
+ * added "Ready to Start" subjectline for manual start games
+ * and fixed subjectline problems with preference changes
+ *
  * Revision 1.9  2001/07/15 09:18:34  greg
  * added support for game directories in a sub directory
  *
@@ -936,6 +940,9 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 	{
 		res_rat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
 	}
+        /* Fix res_rat if over limit */
+        if (res_rat > 1.0 ) res_rat = 1.0;
+
 	if(ont_rat < dipent.orded && ont_rat >= 0)
 	{
 		if(!msg_header_done)
