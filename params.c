@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.3  1997/02/16 20:43:18  davidn
  * Additions to dipent structure and associated code, to allow duplex variants.
  * Command is "set players n".
@@ -34,6 +37,7 @@
  *      23 May 1994 C.Marcus,Jr. Add print_params() procedure; clarify text for
  *                               press flags.
  *      29 Dec 1996 David Norman no_of_players added to dipent
+ *      25 Nov 1999 M. Miller    Added display of LATECOUNT flag if set
  */
 
 #include <stdlib.h>
@@ -63,7 +67,17 @@ int nlevel = nentry(levels);
 
 static void print_params(FILE * outf, char *line);
 
-/****************************************************************************
+
+void strcatf( char *out, char*in, int *first)
+{
+	if (*first == 1) {
+		*first = 0;
+	} else {
+		strcat(out, ", ");
+	}
+	strcat(out, in);
+}
+	/****************************************************************************
 NAME:  params
 
 DESCRIPTION
@@ -104,8 +118,9 @@ ALGORITHM
 void params(FILE * fp)
 {
 	char line[256];		/* Line buffer */
+	char temp1[50];		/* Temp number buffer */
 	char *temp;		/* Pointer to buffer to be freed */
-
+	int first_flag;		/* say if first entry in list */
 	/* Write information for move, retreat, and adjustment phases (deadlines,
 	   processing days, etc.).  */
 
@@ -137,6 +152,13 @@ void params(FILE * fp)
 
 	sprintf(line, "  Variant: %s", (temp = strcap(variants[dipent.variant])));
 	free(temp);
+	if (dipent.flags & F_MACH && dipent.xflags & XF_MACH3) 
+	    strcat(line,"-3");
+	else if (dipent.flags & F_MACH && dipent.xflags & XF_MACH1)
+            strcat(line,"-1");
+        else if (dipent.flags & F_MACH && dipent.xflags & XF_MACH2)
+            strcat(line,"-2");
+
 	if (dipent.flags & F_GUNBOAT) {
 		strcat(line, ", Gunboat");
 	}
@@ -146,9 +168,17 @@ void params(FILE * fp)
 	if (dipent.flags & F_BLIND) {
 		strcat(line, ", Blind");
 	}
-	if (dipent.flags & F_AFRULES) {
+	if (!(dipent.flags & F_MACH)) {
+	    if (dipent.flags & F_AFRULES) {
 		strcat(line, ", A/F Rules");
-	}
+	    }
+	    if (dipent.flags & F_SHORTHAND ) {
+                strcat(line, ", Shorthand");
+	    }
+	    if (dipent.flags & F_WINGS) {
+		strcat(line, ", Wings");
+ 	    }
+	}	
 	strcat(line, ".");
 	print_params(fp, line);
 
@@ -214,6 +244,11 @@ void params(FILE * fp)
 			} else {
 				strcat(line, ", Special");
 			}
+		        if (dipent.xflags & XF_FORT) {
+                                strcat(line, ", Forts");
+                        } /*else {
+                                strcat(line, ", NoForts");
+                        }*/
 		}
 		if (dipent.flags & F_NOADJ) {
 			strcat(line, ", NoAdjacency");
@@ -223,6 +258,121 @@ void params(FILE * fp)
 	}
 	strcat(line, ".");
 	print_params(fp, line);
+	
+        /* Transform information.  */
+        if (!(dipent.flags & F_MACH) && (dipent.xflags & XF_TRANS_ANYT)) {
+            sprintf(line, "  Trafo:  ");
+
+	    if (dipent.xflags & XF_TRANS_BUILD) {
+		strcat(line," Build:");
+                switch ((dipent.xflags & XF_TRANS_BANYW)) {
+                    case XF_TRANS_BANYC:
+                        strcat(line,"AnyCentre");
+                        break;
+                   case XF_TRANS_BONEC:
+                        strcat(line,"OneCentre");
+                        break;
+                   case XF_TRANS_BANYW:
+                        strcat(line,"Anywhere");
+                        break;
+                default:
+                        strcat(line,"HomeCentre");
+                }
+	    }
+
+	    if (dipent.xflags & (XF_TRANS_MOVE)) {
+		strcat(line," Move:");
+		switch ((dipent.xflags & XF_TRANS_MANYW)) {
+		    case XF_TRANS_MANYC:
+			strcat(line,"AnyCentre");
+			break;
+		   case XF_TRANS_MONEC:
+			strcat(line,"OneCentre");
+			break;
+		   case XF_TRANS_MANYW:
+			strcat(line,"Anywhere");
+			break;
+		default:
+			strcat(line,"HomeCentre");
+		}
+	    }
+            strcat(line, ".");
+            print_params(fp, line); 
+       }
+ 
+       /*  xFlag information.  */
+         sprintf(line, "  xFlags:  ");
+	first_flag = 1;
+	if (!(dipent.flags & F_MACH)) {
+	    if (dipent.xflags & XF_BUILD_ONECENTRE) {
+                    strcatf(line, "OneCentre",&first_flag);
+            } else {
+    		if (dipent.xflags & XF_BUILD_ANYCENTRES) {
+	 		strcatf(line, "AnyCentres",&first_flag);
+        	} else {
+			strcatf(line, "HomeCentres",&first_flag);
+        	}
+	    }
+	}
+        if (dipent.xflags & XF_LATECOUNT) {
+                strcatf(line, "LateCount",&first_flag);
+        }
+	if (dipent.xflags & XF_MANUALPROC) {
+                strcatf(line, "ManualProcess",&first_flag);
+        }
+	if (dipent.xflags & XF_NORESUME) {
+		strcatf(line, "NoResume", &first_flag);
+	}
+	if (dipent.xflags & XF_AUTODISBAND) {
+                strcatf(line, "AutoDisband", &first_flag);
+        }
+
+	if (dipent.xflags & XF_MANUALSTART) {
+		strcatf(line, "ManualStart",&first_flag);
+	}
+	if (dipent.xflags & XF_NOLATEPRESS) {
+                strcatf(line, "NoLatePress",&first_flag);
+        }
+	
+	if (!(dipent.flags & F_MACH)) {
+	    if (dipent.xflags & XF_ANYDISBAND) {
+                strcatf(line, "AnyDisband",&first_flag);
+            }
+
+	
+	    if (dipent.xflags & XF_STRCONVOY) {
+                    strcatf(line, "StrictConvoy",&first_flag);
+            }
+            if (dipent.xflags & XF_AHCONVOY) {
+                strcatf(line, "AHConvoys",&first_flag);
+            }
+	}
+	if ((dipent.xflags & XF_AIRLIFTS) && (dipent.flags & F_WINGS))
+	{
+		 strcatf(line, "Airlifts",&first_flag);
+        }
+	if (dipent.xflags & XF_BLANKBOARD) {
+                strcatf(line, "BlankBoard",&first_flag);
+        }
+	if (dipent.xflags & XF_WATCHPRESS) {
+                strcatf(line, "WatchPress",&first_flag);
+        }
+	if (dipent.xflags & XF_NOMINORPRESS) {
+                strcatf(line, "NoMinorPress",&first_flag);
+        }
+	if (dipent.xflags & XF_BLANKPRESS) {
+                strcatf(line, "BlankPress",&first_flag);
+        }
+
+	if (first_flag != 1) {
+		/* Only show xflags if there are some to show! */
+		strcat(line, ", ");
+        	/* print_params(fp, line); */
+	}
+	/* Display the current max_absence setting */
+	sprintf(temp1,"Max Absence: %d.", dipent.max_absence_delay);
+	strcat(line,temp1);
+	print_params(fp,line);
 
 	/*  Press information.  */
 
@@ -254,20 +404,7 @@ void params(FILE * fp)
 		break;
 	}
 
-	if ((dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) != F_NOWHITE) {
-		switch (dipent.flags & (F_OBWHITE | F_OBNONE)) {
-		case (F_OBWHITE | F_OBNONE):
-			strcat(line, ", Undefined");
-			break;
-		case (F_OBWHITE):
-			strcat(line, ", White observers");
-			break;
-		case (F_OBNONE):
-			strcat(line, ", No observers (except to Master)");
-			break;
-		case (0):
-			break;
-		}
+	 if ((dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) != F_NOWHITE) { 
 
 		if (dipent.flags & F_NOPARTIAL) {
 			strcat(line, ", No Partial (except to Master)");
@@ -290,6 +427,28 @@ void params(FILE * fp)
 	} else {
 		strcat(line, " (except to Master)");
 	}
+
+	switch (dipent.flags & (F_OBWHITE | F_OBNONE)) {
+                case (F_OBWHITE | F_OBNONE):
+                        strcat(line, ", Observer is Undefined");
+                        break;
+                case (F_OBWHITE):
+                       	    strcat(line, ", White observers");
+                        break;
+                case (F_OBNONE):
+			if ((dipent.flags & (F_NOWHITE | F_GREY | F_DEFWHITE)) != F_NOWHITE )
+			if (!(dipent.flags & F_NOWHITE)) { 
+				strcat(line, ", No observers (except to Master)");
+			}
+                        break;
+                case (0):
+			
+			if ((dipent.flags & F_NOPARTIAL)) {
+	                        strcat(line,", Partial observers");
+			}
+                        break;
+                }
+
 	strcat(line, ".");
 	print_params(fp, line);
 
