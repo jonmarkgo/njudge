@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.11  2003/09/13 22:59:28  millis
+ * Fix bug 224
+ *
  * Revision 1.10  2003/05/10 00:46:15  millis
  * Bug 140 fix, display 'orders' when orders and 'results' when results
  *
@@ -322,11 +325,11 @@ void ma_buildout(int pt)
 					putc(' ', rfp);
 
 				if (unit[u].status == 'b') {
-					fprintf(rfp, "Builds %s %s in %s", astype(unit[u].stype, unit[u].type),
+					fprintf(rfp, "Builds %s %s in %s.", astype(unit[u].stype, unit[u].type),
 						utype(unit[u].type),
 						pr[unit[u].loc].name);
 				} else {
-					fprintf(rfp, "Maintains the %s%s in %s", bstype(unit[u].stype),
+					fprintf(rfp, "Maintains the %s%s in %s.", bstype(unit[u].stype),
 						utype(unit[u].type),
 						pr[unit[u].loc].name);
 				}
@@ -352,7 +355,6 @@ void ma_buildout(int pt)
 						err++;
 					}
 				}
-				fprintf(rfp,".");
 				unit[u].status = ':';
 
 			} else if (unit[u].status == 'd') {
