@@ -1,5 +1,9 @@
 /*
 ** $Log$
+** Revision 1.29  2004/07/05 06:33:30  nzmb
+** Code cleanup: fixed unnecessary tests in if clauses and fixed formatting
+** in part of movein.
+**
 ** Revision 1.28  2004/07/04 03:25:25  millis
 ** Fix bug 328, implement Portage variant
 **
@@ -765,14 +769,33 @@ int movein(char **s, int p)
 				while (c == 'm' && !railway_flag) {
 					if (!railway(p2) &&(!valid_aw_move(i, p2, &c2, &j) || !convoyable(p2) ||
 					 (!(u2 = pr[p2].unit) || !CheckValidACUnit(u2)))) {
-					 
-						errmsg("The %s in %s can't convoy through %s%s.\n",
-						 utype(u2), pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
-						return E_WARN;
+						/*
+						 * Tim Miller -- don't let blind
+						 * players use convoys to test if fleets 
+						 * exist in a particular body of water.
+						 */
+					 	if(!(dipent.flags & F_BLIND))
+						{	
+							errmsg("The %s in %s can't convoy through %s%s.\n",
+							 utype(u2), pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
+							return E_WARN;
+						}
 					}
 					if (j && !bl)
 						bl = j;
-					heap[hp++] = pr[p2].unit;
+
+					if(!(dipent.flags & F_BLIND))
+						heap[hp++] = pr[p2].unit;
+					else
+						/*
+						 * I **think** this is necessary
+						 * to avoid getting the 0 province.
+						 * We are protected from overflow since
+						 * NPROV is at most 200 and unsigned char
+						 * is guaranteed to hold from 0-255. 
+						 */
+						heap[hp++] = p2 + 1;
+
 					unit[i].loc = p2;
 					if (railway(p2)) railway_flag = 1;
 					p3 = p2;  /* Remember previous province */
@@ -1896,13 +1919,21 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 /* break; */
 			case 'm':
 				if ((s = unit[u].convoy)) {
-					while (*s) {
-						if (!processing && !predict && unit[*s].owner == unit[u].owner &&
-						 (unit[*s].order != 'c' || unit[*s].unit != u ||
-						 unit[*s].dest != unit[u].dest)) {
-							result[u] = BAD_CONVOY;
+					if(!(dipent.flags & F_BLIND))
+					{
+						while (*s) {
+							if (!processing && !predict && unit[*s].owner == unit[u].owner &&
+							 (unit[*s].order != 'c' || unit[*s].unit != u ||
+							 unit[*s].dest != unit[u].dest)) {
+								result[u] = BAD_CONVOY;
+							}
+							fprintf(rfp, " -> %s", pr[unit[*s++].loc].name);
 						}
-						fprintf(rfp, " -> %s", pr[unit[*s++].loc].name);
+					} else {
+						while(*s) {
+							fprintf(rfp, " -> %s", pr[(*s) - 1].name);
+							s++;
+						}
 					}
 				}
 				fprintf(rfp, " -> %s", pr[unit[u].dest].name);
