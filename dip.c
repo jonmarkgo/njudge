@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2001/05/12 07:57:56  greg
+ * added Mario Becroft's dedication problem fix
+ *
  * Revision 1.7  2001/05/12 06:57:39  greg
  * added subjectlines
  *
@@ -62,9 +65,14 @@
 #include "conf.h"
 #include "functions.h"
 #include "diplog.h"
+#include "plyrdata.h"
 
 #define pcontrol if (!(dipent.flags & (F_NOLIST|F_QUIET))) control
 #define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
+
+/* Comment the next line out if you wish the Judge to apply D_LATE right
+   at the deadline rather than 24 hours later. */
+#define NORMDED 
 
 void init(int, char **);
 void phase_pending(void);	/* defined in phase.c */
@@ -85,6 +93,12 @@ int main(int argc, char *argv[])
 
 	OPENDIPLOG(exe_name);
 	DIPINFO("Started dip");
+
+	if(open_plyrdata() != 0)
+	{
+		fprintf(log_fp,"Unable to open plyrdata file.\n");
+	}
+	put_data(0,total);
 	
 	control = ded[0].d0;
 
@@ -118,6 +132,7 @@ int main(int argc, char *argv[])
 		remove("dip.dedicate");
 		close(fd);
 	}
+	close_plyrdata();
         DIPINFO("Ended dip");	
 	exit(0);
 
@@ -631,6 +646,8 @@ void CheckRemindPlayer( int player, long one_quarter)
     char line[150];
     char *pchar;
 
+    if (dipent.phase[6] == 'X') return; /* Don't send out reminders in terminated games. */
+
     if (!WAITING(dipent.players[player].status) ) return; /* Not waiting for a move */
 
     if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
@@ -677,6 +694,7 @@ void CheckRemindPlayer( int player, long one_quarter)
 int process(void)
 {
 	int i, n, v;
+	int dedtest; /* Buffer variable for dipent.dedapplied. */
 	time_t now, then;
 	FILE *dfp, *gfp;
 	char line[150];
@@ -689,6 +707,12 @@ int process(void)
 	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
 	rfp = NULL;
 	time(&now);
+
+	/* Set dedtest equal to dipent.dedapplied. This keeps dipent.dedapplied
+	** from being updated until the Judge finishes processing the game. 
+	** At that point dipent.dedapplied will be set to dedtest.
+	*/
+	dedtest = dipent.dedapplied;
 
 	if (now < dipent.grace) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
@@ -778,6 +802,7 @@ int process(void)
 							dipent.players[i].status |= SF_ABAND;
 							if (!(dipent.flags & F_NORATE)) {
 								ded[dipent.players[i].userid].r += D_ABANDON;
+								put_data(dipent.players[i].userid,resigned);
 								fprintf(log_fp, dedfmt, D_ABANDON, dipent.players[i].userid,
 									ded[dipent.players[i].userid].r);
 							}
@@ -788,6 +813,7 @@ int process(void)
 							dipent.players[i].units, dipent.players[i].centers);
 						pcontrol++;
 					}
+#ifdef NORMDED
 					if (!(dipent.flags & F_NORATE)) {
 						d = n == 1 ?
 						    (!w && (dipent.players[i].status & SF_MOVE) ? D_ONTIME : 0)
@@ -796,6 +822,43 @@ int process(void)
 						fprintf(log_fp, dedfmt, d, dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
 					}
+					if(n == 1 && dipent.dedapplied == 0 && (!(dipent.flags & F_NORATE)))
+					{
+						if(w)
+						{
+							put_data(dipent.players[i].userid,total);
+						}
+						else
+						{
+							put_data(dipent.players[i].userid,ontime);
+							put_data(dipent.players[i].userid,total);
+						}
+						dedtest = 1;
+					}
+#else
+					d = 0;
+					if(dipent.dedapplied == 0 && n == 1)
+					{
+						if(dipent.players[i].status & SF_MOVE)
+						{
+							if(w)
+							{
+								d = D_LATE;
+								put_data(dipent.players[i].userid,total);
+							}
+							else
+							{
+								d = D_ONTIME;
+								put_data(dipent.players[i].userid,ontime);
+								put_data(dipent.players[i].userid,total);
+							}
+							dedtest = 1;
+						}
+						ded[dipent.players[i].userid].r += d;
+						fprintf(log_fp,dedfmt,d,dipent.players[i].userid,
+							ded[dipent.players[i].userid].r);
+					}
+#endif
 					if (*(dipent.players[i].address) != '*') {
 						sprintf(line, "%s dip.result '%s%s:%s - %s Late Notice: %s' '%s'",
 							SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
@@ -811,6 +874,7 @@ int process(void)
 				pprintf(cfp, "%sGrace period for '%s' expires %s.\n",
 					NowString(), dipent.name, ptime(&dipent.grace));
 			}
+			dipent.dedapplied = dedtest;
 			return 0;
 		}
 	}
@@ -881,6 +945,7 @@ int process(void)
 				if ((!(dipent.players[i].status & SF_PART)) && WAITING(dipent.players[i].status)) { 
 					dipent.players[i].status |= SF_CD;
 					if (!(dipent.flags & F_NORATE)) {
+						put_data(dipent.players[i].userid,resigned);
 						ded[dipent.players[i].userid].r += D_CD;
 						fprintf(log_fp, dedfmt, D_CD, dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
@@ -895,13 +960,15 @@ int process(void)
 				}
 			}
 		}
-		if (!(dipent.flags & F_NORATE) && now < dipent.deadline + 60 * 60) {
+		if (!(dipent.flags & F_NORATE) && now < dipent.deadline + 60 * 60 && dipent.dedapplied == 0) {
 			for (i = 0; i < dipent.n; i++) {
 				if (dipent.players[i].power < 0)
 					continue;
 
 				if ((dipent.players[i].status & SF_MOVE) &&
 				    !(dipent.players[i].status & SF_CD)) {
+					put_data(dipent.players[i].userid,ontime);
+					put_data(dipent.players[i].userid,total);
 					ded[dipent.players[i].userid].r += D_ONTIME;
 					fprintf(log_fp, dedfmt, D_ONTIME, dipent.players[i].userid,
 					ded[dipent.players[i].userid].r);
@@ -949,6 +1016,7 @@ int process(void)
 						execute(line);
 					}
 				}
+				dipent.dedapplied = dedtest;
 				return 0;
 			}
 		}
@@ -984,6 +1052,7 @@ int process(void)
                                         execute(line);
                             }
 		            dipent.process = now + 24 *60 *60;  /* Remind each day */
+			    dipent.dedapplied = dedtest;
 			    return 0;
 		        }
                   } 
@@ -1185,6 +1254,7 @@ int process(void)
 		phase_pending();
 		deadline((sequence *) NULL, 0);
 	}
+	dipent.dedapplied = dedtest;
 	return 0;		/* reached ? */
 }
 /***********************************************************************/
