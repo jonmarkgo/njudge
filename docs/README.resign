@@ -10,6 +10,9 @@ Subject: Re: Resigning observers
 The code ignores the password of an observer as long as the return
 address matches.  If the address the judge has for the observer is 
 bogus, you can still sign onto it with a fake return address by 
-including a "Reply-To: bogus_address" prior to the "observe" command.
+including a "Reply-To: bogus_address" prior to the "OBSERVE" command.
 
 -Ken
+
+(Note:  the "please resign me" issue can now be resolved by the Master
+using the "EJECT email_address" command.)

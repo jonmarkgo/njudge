@@ -1,52 +1,121 @@
-Greetings from the Diplomacy* Adjudicator!!             20th Februrary 2001
-Absence.
+Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+absence.
 
 An attempt to remove the greatest burden from moderators: that of 
 administrating holiday requests.
 
 Now players (and the moderator too) can indicate periods when they will
-not be available and when the game should extend its deadlines automatically.
+not be available and when the game should extend its deadlines automatically. 
+Observers and inactive (eliminated) players cannot use the SET ABSENCE command.
 
-The concerned player commands are:
+The following commands are available to signed-on players and moderators:
 
   SET ABSENCE start_date [TO end_date]
-    Requests an absence between the date specified (or the single day if no
-    end date is given. Neither start_date nor end_date can be before the
-    current date. If end_date is before the current deadline, it will be
-    effectively ignored. If absences are overlaid, they count as separate
-    absences. 
+
+     Requests an absence between the dates specified (defaulting to 24 hours
+     if no end_date is given).  Neither start_date nor end_date can be before
+     the current date.  If end_date is before start_date, the command will be
+     ignored.  If absences are overlaid, they count as separate absences.
+
+     Start_date and end_date may use any of the date/time formats accepted
+     for the "SET DEADLINE" command.  See file 'deadlines'.  If no time is
+     specified, it defaults to the move clock setting for the current game
+     (i.e., the standard deadline time for move phases).
+
+     Odd results may sometimes occur if an absence is requested to begin or
+     end on a day on which the Judge does not allow deadlines to fall.  So,
+     for example, if your game's "days" setting is "--TWTF-", your best bet
+     is to set an absence to start and end on a Tuesday, Wednesday, Thursday,
+     or Friday.  This is just a suggestion; the program will accept any day.
     
-
   SET NOABSENCE start_date [TO end_date]
-    Cancel a requested absence period. The period cancelled is one which 
-    includes the specified start_date. The end_date is ignored. The first
-    absence found which includes the specified date is the one cancelled.
 
-Only a maximum of 3 (three) absences can be requested per player. Masters too
-can request absences (with this same limit) but observers cannot.
-Each requested absence will generate an informative message to the master when
-requested, and he will also see the pending future absences every time he sends 
-a message for the game (as per moves). 
+     Cancels a requested absence period. The period cancelled is one which 
+     includes the specified start_date. The end_date is ignored. The first
+     absence found which includes the specified date is the one cancelled.
 
-If an absence request exceeds the game limit, a message will be sent to the master
-who must manually activate the absence for it to take effect. (One technique 
-is to use the 'become' command and set the absence for the player.)
+Examples:
 
-When it is time for the next turn deadline to be calculated, the deadline is 
-increased for each absence requested when at least one of the following 
-conditions is met:
+Assume the current deadline is Friday, June 30 at 23:30 local Judge
+time, the default deadline settings apply, and the following commands are
+issued, in order, by one player on June 29:
+
+(1)  set absence 29 Jun
+
+     By default, sets a 24-hour absence from June 29 23:30 to June 30 23:30. 
+     Since the end of this absence is equal to the current deadline, it will
+     not have any practical effect on the game.
+
+(2)  set noabsence 29 Jun
+
+     Clears the absence set in step (1).
+
+(3)  set absence 30 Jun
+
+     Sets a 24-hour absence from (Friday) June 30 23:30 to (Saturday) July 1
+     23:30.  Since the next deadline under the default game settings will be
+     on Monday, July 3, which is after the requested absence period, the
+     absence will have no practical effect.
+
+(4)  set absence 3 Jul to 7 Jul
+
+     Sets an absence from Monday July 3 23:30 to Friday July 7 23:30.  When
+     the current phase is processed on June 30, the program will first
+     determine the next deadline in the usual way; this would be July 3 at
+     23:30.  Next, the Judge will find that an absence has been set that
+     includes the new deadline, so it will extend the next deadline to the
+     end of that absence period, which is Friday July 7 at 23:30.
+
+(5)  set absence 6 Jul to 10 Jul
+
+     Sets an absence overlapping the one set in step (4).  When the current
+     phase is processed on June 30, both absences would be triggered and the
+     next deadline would be set for Monday, July 10 at 23:30.
+
+(6)  set noabsence 6 Jul
+
+     Clears the absence set in step (4), because it is the first one for
+     which the specified date falls within the requested absence period.
+     You can only clear one absence per command.
+
+Only a maximum of 3 (three) absences can be pending at any given time for a
+single player.  Once an absence expires, however, it is removed from memory
+and its "slot" becomes available for another request.  If you need to change
+a previously-set absence, first use SET NOABSENCE to remove the old one, then
+use SET ABSENCE to set the correct dates.  Otherwise, you will use up two of
+your slots.
+
+Each absence request will generate an informative message to the master, and
+he will also see the pending future absences every time he sends a message
+for the game (along with pending orders). 
+
+If an absence request exceeds the game limit (see command "SET MAXABSENCE" in
+file 'index'), a message will be sent to the master who must manually
+activate the absence for it to take effect.  Generally, the master should do
+this by using the "BECOME power" command and setting the absence for the
+player, as this allows the player to cancel or change the absence later if
+desired.  (Also, the master, like each player, has only three absence
+"slots," and might use them all up setting absences for other players.)  The
+MAXABSENCE setting is ignored if the absence is set by the master, even using
+BECOME.
+
+Each time a turn is processed, any absence that was set to end before the
+current date/time is expired and removed from memory.  Then, the next
+deadline is increased for each pending absence request that starts at or
+before the new deadline, if at least one of the following conditions is met:
+
  - Master requested the absence
  - Player has a move to make and game is either StrictWait or NoPress
  - Game has press and is not StrictWait
  - The game is set to 'quiet' mode.
 
-All absences which become out of date (due to a previous absence activating,
-master manually advancing the deadline or deadline automatically exceeding
-the absence) will be deleted when the next turn is processed.
+Note: The deadline will be adjusted to be equal to the last end date
+requested.  So, if want some time after your return to consider your move,
+add a little bit accordingly.    
 
-Note: The deadline will be ajusted to be equal to the last end date requested.
-So, if want some time after your return to consider your move, addd a little
-bit accordingly.    
+
 -----
-* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
-  Maryland, all rights reserved.  Used with permission.
+
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
+

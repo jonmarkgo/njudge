@@ -1,22 +1,10 @@
-	  Too true, thanks for pointing it out. The other thing to do would be
-	to find a master for it. Hmm. Can you become a master after the game
-	has started? And ... Is the correct way to "destroy" a game to set it to
-	nolist and remove all the players?
-
-Ken has put in Master's after the fact.  I believe he just puts
-an extra line, in the appropiate place in the control file, I think
-he also sometimes has the person add himself as an observer, and
-then he just adjusts the line for him to become Master.  I do
-not believe Master's have to be at the top, also, games, CAN have
-more than one Master, (though they would have to be entered by hand).
-As long as they are both marked as Master, they both have powers.
-
+	 
 With versions of the njudge 0.8.7 and up, a game can have multiple masters
 which do not need to be the first entry. Once a game is created, and the 
 creator has made themselves master, they can promote any obvserver to also
-be a mster (using the 'promote <email>' command). Multiple masters will have 
+be a mster (using the 'PROMOTE <email>' command). Multiple masters will have 
 the same master priviledges, and receive all master-directed press. Any master
-can resign using the 'resign <email>' command. Howver, any game that ends up
+can resign using the 'EJECT <email>' command. Howver, any game that ends up
 having no master at all will need JK intervention to hand-edit the dip.master
 file.
 

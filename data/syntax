@@ -1,9 +1,12 @@
-Greetings from the Diplomacy* Adjudicator!!                  Jan 3, 2000
+Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
 Syntax.
 
 The format of your diplomacy orders depends on the phase of the game:
-Movement, Retreats or Adjustments.  Multiple orders can be entered on 
-one line by separating them with commas or semicolons.
+Movement, Retreats or Adjustments.  Multiple orders can be entered on
+one line by separating them with commas or semicolons.  
+
+WARNING: the syntax for convoys is different than in the standard Diplomacy
+rules.  See the section below titled "CONVOY ROUTES MUST BE SPECIFIED."
 
 Movement orders:
 
@@ -30,79 +33,79 @@ Adjustment orders:
 
 Where:
 
-<type>    = "army", "a", "fleet", "f", "wing", "w" or <empty>.
-<s-prov>  = Source province.
-<d-prov>  = Destination province.
-<c-prov>  = Intermediate water province in a convoy route.
-<power>   = Power name or abbreviation of two or more characters.
-<holds>   = "h", "hold", "holds", "stand", "stands".
-<moves>   = "-", "->", "m", "move", "moves", "move to", "moves to".
-<support> = "s", "support", "supports".
-<convoy>  = "c", "convoy", "convoys", "transport", "transports" , "t",
-	    "fast ferry", "ferry", "ff", "f"
-<proxy>   = "p", "proxy", "proxy to".
-<disband> = "d", "disband", "disbands".
-<build>   = "b", "build" or <empty>.
-<remove>  = "r", "remove", "d", "disband" or <empty>.
-<waive>   = "w", "waive".
+<type>       = "army", "a", "fleet", "f", "wing", "w" or <empty>.
+<s-prov>     = Source province.
+<d-prov>     = Destination province.
+<c-prov>     = Intermediate water province in a convoy route.
+<power>      = Power name or abbreviation of two or more characters.
+<holds>      = "h", "hold", "holds", "stand", "stands".
+<moves>      = "-", "->", "m", "move", "moves", "move to", "moves to".
+<support>    = "s", "support", "supports".
+<convoy>     = "c", "convoy", "convoys", "transport", "transports" , "t",
+	         "fast ferry", "ferry", "ff", "f"
+<proxy>      = "p", "proxy", "proxy to".
+<disband>    = "d", "disband", "disbands".
+<build>      = "b", "build" or <empty>.
+<remove>     = "r", "remove", "d", "disband" or <empty>.
+<waive>      = "w", "waive".
 <transforms> = "transforms to", "transform to", "transform", "transforms",
-		"trafo","tr".
-<tranform> = "transform", "transforms", "trafo"
-<to>	  = "to", "->"
+		   "trafo", "tr".
+<transform>  = "transform", "transforms", "trafo"
+<to>	       = "to", "->"
 
-Province names can be abbreviated or can be spelled out.  Coasts can be
-specified by following the province name with one of:
+    NOTE: "wing" units, "proxy" orders and "transform" orders can only be
+          used if the moderator has enabled the corresponding variant
+          setting.
+
+Province names can be abbreviated or can be spelled out.  Valid abbreviations
+can be found in the 'map' file for the variant you are playing (use the
+command "GET MAP" for the standard map, or "GET map.xxx" for variant map
+"xxx").  Coasts can be specified by following the province name with one of:
 
 <coast>   = "/nc", "(nc)", "/north coast", "(north coast)"
 
-or appropriate other directions instead of 'north'.
+replacing 'north' or 'n' with another valid direction if appropriate.
+WARNING:  if you do not specify a coast for a fleet moving to a destination
+province that contains coasts (including an order to support such a move),
+the Judge will arbitrarily add a coast to the order (namely, the first one on
+its list).  This may lead to unintended results!!
 
+CONVOY ROUTES MUST BE SPECIFIED
 
-Revisions to orders can be sent in anytime before the deadline occurs.
-The last valid order for a particular unit will be honored.  If no valid
-order is received for a particular unit it will be listed in the reports
-as "No order processed".
+Unlike human adjudicators, the Judge requires that convoy routes be
+specified.  (See also file 'rules'.)  To do a convoy, you must order each
+participating fleet to convoy the army, and also must order the army to
+follow a specific convoy route.  For example:
 
+     RIGHT                               WRONG
 
-Orders can be entered conditionally using the following syntax:
+     A Lon-Nth-Nwy                       A Lon-Nwy
+     F Nth C A Lon-Nwy                   F Nth C A Lon-Nwy
 
-  if <condition> then
-    <orders>
-  else if <condition> then
-    <orders>
-  else
-    <orders>
-  endif
+     A Bre-Mid-Wes-Lyo-Mar               A Bre-Mar
+     F Mid C A Bre-Mar                   F Mid C A Bre-Mar
+     F Wes C A Bre-Mar                   F Wes C A Bre-Mar
+     F Lyo C A Bre-Mar                   F Lyo C A Bre-Mar
 
-The "then"s are optional for old fortran programmers.  The conditions
-are of the form:
+The "wrong" column is correct according to the standard rules of Diplomacy
+and the usual practice in human-adjudicated games, but on the Judge it will
+raise the error flag!  (Notes:  the convoying fleets do not have to belong to
+the same power as the army, or as each other; but if the route specified for
+the army does not match up exactly with the fleet orders, the convoy will
+fail.  As shown above, only the army has to specify the entire route; the
+fleets only need to give the origin and destination.)
 
-<condition> = ["not"] <power> <type> <prov>
+REVISING ORDERS
 
-and may be combined with the keywords "and" and "or" evaluated left
-to right.  You can use parenthesis to change the precidence.  The 
-condition evaluates to "true" if a unit of the specified type belonging 
-to the specified power is present (or not) in the specified province.  
-The province must be specified, but the type and power are optional
-interpreted as "any" if not specified.  The power, type and province
-can be specified in any order.  Powers can be abbreviated to two or
-more characters or spelled out.  For example:
+Revisions to orders can be sent in any time before the phase is processed. 
+Orders may be processed before the deadline unless the SET WAIT command has
+been used (see file 'deadlines').  The last valid order for a particular unit
+will be honored.  For Adjustment phases, if you submit more build orders than
+you can use, the last one(s) received will be honored.  If no valid order is
+received for a particular unit in an NMR game, it will be listed in the
+reports as "No order processed".
 
-   phase Fall 1905 Movement
-   if not french army ruhr and (russian prussia or russian siliesia)
-     kiel -> berlin
-     munich support kiel -> berlin
-   else
-     kiel -> ruhr
-     munich support kiel -> ruhr
-   endif
-
-Conditional statements can be nested with expected results.  The end of
-a line closes off all parenthesis and the end of the orders closes off
-all missing endifs without an error being reported.  Note, broadcast
-messages are not considered orders and thus cannot be sent out
-conditionally using this mechanism.
-
+SUBMITTING ORDERS IN ADVANCE
 
 Orders can be submitted for future phases using the following syntax:
 
@@ -122,20 +125,61 @@ phase, your power will get the "orders have been received" status
 automatically whether or not there were any errors or if the orders are
 incomplete.  All orders until the next PHASE directive or the end of
 the mail message will be saved for the specified phase.  Note that only
-orders are saved.  In particular, BROADCAST MESSAGES CANNOT BE DELAYED
-for later transmission.  An exception to this is that the "set wait"
-and "set nowait" directives will be propagated to the future phase.
+orders are saved.  In particular, PRESS MESSAGES CANNOT BE DELAYED
+for later transmission.  An exception to this is that the "SET WAIT"
+and "SET NOWAIT" directives will be propagated to the future phase.
 Your pending orders will be listed in replies to intervening order
 submissions.  To get rid of all your pending orders, use the CLEAR
 command.
 
-As a special note, please be aware that subsequent build orders will
+As noted above, please be aware that subsequent build orders will
 override earlier ones if more build orders are received than you have
 supply centers.  Thus, when submitting orders for future build phases,
 you should list your builds in reverse order of preference in case you
 don't get as many supply centers as you were expecting.
 
+Future orders can be entered conditionally using the following syntax:
+
+  IF <condition> [THEN]
+    <orders>
+  ELSE IF <condition> [THEN]
+    <orders>
+  [ELSE]
+    <orders>
+  [ENDIF]
+
+The "THEN's" are optional for old Fortran programmers.  The conditions
+are of the form:
+
+<condition> = [NOT] [<power>] [<type>] <prov>
+
+and may be combined with the keywords "AND" and "OR" evaluated left
+to right.  You can use parenthesis to change the precedence.  The 
+condition evaluates to "true" if a unit of the specified type belonging 
+to the specified power is present (or not) in the specified province at the beginning of the specified phase.  The province must be specified, but the
+type and power are optional and interpreted as "any" if not specified.  The
+power, type and province can be specified in any order.  Powers can be
+abbreviated to two or more characters or spelled out.  For example:
+
+   phase Fall 1905 Movement
+   if not French Army Ruhr and (Russian Prussia or Russian Silesia)
+     Kiel -> Berlin
+     Munich support Kiel -> Berlin
+   else
+     Kiel -> Ruhr
+     Munich support Kiel -> Ruhr
+   endif
+
+Conditional statements can be nested with expected results.  The end of
+a line closes off all parentheses and the end of the mail message closes
+all open IFs without an error being reported.
+
+Conditional statements can only be used after a PHASE command; they cannot be
+used for the current phase's orders.
+
+
 -----
 
-* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
-  Maryland, all rights reserved.  Used with permission.
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
+

@@ -1,22 +1,26 @@
-Greetings from the Diplomacy* Adjudicator!!                   May 19, 1990.
+Greetings from the Diplomacy* Adjudicator!!                     3 February, 2003
 Rules.
 
-Avalon Hill has not given me permission to distribute copies of the
-rules.  To get a set of rules contact:
+The rules of Diplomacy are copyrighted by the Avalon Hill Game Company, a
+division of Hasbro.  At time of writing, 4th Edition 2000 rules were
+available online at http://www.hasbro.com/common/instruct/Diplomacy.PDF 
+An older (undated) edition of the rules was at http://www.hasbro.com/common/instruct/Diplomacy(OlderVers).PDF
+If you are unable to obtain rules online, you may inquire to Hasbro.
 
-    The Avalon Hill Game Company
-    4517 Harford Road
-    Baltimore, Maryland   21414
+See file 'house.rules' for rules concerning the use of the Judge and the
+conduct of games.  This file only covers the rules for interpretation and
+adjudication of orders.
 
-    1-800-999-3222  or  (301) 254-9200
-
-
-The adjudicator follows The Rules of Diplomacy as specified by The Avalon
-Hill Company with the following exceptions:
+The adjudicator follows the 1990 edition of the Rules of Diplomacy as
+specified by The Avalon Hill Company (note: there are no major differences
+between the 1990 and 2000 rules, but the numbering is completely different),
+with the following exceptions:
 
 VII.3.b: When a fleet can move to two coasts and the coast is not specified,
          the adjudicator will pick an arbitrary coast.  Actually not totally
-         arbitrary, but the first one in its movement list.
+         arbitrary, but the first one in its movement list.  The same process
+         will apply when a unit is ordered to support a fleet that can move to
+         two coasts.
 
 VII.7:   Abbreviations are the first three characters of the province name
          except for provinces starting with 'gul', 'liv', 'nor' and 'tyr'.  
@@ -35,7 +39,7 @@ VII.7:   Abbreviations are the first three characters of the province name
            tys: Tyrrhenian Sea
 
          Other reasonable abbreviations are also defined.  For a complete
-         list see the file available with the 'get map' command.
+         list see the 'map' file, available with the "GET MAP" command.
 
 IX.1:    Do not specify owners of units in support and convoy orders.  This
          redundant specification would unnecessarily complicate the parser.
@@ -67,8 +71,8 @@ XII.5:   This rule when taken literally can have some unintended results.
          France:  F Spa(nc) S F Mid, F Mid Convoy A Por-Bre, A Por-Mid-Bre
          Italy:   F Gulf of Lyon Convoy A Tus-Spa, A Tus-GoL-Spa
  
-         What happens in the Mid-Atlantic ocean?  What about if the 
-         additional order:
+         What happens in the Mid-Atlantic Ocean?  What if the additional
+         order
  
          Italy:   A Mar S A Tus-Spa
  
@@ -94,12 +98,28 @@ XII.5:   This rule when taken literally can have some unintended results.
          in pass four.  Portugal would be given the "no convoy" status and
          thus would have no effect on any unit in Brest in pass five.
 
-XIV.4:   If a power is required to remove a unit and no valid order is
-         received, the least recently produced unit that is not at a supply
-         center will be disbanded.  This is the first one listed on the 
-         reports which will be the one most likely to be furthest away from 
-         a home supply center.
+XII.6:   This rule does not apply because an army must specify its convoy
+         route in order to be convoyed.  Convoys between adjacent provinces
+         are permitted if explicitly ordered.
+
+XIII.2:  Possible builds not being using must be specifically marked
+         using the WAIVE command or your orders will be marked as unfinished.
+
+XIV.4:   In an NMR game, if a power is required to remove a unit and no valid
+         order is received, the least recently produced unit that is not at a
+         supply center will be disbanded.  This is the first one listed on
+         the reports which will be the one most likely to be furthest away
+         from a home supply center.
+
+Unusual Board Situations:
+
+Certain extremely rare situations are not covered by the rules of
+Diplomacy.  (For example, Pandin's paradox discovered by Tony Pandin
+in which a convoy causes its own disruption.) In such a situation,
+the results of the Diplomacy Adjudicator will be accepted as final.
+
 -----
 
-* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
-  Maryland, all rights reserved.  Used with permission.
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
+

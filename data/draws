@@ -1,8 +1,7 @@
-Greetings from the Diplomacy* Adjudicator!!                   March 11, 1993
+Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
 Draws.
 
-Automated drawing is a fairly new addition to the Diplomacy Adjudicator. It
-is facilitated with two commands: SET [NO]DIAS and SET [NO]DRAW.
+Automated drawing is facilitated with two commands: SET [NO]DIAS and SET [NO]DRAW.
 
 The term "DIAS" means "Draws Include All Survivors". In a game designated
 as DIAS, a surviving player cannot be excluded from a draw. In a NoDIAS
@@ -73,8 +72,6 @@ Any draw vote, DIAS or NoDIAS, is good for one phase only. All draw votes
 are cleared at the end of a phase. A drawn game may be restarted with the
 RESUME command.
 
-Questions or comments about the draw system may be directed (for now) to its
-programmer, Jonathan Haas, at positron@eecs.umich.edu.
 
 -----
 

@@ -15,7 +15,7 @@ void DIPINFO(char *fmt, ...);
 void DIPDEBUG(char *fmt, ...);
 
 in decreasing order of severity. Only a few calls are made at present to 
-these functions, these shoudl be expanded in the future.
+these functions, these should be expanded in the future.
 
 -Millis Miller 6th Oct 2000
 
