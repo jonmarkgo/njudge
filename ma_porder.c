@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2003/04/13 16:38:31  millis
+ * Perform Storms before famine (to avoid mistaken removals)
+ *
  * Revision 1.19  2002/12/23 01:43:30  millis
  * Really fixed Bug 69 (incorrect change)
  *
@@ -143,7 +146,10 @@ static void next_phase(int power)
 			dipent.phase[0] = 'F';
 		} else {
 			fam_plag(PLAGUE);
-			dipent.phase[0] = 'U';	/* End of spring */
+			if (dipent.x2flags && X2F_NOSUMMER) 
+			    dipent.phase[0] = 'F';  /* no summer, so go to fall */
+			else
+			    dipent.phase[0] = 'U';	/* End of spring */
 		}
 		init_movement();
 	}
