@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.49  2003/08/23 09:59:47  russblau
+ * deleted commented-out keywords
+ *
  * Revision 1.48  2003/08/10 15:27:51  millis
  * Fix bug 25 (Add TouchPress)
  *
@@ -3243,6 +3246,9 @@ CATF_SETOFF,
 			}
 			if (!i_am_really_master && dipent.players[player].power != MASTER &&
 			absence_delay(dipent.max_absence_delay, datee-dates) == TOO_BIG) {
+				sprintf(subjectline, "%s:%s - %s Oversized Absence Request", JUDGE_CODE, 
+					dipent.name, dipent.phase);
+
 				fprintf(rfp, "Requested absence delay is too large. \nRequest forwarded to master to approve.\n\n");
 				fprintf(mbfp, "%s as %s requested absence between \n%s",
 					raddr, PRINT_POWER, ptime(&dates));
