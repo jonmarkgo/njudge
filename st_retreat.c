@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.5.2.1  2003/01/13 16:04:58  millis
+   ** ustv latest versions
+   **
+   ** Revision 1.5  2002/04/15 12:55:47  miller
+   ** Multiple changes for blind & Colonial & setup from USTV
+   **
    ** Revision 1.4  2001/07/08 23:04:09  miller
    ** Add predict flag
    **
@@ -204,6 +210,7 @@ void retreatout(int pt)
 
 	int p, i, u, u2;
 	char mastrpt_pr[ NPOWER + 1 ];  // Used to be [MAXPLAYERS]. DAN 13/07/99
+	float u_value, u2_value;
 
 /*  Generate report  */
 
@@ -235,6 +242,28 @@ void retreatout(int pt)
 			}
 		}
 	}
+
+/* Pass 1a: undo disbands if unit is bouncing with a unt when a half-value coast */
+    for (u = 1; u <= nunit; u++) {
+        if (unit[u].status == 'd' && unit[u].order == 'm') {
+	    for (u2 = 1; u2 <= nunit; u2++) {
+	        if (unit[u2].status == 'd' && unit[u2].order == 'm' &&
+		    unit[u].dest == unit[u2].dest && u != u2) {
+		    /* OK, have two units bouncing over same space */
+		    u_value = (unit[u].dcoast == HX || unit[u].dcoast == LX)
+				 ? 0.5 : 1;
+		    u2_value =  (unit[u2].dcoast == HX || unit[u2].dcoast == LX) 
+                                 ? 0.5 : 1;
+		    if (u_value > u2_value) 
+			unit[u].status = 'r';  /* cancel bounce */
+		    else if (u2_value > u_value)
+			unit[u2].status = 'r'; /* cancel bounce */
+		}
+	    }
+	}
+    }
+		
+
 /*  Pass two, display results and move the units.  */
 
 	if (pt == MASTER) {
