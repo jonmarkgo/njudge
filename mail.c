@@ -1,5 +1,16 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Innumerous changes, some of which are:
+ *  - Add new command 'promote'
+ *  - Resign command now needs email for master (and can resign observers)
+ *  - Added calls to shorthand functions for SHORTHAND press games
+ *  - set a player flag when a power resigns (for future use to tell resigned players game has ended.)
+ *
+ *  - Allow termination of unstarted games
+ *  - Restrict games witn F_NORESUME to master-only resumation
+ *  - Do not show password of player when doing a 'become' command
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -1450,6 +1461,9 @@ int mail(void)
 					if (n == 0)
 						n = power(*s);
 
+                                        if ( n == MASTER )
+                                                break;
+ 
 					if (0 >= n || n >= WILD_PLAYER) {
 						fprintf(rfp, "Become error: unknown power- %s", s);
 						break;

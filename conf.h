@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Added new dip.conf variable. Plus allowed dip.conf path to be passed in as a parameter
+ *
  * Revision 1.1  1998/02/28 17:51:14  david
  * Initial revision
  *
@@ -47,6 +50,7 @@
 #define MASTER_FILE     config("MASTER_FILE")
 #define TMASTER_FILE	config("TMASTER_FILE")
 #define NO_CREATE       config("NO_CREATE")
+#define AUTO_MASTER     config("AUTO_MASTER")
 #define LOG_FILE        config("LOG_FILE")
 #define CUTOFF_LENGTH   atoi(config("CUTOFF_LENGTH"))
 #define DIE_ASSASSIN    atoi(config("DIE_ASSASSIN"))

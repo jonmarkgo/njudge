@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.3  2000/11/14 14:27:37  miller
+ * Small changes for Blind/Wings setup data files, also handling of JK signon from
+ * any email account, adjustment of takeover countries as according to game settings (deadline that is)
+ * Showing of preference and absence settings on signon (the first restricted to master only)
+ * Handling of BLankBoard games (where game starts with no pieces)
+ *
  * Revision 1.2  1998/03/01 12:52:19  davidn
  * Correction to sort routine added
  *
@@ -109,6 +115,7 @@ int mail_signon(char *s)
 
 	char password[20];
 	int i, j, n, found;
+	int master = 0; // Whether the players has been auto-promoted to master
 	int userid, siteid, level, variant = V_STANDARD, flags = 0;
 	char *t, line[150];
 
@@ -269,6 +276,16 @@ int mail_signon(char *s)
 			if (dipent.flags & F_GUNBOAT)
 				dipent.flags |= F_NOPARTIAL; 
 			*/
+ 
+                        // Automatically upgrade creator to master
+                        if ( !strcmp(AUTO_MASTER,"yes") && strcmp(raddr,GAMES_MASTER) ) 
+			{
+                                master++;
+                                pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);
+                                dipent.flags |= F_MODERATE;
+                                dipent.flags &= ~F_NORATE;
+                                dipent.players[0].power = MASTER;
+                        }
 		} else {
 			if (!msg_header_done)
 				msg_header(rfp);
@@ -380,6 +397,12 @@ int mail_signon(char *s)
 			}
 			n = dipent.n++;
 		}
+		// Make the first player the master
+		if ( master )
+		{
+			name[0] = 'm';
+		}
+
 		dipent.players[n].power = power(name[0]);
 		dipent.players[n].status = 0;
 		dipent.players[n].units = 0;
@@ -438,16 +461,19 @@ int mail_signon(char *s)
 			} else {
 				n = dipent.np;
 			}
-			/* WAS mfprintf  1/94 BLR */
-			fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
-				powers[power(name[0])], dipent.name);
-			fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
-				powers[power(name[0])], dipent.name);
+			if ( !master )
+			{
+				fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
+					powers[power(name[0])], dipent.name);
+				fprintf(mbfp, "%s has signed up to play %s in game '%s'.\n", raddr,
+					powers[power(name[0])], dipent.name);
+				mfprintf(bfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+				mfprintf(bfp, ".\n\n");
+				broad_signon = 1;
+			}
+
 			fprintf(rfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
 			fprintf(rfp, ".\n\n");
-			mfprintf(bfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
-			mfprintf(bfp, ".\n\n");
-			broad_signon = 1;
 			if (dipent.n != 1) {
 				pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
 					NowString(), xaddr,
