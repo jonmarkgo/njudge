@@ -1,5 +1,5 @@
-#Machiavelli 2 map file. Spanish Preponderance scenario
-#Rev. 1c.  Dec. 11th 2002.
+#Machiavelli 2 map file. Spanish Preponderance scenario Alternate Setup
+#Rev. 1c.  Mar. 9th 2003.
 #First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
@@ -31,7 +31,7 @@ Genoa,                   x3P  gen
 Gulf of Naples,          w0.  gon
 Herzegovina,             T0.  her herze
 Hungary,                 T1.  hun hunga
-Ionian Sea,              w0.  ion is
+Ionian Sea,              w0.  ion is ios
 Istria,                  V0.  ist istri
 Lower Adriatic Sea,      w0.  low las la
 Lucca,                   x1f  luc
@@ -57,7 +57,7 @@ Ragusa,                  x1P  rag ragus
 Rome,                    P2f  rme rom
 Salerno,                 N0.  sal saler
 Saluzzo,                 F1f  slz saluz
-Sardinia,                A1p  sar sardi
+Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
 Siena,                   x1f  sie sienn sienna
 Slavonia,                x0.  sla slavo  
@@ -281,4 +281,3 @@ Limits for Units Types:
 #end of limit (this line is compulsory!)
 
 -1
-
