@@ -1,3 +1,114 @@
+2003-12-09 15:40  millis
+
+	* BUGS, NEWS, configure, Makefile.in, configure.ac, njudge.spec:
+	New version for 1.5.4
+
+2003-12-09 15:32  millis
+
+	* data/rules.machiavelli: Clarify that besieged cities produce no
+	income.
+
+2003-12-08 10:47  millis
+
+	* ascii2rec.c, recdump.c: Removed compile warning
+
+2003-12-07 15:44  millis
+
+	* data/syntax: Fix bug 183 (added better explaination for phased
+	adjusts syntax)
+
+2003-12-06 16:52  millis
+
+	* mail.c: Fix bug 217
+
+2003-12-06 16:49  millis
+
+	* ml_getaddr.c: Fix bug 217, bad email addresses being accepted
+
+2003-12-06 16:04  millis
+
+	* ma_movement.c: Fix Bug 249, so that disbanding garrisons prevent
+	setting siege state
+
+2003-12-06 03:32  millis
+
+	* po_init.c: Fix bug 254 (can only broadcast once per game in touch
+	press games)
+
+2003-12-04 16:05  millis
+
+	* data/rules.machiavelli: Small coastal spec change
+
+2003-12-02 15:04  millis
+
+	* data/rules.machiavelli: Added descrition for ocnverts to fleet
+	needing coastal specification.
+
+2003-12-02 14:44  millis
+
+	* docs/README.hackers: Explanation for debugging added
+
+2003-12-02 10:46  millis
+
+	* users.c: Reconsidered change, restoring old version
+
+2003-12-02 10:43  millis
+
+	* users.c: Improved checking for Bug 250, namely not allowing blank
+	addresses
+
+2003-12-02 10:20  russblau
+
+	* data/index: Describe missing "SET GARRISON" and "SET SUMMER"
+	flags, other minor clean-up.
+
+2003-11-18 06:42  millis
+
+	* Makefile.am, Makefile.in: Added manual.htm (Russell Blau's DJUM)
+
+2003-11-18 06:23  njudge
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: First
+	version (1.4.0) from Russell Blau website
+
+2003-11-17 19:20  nzmb
+
+	* users.c: improved cmpaddr so it (should) return 0 on a blank
+	address or one that has a non alphanumeric character as its first
+	character -- partial fix to bug number 250.
+
+2003-11-17 16:12  millis
+
+	* data/: info.dipmach1, map.dipmach1, report.dipmach1,
+	report.dipmach2, seed.dipmach1: Added misisng dipmach files
+
+2003-11-16 02:52  machmstr
+
+	* data/info.dipmach2: Current treatment of fleet/garrison
+	conversions in StP.
+
+2003-11-16 02:50  machmstr
+
+	* data/rules.machiavelli: Current treatment of fleet/garrison
+	conversions in multicoastal provinces and provsionary future rules.
+	In Appendix 4.
+
+2003-11-09 10:59  millis
+
+	* mail.c: Fix bug 145
+
+2003-11-09 10:35  millis
+
+	* po_get.c: Fix bug 248 (allow '_' in country names)
+
+2003-11-09 10:17  millis
+
+	* po_init.c: Fix bug 246
+
+2003-10-26 11:17  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_3
+
 2003-10-26 10:46  millis
 
 	* BUGS, NEWS, configure, configure.ac, njudge.spec: New versions
@@ -48,8 +159,8 @@
 
 2003-09-27 07:18  machmstr
 
-	* data/: info.dipmach, map.dipmach, seed.dipmach: DipMach VERSION 2
-	files for DEMA testing (only new games)
+	* data/: info.dipmach2, map.dipmach2, seed.dipmach2: DipMach
+	VERSION 2 files for DEMA testing (only new games)
 
 2003-09-27 07:15  machmstr
 
@@ -57,7 +168,7 @@
 
 2003-09-27 07:12  machmstr
 
-	* data/map.dipmach: no message
+	* data/map.dipmach2: no message
 
 2003-09-26 12:58  christ
 
