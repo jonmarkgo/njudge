@@ -1,0 +1,41 @@
+Greetings from the Diplomacy* Adjudicator!!                 March 28, 1993.
+Info.shift
+
+Introduction
+
+The Shift-Right and Shift-Left variants of diplomacy follow the same rules
+as normal Diplomacy; the only difference is in the starting positions of the
+powers. The concept is simple: everyone begins the game with their units
+occuyping the home centers of another power, with the units that power would
+normally have at the start of the game. For example, in Shift-Right, Austria
+starts with F Edi, F Lon, A Lvp; England starts with A Ven, A Rom, F Nap;
+Italy starts with F Stp/sc, A War, A Mos, A Sev; and so on. Austria's home
+centers are still Austria's home centers--but he doesn't own any of them
+when the game starts, and can't build until he gets back to them. This is,
+of course, true for all the players....
+
+Victory Conditions
+
+Just as in regular Diplomacy: you must control a majority of the supply
+centers on the board, i.e. 18, regardless of how many units you actually
+have on the board. It is, therefore, theoretically possible to win without
+capturing a single onf of your home centers--unlikely, but you never know.
+
+Initial Setup
+
+The starting positions for Shift-Right Diplomacy are as follows, where
+A -> B means "A's units start in country B":
+
+   Germany -> Turkey       Turkey -> Germany       England -> Italy
+   Italy   -> Russia       Russia -> France        France  -> Austria
+   Austria -> England
+
+Shift-Left Diplomacy shifts everyone in the opposite direction (Germany and
+Turkey still just trade); just reverse the arrows to see who starts where
+(or interpret A -> B as "B's units start in country A").
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.
+

@@ -1,0 +1,405 @@
+Adriatic Sea1, w adr1 adriatic1
+Adriatic Sea2, w adr2 adriatic2
+Aegean Sea1,         w aeg1 aegean1
+Aegean Sea2, w aeg2 aegean2 
+Albania1,               l alb1
+Albania2, l alb2
+Ankara1,                T ank1
+Ankara2, T ank2
+Apulia1,                l apu1
+Apulia2, l apu2
+Armenia1, l arm1
+Armenia2, l arm2
+Baltic Sea1,         w bal1 baltic1
+Baltic Sea2, w bal2 baltic2
+Barents Sea1, w bar1 barents1
+Barents Sea2,         w bar2 barents2
+Belgium1,               x bel1
+Belgium2, x bel2
+Berlin1, G ber1
+Berlin2,                G ber2
+Black Sea1,             w bla1 black1
+Black Sea2, w bla2 black2
+Bohemia1, l boh1
+Bohemia2,               l boh2
+Brest1,                 F bre1
+Brest2, F bre2
+Budapest1, A bud1
+Budapest2,              A bud2
+Bulgaria1,              x bul1
+Bulgaria2, x bul2
+Burgundy1,              l bur1
+Burgundy2, l bur2
+Clyde1, l cly1
+Clyde2,                 l cly2
+Constantinople1,  T con1
+Constantinople2, T con2
+Denmark1,            x den1
+Denmark2, x den2
+Eastern Mediterranean1, w eas1 emed1 east1 eastern1 eastmed1 ems1 eme1
+Eastern Mediterranean2, w eas2 emed2 east2 eastern2 eastmed2 ems2 eme2
+Edinburgh1,             E edi1
+Edinburgh2, E edi2
+English Channel1,       w eng1 english1 channel1 ech1
+English Channel2, w eng2 english2 channel2 ech2
+Finland1, l fin1
+Finland2,               l fin2
+Galicia1,               l gal1
+Galicia2, l gal2
+Gascony1, l gas1
+Gascony2,               l gas2
+Greece1,                x gre1
+Greece2, x gre2
+Gulf of Lyon1, w lyo1 gol1 gulfofl1 lyon1
+Gulf of Lyon2,          w lyo2 gol2 gulfofl2 lyon2
+Gulf of Bothnia1,       w bot1 gob1 both1 gulfofb1 bothnia1
+Gulf of Bothnia2, w bot2 gob2 both2 gulfofb2 bothnia2
+Helgoland Bight1,       w hel1 helgoland1
+Helgoland Bight2,       w hel2 helgoland2
+Holland1, x hol1
+Holland2,               x hol2
+Ionian Sea1,            w ion1 ionian1
+Ionian Sea2, w ion2 ionian2
+Irish Sea1,             w iri1 irish1
+Irish Sea2, w iri2 irish2
+Kiel1, G kie1
+Kiel2,                  G kie2
+Liverpool1,             E lvp1 livp1 lpl1
+Liverpool2, E lvp2 livp2 lpl2
+Livonia1, l lvn1 livo1 lvo1 lva1
+Livonia2,               l lvn2 livo2 lvo2 lva2
+London1,                E lon1
+London2, E lon2
+Marseilles1,            F mar1 mars1
+Marseilles2, F mar2 mars2
+Mid-Atlantic Ocean1,    w mao1 midatlanticocean1 midatlantic1 mid1 mat1
+Mid-Atlantic Ocean2,    w mao2 midatlanticocean2 midatlantic2 mid2 mat2
+Moscow1,                R mos1
+Moscow2, R mos2
+Munich1,                G mun1
+Munich2,                G mun2
+Naples1, I nap1
+Naples2,                I nap2
+North Atlantic Ocean1,  w nao1 nat1
+North Atlantic Ocean2,  w nao2 nat2
+North Africa1, l naf1 nora1
+North Africa2,          l naf2 nora2
+North Sea1,             w nth1 norsea1 nts1
+North Sea2, w nth2 norsea2 nts2
+Norway1, x nor1 nwy1 norw1
+Norway2,                x nor2 nwy2 norw2
+Norwegian Sea1,         w nwg1 norwsea1 nrg1 norwegian1
+Norwegian Sea2,         w nwg2 norwsea2 nrg2 norwegian2
+Paris1, F par1
+Paris2,                 F par2
+Picardy1,               l pic1
+Picardy2,               l pic2
+Piedmont1, l pie1
+Piedmont2,          l pie2
+Portugal1,           x por1
+Portugal2,              x por2
+Prussia1,               l pru1
+Prussia2,               l pru2
+Rome1,                  I rom1
+Rome2, I rom2
+Ruhr1,                  l ruh1
+Ruhr2,                  l ruh2
+Rumania1,               x rum1
+Rumania2,               x rum2
+Serbia1,                x ser1
+Serbia2,                x ser2
+Sevastopol1,        R sev1 sevastapol1
+Sevastopol2,            R sev2 sevastapol2
+Silesia1,               l sil1
+Silesia2,               l sil2
+Skagerrak1,             w ska1
+Skagerrak2,             w ska2
+Smyrna1,                T smy1
+Smyrna2,                T smy2
+Spain1, x spa1
+Spain2,                 x spa2
+St Petersburg1,         R stp1
+St Petersburg2,         R stp2
+Sweden1, x swe1
+Sweden2,                x swe2
+Syria1,                 l syr1
+Syria2, l syr2
+Trieste1, A tri1
+Trieste2,               A tri2
+Tunis1,                 x tun1
+Tunis2, x tun2
+Tuscany1,               l tus1
+Tuscany2,               l tus2
+Tyrolia1,               l tyr1 tyl1 trl1
+Tyrolia2,               l tyr2 tyl2 trl2
+Tyrrhenian Sea1,        w tys1 tyrr1 tyrrhenian1 tyn1 tyh1
+Tyrrhenian Sea2,        w tys2 tyrr2 tyrrhenian2 tyn2 tyh2
+Ukraine1,               l ukr1
+Ukraine2, l ukr2
+Venice1,                I ven1
+Venice2,                I ven2
+Vienna1,                A vie1
+Vienna2,                A vie2
+Wales1,                 l wal1
+Wales2, l wal2
+Warsaw1,                R war1
+Warsaw2,                R war2
+Western Mediterranean1, w wes1 wmed1 west1 western1 westmed1 wms1 wme1
+Western Mediterranean2, w wes2 wmed2 west2 western2 westmed2 wms2 wme2
+Yorkshire1,             l yor1 york1 yonkers1
+Yorkshire2,             l yor2 york2 yonkers2
+Switzerland1,           l swi1 switz1
+Switzerland2,           l swi2 switz2
+-1
+adr1-xc: alb1 apu1 ven1 tri1 ion1 adr2
+adr2-xc: alb2 apu2 ven2 tri2 ion2 adr1
+aeg1-xc: gre1 bul1/sc con1 smy1 eas1 ion1 aeg2
+aeg2-xc: gre2 bul2/sc con2 smy2 eas2 ion2 aeg1
+alb1-mv: tri1 gre1 ser1 alb2
+alb1-xc: adr1 tri1 gre1 ion1 alb2
+alb2-mv: tri2 gre2 ser2 alb1
+alb2-xc: adr2 tri2 gre2 ion2 alb1
+ank1-mv: arm1 con1 smy1 ank2
+ank1-xc: bla1 arm1 con1 ank2
+ank2-mv: arm2 con2 smy2 ank1
+ank2-xc: bla2 arm2 con2 ank1
+apu1-mv: ven1 nap1 rom1 apu2
+apu1-xc: ven1 adr1 ion1 nap1 apu2
+apu2-mv: ven2 nap2 rom2 apu1
+apu2-xc: ven2 adr2 ion2 nap2 apu1
+arm1-mv: smy1 syr1 ank1 sev1 arm2
+arm1-xc: ank1 sev1 bla1 arm2
+arm2-mv: smy2 syr2 ank2 sev2 arm1
+arm2-xc: ank2 sev2 bla2 arm1
+bal1-xc: lvn1 pru1 ber1 kie1 den1 swe1 bot1 bal2
+bal2-xc: lvn2 pru2 ber2 kie2 den2 swe2 bot2  bal1
+bar1-xc: nwg1 stp1/nc nor1 bar2
+bar2-xc: nwg2 stp2/nc nor2 bar1
+bel1-mv: hol1 pic1 ruh1 bur1 bel2
+bel1-xc: eng1 nth1 hol1 pic1 bel2
+bel2-mv: hol2 pic2 ruh2 bur2 bel1
+bel2-xc: eng2 nth2 hol2 pic2 bel1
+ber1-mv: kie1 pru1 sil1 mun1 ber2
+ber1-xc: kie1 bal1 pru1 ber2
+ber2-mv: kie2 pru2 sil2 mun2 ber1
+ber2-xc: kie2 bal2 pru2 ber1
+bla1-xc: rum1 sev1 arm1 ank1 con1 bul1/ec bla2
+bla2-xc: rum2 sev2 arm2 ank2 con2 bul2/ec bla1
+boh1-mv: mun1 sil1 gal1 vie1 tyr1 boh2
+boh2-mv: mun2 sil2 gal2 vie2 tyr2 boh1
+bot1-xc: swe1 fin1 stp1/sc lvn1 bal1 bot2
+bot2-xc: swe2 fin2 stp2/sc lvn2 bal2 bot1
+bre1-mv: pic1 gas1 par1 bre2
+bre1-xc: mao1 eng1 pic1 gas1 bre2
+bre2-mv: pic2 gas2 par2 bre1
+bre2-xc: mao2 eng2 pic2 gas2 bre1
+bud1-mv: vie1 gal1 rum1 ser1 tri1 bud2
+bud2-mv: vie2 gal2 rum2 ser2 tri2 bud1
+bul1-ec: con1 bla1 rum1 bul2/ec
+bul1-mv: gre1 con1 ser1 rum1 bul2
+bul1-sc: gre1 aeg1 con1 bul2/sc
+bul2-ec: con2 bla2 rum2 bul1/ec
+bul2-mv: gre2 con2 ser2 rum2 bul1
+bul2-sc: gre2 aeg2 con2 bul1/sc
+bur1-mv: mar1 gas1 par1 pic1 bel1 ruh1 mun1 bur2
+bur2-mv: mar2 gas2 par2 pic2 bel2 ruh2 mun2 bur1
+cly1-mv: edi1 lvp1 cly2
+cly1-xc: edi1 lvp1 nao1 nwg1 cly2
+cly2-mv: edi2 lvp2 cly1
+cly2-xc: edi2 lvp2 nao2 nwg2 cly1
+con1-mv: bul1 ank1 smy1 con2
+con1-xc: bul1/sc bul1/ec bla1 ank1 smy1 aeg1 con2
+con2-mv: bul2 ank2 smy2 con1
+con2-xc: bul2/sc bul2/ec bla2 ank2 smy2 aeg2 con1
+den1-mv: swe1 kie1 den2
+den1-xc: hel1 nth1 swe1 bal1 kie1 ska1 den2
+den2-mv: swe2 kie2 den1
+den2-xc: hel2 nth2 swe2 bal2 kie2 ska2 den1
+eas1-xc: syr1 smy1 aeg1 ion1 eas2
+eas2-xc: syr2 smy2 aeg2 ion2 eas1
+edi1-mv: lvp1 yor1 cly1 edi2
+edi1-xc: nth1 nwg1 cly1 yor1 edi2
+edi2-mv: lvp2 yor2 cly2 edi1
+edi2-xc: nth2 nwg2 cly2 yor2 edi1
+eng1-xc: mao1 iri1 wal1 lon1 nth1 bel1 pic1 bre1 eng2
+eng2-xc: mao2 iri2 wal2 lon2 nth2 bel2 pic2 bre2 eng1
+fin1-mv: swe1 stp1 nor1 fin2
+fin1-xc: swe1 stp1/sc bot1 fin2
+fin2-mv: swe2 stp2 nor2 fin1
+fin2-xc: swe2 stp2/sc bot2 fin1
+gal1-mv: war1 ukr1 rum1 bud1 vie1 boh1 sil1 gal2
+gal2-mv: war2 ukr2 rum2 bud2 vie2 boh2 sil2 gal1
+gas1-mv: par1 bur1 mar1 spa1 bre1 gas2
+gas1-xc: spa1/nc mao1 bre1 gas2
+gas2-mv: par2 bur2 mar2 spa2 bre2 gas1
+gas2-xc: spa2/nc mao2 bre2 gas1
+gre1-mv: bul1 alb1 ser1 gre2
+gre1-xc: bul1/sc aeg1 ion1 alb1 gre2
+gre2-mv: bul2 alb2 ser2 gre1
+gre2-xc: bul2/sc aeg2 ion2 alb2 gre1
+hel1-xc: nth1 den1 kie1 hol1 hel2
+hel2-xc: nth2 den2 kie2 hol2 hel1
+hol1-mv: bel1 kie1 ruh1 hol2
+hol1-xc: bel1 nth1 hel1 kie1 hol2
+hol2-mv: bel2 kie2 ruh2 hol1
+hol2-xc: bel2 nth2 hel2 kie2 hol1
+ion1-xc: tun1 tys1 nap1 apu1 adr1 alb1 gre1 aeg1 eas1 ion2
+ion2-xc: tun2 tys2 nap2 apu2 adr2 alb2 gre2 aeg2 eas2 ion1
+iri1-xc: nao1 lvp1 wal1 eng1 mao1 iri2
+iri2-xc: nao2 lvp2 wal2 eng2 mao2 iri1
+kie1-mv: hol1 den1 ber1 mun1 ruh1 kie2
+kie1-xc: hol1 hel1 den1 bal1 ber1 kie2
+kie2-mv: hol2 den2 ber2 mun2 ruh2 kie1
+kie2-xc: hol2 hel2 den2 bal2 ber2 kie1
+lon1-mv: yor1 wal1 lon2
+lon1-xc: yor1 nth1 eng1 wal1 lon2
+lon2-mv: yor2 wal2 lon1
+lon2-xc: yor2 nth2 eng2 wal2 lon1
+lvn1-mv: pru1 stp1 mos1 war1 lvn2
+lvn1-xc: pru1 bal1 bot1 stp1/sc lvn2
+lvn2-mv: pru2 stp2 mos2 war2 lvn1
+lvn2-xc: pru2 bal2 bot2 stp2/sc lvn1
+lvp1-mv: wal1 edi1 yor1 cly1 lvp2
+lvp1-xc: wal1 iri1 nao1 cly1 lvp2
+lvp2-mv: wal2 edi2 yor2 cly2 lvp1
+lvp2-xc: wal2 iri2 nao2 cly2 lvp1
+lyo1-xc: spa1/sc mar1 pie1 tus1 tys1 wes1 lyo2
+lyo2-xc: spa2/sc mar2 pie2 tus2 tys2 wes2 lyo1
+mao1-xc: nao1 iri1 eng1 bre1 gas1 spa1/nc por1 spa1/sc naf1 wes1 mao2
+mao2-xc: nao2 iri2 eng2 bre2 gas2 spa2/nc por2 spa2/sc naf2 wes2 mao1
+mar1-mv: spa1 pie1 gas1 bur1 mar2
+mar1-xc: spa1/sc lyo1 pie1 mar2
+mar2-mv: spa2 pie2 gas2 bur2 mar1
+mar2-xc: spa2/sc lyo2 pie2 mar1
+mos1-mv: stp1 lvn1 war1 ukr1 sev1 mos2
+mos2-mv: stp2 lvn2 war2 ukr2 sev2 mos1
+mun1-mv: bur1 ruh1 kie1 ber1 sil1 boh1 tyr1 mun2
+mun2-mv: bur2 ruh2 kie2 ber2 sil2 boh2 tyr2 mun1
+naf1-mv: tun1 naf2
+naf1-xc: mao1 wes1 tun1 naf2
+naf2-mv: tun2 naf1
+naf2-xc: mao2 wes2 tun2 naf1
+nao1-xc: nwg1 lvp1 iri1 mao1 cly1 nao2
+nao2-xc: nwg2 lvp2 iri2 mao2 cly2 nao1
+nap1-mv: rom1 apu1 nap2
+nap1-xc: rom1 tys1 ion1 apu1 nap2
+nap2-mv: rom2 apu2 nap1
+nap2-xc: rom2 tys2 ion2 apu2 nap1
+nor1-mv: fin1 stp1 swe1 nor2
+nor1-xc: ska1 nth1 nwg1 bar1 stp1/nc swe1 nor2
+nor2-mv: fin2 stp2 swe2 nor1
+nor2-xc: ska2 nth2 nwg2 bar2 stp2/nc swe2 nor1
+nth1-xc: yor1 edi1 nwg1 nor1 ska1 den1 hel1 hol1 bel1 eng1 lon1 nth2
+nth2-xc: yor2 edi2 nwg2 nor2 ska2 den2 hel2 hol2 bel2 eng2 lon2 nth1
+nwg1-xc: nao1 bar1 nor1 nth1 cly1 edi1 nwg2
+nwg2-xc: nao2 bar2 nor2 nth2 cly2 edi2 nwg1
+par1-mv: bre1 pic1 bur1 gas1 par2
+par2-mv: bre2 pic2 bur2 gas2 par1
+pic1-mv: bur1 par1 bre1 bel1 pic2
+pic1-xc: bre1 eng1 bel1 pic2
+pic2-mv: bur2 par2 bre2 bel2 pic1
+pic2-xc: bre2 eng2 bel2 pic1
+pie1-mv: mar1 tus1 ven1 tyr1 pie2
+pie1-xc: mar1 lyo1 tus1 pie2
+pie2-mv: mar2 tus2 ven2 tyr2 pie1
+pie2-xc: mar2 lyo2 tus2 pie1
+por1-mv: spa1 por2
+por1-xc: mao1 spa1/nc spa1/sc por2
+por2-mv: spa2 por1
+por2-xc: mao2 spa2/nc spa2/sc por1
+pru1-mv: war1 sil1 ber1 lvn1 pru2
+pru1-xc: ber1 bal1 lvn1 pru2
+pru2-mv: war2 sil2 ber2 lvn2 pru1
+pru2-xc: ber2 bal2 lvn2 pru1
+rom1-mv: tus1 nap1 ven1 apu1 rom2
+rom1-xc: tus1 tys1 nap1 rom2
+rom2-mv: tus2 nap2 ven2 apu2 rom1
+rom2-xc: tus2 tys2 nap2 rom1
+ruh1-mv: bur1 bel1 hol1 kie1 mun1 ruh2
+ruh2-mv: bur2 bel2 hol2 kie2 mun2 ruh1
+rum1-mv: ser1 bud1 gal1 ukr1 sev1 bul1 rum2
+rum1-xc: sev1 bla1 bul1/ec rum2
+rum2-mv: ser2 bud2 gal2 ukr2 sev2 bul2 rum1
+rum2-xc: sev2 bla2 bul2/ec rum1
+ser1-mv: tri1 bud1 rum1 bul1 gre1 alb1 ser2
+ser2-mv: tri2 bud2 rum2 bul2 gre2 alb2 ser1
+sev1-mv: ukr1 mos1 rum1 arm1 sev2
+sev1-xc: rum1 bla1 arm1 sev2
+sev2-mv: ukr2 mos2 rum2 arm2 sev1
+sev2-xc: rum2 bla2 arm2 sev1
+sil1-mv: mun1 ber1 pru1 war1 gal1 boh1 sil2
+sil2-mv: mun2 ber2 pru2 war2 gal2 boh2 sil1
+ska1-xc: nth1 nor1 den1 swe1 ska2
+ska2-xc: nth2 nor2 den2 swe2 ska1
+smy1-mv: syr1 con1 ank1 arm1 smy2
+smy1-xc: syr1 eas1 aeg1 con1 smy2
+smy2-mv: syr2 con2 ank2 arm2 smy1
+smy2-xc: syr2 eas2 aeg2 con2 smy1
+spa1-mv: gas1 por1 mar1 spa2
+spa1-nc: gas1 mao1 por1 spa2/nc
+spa1-sc: por1 wes1 lyo1 mar1 mao1 spa2/sc
+spa2-mv: gas2 por2 mar2 spa1
+spa2-nc: gas2 mao2 por2 spa1/nc
+spa2-sc: por2 wes2 lyo2 mar2 mao2 spa1/sc
+stp1-mv: fin1 lvn1 nor1 mos1 stp2
+stp1-nc: bar1 nor1 stp2/nc
+stp1-sc: fin1 lvn1 bot1 stp2/sc
+stp2-mv: fin2 lvn2 nor2 mos2 stp1
+stp2-nc: bar2 nor2 stp1/nc
+stp2-sc: fin2 lvn2 bot2 stp1/sc
+swe1-mv: fin1 den1 nor1 swe2
+swe1-xc: fin1 bot1 bal1 den1 ska1 nor1 swe2
+swe2-mv: fin2 den2 nor2 swe1
+swe2-xc: fin2 bot2 bal2 den2 ska2 nor2 swe1
+syr1-mv: smy1 arm1 syr2
+syr1-xc: eas1 smy1 syr2
+syr2-mv: smy2 arm2 syr1
+syr2-xc: eas2 smy2 syr1
+tri1-mv: tyr1 vie1 bud1 ser1 alb1 ven1 tri2
+tri1-xc: alb1 adr1 ven1 tri2
+tri2-mv: tyr2 vie2 bud2 ser2 alb2 ven2 tri1
+tri2-xc: alb2 adr2 ven2 tri1
+tun1-mv: naf1 tun2
+tun1-xc: naf1 wes1 tys1 ion1 tun2
+tun2-mv: naf2 tun1
+tun2-xc: naf2 wes2 tys2 ion2 tun1
+tus1-mv: rom1 pie1 ven1 tus2
+tus1-xc: rom1 tys1 lyo1 pie1 tus2
+tus2-mv: rom2 pie2 ven2 tus1
+tus2-xc: rom2 tys2 lyo2 pie2 tus1
+tyr1-mv: mun1 boh1 vie1 tri1 ven1 pie1 tyr2
+tyr2-mv: mun2 boh2 vie2 tri2 ven2 pie2 tyr1
+tys1-xc: wes1 lyo1 tus1 rom1 nap1 ion1 tun1 tys2
+tys2-xc: wes2 lyo2 tus2 rom2 nap2 ion2 tun2 tys1
+ukr1-mv: rum1 gal1 war1 mos1 sev1 ukr2
+ukr2-mv: rum2 gal2 war2 mos2 sev2 ukr1
+ven1-mv: tyr1 tus1 rom1 pie1 apu1 tri1 ven2
+ven1-xc: apu1 adr1 tri1 ven2
+ven2-mv: tyr2 tus2 rom2 pie2 apu2 tri2 ven1
+ven2-xc: apu2 adr2 tri2 ven1
+vie1-mv: tyr1 boh1 gal1 bud1 tri1 vie2
+vie2-mv: tyr2 boh2 gal2 bud2 tri2 vie1
+wal1-mv: lvp1 lon1 yor1 wal2
+wal1-xc: lvp1 iri1 eng1 lon1 wal2
+wal2-mv: lvp2 lon2 yor2 wal1
+wal2-xc: lvp2 iri2 eng2 lon2 wal1
+war1-mv: sil1 pru1 lvn1 mos1 ukr1 gal1 war2
+war2-mv: sil2 pru2 lvn2 mos2 ukr2 gal2 war1
+wes1-xc: mao1 spa1/sc lyo1 tys1 tun1 naf1 wes2
+wes2-xc: mao2 spa2/sc lyo2 tys2 tun2 naf2 wes1
+yor1-mv: edi1 lon1 lvp1 wal1 yor2
+yor1-xc: edi1 nth1 lon1 yor2
+yor2-mv: edi2 lon2 lvp2 wal2 yor1
+yor2-xc: edi2 nth2 lon2 yor1
+swi1-mv: swi1
+swi2-mv: swi2
+-1
+Center order for summary report:
+   ven1 ven2  rom1 rom2 nap1 nap2 tun1 tun2 edi1 edi2 lon1 lon2 lvp1
+   lvp2 bre1 bre2 par1 par2 mar1 mar2 por1 por2 spa1 spa2 bel1 bel2 hol1
+   hol2 mun1 mun2 kie1 kie2 ber1 ber2 den1 den2 swe1 swe2 nor1 nor2 stp1
+   stp2  war1 war2 mos1 mos2 sev1 sev2 con1 con2 ank1 ank2 smy1 smy2 bul1
+   bul2 rum1 rum2 gre1 gre2 ser1 ser2 bud1 bud2 vie1 vie2 tri1 tri2
+#End of center ordering
+-1
+

@@ -1,0 +1,423 @@
+Anchorage,                       B anc ak alaska
+Yukon,                           l yuk
+North West Territories,          l nwt
+Nunavut,                         l nun
+Manitoba,                        x man mb
+Saskatchewan,                    l sas sask sk
+Calgary,                         B cgy calg
+Northern BC,                     l nbc
+Vancouver,                       B van
+Northern Ontario,                l non nont
+Western Ontario,                 l won wont
+Ontario,                         x ont sont on
+Abitibi,                         l abi
+Ungava,                          Q ung
+Labrador,                        l lab
+Cote-Nord,                       l cot cotn cn cnord cote
+Quebec,                          Q que qbc qc
+Montreal,                        Q mon montr
+Beauce,                          l bea beau
+Gaspesie,                        l gas gasp gaspe
+New Brunswick,                   l nbr nb brunswick bru nbrunswick
+Nova Scotia,                     x nsc nova scotia nov nscotia ns
+Newfoundland,                    l new newf nf
+Washington,                      x was wa
+Oregon,                          x ore or
+Idaho,                           l ida id
+San Francisco,                   C sfr cisco sanf saf sfrancisco sf
+Los Angeles,                     C lan los angeles langeles la hollywood
+San Diego,                       C sdi diego sdiego sand sd
+Arizona,                         x ari az
+Utah,                            l uta ut
+Nevada,                          l nev nv
+New Mexico,                      l nme nmex nm nmexico
+Colorado,                        x col co
+Wyoming,                         l wyo wy
+Montana,                         l mta monta mt
+Dallas,                          T dal
+Oklahoma,                        l okl ok
+Kansas,                          x kan ks
+Nebraska,                        l neb nb
+Dakotas,                         l dak
+Minneapolis,                     H min mn
+Iowa,                            l iow ia
+Missouri,                        x mis mo
+Arkansas,                        l ark ar
+Louisiana,                       x lou
+Houston,                         T hou
+San Antonio,                     T san sana santonio sa
+West Texas,                      l wte wtex wtx wt
+Lake Ontario,                    w lon lont lontario
+Upper Peninsula,                 l upe upp upen up
+Michigan,                        x mic mich mi
+Indiana,                         l ind in
+Chicago,                         H chi il illinois windycity
+Lake Michigan,                   w lmi lmic lmichigan
+Lake Superior,                   w lsu lsup lsuperior
+Lake Huron,                      w lhu lhur lhuron
+Lake Erie,                       w ler lerie leri
+Milwaukee,                       H mil milw wi
+Ohio,                            x ohi oh
+West Pennsylvania,               l wpe wpen wpa
+New York State,                  l nys
+Maine,                           l mai main me
+Vermont,                         l vem verm vt
+Massachussets,                   x mas mass ma
+New York City,      N nyc manhattan ny york bigapple bronx queens brooklyn
+New Jersey,                      N nje njer nj njtp gsp
+Washington DC,                   x wdc dc georgetown
+Philadelphia,                    N phi phil philly epa
+Virginia,                        l vir va
+West Virginia,                   l wvi wvir wv wva
+Kentucky,                        l ken ky
+Tennessee,                       x ten tn
+Deep South,                      l dso dsou ds al mi dsouth deep dee
+Georgia,                         x geo ga
+South Carolina,                  l sca scaro sc scarolina
+North Carolina,                  x nca ncaro nc ncarolina
+Florida Panhandle,               l fpa fpan panhandle
+Jacksonville,                    F jac
+Miami,                           F mia
+Tampa,                           F tam
+Havana,                          U hav
+Camaguey,                        l cam
+Holguin,                         U hol
+Haiti,                           l hai
+Dominican Republic,               x dom domr drepublic dominican drep
+Kingston,                        U kin king kings jam jamaica
+Baja California,                         l baj baja bcal bcalifornia bca
+Chihuahua,                               x chh chih
+Coahuila,                                l coa
+Nuevo Leon,                              x nle nuevo leon nleo nleon
+Durango,                                 x dur
+Guadalajara,                             X gua guad
+Potosi,                                  l pot
+Veracruz,                                X ver
+Mexico,                                  X mex
+Guerrero,                                l gue
+Oaxaca,                                  l oax
+Chiapas,                                 l chp chia
+Tabasco,                                 l tab
+Guatemala,                               x gut guat
+Yucatan,                                 x yuc
+El Salvador,                       l esa salvador esal elsa elsal es els
+Honduras,                                l hon
+Nicaragua,                               x nic
+Costa Rica,                              l cri cos cric costa rica cr
+Panama,                                  x pan
+Cali,                                    P cal
+Antioquia,                               l ant
+Guajira,                                 l guj guaj
+Venezuela,                               x ven
+Vichada,                                 l vic
+Bogota,                                  P bog
+Lima,                                    P lim
+Ecuador,                                 l ecu
+Hawaii,                                  x haw hi oahu honolulu
+Greenland,                               x gre
+Bering Sea,                              w ber bers bering
+Arctic Ocean,                            w aro arco arctic arc ao
+Beaufort Sea,                            w bef befs beaufort
+Hudson Bay,                              w hub hudb hudson hud hb
+Baffin Bay,                              w bab bafb baffin baf
+Sea of Labrador,                         w sol sola slab
+North Atlantic Ocean,                    w nao nat natlantic
+Gulf of St-Lawrence,                     w gsl gstl gsla lawrence
+Massachussets Bay,                       w mab masb
+Mid Atlantic Ocean,                      w mao mat matlantic
+Chesapeake Bay,                          w chb chesapeake cheb
+Cape May,                                w cma may cmay
+Sea of Sargasso,                         w sos sargasso sosa
+Bermuda Triangle,                        w bet bermuda triangle bert tri
+East Coast,                              w eco ecoast ecoa ec
+Straits of Florida,                      w sof sflorida sflor
+East Caribbean Sea,                      w ecs ecars ecaribbean
+Lesser Antilles,                  w les lesser lantilles antilles lant
+Apalachee Bay,                           w apb apalachee apab apa
+Gulf of Mexico,                          w gom gmexico gmex gomex gm
+Gulf of Campeche,                        w goc campeche gcam
+Straits of Yucatan,                      w soy syuc syucatan sy
+Gulf of Honduras,                        w goh ghonduras ghon gh
+Cayman Trench,                     w cat cay cayman trench cayt ctr
+West Caribbean Sea,                      w wcs wcars wcaribbean
+South Caribbean Sea,                     w scs scars scaribbean
+Gulf of Mosquitos,   w gomo gomos gmos gmo mosq mosquitos gmosquitos
+North Pacific Ocean,                     w npo npa npac npacific
+Gulf of Alaska,                          w goa galaska goal
+Queen Charlotte Sound,     w qcs queen charlotte sound qsound qcsound
+Straits of Juan de Fuca,                 w sjf juan fuca sjuan sfuca
+West Coast,                              w wco wcoast wcoa wc
+Mid Pacific Ocean,                       w mpo mpa mpac mpacific
+Gulf of Santa Catalina,                  w gsc catalina gsca
+South West Pacific Ocean,                w swp swpa swpo swpac swpacific
+Coast of Mexico,                         w com cmexico cmex cm
+Gulf of California,                      w gca gcal gcalifornia
+Gulf of Tehuantepec,                     w got tehuantepec gteh gt
+South Pacific Ocean,                     w spo spa spac spacific
+Galapagos,                               w gal turtle
+Gulf of Guayaquil,                       w gog guayaquil ggua gg
+Gulf of Panama,                          w gop gpanama gpan gp
+Coronado Bay,                            w cob coronado corb cb
+Gulf of Fonseca,                         w gof fonseca gfon gf
+-1
+anc-mv: yuk nbc van
+anc-xc: aro bef yuk van qcs goa ber
+yuk-mv: nwt nbc anc
+yuk-xc: bef nwt anc
+nwt-mv: nun sas cgy nbc yuk
+nwt-xc: bef nun yuk aro
+nun-mv: man nwt ung sas
+nun-xc: aro bab sol hub man nwt ung
+man-mv: nun non won min dak sas
+man-xc: nun hub non
+sas-mv: nwt nun man dak mta cgy
+cgy-mv: nwt sas mta van nbc
+nbc-mv: yuk nwt cgy van anc
+van-mv: nbc cgy mta ida was anc
+van-xc: anc was sjf qcs
+non-mv: abi ont won man mon
+non-xc: abi man hub
+won-mv: non ont min man
+won-xc: ont lsu min
+ont-mv: won non mon nys mic upe bea
+ont-xc: won mon nys lon ler mic lhu upe lsu bea
+abi-mv: ung que mon non
+abi-xc: hub ung non
+ung-mv: lab cot que abi nun
+ung-xc: lab abi hub sol nun
+lab-mv: cot ung
+lab-xc: gsl cot ung sol
+cot-mv: lab que ung
+cot-xc: lab gsl que
+que-mv: ung cot gas bea mon abi
+que-xc: cot gsl gas bea mon
+mon-mv: que bea ont abi non
+mon-xc: que bea ont
+bea-mv: que gas mai vem nys mon ont
+bea-xc: que nys mon ont gas
+gas-mv: nbr mai bea que
+gas-xc: nbr/nc que gsl bea
+nbr-mv: nsc mai gas
+nbr-nc: gas gsl nsc
+nbr-sc: nsc mab mai
+nsc-mv: nbr
+nsc-xc: gsl nao mab nbr/sc nbr/nc
+new-xc: nao gsl sol
+was-mv: van ida ore
+was-xc: van ore sjf
+ore-mv: was ida nev sfr
+ore-xc: was sfr wco sjf
+ida-mv: van mta wyo uta nev ore was
+sfr-mv: ore nev lan
+sfr-xc: ore lan wco
+lan-mv: sfr nev sdi
+lan-xc: sfr sdi gsc wco
+sdi-mv: lan nev ari baj
+sdi-xc: lan baj gsc
+ari-mv: nev uta col nme chh baj sdi
+uta-mv: ida wyo col ari nev
+nev-mv: ida uta ari sdi lan sfr ore
+nme-mv: col okl dal wte chh ari
+col-mv: neb kan okl nme ari uta wyo
+wyo-mv: mta dak neb col uta ida
+mta-mv: cgy sas dak wyo ida van
+dal-mv: okl ark lou hou san wte nme
+okl-mv: kan mis ark dal nme col
+kan-mv: mis okl col neb
+neb-mv: iow mis kan col wyo dak
+dak-mv: sas man min iow neb wyo mta
+min-mv: won mil iow dak man
+min-xc: won lsu mil/nc
+iow-mv: min mil chi mis neb dak
+mis-mv: iow chi ken ten ark okl kan neb
+mis-xc: chi ken ten ark
+ark-mv: mis ten dso lou dal okl
+ark-xc: mis ten dso lou
+lou-mv: ark dso hou dal
+lou-xc: ark dso apb gom hou
+hou-mv: lou san dal
+hou-xc: lou gom san
+san-mv: wte dal hou nle coa
+san-xc: hou gom nle
+wte-mv: dal san coa chh nme
+lon-xc: nys ont
+upe-mv: ont mic mil
+upe-xc: ont lhu mic lmi mil/ec mil/nc lsu
+mic-mv: upe ont ohi ind
+mic-xc: upe lhu ont ler ohi ind lmi
+ind-mv: mic ohi ken chi
+ind-xc: lmi mic chi
+chi-mv: mil ind ken mis iow
+chi-xc: mil/ec lmi ind ken mis
+lmi-xc: upe mic ind chi mil/ec lhu
+lsu-xc: ont upe mil/nc min won
+lhu-xc: ont mic upe lmi
+ler-xc: nys wpe ohi mic ont
+mil-mv: upe chi iow min
+mil-nc: min lsu upe
+mil-ec: upe lmi chi
+ohi-mv: wpe wvi ken ind mic
+ohi-xc: ler wpe mic
+wpe-mv: nys phi wdc wvi ohi
+wpe-xc: nys ohi ler
+nys-mv: bea vem mas nyc phi wpe ont
+nys-xc: bea nyc wpe ler ont lon
+mai-mv: gas nbr vem bea
+mai-xc: nbr/sc mab vem
+vem-mv: mai mas nys bea
+vem-xc: mai mab mas
+mas-mv: vem nyc nys
+mas-xc: vem mab cma nyc
+nyc-mv: nys mas nje phi
+nyc-xc: nys mas cma nje
+nje-mv: nyc wdc phi
+nje-xc: nyc cma wdc
+wdc-mv: wpe phi nje vir wvi
+wdc-xc: nje cma chb vir
+phi-mv: nys nyc nje wdc wpe
+vir-mv: wvi wdc nca ten ken
+vir-xc: wdc chb nca
+wvi-mv: wpe wdc vir ken ohi
+ken-mv: chi ind ohi wvi vir ten mis
+ken-xc: chi ten mis
+ten-mv: ken vir nca geo dso ark mis
+ten-xc: ken dso ark mis
+dso-mv: ten geo fpa lou ark
+dso-xc: ten fpa apb lou ark
+geo-mv: ten nca sca jac fpa dso
+geo-xc: sca eco jac
+sca-mv: geo nca
+sca-xc: eco geo nca
+nca-mv: vir sca geo ten
+nca-xc: vir chb eco sca
+fpa-mv: geo jac tam dso
+fpa-xc: tam apb dso
+jac-mv: geo mia tam fpa
+jac-xc: geo eco mia
+mia-mv: tam jac
+mia-xc: tam jac eco sof apb
+tam-mv: jac mia fpa
+tam-xc: mia apb fpa
+hav-mv: cam
+hav-xc: cam/nc cam/sc wcs soy sof
+cam-mv: hol hav
+cam-nc: hav sof bet hol
+cam-sc: hol cat wcs hav
+hol-mv: cam
+hol-xc: cat cam/sc cam/nc bet
+hai-mv: dom
+hai-xc: dom ecs cat bet
+dom-mv: hai
+dom-xc: sos les ecs hai bet
+kin-xc: ecs wcs cat
+baj-mv: sdi ari chh
+baj-xc: gsc sdi chh gca npo mpo
+chh-mv: wte coa dur baj ari nme
+chh-xc: baj gca dur
+coa-mv: wte san nle dur chh pot
+nle-mv: san pot coa
+nle-xc: san gom goc pot
+dur-mv: chh coa pot gua
+dur-xc: chh gua gca
+gua-mv: pot mex gue dur
+gua-xc: gue gca com dur
+pot-mv: nle ver mex gua dur coa
+pot-xc: nle goc ver
+ver-mv: pot tab chp oax mex
+ver-xc: pot goc tab
+mex-mv: pot ver oax gue gua
+gue-mv: gua mex oax
+gue-xc: gua oax com
+oax-mv: gue mex ver chp
+oax-xc: gue chp got com
+chp-mv: ver tab gut oax
+chp-xc: gut/sc got oax
+tab-mv: yuc gut chp ver
+tab-xc: goc yuc ver
+gut-mv: yuc hon esa chp tab
+gut-sc: esa got com chp
+gut-ec: yuc goh hon/nc
+yuc-mv: gut tab
+yuc-xc: gom soy goh gut/ec tab goc
+esa-mv: hon gut
+esa-xc: hon/sc com gof gut/sc
+hon-mv: nic esa gut
+hon-nc: gut/ec goh wcs nic/ec
+hon-sc: nic/wc gof esa
+nic-mv: cri hon
+nic-ec: hon/nc wcs gomo cri/nc
+nic-wc: cri/sc cob gof hon/sc
+cri-mv: pan nic
+cri-nc: nic/ec gomo pan
+cri-sc: pan cob nic/wc
+pan-mv: cal cri
+pan-xc: gomo scs cal/nc cal/sc gop cob cri/sc cri/nc
+cal-mv: ant bog ecu pan
+cal-nc: pan scs ant
+cal-sc: ecu gog gop pan
+ant-mv: guj vic bog cal
+ant-xc: guj cal/nc scs
+guj-mv: ven vic ant
+guj-xc: ven ant scs
+ven-mv: vic guj
+ven-xc: guj scs ecs les
+vic-mv: ven bog ant guj
+bog-mv: ant vic lim ecu cal
+lim-mv: bog ecu
+lim-xc: gal gog ecu
+ecu-mv: bog lim cal
+ecu-xc: lim gog cal/sc
+haw-xc: spo swp mpo npo
+gre-xc: sol bab aro nao
+ber-xc: anc goa aro
+aro-xc: bab nun nwt bef anc ber gre
+bef-xc: nwt yuk anc aro
+hub-xc: sol ung abi non man nun
+bab-xc: gre sol nun aro
+sol-xc: gre nao new gsl lab ung hub nun bab
+nao-xc: sol gre mao mab nsc gsl new
+gsl-xc: lab sol new nao nsc nbr/nc gas que cot
+mab-xc: mai nbr/sc nsc nao mao cma mas vem
+mao-xc: nao sos bet cma mab
+chb-xc: wdc cma eco nca vir
+cma-xc: nyc mas mab mao bet eco chb wdc nje
+sos-xc: mao les dom bet
+bet-xc: mao sos dom hai cat hol cam/nc sof eco cma
+eco-xc: sca nca chb cma bet sof mia jac geo
+sof-xc: apb mia eco bet cam/nc hav soy gom
+ecs-xc: hai dom les ven scs wcs kin cat
+les-xc: ven ecs dom sos
+apb-xc: dso fpa tam mia sof gom lou
+gom-xc: san hou lou apb sof soy yuc goc nle
+goc-xc: nle gom yuc tab ver pot
+soy-xc: gom sof hav wcs goh yuc
+goh-xc: soy wcs hon/nc gut/ec yuc
+cat-xc: cam/sc hol bet hai ecs kin wcs
+wcs-xc: goh soy hav cam/sc cat kin ecs scs gomo nic/ec hon/nc
+scs-xc: ecs ven guj ant cal/nc pan gomo wcs
+gomo-xc: wcs scs pan cri/nc nic/ec
+goa-xc: anc qcs sjf wco npo ber
+qcs-xc: anc van sjf goa
+sjf-xc: qcs van was ore wco goa
+wco-xc: sjf ore sfr lan gsc npo goa
+npo-xc: wco gsc baj mpo haw swp goa
+mpo-xc:  baj gca com spo haw npo
+gsc-xc: lan sdi baj npo wco
+swp-xc: haw spo npo
+com-xc: gca gue oax got gut/sc esa gof gal spo mpo gua
+gca-xc: baj chh dur gua com mpo
+got-xc: oax chp gut/sc com
+spo-xc: haw mpo com gal swp
+gal-xc: gof gog lim spo com
+gog-xc: cob gop cal/sc ecu lim gal gof
+gop-xc: pan cal/sc gog cob
+cob-xc: nic/wc cri/sc pan gop gog gof
+gof-xc: esa hon/sc nic/wc cob gog gal com
+-1
+Center order for summary report:
+   col ari sfr los sdi ore was anc cgy van man mis min mil chi kan
+   mic ont ung que mon gre ohi nsc ten mas nyc nje phi wdc nca geo
+   lou jac mia tam hav hol kin dom ven cal bog lim pan yuc dal
+   hou san nle chh dur nic gut gua ver mex haw
+#End of center ordering
+-1
