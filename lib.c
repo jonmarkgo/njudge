@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.16  2003/07/15 22:47:06  millis
+	 * Fix Bug 185 (call smail for each email individually)
+	 *
 	 * Revision 1.15  2003/06/11 15:48:52  millis
 	 * Remove the 'unit' text
 	 *
@@ -1430,8 +1433,10 @@ void MailOut(char *out_line, char *address)
    static char lline[256];
 
    while ( ptr = GetAddressPart(count++, address)) {
-       sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
-       execute(lline);
+        if (*ptr != '*' ) {
+           sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
+           execute(lline);
+	}
    }
 
 }

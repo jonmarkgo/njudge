@@ -1,5 +1,8 @@
  /*
  * $Log$
+ * Revision 1.13  2003/06/29 21:37:41  nzmb
+ * Made EOG draw entries broadcasted at the end of the game.
+ *
  * Revision 1.12  2003/06/20 23:25:37  millis
  * Fix bug 180, missing press messages (due to too much stack variables)
  *
@@ -398,15 +401,16 @@ int process_draw(void)
 	fclose(ofp);
 
 	{
-		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-			sprintf(line, "%s dip.temp 'MNC: Draw in game %s' '%s'",
-				SMAIL_CMD,
-				dipent.name, MN_CUSTODIAN);
-		else
-			sprintf(line, "%s dip.temp 'BNC: Draw in game %s' '%s'",
-				SMAIL_CMD, dipent.name, BN_CUSTODIAN);
+		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
+			sprintf(line, "dip.temp 'MNC: Draw in game %s'",
+				dipent.name);
+			MailOut(line, MN_CUSTODIAN); 
+		} else {
+			sprintf(line, "dip.temp 'BNC: Draw in game %s'",
+				dipent.name);
+			MailOut(line, BN_CUSTODIAN);
+		}
 	}
-	execute(line);
 
 	/*
 	 * Force regeneration of the summary file if it's a gunboat game.
@@ -432,9 +436,9 @@ int process_draw(void)
 
 	/*  Mail summary to HALL_KEEPER */
 
-	sprintf(line, "%s %s%s/summary 'HoF: Draw in %s' '%s'",
-		SMAIL_CMD, GAME_DIR, dipent.name, dipent.name, HALL_KEEPER);
-	execute(line);
+	sprintf(line, "%s%s/summary 'HoF: Draw in %s'",
+		GAME_DIR, dipent.name, dipent.name);
+	MailOut(line, HALL_KEEPER);
 
 	/* send eog diaries */
 	send_diary();
@@ -540,14 +544,16 @@ int process_conc(void)
 
 	/* Now we must notify the various custodians of the concession. */
 	{
-        	if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-                        sprintf(line, "%s dip.temp 'MNC: Concession in game %s' '%s'",
-                                SMAIL_CMD,dipent.name, MN_CUSTODIAN);
-                else
-                        sprintf(line, "%s dip.temp 'BNC: Concession in game %s' '%s'",
-                                SMAIL_CMD, dipent.name, BN_CUSTODIAN);
+        	if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
+                        sprintf(line, "dip.temp 'MNC: Concession in game %s'",
+                                dipent.name);
+			MailOut(line, MN_CUSTODIAN);
+                } else {
+                        sprintf(line, "dip.temp 'BNC: Concession in game %s'",
+                                dipent.name);
+			MailOut(line, BN_CUSTODIAN);
+		}
         }
-	execute(line);
 	/* Regenerate the summary */
 	if (dipent.flags & F_GUNBOAT) {
                 sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);
@@ -563,10 +569,10 @@ int process_conc(void)
                 system(line);
 	}
 	/* Now mail the summary to the hall keeper. */
-	sprintf(line, "%s %s%s/summary 'HoF: Concession to %s in %s' '%s'",
-                SMAIL_CMD, GAME_DIR, dipent.name,powers[dipent.players[largest].power],
-		dipent.name, HALL_KEEPER);
-        execute(line);
+	sprintf(line, "%s%s/summary 'HoF: Concession to %s in %s'",
+                GAME_DIR, dipent.name,powers[dipent.players[largest].power],
+		dipent.name);
+	MailOut(line, HALL_KEEPER);
 
 	/* send diaries */
 	send_diary();

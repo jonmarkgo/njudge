@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/07/13 00:31:04  millis
+ * Bug 189 fix, make line[] a static
+ *
  * Revision 1.10  2003/05/02 18:19:20  millis
  * More for Bug 137, Optional summer turns
  *
@@ -263,8 +266,9 @@ void phase_pending(void)
 			fclose(tfp);
 			rfp = fopen("dip.reply", "w");
 			if (porder('T', n, 0) == E_FATAL) {
-				sprintf(line, "%s dip.reply 'Pending orders error' '%s'",
-					SMAIL_CMD, GAMES_MASTER);
+				sprintf(line, "dip.reply 'Pending orders error'");
+				fclose(rfp);
+				MailOut(line, GAMES_MASTER);
 			} else {
 
 				dipent.players[n].status |= SF_PART;
@@ -276,14 +280,14 @@ void phase_pending(void)
 				}
 
 				rename(Tfile, Mfile);
-				sprintf(line, "%s dip.reply '%s:%s - %s Pending Orders' '%s'",
-					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[n].address);
+				sprintf(line, "dip.reply '%s:%s - %s Pending Orders'",
+					JUDGE_CODE, dipent.name, dipent.phase);
+				fclose(rfp);
+				MailOut(line, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;
 				dipent.players[n].status &= ~(SF_ABAND | SF_CD);
 			}
-			fclose(rfp);
-			execute(line);
 		}
 	}
 
