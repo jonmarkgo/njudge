@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.18  2003/05/03 16:25:46  millis
+  ** Checking wrong flag for Summer setting!
+  **
   ** Revision 1.17  2003/05/02 21:52:08  millis
   ** Better fix for the HOMETRANSFER flag
   **
@@ -296,8 +299,8 @@ int ownership(void)
 	    if (statusval == 0)
 		statusval = 1;
 
-	/* games with chooseable home centres have if a power needs centres */
-	if (dipent.x2flags & X2F_MORE_HOMES) {
+	/* games with chooseable home centres have builds to make if a power needs centres */
+	if ((dipent.x2flags & X2F_MORE_HOMES) && statusval == 0) {
 		statusval = 1;  
 	/* Temporary: should do some work by seeing if any homes still left
            to declare for players alive */
