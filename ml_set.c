@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.44  2003/05/16 20:37:45  millis
+ * Small compile error fix.
+ *
  * Revision 1.43  2003/05/15 00:09:46  russblau
  * Corrected errors in keyword arrays, and commented out very many redundant entries.
  *
@@ -815,6 +818,10 @@ void mail_setp(char *s)
 #define PRV_CAPTUREWIN	  'm'
 #define SET_NOCAPTUREWIN  168
 #define PRV_NOCAPTUREWIN  'm'
+#define SET_AUTOCREATE    169
+#define PRV_AUTOCREATE    'm'
+#define SET_NOAUTOCREATE  170
+#define PRV_NOAUTOCREATE  'm'
 
 /***********************************************************************
  * Note:  in keys below, a blank space indicates that whitespace is    *
@@ -954,7 +961,8 @@ void mail_setp(char *s)
 	    "garrisons", "no garrisons",/* "nogarrisons",*/
 	    "neutrals",/* "noneutrals",*/ "no neutrals",
 	    "capture win",/* "capturewin",
-	    "nocapturewin", "no capturewin",*/ "no capture win"
+	    "nocapturewin", "no capturewin",*/ "no capture win",
+	    "autocreate", "noautocreate"
 	}; 
 	
 	static unsigned char action[] = {
@@ -1064,7 +1072,8 @@ void mail_setp(char *s)
 	    SET_NOGARRISONS,/* SET_NOGARRISONS,*/
 	    SET_NEUTRALS,/* SET_NONEUTRALS,*/ SET_NONEUTRALS,
 	    SET_CAPTUREWIN,/* SET_CAPTUREWIN, SET_NOCAPTUREWIN, SET_NOCAPTUREWIN,*/
-	    SET_NOCAPTUREWIN 
+	    SET_NOCAPTUREWIN ,
+	    SET_AUTOCREATE, SET_NOAUTOCREATE
 	}; 
 	
 	static char privs[] = {
@@ -1158,7 +1167,8 @@ void mail_setp(char *s)
 	    PRV_SUMMER,/* PRV_NOSUMMER,*/ PRV_NOSUMMER, PRV_GARRISONS,
 	    PRV_NOGARRISONS,/* PRV_NOGARRISONS,*/ PRV_NEUTRALS,/* PRV_NONEUTRALS,*/
 	    PRV_NONEUTRALS, PRV_CAPTUREWIN,/* PRV_CAPTUREWIN, PRV_NOCAPTUREWIN, PRV_NOCAPTUREWIN,*/
-	    PRV_NOCAPTUREWIN
+	    PRV_NOCAPTUREWIN,
+	    PRV_AUTOCREATE, PRV_NOAUTOCREATE
 	};
 
 	chk24nmr = 0;
@@ -2696,7 +2706,7 @@ void mail_setp(char *s)
                             fprintf(rfp, "Game '%s' has already started: not allowed to change CaptureWin flag!\n\n",
                                     dipent.name);
                         } else {
-                        CheckAndToggleFlag(&dipent.x2flags,  X2F_CAPTUREWIN, "CpatureWin", CATF_SETON,
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_CAPTUREWIN, "CaptureWin", CATF_SETON,
                                                "Game will now be won when a power captures ALL home SCs of another.\n",CATF_NORMAL);
                         }
                         break;
@@ -2704,11 +2714,33 @@ void mail_setp(char *s)
                 case SET_NOCAPTUREWIN:
                         CheckNoMach();
                         if (dipent.seq[0] != 'x') {
-                            fprintf(rfp, "Game '%s' has already started: not allowed to changeCaptureWin flag!\n\n",
+                            fprintf(rfp, "Game '%s' has already started: not allowed to change CaptureWin flag!\n\n",
                                     dipent.name);
                         } else {
                         CheckAndToggleFlag(&dipent.x2flags,  X2F_CAPTUREWIN, "CaptureWin", CATF_SETOFF,
                                                "Game will now be won when a power captures enough supply centres.\n",CATF_NORMAL);
+                        }
+                        break;
+
+		case SET_AUTOCREATE:
+                       if (dipent.seq[6] == 'X') {
+                            fprintf(rfp, "Game '%s' has already finished: not allowed to change AutoCreate flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_AUTOCREATE, "AutoCreate",
+CATF_SETON,
+                                               "A new game with identical settings will be automatically created when this one finishes.\n",CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOAUTOCREATE:
+                        if (dipent.seq[6] == 'X') {
+                            fprintf(rfp, "Game '%s' has already finished: not allowed to change AutoCreate flag!\n\n",
+                                    dipent.name);
+                        } else {
+                        CheckAndToggleFlag(&dipent.x2flags,  X2F_AUTOCREATE, "AutoCreate",
+CATF_SETOFF,
+                                               "No new game will be started when this game finishes.\n",CATF_NORMAL);
                         }
                         break;
 

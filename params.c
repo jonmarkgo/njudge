@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2003/05/09 09:44:51  millis
+ * Added display of Mach2 flag
+ *
  * Revision 1.28  2003/05/06 01:53:07  millis
  * Bug in displaying Summer turn
  *
@@ -568,6 +571,10 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_ARTILLERY) {
 		strcatf(line, "Artillery", &first_flag);
 	}
+	
+	if (dipent.x2flags & X2F_AUTOCREATE) {
+                strcatf(line, "AutoCreate", &first_flag);
+        }
 
 	
 
