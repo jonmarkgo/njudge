@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2001/05/07 04:30:49  greg
+ * minor bug fix
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -84,7 +87,7 @@ int main(int argc, char **argv)
 			perror("dip.ded");
 			exit(1);
 		} else {
-			nded = (read(fd, ded, MAXUSER * sizeof(ded[0])) /sizeof(ded[0])) + 1;
+			nded = read(fd, ded, MAXUSER * sizeof(ded[0])) /sizeof(ded[0]);
 			close(fd);
 		}
 
@@ -150,7 +153,7 @@ int main(int argc, char **argv)
 				perror("text.ded");
 				exit(1);
 			}
-			for (i = 0; i < nded; i++) {
+			for (i = 0; i <= nded; i++) {
 				fprintf(fp, "USER: %d %d %d %d %d\n", i,
 					ded[i].r, ded[i].i1, ded[i].i1, ded[i].i2);
 				fprintf(fp, "SIGN: %s", ctime(&ded[i].ls));
