@@ -3,15 +3,8 @@ njudge for DEBIAN
 
 Comments regarding the Package
 
-Changes I've made from the upstream version include some makefile 
-changes and the home directory is /home/judge instead of /home/judge/dip
-(Yes I know using /home is against Debian policy.  Some paths are 
-hardcoded in so I can't change them yet.)
-
-I've also added a man page and the source uses GNU autotools now.
-
-Also the -s has been removed from the call to at(1) in bgreet as Linux at 
-doesn't support it.
+The home directory is /home/judge (Yes I know using /home is against
+Debian policy.  Some paths are hardcoded in so I can't change them yet.)
 
 Using Sendmail Restricted Shell
 
@@ -19,4 +12,4 @@ If you are using sendmail with the smrsh(1) option, the judge may not work
 correctly.  I haven't quite figured out why.
 
 
-Jaldhar H. Vyas <jaldhar@braincells.com>, Thu, 12 Nov 1998 22:23:00 -0500
+Jaldhar H. Vyas <judgekeeper@braincells.com>, Mon, 30 Dec 2002 01:04:00 -0500

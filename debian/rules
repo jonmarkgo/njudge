@@ -19,10 +19,11 @@ binary-arch:	checkroot build
 	dh_testdir
 	dh_clean
 	dh_installdirs
-	make install DESTDIR=`pwd`/debian/tmp docdir=/usr/share/doc/njudge \
+	make install DESTDIR=$(CURDIR)/debian/tmp docdir=/usr/share/doc/njudge \
 		mandir=/usr/share/man
 	rm $(CURDIR)/debian/tmp/home/judge/newlogs
 	install -m 0755 debian/newlogs $(CURDIR)/debian/tmp/home/judge/newlogs
+	install -D -m 0644 debian/bug $(CURDIR)/debian/tmp/usr/share/bug/njudge/control
 	dh_installdocs
 	dh_installcron
 	dh_installchangelogs

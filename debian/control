@@ -1,12 +1,14 @@
 Source: njudge
 Section: games
 Priority: extra
-Maintainer: Jaldhar H. Vyas <jaldhar@braincells.com>
+Maintainer: Jaldhar H. Vyas <judgekeeper@braincells.com>
 Build-Depends: debhelper
 Standards-Version: 3.5.6
 
 Package: njudge
 Architecture: any
+Origin: Braincells
+Bugs: mailto:judgekeeper@braincells.com
 Depends: ${shlibs:Depends}, tcsh | c-shell, sendmail | mail-transport-agent
 Description: Internet Diplomacy Adjudicator
  The judge adjudicates email games of the Hasbro boardgame Diplomacy.

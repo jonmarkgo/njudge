@@ -1,3 +1,10 @@
+njudge (1.3.0pre-20021221-2) unstable; urgency=low
+
+  * Added information so bug reports get sent to my judgekeeper address.
+  * More packaging cleanup.
+
+ -- Jaldhar H. Vyas <judgekeeper@braincells.com>  Mon, 30 Dec 2002 01:11:59 -0500
+
 njudge (1.3.0pre-20021221-1) unstable; urgency=low
 
   * New upstream version (from CVS.)
