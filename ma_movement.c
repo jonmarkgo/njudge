@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/12/04 23:33:14  millis
+ * Fixed Bug 47 (incorrect ownership change for proxied orders)
+ *
  * Revision 1.10  2002/11/13 22:30:33  millis
  * Bug 30, correctly calculate support on assasination
  *
@@ -103,6 +106,12 @@ int ma_movein(char **s, int p)
 		return E_WARN;
 	}
 	if (p != unit[u].owner && p != MASTER) {
+		if (!(dipent.flags & (F_PROXY))) {
+                        errmsg("%s doesn't own the %s %s %s.\n", powers[p], utype(c),
+                         mov_type(p1, u), pr[p1].name);
+                        errmsg("Game %s does not allow proxy orders.\n", dipent.name);
+                        return E_WARN;
+                }
 		for (u2 = 1; u2 <= nunit; u2++) {
 			if (unit[u2].owner == p && unit[u2].proxy == u)
 				break;
@@ -117,7 +126,7 @@ int ma_movein(char **s, int p)
 		}
 		memcpy(&unit[u2], &unit[u], sizeof(unit[0]));
 		if (u2 == nunit)
-		    unit[nunit].exists = 0; /* Unit does not yet exist */
+                	unit[nunit].exists = 0; /* Unit does not yet exist */
 		unit[u2].owner = p;
 		unit[u2].proxy = u;
 		unit[u2].order = 'n';
@@ -494,6 +503,7 @@ int ma_moveout(int pt)
 	int supportvalue[MAXUNIT];
  */	int has_other_retreat = 0; 
 
+	int had_rebellion[NPROV+1];  /* Remember if a province had a rebellion */
 
 #define VOID        1
 #define NO_CONVOY   2
@@ -527,6 +537,7 @@ int ma_moveout(int pt)
 	for (p = 1; p <= npr; p++) {
 		contest[p] = 0;
 		converted[p] = 0;
+		had_rebellion[p] = 0;
 	}
 
 	if (err)
@@ -1246,6 +1257,7 @@ int ma_moveout(int pt)
 						fprintf(rfp, "\n");
 					fprintf(rfp, "Rebellion in %s liberated.\n", pr[p].name);
 					remove_rebellion(p);
+					had_rebellion[p] = 1; /* Remember had a rebellion */
 				}
 			}
 			/*
@@ -1377,6 +1389,7 @@ int ma_moveout(int pt)
 					   ** 1) There should be a fortress.
 					   ** 2) It should be unoccupied.
 					   ** 3) Free of rebellion.
+					   ** 3aa) Didn't have a rebellion against unit's onwer
 					   ** 3a) not Venice
 					   ** 4) And if we are a fleet, it should have a port.
 					 */
@@ -1384,6 +1397,7 @@ int ma_moveout(int pt)
 					    has_fortress(unit[u].loc) &&
 					    !has_garrison(unit[u].loc) &&
 					  !has_crebellion(unit[u].loc) &&
+				          !(had_rebellion[unit[u].loc] && pr[unit[u].loc].owner == unit[u].owner) &&
 					  !is_venice(unit[u].loc) &&
 					    (has_port(unit[u].loc) || unit[u].type == 'A')) {
 						if (!i++ || dipent.xflags & XF_GCONVERT_ANYTIME) {
