@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2003/07/15 22:47:07  millis
+ * Fix Bug 185 (call smail for each email individually)
+ *
  * Revision 1.16  2003/02/12 07:46:07  nzmb
  * Fixed several bugs in the concession handling code, including a severe one
  *
@@ -358,6 +361,12 @@ int main(int argc, char **argv)
 		fprintf(log_fp, "sum: cmap heap read error, %d of %d, %s.\n", i, hp, line);
 		return E_FATAL;
 	}
+
+	if ((i = fread(extra_centres, sizeof(extra_centres), 1, ifp)) != 1) {
+	        fprintf(rfp, "cmap extra_centres read error, %ds. %s.\n", i, line);
+	        return E_FATAL;
+        }
+
 	if (nv > MAXVINC) {
 		fprintf(log_fp, "sum: Maximum variable income exceeded.\n");
 		return E_FATAL;
