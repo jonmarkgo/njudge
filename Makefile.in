@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.16  2003/01/14 14:05:51  millis
+# Added history
+#
 #
 
 @SET_MAKE@
@@ -331,6 +334,7 @@ delgame_DEPENDENCIES =
 delgame_LDFLAGS =
 am_dip_OBJECTS = assign.$(OBJEXT) bailout.$(OBJEXT) common.$(OBJEXT) \
 	conf.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) diplog.$(OBJEXT) \
+	draw.$(OBJEXT) global.$(OBJEXT) \
 	hashtable.$(OBJEXT) history.$(OBJEXT) jm.$(OBJEXT) \
 	lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
 	ma_expenses.$(OBJEXT) ma_famplag.$(OBJEXT) \
@@ -416,6 +420,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/conf.Po ./$(DEPDIR)/ded_to_ascii.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/deddump.Po ./$(DEPDIR)/delgame.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dip.Po ./$(DEPDIR)/dipent.Po \
+@AMDEP_TRUE@    ./$(DEPDIR)/diplog.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/draw.Po ./$(DEPDIR)/flock.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fmtwho.Po ./$(DEPDIR)/global.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/hashtable.Po ./$(DEPDIR)/history.Po \
