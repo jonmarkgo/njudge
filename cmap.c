@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -42,6 +45,10 @@ int main(int argc, char *argv[])
 	PFTAB(pftab);
 	short cent[NPROV];
 	short prov[NPROV];
+	char *typetext;
+	int power_index;
+	char unit_list[MAX_UNIT_TYPES][200]; /* to be safe only! */
+	char power_name[20];
 
 	switch (argc) {
 	case 1:
@@ -123,6 +130,22 @@ int main(int argc, char *argv[])
 			}
 
 			pr[npr].flags = 0;
+			pr[npr].type2 = pr[npr].type; /* default type2 = type */
+
+			/* If another character after type, and not a mach one (0-7) use as type2 value */
+			if (*t && !isspace(*t) &&  (*t < '0' || '7' < *t)) {
+				switch (*t)
+				{
+				    case 'w':
+				    case 'l':
+					pr[npr].type2 = *t;
+					break;
+				    default:
+					fprintf(stderr, "Bad type2 value %c for %s.\n", *t, pr[npr].name);
+                                        err++;
+				}
+				t++;
+			}
 
 			if (*t && !isspace(*t)) {
 
@@ -134,9 +157,15 @@ int main(int argc, char *argv[])
 
 				if (*t == 'f' || *t == 'P')
 					pr[npr].flags |= PF_FORTRESS;	/* Province is fortifiable */
-
+				
 				if (*t == 'p' || *t == 'P')
 					pr[npr].flags |= PF_PORT;	/* Province is a port city */
+
+				if (!isspace(*t)) {
+				    t++;
+				    if (*t == 'V')
+				        pr[npr].flags |= PF_VENICE;     /* Province is like Venice */
+				}
 
 				while (*t && !isspace(*t))
 					t++;
@@ -342,25 +371,37 @@ int main(int argc, char *argv[])
 				break;
 
 				/*
-				 *  Plague and Famine tables.
+				 *  Plague, Famine and Storm tables.
 				 */
 
 			case 'F':
 			case 'P':
-				pftab = *line == 'F' ? ftab : ptab;
+			case 'S':
+				if (*line =='F' ) {
+					pftab = ftab;
+					typetext = "famine";
+				}
+				else if (*line =='P') {
+					pftab = ptab;
+					typetext = "plague";
+				} else { 
+					pftab = stab;
+					typetext = "storm";
+				}
+
 				for (i = 2; i <= 12; i++) {
 					if (!fgets(line, sizeof(line), ifp)) {
-						fprintf(stderr, "End of input in famine/plague table.\n");
+						fprintf(stderr, "End of input in %s table.\n", typetext);
 						err++;
 						break;
 					}
 					if (i != atoi(line)) {
-						fprintf(stderr, "Column %d mismatch in famine/plague table.\n", i);
+						fprintf(stderr, "Column %d mismatch in %s table.\n", i, typetext);
 						fprintf(stderr, "Line: %s", line);
 						err++;
 					}
 					if (!(t = strchr(line, ':'))) {
-						fprintf(stderr, "Missing colon in famine/plague table.\n");
+						fprintf(stderr, "Missing colon in %s table.\n", typetext);
 						fprintf(stderr, "Line: %s", line);
 						err++;
 					}
@@ -375,7 +416,9 @@ int main(int argc, char *argv[])
 						} else {
 							t = get_prov(t, &p, &m);
 							if (!p) {
-								fprintf(stderr, "Bad province %d in famine table: %s", j, t);
+								fprintf(stderr, 
+									"Bad province %d in %s table: %s", 
+									j, typetext, t);
 								fprintf(stderr, "Line: %s", line);
 								err++;
 								break;
@@ -422,9 +465,60 @@ int main(int argc, char *argv[])
 				}
 				break;
 
-				/*
-				 *  Comments.
-				 */
+			/*
+			 * Special unit limits 
+			 */
+
+			case 'L':
+				power_index = 0;
+				while (fgets(line, sizeof(line), ifp) && isspace(*line)) {
+				    if (sscanf(line, "%s %s %s %s", 
+						power_name,
+					        unit_list[0], unit_list[1],  unit_list[2]) != MAX_UNIT_TYPES +1) { 
+				      fprintf(stderr, "Bad unit line: %s ", line);
+				      err++;
+				    } else {	
+				       strncpy(&permitted_units[power_index].power_letter,
+					       power_name, 1);
+					for (i = 0; i < MAX_UNIT_TYPES; i++)
+					{
+					     permitted_units[power_index].permissions[i] = 0;
+					    for (j = 0; j < MAX_SPEC_TYPES; j++)
+					    {
+					        switch (unit_list[i][j])
+						{
+						    case P_ANYTIME:
+						        permitted_units[power_index].permissions[i] += PP_ANYTIME << (j*2);
+							break;
+
+						    case P_BUILD:
+							   permitted_units[power_index].permissions[i] += PP_BUILD << (j*2);
+							break;
+					
+						   case P_BUY:
+							permitted_units[power_index].permissions[i] += PP_BUY << (j*2);                                                        break;
+
+						   case P_NEVER:
+							permitted_units[power_index].permissions[i] += PP_NEVER << (j*2);
+							break;
+						   
+						   default:
+							fprintf(stderr, "Unknown option in line: %s", line);
+							err++;
+							break;
+					      }
+					  }
+				     }
+				       power_index++;
+				   }
+				   /* fprintf(stderr, "Pwer = %s, army = %s, fleet = %s\n",
+					   power_name, army_list, fleet_list); */
+				}
+				break;
+
+			/*
+			 * Comments.
+			 */
 
 			case '\n':
 			case '#':
@@ -467,6 +561,8 @@ int main(int argc, char *argv[])
 				fwrite(vincome, nv, sizeof(vincome[0]), ifp);
 				fwrite(ftab, sizeof(ftab), 1, ifp);
 				fwrite(ptab, sizeof(ptab), 1, ifp);
+				fwrite(stab, sizeof(stab), 1, ifp);
+				fwrite(permitted_units, sizeof(permitted_units), 1, ifp);
 			}
 			fwrite(&nc, sizeof(nc), 1, ifp);
 			if (nc) {
