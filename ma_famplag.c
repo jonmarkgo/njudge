@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2003/06/10 10:06:56  millis
+ * Bug 173, missed a '=' in use of npr
+ *
  * Revision 1.7  2003/01/05 00:06:43  millis
  * Fix bug 90
  *
@@ -46,7 +49,7 @@ void fam_plag(int t)
 	int i, d, r, c, u, p;
 	char *s, buf[1024];
 	PFTAB(pftab);
-	char *typetext;
+	char *typetext = NULL;
 	char Typetext[20];
 	int at_least_one = 0;   /* True if at least one province is struck */
 
