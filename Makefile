@@ -1,6 +1,11 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.16  2001/12/29 20:38:03  nzmb
+#
+# Added infoplayer, record commands. Put judge version to 1.0.0 as we think it is
+# stable.
+#
 # Revision 1.15  2001/10/20 12:11:10  miller
 # Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
 #
@@ -33,7 +38,8 @@ INSTALLCMD=install
 include Makefile.defines
 
 #set the judge version
-JVERSION=1.0.0
+#Now in a separate file
+include Makefile.version
 
 # Programs, Sources, and Objects.
 
@@ -94,11 +100,11 @@ EXTRAS = cmap.c summary.c bgreet.c deddump.c delgame.c \
  
 OBJS = $(SRCS:%.c=%.o)
 
-FILES=	${SRCDIR}/Makefile ${SRCDIR}/README ${SRCDIR}/dip.template \
+FILES=	${SRCDIR}/Makefile ${SRCDIR}/Makefile.version ${SRCDIR}/README ${SRCDIR}/dip.template \
 	${SRCDIR}/*.h ${SRCDIR}/*.c ${SRCDIR}/makedata ${SRCDIR}/newvers \
 	${SRCDIR}/diprun ${SRCDIR}/smail ${SRCDIR}/dipclean ${SRCDIR}/atrun \
         ${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
-	${SRCDIR}/data/* ${SRCDIR}/starter.flist ${SRCDIR}/mapit/* \
+	${SRCDIR}/data/* ${SRCDIR}/starter.flist \
 	${SRCDIR}/rundipmap ${SRCDIR}/README.* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
 	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base
 
@@ -356,13 +362,13 @@ ${INSTALLDIR}/newlogs: newlogs
 
 dist: tarZ targz tarbz2
 
-tarZ: ../njudge-${JVERSION}.tar.Z ../mapit.tar.Z
+tarZ: ../njudge-${JVERSION}.tar.Z 
 
-targz: ../njudge-${JVERSION}.tar.gz ../mapit.tar.gz
+targz: ../njudge-${JVERSION}.tar.gz 
 
-tarbz2: ../njudge-${JVERSION}.tar.bz2 ../mapit.tar.bz2
+tarbz2: ../njudge-${JVERSION}.tar.bz2 
 
-tar: ../njudge-${JVERSION}.tar ../mapit.tar
+tar: ../njudge-${JVERSION}.tar 
 
 ../njudge-${JVERSION}.tar: ${FILES} 
 #	newvers VERMAJ
@@ -370,39 +376,21 @@ tar: ../njudge-${JVERSION}.tar ../mapit.tar
 	rm -f ../njudge-${JVERSION}.tar
 	tar -cf ../njudge-${JVERSION}.tar ${FILES}
 
-../mapit.tar:
-	rm -f ../mapit.tar 
-	tar -cf ../mapit.tar mapit
 
 ../njudge-${JVERSION}.tar.Z: ../njudge-${JVERSION}.tar
 	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
 	compress -f ../njudge-${JVERSION}.tar
 	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
 
-../mapit.tar.Z: ../mapit.tar
-	cp -p ../mapit.tar ../mapit.tar.old
-	compress -f ../mapit.tar
-	mv ../mapit.tar.old ../mapit.tar
-
 ../njudge-${JVERSION}.tar.gz: ../njudge-${JVERSION}.tar
 	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
 	gzip -f ../njudge-${JVERSION}.tar
 	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
 
-../mapit.tar.gz: ../mapit.tar
-	cp -p ../mapit.tar ../mapit.tar.old
-	gzip -f ../mapit.tar
-	mv ../mapit.tar.old ../mapit.tar
-
 ../njudge-${JVERSION}.tar.bz2: ../njudge-${JVERSION}.tar
 	cp -p ../njudge-${JVERSION}.tar ../njudge-${JVERSION}.tar.old
 	bzip2 -f ../njudge-${JVERSION}.tar
 	mv ../njudge-${JVERSION}.tar.old ../njudge-${JVERSION}.tar
-
-../mapit.tar.bz2: ../mapit.tar
-	cp -p ../mapit.tar ../mapit.tar.old
-	bzip2 -f ../mapit.tar
-	mv ../mapit.tar.old ../mapit.tar
 
 
 loglink: 
@@ -448,9 +436,9 @@ bailout.o: bailout.c dip.h conf.h port.h variant.h diplog.h
 common.o: common.c dip.h conf.h port.h variant.h porder.h
 conf.o: conf.c conf.h hashtable.h
 dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h \
-  plyrdata.h
-dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h defaults.inc \
-  functions.h diplog.h
+ plyrdata.h
+dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
+ defaults.inc functions.h diplog.h
 diplog.o: diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
 dipstats.o: dipstats.c conf.h dipstats.h
 draw.o: draw.c dip.h conf.h port.h variant.h functions.h mail.h
@@ -460,66 +448,69 @@ history.o: history.c dip.h conf.h port.h variant.h functions.h mail.h
 jm.o: jm.c functions.h dip.h conf.h port.h variant.h
 lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
 ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
-  functions.h
+ functions.h
 ma_build_basic.o: ma_build_basic.c dip.h conf.h port.h variant.h \
-  functions.h porder.h mach.h
+ functions.h porder.h mach.h
 ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
-  mach.h functions.h
-ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h porder.h \
-  mach.h functions.h
+ mach.h functions.h
+ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
+ porder.h mach.h functions.h
 ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
-  mach.h functions.h
+ mach.h functions.h
 ma_porder.o: ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
-  mach.h functions.h
-ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h mach.h \
-  functions.h
-ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h mail.h \
-  porder.h mach.h
+ mach.h functions.h
+ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h \
+ mach.h functions.h
+ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
+ mail.h porder.h mach.h
 machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
 mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h \
-  dipstats.h diplog.h
-ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h functions.h \
-  porder.h
+ dipstats.h diplog.h plyrdata.h
+ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h \
+ functions.h porder.h
 mfprintf.o: mfprintf.c mail.h variant.h
 ml_date.o: ml_date.c port.h
 ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
-  functions.h
+ functions.h
 ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
-ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h functions.h
+ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
+ functions.h
 ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
-  dipstats.h diplog.h plyrdata.h
-ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h ml_signon.h \
-  functions.h dipstats.h plyrdata.h
+ dipstats.h diplog.h plyrdata.h
+ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
+ ml_signon.h functions.h dipstats.h plyrdata.h
 params.o: params.c dip.h conf.h port.h variant.h functions.h
 plyrdata.o: plyrdata.c plyrdata.h
 phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
-po_condition.o: po_condition.c dip.h conf.h port.h variant.h functions.h \
-  porder.h
+po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
+ functions.h porder.h
 po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
-  porder.h
+ porder.h
 po_get.o: po_get.c dip.h conf.h port.h variant.h functions.h porder.h
 po_init.o: po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
-  functions.h
+ functions.h
 po_mastrpt.o: po_mastrpt.c dip.h conf.h port.h variant.h
 porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
-st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h porder.h
+st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
 st_movement.o: st_movement.c functions.h dip.h conf.h port.h variant.h \
-  porder.h
-st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h mail.h \
-  porder.h
+ porder.h
+st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h \
+ mail.h porder.h
 st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
-  porder.h
+ porder.h
 st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
-  porder.h
+ porder.h
 strcasecmp.o: strcasecmp.c
 strdup.o: strdup.c
 users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h \
-  plyrdata.h
+ plyrdata.h
 variant.o: variant.c dip.h conf.h port.h variant.h
 version.o: version.c dip.h conf.h port.h variant.h functions.h
-cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h mach.h
+cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
+ mach.h
 summary.o: summary.c dip.h conf.h port.h variant.h porder.h mach.h \
-  functions.h diplog.h
+ functions.h diplog.h
 bgreet.o: bgreet.c dip.h conf.h port.h variant.h functions.h
 deddump.o: deddump.c dip.h conf.h port.h variant.h
 delgame.o: delgame.c port.h dip.h conf.h variant.h
