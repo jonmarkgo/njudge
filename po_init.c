@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/05/03 23:33:50  millis
+ * Fix bug 150 (NO_GARRISONS flag)
+ *
  * Revision 1.10  2003/05/02 22:29:16  millis
  * Added support for neutrals and artillery units
  *
@@ -496,7 +499,7 @@ int gamein(void)
 						  *t, dipent.name, line);
 						fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
 						  *t, dipent.name, line);
-						err++;
+						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
 							t++;
@@ -508,7 +511,7 @@ int gamein(void)
 									*t, dipent.name, line);
 								fprintf(log_fp, "Unknown power %c on '%s' alliance: %s",
 									*t, dipent.name, line);
-								err++;
+								/*err++;*/
 							} else {
 								allies[i][j] = 1;
 							}
@@ -530,7 +533,7 @@ int gamein(void)
 						  *t, dipent.name, line);
 						fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
 						  *t, dipent.name, line);
-						err++;
+						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
 							t++;
@@ -542,7 +545,7 @@ int gamein(void)
 									*t, dipent.name, line);
 								fprintf(log_fp, "Unknown power %c on '%s' assassinate: %s",
 									*t, dipent.name, line);
-								err++;
+								/*err++;*/
 							}
 						}
 						if (j == MAX_CHIT) {
@@ -585,7 +588,7 @@ int gamein(void)
 						      dipent.name, line);
 						fprintf(log_fp, "Unknown power on '%s' ducats line: %s",
 						      dipent.name, line);
-						err++;
+						/*err++;*/
 					} else {
 						while (*t && !isspace(*t))
 							t++;
