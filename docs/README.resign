@@ -15,4 +15,5 @@ including a "Reply-To: bogus_address" prior to the "OBSERVE" command.
 -Ken
 
 (Note:  the "please resign me" issue can now be resolved by the Master
-using the "EJECT email_address" command.)
+using the "EJECT email_address" command.  - RMB 11 Feb 2003)
+

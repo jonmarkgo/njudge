@@ -2,15 +2,15 @@ This file describes the new dedication systems created by Tim Miller and
 Mario Becroft. This system is for use with the Ken Lowe Diplomacy
 ajudicators. Diplomacy is a trademark of Hasbro, Inc.
 
-Please see also the commands "set resrat" and "set ontimerat" in the index
-for details on how the systems work. Also, see the "dedsystems" file
+Please see also the commands "SET RESRAT" and "SET ONTIMERAT" in file
+'index' for details on how the systems work. Also, see file 'dedsystems'
 for the generic user info about the new dedication systems. This file
 deals mainly with how data is stored and how the Judgekeeper can adjust
 player records.
 
 The data for the players is kept in a file in the dip directory called
 "plyrdata". This file is a binary file containing all the records, plus a
-header containing such information as the file version, and a few otrher
+header containing such information as the file version, and a few other
 things to make sure the Judge doesn't try to read from or write to a
 corrupted file.
 
@@ -20,7 +20,7 @@ as read it.
 
 To simply read the records, log in as the judge and run the program
 recdump with no flags. The records will be displayed in a file called
-"text.rec" **modifying this text file will, of course, not modify the
+"text.rec"  **Modifying this text file will, of course, NOT modify the
 actual records in the plyrdata file**. If you wish to modify a record, you
 must run the recdump program with the -w flag. The program will prompt you
 to enter the number of the record you wish to modify. The record number of
@@ -29,10 +29,9 @@ The program will ask you which field of the record you wish to modify, and
 then ask for the new value for that field. The new data will then be
 written back into the plyrdata file. 
 
-
-I've now added the "record" command, which allows the Judge Keeper to modify
-a player's entry via an e-mail command. Please see the 'index' file and look
-under the "RECORD" entry for details.
+The "RECORD" command allows the Judge Keeper to modify a player's entry via
+an e-mail command. Please see file 'index' and look under the "RECORD"
+entry for details.
 
 Tim Miller
 April 28, 2002 

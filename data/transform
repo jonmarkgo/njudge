@@ -16,22 +16,20 @@ SET TRANSFORM NONE
 SET TRANSFORM <when>:<where> [<when>:<where>]
 
     <when> is either MOVE or BUILD
-        MOVE specifies which transforms will be permitted during move phases.
-        BUILD specifies which transforms will be permitted during build
-        phases.
 
     <where> is one of:
-        HOME [CENTRE]
-        ONE [CENTRE]
-        ANY [CENTRE]
+        HOME[CENTRE]
+        ONE[CENTRE]
+        ANY[CENTRE]
         ANYWHERE
         NONE
 
-"CENTRE" and "CENTER" are interchangeable.  Note that "ANY" is assumed to be
-an abbreviation for "ANYCENTRE", so "ANYWHERE" must be spelled out in full if
-used.
+"CENTRE" and "CENTER" are interchangeable (and optional).  Note that "ANY" is
+assumed to be an abbreviation for "ANYCENTRE", so "ANYWHERE" must be spelled out
+in full if used.
 
 Warnings:
+
    If you omit the "when" specification, it defaults to BUILD.  So,
    "SET TRANSFORM :ANYCENTRE" is the same as "SET TRANSFORM BUILD:ANYCENTRE".
 
@@ -88,8 +86,8 @@ ANY CENTRE:   Transformations are allowed during the specified phase in any
               centre.
 
 ANYWHERE:     Transformations are allowed during the specified phase in any
-              province. The exceptions to this are water spaces, and for
-              wings that are blockading during a build phase.
+              land province (units can never transform at sea).  However, wings
+              that are blockading may not transform during a build phase.
 
 NONE:         No transformations are allowed during the specified phase.
 
@@ -100,11 +98,12 @@ for moves:
 [<unit>] <location> TRANSFORMS TO <unit> [<coast>]
 
 for build phases:
-TRANSFORM <unit> <location> [<coast>]
+TRANSFORM [<unit>] <location> [<coast>] TO <unit>
 
 The abbreviation 'TRAFO' can be used for both of these forms, but otherwise
 cannot be further shortened (to avoid confusion with the 'transport'
-abbreviations already in existence).
+abbreviations already in existence).  The type of unit to be transformed into
+must be specified (because this option can be used in games with Wing units).
 
 
 -----

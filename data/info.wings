@@ -5,37 +5,41 @@ Wings were added to provide a missing element from the original
 conception of the modern game, but can apply equally well to any variant
 you wish.
 
-A third unit, the Wing, is available in wings rules games (variant modifier is
-simply wings). At present, only the Modern variant has a starting position 
+A third unit, the Wing, is available in wings rules games (variant modifier
+is simply wings). At present, only the Modern variant has a starting position 
 using wings, though any other game can use them via subsequent builds.
 
 Wings can be built on any buildable centre, and can move over any terrain
-(be it land or sea). Their moves are specified independant of costal regions
-(like an army). They should also be immune to the effects of Artic winters 
+(be it land or sea). Their moves are specified independent of coastal regions
+(like an army). They should also be immune to the effects of Arctic winters 
 in the Aberration variant.
 
 A wing can move, support, be supported and be dislodged like any other unit. 
 It cannot however convoy nor be convoyed.
 
-A Wing does not capture a centre: it blockades it. The centre remains under its
-original ownership, but it is not counted for build purposes by either the 
-centre's owner or the owner of the blockading wing. A power may have to disband
-unit(s) if centre(s) are blockaded, even down to no units, but is not considered
-eliminated until these centres are occupied by an emeny fleet/army as in standard
-rules. Only other powers can blockade: you can't blockade yourself!
+A Wing does not capture a centre: it blockades it. The centre remains under
+its original ownership, but it is not counted for build purposes by either
+the centre's owner or the owner of the blockading wing. A power may have to
+disband unit(s) if centre(s) are blockaded, even down to no units, but is not
+considered eliminated until these centres are occupied by an enemy fleet/army
+as in standard rules. Only other powers can blockade: you can't blockade
+yourself!
 
-Blockaded centres are shown surrounded in parentheses e.g 
+Blockaded centres are shown surrounded in parentheses; e.g.:
 Austria: Budapest, Trieste, (Vienna)
 
-A centre remains blockaded only as long as a wing is over it: as soon as it is 
-gone the blockade is lifted and the power will be able to count this centre in 
-the next adjustment phase (as long as it is not subsequent captured or 
-re-blockaded). 
+A centre remains blockaded only as long as a wing is over it: as soon as it
+is gone the blockade is lifted and the power will be able to count this
+centre in the next adjustment phase (as long as it is not subsequently
+captured or re-blockaded). 
 
-For the purposes of victory conditions, a blockaded centre does not count whilst
-it is being blockaded, neither for its owner nor for the power blockading it.
+For the purposes of victory conditions, a blockaded centre does not count
+whilst it is being blockaded, neither for its owner nor for the power
+blockading it.
 
 Millis Miller
 
 ------------
 
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
