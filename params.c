@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2002/11/13 22:29:16  millis
+ * Bug 42 fix, Storms setting not being shown
+ *
  * Revision 1.15  2002/07/17 11:46:33  millis
  * Only show postal setting if set
  *
@@ -335,7 +338,7 @@ void params(FILE * fp)
                                 strcat(line, ", NoForts");
                         }*/
 			if (dipent.xflags & XF_STORMS) {
-				strcat(line," , Storms");
+				strcat(line,", Storms");
 			}	
 		}
 		
