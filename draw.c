@@ -1,5 +1,8 @@
- /*
+/*
  * $Log$
+ * Revision 1.15  2004/04/04 15:58:38  millis
+ * Fixed bug 285 (inform extra custodians of game start)
+ *
  * Revision 1.14  2003/07/17 00:01:29  millis
  * Use MailOut to send emails
  *
@@ -277,7 +280,7 @@ int process_draw(void)
  * If draws are DIAS, this is easy :-)
  */
 
-	if (!(dipent.flags & F_NODIAS)) {
+	if (!(dipent.x2flags & X2F_NODIAS)) {
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
