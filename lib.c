@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.17  2003/07/17 00:01:29  millis
+	 * Use MailOut to send emails
+	 *
 	 * Revision 1.16  2003/07/15 22:47:06  millis
 	 * Fix Bug 185 (call smail for each email individually)
 	 *
@@ -1411,12 +1414,12 @@ static char *GetAddressPart(int index, char *address)
 	    *ptr = '\0';
         }
         if (count != index ) {
-	    cur_ptr = ptr + 1;
+	    if (ptr) cur_ptr = ptr + 1;
 	    count++;
         }
     } while (count < index && ptr); 
 	
-    if (count != index) 
+    if (count != index || (count > 0 && !ptr)) 
 	return NULL;  /* No next part found */
     else
 	return cur_ptr;  /* Return found part */
