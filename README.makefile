@@ -17,6 +17,7 @@ Datamake:	Rebuild the data files
 install:	build and install a judge (Note: this will DELETE
 		any existing judge data files, so do NOT use on an
 		existing judge installation)
+remap:		Force binary map files to be regenerated if required
 upgrade:	Rebuild all the programs and install them in correct
 		directory (used principally for updating a running 
 		judge)
@@ -35,4 +36,4 @@ lint:		Run "lint" on all source files
 depend:		Update Makefile itself automatically for source dependcies.
 
 
--Millis Miller 6th October 2000
+-Millis Miller 24th October 2001
