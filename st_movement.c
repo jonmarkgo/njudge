@@ -1,5 +1,10 @@
 /*
 ** $Log$
+** Revision 1.30  2004/07/05 07:17:34  nzmb
+** Partial fix to bug 290. Unfortunately, convoys in blind seem to be
+** somewhat broken because of this fix (by my testing, long convoys don't
+** work). I'll fix this as soon as I can.
+**
 ** Revision 1.29  2004/07/05 06:33:30  nzmb
 ** Code cleanup: fixed unnecessary tests in if clauses and fixed formatting
 ** in part of movein.
@@ -1902,7 +1907,7 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
                                 }
 				else if (!processing && !predict && unit[u2].dest != unit[u].dest)
 					result[u] = BAD_CONVOY;
-				fprintf(rfp, "%s %s -> %s", Utype(u), pr[unit[u].unit_prov].name,
+				fprintf(rfp, "%s %s -> %s", Utype(unit[u2].type), pr[unit[u].unit_prov].name,
 					pr[unit[u].dest].name);
 				break;
 			case 'h':
