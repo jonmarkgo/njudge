@@ -1,6 +1,8 @@
-
 /*
    ** $Log$
+   ** Revision 1.14  2002/12/12 01:46:31  millis
+   ** Fixed Bug 51 (Suez counting as an owned province)
+   **
    ** Revision 1.13  2002/06/10 22:07:02  millis
    ** Small fix to init_build(), that was counting gateway units as units
    **
@@ -80,6 +82,54 @@
 #include "functions.h"
 #include "porder.h"
 
+#define PossibleHomeCentre(p1) (p1 == 'x' || \
+		    (p1 >= '0' && p1 <= '9') || \
+                    (p1 >= 'A' && p1 <= 'Z'))
+
+
+int ExtraCentres(void) 
+{
+    int current_year;
+    int first_year;
+
+    if (dipent.extra_centres == 0)
+        return 0;
+
+    current_year = atoi(&dipent.phase[1]);
+    first_year = atoi(&sphase[dipent.variant][1]);
+
+    if ((current_year - first_year) <= dipent.extra_centres)
+        return (dipent.extra_centres - current_year + first_year);
+
+    return 0;
+}
+
+    
+
+int CountHomeCentres( int p)
+{
+    int total = 0;
+    int i;
+
+    for ( i = 1; i <= npr; i++)
+        if (pr[i].type == pletter[dipent.variant][p] )
+            total++;
+
+    return total;
+}
+
+int CountCentres( int p )
+{
+
+    int total = 0;
+    int i;
+
+    for ( i = 1; i <= npr; i++)
+        if (pr[i].owner ==  p )
+            total++;
+
+    return total;
+}
 
 
 static int nu[NPOWER + 1], lu[NPOWER + 1], cnb[NPOWER + 1];
@@ -87,7 +137,7 @@ int one_owned[NPOWER + 1];
 /* See if passed location is in conditions to be built on */
 int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
 {
-        char *t;
+        unsigned char *t;
 
 	if (pr[p1].blockaded) {
             errmsg("Cannot transform wing as it is blockading %s.\n",
@@ -140,14 +190,29 @@ void init_build(void)
 	/*  Count number of units allowed to be built.  */
 
 	for (p = 1; p <= NPOWER; p++) {
+
+	        /* Just in case it got changed, i.e. X2F_MORE_HOMES game! */
+		if (PossibleHomeCentre(pr[p].type) && 
+		    PossibleHomeCentre(pletter[dipent.variant][pr[p].home]))
+		    pr[p].type = pletter[dipent.variant][pr[p].home];
+		
 		one_owned[p] = 0;
 		nu[p] = 0;
 		lu[p] = 0;
 		for (i = 1; i <= npr; i++) {
-			if (gateway(i)) continue; /* Gateways don't count */
-			if (pr[i].owner == p && pr[i].blockaded == 0)
+		    if (gateway(i)) continue; /* Gateways don't count */
+		    /* Just in case it got changed, i.e. X2F_MORE_HOMES game! */
+                    if (PossibleHomeCentre(pr[i].type) &&
+                    PossibleHomeCentre(pletter[dipent.variant][pr[i].home]))
+                    pr[i].type = pletter[dipent.variant][pr[i].home];
+
+
+		    if (pr[i].owner == p && 
+		        pr[i].blockaded == 0 && 
+			PossibleHomeCentre(pr[i].type))
 				nu[p]++;
 		}
+
 		for (i = 1; i <= nunit; i++)
 			if (unit[i].owner == p && !gateway(unit[i].loc))
 				nu[p]--;
@@ -165,6 +230,7 @@ void init_build(void)
 				one_owned[p]++;
 			}
 		}
+		nu[p] += ExtraCentres();
 	}
 }
 
@@ -172,7 +238,8 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 {
 	char *s = in_text;
 
-	char type, order, *t;
+	char type, order;
+	unsigned char *t;
 	int p1, c1;
 	char temp_out[256];
 	char *out_text = NULL;
@@ -253,6 +320,21 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 		AddUnitProvinceToOrder(out_text,type, p1);
 		break;
 
+	case 'h':  /* Home centre definition */
+	case 'n':  /* Home centre definition cancellation */
+		if (!(dipent.x2flags & X2F_MORE_HOMES)) {
+		     errmsg("Invalid build order encountered.\n");
+		    return E_WARN;
+		}
+		if (pr[p1].type != 'x' && 
+		    !(pr[p1].type >= '0' && pr[p1].type <= '9') && 
+		    !(pr[p1].type >= 'A' && pr[p1].type <= 'Z')) {
+		        errmsg("Invalid province to make home centre.\n");
+			return E_WARN;
+		}
+		AddProvinceToOrder(out_text, p1);
+		break;
+
 	case 't':
 		
 		AddUnitProvinceToOrder(out_text,type, p1);
@@ -282,16 +364,12 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 	return 0;
 }
 
-int buildin_td(char **s, int p)
-{
-    return buildin(s, p);
-}
-
 int buildin(char **s, int p)
 {
 /*  Read build orders in from input file.  */
 
-	char type, order, *t;
+	char type, order;
+	unsigned char *t;
 	int i, j, u, p1, c1;
 
 	/*
@@ -428,7 +506,8 @@ int buildin(char **s, int p)
 		break;
 
 	case 'r':
-		if (!(u = pr[p1].unit) || unit[u].owner != p) {
+		u = GetUnitIndex(p1, p); /* Will return the next unit to disband */
+		if (!(u) || unit[u].owner != p) {
 			errmsg("%s does not own a unit %s %s to remove.\n",
 			powers[p], mov_type(p1,u), pr[p1].name);
 			return E_WARN;
@@ -534,6 +613,54 @@ int buildin(char **s, int p)
                 }
 		break;
 
+        case 'h':  /* Home centre definition */
+                if (!(dipent.x2flags & X2F_MORE_HOMES)) {
+                     errmsg("Invalid build order encountered.\n");
+                    return E_WARN;
+                }
+                if (pr[p1].type != 'x' &&
+                    !(pr[p1].type >= '0' && pr[p1].type <= '9') &&
+                    !(pr[p1].type >= 'A' && pr[p1].type <= 'Z')) {
+                        errmsg("Invalid province to make home centre.\n");
+                        return E_WARN;
+                }
+                /* OK, see if it is owned */
+                if (pr[p1].owner != p) {
+                    errmsg("Only owned centres can be made a home centre.\n");
+                    return E_WARN;
+                }
+		if (pr[p1].type == pletter[dipent.variant][p]) {
+		    errmsg("Centre is already owned by %s.\n",power(p));
+		    return E_WARN;
+		}
+                if (CountHomeCentres(p) >= dipent.num_homes) {
+                    errmsg("Power already has enough home centres.\n");
+                    return E_WARN;
+                }
+
+                if (pr[p1].type == 'x')
+                    pr[p1].home = p;
+                else {
+                    if (CountCentres(power(pr[p1].type)) > 0) {
+                        errmsg("Centre is still used as home centre by %s.\n",
+                                powers[power(pr[p1].type)]);
+                        return E_WARN;
+                   } else {
+                        pr[p1].home = p;
+		   }
+                }
+                break;
+
+
+	case 'n':  /* Home centre cancel */
+	    if (!(dipent.x2flags & X2F_MORE_HOMES)) {
+                     errmsg("Invalid build order encountered.\n");
+                    return E_WARN;
+            }
+            pr[p1].home = pr[p1].type;
+	    break;
+
+
 	default:
 		fprintf(rfp, "Invalid build order encountered.\n");
 		err++;
@@ -542,23 +669,21 @@ int buildin(char **s, int p)
 	return 0;
 
 }
-
-void buildout_td(int pt)
-{
-    return buildout(pt);
-}
-
 void buildout(int pt)
 {
-	int i, u, p, c1;
-	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
+	int i, u, p, c1, p1, p_index;
+	char mastrpt_pr[NPOWER + 1];    /* Used to be [MAXPLAYERS]. DAN 04/02/1999 */
+	int num_hc;
+	int pr_found;
+	int one_printed;
+	int assumed[ NPOWER + 1 ];  /* Count number of centres power is assuming this turn as home centre */
 
 
 	fprintf(rfp, "Adjustment orders for Winter of %d.  (%s.%s)\n\n",
 		atoi(&dipent.phase[1]), dipent.name, dipent.seq);
 
 	if (pt == MASTER) {
-		for (u = 0; u <= NPOWER; u++)    // Used to be < MAXPLAYERS. DAN.
+		for (u = 0; u <= NPOWER; u++)    /* Used to be < MAXPLAYERS. DAN. */
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
@@ -570,6 +695,26 @@ void buildout(int pt)
 		};
 		fprintf(rfp, "\n");
 	};
+
+         for (p1 = 1;  p1<= npr; p1++) {
+            pr_found = 0;
+            for (u = 1; u <= nunit; u++) {
+                if (unit[u].loc == p1)
+                    pr_found = 1;
+            }
+            if (!pr_found && pr[p1].type == 'x') {
+                /* Unowned centre: if we have natives, build one there */
+                if (dipent.has_natives && 
+			(pr[p1].owner == dipent.has_natives || !pr[p1].owner)) {
+                    unit[++nunit].type = 'A';
+		    unit[nunit].stype = 'x';
+                    unit[nunit].owner = dipent.has_natives;
+                    unit[nunit].status = 'b';
+		    unit[nunit].loc = p1;
+		}
+            }
+         }
+
 	for (u = 1; u <= nunit; u++) {
 		if (processing || pt == unit[u].owner || pt == MASTER) {
 
@@ -632,6 +777,7 @@ void buildout(int pt)
 	}
 
 	for (p = 1; p <= NPOWER; p++) {
+		assumed[p] = 0;  /* Zero array */
 		if (nu[p] > 1 && (processing || pt == p || pt == MASTER)) {
 			fprintf(rfp, "%s: ", powers[p]);
 			for (i = strlen(powers[p]); i < LPOWER; i++)
@@ -677,6 +823,48 @@ void buildout(int pt)
 			}
 		}
 	}
-}
 
+	one_printed = 0;
+	for (p1 = 1;  p1<= npr; p1++) {
+	    p = pr[p1].home;
+	    if ( pr[p1].type != pletter[dipent.variant][pr[p1].home] &&
+		PossibleHomeCentre(pletter[dipent.variant][pr[p1].home])) {
+		 assumed[p]++;
+		 if (processing || pt == p || pt == MASTER) {
+		    one_printed++;
+		    fprintf(rfp, "\n%s: ", powers[p]);
+                                for (i = strlen(powers[p]); i < LPOWER; i++)
+                                        putc(' ', rfp);
+                                fprintf(rfp, "Assumes %s as a home centre.",
+                                        pr[p1].name);
+		}
+	    }
+	}
+	if (one_printed) fprintf(rfp, "\n");
+
+	/* Now show pending moves for home centre declarations */
+	one_printed = 0;
+        for (p = 1; p <= NPOWER && (dipent.x2flags & X2F_MORE_HOMES); p++) {
+            if (p != dipent.has_natives && (processing || pt == p || pt == MASTER )) {
+		p_index = FindPower(p);
+		if (dipent.players[p_index].centers <=0 &&
+		    dipent.players[p_index].units <= 0)
+			continue;  /* Not an alive player, so ignore */
+	        num_hc = CountHomeCentres(p);
+		if ( (dipent.x2flags & X2F_MORE_HOMES) && 
+	     	     num_hc + assumed[p] < dipent.num_homes && CountCentres(p) > 0) {
+			fprintf(rfp, "\n%s: ", powers[p]);
+			one_printed++;
+                        for (i = strlen(powers[p]); i < LPOWER; i++)
+                                 putc(' ', rfp);
+                        fprintf(rfp, "%d more Home Centre assignment%s pending.", 
+				dipent.num_homes - num_hc - assumed[p],
+				dipent.num_homes - num_hc - assumed[p] > 1 ? "s" : "" );
+		}
+	    }
+	}
+
+	if (one_printed) fprintf(rfp, "\n");
+	        
+}
 /****************************************************************************/
