@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.15  2001/11/11 21:16:19  greg
+ * Subjectline Fixes
+ *  - New player signons will no longer show "Preference Change"
+ *  - Manual start games will no longer say "Waiting for More Players" after the game is full
+ *  - reply lines no longer assume JUDGE_CODE is four characters
+ *
  * Revision 1.14  2001/08/18 06:09:15  nzmb
  * Added code to reset concession flags when turn processes, and not to warn
  * people in terminated games.
@@ -1014,8 +1020,8 @@ int process(void)
 				continue;
 
 			if (*(dipent.players[i].address) != '*') {
-				sprintf(line, "%s dip.result '%s:%s - Waiting for More Players' '%s'",
-					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.players[i].address);
+				sprintf(line, "%s dip.result '%s' '%s'",
+					SMAIL_CMD, subjectline, dipent.players[i].address);
 				execute(line);
 			}
 		}
