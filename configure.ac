@@ -32,6 +32,12 @@ AC_ARG_WITH(domain,
 DOMAIN="$ac_domain"
 AC_SUBST(DOMAIN)
 
+AC_ARG_WITH(sendmail,
+     [  --with-sendmail=SENDMAIL    Location of sendmail [[/usr/sbin]] ],
+     [ ac_sendmail="$withval"],
+     [ ac_sendmail="/usr/sbin" ]
+)
+
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_AWK
@@ -39,6 +45,14 @@ AC_PROG_LN_S
 AC_PATH_PROG(HEAD, head)
 AC_PATH_PROG(_MAIL_, mail) # MAIL often is already set
 AC_PATH_PROG(PERL, perl)
+# Sendmail is not always easy to find on some systems
+AC_PATH_PROG(sendmail, sendmail, "no", $ac_sendmail:/usr/sbin:/usr/lib:$PATH)
+if test  "$sendmail" = "no"; then
+  AC_MSG_ERROR(Cannot find sendmail)
+else
+  SENDMAIL="$sendmail"
+  AC_SUBST(SENDMAIL)
+fi
 
 dnl Checks for functions
 AC_CHECK_FUNCS(strdup) 

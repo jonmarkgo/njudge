@@ -14,7 +14,7 @@ echo "===== mail sent to $3/$2" >>mail.log
 cat dip.msg $1 > dip.reply1
 # Following command must be sendmail (even exim, postfix or others provide it)
 # as mail does not seem to allow to define headers ourselves
-@_MAIL_@ $3 << EOF
+@SENDMAIL@ $3 << EOF
 From: Diplomacy Judge <@USER@@@DOMAIN@>
 To: $3
 Subject: $2
