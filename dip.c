@@ -1034,6 +1034,7 @@ int process(void)
 	static char *dedfmt = "Adding %d to user %d's dedication to yield %d.\n";
 	char late[51];
 	struct stat ppinfo;
+	int one_printed = 0;
 
 
 	if (GAME_PAUSED) return 0;  /* game is paused, do not process! */
@@ -1088,6 +1089,7 @@ int process(void)
 								if (dipent.x2flags & X2F_SECRET) {
 									fprintf(lfp, "Diplomacy game '%s' is waiting for orders from one or more powers",
 										dipent.name);
+									one_printed++;
 								}
 							}
 
@@ -1104,6 +1106,7 @@ int process(void)
 						fprintf(lfp, "Diplomacy game '%s' is waiting for %s's orders",
 							dipent.name, dipent.flags & F_QUIET ? "some power"
 							: powers[dipent.players[i].power]);
+						one_printed++;
 					}
 
 					fprintf(mlfp, "Diplomacy game '%s' is waiting for %s's orders",
@@ -1125,7 +1128,10 @@ int process(void)
 							dipent.players[RealPlayerIndex(i)].late_count,
 							dipent.players[RealPlayerIndex(i)].late_count == 1 ? "" : "s" );
 					}
-					fprintf(lfp,".\n");
+					if (one_printed) {
+					    fprintf(lfp,".\n");
+					    one_printed = 0;
+					}
 					fprintf(mlfp,".\n");
 				}
 			}
@@ -1290,7 +1296,7 @@ int process(void)
 		} else {
 			msg_header(rfp);
 		}
-		i = dipent.np + '0' - dipent.seq[1];
+		i = dipent.powers + '0' - dipent.seq[1];
 		if (dipent.xflags & XF_MANUALSTART && i <= 0) {
 			sprintf(subjectline, "%s:%s - Waiting for Master to Start", JUDGE_CODE, dipent.name);
 			fprintf(rfp, "Diplomacy game '%s' is still waiting for master to start it.\n", dipent.name );
@@ -1299,8 +1305,10 @@ int process(void)
 		} else {
 			sprintf(subjectline, "%s:%s - Waiting for More Players", JUDGE_CODE, dipent.name);
 			if (dipent.x2flags & X2F_SECRET) {
+			    sprintf(subjectline, "%s:%s - Waiting for More Player(s)", JUDGE_CODE, dipent.name);
 			    fprintf(rfp, "Diplomacy game '%s' is still waiting for some player(s) to sign on.\n", dipent.name);
 			} else {	
+			    sprintf(subjectline, "%s:%s - Waiting for %d More Player%s", JUDGE_CODE, dipent.name, i, i == 1 ? "" : "s");
 			    fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
 			}
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
