@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.2  1997/02/16 20:43:18  davidn
    ** Additions to dipent structure and associated code, to allow duplex variants.
    ** Command is "set players n".
@@ -25,7 +28,10 @@
    **  ----------- ------------ -----------------------------------------
    **  ?? ??? 1987 Ken Lowe     He wrote it
    **  30 Dec 1996 David Norman Additions for dipent.no_of_players
- */
+   **  18 Nov 1999 Millis Miller Changed display for a non-started, terminated 
+				 game
+   **  26 Nov 1999 Millis Miller Added Display if in Shrthand mode
+   */
 
 #include <string.h>
 #include <time.h>
@@ -33,6 +39,7 @@
 #include "functions.h"
 #include "dip.h"
 #include "mail.h"
+
 
 /***************************************************************************/
 
@@ -42,14 +49,22 @@ void mail_listit(void)
 /*  List out current status of the game  */
 
 	int i, f, n;
+	int ccount;
 	char *s, line[150];
 	long now;
 	FILE *fp;
+	int ok_for_blind = 0;
 
+	/* If it's not blind, ok to show everything */
+	if (!(dipent.flags & F_BLIND)) ok_for_blind = 1;
 
 	time(&now);
 
-	if (dipent.seq[0] == 'x') {
+	if (dipent.phase[6] == 'X' && dipent.seq[0] == 'x') {
+	       fprintf(rfp, "Game '%s' is already terminated before starting.\n", 
+			dipent.name);
+	}
+	else if (dipent.seq[0] == 'x') {
 
 		n = dipent.no_of_players - (dipent.seq[1] - '0');
 		fprintf(rfp, "Game '%s' is waiting for %d%s player%s to sign on.\n",
@@ -57,6 +72,7 @@ void mail_listit(void)
 			n == 1 ? "" : "s");
 
 	} else if (dipent.phase[6] == 'X') {
+		ok_for_blind = 1; /* Game over, so ok to show all for blind */
 
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
@@ -119,11 +135,12 @@ void mail_listit(void)
 		fclose(fp);
 	}
 	if (dipent.n) {
+		
 		int lates, abandons;
-
 		fprintf(rfp, "\nThe following players are signed up for game '%s':\n",
 			dipent.name);
 		lates = abandons = 0;
+		/* TODO: Reorder so that you can't tell which power signed on first */
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
@@ -139,31 +156,56 @@ void mail_listit(void)
 
 			if (dipent.flags & F_QUIET && (!signedon ||
 						       (player != i && dipent.players[player].power != MASTER))) {
-				if (f & SF_MOVE) {
+				if (f & SF_MOVE && ok_for_blind) {
 					s = "move";
 				}
 			} else if (f & SF_CD) {
 				s = "CD";
 			} else if (f & SF_ABAND) {
 				s = "abandon";
-			} else if (f & SF_MOVE) {
+			} else if (f & SF_MOVE && ok_for_blind) {
 				s = "move";
 				if (now > dipent.deadline && WAITING(f)) {
 					s = f & SF_PART ? "part" : "late";
 				}
 			}
-			fprintf(rfp, "  %-10.10s %-7.7s", powers[dipent.players[i].power], s);
-			if (dipent.players[i].units || dipent.players[i].centers)
+			fprintf(rfp, "   %-10.10s %-7.7s", powers[dipent.players[i].power], s);
+			if (ok_for_blind && 
+			     (dipent.players[i].units || dipent.players[i].centers)) {
+				ccount = dipent.players[i].centers-dipent.players[i].centres_blockaded;
 				fprintf(rfp, "%2d/%d%s",
-					dipent.players[i].units, dipent.players[i].centers,
+					dipent.players[i].units, 
+					ccount,
 					dipent.players[i].centers < 10 ? " " : "");
-			else
+			} else
 				fputs("     ", rfp);
 
-			if (!(dipent.flags & F_GUNBOAT)
+			/* Now display late count if either master or not quiet/late_count */
+		        if ((dipent.xflags & XF_LATECOUNT) ) {	
+				if ((dipent.players[i].power >= 0 && dipent.players[i].power < WILD_PLAYER) &&
+				    ((signedon && (dipent.players[player].power == MASTER || player == i)) || (!(dipent.flags & F_QUIET)))) 
+				    fprintf(rfp, " %2d ", dipent.players[i].late_count); 
+				else
+				    fprintf(rfp, "   ");
+			}
+			else
+				fprintf(rfp, "   ");
+			
+			if (signedon && (dipent.players[player].power == MASTER || player == i)) {
+				if (dipent.players[i].status & SF_PRESS)
+					fprintf(rfp,"*");
+				else
+					fprintf(rfp," ");
+			} else {
+				fprintf(rfp," ");
+			}
+
+	
+			if ( (!(dipent.flags & F_GUNBOAT)
 			    && 0 < dipent.players[i].userid
 			    && dipent.players[i].userid < nded
-			    && ded[dipent.players[i].userid].r)
+			    && ded[dipent.players[i].userid].r 
+			    && (0 != strcmp(dipent.players[i].password,GONE_PWD))))
 				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r);
 			else
 				fputs("    ", rfp);
@@ -224,10 +266,16 @@ void mail_listbrief(void)
 	if (dipent.flags & F_AFRULES)
 		fprintf(rfp, ", A/F");
 
+        if (dipent.flags & F_SHORTHAND)
+		fprintf(rfp, ", Shorthand");
+
+	if (dipent.flags & F_WINGS)
+		fprintf(rfp, ", Wings");
+
 	if (!(dipent.flags & F_NONMR))
 		fprintf(rfp, ", NMR");
 
-	if ((i = dipent.movement.next) < 72)
+	if ((i = (int) dipent.movement.next) < 72)
 		fprintf(rfp, ", %d hrs", i);
 
 	if (dipent.access == A_ANY)
@@ -262,7 +310,7 @@ void mail_listbrief(void)
 	else
 		fprintf(rfp, "-");
 
-	if (dipent.flags & F_NOPARTIAL)
+	if (dipent.flags & F_NOPARTIAL || dipent.flags & F_NOWHITE)
 		fprintf(rfp, "-");
 	else
 		fprintf(rfp, "P");
@@ -305,8 +353,11 @@ void mail_listbrief(void)
 			n = 79 - n;
 		fprintf(rfp, "%*s%s\n", n, "", dipent.comment);
 	}
-	if (dipent.seq[0] == 'x') {
+        
+	if (dipent.phase[6] != 'X' && dipent.seq[0] == 'x') {
 		n = dipent.np - (dipent.seq[1] - '0');
+		if (n == 0) fprintf(rfp, "%21.21sFormed: waiting to be started.\n","");
+		else 
 		fprintf(rfp, "%21.21sForming: %d%s player%s needed.\n", "",
 		    n, n == dipent.np ? "" : " more", n == 1 ? "" : "s");
 	} else if (dipent.phase[6] != 'X') {
@@ -326,7 +377,8 @@ void mail_listbrief(void)
 					fputs(", ", rfp);
 
 				fprintf(rfp, "%s (%d/%d)", powers[dipent.players[i].power],
-					dipent.players[i].units, dipent.players[i].centers);
+					dipent.players[i].units, 
+					dipent.players[i].centers-dipent.players[i].centres_blockaded);
 			}
 		}
 		if (n)
