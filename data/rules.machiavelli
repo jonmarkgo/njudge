@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Feb. 23, 2003
+Greetings from the Diplomacy* Adjudicator!!                   July 20, 2003
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -169,6 +169,7 @@ Special characteristics of units with the strength of 2:
      1) Have twice the normal strength for moves, holds, and supports.
      2) Have their support *entirely cut* by a unit of strength 1.
      3) Cannot dislodge any besieger in the second siege season.
+        (also see Conversion... below)
      4) Are only counted as strength 1 units during retreats.
 
 
@@ -183,11 +184,11 @@ subsequent movement phase.  When the siege is complete, the garrison is
 eliminated.  (Also see 'effects of assassination' for additional
 information.)
 A besieged garrison (one whose city's siege started during the previous
-campaign) cannot convert regardless of strength, although it can support
-another unit moving into its province to displace the besieging unit.
-A besieging unit must issue a besiege, hold or lift siege order in the
-second campaign after having started a siege.  Any other order will
-automatically be converted to hold.
+campaign) cannot convert regardless of strength (also see Conversion...
+below), although it can support another unit moving into its province to 
+displace the besieging unit.  A besieging unit must issue a besiege, hold 
+or lift siege order in the second campaign after having started a siege.  
+Any other order will automatically be converted to hold.
 
 In the following cases the siege lapses and the besieging unit is free to
 issue other orders in what would be the second campaign of the siege (that
@@ -200,7 +201,7 @@ is - need not issue hold, lift siege or 2nd besiege order):
 besiege order on your own garrison, but, if the garrison remains yours,
 the order will automatically be changed to 'hold'.  Should a similar
 situation occur as a result of bribes the besiegeing unit will
-automatically have its orders automatically changed to 'lift siege'.
+automatically have its orders changed to 'lift siege'.
 
 
 CONVERSION BETWEEN UNIT TYPES
@@ -220,6 +221,26 @@ garrison if, and only if, it has no other place to retreat to.  Of course
 it can not retreat by converting into a garrison if the unit that displaced
 it was a garrison converting into its location since you cannot retreat to
 the location your attacker came from.
+
+Clarification of the effects of conversion:
+1) Successful conversions
+     a) Garrisoning into a city *not* in rebellion.
+     b) Converting into an empty province.
+     c) Converting into an empty prov. attacked by a lesser force.
+     d) Converting into a province occupied by a lesser force
+          1) if the lesser force is not besiegeing.
+          2) if the lesser force is issuing its *first* besiege order. 
+          3) if being supported to constitute a larger force.
+
+2) Unsuccessful conversions
+     a) Trying to garrison into a city *in rebellion*.
+     b) Converting into a province attacked by an equal or superior force.
+     c) Converting into a province occupied by an equal or superior force.
+     d) Converting into a province occupied by a lesser force if the lesser 
+        force is issuing its *second* besiege order (unless 1d3 is valid).
+
+Machiavelli 2 note: conversions are treated as attacks. Thus Points 1d2 and 
+2d above are not applicable and only the strengths of the units count. 
 
 'Tech note'.  It is a point of debate whether, under the original
 Machiavelli rules, an army or fleet converting into a garrison is allowed
@@ -315,44 +336,51 @@ The standard victory limits are:
 
 SPECIAL MAPBOARD FEATURES AND RULES
 
-1) Piombino
-The province includes the offshore island of Elba.  The straits in between
+1) Piombino and Messina
+The province includes the offshore island of Elba.  The straits in-between
 are not a separate sea, but are part of the Eastern Tyrrhenian Sea.  A fleet
 in this province controls the straits between the mainland and the island.
 
-2) Messina
 A fleet in Messina controls the straits between Messina and Otranto.
 
 Additional considerations about Piombino and Messina
      a) As long as there is a fleet in either Messina or Piombino, no hostile
-        fleet can move or convoy between the Gulf of Naples and the Ionian Sea
-        or the Eastern Thyrrenian Sea and Pisa.
+        fleet can move, support or convoy between the Gulf of Naples and the 
+        Ionian Sea or the Eastern Thyrrenian Sea and Pisa.
      b) No player may use the straits without the controlling player's
         permission.  A player wishing to allow another player to use the
         straits must include an "ally" command with his movement orders.
      c) An army unit or garrison in either of these provinces does not control
         the straits.
      d) If a fleet successfully advances into Piombino or Messina in the same
-        turn as a hostile fleet attempts to use the straits, the movement
-        through the straits is blocked.
-     e) If a garrison converts to a fleet it will bounce a hostile fleet.
-     f) If a fleet converts to a garrison it will *also* bounce a hostile
-        fleet in the same turn as it converts.
-     g) Adjacency is not affected by blocking fleets.
+        turn as a hostile fleet attempts to use the straits, the hostile fleet
+        suffers all effects described in a) above.
+     e) If a garrison successfully converts to a fleet it will block a hostile 
+        fleet.  The hostile fleet will suffer all effects described in a) above.
+     f) If a fleet converts to a garrison it will *not* block a hostile
+        fleet in the same turn as it converts. 
+     g) Adjacency for bribe purposes is not affected by blocking fleets.
 
-3) Croatia and Provence
+What essentially happens is that the straits become 'land' for all fleet 
+purposes.
+
+Note that in Machiavelli 2 rule 1d) above is not applicable, as only fleets 
+that are *already present* in the province (Messina only in that case) affect 
+the straits.
+
+2) Croatia and Provence
 These provinces have a north and south coast that are treated just like the 
 dual coast provinces in other variants of Diplomacy.
 
-4) Istria and Dalmatia
+3) Istria and Dalmatia
 These provinces are connected by a "land bridge".  An army can thus move
 from Dalmatia to Istria or vice versa.
 
-5) Venice Lagoon
+4) Venice Lagoon
 Although small, the lagoon surrounding Venice is treated like an ordinary
 sea space.
 
-6) Venice province
+5) Venice province
 As province and city occupy the same space Venice is handled somewhat
 differently.
 The following exceptions occur:
@@ -382,11 +410,11 @@ The following exceptions occur:
         only be one unit). However, any other player will 'put down' the
         rebellion and thus be able to move into Venice.
 
-7) Port cities
+6) Port cities
 Port cities are fortified cities or fortresses identified by an anchor
 symbol on the map.
 
-8) Fortresses
+7) Fortresses
 Fortresses (or forts for short) are optional fortified areas that can
 be used in a scenario. Fortresses differ from ordinary cities by this:
      a) They generate *no* income.
@@ -995,6 +1023,10 @@ set [no]mach2
 To use or not the Machiavelli 2nd edition (1995) rules.  Always disabled 
 by default.
 
+set [no]summer
+To ignore the summer turn (and plague).  Allows diplomacy-style 2 season 
+years.  Always disabled by default.
+
 set [no]money
 If you set nomoney cities are treated as supply centers and builds are 
 calculated as per normal Diplomacy rules even in Machiavelli1 !  You 
@@ -1018,14 +1050,14 @@ To disable/enable the famine rules.
 'Tech note': Perugia never has famine as it is not incl. in the table.
 
 set [no]plague
-To disable/enable the plague rules.  Always disabled by default.  It is 
-incl.in the 1995 2nd ed.
+To disable/enable the plague rules.  Always disabled by default.
 
 'Tech note': Arezzo, Piombino, Pistoia and Ragusa never have plague as
 they are not incl. in the table.  They are incl.in the 1995 2nd ed.
 
 set [no]storm
-To disable/enable the fall sea storms that can sink fleets.
+To disable/enable the fall sea storms that can sink fleets.  Always 
+disabled by default.
 
 set [no]assassinations
 To disable/enable the use of the assassination *expenditure*.  Regardless
@@ -1036,7 +1068,8 @@ set [no]special
 To disable/enable the special unit types.
 
 set [no]fort[ress]
-To allow or not the use of additional fortified cities.
+To allow or not the use of additional fortified cities.  Always disabled 
+by default.
 
 set [no]adjacency
 To disable/enable the restriction that bribes can only be directed to units
@@ -1064,7 +1097,7 @@ convoys are by default enabled for the standard Machiavelli variant.
 
 set [no]disband
 To disable/enable the Mach1 disband rule. That allows you to disband
-units anytime.  E.g. a sav disband. 
+units anytime.  E.g. a sav disband.  Always enabled for Mach1.
 
 The status of these options are listed in the "full" listing of the games
 under the heading "flags".  The default settings for the various Mach
@@ -1161,3 +1194,5 @@ v2.1 27th Jan 2003. Summary sequence of play added. Retreat into rebelling
 v2.1b 23rd Feb. 2003. Moved section on version differences here from
     rules.machiavelli2. Section on variant specific commands reviewed and 
     updated. Author Sergio Lidsell.
+v2.2 20th July 2003. Section clarifying conversions added. New rule re
+    straits and support orders. New commands described. Auth. S. Lidsell.
