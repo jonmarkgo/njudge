@@ -2,7 +2,7 @@
 
                  Installation-HOWTO for the Diplomacy judge
 
-                                 v.1.5.1.1
+                                 v.1.5.1.2
               [1]Christophe Courtois (christophe@courtois.cc)
 
                              [2]1 Introduction
@@ -70,7 +70,7 @@
 
 1.1 History
 
-   - 1.5.1.1 : September 2003
+   - 1.5.1.x : September 2003
 
    - 1.5.1.0 : August 2003
 
@@ -1134,10 +1134,13 @@
             [90]floc.net,
           + a [91]full CVS view of the judge code,
           + a sum-up from Millis of [92]a recent discussion on a possible
-            njudge v.2.
-     * A Diplomacy Judge user manual on the [93]Russ Blau Diplomacy page.
-     * The worlwide main resource on Diplomacy: The [94]DipPouch.
-     * An [95]history of njudge by [96]Millis Miller, the current main
+            njudge v.2.,
+          + a [93]description of the e-mail judge format (NB: work in
+            progress!)
+          + some [94]other docs from the judge tarball.
+     * A Diplomacy Judge user manual on the [95]Russ Blau Diplomacy page.
+     * The worlwide main resource on Diplomacy: The [96]DipPouch.
+     * An [97]history of njudge by [98]Millis Miller, the current main
        maintener.
 
                                     13 Misc
@@ -1179,7 +1182,7 @@
    (no translation known for the moment).
      _________________________________________________________________
 
-   [97]Valid HTML 4.01! 
+   [99]Valid HTML 4.01! 
 
 References
 
@@ -1270,18 +1273,20 @@ References
   84. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
   85. http://www.floc.net/exarch/judgemaint.html
   86. http://www.njudge.org/
-  87. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/VariantsHOWTO.html?rev=HEAD&content-type=text/html
-  88. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudgemapdatahowto.htm?rev=HEAD&content-type=text/html
-  89. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/HowToFloc.html?rev=HEAD&content-type=text/html
+  87. http://devel.diplom.org/~njudge/docs/VariantsHOWTO.html
+  88. http://devel.diplom.org/~njudge/docs/njudgemapdatahowto.htm
+  89. http://devel.diplom.org/~njudge/docs/HowToFloc.html
   90. http://www.floc.net/
   91. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/
-  92. http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudge2-discussion.html?rev=HEAD&content-type=text/html
-  93. http://members.cox.net/russblau/
-  94. http://www.diplom.org/
-  95. http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html
-  96. http://C.webring.com/hub?ring=millisring&id=1&hub
-  97. http://validator.w3.org/check/referer
+  92. http://devel.diplom.org/~njudge/docs/njudge2-discussion.html
+  93. http://devel.diplom.org/~njudge/docs/mail_format.html
+  94. http://devel.diplom.org/~njudge/docs/
+  95. http://members.cox.net/russblau/
+  96. http://www.diplom.org/
+  97. http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html
+  98. http://C.webring.com/hub?ring=millisring
+  99. http://validator.w3.org/check/referer
 
    Hidden links:
-  98. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
-  99. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
+ 100. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html
+ 101. file://localhost/home/alex/cvs/njudge/docs/InstallationHOWTO.html

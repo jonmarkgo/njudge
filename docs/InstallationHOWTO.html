@@ -24,7 +24,7 @@ I want this code to stay clean and W3C compliants. Thanks - Christophe -->
 
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.5.1.1
+<p align=center>v.1.5.1.2
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
 <table align=center width="80%" summary="Summary"><tr valign=top><td>
@@ -100,7 +100,7 @@ I want this code to stay clean and W3C compliants. Thanks - Christophe -->
 
 <h2><a name="1.1">1.1 History</a></h2>
 
-<p>- 1.5.1.1 : September 2003
+<p>- 1.5.1.x : September 2003
 <p>- 1.5.1.0 : August 2003
 <p>- 1.3.2.x : March-May 2003
 <br>- 1.3.0-pre : December 2002
@@ -358,7 +358,7 @@ and add another parameter to the script: <tt>--with-sendmail=/path_where_sendmai
 Thank you for <a href="mailto:judge-maint@devel.diplom.org">telling us</a> this unknown path,
 it will be added in the script in the next version </p>.  If the <tt>./configure</tt> finds it,
 but the compilation fails by not finding it itself, you may have to:
-<ul disc=circle>
+<ul type=circle>
 <li>try to launch <tt>automake</tt> and <tt>aclocal</tt> and try <tt>./configure</tt> and
 <tt>make all</tt> again,</li>
 <li>or upgrade to <tt>automake 1.7</tt> and begin from a fresh tarball again (anyway, I had to do that).</li>
@@ -1139,28 +1139,31 @@ judge-maint mailing-list</a>, courtesy from Alain Tésio.
 <li>The official njudge site: <a href="http://www.njudge.org/">Njudge.org</a>.
 <br>You'll find on this site (and sometimes in the same tarball than the current file):
 <ul type="disc">
-<li>a <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/VariantsHOWTO.html?rev=HEAD&content-type=text/html">
+<li>a <a href="http://devel.diplom.org/~njudge/docs/VariantsHOWTO.html">
 guide to help building variants</a> on njudge v1.x (NB: work in progress!),</li>
-<li><a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudgemapdatahowto.htm?rev=HEAD&content-type=text/html">
+<li><a href="http://devel.diplom.org/~njudge/docs/njudgemapdatahowto.htm">
 How to build a Diplomacy Judge Map Data file</a> by Sergio Lidsell</li>
-</li>
-<li>some <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/HowToFloc.html?rev=HEAD&content-type=text/html">
+<li>some <a href="http://devel.diplom.org/~njudge/docs/HowToFloc.html">
 documentation of the building of maps</a> for
 <a href="http://www.floc.net/">floc.net</a>,</li>
 <li>a <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/njudge/">full CVS
 view</a> of the judge code,</li>
-<li>a sum-up from Millis of <a href="http://devel.diplom.org/~njudge/cgi-bin/viewcvs.cgi/*checkout*/njudge/docs/njudge2-discussion.html?rev=HEAD&content-type=text/html">
-a recent discussion on a possible njudge v.2.</a></li>
+<li>a sum-up from Millis of
+<a href="http://devel.diplom.org/~njudge/docs/njudge2-discussion.html">
+a recent discussion on a possible njudge v.2.</a>,</li>
+<li>a <a href="http://devel.diplom.org/~njudge/docs/mail_format.html">
+description of the e-mail judge format</a> (NB: work in progress!)</li>
+<li>some <a href="http://devel.diplom.org/~njudge/docs/">other docs</a> from the
+judge tarball.</li>
 </ul>
-
 </li>
 
 <li>A Diplomacy Judge user manual on the
-<a href="http://members.cox.net/russblau/">Russ Blau Diplomacy page</a>.</il>
+<a href="http://members.cox.net/russblau/">Russ Blau Diplomacy page</a>.</li>
 
 <li>The worlwide main resource on Diplomacy: The <a href="http://www.diplom.org/">DipPouch</a>.</li>
 <li>An <a href="http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html">
-history of njudge</a> by <a href="http://C.webring.com/hub?ring=millisring&id=1&hub">
+history of njudge</a> by <a href="http://C.webring.com/hub?ring=millisring">
 Millis Miller</a>, the current main maintener.</li>
 
 </ul>
