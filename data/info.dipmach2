@@ -1,11 +1,11 @@
-Greetings from the Diplomacy* Adjudicator!!           August 15, 2003
+Greetings from the Diplomacy* Adjudicator!!          November 16, 2003
 info.dipmach
 
 
 Introduction
 
 Dipmach is an adaption of the Standard Diplomacy Map for play with the 
-Machiavelli (Classical or version 2) rules.  The adaption is 
+Machiavelli (Classical or version 2) rules.  The adaption was 
 conceived and made by Sergio Lidsell.
 
 Setup is the same as for standard Diplomacy.
@@ -14,7 +14,7 @@ Setup is the same as for standard Diplomacy.
 Modes of play
 
 Dipmach can either be played as:
-     a) 3-season Diplomacy with garrisons
+     a) 2 or 3-season Diplomacy with or without garrisons
      b) good ol' Machiavelli
 
 
@@ -22,10 +22,12 @@ a) Diplomacy style play
 
 To be able to play as 3-season Diplomacy you must set up the game thus:
      create ?gamename yourpassword dipmach
-     set mach2     (this flag enables the "diplomacy build rules")
-     set nodice    (this removes disasters, variable income and more)
-     set nomoney   (this removes all use of money)
-     set nospecial (this removes the use of elite and militia units)
+     set mach2     (enables the "diplomacy build and control rules")
+     set nodice    (removes disasters, variable income and more)
+     set nomoney   (removes all use of money)
+     set nospecial (removes the use of elite and militia units)
+     set nosummer  (there will be no summer move)
+     set nogarrisons (garrisons may not be used or built or coverted to)
 
 What are the differences with Diplomacy if I play "3-season dip w/ garr" ?
 Just these few:
@@ -73,7 +75,14 @@ b) Machiavelli notes
    This area straddles the abovementioned straits and and army is not 
    blocked by those.
 
-7) Income
+7) St. Petersburg province
+   *Both* a fleet in in STP/NC *and* STP/SC may convert to garrison.  A 
+   garrison may likewise convert to a fleet on both coasts.  This means 
+   that a fleet in BAR has a backdoor into BAL.
+   (This feature is due to Machiavelli not having split coasts and thus no 
+   rules covering this.  This issue will not be adressed soon.)
+
+8) Income
    England, Germany and Russia have two dice for variable income.  All other 
    countries (Austria, Italy, France and Turkey) have one.  In addition to 
    the playing powers the owner of Spain or Sweden will receive an 
@@ -98,7 +107,7 @@ b) Machiavelli notes
    woods and related industries.
    Austria and Turkey were on the other hand not that well managed.
 
-8) Unit availability for Machiavelli2
+9) Unit availability for Machiavelli2
    England, France, Germany and Russia can build any type of unit
    Austria: no elite professional AGF; only bribe/maintain citizens militia
       and mercenary F units.
@@ -124,11 +133,14 @@ T: Turkey   A-Constantinople, A-Smyrna, F-Ankara, Armenia, Syria
 
 
 -----
-
 * Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
-All rights reserved.  Used with permission.
+All rights reserved.
+------
+
 
 REVISION HISTORY
 v1, March 16th 2003.  Final release version.  By Sergio Lidsell.
 v2, August 15th 2003.  Garrisons added. Variable income changes.  
     By Sergio Lidsell.
+v2b,November 16th 2003.  Clarification on StP and F/G conversion.  Added 
+    short explanation of nosummer and nogarrison flags.  By Sergio Lidsell.
