@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.12  2004/06/09 22:05:08  millis
+   ** More fixes for Bug 297, Intimate Diplomacy
+   **
    ** Revision 1.11  2004/05/22 08:56:53  millis
    ** Bug 297: Add Intimate Diplomacy
    **
@@ -200,26 +203,29 @@ void mail_listit(void)
 			f = dipent.players[i].status;
 			s = "";
 
-			if (f & (SF_CD | SF_ABAND))
+			if (!(dipent.x2flags & X2F_SECRET)) {
+
+			    if (f & (SF_CD | SF_ABAND))
 				abandons++;
 
-			if (now > dipent.deadline && WAITING(f))
+			    if (now > dipent.deadline && WAITING(f))
 				lates++;
 
-			if (dipent.flags & F_QUIET && (!signedon ||
+			    if (dipent.flags & F_QUIET && (!signedon ||
 						       (player != i && dipent.players[player].power != MASTER))) {
 				if (f & SF_MOVE && ok_for_blind) {
 					s = "move";
 				}
-			} else if (f & SF_CD) {
+			    } else if (f & SF_CD) {
 				s = "CD";
-			} else if (f & SF_ABAND) {
+			    } else if (f & SF_ABAND) {
 				s = "abandon";
-			} else if (f & SF_MOVE && ok_for_blind) {
+			    } else if (f & SF_MOVE && ok_for_blind) {
 				s = "move";
 				if (now > dipent.deadline && WAITING(f)) {
 					s = f & SF_PART ? "part" : "late";
 				}
+			    }
 			}
 
 			sprintf(line, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);
