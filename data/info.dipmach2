@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!          November 16, 2003
+Greetings from the Diplomacy* Adjudicator!!          May 13, 2004
 info.dipmach
 
 
@@ -94,7 +94,7 @@ b) Machiavelli notes
      France        1     2  3  3  4  5  6    1     Paris/3
      Germany       2     1  2  2  3  3  4    3     Berlin/3
      Italy         1     2  3  3  4  4  5    1     Rome/2
-     Russia        1     1  2  3  4  5  5    3     Moscow/3
+     Russia        1     2  3  3  4  5  5    3     Moscow/3
      Turkey        1     1  2  3  3  4  4    0     Constantinople/2
      Spain         1     0  0  0  1  1  1    0     Spain/2
      Sweden        1     0  0  0  0  1  1    0     -
@@ -144,3 +144,4 @@ v2, August 15th 2003.  Garrisons added. Variable income changes.
     By Sergio Lidsell.
 v2b,November 16th 2003.  Clarification on StP and F/G conversion.  Added 
     short explanation of nosummer and nogarrison flags.  By Sergio Lidsell.
+v2c,May 13th 2004. Correction of Russian VI. By SL.
