@@ -1,8 +1,10 @@
 /*
  * $Log$
+ * Revision 1.8  2001/07/16 22:53:11  miller
+ * Fixed EJECT command (was previosuly doing nothing!)
+ *
  * Revision 1.7  2001/07/15 09:16:14  greg
  * added support for game directories in a sub directory
- * ci -u ml_list.c
  *
  * Revision 1.6  2001/07/14 07:40:17  greg
  * minor bug fix & put "[Error Flag]" in subjectline when appropriate
@@ -175,6 +177,17 @@ static int cvalue[] =
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
+
+
+void shiftleft(int dist) {
+	int x = 0;
+
+	do  {
+		subject[x] = subject[x+dist];
+		x++;
+	} while (subject[x+dist-1] != '\0');
+}
+
 
 static int address_not_in_list(char *reply_address, char *players_addresses);
 
@@ -1961,7 +1974,7 @@ void mail_reply(int err)
 
 	char line[1024];
 	char *s;
-	int i, x, slen;
+	int i, slen;
 	char jline[50];
 
 	if ((err != E_FATAL) && (!junkmail))
@@ -1987,85 +2000,44 @@ void mail_reply(int err)
 		return;
 
 	if (!strncmp(subject, "Re: ", 4)) {
-		x = 0;
-		do  {
-			subject[x] = subject[x+4];
-			x++;
-		}
-		while (subject[x+3] != '\0');
+		shiftleft(4);
 
-		if (!strncmp(subject, "[Error Flag] ", 13)) {
-			x = 0;
-			do {
-				subject[x] = subject[x+13];
-				x++;
-			}
-			while (subject[x+12] != '\0');
-		}
+		if (!strncmp(subject, "[Error Flag] ", 13))
+			shiftleft(13);
 
-		if (!strncmp(subject, "[You are late!] ", 16)) {
-			x = 0;
-			do {
-				subject[x] = subject[x+16];
-				x++;
-			}
-			while (subject[x+15] != '\0');
-		}
+		if (!strncmp(subject, "[You are late!] ", 16))
+			shiftleft(16);
 
 		if (!strncmp(subject, JUDGE_CODE, 4)) {
-			x = 0;
-			do  {
-				subject[x] = subject[x+4];
-				x++;
-			}
-			while (subject[x+3] != '\0');
+			shiftleft(4);
 
-			if (!strncmp(subject, ":", 1)) {
-				x = 0;
-				do  {
-					subject[x] = subject[x+1];
-					x++;
-				}
-				while (subject[x] != '\0');
+			if (signedon) {
+				if (!strncmp(subject, ":", 1)) {
+					shiftleft(1);
 
-				slen = strlen(dipent.name);
+					slen = strlen(dipent.name);
 
-				if (!strncmp(subject, dipent.name, slen)) {
-					x = 0;
-					do  {
-						subject[x] = subject[x+slen];
-						x++;
-					}
-					while (subject[x+slen-1] != '\0');
+					if (!strncmp(subject, dipent.name, slen)) {
+						shiftleft(slen);
 
-					if (!strncmp(subject, " - ", 3)) {
-						x = 0;
-						do  {
-							subject[x] = subject[x+3];
-							x++;
-						}
-						while (subject[x+2] != '\0');
+						if (!strncmp(subject, " - ", 3)) {
+							shiftleft(3);
 
-						if (!strncmp(subject, dipent.phase, 6)) {
-							x = 0;
-							do  {
-								subject[x] = subject[x+6];
-								x++;
-							}
-							while (subject[x+5] != '\0');
+							if (!strncmp(subject, dipent.phase, 6)) {
+								shiftleft(6);
 
-							if (!strncmp(subject, " ", 1)) {
-								x = 0;
-								do  {
-									subject[x] = subject[x+1];
-									x++;
-								}
-								while (subject[x] != '\0');
+								while (subject[0] == ' ')
+									shiftleft(1);
 							}
 						}
-
 					}
 				}
+			} else {
+				if (!strncmp(subject, ":", 1))
+					shiftleft(1);
+
+				while (subject[0] == ' ')
+					shiftleft(1);
 			}
 		}
 	}
@@ -2359,4 +2331,6 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 
 	return result;
 }
+
+
 
