@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2001/08/30 05:01:30  nzmb
+ * Modified second argument of calls to check_can_vote.
+ *
  * Revision 1.11  2001/07/22 10:03:32  greg
  * customized subjectline for player's preference change
  *
@@ -178,6 +181,8 @@ void CheckForGameStart()
 	} else {
 	    fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
             mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
+
+		sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
         }
      broadcast = 1;
      }
