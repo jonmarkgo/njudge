@@ -1,10 +1,11 @@
-The following bugs were outstanding as of 1.7.3
+The following bugs were outstanding as of 1.7.4
 
 --------------------
 
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 282 	maj 	P3 	All 	judge-maint@diplom.org 	REOP 		'::' summary lines sometimes not sent
 382 	maj 	P3 	All 	judge-maint@diplom.org 	ASSI 		resign command no longer works
+394 	maj 	P3 	All 	judge-maint@diplom.org 	NEW 		Bailout on terminating started game with no moves made
 131 	nor 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
 149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
 186 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Must order does not allow press when should
@@ -49,5 +50,6 @@ ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 373 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player receives notice with wrong header
 378 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Game is terminated, not completed
 383 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Disband-mantain parsing error
+390 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Self-bounce gives message (*siege required*)
 255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
-47 bugs found. 
+49 bugs found. 

@@ -1,13 +1,10 @@
 This is a bug-fix release.
 
-The following bugs were fixed in 1.7.3
+The following bugs were fixed in 1.7.4
 
 (ordered by Severity)
 
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
-385 	cri 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Portage games can block the judge
-386 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	DipMach not showing Albania/North Africa
-387 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Support order incorrectly voided
-384 	nor 	P3 	PC 	judgekeeper@braincells.com 	RESO 	FIXE 	fails to compile on FreeBSD
-388 	min 	P3 	All 	millis@faztek.org 	RESO 	FIXE 	Intimate help files incomplete
-5 bugs found. 
+395    	cri   	P3   	All   	judge-maint@diplom.org   	RESO   	FIXE   	Partial Press sent to too many players
+393 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Mach2 game besieged unit fails to break siege
+391 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Bailout executes twice
