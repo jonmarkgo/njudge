@@ -2,7 +2,7 @@ Greetings from the Diplomacy* Adjudicator!!                15th April 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
-	 Still to be implemented ones are marked with a '+'.)
+       Still to be implemented ones are marked with a '+'.)
 
 This is an alphabetical list of all the commands that the adjudicator will
 process with a brief description.  Each command is preceded by a who/where
@@ -47,7 +47,12 @@ any/aft BROADCAST [options] ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
 any/aft CLEAR
         To clear any pending orders entered with the PHASE command.
 
-adm/pre FIXID siteid site_name
+mod/aft*EJECT power-or-email
+        A master-only command to resign a particular power. This can be done at
+        any time by the master. The master MUST use this form to resign himself.
+        The <power-or-email> specification can also be an email address, and will
+        work with observers too.
+                                                                                                                                      adm/pre FIXID siteid site_name
         Sets all players who have registered with the specified site name
         to have a siteid as indicated.  By default all users get their
         area code times 100 as a siteid and must be fixed to some non-
@@ -174,6 +179,10 @@ any/aft PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.
 
+mod/aft*PREDICT
+	Will send to the master a prediction of the current turn, using partial
+	orders already entered.
+	
 any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
         To send a press message; options must be specified, and the message
         may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or the
@@ -184,12 +193,6 @@ mod/aft*PROMOTE address
 
 any/any REGISTER ... END  
         To register yourself.  See file 'form'.
-
-mod/aft*RESIGN power-or-email
-	A master-only command to resign a particular power. This can be done at
-	any time by the master. The master MUST use this form to resign himself.
-	The <power-or-email> specification can also be an email address, and will
-	work with observers too.
 
 any/aft RESIGN
         To withdraw from the game.  This must be the LAST command in the
@@ -316,16 +319,6 @@ mod/aft SET DEDICATION level
         rating equal or greater than the indicated level.  The indicated
 	level can not be higher than the Moderator's current dedication
 	rating.  See file 'deadlines'.
-
-mod/aft SET ONTIMERAT level
-	Restricts access to the game to those people with an ontime ratio
-	equal then or greater than the indicated level. The indicated
-	level can not be higher than the moderator's.
-
-mod/aft SET RESRAT level
-	Restricts access to the game to those people with a resignation
-	ratio lower than or equal to the indicated level. The indicated
-	level can not be lower than the moderator's.
 
 mod/aft SET [NO]DIAS
         Disables/enables requirement that all draws must include all
