@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2003/03/19 22:24:22  millis
+ * Small bug fix
+ *
  * Revision 1.3  2003/03/18 16:13:57  millis
  * Use fputs instead of puts to avoid extra '\n'
  *
@@ -33,13 +36,13 @@ int main(int argc, char *argv[])
 
     char *filename;
     FILE *fptr;
-    char line[1024];
+    char line[512];
     
-    int max_size = sizeof(line) -1;
+    int mmsize = sizeof(line) -1;
 
     if (argc != 2) {
 	printf("lenlimit <filename>:\n");
-	printf("\n where <filename> is file to limit to 1024 bytes line length.\n\n");
+	printf("\n where <filename> is file to limit to %d bytes line length.\n\n", mmsize-2);
 	return 1;
     }
     filename = argv[1];
@@ -48,13 +51,13 @@ int main(int argc, char *argv[])
 
     if (!fptr) {
 	printf("File %s not found.\n", filename);
-	return ;
+	return -1;
     }
 
-    while (fgets(line, max_size-1, fptr)) {
-        if (strlen(line) >= max_size) {
-	    line[max_size-1] = '\n';
-	    line[max_size] = '\0';
+    while (fgets(line, mmsize-1, fptr)) {
+        if (strlen(line) >= mmsize-2) {
+	    line[mmsize-2] = '\n';
+	    line[mmsize-1] = '\0';
 	}
 	fputs(line,stdout);
     };
