@@ -21,7 +21,7 @@
 include Makefile.defines
 
 #set the judge version
-JVERSION=0.8.7
+JVERSION=0.8.7-Beta-1
 
 # Programs, Sources, and Objects.
 
@@ -172,9 +172,13 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	fi;
 	rm -f data/RCS
 	cp data/* ${INSTALLDIR}/data
-	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR}
+	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
+	fi; 
 	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
-	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} 
+	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \  
+	fi;
 	cp dip.conf $(DESTDIR)/dip.conf
 	touch ${DESTDIR}/dip.msg
 	@chmod 640 ${DESTDIR}/dip.msg
@@ -199,8 +203,14 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	@echo "To start the judge, rename /home/${USER}/forward to .forward"
 	@echo
 
+remap: cmap
+	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
+#	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+#	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} \
+#	fi; 
+
 upgrade: dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
-	 pdip rdip summary deddump delgame flock ign flist magic
+	 remap pdip rdip summary deddump delgame flock ign flist magic
 	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
 	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 	install ${INSFLAGS} summary ${INSTALLDIR}/summary
@@ -286,7 +296,7 @@ ${INSTALLDIR}/data/flist: ${INSTALLDIR}/data Datamake flist.info
 	 echo g/+/s/+//;                \
 	 echo g/NOLIST/d;               \
 	 echo w) | \
-	  ed - temp.flist2
+	  ed  - temp.flist2
 	-rm ${INSTALLDIR}/data/flist
 	cat temp.flist1 temp.flist2 > ${INSTALLDIR}/data/flist
 	rm  temp.flist1 temp.flist2
