@@ -1,0 +1,11 @@
+#! /bin/csh
+#
+# This file is to be used when the JK wants to move the game directories
+# to a sub directory
+#
+# Be sure to change the references to "games" below to match the value of
+# GAME_DIR in dip.conf
+
+
+mkdir games
+mv `ls -ld D* | awk '{print $9}'` games
