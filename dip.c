@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2001/11/20 07:43:45  greg
+ * VSFixed last (hopefully) problem with "Waiting for Master to Start" subjectlinE: 
+ *
  * Revision 1.15  2001/11/11 21:16:19  greg
  * Subjectline Fixes
  *  - New player signons will no longer show "Preference Change"
@@ -1345,6 +1348,11 @@ int process(void)
 			    /* Special routine to work out what to tell who */
 			    inform_party_of_blind_turn(i, phase);
 			}
+			/* If a build transfer, set a wait for all players playing */
+                        if ((dipent.phase[5] == 'B') && !(dipent.players[i].status &= SF_DEAD)
+                            && (dipent.xflags & XF_TRANS_BANYW)) {
+                            dipent.players[i].status |= SF_WAIT;
+                        }
   
 		}
 
