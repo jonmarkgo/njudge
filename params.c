@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2000/11/18 21:12:14  miller
+ * Fixed ONECENTRE bug
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Display of all new additional parameters
  *
@@ -298,6 +301,13 @@ void params(FILE * fp)
 		default:
 			strcat(line,"HomeCentre");
 		}
+                if (dipent.xflags & XF_NOATTACK_TRANS )
+                {
+                    strcat(line, " (if not attacked)");
+                }
+                else
+                    strcat(line, " (if not dislodged)");
+
 	    }
             strcat(line, ".");
             print_params(fp, line); 
