@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.23  2003/04/30 00:02:00  millis
+# Added use of dip.footer
+#
 # Revision 1.22  2003/03/29 18:20:28  christ
 # Added VariantsHOWTO* to Makefile.am
 #
@@ -230,16 +233,22 @@ dist_doc_DATA=	docs/InstallationHOWTO.txt \
 		ChangeLog \
 		README
 
-upgrade: defaults.h ${bin_PROGRAMS}
+upgrade: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
+	@for i in ${dist_data_DATA}; \
+	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
+	done;
 
-upgrade-strip: defaults.h ${bin_PROGRAMS}
+upgrade-strip: defaults.h ${bin_PROGRAMS} ${dist_data_DATA}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} -s $$i ${DESTDIR}$(bindir)/$$i; \
+	done;
+	@for i in ${dist_data_DATA}; \
+	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/$$i; \
 	done;
 
 defaults.h: defaults.inc
