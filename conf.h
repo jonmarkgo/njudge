@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/07/08 22:57:07  miller
+ * New defines
+ *
  * Revision 1.3  2001/01/06 18:48:43  davidn
  * Changes to allow game creator to be automatically made master
  *
@@ -66,6 +69,7 @@
 #define STATS_DIR	config("STATS_DIR")
 #define TIME_TOLERANCE  atoi(config("TIME_TOLERANCE"))
 #define WARP_FILE	config("WARP_FILE")
+#define GAME_DIR	config("GAME_DIR")
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think
