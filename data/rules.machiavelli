@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                  August 5, 2004
+Greetings from the Diplomacy* Adjudicator!!               November 21, 2004
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -24,16 +24,16 @@ machiavelli.ps" command or on various sites on the Internet.
 The time frame of Machiavelli is Renaissance Italy from 1385 to 1529.
 
 The main changes from standard Diplomacy are (also see appendix 3):
-     1) Powers have finances.
-     2) The use of money to buy, build, disband and maintain units.
-     3) Famine and plague events.
-     4) Garrison and multistrength units.
-     5) Siege rules.
-     6) Convoy rules.
-     7) Province control rules (supply centers).
-     8) Bribery.
-     9) New order types.
-    10) Three movement seasons: spring, summer and fall.
+     1) Three movement seasons: spring, summer and fall.
+     2) New order types.
+     3) Province control rules (supply centers). (Classic rules.)
+     4) Convoy rules.
+     5) Garrison unit and siege rules.
+     6) Powers have finances. (Advanced rules)
+     7) The use of money to buy, build, disband and maintain units. (Adv.)
+     8) Famine and plague events. (Adv.)
+     9) Bribery. (Adv.)
+    10) Special (multistrength) units. (Adv.)
 
 
 ADVANCED AND BASIC RULES
@@ -88,26 +88,39 @@ is garrisoned in the city and the other is outside the city in the province
 proper (except "Venice", see under special mapboard features).
 
 Retreats differ from diplomacy as listed below:
-     1) Retreats are *not* allowed into a rebelling city (city gates are locked).
+     1) Retreats are *not* allowed into a rebelling city (locked city gates).
      2) Retreats are allowed into a rebelling province.
      3) Rebelling units can not and do not support retreats.
      4) Multistrength units (the elites) are treated as normal one-strength
         units during retreat (thus this is a bounce: a mil m pav,
         elite a tur m pav).
 
-If you try to self-bounce one of your multistrength units with one of 
+You may *disband* any unit at *any time*. On the nJudge this feature is 
+controlled by the 'set disband' flag (q.v.).
+
+If you try to *self-bounce* one of your multistrength units with one of 
 your one strength units the multistrength unit's move will succeed 
 and the other unit will bounce.
 
-'Tech note'.  In original Machiavelli you would instead note: unitserial
+Notice that a garrison and an army or fleet in the *same province* cannot 
+*trade places*. E.g. G PISA C A at the same time asF PISA C G is not 
+allowed regardless of units strengths.
+
+Nor can two units *trade provinces* with each other. E.g. F PISA M PIO at 
+the same time as A PIO M PISA is not allowed regardless of units strengths.
+
+'Tech note' 1.  In original Machiavelli you would instead note: unitserial
 order endprov.  Original rules are also very vague about conflicts.  As
 what happens when a power orders two of his units to move to the same
 province.
 
+'Tech note' 2.  In the original rules nothing is said about trading places.
+
 
 CONVOYS
-Fleets may convoy even if they are in coastal provinces.  Armies must start
-and finish in coastal provinces.  Convoys cannot jump coasts.
+Fleets may convoy even if they are in coastal provinces.  On the nJudge 
+this feature is controlled by the 'set coastalconvoys' flag (q.v.).  Armies 
+must start and finish in coastal provinces.  Convoys cannot jump coasts.
 
 
 ADDITIONAL UNITS
@@ -138,6 +151,8 @@ as obstacles and must be besieged or bribed to be removed.  You may of
 course also buy them to get an additional unit.
 Do note that they affect city ownership for elimination purposes as any
 ordinary garrison would.
+Notice that special units retain their 'specialness' if you bribe them to 
+turn autonomous. Thus you may e.g. create an elite autonomous garrison! 
 
 
 SPECIAL UNITS (OPTIONAL)
@@ -774,7 +789,7 @@ EFFECTS OF REBELLIONS:
    province as they can never be placed in a garrisoned city, even if the
    garrison later on leaves or is eliminated.
 4) Rebellion units are placed in both the province and, if it's
-   ungarrisoned, any fortified city or fortress present in the affected
+   ungarrisoned, any fortified city or fortress (if in use) present in the affected
    province.
 5) Movement, conversions, retreats and builds
      1) Movement into a rebelling province is not restricted.
@@ -806,6 +821,7 @@ EFFECTS OF REBELLIONS:
         a player in a city may cause a rebellion in the province to support
         his own units *into* the province.)  Note that besieged units can
         not convert.
+     6) Rebellion units can not and do not support retreats.
 7) Income
      1) The controlling player receives no income from rebelling provinces
         or rebelling ungarrisoned cities.
@@ -1203,6 +1219,7 @@ To be able to play as 3-season Diplomacy you must set up the game thus:
      set nodice    (this removes disasters, variable income and more)
      set nomoney   (this removes all use of money)
      set nospecial (this removes the use of elite and militia units)
+     set nostorm
 
 What are the differences with Diplomacy if I play "3-season mach w garr" ?
 Just these few:
@@ -1223,6 +1240,8 @@ ignored in this case.)
 To play 100% Standard Diplomacy also set these flags
      set nogarrisons (this removes the use of garrisons)
      set nosummer (this removes the summer moves and plagues)
+     set nocoastalconvoys
+     set nodisband
 
 What are the differences with Diplomacy if I play "2-season mach w/o garr" ?
 None !!!
@@ -1230,32 +1249,25 @@ None !!!
 
 APPENDIX 4 -- PROVISIONAL RULE FOR MULTI-COASTAL PROVINCES
 
-How conversiosn are to be resolved in multi-coastal areas containing a city (e.g.
+How conversions are to be resolved in multi-coastal areas containing a city (e.g.
 St. Petersburg).
 
-Current status: all coasts are available for conversion regardless of placement 
-of anchor symbol.
+Current status: all coasts are available for conversion or builds regardless of 
+placement of city or anchor symbol.
 
-Probable future rules (used at GM's discretion):
+Probable future rule (used at GM's discretion):
 
-Version 1: Fleets may only convert to garrison or vice versa from/to a sea area 
-containing the anchor symbol.  Would both coasts have the anchor then both 
-coasts would be eligible for conversion.
+Version 1: Fleets may only be built or convert to garrison or vice versa from/to 
+a sea area containing the anchor symbol.  Would both coasts have the anchor then 
+both coasts would be eligible for conversion.
 
-Version 2: Fleets may only convert to garrison or vice versa from/to a sea area 
-containing the anchor symbol.  Only one "anchored" coast may exist.
+Version 2: Fleets may only be built or convert to garrison or vice versa from/to 
+a sea area containing the anchor symbol.  Only *one anchored* coast may exist.
 
-**Support into multi-coastal provinces**
-This is a recurrent bone of contention.  To simplify the procedure and avoid 
-endless discussions about what coast the support was intended to (after the 
-judge software has added an arbitrary coastal designation), we recommend that 
-the GM always declares in the game information what rule he will use.
+Support from fleets into multi-coastal provinces
 
-We recommend one of these solutions:
-1) Support always successful regardless of if the fleet givning support can 
-   move to the coast in question, or
-2) Support only successful if the fleet giving support can move to the coast 
-   that the supported fleet is on. 
+As in Diplomacy support is only successful if the fleet giving support can move 
+to the coast that the supported fleet is on. 
 
 
 APPENDIX 5 -- INCOME QUICK REFERENCE CHART
@@ -1297,8 +1309,8 @@ RIGHTS RESERVED.
 REVISION HISTORY
 v1 11th December 1991. Author Ken Lowe??.
 v1b 25th May 2000. Minor revision. Avalon Hill changed to Hasbro Inc.
-    and correction of assassination effects on garrisons. 
-    Author Millis Miller.
+    Correction of erroneous unit limist, besieged garrison income and 
+    of assassination handling on the nJudge.  Author Millis Miller.
 v2 30th June 2001. Major rewrite. Clarifications to most rules. Author
     Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and 
     Robert Rehbold.
@@ -1325,6 +1337,11 @@ v2.4b 22nd Jan 2004.  'Income quick ref chart' (app 5).  Minor correction
     re coasts and disbands.  Venice 5e corrected.  Author Sergio Lidsell.
 v2.4c 3rd March 2004.  Note about support into multi-coastal provinces 
     added.  Author Sergio Lidsell.
-v2.4d 5th Aug 2004.  Appendix 6 added.  Author Sergio Lidsell.
+v2.4d 25th Aug 2004.  Appendix 6 added.  Appendix 4 corrected and 
+    clarified. Rebellion effects on support clarified (p6).  Grouped the 
+    Mach-Dip diffs in the intro into diffs under basic rules and diffs under
+    advanced rules.  Author Sergio Lidsell.
+v2.5 21th Nov 2004.  Clarified that units cannot trade places (movement 
+    rules) and how elite autonomous garrisons can appear.  Author S. Lidsell.
 
-This document is free to distribute for non-commercial and non-profit  purposes.
+This document is free to distribute for non-commercial and non-profit purposes.
