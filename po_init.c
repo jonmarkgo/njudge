@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/08/27 22:27:56  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.7  2002/04/15 12:55:45  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -144,6 +147,7 @@ int po_init(void)
 		for (i = 0; i <= npr; i++) {
 			n = islower(pr[i].type) ? 0 : power(pr[i].type);
 			pr[i].owner = n;
+			pr[i].new_owner = n;
 			pr[i].cown = n;
 			pr[i].home = n;
 			pr[i].unit = 0;
@@ -185,10 +189,12 @@ int po_init(void)
 			pr[i].type2 = cmap[CMAP_TYPE2];
 			n = islower(pr[i].type) ? 0 : power(pr[i].type);
 			pr[i].owner = n;
+			pr[i].new_owner = n;
 			pr[i].cown = n;
 			pr[i].home = n;
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
+			pr[i].order_index =0;
 			if (pr[i].type == 'r' || pr[i].type == 'g' )
 			    pr[i].move = NULL;
 		}
@@ -269,6 +275,9 @@ int po_init(void)
 		hpx = hp;
 	}
 	UpdateBlockades();
+
+	dipent.has_multi_unit_provs = CheckForMultiUnitProvinces();
+
 	return err;
 }
 
@@ -297,7 +306,7 @@ void po_chkmov(void)
 				continue;
 			}
 			i = *s++ & 0x0f;
-			while ((j = *t++) && ((j != from) || (i != MX && i != *t >> 4)))
+			while ((j = *t++) && ((j != from) || (i != MX && i != HX && i != LX && i != *t >> 4)))
 				t++;
 			if (!j) {
 				/* TODO of course this may be deliberate... */
@@ -361,6 +370,7 @@ int gamein(void)
 			fprintf(rfp, "Invalid unit owner %c for unit %d.\n", *line, nunit);
 			err++;
 		}
+		
 		unit[nunit].railway_index = -1; /* not yet using a railway */
 		unit[nunit].status = line[1];
 		unit[nunit].exists = 1;  /* reading it in, so it must exist! */
@@ -425,7 +435,7 @@ int gamein(void)
 			} else {
 				pr[unit[nunit].loc].gunit = nunit;
 			}
-		} else if (pr[p1].unit) {
+		} else if (pr[p1].unit && !IsMultiProvince(p1)) {
 			fprintf(rfp, "More than one unit in province %s.\n", pr[p1].name);
 			err++;
 		} else {
@@ -675,7 +685,7 @@ int gameout(void)
 	unsigned char *b, *rc;
 	int i, j, n, p, u;
 	int nu[AUTONOMOUS + 1], np[AUTONOMOUS + 1];
-	char ns[80], n1[80], n2[80], os[80], o1[80], cs[80], c1[80],
+	char ns[80], n1[80], n2[80], n3[80], n4[80], os[80], o1[80], cs[80], c1[80],
 	 hs[80], fs[80];
 
 	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
@@ -770,6 +780,18 @@ int gameout(void)
 		ns[n] = pr[p].name[0];
 		n1[n] = pr[p].name[1];
 		n2[n] = pr[p].name[2];
+		n3[n] = pr[p].name[3];
+		n4[n] = pr[p].name[4];
+		if (n1[n] == '\0' ) {
+			n1[n] = n2[n] = ' '; n3[n] = ' '; n4[n] = ' '; 
+		}
+		if (n2[n] == '\0' ) {
+                        n2[n] = n3[n] = ' '; n4[n] = ' '; 
+                }
+		if (n3[n] == '\0' ) {
+                        n3[n] = n4[n] = ' '; 
+                }
+
 		os[n] = dipent.pl[pr[p].owner];
 		o1[n] = dipent.pl[npown[p]];
 		cs[n] = dipent.pl[pr[p].cown];
@@ -777,14 +799,17 @@ int gameout(void)
 		hs[n] = dipent.pl[pr[p].home];
 		fs[n] = ((pr[p].flags & 0x3F00) >> 8) + '0';
 		if (n++ == 78 - 2 || p == npr) {
-			ns[n] = n1[n] = n2[n] = os[n] = o1[n] =
+			ns[n] = n1[n] = n2[n] = n3[n] = n4[n] = os[n] = o1[n] =
 			    cs[n] = c1[n] = hs[n] = fs[n] = '\0';
-			fprintf(ifp, "N:%s\nn:%s\nn:%s\nO:%s\n", ns, n1, n2, os);
+			fprintf(ifp, "N:%s\nn:%s\nn:%s\nn:%s\nn:%s\nO:%s\n", ns, n1, n2, n3, n4, os);
 			if (dipent.flags & F_MACH) {
 				fprintf(ifp, "C:%s\nH:%s\nF:%s\n", cs, hs, fs);
 				if (dipent.phase[5] == 'R') {
 					fprintf(ifp, "o:%s\nc:%s\n", o1, c1);
 				}
+			}
+			if (dipent.x2flags & X2F_MORE_HOMES) {
+				 fprintf(ifp, "H:%s\n",hs);
 			}
 			n = 0;
 		}
@@ -847,7 +872,10 @@ int gameout(void)
 			/* Mark player as dead if he is */
 			if (!(dipent.flags & F_MACH) || 
 			     (dipent.xflags & XF_NOMONEY)) {
-				if (dipent.players[u].centers <= 0) dipent.players[u].status |= SF_DEAD;			     }
+				if (dipent.players[u].centers <= 0 &&
+				    dipent.players[u].units <= 0 ) 
+				  dipent.players[u].status |= SF_DEAD;
+			}
 			if (need_order[p] && !(dipent.players[u].status & SF_DEAD))
 				dipent.players[u].status |= SF_MOVE;
 		} else {

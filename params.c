@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.20  2002/12/28 01:00:56  millis
+ * Small text change
+ *
  * Revision 1.19  2002/12/28 00:52:18  millis
  * Proper fix to CR 17
  *
@@ -501,16 +504,22 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_SECRET)
                 strcatf(line, "Secret", &first_flag);
 
+
 	if (dipent.x2flags & X2F_MORE_HOMES) {
 		sprintf(temp1,"NumHome: %d", dipent.num_homes);
 		strcatf(line, temp1, &first_flag);
 	}
+	
+	if (dipent.extra_centres != 0) {
+                sprintf(temp1,"ExtraCentres: %d", dipent.extra_centres);
+                strcatf(line, temp1, &first_flag);
+        }
 
 	if (dipent.flags & F_BLIND) {
-	    if (dipent.x2flags & X2F_BLIND_CENTRES) {
-                strcatf(line, "BCentres", &first_flag);
+	    if (dipent.x2flags & X2F_BLIND_NO_CENTRES) {
+                strcatf(line, "NoBlindCentres", &first_flag);
             } else {
-                strcatf(line, "NoBCentres", &first_flag);
+                strcatf(line, "BlindCentres", &first_flag);
             } 
 	}
 	

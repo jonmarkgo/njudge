@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.4.2.1  2003/01/13 16:04:55  millis
+ * ustv latest versions
+ *
+ * Revision 1.4  2001/12/11 12:08:36  miller
+ * Added extra "trafo to" action
+ *
  * Revision 1.3  2001/07/01 23:19:29  miller
  * Change function signature
  *
@@ -263,13 +269,19 @@ char *get_order(char *l, char *o)
 	 "remove", "r#", "disband", "d#",
 	 "maintain", "m#",
 	 "waive", "w#",
-	 "transform", "trafo", "t#"};
+	 "transform", "trafo", "t#",
+	 "home", "nohome", "no home",
+	 "erase", "zap", "restore",
+	 "own" };
 	static char reply[] =
 	{'x', 'b', 'b', 'r',
 	 'r', 'r', 'r', 'r',
 	 'm', 'm',
 	 'w', 'w',
-	 't', 't', 't'
+	 't', 't', 't',
+	 'h', 'n', 'n',
+	 'c', 'z', 's',
+	 'o'
 	};
 
 
@@ -383,3 +395,4 @@ char *get_type(char *l, char *t)
 	}
 
 }
+

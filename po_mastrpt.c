@@ -1,5 +1,11 @@
 /*
    ** $Log$
+   ** Revision 1.1.2.1  2003/01/13 16:04:56  millis
+   ** ustv latest versions
+   **
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.2  1997/03/12 21:33:31  davidn
    ** Fix to ensure judge does not try to send 4Gb of spaces to the gm
    ** when there is a power with more than 10 letters in its name.
@@ -24,6 +30,8 @@ void mast_rpt(int current_power, int line_up)
 {
 	int cnt, tmp;
 
+	if (current_power == dipent.has_natives) 
+		return;  /* Don't show moves pending from natives */
 	fprintf(rfp, "%s:", powers[current_power]);
 	if (line_up) {
 		for (cnt = strlen(powers[current_power]); cnt < LPOWER + 1; cnt++) {
