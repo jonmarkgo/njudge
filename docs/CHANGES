@@ -1,3 +1,5 @@
+(8th Nov 2002)
+Fixed bug 36, in users.c, functions.h & mail.c
 (23rd Oct 2002)
 Fiexed bug 22 in machlib.c
 Update rules.machiavelli&2 files for more clarification
