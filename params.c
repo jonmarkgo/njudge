@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.25  2003/02/28 20:16:46  nzmb
+ * Changed the name of resignation ratio to CD ratio, to avoid confusion with
+ * Doug Massey's DRR.
+ *
  * Revision 1.24  2003/02/18 14:26:01  millis
  * Fixed small errors (missing '&')
  *
@@ -328,9 +332,9 @@ void params(FILE * fp)
 	if (dipent.flags & F_MACH) {
         sprintf(line, "    Mach:   ");
 
-		if (dipent.flags & F_NODICE) {
+	    if (dipent.flags & F_NODICE) {
 			strcat(line, "NoDice");
-		} else {
+	    } else {
 			if (dipent.flags & F_NOFAMINE) {
 				strcat(line, "NoFamine");
 			} else {
@@ -351,20 +355,25 @@ void params(FILE * fp)
 			} else {
 				strcat(line, ", Assassination");
 			}
-			if (dipent.flags & F_NOSPECIAL) {
-				strcat(line, ", NoSpecial");
-			} else {
+	    }
+		    if (dipent.flags & F_NOSPECIAL) {
+		   	strcat(line, ", NoSpecial");
+		    } else {
 				strcat(line, ", Special");
-			}
-		        if (dipent.xflags & XF_FORT) {
-                                strcat(line, ", Forts");
-                        } /*else {
-                                strcat(line, ", NoForts");
-                        }*/
-			if (dipent.xflags & XF_STORMS) {
-				strcat(line,", Storms");
-			}	
-		}
+		    }
+	            if (dipent.xflags & XF_FORT) {
+                        strcat(line, ", Forts");
+                    } else {
+                        strcat(line, ", NoForts");
+                    }
+		    if (dipent.xflags & XF_STORMS) {
+			strcat(line,", Storms");
+		    }
+		    if (dipent.x2flags & X2F_NOGARRISONS) 
+			strcat(line, ", NoGarrisons");
+
+		    if (dipent.x2flags & X2F_NOSUMMER) 
+			strcat(line, ", NoSummer");	
 		
 		if (dipent.flags & F_NOADJ) {
 			strcat(line, ", NoAdjacency");
@@ -373,6 +382,7 @@ void params(FILE * fp)
 		}
                 if (dipent.xflags & XF_NOMONEY)
                     strcat(line, ", NoMoney");
+
             strcat(line, ".");
             print_params(fp, line);
 
@@ -553,6 +563,9 @@ void params(FILE * fp)
             } else {
                 strcatf(line, "NoBCentres", &first_flag);
             } 
+	}
+	if (dipent.x2flags & X2F_SUMMER) {
+		strcatf(line, "Summer", &first_flag);
 	}
 	
 	if (!first_flag) 
