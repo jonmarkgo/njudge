@@ -112,4 +112,19 @@ Making public distributions
 
   $  fakeroot ./debian/rules clean
 
+Debugging
+=========
+
+  1.  Preparing the code for debugging (with gdb, ddd etc.)
+  ---------------------------------------------------------
+
+  Normally, the code is compiled with the flags '-O2', which makes it optimised.
+  This is no good when trying to debug it, as you won't be able to single-step.
+  Instead, it needs to be recompiled for debugging, with '-ggdb'.
+ 
+  Use the following commands to do this:
+
+  $  make clean; make CFLAGS="-ggdb"; make upgrade
+
+
 Jaldhar H. Vyas <jaldhar@braincells.com> Sun, 22 Dec 2002 19:51:50 -0500
