@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -66,6 +69,20 @@ void errputc(char c, FILE * fp)
 /****************************************************************************/
 
 static int alev = 0, ilev = 0, elev = 0;
+#define IF      1
+#define ELSEIF  2
+#define ELSE    3
+#define ENDIF   4
+
+        static char *directives[] =
+        {"0", "if", "else if", "else", "endif"};
+
+int canpreprocess(char *s)
+{
+	int dir;
+        s = lookfor(s, directives, nentry(directives), &dir);
+	return dir; 
+}
 
 int preprocess(char **s, int *p)
 {
@@ -74,14 +91,6 @@ int preprocess(char **s, int *p)
  *  Do various common processing for every line read from input.
  *  The return value if nonzero if the line should be skipped.
  */
-
-#define IF      1
-#define ELSEIF  2
-#define ELSE    3
-#define ENDIF   4
-
-	static char *directives[] =
-	{"0", "if", "else if", "else", "endif"};
 
 	int dir;
 
