@@ -11,6 +11,9 @@ DESTDIR= /home/judge
 INSTALLDIR=${DESTDIR}
 
 
+#This entry defines the install command: over-ride if necessary
+INSTALLCMD=install
+
 #The line indicates where the source code resides (normally need not be changed)
 SRCDIR=.
 
