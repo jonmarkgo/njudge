@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.31  2004/07/07 22:00:00  millis
+** Small fix as was showing 'Unit' not real type for convoyed units
+**
 ** Revision 1.30  2004/07/05 07:17:34  nzmb
 ** Partial fix to bug 290. Unfortunately, convoys in blind seem to be
 ** somewhat broken because of this fix (by my testing, long convoys don't
@@ -255,23 +258,33 @@ int dual_land(int p)
 
 static int NoValidConvoyingFleet(char *s, int u)
 {
+    /*
+     * *s is now an entry into the province table, not the unit table.
+     */
     int ret_code = 1;
-    int p = unit[(int) *s].loc;
+    int p = (*s) - 1;
     int u1;
 
+    /*
+     * NOTE: this used to be in a do-while loop that only ever executed
+     * one iteration since pr[p].order_index can never be > 1. I have left the
+     * loop in commented out. If this works it and this comment should be
+     * deleted.
+     */
     pr[p].order_index = 1;
     u1 = GetUnitIndex(p, MASTER);
-    do {
-        if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
-           (unit[u1].dest != unit[u].dest &&
-	     unit[u1].dest != unit[(int) *(s + 1)].loc)) {
-	    /* Unit found but is doing something else */
-	} else {
-	    /* Unit found and IS convoying/airlifting this one! */
-	    ret_code = 0;
-	}
-        u1 = GetUnitIndex(p, MASTER);
-    } while (ret_code == 1 && pr[p].order_index > 1);
+    /*do {*/
+
+    if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
+       (unit[u1].dest != unit[u].dest && unit[u1].dest != (*(s + 1) - 1)) ) {
+	/* Unit found but is doing something else */
+    } else {
+        /* Unit found and IS convoying/airlifting this one! */
+        ret_code = 0;
+    }
+    u1 = GetUnitIndex(p, MASTER);
+
+    /*} while (ret_code == 1 && pr[p].order_index > 1); */
 
     pr[p].order_index = 1; /* Reset the index so will start from first unit */
 
@@ -789,17 +802,14 @@ int movein(char **s, int p)
 					if (j && !bl)
 						bl = j;
 
-					if(!(dipent.flags & F_BLIND))
-						heap[hp++] = pr[p2].unit;
-					else
-						/*
-						 * I **think** this is necessary
-						 * to avoid getting the 0 province.
-						 * We are protected from overflow since
-						 * NPROV is at most 200 and unsigned char
-						 * is guaranteed to hold from 0-255. 
-						 */
-						heap[hp++] = p2 + 1;
+					/*
+					 * Tim Miller: convoy rewrite.
+					 * I **think** the + 1 is necessary to avoid getting the 0 province.
+					 * We are protected from overflow since
+					 * NPROV is at most 200 and unsigned char
+					 * is guaranteed to hold from 0-255. 
+					 */
+					heap[hp++] = p2 + 1;
 
 					unit[i].loc = p2;
 					if (railway(p2)) railway_flag = 1;
@@ -1201,7 +1211,7 @@ static void DoMoves( void)
                         } else if (unit[u].order == 'm' && unit[u].convoy != NULL) {
                                 for (s = unit[u].convoy; *s; s++) {
 					if (NoValidConvoyingFleet(s, u)) {
-                                            if (pr[unit[*s].loc].type != 'r') {
+                                            if (pr[(*s) - 1].type != 'r') {
                                                 /* only disallow if not a railway unit involved */
                                                 result[u] = NO_CONVOY;
                                                 support[u] = supval(u) - 1;
@@ -1295,7 +1305,14 @@ static void DoMoves( void)
                                 continue;
                         if (unit[u].order == 'c' && !result[u2 = unit[u].unit]) {
                                 for (s = unit[u2].convoy; s != NULL && *s; s++) {
-                                        if (*s == u) {
+					/*
+					 * convoy clean up: s is an entry in the
+					 * province table, so get the actual ordinal
+					 * of the convoying unit (cunit).
+					 */
+					int cunit = pr[(*s) - 1].unit; 
+
+                                        if (cunit == u) {
                                                 for (u3 = 1; u3 <= nunit; u3++) {
                                                         if (unit[u3].owner <= 0)
                                                                 continue;
@@ -1330,7 +1347,7 @@ static void DoMoves( void)
                          && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
 /* XII.5: You can't cut support of attacks against your convoy */
                                 for (s = unit[u].convoy; s != NULL && *s; s++)
-                                        if (unit[u2].unit == *s)
+                                        if (unit[u2].unit == pr[(*s) - 1].unit)
                                                 goto nextp2b;
                                 if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
 				    result[u2] = CUT;
@@ -1345,7 +1362,7 @@ static void DoMoves( void)
                                 continue;
                         if (unit[u].order == 'c' && result[u2 = unit[u].unit] == MAYBE_NO_CONVOY) {
                                 for (s = unit[u2].convoy; s != NULL && *s; s++) {
-                                        if (*s == u) {
+                                        if (pr[(*s) - 1].unit == u) {
                                                 for (u3 = 1; u3 <= nunit; u3++) {
                                                        if (unit[u3].owner <= 0)
                                                                 continue;
@@ -1412,7 +1429,7 @@ static void DoMoves( void)
                                  && unit[u2].owner != unit[u].owner) {  /* IX.6.note */
 /* XII.5: You can't cut support of attacks against your convoy */
                                         for (s = unit[u].convoy; s != NULL && *s; s++)
-                                                if (unit[u2].unit == *s)
+                                                if (unit[u2].unit == pr[(*s) - 1].unit)
                                                         goto nextp2c;
 					if (unit[u].dcoast != HX && !IsMultiProvince(unit[u2].loc)) {
                                             result[u2] = CUT;
@@ -1924,21 +1941,33 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 /* break; */
 			case 'm':
 				if ((s = unit[u].convoy)) {
-					if(!(dipent.flags & F_BLIND))
-					{
-						while (*s) {
-							if (!processing && !predict && unit[*s].owner == unit[u].owner &&
-							 (unit[*s].order != 'c' || unit[*s].unit != u ||
-							 unit[*s].dest != unit[u].dest)) {
+					/*
+					 * Tim Miller: convoy clean-up -- the convoy
+					 * list now has provinces, not units.
+					 */
+
+					while(*s) {
+						/*
+						 * unum holds the unit ordinal of the unit
+						 * in the province we convoy through, or 0
+						 * if no unit.
+						 */
+						int unum = pr[(*s) - 1].unit; 
+
+						/*
+						 * If this game is not blind, we can warn
+						 * players about possible bad convoys.
+						 */
+						if(!(dipent.flags & F_BLIND))
+						{
+							if (!processing && !predict && unit[unum].owner == unit[u].owner &&
+							 (unit[unum].order != 'c' || unit[unum].unit != u ||
+							 unit[unum].dest != unit[u].dest)) {
 								result[u] = BAD_CONVOY;
 							}
-							fprintf(rfp, " -> %s", pr[unit[*s++].loc].name);
 						}
-					} else {
-						while(*s) {
-							fprintf(rfp, " -> %s", pr[(*s) - 1].name);
-							s++;
-						}
+						fprintf(rfp, " -> %s", pr[(*s) - 1].name);
+						s++;
 					}
 				}
 				fprintf(rfp, " -> %s", pr[unit[u].dest].name);
@@ -2065,7 +2094,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
                                 fprintf(rfp, " (%s)", mtype[unit[u].coast]);
 		    if ((s = unit[u].convoy)) {
                         while (*s) {
-                            fprintf(rfp, " -> %s", pr[unit[*s++].loc].name);
+                            fprintf(rfp, " -> %s", pr[(*s) - 1].name);
+			    s++;
                         }
                     }
                     fprintf(rfp, " -> %s", pr[unit[u].dest].name);
