@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.16  2003/05/02 18:19:21  millis
+  ** More for Bug 137, Optional summer turns
+  **
   ** Revision 1.15  2003/04/26 22:50:35  millis
   ** Fixed HongKongCheck() to return int not char
   **
@@ -137,13 +140,15 @@ int ownership(void)
 				}
 				while (*s)
 					s++;
-				if (dipent.x2flags & (X2F_MORE_HOMES || X2F_HOMETRANSFER)) {
+				if (dipent.x2flags & X2F_MORE_HOMES || 
+				    dipent.x2flags & X2F_HOMETRANSFER) {
 				    /* As homes can be variable, show them as per Mach */
                                     if (pr[n].home == i && i != 0) {
                                         *s++ = '*';
                                     }
                                     if ((pr[n].type >= 'A' && pr[n].type <= 'Z') || 
-					(pr[n].type >= '0' && pr[n].type <= '9')) {
+					(pr[n].type >= '0' && pr[n].type <= '9') ||
+					(pr[n].type == 'x' && pr[n].home)) {
                                         sprintf(s, "(%c)", pletter[dipent.variant][pr[n].home]);
                                        while (*s) s++;
                                     }
@@ -299,6 +304,23 @@ int ownership(void)
 	return statusval;
 }
 
+
+/* If CaptureWin is set, see if one or more players have captured all Home SCs of another */
+/* Set passed status to -1 if someone has won */
+void CheckCaptureWin(int *status)
+{
+
+    int p;
+
+    for (p = 1; p <= npr; p++) {
+
+    /* To Do!!! */
+
+    }
+
+
+}
+
 static void next_phase(void)
 {
 	int status;
@@ -308,6 +330,9 @@ static void next_phase(void)
 		/* Init build phase or advance to the next spring */
 		newowner();
 		status = ownership();
+		if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
+		    CheckCaptureWin(&status);
+
 		if (status < 0)	/* VICTORY */
 			dipent.phase[6] = 'X';
 		else {
