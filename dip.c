@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2001/07/15 09:13:52  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.12  2001/07/14 07:05:17  greg
  * a few bug fixes & show who's late to GM in quiet games
  *
@@ -86,7 +89,7 @@
 
 /* Comment the next line out if you wish the Judge to apply D_LATE right
    at the deadline rather than 24 hours later. */
-#define NORMDED 
+/*#define NORMDED */
 
 void init(int, char **);
 void phase_pending(void);	/* defined in phase.c */
@@ -660,6 +663,7 @@ void CheckRemindPlayer( int player, long one_quarter)
     char line[150];
     char *pchar;
 
+    if(dipent.phase[6] == 'X') return; 
     if (!WAITING(dipent.players[player].status) ) return; /* Not waiting for a move */
 
     if (dipent.players[player].status & SF_REMIND) return; /* Already been reminded */
@@ -1310,7 +1314,9 @@ int process(void)
 /*
  * This looks as good a place as any to clear draw flags...
  *    (Pãositron, 11 Mar 1993)
+ * And concession flags (Tim Miller 12 Aug 2001)
  */
+			dipent.players[i].status &= ~SF_CONC;
 			dipent.players[i].status &= ~SF_DRAW;
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) {
 				sprintf(line, "%s dip.result '%s:%s - %s Results' '%s'",
