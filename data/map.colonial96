@@ -5,6 +5,9 @@
 # - There is a land bridge between Sakhalin and Vladivostok
 #
 # $Log$
+# Revision 1.1  2002/12/28 01:18:45  millis
+# Bug 59, add colonial96 variant
+#
 #
 Himalayas,      l him himal
 Abyssinia,      l aby
@@ -245,6 +248,7 @@ oma-mv: arb
 oma-xc: arb/nc arb/sc perg aras
 oms-mv: kra akm ore prm
 ore-mv: bok mos prm oms akm tas
+ota-mv: sak
 ota-xc: soj okhs
 part-mv: seo mac
 part-xc: seo/wc yels mac
@@ -261,6 +265,7 @@ ran-xc: ban/wc ands bob ubur
 reds-xc: eri sud egy meds mec ade goa 
 rum-mv: con ode
 rum-xc: con ode blas
+sak-mv: vla ota
 sak-xc: okhs
 sar-mv: bor
 sar-xc: bor javs suns suls cels
@@ -299,7 +304,7 @@ ubur-mv: ben ass yun may ran
 ubur-xc: bob ben ran
 up-xc: for ecs yels kyu kyo okhs mp tok 
 uru-mv: sik kag kir sem kra mon
-vla-mv: seo mac irk
+vla-mv: seo mac irk sak
 vla-xc: okhs seo/ec soj
 wio-xc: sio eio gom cey mad mys aras goa 
 yels-xc: ecs sha mac part seo/wc fus soj kyo up kyu 
@@ -319,7 +324,7 @@ C: HK
 
 Gateway
 SC:Egy med red 
-#end of GAteway setting
+#end of Gateway setting
 
 Railway     
 TSR:R Mos Prm Oms Kra Irk Vla
