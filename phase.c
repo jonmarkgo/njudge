@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2002/08/27 22:27:56  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.8  2002/05/11 09:15:34  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -15,7 +18,7 @@
  * Fixed phased order bug in Ancient Med and made phase.c able to handle a wider range of years (all positive years).
  *
  * Revision 1.6  2001/10/20 12:11:14  miller
- * Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
+ * Merged in changes from DEMA and USTV 
  *
  * Revision 1.5.2.1  2001/10/20 00:52:49  dedo
  * Remvoe compile warnings
@@ -100,20 +103,23 @@ int phase(char *s)
 	i = toupper(ss[0]);
 	if (i == 'S' || i == 'U') {
 		s2 = 0;
-		if (dipent.flags & F_MACH && (i == 'U' || !strncasecmp(s, "summer", 6))) {
+		if ((i == 'U' || !strncasecmp(s, "summer", 6))) {
+		    /* See if game can have summer turns */
+		    if ((dipent.flags & F_MACH && !(dipent.x2flags & X2F_NOSUMMER)) ||
+			(!(dipent.flags & F_MACH) && dipent.x2flags & X2F_SUMMER))
 			s2 = 1;
 		}
 	} else if (i == 'F' || i == 'W') {
 		s2 = 2;
 	}
-	while (*t && !(isdigit(*t)))
+	while (*t && !(isdigit((int) *t)))
 		t++;
 	if (!*t || ((y2 = atoi(t)) < 0 /*1000*/ || y1 + 5 < y2))
 		y2 = -1;
 
-	while (isdigit(*t))
+	while (isdigit((int) *t))
 		t++;
-	while (isspace(*t))
+	while (isspace((int) *t))
 		t++;
 	if ((j = toupper(*t)) == 'M')
 		p2 = 1;

@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.15  2003/04/26 22:50:35  millis
+  ** Fixed HongKongCheck() to return int not char
+  **
   ** Revision 1.14  2003/02/18 14:04:44  millis
   ** Display home centres if X2F_HOMETRANSFER is set
   **
@@ -314,7 +317,10 @@ static void next_phase(void)
 				next_year();
 		}
 	} else {
-		dipent.phase[0] = 'F';
+	 	if ((dipent.xflags & X2F_SUMMER) && dipent.phase[0] != 'U') 
+		    dipent.phase[0] = 'U';
+		else
+		    dipent.phase[0] = 'F';
 		init_movement();
 	}
 }
