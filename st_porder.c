@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.19  2003/05/16 22:45:42  millis
+  ** Fix bug 156 (ownership() was having winning condition incorrectly reset)
+  **
   ** Revision 1.18  2003/05/03 16:25:46  millis
   ** Checking wrong flag for Summer setting!
   **
@@ -339,9 +342,13 @@ static void next_phase(void)
 		if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
 		    CheckCaptureWin(&status);
 
-		if (status < 0)	/* VICTORY */
+		if (status < 0) {	/* VICTORY */
 			dipent.phase[6] = 'X';
-		else {
+			/* fix bug 219 -- increment the phase even if the game
+			 * is over, just in case somebody resumes it.
+			 */
+			dipent.phase[5] = 'B';
+		} else {
 			if (status)
 				dipent.phase[5] = 'B';
 			else
