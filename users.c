@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2003/12/02 18:43:06  millis
+ * Improved checking for Bug 250, namely not allowing blank addresses
+ *
  * Revision 1.14  2003/11/18 03:20:10  nzmb
  * improved cmpaddr so it (should) return 0 on a blank address or one that has
  * a non alphanumeric character as its first character -- partial fix to bug
@@ -1252,7 +1255,7 @@ int cmpaddr(char *addr, char *list)
 	register char *s, *t, c = 0, d = 0, k;
 
 	/* do some sanity checking on the inputs */
-	if (IsBlank(addr) || IsBlank(list))
+	if(addr[0] == '\0' || list[0] == '\0')
                 return 0;
 	if(!isalnum(addr[0]) || !isalnum(list[0]))
 		return 0;
