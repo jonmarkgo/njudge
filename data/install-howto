@@ -540,7 +540,11 @@ Start      Sun Jan 06 14:05:45 2002
 
  The docs/ directory contains documentation, README files on many
 subjects, and perhaps a brand new Administrator Guide the day it is
-done. 
+done.  You'll find too the LICENSE file, which indicate who owns the 
+source code, the AUTHORS which lists all contributors to the Diplomacy
+judge, TODO, which contains bugs, whishlist, and modifications in progress,
+CHANGES, if you need to know the last modifications.   
+
  The archives/ subdirectory contains files which are out-of-date
 but may be useful for old versions of the judge, for migrating, or for
 historical purpose.
