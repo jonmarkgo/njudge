@@ -1,6 +1,9 @@
 # Process this file with automake to produce Makefile.in
 ## njudge/Makefile.am
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
+#
+# $Log$
+#
 
 AUTOMAKE_OPTIONS=foreign dist-zip
 
