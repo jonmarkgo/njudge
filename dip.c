@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/04/17 21:30:31  miller
+ * Refixed problem with CONFIG_DIR parsing
+ *
  * Revision 1.5  2001/04/15 21:21:22  miller
  * Correctly show pending orders when late warning is sent
  *
@@ -246,6 +249,8 @@ void init(int argc, char **argv)
 	 *  We'll cd to that directory to find our datafiles.
 	 */
 
+	subjectline[0] = '\0';
+
 	time(&now);
 	srand(now);
 
@@ -447,13 +452,13 @@ void init(int argc, char **argv)
 			nded = 0;
 		else {
 			int i, dedicate[MAXUSER];
-			nded = read(fd, dedicate, MAXUSER * sizeof(int)) / sizeof(int);
+			nded = (read(fd, dedicate, MAXUSER * sizeof(int)) / sizeof(int)) + 1;
 			for (i = 0; i < nded; i++) {
 				ded[i].r = dedicate[i];
 			}
 			close(fd);
 	} else {
-		nded = read(fd, ded, MAXUSER * sizeof(ded[0])) / sizeof(ded[0]);
+		nded = (read(fd, ded, MAXUSER * sizeof(ded[0])) / sizeof(ded[0])) + 1;
 		close(fd);
 	}
 
@@ -668,14 +673,15 @@ void CheckRemindPlayer( int player, long one_quarter)
 /***********************************************************************/
 int process(void)
 {
-	int i, n;
+	int i, n, v;
 	time_t now, then;
-	FILE *dfp;
+	FILE *dfp, *gfp;
 	char line[150];
 	char title_text[150];
 	char phase[sizeof(dipent.phase)];
 	int process_set; /* Set to 1 if process has been set */
 	static char *dedfmt = "Adding %d to user %d's dedication to yield %d.\n";
+	char late[51];
 
 	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
 	rfp = NULL;
@@ -716,6 +722,9 @@ int process(void)
 					fprintf(rfp, "Diplomacy game '%s' is waiting for %s's orders",
 						dipent.name, dipent.flags & F_QUIET ? "some power"
 						: powers[dipent.players[i].power]);
+
+					late[n-1] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
+
 					if (!(dipent.players[i].status & SF_LATE)) {
 					    dipent.players[i].status |= SF_LATE;
 					    dipent.players[i].late_count++; /* bump up the late count */
@@ -731,6 +740,7 @@ int process(void)
 		}
 
 		if (n) {
+			late[n] = '\0';
 			then = dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60);
 			fputs(n == 1 ? "\nThis power" : "\nThese powers", rfp);
 			fputs(now < then ? " will be" :
@@ -783,18 +793,15 @@ int process(void)
 						fprintf(log_fp, dedfmt, d, dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
 					}
-					sprintf(line, "%s dip.result 'Diplomacy %s: %s' '%s'",
-						SMAIL_CMD,
-						w ? "deadline missed"
-						: "notice",
-						dipent.name,
-					      dipent.players[i].address);
-					if (*(dipent.players[i].address) != '*')
+					if (*(dipent.players[i].address) != '*') {
+						sprintf(line, "%s dip.result '%s%s:%s - %s Late Notice: %s' '%s'",
+							SMAIL_CMD, w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
 						execute(line);
+					}
 				}
 			}
 			if (n) {
-				sprintf(line, "Diplomacy notice: '%s'", dipent.name);
+				sprintf(line, "%s:%s - %s Late Notice: %s", JUDGE_CODE, dipent.name, dipent.phase, late);
 				archive("dip.result", line);
 			}
 			if (n == -1) {
@@ -842,10 +849,11 @@ int process(void)
 			if (dipent.players[i].power < 0)
 				continue;
 
-			sprintf(line, "%s dip.result '%s' '%s'",
-				SMAIL_CMD, title_text, dipent.players[i].address);
-			if (*(dipent.players[i].address) != '*')
+			if (*(dipent.players[i].address) != '*') {
+				sprintf(line, "%s dip.result '%s:%s - Waiting for More Players' '%s'",
+					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.players[i].address);
 				execute(line);
+			}
 		}
 		dipent.process = now + 168 * 60 * 60;
 
@@ -864,7 +872,7 @@ int process(void)
 			for (i = 0; i < dipent.n; i++) {
 				if (dipent.players[i].power < 0)
 					continue;
-		/* Dietmar Kulsch change 10/10/2000 to avoiod players going
+		/* Dietmar Kulsch change 10/10/2000 to avoid players going
 		 * abandoned when they submit error orders
 		 */
 				if ((!(dipent.players[i].status & SF_PART)) && WAITING(dipent.players[i].status)) { 
@@ -913,10 +921,15 @@ int process(void)
 					pprintf(cfp, "%s with %d of %d units on the board (%s).\n",
 						powers[dipent.players[i].power], dipent.players[i].units,
 						dipent.players[i].centers, dipent.phase);
+
+					late[n] = (dipent.flags & F_QUIET ? '?' : dipent.pl[dipent.players[i].power]);
+
 					n++;
 				}
 			}
 			if (n) {
+				late[n] = '\0';
+
 				dipent.process = now + 48 * 60 * 60;
 
 				if (!Dflg)
@@ -926,11 +939,12 @@ int process(void)
 					if (dipent.players[i].power < 0)
 						continue;
 
-					sprintf(line, "%s dip.result 'Diplomacy waiting %s %s' '%s'",
-						SMAIL_CMD,
-						dipent.name, dipent.phase, dipent.players[i].address);
-					if (*(dipent.players[i].address) != '*' && !Dflg)
+					if (*(dipent.players[i].address) != '*' && !Dflg) {
+						sprintf(line, "%s dip.result '%s:%s - %s Waiting for Replacements: %s' '%s'",
+							SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, late, dipent.players[i].address);
+
 						execute(line);
+					}
 				}
 				return 0;
 			}
@@ -955,9 +969,14 @@ int process(void)
                                 if (dipent.players[i].power < 0)
                                         continue;
 
-                                sprintf(line, "%s dip.result '%s' '%s' '%s'",
-                                SMAIL_CMD, "Diplomacy turn waiting:", 
-				dipent.name, dipent.players[i].address);
+/*
+ *				sprintf(line, "%s dip.result '%s' '%s' '%s'",
+ *				SMAIL_CMD, "Diplomacy turn waiting:", 
+ *				dipent.name, dipent.players[i].address);
+ */
+				sprintf(line, "%s dip.result '%s:%s - %s Turn Waiting' '%s'",
+					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+
                                 if (*(dipent.players[i].address) != '*')
                                         execute(line);
                             }
@@ -1000,6 +1019,11 @@ int process(void)
 				fprintf(log_fp, "process: Error opening second temporary file.\n");
 				bailout(E_FATAL);
 			}
+			if ((gfp = fopen("dip.victory", "w")) == NULL) {
+				fprintf(log_fp, "dip: Error opening victory file.\n");
+				bailout(E_FATAL);
+			}
+
 			msg_header(ofp);
 
 			pprintf(cfp, "%sGame '%s' completed.\n", NowString(), dipent.name);
@@ -1008,8 +1032,11 @@ int process(void)
 			time(&now);
 			fprintf(dfp, "Game won: %s\n", ctime(&now));
 			fprintf(dfp, "The game was won by ");
+			fprintf(gfp, "The game was won by ");
 
 			/*  Find out who has won */
+
+			v = 0;
 
 			for (i = 0; i < dipent.n; i++) {
 				if (dipent.players[i].power < 0)
@@ -1018,15 +1045,31 @@ int process(void)
 				if (dipent.players[i].centers >= dipent.vp) {
 					fprintf(ofp, "%s.\n\n", powers[dipent.players[i].power]);
 					fprintf(dfp, "%s.\n", powers[dipent.players[i].power]);
+					fprintf(gfp, "%s.\n", powers[dipent.players[i].power]);
+					v = i;
 					break;
 				}
 			}
+
+			fprintf(gfp, "Congratulations on a well deserved victory!");
 
 			/*  If game is standard, it has a Boardman Number, if not
 			   it has a Miller Number.  Check to see if it is an EP
 			   game.  Alert Custodians to victory */
 			fclose(ofp);
 			fclose(dfp);
+			fclose(gfp);
+
+			for (i = 0; i < dipent.n; i++) {
+				if (dipent.players[i].power < 0)
+					continue;
+
+				if (*(dipent.players[i].address) != '*' && !Dflg) {
+					sprintf(line, "%s dip.victory '%s:%s - %s Victory: %c' '%s'",
+					  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.pl[dipent.players[v].power], dipent.players[i].address);
+					execute(line);
+				}
+			}
 
 			{
 				if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
@@ -1113,8 +1156,9 @@ int process(void)
  */
 			dipent.players[i].status &= ~SF_DRAW;
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) {
-			    sprintf(line, "%s dip.result 'Diplomacy results %s %s' '%s'",
-			      SMAIL_CMD, dipent.name, phase, dipent.players[i].address);
+				sprintf(line, "%s dip.result '%s:%s - %s Results' '%s'",
+				  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
+
 			    if (*(dipent.players[i].address) != '*' && !Dflg) {
 				execute(line);
 			    }
@@ -1132,7 +1176,7 @@ int process(void)
 				SMAIL_CMD, dipent.name, phase, GAMES_OPENER);
 			execute(line);
 		}
-		sprintf(line, "Diplomacy results '%s' %s", dipent.name, phase);
+		sprintf(line, "%s:%s - %s Results", JUDGE_CODE, dipent.name, phase);
 		archive("dip.result", line);
 
 		phase_pending();
