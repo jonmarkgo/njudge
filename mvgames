@@ -1,4 +1,4 @@
-#! /bin/csh
+#! /bin/sh
 #
 # This file is to be used when the JK wants to move the game directories
 # to a sub directory
@@ -8,4 +8,4 @@
 
 
 mkdir games
-mv `ls -ld D* | awk '{print $9}'` games
+ls -d D* | sed 's/^D//' | awk '{print "mv D" $1 " games/" $1}' | /bin/sh
