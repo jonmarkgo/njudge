@@ -1,6 +1,6 @@
 Installation-HOWTO for the Diplomacy judge
 
-v.1.3.0-20021218   -   Version of this file follows judge versions
+v.1.3.0-20021221   -   Version of this file follows judge versions
 
 Christophe Courtois ( christophe@courtois.cc )
 - 1.3.0-pre : Dec 2002
@@ -42,7 +42,7 @@ than writing documentation, he wrote the present installation guide.
  It is a compilation of what I have read in the judge files and
 code, on the judge-maint mailing-list, of what I have learned myself
 by installing the judge (versions: 0.8.6-FROG, 0.8.7, 0.8.9, 1.0.0,
-1.1.1, 1.3.0). Comments, advice, corrections [including spelling and
+1.1.1, 1.3.0-pre). Comments, advice, corrections [including spelling and
 grammar, I'm not a native English speaker] are welcomed!
 
  This guide is focused on the installation on Linux, but should be okay
@@ -58,7 +58,8 @@ Computer: Pentium 75
 OS:       Linux Debian 3.0 (woody)
 Judge:    njudge 1.3.0-pre20021218 compiled from source
 
-2 Before compiling
+
+2 Before installing
 
 2.1 Material, learning and paperwork
 
@@ -117,7 +118,35 @@ maintenance mailing list. The JKs just happen to all be there.
  http://www.floc.net/exarch/judgemaint.html
 
 
-2.2 Judge user: unix level configuration
+2.2 Getting the source code or the package
+
+ - Download the source of the judge from the net :
+ http://www.njudge.org/ is the official download site from Millis Miller
+and should indicate which is the last official judge version available,
+and give you a link to download it.
+
+  A CVS snapshot is available too.  It is a tarball generated every day
+from the CVS (development) tree.  It is the most current (and unstable!)
+judge, only for people who know what they are doing.  A direct CVS access
+is possible only with an account on the development computer.
+
+  Other sources where you can search in case of a problem on njudge.org:
+   * ftp.diplom.org/pub/diplomacy/Sources/
+
+ - The official judge is distributed as a source code tarball called
+njudge-1.X.Y.tar.gz, where X and Y change with time.  (Please ignore
+njudge-0.8.X and dipsrc-9XXX files if you find some, they are out of date)
+
+ - If you're lucky enough to work with a Debian Linux, you have a
+package available at Braincells: http://src.braincells.com/debian/woody/njudge/
+  See below (sectiopn 4.) how to install it.  You can skip the
+Unix configuration and the compilation below.  Your judge will use the
+'judge' user name, and will be installed directly in /home/judge (no dip/
+binary directory).
+
+
+
+2.3 Judge user: unix level configuration
 
  - Create an account for the judge on your system.  The name of the account
 may be anything as long as it does NOT contain a '-'.  It is often judge@...
@@ -142,30 +171,6 @@ and/or .profile.
 put the judge binary directories in the .cshrc file.  For example:
 
 setenv PATH /usr/bin:/usr/local/bin:/home/alex/dip:/home/alex:/bin:~:.
-
-
-
-2.3 Getting the source code or the package
-
- - Download the source of the judge from the net :
- http://www.njudge.org/ is the official download site from Millis Miller
-and should indicate which is the last official judge version available,
-and give you a link to download it.
-
-  A CVS snapshot is available too.  It is a tarball generated every day
-from the CVS (development) tree.  It is the most current (and unstable!)
-judge, only for people who know what they are doing.  A direct CVS access
-is possible only with an account on the development computer.
-
-  Other sources where you can search in case of a problem on njudge.org:
-   * ftp.diplom.org/pub/diplomacy/Sources/
-
- - The official judge is distributed as a source code tarball called
-njudge-1.X.Y.tar.gz, where X and Y change with time.  (Please ignore
-njudge-0.8.X and dipsrc-9XXX files if you find some, they are out of date)
-
- - A Debian package (.deb) may be available when you read this.
-It would probably be for GNU/Debian on x86. Use dpkg to install it.
 
  - All the examples here deal with njudge-1.3.0.tar.gz.
 
@@ -305,6 +310,8 @@ script:
 
 (I'll try to put this in the official distribution sometimes).
 
+ - Warning : dip.msg and dip.footer must be configured AFTER the installation.
+
  - The smail script may need other modifications. For example, Greg Greenman
 had some problem on USTX with the mails headers with
 sendmail. This is his smail script which solves the problems:
@@ -388,7 +395,7 @@ set by default to 8000, may be increased.
 
 2.11 Patches
 
- No known last-minute patch to add to the official 1.3.0 version. (Stable
+ No known last-minute patch to add to the official version. (Stable
 versions are not so much fun anymore ;-)
 
 
@@ -402,11 +409,16 @@ versions are not so much fun anymore ;-)
 
         make all
 
-and the judge will be compiled.  Then:
+and the judge will be compiled.
+
+
+3.2 Installation
+
+ - Type:
 
         make install       #for a new judge only!
 
-  The last line copies everything that the judge needs into the
+  This copies everything that the judge needs into the
 destination directory you gave to ./configure.  On a running judge,
 use 'make upgrade' (see below).  You don't need to be root, and
 nothing will be installed outside of the judge directory.
@@ -425,7 +437,7 @@ may give a few harmless errors (when it tries to strip scripts) but you
 can ignore them.
 
 
-3.2 Cleaning
+3.3 Cleaning
 
   - You can remove the program binaries and object files from the
 source code directory by typing `make clean'.  To also remove the
@@ -433,7 +445,27 @@ files that `configure' created (so you can compile the package for
 a different kind of computer), type `make distclean'.
 
 
-3.3 Configuring the judge you just installed (dip.conf)
+
+4 Installing the Debian package
+
+ - To avoid compiling yourself, you can get the Debian package from Jaldhar Vyas.
+
+ Download the version suitable for your architecture from http://www.njudge.org/
+if it is available there, or from http://src.braincells.com/debian/woody/njudge/,
+and (as root) use dpkg to install it, or add the lines given on the site to your
+/etc/apt/sources.list, run apt-get update and apt-get install it.
+ It is still to be considered experimental.
+
+ - It will create a user called 'judge', with its directory '/home/judge'
+containing all binaries and data files (yes, it is against Debian policy).
+ There is no dip/ directory.
+
+ Before running the judge, you still must configure dip.conf as described below.
+
+
+5 Configuring your new judge
+
+5.1 Dip.conf
 
  - Go to the binary directory ( /home/alex/dip in my example,
 /home/judge or /home/judge/dip/ maybe for you).
@@ -460,11 +492,12 @@ GAME_DIR=games/
 
  Don't forget the last '/'!
  By default, GAME_DIR=D. If you leave this variable commented out, the
-games will accumulate in the dip/ directory with a name beginning by D
-(example : Dtest).  So if you move existing game subdirectories from ~/dip/
-to ~/dip/my_games/, you must set GAME_DIR=./my_games/D (or remove the
-leading D from all game subdirectories).  You must set the full path if going
-outside the judge directory (ex: /home/alex/games/ ).
+games subdirectories will accumulate in the dip/ directory with a name
+beginning by D (example : Dtest).  So if you move existing game
+subdirectories from ~/dip/ to ~/dip/my_games/, you must set
+GAME_DIR=./my_games/D (or remove the leading D from all game subdirectories).
+You must set the full path if going outside the judge directory
+(ex: /home/alex/games/ ).
 
  Don't use it to share the games across more than one judge, unless you share
 other files like dip.whois or dip.addr and avoid concurrent access (dangerous!).
@@ -475,10 +508,7 @@ HALL_KEEPER, GAMES_OPENER and other mail variables, that MUST be commented
 out if you're not running a public stable judge with real games. Don't change
 variables like XFORWARD, KEEPOUT... if you don't know what you're really doing.
 
-
-4. Post-compiling
-
-4.1 dip.* files
+5.2 Other dip.* files
 
  - Verify the existence of the following files. If they are not there,
 create them using the 'touch' command. They contain the games data:
@@ -500,14 +530,16 @@ produce .ps maps of a game)
 command to produce .ps maps of a game based on a LIST output).  [Do
 these options really work nowadays?]
 
-4.2 dipclean
+5.3 dipclean
 
  - Open the 'dipclean' script and change any path that doesn't match
 your system (especially the first line) (yes, it's a bug).
 
  - It is now useless to run it for a first install.
 
-4.3 .forward
+5.4 .forward
+
+ (Already done if installing through the Debian package).
 
  In the home directory of the judge, a file '.forward' must be created.
 It is normally enough to rename the 'xxxx-forward' file (where xxxx is
@@ -527,7 +559,7 @@ to make some processing instead of or before lauching the judge program
 (mainly logging). Ask on the judge-keepers list (especially to Philippe
 Lalande) for more information.
 
-4.4 dip.control date problems
+5.5 dip.control date problems
 
  The dip.master file is generated from the Makefile, and according
 to the configuration of your system, it can be faulty (although it may
@@ -546,29 +578,31 @@ Process    Mon Jan 06 14:05:45 2003
 Start      Sun Jan 06 14:05:45 2002
 
 
-4.5 Ready ?
+5.6 Ready ?
 
  At this point, the judge should be ready to run.
 
 
 
-5. What are these files?
+6. What are these files?
 
-5.1 Documentation
+6.1 Documentation
 
- The docs/ directory contains documentation, README files on many
-subjects, and perhaps a brand new Administrator Guide the day it is
-done.  You'll find too the LICENSE file, which indicate who owns the
-source code, the AUTHORS which lists all contributors to the Diplomacy
-judge, TODO, which contains bugs, whishlist, and modifications in progress,
-CHANGES, if you need to know the last modifications.   
+ The docs/ directory of the source code contains mainly documentation and,
+README files on many subjects.  You'll find too the LICENSE file, which
+indicate who owns the source code, the AUTHORS which lists all
+contributors to the Diplomacy judge, TODO, which contains bugs, whishlist,
+and modifications in progress, CHANGES, if you need to know the last
+modifications.
 
  The archives/ subdirectory contains files which are out-of-date
 but may be useful for old versions of the judge, for migrating, or for
 historical purpose.
 
+ (On the Debian package, documentation is in /usr/share/doc/njudge).
 
-5.2 Binaries
+
+6.2 Binaries
 
  - rdip : Its purpose is to read in mail and copy it to a file
 for later processing, it is invoked by incoming mail.
@@ -600,7 +634,7 @@ textual map files.
 
  - summary : Creates the summary of a game.
 
-5.3 Shell scripts
+6.3 Shell scripts
 
  - diprun : This is the script which is called by 'at' and launches rdip
 
@@ -622,7 +656,7 @@ mail.log files into compressed *.Z files. (You can use 'uncompress'
 to extract them).
 
 
-5.4 Parameter and data files
+6.4 Parameter and data files
 
 (See content for more information)
 
@@ -653,7 +687,7 @@ allowed.
 
 
 
-5.5 Maps and 'data' directory
+6.5 Maps and 'data' directory
 
  - map.n         : Compiled data files, one for each variant.
  - map.<variant_name> : Real map source files
@@ -664,7 +698,11 @@ any other information, text or joke there!!)
  - data/*        : Other files that can get by the players by
 the 'get' command (help files...)
 
-5.6 Games
+6.6 Games
+
+ By default, games are located in the binary directory as subdirectories
+whose name begins by a D.  You can change that with the GAME_DIR parameter
+in dip.conf (see above).
 
  - Dxxx/ : All the data of the game xxx is stored in this directory.
 
@@ -704,7 +742,7 @@ result. This is used in the summary. If this file has been created, it
 will be deleted if another turn processes.
 
 
-5.7 Log files
+6.7 Log files
 
  - install.log : Logs all variant map files compiled with cmap.
 
@@ -730,7 +768,7 @@ become huge!
 dip.conf). See README.statistics
 
 
-5.8 Temporary files
+6.8 Temporary files
 
  - dip.incoming : File containing the last mail received or processed.
  - dip.lock1, dip.lock2 : Used internally by flock.
@@ -745,12 +783,12 @@ if smail works.)
  - dip.result
  - dip.temp   : Used for mail construction.
 
-5.9 Files created or left behind by a crashed judge:
+6.9 Files created or left behind by a crashed judge:
 
  - zforward : See README.bailout. After a judge crash, .forward is
 renamed to zforward, and the judge won't accept to run.
 
-5.10 Other files
+6.10 Other files
 
  - xforward : When healing a dead judge, zforward must be renamed to
 xforward. See README.bailout.
@@ -766,9 +804,9 @@ the judge is stacked when the .forward file is not there.  (The exact
 path may change according to your system and distribution).
 
 
-6. Testing the judge, first game
+7. Testing the judge, first game
 
-6.1 Manual basic testing
+7.1 Manual basic testing
 
  - If you have configured everything, the judge should be able to
 answer. If any of the following tests fails, see 'Troubleshooting',
@@ -859,38 +897,36 @@ NoDIAS, make a quick draw.
  - Check variants too! A h32 (Hundred) could be quicker to check the
 full commands than a standard.
 
-6.2 Automatic judge tester
+7.2 Automatic judge tester
 
-Max Loewenthal wants to make an automatic judge tester. It is still in
-development. You can check the status of the project in the web:
-http://www.xs4all.nl/~zapata/diplomacy/JudgeTester.html
+ Yes, it would be fine to have one.  As far as I know, nobody finished one.
 
 
 
-7. Troubleshooting
+8. Troubleshooting
 
 These are some problems and solutions:
 
  - Nothings happen when sending something to the judge and in dip.log,
 the judge complains he didn't find rm, date, echo... and other commands:
-This is a PATH problem. Be careful : The script juges csh as a
-shell, and not bash as often. Check '.cshrc' in the home directory.
+This is a PATH problem.  Be careful : The script juges csh as a
+shell, and not bash as often.  Check '.cshrc' in the home directory.
 Check that mail and head are in the locations defined in
 Makefile.defines (to avoid a reinstallation, add symbolic links).
 
- - Judges makes a bailout: The judge can send to the judgekeeper a
-message saying 'Bailout executed'. It means that the judge died. It has
-crashed. .forward was renamed to zforward. To solve the problem without
+ - Judges makes a bailout:  The judge can send to the judgekeeper a
+message saying 'Bailout executed'.  It means that the judge died.  It has
+crashed.  .forward was renamed to zforward.  To solve the problem without
 losing some mails, you must follow the instructions in README.bailout.
 
- - The judge complains that 'dip.input' exists : you didn't clean this
-file after a previous crash. See README.bailout if you don't want to
+ - The judge complains that 'dip.input' exists: you didn't clean this
+file after a previous crash.  See README.bailout if you don't want to
 lose what it contains.
 
- - The judge crashes at the first time, in dipent.c: Check that the dip.master
-file was not generated with a bad format in dip.control (see 4.4).
+ - The judge crashes at the first time, in dipent.c:  Check that the dip.master
+file was not generated with a bad format in dip.control (see 5.5).
 
- - The judge crashes when you try a new variant : look in install.log
+ - The judge crashes when you try a new variant: look in install.log
 what variants are installed. Check that all files (source and compiled)
 are there.
 
@@ -901,19 +937,21 @@ check the existence of all files (including dip.master, dip.whois...)
 And don't forget to read README.bailout.
 
 
-8. Other customization
+9. Other customizations
 
  - You can change the text in dip.msg and dip.footer anyway you want,
 these are just files added at the beginning or the end of mails sent by
 the judge.
 
- - The report.* files in ~/dip/data are the beginning positions sent to
+ - The report.* files in data/ are the beginning positions sent to
 the judge when a game begins. They're just text and you can change
 whatever you want there and add silly comments. (Be careful not to
 break software like Dipchief or web observers...)
 
+ - You can read README.hackers if you change the code.
 
-9. Backup
+
+10. Backup
 
  As far as I know and have experimented, the easiest way to backup the
 judge is to make a big archive of it and put it anywhere else where it
@@ -927,57 +965,43 @@ only newer files):
 
  cp -upR /home/alex/* /backup-directory/
 
- Anyway, the backup must be made as often as possible (put in your
+ Anyway, the backup must be made as often as possible (put it in your
 crontab).
 
+ Be careful: it will probably change in the next versions of the judge,
+with data in /var/njudge for example.
 
-10. Upgrading and patching a judge
 
-10.1 Locking the judge
+11. Upgrading and patching a judge
+
+11.1 Locking the judge
 
  - Let's suppose that you want to modify the source code of the judge
 with a patch found on judge-maint. (This example suppose that you have a
-symlink 'source' pointing to the real 1.0.0 tree).
+symlink 'source' pointing to the real 1.3.0 tree).
 
  - Lock the judge: enter 'flock dip.log' in the 'dip' directory.
 
-10.2 Archiving
+11.2 Archiving
 
  - Copy the 'dip' directory and archive it. For example:
         cp -R dip dip.backup
 
  - Create a new source directory to be sure
-        cp -R njudge-1.0.0 njudge-1.0.0-patch1
+        cp -R njudge-1.3.0 njudge-1.3.0-patch1
 
  - Make the 'source' symlink to point to the new directory.
         rm source
-        ln -s /home/alex/njudge-1.0.0-patch1 source
+        ln -s /home/alex/njudge-1.3.0-patch1 source
 
-10.3 Makefile variables
+11.3 Makefile variables
 
-[A MODIFIER **** ]
-
- - IMPORTANT :Go in the source directory and modify the JVERSION
-variable in Makefile.version
-
- For example:         JVERSION=v1.0.0-john_patches
-
- You don't have to do it if you downloaded the Makefile.version from
-an 'official' source (for example the daily CVS tarball).
- This variable indicates the version of the judge. You must modify it
-if you have changed the source code, and only if you have changed it.
-It is used by the 'version' command (through mail).
- It is useful for others to know precisely what your
-judge can do, which known bugs he has and so on. For example,
-http://gem.win.co.nz/judge/judgevers.html contains versions of
-public running judges.
-
- - The SRCDIR variable in Makefile.defines.base must only be changed 
-if you don't use a symlink and don't compile from the judge source
-main directory.
+ This part is now useless, as the new autoconf/automake process generates
+automatically the Makefile.
+ Read docs/README.hackers until this part is updated.
 
 
-10.4 Patching or upgrading source code
+11.4 Patching or upgrading source code
 
   - Modify the .c code, or apply a patch (this way for example:
 patch summary.c patch-bug160701 ), or download the last CVS version
@@ -988,26 +1012,27 @@ source code tarball in a *new* source directory.
 playing with judge source code modifications, as it sometimes involves
 to re-run automake/autoconf.
 
- - Anyway, you must copy the defaults.inc and Makefile.defines
-from your current judge into the new source directory, and compile
-from there. Don't forget to read the INSTALL and InstallationHOWTO files
-of this new version to be sure that the important configuration files
-to move across both versions are the same (judge mainteners try to do it).
+ - Anyway, you must copy the defaults.inc from your current judge into
+the new source directory, and compile from there. Don't forget to read
+the INSTALL and InstallationHOWTO files of this new version to be sure
+that the important configuration files to move across both versions
+are the same (judge mainteners try to do it).
 
  - dip.conf is the configuration file, stored in the judge directory,
-and will not be overwritten. Please check that the new version doesn't contain
-new parameters.
+and will not be overwritten. Please check that the new version doesn't
+contain new parameters.
 
  - Add any new file that the judge would need (variants...).
  Be very careful of including files of the form foo.[0-9x] in the data
 directory. The tools that maintain the flist handle them in a different
 way, which can produce some really weird results.
+ See README.hackers too.
 
  - If you just want to rebuild the map files (because e.g. you added a new
 variant,) type 'make remap'.
 
 
-10.5 Recompiling and installation
+11.5 Recompiling and installation
 
  - Recompile and reinstall:
         make clean
@@ -1017,7 +1042,7 @@ variant,) type 'make remap'.
 (NB: if you make a mistake and type 'make install', it will fail but
 you won't break anything. It was not the case before 0.8.10 :-)
 
-10.6 Relaunching the judge
+11.6 Relaunching the judge
 
  - Run 'dipclean' (especially after upgrading)
 
@@ -1025,15 +1050,15 @@ you won't break anything. It was not the case before 0.8.10 :-)
 test it!
 
 
-11.Misc
+12.Misc
 
-11.1 The author
+12.1 The author
 
  The author is 28 years old, writes SQL all day long for big
 corporations to eat, and is trying to learn C and PHP (The most difficult
 part is to find some time for it...)
 
-11.2 Thanks
+12.2 Thanks
 
  Many parts of this Howto are cut-and-pasted from README files, from
 source code, from mails of the judge-maint mailing list, from INSTALL file
@@ -1044,7 +1069,7 @@ all my questions on the judge, and the members of the judge-maint
 mailing-list.
 
 
-11.3 Copyright and boring stuff:
+12.3 Copyright and boring stuff:
 
  Permission is granted to make and distribute copies of this text
 provided the copyright notice and this permission notice are preserved
