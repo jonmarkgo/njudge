@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/01/16 22:51:47  millis
+ * Removed STAT stuff
+ *
  * Revision 1.10  2003/01/13 22:38:51  millis
  * merged in from ustv
  *
@@ -160,6 +163,8 @@ int conf_init(void)
 	conf_set("NOBODY", "nobody@localhost");
 
 	conf_set("BLOCK_FILE", ""); /* File to block dip running */
+
+	conf_set("JUDGE_TZ", "");	/* Judge timezone, if different from localtime */
 
 	return 1;
 }

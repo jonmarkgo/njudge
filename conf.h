@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2003/01/13 22:29:48  millis
+ * Merged from ustv
+ *
  * Revision 1.7  2002/12/22 02:00:34  millis
  * Added DIE_STORMS setting for new random seed for storms
  *
@@ -81,6 +84,7 @@
 #define BLIND_CMD       config("BLIND_CMD")
 #define NOBODY		config("NOBODY")
 #define BLOCK_FILE	config("BLOCK_FILE");
+#define JUDGE_TZ	config("JUDGE_TZ");
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think

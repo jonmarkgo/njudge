@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.32  2003/01/13 22:38:51  millis
+ * merged in from ustv
+ *
  * Revision 1.31  2003/01/12 00:14:37  nzmb
  * Fixed it so that postal press reports are not sent when no press is submitted.
  *
@@ -189,7 +192,19 @@ int main(int argc, char *argv[])
 	char *t;	
 	init(argc, argv);
 	
-	sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
+
+	/* 
+	 * Change the judge timezone, if set
+	 */
+
+	t = JUDGE_TZ;
+
+	if (*t) {
+	    setenv("TZ", t, 1);
+	    tzset();
+	}
+
+ 	sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
 
 	OPENDIPLOG(exe_name);
 	DIPINFO("Started dip");
