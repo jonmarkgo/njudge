@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/07/08 22:53:57  miller
+ * New defines
+ *
  * Revision 1.6  2001/07/01 23:19:29  miller
  * New Mach flags
  *
@@ -150,7 +153,7 @@
 #define XF_PROV_DUALITY 0x8000000 /* Provinces can be both land and water  */
 #define XF_NOMONEY	0x10000000 /* Set to have no money (basic game Mach) */
 #define XF_MOVEDISBAND  0x20000000 /* Allow disbands in movement turns 	     */
-
+#define XF_NOCONCESSIONS 0x40000000 /* No concessions permitted */
 
 /* Mach2 flags, currently combined into one flag, XF_MACH2 */
 #define XF_GCONVERT_ANYTIME     XF_MACH2  /* Can retreat to a garrison anytime */
@@ -183,6 +186,7 @@ typedef struct Sequence {
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
 #define SF_TURNGO  0x4000	/* Set by the master to make a manual turn go   */
+#define SF_CONC    0x8000	/* Player agreed to concession */
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
