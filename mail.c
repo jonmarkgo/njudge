@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.72  2004/07/08 22:20:45  millis
+ * Bug 91: small changes to improve status handling and show only
+ * real player information to master
+ *
  * Revision 1.71  2004/05/22 09:18:23  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -1971,6 +1975,8 @@ int mail(void)
 					sprintf(subjectline, "%s:%s - %s Rollback to ", JUDGE_CODE, dipent.name, dipent.phase);
 
 					line[strlen(line) - 1] = '\0';
+					if ((dipent.flags & F_INTIMATE) && i == 1)
+					    line[5] = 'A'; /* force bid phase at start of Intimate */
 					strcpy(dipent.phase, line);
 					sprintf(dipent.seq, "%3.3d", i);
 
