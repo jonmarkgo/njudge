@@ -17,6 +17,9 @@
 # Process this file with automake to produce Makefile.in
 #
 # $Log$
+# Revision 1.30  2003/07/23 05:36:43  jaldhar
+# Autogenerate dip.conf (fixes bug 154)
+#
 # Revision 1.29  2003/07/23 05:05:09  jaldhar
 # Remake map on upgrades (Closes bug 175) and some rearrangement of targets.
 #
@@ -337,7 +340,7 @@ dist_doc_DATA = docs/InstallationHOWTO.txt \
 		README
 
 
-EXTRA_DIST = config.h.in defaults.inc.in dip.conf dip.template starter.flist \
+EXTRA_DIST = config.h.in defaults.inc.in dip.template starter.flist \
 	debian njudge.spec $(man_MANS) $(bin_SCRIPTS)
 
 
@@ -347,7 +350,7 @@ subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = smail dipclean
+CONFIG_CLEAN_FILES = smail dipclean dip.conf
 bin_PROGRAMS = dip$(EXEEXT) rdip$(EXEEXT) size_check$(EXEEXT) \
 	cmap$(EXEEXT) summary$(EXEEXT) deddump$(EXEEXT) \
 	delgame$(EXEEXT) flock$(EXEEXT) fmtwho$(EXEEXT) \
@@ -522,8 +525,8 @@ HEADERS = $(noinst_HEADERS)
 DIST_COMMON = README $(dist_data_DATA) $(dist_doc_DATA) \
 	$(noinst_HEADERS) AUTHORS COPYING ChangeLog INSTALL Makefile.am \
 	Makefile.in NEWS aclocal.m4 config.guess config.h.in config.sub \
-	configure configure.ac depcomp dipclean.in install-sh missing \
-	mkinstalldirs smail.in
+	configure configure.ac depcomp dip.conf.in dipclean.in \
+	install-sh missing mkinstalldirs smail.in
 SOURCES = $(ascii2rec_SOURCES) $(ascii_to_ded_SOURCES) $(cmap_SOURCES) $(ded_to_ascii_SOURCES) $(deddump_SOURCES) $(delgame_SOURCES) $(dip_SOURCES) $(flock_SOURCES) $(fmtwho_SOURCES) $(lenlimit_SOURCES) $(rdip_SOURCES) $(recdump_SOURCES) $(size_check_SOURCES) $(summary_SOURCES) $(zpblind_SOURCES)
 
 all: $(BUILT_SOURCES) config.h
@@ -567,6 +570,8 @@ distclean-hdr:
 smail: $(top_builddir)/config.status smail.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 dipclean: $(top_builddir)/config.status dipclean.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+dip.conf: $(top_builddir)/config.status dip.conf.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 install-binPROGRAMS: $(bin_PROGRAMS)
@@ -1137,8 +1142,8 @@ install-data-hook: dirs flist magic
 	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 
-# smail.in and dipclean.in are  already automatically included as are 
-# top-level docs like COPYING etc.
+# smail.in, dip.conf.in, and dipclean.in are  already automatically included as
+# are top-level docs like COPYING etc.
 distclean-local:
 	-rm -rf autom4te.cache
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
