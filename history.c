@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/15 09:15:19  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.5  2001/07/14 07:25:41  greg
  * fix "history exclstart" command with new subjectlines
  *
@@ -101,7 +104,9 @@ char *GameName;
 		if (flag == 0) {
 			if (strstr(Input, "Subject:") != NULL) {
 				if ((!nbflag) && (strstr(Input, "Results") == NULL)
-					&& (strstr(Input, "Game Starting") == NULL)) {
+					&& (strstr(Input, "Game Starting") == NULL)
+					&& (strstr(Input, "starting") == NULL)
+					&& (strstr(Input, "results") == NULL)) {
 					flag = 1;
 				} else if (strstr(Input, against) != NULL) {
 					flag = 2;
