@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/05/07 04:55:17  greg
+ * added subjectline
+ *
  * Revision 1.3  2001/04/15 21:28:30  miller
  * Added XF_NOATTACKTRANS flag
  *
@@ -204,6 +207,9 @@ struct dipent {
 	int flags;		/* Flags:   F_NONMR                             */
 	int xflags;		/* Extra flags: XF_*				*/
 	int dedicate;		/* Minimum dedication requirement               */
+	float orded;	        /* Minimum ontime ratio requirement       */
+	float rrded;            /* Maximum resignation ratio requirement  */
+	int dedapplied;         /* Have we applied dedication / taken stats yet? */		
 	long process;		/* Time to process this entry                   */
 	long start;		/* Minimum time before processing this entry    */
 	long deadline;		/* Current deadline to process this entry       */
