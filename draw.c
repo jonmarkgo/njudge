@@ -1,5 +1,8 @@
  /*
  * $Log$
+ * Revision 1.7  2001/10/22 20:09:04  nzmb
+ * Cw.c draw.c added chenges and fixes so summaries for draws and concessions are properly sent to the HALL_KEEPER address.
+ *
  * Revision 1.4  2001/07/15 09:14:55  greg
  * added support for game directories in a sub directory
  *
@@ -49,7 +52,7 @@ int check_can_vote(int i, int flag)
                 bailout(E_FATAL); /* Is this right? */
         }
 	/* Don't want concessions in games where they aren't allowed. */
-	if((flag == 1) && (dipent.xflags & XF_NOCONCESSIONS))
+	if((flag == 2) && (dipent.xflags & XF_NOCONCESSIONS))
 	{
 		fprintf(rfp,"No concessions are permitted in this game.\n");
 		return 1;
