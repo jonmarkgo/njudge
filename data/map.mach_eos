@@ -1,5 +1,5 @@
 #Machiavelli 1 Expansion of States
-#Rev. 1b.  Nov 17 2002.
+#Rev. 2.  Nov 22nd 2003.
 XXXXXX,                  l0.  xxx
 Albania,                 x1.  alb alban
 Ancona,                  x1P  anc ancon
@@ -48,12 +48,12 @@ Perugia,                 x1f  per perug
 Piancenza,               x0f  pia pianc piace piacenza
 Piombino,                x1P  pio piomb
 Pisa,                    L1P  psa
-Pistoia,                 L0.  pst pisto pis
+Pistoia,                 L0.  pst pisto
 Pontremoli,              x0.  pon pontr
 Ragusa,                  V1P  rag ragus
-Romagna,                 x0f  rom romag
+Romagna,                 x0f  rma romag
 Rome,                    x2f  rme
-Salerno,                 N0P  sal saler
+Salerno,                 N0P  slr saler
 Saluzzo,                 x1f  slz saluz
 Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
@@ -62,7 +62,7 @@ Slavonia,                x0.  sla slavo
 Spoleto,                 x0f  spo spole
 Tivoli,                  x0P  tiv tivol
 Trent,                   x1f  trt
-Treviso,                 x1f  tre trevi
+Treviso,                 x1f  trv trevi
 Tunis,                   x2P  tun
 Turin,                   x1f  tur
 Upper Adriatic Sea,      w0.  uas upp ua
@@ -78,17 +78,17 @@ Western Tyrrhenian Sea,  w0.  wts
 xxx-mv: xxx
 alb-mv: rag her dur
 alb-xc: rag las dur
-anc-mv: rom aqu urb spo
-anc-xc: rom aqu uas las
-aqu-mv: anc spo cap nap sal bar
+anc-mv: rma aqu urb spo
+anc-xc: rma aqu uas las
+aqu-mv: anc spo cap nap slr bar
 aqu-xc: anc bar las
 are-mv: flo urb per sie
-bar-mv: aqu otr sal
+bar-mv: aqu otr slr
 bar-xc: aqu las otr
 bot-xc: wms pal ion tun
 ber-mv: mil trt bre cre
-bol-mv: man fer rom flo pst luc mod
-bol-xc: fer uas rom
+bol-mv: man fer rma flo pst luc mod
+bol-xc: fer uas rma
 bos-mv: cro her dal
 bre-mv: ber trt ver man cre
 cap-mv: spo aqu nap tiv
@@ -110,13 +110,13 @@ ets-xc: psa/cc pio sie pat tiv gon mes pal wts
 ets-cc: psa
 fer-mv: man ver pad bol
 fer-xc: pad uas bol
-flo-mv: bol rom urb are sie psa pst
+flo-mv: bol rma urb are sie psa pst
 for-mv: pav pia par pon gen mon
-fri-mv: crn tre vic
-fri-xc: crn uas lag tre
+fri-mv: crn trv vic
+fri-xc: crn uas lag trv
 gen-mv: sav mon for pon mod
 gen-xc: sav mod egl
-gon-xc: tiv cap nap sal otr ion/cc mes ets
+gon-xc: tiv cap nap slr otr ion/cc mes ets
 gon-cc: ion
 her-mv: bos alb rag dal
 her-xc: rag las dal
@@ -134,12 +134,12 @@ mil-mv: com trt ber cre pia pav
 mod-mv: gen pon par man bol luc
 mod-xc: gen luc egl
 mon-mv: tur pav for gen sav
-nap-mv: cap aqu sal
-nap-xc: cap sal gon
-otr-mv: sal bar
-otr-xc: gon sal bar las ion
-pad-mv: ver vic tre fer
-pad-xc: tre lag uas fer
+nap-mv: cap aqu slr
+nap-xc: cap slr gon
+otr-mv: slr bar
+otr-xc: gon slr bar las ion
+pad-mv: ver vic trv fer
+pad-xc: trv lag uas fer
 pal-mv: mes
 pal-xc: wts ets mes ion bot wms
 par-mv: pia cre man mod pon for
@@ -157,11 +157,11 @@ pst-mv: luc bol flo psa
 pon-mv: for par mod gen
 rag-mv: her alb
 rag-xc: her alb las
-rom-mv: bol anc urb flo
-rom-xc: bol uas anc
+rma-mv: bol anc urb flo
+rma-xc: bol uas anc
 rme-mv: per spo tiv pat
-sal-mv: nap aqu bar otr
-sal-xc: nap otr gon
+slr-mv: nap aqu bar otr
+slr-xc: nap otr gon
 slz-mv: tur sav
 sar-xc: wgl wts wms
 sav-mv: slz tur mon gen
@@ -173,17 +173,17 @@ spo-mv: per urb anc aqu cap tiv rme
 tiv-mv: pat rme spo cap
 tiv-xc: pat cap gon ets
 trt-mv: mil vic ver bre ber
-tre-mv: vic fri pad
-tre-xc: fri lag pad
+trv-mv: vic fri pad
+trv-xc: fri lag pad
 tun-xc: wms bot
 tur-mv: com pav mon sav slz  
 uas-xv: fer pad lag fri crn cro/nc ist dal las
-uas-xc: anc rom bol
-urb-mv: flo rom anc spo per are
-lag-xc: pad tre fri uas ven
+uas-xc: anc rma bol
+urb-mv: flo rma anc spo per are
+lag-xc: pad trv fri uas ven
 ven-xc: lag
 ver-mv: bre trt vic pad fer man
-vic-mv: trt fri tre pad ver
+vic-mv: trt fri trv pad ver
 wgl-xc: egl cor wts sar wms
 wms-xc: wgl sar wts pal bot tun
 wts-xc: cor egl psa pio ets pal wms sar wgl
@@ -223,7 +223,7 @@ Variable Income:  City         dice   1  2  3  4  5  6
 # End of Variable Income.
 
 Ownership (city) ordering:
-   tur slz sav cor gen mon pav cre mil trt crn cro dal tre pad ven man fer mod 
+   tur slz sav cor gen mon pav cre mil trt crn cro dal trv pad ven man fer mod 
    luc psa flo pio sie are bol per rme anc nap bar mes pal sar tun dur alb rag
 #End of center ordering
 

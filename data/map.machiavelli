@@ -1,6 +1,6 @@
 #Machiavelli Classic map file. Balance of Power scenario.
-#Rev. 3.  Feb. 22nd 2003.  Mach1/2 abbr. 'cross-compatible'.
-#First section defines provinces and abbreviations 
+#Rev. 4.  Nov. 22nd 2003.  Ambiguous abbr. -> unambiguous.
+#First section defines provinces and abbreviations
 XXXXXX,                  l0.  xxx
 Albania,                 T1.  alb alban
 Ancona,                  P1P  anc ancon
@@ -15,7 +15,7 @@ Bologna,                 P1f  bol bolog
 Bosnia,                  T0.  bos bosni
 Brescia,                 V0f  bre bresc
 Capua,                   N0.  cap
-Carinthia,               A0.  car carin
+Carinthia,               A0.  cri carin
 Carniola,                x1.  crn carni
 Como,                    I0.  com
 Corsica,                 x1p  cor corsi
@@ -54,14 +54,14 @@ Perugia,                 P1f  per perug
 Piancenza,               I0f  pia pianc piace piacenza
 Piombino,                x1P  pio piomb
 Pisa,                    L1P  psa
-Pistoia,                 L0.  pst pisto pis
+Pistoia,                 L0.  pst pisto
 Pontremoli,              x0.  pon pontr
 Provence,                F0.  pro prove
 Ragusa,                  x1P  rag ragus
-Romagna,                 P0f  rom romag
+Romagna,                 P0f  rma romag
 Rome,                    P2f  rme
-Salerno,                 N0P  sal saler
-Saluzzo,                 x1f  slz saluz
+Salerno,                 N0P  sle slr saler
+Saluzzo,                 x1f  slu slz saluz
 Sardinia,                x1p  sar sardi
 Savoy,                   x1P  sav
 Siena,                   x1f  sie sienn sienna
@@ -69,8 +69,8 @@ Slavonia,                x0.  sla slavo
 Spoleto,                 P0f  spo spole
 Swiss,                   F1.  swi
 Tivoli,                  x0P  tiv tivol
-Trent,                   x1f  trt
-Treviso,                 V1f  tre trevi
+Trent,                   x1f  trt trn
+Treviso,                 V1f  trv trevi
 Tunis,                   T2P  tun
 Turin,                   x1f  tur
 Tyrolea,                 A1f  tyr tyrol
@@ -87,26 +87,26 @@ Western Tyrrhenian Sea,  w0.  wts
 xxx-mv: xxx
 alb-mv: rag her dur
 alb-xc: rag las dur
-anc-mv: rom aqu urb spo
-anc-xc: rom aqu uas las
-aqu-mv: anc spo cap nap sal bar
+anc-mv: rma aqu urb spo
+anc-xc: rma aqu uas las
+aqu-mv: anc spo cap nap slr bar
 aqu-xc: anc bar las
 are-mv: flo urb per sie
-aus-mv: hun sla car tyr
+aus-mv: hun sla cri tyr
 avi-mv: swi tur pro
 avi-xc: pro/nc wgl
-bar-mv: aqu otr sal
+bar-mv: aqu otr slr
 bar-xc: aqu las otr
 bot-xc: wms pal ion tun
 ber-mv: mil trt bre cre
-bol-mv: man fer rom flo pst luc mod
-bol-xc: fer uas rom
+bol-mv: man fer rma flo pst luc mod
+bol-xc: fer uas rma
 bos-mv: cro her dal
 bre-mv: ber trt ver man cre
 cap-mv: spo aqu nap tiv
 cap-xc: tiv nap gon
-car-mv: aus sla crn fri vic trt mil tyr
-crn-mv: car sla cro fri
+cri-mv: aus sla crn fri vic trt mil tyr
+crn-mv: cri sla cro fri
 crn-xc: cro/nc uas fri
 com-mv: tyr mil pav tur
 cor-xc: egl wts wgl
@@ -123,13 +123,13 @@ ets-xc: psa/cc pio sie pat tiv gon mes pal wts
 ets-cc: psa
 fer-mv: man ver pad bol
 fer-xc: pad uas bol
-flo-mv: bol rom urb are sie psa pst
+flo-mv: bol rma urb are sie psa pst
 for-mv: pav pia par pon gen mon
-fri-mv: car crn tre vic
-fri-xc: crn uas lag tre
+fri-mv: cri crn trv vic
+fri-xc: crn uas lag trv
 gen-mv: sav mon for pon mod
 gen-xc: sav mod egl
-gon-xc: tiv cap nap sal otr ion/cc mes ets
+gon-xc: tiv cap nap slr otr ion/cc mes ets
 gon-cc: ion
 her-mv: bos alb rag dal
 her-xc: rag las dal
@@ -146,16 +146,16 @@ mar-mv: pro
 mar-xc: pro/nc pro/sc wgl
 mes-mv: pal
 mes-xc: ets gon ion pal
-mil-mv: com tyr car trt ber cre pia pav
+mil-mv: com tyr cri trt ber cre pia pav
 mod-mv: gen pon par man bol luc
 mod-xc: gen luc egl
 mon-mv: tur pav for gen sav
-nap-mv: cap aqu sal
-nap-xc: cap sal gon
-otr-mv: sal bar
-otr-xc: gon sal bar las ion
-pad-mv: ver vic tre fer
-pad-xc: tre lag uas fer
+nap-mv: cap aqu slr
+nap-xc: cap slr gon
+otr-mv: slr bar
+otr-xc: gon slr bar las ion
+pad-mv: ver vic trv fer
+pad-xc: trv lag uas fer
 pal-mv: mes
 pal-xc: wts ets mes ion bot wms
 par-mv: pia cre man mod pon for
@@ -176,35 +176,35 @@ pro-nc: avi mar wgl
 pro-sc: mar sav egl wgl
 rag-mv: her alb
 rag-xc: her alb las
-rom-mv: bol anc urb flo
-rom-xc: bol uas anc
+rma-mv: bol anc urb flo
+rma-xc: bol uas anc
 rme-mv: per spo tiv pat
-sal-mv: nap aqu bar otr
-sal-xc: nap otr gon
+slr-mv: nap aqu bar otr
+slr-xc: nap otr gon
 slz-mv: pro tur sav
 sar-xc: wgl wts wms
 sav-mv: pro slz tur mon gen
 sav-xc: pro/sc gen egl
 sie-mv: pio psa flo are per pat
 sie-xc: pio pat ets
-sla-mv: aus hun cro crn car
+sla-mv: aus hun cro crn cri
 spo-mv: per urb anc aqu cap tiv rme
 swi-mv: tyr tur avi
 tiv-mv: pat rme spo cap
 tiv-xc: pat cap gon ets
-trt-mv: mil car vic ver bre ber
-tre-mv: vic fri pad
-tre-xc: fri lag pad
+trt-mv: mil cri vic ver bre ber
+trv-mv: vic fri pad
+trv-xc: fri lag pad
 tun-xc: wms bot
 tur-mv: swi tyr com pav mon sav slz pro avi
-tyr-mv: aus car mil com tur swi
+tyr-mv: aus cri mil com tur swi
 uas-xv: fer pad lag fri crn cro/nc ist dal las
-uas-xc: anc rom bol
-urb-mv: flo rom anc spo per are
-lag-xc: pad tre fri uas ven
+uas-xc: anc rma bol
+urb-mv: flo rma anc spo per are
+lag-xc: pad trv fri uas ven
 ven-xc: lag
 ver-mv: bre trt vic pad fer man
-vic-mv: trt car fri tre pad ver
+vic-mv: trt cri fri trv pad ver
 wgl-xc: avi pro/nc mar pro/sc egl cor wts sar wms
 wms-xc: wgl sar wts pal bot tun
 wts-xc: cor egl psa pio ets pal wms sar wgl
@@ -249,7 +249,7 @@ Variable Income:  City         dice   1  2  3  4  5  6
 
 Ownership (city) ordering:
    avi mar swi tur slz sav cor gen mon pav cre mil trt tyr aus hun crn cro
-   dal tre pad ven man fer mod luc psa flo pio sie are bol per rme anc nap
+   dal trv pad ven man fer mod luc psa flo pio sie are bol per rme anc nap
    bar mes pal sar tun dur alb rag
 #End of center ordering
 
