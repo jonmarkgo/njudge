@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2002/07/17 11:46:33  millis
+ * Only show postal setting if set
+ *
  * Revision 1.14  2002/07/16 18:14:23  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -331,6 +334,9 @@ void params(FILE * fp)
                         } /*else {
                                 strcat(line, ", NoForts");
                         }*/
+			if (dipent.xflags & XF_STORMS) {
+				strcat(line," , Storms");
+			}	
 		}
 		
 		if (dipent.flags & F_NOADJ) {
