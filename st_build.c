@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.20  2003/05/03 22:45:32  millis
+   ** take account of ExtraCentres() if set.
+   **
    ** Revision 1.19  2003/05/02 21:39:33  millis
    ** Added handling of assumed home centres
    **
@@ -221,6 +224,8 @@ void init_build(void)
 		one_owned[p] = 0;
 		nu[p] = 0;
 		lu[p] = 0;
+		nu[p] += ExtraCentres();
+		
 		for (i = 1; i <= npr; i++) {
 		    if (gateway(i)) continue; /* Gateways don't count */
 		    /* Just in case it got changed, i.e. X2F_MORE_HOMES game! */
@@ -252,7 +257,6 @@ void init_build(void)
 				one_owned[p]++;
 			}
 		}
-		nu[p] += ExtraCentres();
 	}
 }
 
