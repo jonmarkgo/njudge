@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.61  2003/12/11 13:11:45  millis
+ * In msg_header(), exit if msg_header_done is set (avoid tests everywhere)
+ *
  * Revision 1.60  2003/12/07 00:52:08  millis
  * Fix bug 217
  *
@@ -868,8 +871,7 @@ int mail(void)
 					} else {
 						i_am_really_master = 0;
 					}
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 
 					time(&now_time);
 					if (ded[dipent.players[player].userid].md < now_time - 24 * 60 * 60) {
@@ -896,8 +898,7 @@ int mail(void)
 
 				case GET:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					while (isspace(*s))
 						++s;
 					if (strcasecmp(s, "package\n") == 0) {
@@ -932,8 +933,7 @@ int mail(void)
 				case MAP:	/* Map is unavailable */
 
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					fprintf(rfp, "\nThe map command is no longer suppoered.");
 					break;
 
@@ -951,12 +951,10 @@ int mail(void)
 
 					if ((full = !strcasecmp("full", name)))
 						*name = '\0';
-					if ((!*name) && (!msg_header_done))
-						msg_header(rfp);
+					if (!*name)  msg_header(rfp);
 
 					if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
-						if (!msg_header_done)
-							msg_header(rfp);
+						msg_header(rfp);
 						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
 						return E_FATAL;
 					}
@@ -982,12 +980,10 @@ int mail(void)
 
 					if (!not_eof) {
 						if (*name) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "There is no game '%s' active.\n", name);
 						} else if (!full) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "\nUse 'list name' or 'list full' for more ");
 							fprintf(rfp, "information on these games.\n");
 							fprintf(rfp, "Press options are: WGPF\n");
@@ -1010,8 +1006,7 @@ int mail(void)
 					*t = '\0';
 
 					if (!*name) {
-						if (!msg_header_done)
-							msg_header(rfp);
+						msg_header(rfp);
 						fprintf(rfp, "Name of game for summary must be specified.\n");
 						break;
 					}
@@ -1019,8 +1014,7 @@ int mail(void)
 					if (!(tfp = fopen(line, "r"))) {
 						sprintf(line, "%s%s/G001", GAME_DIR, name);
 						if (!(tfp = fopen(line, "r"))) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "There is no summary record for game '%s'.\n", name);
 							break;
 						}
@@ -1032,8 +1026,7 @@ int mail(void)
 						 */
 
 						if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
 							return E_FATAL;
 						}
@@ -1052,15 +1045,13 @@ int mail(void)
 							not_eof ? dipent.variant : V_STANDARD, name);
 						fflush(log_fp);
 						if (system(line)) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n", name);
 							break;
 						}
 						sprintf(line, "%s%s/summary", GAME_DIR, name);
 						if (!(tfp = fopen(line, "r"))) {
-							if (!msg_header_done)
-								msg_header(rfp);
+							msg_header(rfp);
 							fprintf(rfp, "Sorry, unable to generate summary for '%s'.\n", name);
 							break;
 						}
@@ -1074,8 +1065,7 @@ int mail(void)
 
 				case REGISTER:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					if ((i = newuser(raddr, inp))) {
 						mail_reply(i);
 						return (i);
@@ -1084,8 +1074,7 @@ int mail(void)
 
 				case IAMALSO:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					iamalso(raddr, s);
 					break;
 
@@ -1099,8 +1088,7 @@ int mail(void)
 
 				case WHOGAME:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					t = name;
 					while (isspace(*s))
 						s++;
@@ -1139,8 +1127,7 @@ int mail(void)
 
 				case WHOIS:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					whois(s);
 					break;
 /* TODO why is this section commented out ? -- nw */
@@ -1186,15 +1173,13 @@ int mail(void)
 
 				case DEDICATE:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					getded(s);
 					break;
 #endif
 				case _VERSION:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					version(rfp);
 					break;
 
@@ -1205,15 +1190,13 @@ int mail(void)
 
 				case FIXID:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					setsite(s);
 					break;
 
 				case ADJUST:
 					command++;
-					if (!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					if (sscanf(s, "%d %d", &i, &n) != 2) {
 						fprintf(rfp, "Invalid adjustment: adjust %s", s);
 					} else {
@@ -1231,8 +1214,7 @@ int mail(void)
 
 				case RECORD:
 					command++;
-					if(!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					if(sscanf(s, "%d %d %d %30s", &i, &j, &k, x) != 4)
 					{
 						fprintf(rfp, "Bad record command %s.\n", s);			
@@ -1289,8 +1271,7 @@ int mail(void)
 					if(no_of_infop > INFOPLAYER_MAX)
 						break;
 					command++;
-					if(!msg_header_done)
-						msg_header(rfp);
+					msg_header(rfp);
 					fprintf(rfp,"Dedication request info on %s\n", s);
 					switch(send_dedication(s))
 					{
@@ -2589,7 +2570,7 @@ void msg_header(FILE * fp)
 {
 	char *temp;
 	
-	if (msg_header_done) return: /* Already done, so exit */
+	if (fp == rfp && msg_header_done) return: /* Already done, so exit */
 
 	/* The 4-letter Judge code (or "XXXX" if no code assigned yet).  */
 
