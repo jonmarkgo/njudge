@@ -14,8 +14,8 @@ First Urbino,            x0.  ur1 urb1 urbin1 urbino1
 First Bay,               w0.  fb bay1 by1
 First Gulf of Naples,    w0.  fgn gon1 gul1 gn1
 First Ionian Sea,        w0.  fis ion1 ios1 is1
-First Lower Adriatic,    w0.  fla las1 la1
-First Upper Adriatic,    w0.  fua uas1 ua1
+First Lower Adriatic,    w0.  fla las1 
+First Upper Adriatic,    w0.  ua1 fua uas1
 Strait of Sardinia,      w0.  ssa soa st1
 Sardinia,                x0.  sar sardi il1
 Second Ancona,           21P  an2 anc2 ancon2 ancona2
@@ -31,7 +31,7 @@ Second Urbino,           x0.  ur2 urb2 urbin2 urbino2
 Second Bay,              w0.  sb bay2 by2
 Second Gulf of Naples,   w0.  sgn gon2 gul2 gn2
 Second Ionian Sea,       w0.  sis ion2 ios2 is2
-Second Lower Adriatic,   w0.  sla las2 la2
+Second Lower Adriatic,   w0.  sla las2
 Second Upper Adriatic,   w0.  sua uas2 ua2
 Strait of Sicily,        w0.  ssi soy st2
 Sicily,                  x0.  sic sicil il2
@@ -48,7 +48,7 @@ Third Urbino,            x0.  ur3 urb3 urbin3 urbino3
 Third Bay,               w0.  tb bay3 by3
 Third Gulf of Naples,    w0.  tgn gon3 gul3 gn3
 Third Ionian Sea,        w0.  tis ion3 ios3 is3
-Third Lower Adriatic,    w0.  tla las3 la3
+Third Lower Adriatic,    w0.  tla las3
 Third Upper Adriatic,    w0.  tua uas3 ua3
 Strait of Corsica,       w0.  sco soc st3
 Corsica,                 x0.  cor corsi il3
@@ -65,7 +65,7 @@ Fourth Urbino,           x0.  ur4 urb4 urbin4 urbino4
 Fourth Bay,              w0.  ob bay4 by4
 Fourth Gulf of Naples,   w0.  ogn gon4 gul4 gn4
 Fourth Ionian Sea,       w0.  ois ion4 ios4 is4
-Fourth Lower Adriatic,   w0.  ola las4 la4
+Fourth Lower Adriatic,   w0.  ola las4
 Fourth Upper Adriatic,   w0.  oua uas4 ua4
 Strait of Elba,          w0.  sel soe st4
 Elba,                    x0.  elb il4
@@ -82,7 +82,7 @@ Fifth Urbino,            x0.  ur5 urb5 urbin5 urbino5
 Fifth Bay,               w0.  ib bay5 by5
 Fifth Gulf of Naples,    w0.  ign gon5 gul5 gn5
 Fifth Ionian Sea,        w0.  iis ion5 ios5 is5
-Fifth Lower Adriatic,    w0.  ila las5 la5
+Fifth Lower Adriatic,    w0.  ila las5
 Fifth Upper Adriatic,    w0.  iua uas5 ua5
 Strait of Malta,         w0.  sma som st5
 Malta,                   x0.  mal il5
@@ -96,95 +96,95 @@ Mediterranean,           w0.  med medit
 -1
 xxx-mv: xxx
 an1-mv: ur1 pe1 la1 ca1
-an1-xc: ua1 by2
+an1-xc: ua1 by2 ur1 ca1
 an2-mv: ur2 pe2 la2 ca2
-an2-xc: ua2 by3
+an2-xc: ua2 by3 ur2 ca2
 an3-mv: ur3 pe3 la3 ca3
-an3-xc: ua3 by4
+an3-xc: ua3 by4 ur3 ca3
 an4-mv: ur4 pe4 la4 ca4
-an4-xc: ua4 by5
+an4-xc: ua4 by5 ur4 ca4
 an5-mv: ur5 pe5 la5 ca5
-an5-xc: ua5 by1
+an5-xc: ua5 by1 ur5 ca5
 ba1-mv: ca1 pr1 ot1
-ba1-xc: ua1 la1
+ba1-xc: ua1 las1 ot1 ca1
 ba2-mv: ca2 pr2 ot2
-ba2-xc: ua2 la2
+ba2-xc: ua2 las2 ot2 ca2
 ba3-mv: ca3 pr3 ot3
-ba3-xc: ua3 la3
+ba3-xc: ua3 las3 ot3 ca3
 ba4-mv: ca4 pr4 ot4
-ba4-xc: ua4 la4
+ba4-xc: ua4 las4 ot4 ca4
 ba5-mv: ca5 pr5 ot5
-ba5-xc: ua5 la5
+ba5-xc: ua5 las5 ot5 ca5
 ca1-mv: an1 la1 na1 pr1 ba1
-ca1-xc: ua1 by2
+ca1-xc: ua1 by2 an1 ba1
 ca2-mv: an2 la2 na2 pr2 ba2
-ca2-xc: ua2 by3
+ca2-xc: ua2 by3 an2 ba2
 ca3-mv: an3 la3 na3 pr3 ba3
-ca3-xc: ua3 by4
+ca3-xc: ua3 by4 an3 ba3
 ca4-mv: an4 la4 na4 pr4 ba4
-ca4-xc: ua4 by5
+ca4-xc: ua4 by5 an4 ba4
 ca5-mv: an5 la5 na5 pr5 ba5
-ca5-xc: ua5 by1
-la1-mv: na1 ca1 an1 pe1 ro1 ur1
-la1-xc: by1
-la2-mv: na2 ca2 an2 pe2 ro2 ur2
-la2-xc: by2
-la3-mv: na3 ca3 an3 pe3 ro3 ur3
-la3-xc: by3
-la4-mv: na4 ca4 an4 pe4 ro4 ur4
-la4-xc: by4
-la5-mv: na5 ca5 an5 pe5 ro5 ur5
-la5-xc: by5
+ca5-xc: ua5 by1 na5 ba5
+la1-mv: na1 ca1 an1 pe1 ro1 ur5
+la1-xc: by1 na1 ur5
+la2-mv: na2 ca2 an2 pe2 ro2 ur1
+la2-xc: by2 na2 ur1
+la3-mv: na3 ca3 an3 pe3 ro3 ur2
+la3-xc: by3 na3 ur2
+la4-mv: na4 ca4 an4 pe4 ro4 ur3
+la4-xc: by4 na4 ur3
+la5-mv: na5 ca5 an5 pe5 ro5 ur4
+la5-xc: by5 na5 ur5
 na1-mv: pr1 ca1 la1
-na1-xc: by1 gn1
+na1-xc: by1 gn1 la1 pr1
 na2-mv: pr2 ca2 la2
-na2-xc: by2 gn2
+na2-xc: by2 gn2 la2 pr2
 na3-mv: pr3 ca3 la3
-na3-xc: by3 gn3
+na3-xc: by3 gn3 la3 pr3
 na4-mv: pr4 ca4 la4
-na4-xc: by4 gn4
+na4-xc: by4 gn4 la4 pr4
 na5-mv: pr5 ca5 la5
-na5-xc: by5 gn5
+na5-xc: by5 gn5 la5 pr5
 ot1-mv: ba1 pr1
-ot1-xc: is1 la1 st1
+ot1-xc: is1 las1 st1 ba1 pr1
 ot2-mv: ba2 pr2
-ot2-xc: is2 la2 st2
+ot2-xc: is2 las2 st2 ba2 pr2
 ot3-mv: ba3 pr3
-ot3-xc: is3 la3 st3
+ot3-xc: is3 las3 st3 ba3 pr3
 ot4-mv: ba4 pr4
-ot4-xc: is4 la4 st4
+ot4-xc: is4 las4 st4 ba4 pr4
 ot5-mv: ba5 pr5
-ot5-xc: is5 la5 st5
+ot5-xc: is5 las5 st5 ba5 pr5
 pe1-mv: are ro1 la1 an1 ur1
 pe2-mv: bol ro2 la2 an2 ur2
 pe3-mv: luc ro3 la3 an3 ur3
 pe4-mv: pis ro4 la4 an4 ur4
 pe5-mv: sie ro5 la5 an5 ur5
 pr1-mv: ot1 ba1 ca1 na1
-pr1-xc: gn1 st1
+pr1-xc: gn1 st1 ot1 na1
 pr2-mv: ot2 ba2 ca2 na2
-pr2-xc: gn2 st2
+pr2-xc: gn2 st2 ot2 na2
 pr3-mv: ot3 ba3 ca3 na3
-pr3-xc: gn3 st3
+pr3-xc: gn3 st3 ot3 na3
 pr4-mv: ot4 ba4 ca4 na4
-pr4-xc: gn4 st4
+pr4-xc: gn4 st4 ot4 na4
 pr5-mv: ot5 ba5 ca5 na5
-pr5-xc: gn5 st5
+pr5-xc: gn5 st5 ot5 na5
 ro1-mv: are ur5 la1 pe1
 ro2-mv: bol ur1 la2 pe2
 ro3-mv: luc ur2 la3 pe3
 ro4-mv: pis ur3 la4 pe4
 ro5-mv: sie ur4 la5 pe5
 ur1-mv: are bol pe1 an1 la2 ro2
-ur1-xc: by2
+ur1-xc: by2 an1 la2
 ur2-mv: bol luc pe2 an2 la3 ro3
-ur2-xc: by3
+ur2-xc: by3 an2 la3
 ur3-mv: luc pis pe3 an3 la4 ro4
-ur3-xc: by4
+ur3-xc: by4 an3 la4
 ur4-mv: pis sie pe4 an4 la5 ro5
-ur4-xc: by5
+ur4-xc: by5 an4 la5
 ur5-mv: sie are pe5 an5 la1 ro1
-ur5-xc: by1
+ur5-xc: by1 an5 la1
 by1-xc: gn1 na1 la1 ur5 an5 ca5 ua5
 by2-xc: gn2 na2 la2 ur1 an1 ca1 ua1
 by3-xc: gn3 na3 la3 ur2 an2 ca2 ua2
@@ -194,32 +194,32 @@ gn1-xc: il1 st1 pr1 na1 by1 ua5
 gn2-xc: il2 st2 pr2 na2 by2 ua1
 gn3-xc: il3 st3 pr3 na3 by3 ua2
 gn4-xc: il4 st4 pr4 na4 by4 ua3
-gn5-xc: il5 st5 pr5 na5 by5 ua3
-is1-xc: is5 il1 st1 ot1 la1 il2 is2 med
-is2-xc: is1 il2 st2 ot2 la2 il3 is3 med
-is3-xc: is2 il3 st3 ot3 la3 il4 is4 med
-is4-xc: is3 il4 st4 ot4 la4 il5 is5 med
-is5-xc: is4 il5 st5 ot5 la5 il1 is1 med
-la1-xc: ua5 ba5 ot5 is5 il1
-la2-xc: ua1 ba1 ot1 is1 il2
-la3-xc: ua2 ba2 ot2 is2 il3
-la4-xc: ua3 ba3 ot3 is3 il4
-la5-xc: ua4 ba4 ot4 is4 il5
-ua1-xc: il1 gn1 by1 an5 ca5 ba5 la5
-ua2-xc: il2 gn2 by2 an1 ca1 ba1 la1
-ua3-xc: il3 gn3 by3 an2 ca2 ba2 la2
-ua4-xc: il4 gn4 by4 an3 ca3 ba3 la3
-ua5-xc: il5 gn5 by5 an4 ca4 ba4 la4
+gn5-xc: il5 st5 pr5 na5 by5 ua4
+is1-xc: is5 il1 st1 ot1 las1 il2 is2 med
+is2-xc: is1 il2 st2 ot2 las2 il3 is3 med
+is3-xc: is2 il3 st3 ot3 las3 il4 is4 med
+is4-xc: is3 il4 st4 ot4 las4 il5 is5 med
+is5-xc: is4 il5 st5 ot5 las5 il1 is1 med
+las1-xc: ua1 ba1 ot1 is1 il2
+las2-xc: ua2 ba2 ot2 is2 il3
+las3-xc: ua3 ba3 ot3 is3 il4
+las4-xc: ua4 ba4 ot4 is4 il5
+las5-xc: ua5 ba5 ot5 is5 il1
+ua1-xc: il2 gn2 by2 an1 ca1 ba1 las1
+ua2-xc: il3 gn3 by3 an2 ca2 ba2 las2
+ua3-xc: il4 gn4 by4 an3 ca3 ba3 las3
+ua4-xc: il5 gn5 by5 an4 ca4 ba4 las4
+ua5-xc: il1 gn1 by1 an5 ca5 ba5 las5
 st1-xc: il1 is1 ot1 pr1 gn1
 st2-xc: il2 is2 ot2 pr2 gn2
 st3-xc: il3 is3 ot3 pr3 gn3
 st4-xc: il4 is4 ot4 pr4 gn4
 st5-xc: il5 is5 ot5 pr5 gn5
-il1-xc: is1 st1 gn1 ua5 la5 is5
-il2-xc: is2 st2 gn2 ua1 la1 is1
-il3-xc: is3 st3 gn3 ua2 la2 is2
-il4-xc: is4 st4 gn4 ua3 la3 is3
-il5-xc: is5 st5 gn5 ua4 la4 is4
+il1-xc: is1 st1 gn1 ua5 las5 is5
+il2-xc: is2 st2 gn2 ua1 las1 is1
+il3-xc: is3 st3 gn3 ua2 las2 is2
+il4-xc: is4 st4 gn4 ua3 las3 is3
+il5-xc: is5 st5 gn5 ua4 las4 is4
 are-mv: ur5 ro1 pe1 ur1 bol flo sie
 bol-mv: ur1 ro2 pe2 ur2 luc flo are
 flo-mv: are bol luc pis sie
