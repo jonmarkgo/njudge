@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2004/07/05 04:01:09  nzmb
+ * Fix bug #291.
+ *
  * Revision 1.14  2004/04/03 16:29:16  millis
  * Fixed ExtraCentres problem (wasn't working!)
  *
@@ -143,29 +146,38 @@ int main(int argc, char *argv[])
 		else
 			sprintf(line, "%s/map.%s", dir, variants[v]);
 
-		sprintf(seed_file, "%s/seed.%s", dir, variants[v]);
-		sprintf(rep_file, "%s/report.%s", dir, variants[v]);
-		if(stat(line, &sbuf)) {
-			perror(line);
-			fprintf(stderr, "Error: no good map file for the %s variant.\n", variants[v]);
-			free(seed_file);
-			free(rep_file);
-			exit(1);
-		}
-		if(stat(seed_file, &tbuf)) {
-			perror(seed_file);
-			fprintf(stderr, "Error: no good seed file for the %s variant.\n", variants[v]);
-			free(seed_file);
-			free(rep_file);
-			exit(1);
-		}
-		if(stat(rep_file, &tbuf)) {
-			perror(rep_file);
-			fprintf(stderr, "Error: no good report file for the %s variant.\n", variants[v]);
-			free(seed_file);
-			free(rep_file);
-			exit(1);
-		}
+	        sprintf(seed_file, "%s/seed.%s", dir, variants[v]);
+                sprintf(rep_file, "%s/report.%s", dir, variants[v]);
+                if(stat(line, &sbuf)) {
+                        sprintf(line, "%s/map.%d", dir, v);
+                        if (stat(line, &sbuf)) {
+                            perror(line);
+                            fprintf(stderr, "Error: no good map file for the %s variant.\n", variants[v]);
+                            free(seed_file);
+                            free(rep_file);
+                            exit(1);
+                        }
+                }
+                if(stat(seed_file, &tbuf)) {
+                        sprintf(seed_file, "%s/seed.%d", dir, v);
+                        if(stat(seed_file, &tbuf)) {
+                            perror(seed_file);
+                            fprintf(stderr, "Error: no good seed file for the %s variant.\n", variants[v]);
+                            free(seed_file);
+                            free(rep_file);
+                            exit(1);
+                        }
+                }
+                if(stat(rep_file, &tbuf)) {
+                        sprintf(rep_file, "%s/report.%d", dir, v);
+                        if(stat(rep_file, &tbuf)) {
+                            perror(rep_file);
+                            fprintf(stderr, "Error: no good report file for the %s variant.\n", variants[v]);
+                            free(seed_file);
+                            free(rep_file);
+                            exit(1);
+                        }
+                }
 		t1 = sbuf.st_mtime;
 
 		sprintf(file, "%s/../map.%d", dir, v);
