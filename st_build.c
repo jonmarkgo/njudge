@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.17  2003/02/05 01:10:00  millis
+   ** Fixed small bug with pending build unit count
+   **
    ** Revision 1.16  2003/01/18 23:46:03  millis
    ** Integrated USTV changes.
    **
@@ -554,7 +557,7 @@ int buildin(char **s, int p)
 		break;
 
 	case 'r':
-		u = GetUnitIndex(p, p1); /* Will return the next unit to disband */
+		u = GetUnitIndex(p1, p); /* Will return the next unit to disband */
 		if (!u || unit[u].owner != p) {
 			errmsg("%s does not own a unit %s %s to remove.\n",
 			powers[p], mov_type(p1,u), pr[p1].name);
@@ -781,6 +784,7 @@ void buildout(int pt)
 
 	for (p = 1; p <= NPOWER; p++) { /* This loop is just to order by power */
             p_index = FindPower(p);
+	    one_printed = 0;
             if (p_index >= dipent.n) continue; /* Not a valid power */
 	    if (!(processing || pt == p || pt == MASTER)) continue;	
 	    for (u = 1; u <= nunit; u++) {
@@ -799,6 +803,7 @@ void buildout(int pt)
 				else
 					fprintf(rfp, ".\n");
 				unit[u].status = ':';
+				one_printed++;
 
 			} else if (unit[u].status == 'd' && unit[u].exists) {
 				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
@@ -811,6 +816,7 @@ void buildout(int pt)
 
 				unit[u].owner = 0;
 				unit[u].status = ':';
+				one_printed++;
 
 
 			} else if (unit[u].status == 'w') {
@@ -820,6 +826,7 @@ void buildout(int pt)
 					putc(' ', rfp);
 				fprintf(rfp, "Build waived.\n");
 				unit[u].owner = 0;
+				one_printed++;
 
 			} else if (unit[u].status == 't') {
 				num_units[unit[u].owner]++;
@@ -841,6 +848,7 @@ void buildout(int pt)
                                                 unit[u].coast = unit[u].new_coast;
 					}
 				unit[u].status = ':';
+				one_printed++;
 			} else if (unit[u].status == 'm') {
 			    num_units[unit[u].owner]++;
 				/* only notify when explictly maintaining units */
@@ -852,6 +860,7 @@ void buildout(int pt)
                                                 utype(unit[u].type),
                                                 mov_type(unit[u].loc,u),
                                                 pr[unit[u].loc].name);
+				one_printed++;
  			    }
 				unit[u].status = ':';
 			} else if (unit[u].status == ':') {
@@ -868,11 +877,13 @@ void buildout(int pt)
                                         more_orders++;
                                 }
                                 fprintf(rfp, " (maintain).\n");
+				one_printed++;
 			    }
                         }
 		}
 	    }
 	    if (!processing && !predict && pt == MASTER)
+		if (one_printed)
                     fprintf(rfp,"\n"); /* Extra blank for master */
 
 	}
