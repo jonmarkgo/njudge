@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/11/09 18:17:57  millis
+ * Fix bug 246
+ *
  * Revision 1.12  2003/09/14 08:03:05  millis
  * Do not flag some errors in Mach data (just ignore them)
  *
@@ -928,7 +931,7 @@ int gameout(void)
 		if (dipent.players[u].power < 0)
 			continue;
 
-		dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT);
+		dipent.players[u].status &= ~(SF_MOVE | SF_MOVED | SF_PART | SF_WAIT | SF_BROAD_SENT);
 		if ((p = dipent.players[u].power) <= NPOWER) {
 			dipent.players[u].units = nu[p];
 			if (dipent.flags & F_MACH)
