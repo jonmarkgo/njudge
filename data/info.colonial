@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 Dec 30,2002
+Greetings from the Diplomacy* Adjudicator!!                 July 28th,2002
 Info.colonial
      
 The Colonial Diplomacy variant of diplomacy follows the most of the rules 
@@ -7,7 +7,8 @@ can be set on or off at the GMs desire.  The game is the first Avalon Hill
 published variant.
      
 The judge version was designed by Andy Schwarz (who did the grunt work) and 
-Larry Richardson (who did the harder stuff).
+Larry Richardson (who did the harder stuff). Millis Miller added the 
+optional rules support.
      
 Rules:
      
@@ -89,7 +90,7 @@ also work.
      
      
 Optional Rules:
-There are three options rules which can be individually enabled by the GM
+There are three optional rules which can be individually enabled by the GM.
 
 1. Hong Kong
 The supply centre of Hong Kong is considered part of China by the Chinese. 
@@ -97,7 +98,7 @@ With this optional rule enabled, Chinese occupation of Hong Kong does not
 count as a supply centre occupied but only a province occupied.
 China can take Hong Kong to prevent another power gaining it, but will
 not be credited with it as a supply centre. 
-Whilest under Chinese control, Hong Kong will be shown as 'Unowned'.
+Whilst under Chinese control, Hong Kong will be shown as 'Unowned'.
 
 This rule is enabled by the command 'set hong kong'.
 
@@ -115,8 +116,9 @@ Army Vladivostok - Trans Siberian Railway - Moscow
 This line is only usable by Russian armies.
 Movement to the destination can be supported as per any normal movement.
 Should the movement fail, or a foreign unit block the line, the ordered
-unit will stop on the furthest empty province on the line from the start
-province.
+unit will stop in the nearest empty province to the destination specified. 
+If no free province is found, the unit will remain in the start province
+(from where it can be dislodged as normal, if attacked with sufficient force).
 
 The Trans Siberian Railway can be abbreviated to TSR. 
 
@@ -133,15 +135,16 @@ The power which has a unit in Egypt in any one turn will have also a Suez
 Canal unit. That unit can only be ordered to hold or to support a unit
 in either Red Sea or Mediterranean sea itself to hold or to move through the 
 canal. The support given does not count as a real support, but permission to
-use the canal.
+use the canal by the unit that is given support.
 
 Failure to give correct permission means that support or movement order
-mande through the canal will be marked as *blocked* and automatically fail.
+made through the canal will be marked as *blocked* and automatically fail.
 
 A unit must be present in Egypt to activate the canal: if there is no
 unit there, no-one can move through or support through the canal.
 If the unit in Egypt is ordered to leave the province, and that order
-would be successful, the Suez Canal order fails.
+is successful, the Suez Canal order fails. (Conversely, if it bounces, the 
+Suez Canal order suceeds.)
 
 The Suez Canal can be abbreviated to SC. 
 
