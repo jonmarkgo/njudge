@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.21  2003/07/22 23:32:21  millis
+** Fix Bug 201
+**
 ** Revision 1.20  2003/06/04 23:17:22  millis
 ** Fix bug 165, mis-ajudication over TSR
 **
@@ -1910,11 +1913,11 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				  (unit[u].owner != NEUTRAL) &&
 				  (p = *s++) ; 
 				 s++) {
-					if (!contest[p] 
+					if ((!contest[p] || IsMultiProvince(p))
 					&& ((*s >> 4) == unit[u].coast || unit[u].type == 'W' )
 				 && (*s & 0x0f) != MX
 					 && (!(u2 = pr[p].unit)	/* XI: can't retreat to */
-						||(unit[u2].loc != p	/* attackers origin. */
+						||((unit[u2].loc != p || IsMultiProvince(p))	/* attackers origin. */
 					 && unit[u2].loc != unit[u].loc))
 					 && (dipent.phase[0] != 'F' || pr[p].type != 'v')
 					 && AllowedGatewayRetreat(u, p)) {
