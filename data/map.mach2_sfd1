@@ -224,9 +224,9 @@ Variable Income:  City         dice   1  2  3  4  5  6 Initial
                   Austria       1     1  2  3  3  4  4   3
                   Florence      2     1  2  3  3  4  5   6
                   Marseilles    1     1  2  3  4  5  6   7
-                  Genoa         1     1  2  2  3  3  4   0
-                  Milan         1     2  3  3  4  4  5   0
-                  Naples        1     1  2  2  3  3  4   0
+                  Genoa         1     1  2  2  3  3  4   2
+                  Milan         1     2  3  3  4  4  5   2
+                  Naples        1     1  2  2  3  3  4   1
                   Rome          1     2  3  3  4  5  6   4
                   Durazzo       1     1  2  3  4  5  6   4
                   Venice        2     2  3  3  4  4  5   7
