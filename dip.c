@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.55  2004/07/12 00:21:59  millis
+ * Fix Bug 226: remind every move frequency for paused games.
+ * Also a fix for Bug 91 / Bug 297, to only mail real players on a game pause.
+ *
  * Revision 1.54  2004/07/07 22:50:39  millis
  * Bug91: further fixes for Duplex code
  * (these mainly to get absences and late handling working)
@@ -825,7 +829,7 @@ void master(void)
 				    MailOut(line, dipent.players[i].address);
 				}
                               }
-			      dipent.process = now + dipent.movement.next * 60 * 60; /* Remind every normal movement periodi that game is paused */
+			      dipent.process = now + 3 * 24 * 60 * 60; /* Remind every 3 days that game is paused */
 			    }
 
         		} else {
