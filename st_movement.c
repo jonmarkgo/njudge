@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.12  2001/10/20 12:11:15  miller
+** Merged in changes from DEMA and USTV 
+**
 ** Revision 1.11.2.2  2001/10/20 00:52:49  dedo
 ** Remvoe compile warnings
 **
@@ -636,6 +639,7 @@ int moveout(int pt)
 	int u, u2, u3, u4, bounce = 0, i, index, p;
 	unsigned char *s, *t, c, contest[NPROV + 1];
 	int c1;
+	int unit_dislodged;
 	char cbuffer[1024];
 	int result[MAXUNIT];
 	int support[MAXUNIT];
@@ -953,9 +957,20 @@ result[u] = BLOCKED;
 						p += supval(u3);
 				}
 				if (support[u] - p > support[u2]) {
-					result[u2] = DISLODGED;
-					support[unit[u2].unit] -= supval(u2);
-				}
+				     for (u4=1, unit_dislodged=1; u4<=nunit; u4++ ) {
+                                        if ( ( u != u4 )
+                                        && ( unit[ u4 ].order == 'm' )
+                                        && ( !result[ u4 ] )
+                                        && ( unit[ u4 ].dest == unit[ u ].dest )
+                                        && ( support[ u4 ] >= support[u]-p ) )
+                                            unit_dislodged = 0;
+                                    }
+
+                                    if ( unit_dislodged == 1 ) {
+                                    result[u2] = DISLODGED;
+                                    support[unit[u2].unit] -= supval(u2);
+                                    }
+                                }
 			}
 		}
  
