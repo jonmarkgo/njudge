@@ -9,7 +9,7 @@
 SOURCE INSTALL
 ==============
 
-   The system the judge is to be run on needs to have the followinf software
+   The system the judge is to be run on needs to have the following software
    installed:  C Shell, Perl 5.005 or higher, and Sendmail or an MTA with a
    compatible interface to Sendmail such as Exim or Postfix.
 
