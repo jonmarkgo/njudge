@@ -10,29 +10,18 @@
 #  above notices are preserved and that due credit is given to Mr.
 #  Lowe.
 
-DESTDIR= /home/judge/dip
-SRCDIR= 
-INCPATH=
-LOGEDIT= vi +
-CC=gcc
-USER=judge
-JVERSION=0.8.5
+#Include installation-specific settings
+# A macro similar to this will install base settings
+#	@if [ ! -f Makefile.defines ]; then \
+#		cp Makefile.defines.base Makefile.defines
+#		echo "Default Makefile.defines created - please check." ; \
+#	fi;
 
-# locations of some support programs
-HEAD=/bin/head
-MAIL=/bin/mail
 
-# Non-test options.  Comment out if testing with GDB.
-CFLAGS= -pipe -O -Wall -DJVERSION=\"$(JVERSION)\"
-LDFLAGS= 
-INSFLAGS= -c -s -m 755
-LIBS= -lm
+include Makefile.defines
 
-# Test options.  Comment (#) out if NOT testing with GDB.
-#CFLAGS= -gstabs -DSOLARIS
-#LDFLAGS= -gstabs  -DSOLARIS
-#INSFLAGS= -c -m 755
-#LIBS=
+#set the judge version
+JVERSION=0.8.7
 
 # Programs, Sources, and Objects.
 
@@ -42,6 +31,8 @@ SRCS = 	assign.c \
 		conf.c \
 		dip.c \
 		dipent.c \
+		diplog.c \
+		dipstats.c \
 		draw.c \
 		global.c \
 		hashtable.c \
@@ -57,6 +48,7 @@ SRCS = 	assign.c \
 		ma_stats.c \
 		machlib.c \
 		mail.c \
+		ml_short.c \
 		mfprintf.c \
 		ml_date.c \
 		ml_getaddr.c \
@@ -93,7 +85,8 @@ FILES=	${SRCDIR}/Makefile ${SRCDIR}/README ${SRCDIR}/dip.template \
 	${SRCDIR}/diprun ${SRCDIR}/smail ${SRCDIR}/dipclean ${SRCDIR}/atrun \
         ${SRCDIR}/rundipmap ${SRCDIR}/runlistmap ${SRCDIR}/newlogs \
 	${SRCDIR}/data/* ${SRCDIR}/starter.flist ${SRCDIR}/mapit/* \
-	${SRCDIR}/rundipmap ${SRCDIR}/README.*
+	${SRCDIR}/rundipmap ${SRCDIR}/README.* ${SRCDIR}/dip.conf ${SRCDIR}/defaults.inc.base \
+	${SRCDIR}/smail ${SRCDIR}/Makefile.defines.base
 
 .SUFFIXES: .c .o .h
 
@@ -105,16 +98,16 @@ all:	dip rdip pdip cmap summary bgreet deddump delgame flock fmtwho ign
 dip: ${OBJS}
 	${CC} ${LDFLAGS} -o dip ${OBJS} ${LIBS}
 
-cmap:	cmap.o lib.o bailout.o conf.o strdup.o variant.o hashtable.o global.o
-	${CC} ${LDFLAGS} -o cmap cmap.o lib.o bailout.o conf.o strdup.o \
+cmap: jm.o cmap.o lib.o bailout.o conf.o strdup.o variant.o hashtable.o global.o diplog.o
+	${CC} ${LDFLAGS} -o cmap jm.o cmap.o lib.o bailout.o conf.o strdup.o diplog.o \
 	                    variant.o hashtable.o global.o ${LIBS}
 
-summary: summary.o dipent.o jm.o lib.o params.o po_get.o bailout.o conf.o variant.o hashtable.o global.o strdup.o
-	${CC} ${LDFLAGS} -o summary summary.o dipent.o jm.o lib.o hashtable.o \
+summary: summary.o dipent.o diplog.o jm.o lib.o params.o po_get.o bailout.o conf.o variant.o hashtable.o global.o strdup.o
+	${CC} ${LDFLAGS} -o summary summary.o dipent.o diplog.o jm.o lib.o hashtable.o \
 						params.o po_get.o bailout.o conf.o strdup.o variant.o \
 						global.o ${LIBS}
 
-bgreet:	bgreet.o
+bgreet: bgreet.o
 	${CC} ${LDFLAGS} -o bgreet bgreet.o ${LIBS}
 
 deddump: deddump.o conf.o strdup.o hashtable.o global.o
@@ -123,76 +116,111 @@ deddump: deddump.o conf.o strdup.o hashtable.o global.o
 delgame: delgame.o
 	${CC} ${LDFLAGS} -o delgame delgame.o ${LIBS}
 
-flock:	flock.o
+flock: flock.o
 	${CC} ${LDFLAGS} -o flock flock.o ${LIBS}
 
-fmtwho:	fmtwho.o
+fmtwho: fmtwho.o
 	${CC} ${LDFLAGS} -o fmtwho fmtwho.o ${LIBS}
 
-ign:	ign.o strcasecmp.o
+ign: ign.o strcasecmp.o
 	${CC} ${LDFLAGS} -o ign ign.o strcasecmp.o ${LIBS}
 
-pdip:	pdip.o
+pdip: pdip.o
 	${CC} ${LDFLAGS} -o pdip pdip.o ${LIBS}
 
-rdip:	rdip.o bailout.o conf.o strdup.o hashtable.o global.o
-	${CC} ${LDFLAGS} -o rdip rdip.o bailout.o conf.o strdup.o hashtable.o global.o ${LIBS}
+rdip: rdip.o diplog.o bailout.o conf.o strdup.o hashtable.o global.o
+	${CC} ${LDFLAGS} -o rdip rdip.o diplog.o bailout.o conf.o strdup.o hashtable.o global.o ${LIBS}
+
+defaults.inc:
+	@echo "Generating defaults.inc file from base version."
+	@echo "You should change this if you wish a different policy for your judge."
+	@echo
+	@cp -p defaults.inc.base defaults.inc
 
 Datamake: data/*
-	./makedata ${DESTDIR} > Datamake
+	./makedata ${INSTALLDIR} > Datamake
 
-# ${DESTDIR}/data/flist removed from list because it doesn't work --nw
-
-install: ${DESTDIR} ${DESTDIR}/data dip \
-	 ${DESTDIR}/diprun ${DESTDIR}/smail ${DESTDIR}/dipclean ${DESTDIR}/atrun \
-	 ${DESTDIR}/rundipmap ${DESTDIR}/runlistmap ${DESTDIR}/newlogs cmap \
-	 summary bgreet deddump delgame flock fmtwho ign pdip rdip
-	install ${INSFLAGS} dip ${DESTDIR}/newprg
-	mv ${DESTDIR}/newprg ${DESTDIR}/dip
-	install ${INSFLAGS} summary ${DESTDIR}/summary
-	install ${INSFLAGS} bgreet ${DESTDIR}/bgreet
-	install ${INSFLAGS} deddump ${DESTDIR}/deddump
-	install ${INSFLAGS} delgame ${DESTDIR}/delgame
-	install ${INSFLAGS} flock ${DESTDIR}/flock
-	install ${INSFLAGS} fmtwho ${DESTDIR}/fmtwho
-	install ${INSFLAGS} ign ${DESTDIR}/ign
-	install ${INSFLAGS} pdip ${DESTDIR}/pdip
-	install ${INSFLAGS} rdip ${DESTDIR}/rdip
+install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flist \
+	 ${INSTALLDIR}/diprun ${INSTALLDIR}/smail ${INSTALLDIR}/dipclean ${INSTALLDIR}/atrun \
+	 ${INSTALLDIR}/rundipmap ${INSTALLDIR}/runlistmap ${INSTALLDIR}/newlogs cmap \
+	 summary bgreet deddump delgame flock fmtwho ign pdip rdip magic \
+	 defaults.inc
+	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
+	install ${INSFLAGS} summary ${INSTALLDIR}/summary
+	install ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
+	install ${INSFLAGS} deddump ${INSTALLDIR}/deddump
+	install ${INSFLAGS} delgame ${INSTALLDIR}/delgame
+	install ${INSFLAGS} flock ${INSTALLDIR}/flock
+	install ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
+	install ${INSFLAGS} ign ${INSTALLDIR}/ign
+	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
+	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
+		ln -f -s ${INSTALLDIR}/rdip ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/dip ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/summary ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/deddump ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/flock ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/fmtwho ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/ign ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/pdip ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/bgreet ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/delgame ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/atrun ${DESTDIR}; \
+		ln -f -s ${INSTALLDIR}/smail ${DESTDIR}; \
+	fi;
 	rm -f data/RCS
-	cp data/* ${DESTDIR}/data
-	./cmap ${DESTDIR} >> ${DESTDIR}/install.log
+	cp data/* ${INSTALLDIR}/data
+	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR}
+	./cmap ${INSTALLDIR} >> ${INSTALLDIR}/install.log
+	@-ln -f -s  ${INSTALLDIR}/install.log ${DESTDIR} 
 	cp dip.conf $(DESTDIR)/dip.conf
-	cp smail.pl $(DESTDIR)/smail.pl
 	touch ${DESTDIR}/dip.msg
 	@chmod 640 ${DESTDIR}/dip.msg
 	touch ${DESTDIR}/dip.addr
 	@chmod 640 ${DESTDIR}/dip.addr
 	touch ${DESTDIR}/dip.whois
 	@chmod 640 ${DESTDIR}/dip.whois
+	-mkdir ${DESTDIR}
+	-mkdir ${DESTDIR}/Dcontrol
+	-chmod 700 ${DESTDIR}
+	-chown $(USER) ${DESTDIR}
+	-chown $(USER) ${DESTDIR}/Dcontrol
 	@echo "control   001       S1801MX   1 1 1 0 2 18 7" > ${DESTDIR}/dip.master
 	@echo "Process   " `date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}/dip.master
 	@echo "Start     " `date '+%a %b %d %X %Y'` >> ${DESTDIR}/dip.master
 	@echo "-" >> ${DESTDIR}/dip.master
+	@echo ",\"| ${DESTDIR}/rdip -b -d ${DESTDIR} \"" > /home/${USER}/forward
+	-@chown ${USER} ${DESTDIR}/*
 	@echo
-	@echo "you must now edit DESTDIR/dip.conf, DESTDIR/smail, DESTDIR/atrun,"
-	@echo "and DESTDIR/dip.msg (which may be left empty)"
+	@echo "you must now edit ${INSTALLDIR}/smail, ${INSTALLDIR}/atrun,"
+	@echo "${DESTDIR}/dip.conf and ${DESTDIR}/dip.msg (which last may be left empty)"
+	@echo "To start the judge, rename /home/${USER}/forward to .forward"
 	@echo
 
-upgrade:	dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
-	 pdip rdip summary deddump delgame flock ign
-	install ${INSFLAGS} dip ${DESTDIR}/newprg
-	mv ${DESTDIR}/newprg ${DESTDIR}/dip
-	install ${INSFLAGS} summary ${DESTDIR}/summary
-	install ${INSFLAGS} bgreet ${DESTDIR}/bgreet
-	install ${INSFLAGS} deddump ${DESTDIR}/deddump
-	install ${INSFLAGS} delgame ${DESTDIR}/delgame
-	install ${INSFLAGS} flock ${DESTDIR}/flock
-	install ${INSFLAGS} fmtwho ${DESTDIR}/fmtwho
-	install ${INSFLAGS} ign ${DESTDIR}/ign
-	install ${INSFLAGS} pdip ${DESTDIR}/pdip
-	install ${INSFLAGS} rdip ${DESTDIR}/rdip
+upgrade: dip diprun dipclean rundipmap runlistmap bgreet fmtwho \
+	 pdip rdip summary deddump delgame flock ign flist magic
+	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
+	install ${INSFLAGS} summary ${INSTALLDIR}/summary
+	install ${INSFLAGS} bgreet ${INSTALLDIR}/bgreet
+	install ${INSFLAGS} deddump ${INSTALLDIR}/deddump
+	install ${INSFLAGS} delgame ${INSTALLDIR}/delgame
+	install ${INSFLAGS} flock ${INSTALLDIR}/flock
+	install ${INSFLAGS} fmtwho ${INSTALLDIR}/fmtwho
+	install ${INSFLAGS} ign ${INSTALLDIR}/ign
+	install ${INSFLAGS} pdip ${INSTALLDIR}/pdip
+	install ${INSFLAGS} rdip ${INSTALLDIR}/rdip
+magic:
+	@if [ -f .magic.h ]; then \
+		cat .magic.h  | grep DIE_MAGIC | cut -d' ' -f3 >  ${DESTDIR}/.magic.dat; \
+		echo ".magic.dat created from .magic.h" ; \
+		rm -f .magic.h; \
+	fi;	
 	
-${DESTDIR}:
+
+${DESTDIR}: 
 	mkdir ${DESTDIR}
 	mkdir ${DESTDIR}/Dcontrol
 	cp dip.template ${DESTDIR}/dip.master
@@ -203,13 +231,19 @@ ${DESTDIR}:
 	-chown $(USER) ${DESTDIR}
 	-chown $(USER) ${DESTDIR}/Dcontrol
 
-${DESTDIR}/data:
+${DESTDIR}/data: 
 	mkdir ${DESTDIR}/data
-	ln -s ../dip.whois ${DESTDIR}/data/whois
+	ln -f -s ../dip.whois ${DESTDIR}/data/whois
 	chmod 700 ${DESTDIR}/data
 	-chown $(USER) ${DESTDIR}/data
 
-flist.info:
+${INSTALLDIR}/data:
+	mkdir ${INSTALLDIR}/data
+
+${INSTALLDIR}:
+	mkdir ${INSTALLDIR}
+
+flist.info:  starter.flist
 	cp starter.flist flist.info
 
 # flist: Available file list.  
@@ -227,18 +261,22 @@ flist.info:
 #	g) Delete any entries with a comment of NOLIST.
 #   5) Merge the header and the resulting file list.
 
+flist: ${INSTALLDIR}/data/flist starter.flist 
 
-${DESTDIR}/data/flist: ${DESTDIR}/data Datamake flist.info
+
+${INSTALLDIR}/data/flist: ${INSTALLDIR}/data Datamake flist.info
 	@make -f Datamake
+	rm -f ${INSTALLDIR}/data/flist.info
+	cp flist.info ${INSTALLDIR}/data
 	echo >  temp.flist1 "Files and sizes in bytes as of `date`"
 	echo >> temp.flist1 ""
 	echo >> temp.flist1 \
 "Name                   Size  Last Change    Description"
 	echo >> temp.flist1 \
 "------------------   ------ -------------   ---------------------------------"
-	(cd ${DESTDIR}/data; \
+	(cd ${INSTALLDIR}/data; \
 	  /bin/ls -lL | grep -v "^total" | \
-	  awk '{printf("%-20.20s%7d %3s %3s %5s  +\n",$$8,$$4,$$5,$$6,$$7)}' \
+	  awk '{printf("%-20.20s%7d %3s %3s %5s  +\n",$$9,$$5,$$6,$$7,$$8)}' \
 	) | sort - flist.info > temp.flist2
 	(echo g/=/s/'^'/'#'/;           \
 	 echo g/=/.-1,.j;               \
@@ -249,69 +287,111 @@ ${DESTDIR}/data/flist: ${DESTDIR}/data Datamake flist.info
 	 echo g/NOLIST/d;               \
 	 echo w) | \
 	  ed - temp.flist2
-	rm ${DESTDIR}/data/flist
-	cat temp.flist1 temp.flist2 > ${DESTDIR}/data/flist
+	-rm ${INSTALLDIR}/data/flist
+	cat temp.flist1 temp.flist2 > ${INSTALLDIR}/data/flist
 	rm  temp.flist1 temp.flist2
 
-${DESTDIR}/dip: dip
-	install ${INSFLAGS} dip ${DESTDIR}/newprg
-	mv ${DESTDIR}/newprg ${DESTDIR}/dip
+${INSTALLDIR}/dip: dip
+	install ${INSFLAGS} dip ${INSTALLDIR}/newprg
+	mv ${INSTALLDIR}/newprg ${INSTALLDIR}/dip
 
-${DESTDIR}/diprun: diprun
-	cp diprun ${DESTDIR}/diprun
+${INSTALLDIR}/diprun: diprun
+	cp diprun ${INSTALLDIR}/diprun
 
-${DESTDIR}/smail: smail
-	cp smail ${DESTDIR}/smail
+${INSTALLDIR}/smail: smail
+	cp smail ${INSTALLDIR}/smail
 
-${DESTDIR}/dipclean: dipclean
-	cp dipclean ${DESTDIR}/dipclean
+${INSTALLDIR}/dipclean: dipclean
+	cp dipclean ${INSTALLDIR}/dipclean
 
-${DESTDIR}/atrun: atrun
-	cp atrun ${DESTDIR}/atrun
+${INSTALLDIR}/atrun: atrun
+	cp atrun ${INSTALLDIR}/atrun
 
-${DESTDIR}/rundipmap: rundipmap
-	cp rundipmap ${DESTDIR}/rundipmap
+${INSTALLDIR}/rundipmap: rundipmap
+	cp rundipmap ${INSTALLDIR}/rundipmap
 
-${DESTDIR}/runlistmap: runlistmap
-	cp runlistmap ${DESTDIR}/runlistmap
+${INSTALLDIR}/runlistmap: runlistmap
+	cp runlistmap ${INSTALLDIR}/runlistmap
 
-${DESTDIR}/newlogs: newlogs
-	cp newlogs ${DESTDIR}/newlogs
+${INSTALLDIR}/newlogs: newlogs
+	cp newlogs ${INSTALLDIR}/newlogs
 
-tar: ../dip.tar.Z ../mapit.tar.Z
+dist: tarZ targz tarbz2
 
-../dip.tar.Z: README Makefile ${SRCS}
+tarZ: ../dip-${JVERSION}.tar.Z ../mapit.tar.Z
+
+targz: ../dip-${JVERSION}.tar.gz ../mapit.tar.gz
+
+tarbz2: ../dip-${JVERSION}.tar.bz2 ../mapit.tar.bz2
+
+tar: ../dip-${JVERSION}.tar ../mapit.tar
+
+../dip-${JVERSION}.tar: ${FILES} 
 #	newvers VERMAJ
 #	@touch .log/oldlog
-	rm -f ../dip.tar.Z
-	(cd ..; tar -cvf dip.tar ${FILES}; compress dip.tar)
+	rm -f ../dip-${JVERSION}.tar
+	tar -cf ../dip-${JVERSION}.tar ${FILES}
 
-../mapit.tar.Z: 
-	(tar -cvf ../mapit.tar mapit; compress ../mapit.tar)
+../mapit.tar:
+	rm -f ../mapit.tar 
+	tar -cf ../mapit.tar mapit
 
-loglink:
+../dip-${JVERSION}.tar.Z: ../dip-${JVERSION}.tar
+	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
+	compress -f ../dip-${JVERSION}.tar
+	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+
+../mapit.tar.Z: ../mapit.tar
+	cp -p ../mapit.tar ../mapit.tar.old
+	compress -f ../mapit.tar
+	mv ../mapit.tar.old ../mapit.tar
+
+../dip-${JVERSION}.tar.gz: ../dip-${JVERSION}.tar
+	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
+	gzip -f ../dip-${JVERSION}.tar
+	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+
+../mapit.tar.gz: ../mapit.tar
+	cp -p ../mapit.tar ../mapit.tar.old
+	gzip -f ../mapit.tar
+	mv ../mapit.tar.old ../mapit.tar
+
+../dip-${JVERSION}.tar.bz2: ../dip-${JVERSION}.tar
+	cp -p ../dip-${JVERSION}.tar ../dip-${JVERSION}.tar.old
+	bzip2 -f ../dip-${JVERSION}.tar
+	mv ../dip-${JVERSION}.tar.old ../dip-${JVERSION}.tar
+
+../mapit.tar.bz2: ../mapit.tar
+	cp -p ../mapit.tar ../mapit.tar.old
+	bzip2 -f ../mapit.tar
+	mv ../mapit.tar.old ../mapit.tar
+
+
+loglink: 
 	rm -f ${DESTDIR}/data/log
-	ln -s `pwd`/.log/log ${DESTDIR}/data/log
+	ln -f -s `pwd`/data/log ${DESTDIR}/data/log
 
-more:
+more: 
 	rm -f morefil
-	(cd ..; more ${FILES} > morefil)
+	(more ${FILES} > morefil)
 
-list:
+list: 
 	rm -f listing
 	-for i in ${FILES}; do \
-		expand ../$$i | pr -h $$i | sed 's/^/       /' >> listing; \
+		expand $$i | pr -h $$i | sed 's/^/       /' >> listing; \
 	done
 
-clean:
+clean: 
 	rm -f a.out core dip Datamake *.o *~
 	rm -f cmap bgreet fmtwho pdip rdip summary
 	rm -f deddump delgame flock ign makedep eddep
 	
-lint:
+lclint:
+	lint ${SRCS}
+lint: 
 	lint ${SRCS}
 
-depend:
+depend: 
 	${CC} -MM ${INCPATH} ${SRCS} ${EXTRAS} > makedep 
 	echo '/^# DO NOT DELETE THIS LINE/+2,$$d' >eddep
 	echo '$$r makedep' >>eddep
@@ -325,36 +405,40 @@ depend:
 
 # DO NOT DELETE THIS LINE -- make depend uses it
 # DEPENDENCIES MUST END AT END OF FILE
-dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h
-dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
- functions.h
-bailout.o: bailout.c dip.h conf.h port.h variant.h
 assign.o: assign.c dip.h conf.h port.h variant.h
+bailout.o: bailout.c dip.h conf.h port.h variant.h diplog.h
 common.o: common.c dip.h conf.h port.h variant.h porder.h
 conf.o: conf.c conf.h hashtable.h
+dip.o: dip.c dip.h conf.h port.h variant.h mail.h functions.h diplog.h
+dipent.o: dipent.c dip.h conf.h port.h variant.h defaults.h \
+ defaults.inc functions.h diplog.h
+diplog.o: diplog.c diplog.h functions.h dip.h conf.h port.h variant.h
+dipstats.o: dipstats.c conf.h dipstats.h
 draw.o: draw.c dip.h conf.h port.h variant.h functions.h mail.h
-global.o: global.c dip.h conf.h port.h variant.h
+global.o: global.c dip.h conf.h port.h variant.h mach.h porder.h
 hashtable.o: hashtable.c hashtable.h
 history.o: history.c dip.h conf.h port.h variant.h functions.h mail.h
-jm.o: jm.c
-lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h \
- .magic.h
-machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
+jm.o: jm.c functions.h dip.h conf.h port.h variant.h
+lib.o: lib.c dip.h conf.h port.h variant.h functions.h porder.h mail.h
 ma_build.o: ma_build.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h
 ma_expenses.o: ma_expenses.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
-ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
- mach.h functions.h
 ma_famplag.o: ma_famplag.c dip.h conf.h port.h variant.h mail.h \
  porder.h mach.h functions.h
-ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
- mail.h porder.h mach.h
+ma_movement.o: ma_movement.c dip.h conf.h port.h variant.h porder.h \
+ mach.h functions.h
 ma_porder.o: ma_porder.c dip.h conf.h port.h variant.h mail.h porder.h \
  mach.h functions.h
 ma_retreat.o: ma_retreat.c dip.h conf.h port.h variant.h porder.h \
  mach.h functions.h
-mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h
+ma_stats.o: ma_stats.c functions.h dip.h conf.h port.h variant.h \
+ mail.h porder.h mach.h
+machlib.o: machlib.c dip.h conf.h port.h variant.h porder.h mach.h
+mail.o: mail.c dip.h conf.h port.h variant.h mail.h functions.h \
+ dipstats.h diplog.h
+ml_short.o: ml_short.c dip.h conf.h port.h variant.h mail.h \
+ functions.h porder.h
 mfprintf.o: mfprintf.c mail.h variant.h
 ml_date.o: ml_date.c port.h
 ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
@@ -362,46 +446,48 @@ ml_getaddr.o: ml_getaddr.c dip.h conf.h port.h variant.h mail.h \
 ml_list.o: ml_list.c functions.h dip.h conf.h port.h variant.h mail.h
 ml_press.o: ml_press.c dip.h conf.h port.h variant.h mail.h \
  functions.h
-ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h
+ml_set.o: ml_set.c dip.h conf.h port.h variant.h mail.h functions.h \
+ dipstats.h diplog.h
 ml_signon.o: ml_signon.c dip.h conf.h port.h variant.h mail.h \
- ml_signon.h .magic.h functions.h
+ ml_signon.h functions.h dipstats.h
 params.o: params.c dip.h conf.h port.h variant.h functions.h
 phase.o: phase.c dip.h conf.h port.h variant.h porder.h functions.h
-porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
 po_condition.o: po_condition.c dip.h conf.h port.h variant.h \
  functions.h porder.h
 po_errmsg.o: po_errmsg.c dip.h conf.h port.h variant.h functions.h \
  porder.h
-po_get.o: po_get.c dip.h conf.h port.h variant.h porder.h
+po_get.o: po_get.c dip.h conf.h port.h variant.h functions.h porder.h
 po_init.o: po_init.c dip.h conf.h port.h variant.h porder.h mach.h \
  functions.h
 po_mastrpt.o: po_mastrpt.c dip.h conf.h port.h variant.h
+porder.o: porder.c dip.h conf.h port.h variant.h porder.h functions.h
 st_build.o: st_build.c dip.h conf.h port.h variant.h functions.h \
- porder.h
-st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
  porder.h
 st_movement.o: st_movement.c functions.h dip.h conf.h port.h variant.h \
  porder.h
 st_porder.o: st_porder.c dip.h conf.h port.h variant.h functions.h \
  mail.h porder.h
+st_retreat.o: st_retreat.c dip.h conf.h port.h variant.h functions.h \
+ porder.h
 st_status.o: st_status.c dip.h conf.h port.h variant.h functions.h \
  porder.h
 strcasecmp.o: strcasecmp.c
 strdup.o: strdup.c
 users.o: users.c dip.h conf.h port.h variant.h mail.h functions.h
 variant.o: variant.c dip.h conf.h port.h variant.h
-version.o: version.c dip.h conf.h port.h variant.h
-cmap.o: cmap.c dip.h conf.h port.h variant.h porder.h mach.h
+version.o: version.c dip.h conf.h port.h variant.h functions.h
+cmap.o: cmap.c dip.h conf.h port.h variant.h functions.h porder.h \
+ mach.h
 summary.o: summary.c dip.h conf.h port.h variant.h porder.h mach.h \
- functions.h
-bgreet.o: bgreet.c
+ functions.h diplog.h
+bgreet.o: bgreet.c dip.h conf.h port.h variant.h functions.h
 deddump.o: deddump.c dip.h conf.h port.h variant.h
 delgame.o: delgame.c port.h dip.h conf.h variant.h
 flock.o: flock.c port.h
-fmtwho.o: fmtwho.c port.h
+fmtwho.o: fmtwho.c functions.h dip.h conf.h port.h variant.h
 ign.o: ign.c
 pdip.o: pdip.c
-rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h
+rdip.o: rdip.c functions.h dip.h conf.h port.h variant.h diplog.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above

@@ -4,3 +4,5 @@
 
 2) Always lock your dip.log (flock dip.log) before you do much of anything
    to the dip directory.
+
+3) Do not use a judge user name with a '-' in it (messes up flist generation).

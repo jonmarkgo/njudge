@@ -1,3 +1,9 @@
 To turn off gunboat flag: edit dip.master to remove "0x000200" flag.
 
 -David
+
+To look at the flags settigns used, consult the file "dip.h". This
+shows the hexadecimal masks used. To change this by hand-editing the
+"dip.master" file, consult here for the correct values.
+
+-Millis Miller 6th Oct 2000

@@ -16,68 +16,6 @@ messed up and forgot about "map.1898" which I *do* want listed in that
 file.  I'm not sure what it is doing to your flist file, but renaming 
 the files is not the answer.  The flist generation should be corrected.
 
-Here's the current code that generates the flist file:
-
-${DESTDIR}/data/flist: ${DESTDIR}/data flist.info
-        echo >  temp.flist1 "Files and sizes in bytes as of `date`"
-        echo >> temp.flist1 ""
-        echo >> temp.flist1 \
-"Name                   Size  Last Change    Description"
-        echo >> temp.flist1 \
-"------------------   ------ -------------   ---------------------------------"
-        (cd ${DESTDIR}/data; \
-          /bin/ls -l \
-          `find . -type f ! -name "*.[0-9x]*" -print | \
-          sed 's-./--'` | \
-          awk '{printf("%-20.20s%7d %3s %3s %5s  +\n",$$8,$$4,$$5,$$6,$$7)}' \
-        ) | sort - flist.info > temp.flist2
-        (echo g/=/.-1,.j; echo g/=/s/+.'*'=//; echo g/+/s/+//; echo w) | \
-          ed - temp.flist2
-        cat temp.flist1 temp.flist2 > ${DESTDIR}/data/flist
-        rm  temp.flist1 temp.flist2
-
-Let's replace that with:
-
-#
-# flist: Available file list.  
-#
-#   1) First generate a header on temp.flist1
-#   2) Generate a list of all files in the format  "name size date +"
-#   3) Sort and merge with the flist.info which is "name %	   = comment"
-#   4) Edit the resulting file to:
-#	a) Insert a # at the beginning of each comment line (those with an =).
-#	b) Join the comment lines to the end of the preceeding lines.
-#	c) Replace the first # with a %.
-#	d) Delete anything after a second # (represents comment with no file)
-#	e) Delete the text from the + to the =.
-#	f) Delete any extra + signs (files without comments).
-#	g) Delete any entries with a comment of NOLIST.
-#   5) Merge the header and the resulting file list.
-#
-
-${DESTDIR}/data/flist: ${DESTDIR}/data flist.info
-	echo >  temp.flist1 "Files and sizes in bytes as of `date`"
-	echo >> temp.flist1 ""
-	echo >> temp.flist1 \
-"Name                   Size  Last Change    Description"
-	echo >> temp.flist1 \
-"------------------   ------ -------------   ---------------------------------"
-	(cd ${DESTDIR}/data; \
-	  /bin/ls -lL | grep -v "^total" | \
-	  awk '{printf("%-20.20s%7d %3s %3s %5s  +\n",$$8,$$4,$$5,$$6,$$7)}' \
-	) | sort - flist.info > temp.flist2
-	(echo g/=/s/'^'/'#'/;           \
-	 echo g/=/.-1,.j;               \
-	 echo g/'#'/s/'#'/'%'/;         \
-	 echo g/'#'/s/'#'.'*'//;        \
-	 echo g/=/s/+.'*'=//;           \
-	 echo g/+/s/+//;                \
-	 echo g/NOLIST/d;               \
-	 echo w) | \
-	  ed - temp.flist2
-	cat temp.flist1 temp.flist2 > ${DESTDIR}/data/flist
-	rm  temp.flist1 temp.flist2
-
 I'm adding the comments, getting rid of the find and sed and rewriting
 the ed directives.  This also fixes problems with comments that had no
 respective file.  The previous version would put the extra comment on
