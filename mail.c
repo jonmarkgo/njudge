@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.40  2003/04/27 15:45:03  millis
+ * Fixed Bug 5 (allowing game to be Force begun without all players)
+ *
  * Revision 1.39  2003/04/27 14:47:35  millis
  * Fix bug 141 (unintentional FORCE BEGIN)
  *
@@ -2852,6 +2855,7 @@ static int address_not_in_list(char *reply_address, char *players_addresses)
 	return result;
 }
 
+#define NULL_EMAIL "no-one@localhost"
 
 static int InsertDummyPlayers()
 {
