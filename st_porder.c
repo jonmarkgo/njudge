@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.5  2001/11/18 17:28:28  miller
+   ** Corrected build checking for chaos-like games
+   **
    ** Revision 1.4  2001/10/20 12:11:15  miller
    ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
    **
@@ -47,7 +50,7 @@ static void newowner(void);
 static void next_phase(void);
 static char HongKongCheck(int, int);
 
-#define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type >= '9'))
+#define IsCentre(x)  ( pr[x].type == 'x' || (pr[x].type >= 'A' && pr[x].type <= 'Z') || (pr[x].type >= '0' && pr[x].type <= '9'))
 
 /***************************************************************************/
 /*  Print out build statistics.  
