@@ -666,19 +666,39 @@ ply/bgs SET PREFERENCE list
         immediately after an initial SIGNON entering a forming game.  Can be
         modified up until the powers are actually assigned.
 
-        A player may indicate that he has an equal preference for two or more
-        powers by enclosing them in square brackets.  For example, 
+        There are two formats for "list", depending on the game's preference
+        setting (see SET PRFBOTH, SET PRFLIST, SET PRFRAND below).
+        
+        If the setting is PRFLIST or PRFBOTH, the "list" may contain initials
+        of the various powers in the game, arranged with the player's most
+        preferred power listed first.  For instance, "SET PREFERENCE ATRIFEG"
+        could be used by a player who has a strong desire to play an eastern
+        power.  A player may indicate that he has an equal preference for two
+        or more powers by enclosing them in square brackets.  For example,
         "SET PREFERENCE E[FGR][TAI]" would indicate that the player's first
         choice is England; after that, he would prefer any of France, Germany,
         or Russia equally; and after that would take any of the remaining
-        powers.
+        powers.  The Judge assigns powers by assigning each player's first
+        choice a weight of 7, the second choice a weight of 6, etc., and
+        averaging the weights for powers combined in square brackets; these
+        weights are used in an algorithm that maximizes the overall total
+        weight of the power assignments.
 
-        If the list is a single asterisk ("*"), then a random power will be
-        assigned, if the game is SET PRFBOTH.  In all other cases, if a
-        player's preference list is missing (or the Judge runs out of
-        preferences because the player did not list all available powers),
-        that player will receive a random assignment *after* all other
-        player's preference lists have been processed.
+        If the setting is PRFBOTH OR PRFRAND, then "list" may be a single
+        asterisk ("SET PREFERENCE *").  (In fact, if the game setting is
+        PRFRAND, this is the only possible preference list, so there is really
+        no point in using SET PREFERENCE.)  This signifies that the player
+        will receive a randomly selected power (and these assignments are made
+        *before* the Judge looks at other players' preference lists).
+        
+        If a player's preference list is empty, or the Judge runs out of
+        preferences because the player did not list all available powers, the
+        Judge will proceed as if all the remaining powers were listed in
+        square brackets at the end of the list.  As a practical matter, this
+        likely means that that player will receive a random assignment *after*
+        all other players' preference lists have been processed.  In other
+        words, an empty (or missing) preference list is *not* the same as "SET
+        PREFERENCE *".
 
 mod/bgs SET PRFBOTH                                                    {1.1.0}
         To have the judge assign a random power to any player that requests it
