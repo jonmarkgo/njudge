@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.14  2003/02/18 14:05:28  millis
+	 * Added display of new Cavalry and Artillery units
+	 *
 	 * Revision 1.13  2003/01/15 14:12:04  millis
 	 * Merged from ustv
 	 *
@@ -530,9 +533,9 @@ char *autype(char c)
 	else if (c == 'S')
 		return ("a spy");
 	else if (c == 'C')
-		return ("a cavalry unit");
+		return ("a cavalry");
 	else if (c == 'R')
-		return ("an artillery unit");
+		return ("an artillery");
 	else if (c ==' ')
 		return "";
 	else
