@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.67  2004/03/28 10:17:05  millis
+ * Fix Bug 281: generate error if press rejected by MustOrder flag.
+ *
  * Revision 1.66  2004/03/28 10:01:27  millis
  * Bug 280, add blank line before message
  *
@@ -340,6 +343,7 @@ char *mail_r2file;
 #define POSTALPRESS	46
 #define FORCE_BEGIN	47
 #define DIARY           48
+#define X_NJUDGE	49
 
 /* Note: in both prelim and commands below, a blank character means
  * that whitespace is optional in the user input; a '#' character
@@ -362,7 +366,8 @@ static char *prelim[] =
  "map", "sign off", "-- \n", "record", "info player",
  "if", "else", "endif"        /* -- Tamas -- 2002-06-11 -- */
  /* , "ded game#", "dedicate#",
-	"ded#" */ };
+	"ded#" */
+ , "X-Njudge:" };
 
 static int pvalue[] =
 {0, LIST, HELP, FROM,
@@ -768,6 +773,10 @@ int mail(void)
 					s = lookfor(s, prelim, nentry(prelim), &i);
 				create = moreaddr = 0;
 				switch (pvalue[i]) {
+
+                                case X_NJUDGE:  /* X-Njudge:, i.e. from another judge */
+                                                return E_WARN;
+
 				case FROM:	/*  From: */
 				       DIPINFO(s);
 					if (got_reply)
