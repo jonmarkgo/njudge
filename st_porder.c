@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.31  2004/07/27 23:14:35  millis
+  ** Bug 341, don't show eliminated Mercenary powers in intimate
+  **
   ** Revision 1.30  2004/07/25 16:13:44  millis
   ** Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
   ** return in duplex) and Bug 206 (allow takeover of unknown abandoned
@@ -303,7 +306,8 @@ int ownership(int new_flag, int *status)
 			nu[i], nu[i] == 1 ? ": " : "s:",
 			np[i] >= nu[i] ? "Builds " : "Removes",
 			l, l == 1 ? "" : "s");
-		if (np[i] >= maxcen && !isNativePower(i)) {
+		if (np[i] >= maxcen && !isNativePower(i) && !(dipent.flags & F_INTIMATE) &&
+		    !(dipent.x2flags & X2F_CAPTUREWIN)) {
 			/* Can't handle draws just yet - see above */
 			if ((numwin == 1) /* || (dipent.flags & SF_DRAW) */ ) {
 				fprintf(rfp, "%s  (* VICTORY!! *)\n", l == 1 ? " " : "");
@@ -675,6 +679,7 @@ void process_input(int pt, char phase, int player)
 		unit[u].order = 'n';
 
 	init_build();
+	SetupIntimateTreasury(); /* Will do if necessary */
 
 
 	do {
@@ -696,7 +701,6 @@ void process_input(int pt, char phase, int player)
                         } else 
 			switch (phase) {
 			case 'A':
-				SetupIntimateTreasury();
 				status = bidin(&s, p, 0);
 				break;
 			case 'B':

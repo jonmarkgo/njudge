@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.44  2004/07/27 23:09:44  millis
+ * Signon problems fixed (Bug 91)
+ *
  * Revision 1.41  2004/05/22 09:23:48  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -249,6 +252,8 @@ void SetupIntimateTreasury(void)
 
     if (has_treasury)
 	    return;  /* Game datafile already has treasury */
+
+    if (!(dipent.flags & F_INTIMATE)) return;  /* Not Intimate, so don't do anything! */
 
     if (atoi(dipent.seq) > 1) return; /* Not on first turn, so ignore this call */
 
