@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2003/05/13 00:07:26  millis
+ * Bug 110, move on process deadline by 24 hours on bailout recovery
+ *
  * Revision 1.13  2003/05/12 23:47:59  millis
  * Fix bug 110, shift process time out on a timewarp.
  *
@@ -325,7 +328,7 @@ int getdipent(FILE * fp)
 		}
 	} else {
 	    /* Non control game, check for a time-warp or bailout recovery set */
-	    if (time_warp || bailout_recovery) {
+	    if ((time_warp || bailout_recovery) && dipent.phase[5] != 'A') {
 		/* Try to fix the warp/recovery by adjusting deadline */
 		/* Rather simplistic, but will do for now */
 		deadline(NULL,1);
