@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2002/04/15 12:55:41  miller
+ * Multiple changes for blind & Colonial & setup from USTV
+ *
  * Revision 1.5  2001/07/17 09:55:31  greg
  * added GAME_DIR
  *
@@ -65,6 +68,7 @@
 #define DIE_ASSASSIN    atoi(config("DIE_ASSASSIN"))
 #define DIE_EXPENSE     atoi(config("DIE_EXPENSE"))
 #define DIE_FAMPLAG     atoi(config("DIE_FAMPLAG"))
+#define DIE_STORMS	atoi(config("DIE_STORMS"))
 #define DIE_INCOME      atoi(config("DIE_INCOME"))
 #define MAXGAMES	atoi(config("MAXGAMES"))
 #define SYSLOG_FLAG	atoi(config("SYSLOG_FLAG"))

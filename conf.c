@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/08/27 22:27:45  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.7  2002/04/15 12:55:41  miller
  * Multiple changes for blind & Colonial & setup from USTV
  *
@@ -129,6 +132,7 @@ int conf_init(void)
 	conf_set("DIE_ASSASSIN", "382204");
 	conf_set("DIE_EXPENSE", "148741");
 	conf_set("DIE_FAMPLAG", "995816");
+	conf_set("DIE_STORMS",  "341291");
 	conf_set("DIE_INCOME", "66144");
 	conf_set("CREATE_DEDICATION", "-10");
 	conf_set("SPECIAL_PW", "default");
