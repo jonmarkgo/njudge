@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.18  2003/03/05 02:57:54  nzmb
+# Small error in previous commit fixed.
+#
 # Revision 1.17  2003/03/05 02:42:08  nzmb
 # Added ascii2rec which will convert a text plyrdata record dump (generated
 # by recdump) into a binary plyrdata file.
@@ -119,7 +122,8 @@ dip_SOURCES=	assign.c \
 		version.c \
 		defaults.h
 
-ascii_to_ded_SOURCES=	ascii_to_ded.c
+ascii_to_ded_SOURCES=	ascii_to_ded.c \
+			plyrdata.c
 
 ascii2rec_SOURCES=   ascii2rec.c
 
