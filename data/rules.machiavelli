@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!             December 11, 1991.
+Greetings from the Diplomacy* Adjudicator!!             25th May, 2000
 Rules.machiavelli*
 
 
@@ -197,7 +197,7 @@ The sequence of play for Adjustment phases:
    to the other.  If the unit in the province leaves or is eliminated
    while the garrison remains, control of the province will revert to the
    player with the garrison.  This applies to autonomous garrisons as
-   well.  A besieged city produces no income.
+   well.  A besieged city however still produces income.
 
    To gain control of another player's home country, you must control all 
    of his original provinces and cities.  A player who controls no cities
@@ -236,9 +236,8 @@ The sequence of play for Adjustment phases:
       However, a player could remove a unit from one province or city 
       (ie: not pay for it), and then place another unit in another 
       province or city.
-   d) It is possible that a player will not be able to place all the
-      new units desired.  The maximum number of units that any player
-      can have on the map are: 12 armies, 8 fleets and 6 garrisons.
+   d) There is no upper limit to the number of fleets, armies and/or 
+      garrisons that a player may have on the board at any time.
    e) Once units are paid for, they are paid for the entire year.  No
       further ducats need be paid for the units for the rest of the
       year, but also, no "refunds" of ducats can be made for units that
@@ -454,7 +453,8 @@ Movement phases:
          all sieges that the player is attempting are broken.
 
       2) Any of the victim's garrisons that are under siege are immediately
-         eliminated.
+         eliminated. The exception to this is if the sieging unit's leader is
+         also assassinated, in which case the garrison remains.
 
       3) Some number of the victim's controlled provinces will take advantage
          of the assassination to rebel.  Based on a 1d6 die roll: 
