@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.38  2003/05/03 14:19:33  millis
+ * Merged in USTV version, with Neutrals etc.
+ *
  * Revision 1.37  2003/04/16 04:34:42  millis
  * Implement Bug 65
  *
@@ -941,7 +944,7 @@ void mail_setp(char *s)
          "bcenters", "bcentres",
          "no bcentres", "no bcenters", "nobcentres", "nobcenters",
 	 "summer", "nosummer", "no summer",
-	 "garrisons", "no garrisons", "nogarrisons"
+	 "garrisons", "no garrisons", "nogarrisons",
 	 "neutrals", "noneutrals", "no neutrals",
 	 "capture win", "capturewin",
 	 "nocapturewin", "no capturewin", "no capture win"
