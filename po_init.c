@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2004/05/22 08:52:22  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.16  2004/01/13 18:17:40  millis
  * Fix Bug 268, don't display Unknown power error on 'x' in assassinate line
  *
@@ -102,7 +105,7 @@ void UpdateBlockades()
 	int i,u;
 	
 	
-	for (u = 0; u<dipent.np; u++) {
+	for (u = 0; u<dipent.n; u++) {
                	dipent.players[u].centres_blockaded = 0;
        	}
 
