@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.25  2003/12/07 00:04:04  millis
+ * Fix Bug 249, so that disbanding garrisons prevent setting siege state
+ *
  * Revision 1.24  2003/10/08 12:28:08  millis
  * Fix bug 236
  *
@@ -421,7 +424,7 @@ int ma_movein(char **s, int p)
 			errmsg("Valid power must be specified for proxy order.\n");
 			return E_WARN;
 		}
-		if (!(dipent.flags & F_PROXY)) {
+		if (!(dipent.x2flags & X2F_PROXY)) {
 			errmsg("Game %s does not allow proxy orders.\n", dipent.name);
 			return E_WARN;
 		}

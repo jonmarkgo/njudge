@@ -1,8 +1,5 @@
 /*
  * $Log$
- * Revision 1.45  2004/02/22 23:26:09  millis
- * Small Bug91 change
- *
  * Revision 1.44  2004/02/14 23:15:32  millis
  * Fixed X2F_PRESS_OPTIONS to use '|' not '&', else shows blank x2flags setting
  *
@@ -240,11 +237,11 @@
 #define F_GUNBOAT   0x200	/* Game is a gunboat variant                */
 #define F_BLIND     0x400	/* Game is a blind variant                  */
 /* Variant related flags                    */
-#define F_VFLAGS    (F_GUNBOAT | F_BLIND | F_SHORTHAND | F_AFRULES | F_WINGS ) 	
+#define F_VFLAGS    (F_GUNBOAT | F_BLIND | F_SHORTHAND | F_AFRULES | F_WINGS | F_INTIMATE) 	
 #define F_OBWHITE   0x800	/* Observers can only post white press      */
 #define F_OBNONE    0x1000	/* Observers cannot post press at all       */
 #define F_MACH      0x2000	/* Game is a Machiavelli variant            */
-#define F_PROXY     0x4000	/* Game allows proxy orders                 */
+#define F_INTIMATE  0x4000	/* Intimate Diplomacy                       */
 #define F_NODICE    0x8000	/* Game does not contain random elements    */
 #define F_NOFAMINE  0x10000	/* Game does not use famine rules           */
 #define F_NOPLAGUE  0x20000	/* Game does not use plague rules           */
@@ -256,10 +253,10 @@
 #define F_NORATE    0x800000	/* Game does not affect dedication rating   */
 #define F_NOREVEAL  0x1000000	/* Gunboat players are not to be revealed   */
 #define F_AFRULES   0x2000000	/* A/F rules are in play                    */
-#define F_NOSHOW    0x4000000	/* aPower shown in gunboat set broadcasts   */
-#define F_NODIAS    0x8000000	/* Draws need not include all survivors     */
+#define F_NOSHOW    0x4000000	/* Setting changes show someone@somewhere   */
+#define F_SPARE1    0x8000000	/* Unused (was F_NODIAS)                    */
 #define F_GRACEDAYS 0x10000000	/* Grace period expire on processing days   */
-#define F_STRWAIT   0x20000000	/* Only set wait if moving (or MASTER)      */
+#define F_SPARE2    0x20000000	/* Unused (was F_STRWAIT)                   */
 #define F_SHORTHAND 0x40000000  /* Set if variant of type Shorthand Press   */
 #define F_WINGS     0x80000000  /* Wings variant (for modern)		    */
 
@@ -341,13 +338,16 @@
 #define X2F_CAPTUREWIN          0x400000 /* Powers win the game by capturing another's HCs */
 #define X2F_TOUCHPRESS		0x800000 /* Powers can only press to neighbours */
 #define X2F_EXTRA_HC	        0x1000000 /* Game has extra home centre(s) according to map file */
-#define X2F_APPROVAL		0x2000000 /* Master needs to approve players to let them make moves */
+#define X2F_PROXY		0x2000000 /* Game allows proxy orders */
+#define X2F_NODIAS		0x4000000 /* Game has NODIAS settings */
+#define X2F_STRWAIT		0x8000000 /* Only players with moves can place waits */
+
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */
 #define X2F_PRESS_OPTIONS 	(X2F_TOUCHPRESS | X2F_MUSTORDER)
 /* Do not display Colonial, Preference and Mach-only flags */
-#define X2F_PRINT_OPTIONS 	(~X2F_PRESS_OPTIONS & ~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS)
+#define X2F_PRINT_OPTIONS 	(~X2F_PRESS_OPTIONS & ~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY & ~X2F_NO_TREASURY & ~X2F_FORT_GARRISON & ~X2F_NOGARRISONS & ~X2F_STRWAIT & ~X2F_NODIAS & ~X2F_PROXY)
 
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
 #define GAME_PAUSED           (dipent.phase[6] == 'P')
@@ -379,14 +379,14 @@ typedef struct Sequence {
 #define SF_RESIGN  0x800	/* This player has resigned 			*/
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
-#define SF_NOT_APPROVED  0x4000	/* Player needs to be approved before can move  */
+#define SF_UNUSED  0x4000	/*** NOT CURRENTLY USED ***/ 
 #define SF_CONC    0x8000       /* Player agreed to concession */
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
 #define SF_BROAD_SENT 0x20000   /* Player has sent one broadcast message this turn */
 
 
 /* This will clear out non-essential status for a new player */
-#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_RESIGN | SF_CD | SF_ABAND | SF_REMIND | SF_LATE | SF_DRAW);
+#define NewPlayerSF(i) dipent.players[i].status &= ~(SF_MOVE | SF_WAIT | SF_MOVED | SF_PART)
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
@@ -406,6 +406,7 @@ typedef struct PLAYER {
 	int centres_blockaded;  /* Number of centres this power has blockaded */
 	int late_count;		/* number of times this player has gone late  */
 	int absence_count;	/* Number of active absence requests          */
+	int controlling_power;  /* Ordinal of power controlling (0 if real)   */
 	long absence_start[MAX_ABSENCES]; /* Start of each absence period     */
  	long absence_end[MAX_ABSENCES];  /* End of each absence period        */
 	long absence_total;	/* Total absence time requested in game       */
@@ -429,6 +430,7 @@ struct dipent {
 	int flags;		/* Flags:   F_NONMR                             */
 	int xflags;		/* Extra flags: XF_*				*/
 	int x2flags;		/* More extra flags                             */
+	int x3flags;		/* Yet more flags 				*/
 
 	int dedicate;		/* Minimum dedication requirement               */
 	float orded;	        /* Minimum ontime ratio requirement             */
@@ -514,5 +516,6 @@ extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       
 
 extern int GM_Became;		/* set to 1 if GM issued become */
 
+extern int has_treasury;	/* Set to 1 if the game datafile has treasury   */
 
 #endif				/* _DIP_H */

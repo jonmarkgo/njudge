@@ -118,11 +118,69 @@
                  mov_type(p1,u), pr[p1].name); \
                 return E_WARN;
 
+
+static int valid_aw_move(int i, int p2, int *c2, int *j)
+{
+    /* See firstly if a valid fleet move */
+    /* Then, if airlifts permitted, check if a valid land move */
+
+    int ret;
+
+    ret = valid_move(i, p2, c2, j);
+
+    if (!ret)
+        if (dipent.xflags & XF_AIRLIFTS) {
+	    unit[i].coast = MV;
+	    ret = valid_aw_move(i, p2, c2, j);
+        }
+	
+    return ret;
+
+	
+}
+
+static int CheckValidACUnit( int u) 
+{
+
+    /* See if unit in place is of a valid type to airlift/convoy */
+
+    /* If game is blind, always permit this movement (to prevent players checking
+     * for adjacent units 
+     * Otherwise, if a fleet, permit
+     * Otherwise, if a wing and airlifts in operation, permit
+     * Otherwise, no good 
+     */
+
+   if (dipent.flags & F_BLIND)
+        return 1;
+
+   if (unit[u].type == 'F')
+	return 1;
+
+   if (unit[u].type == 'W' && dipent.xflags & XF_AIRLIFTS)
+	return 1;
+
+   return 0;
+}
+
+
+	
 int convoyable(int p) 
 { 
-    return (water(p) | \
-	              (dipent.xflags & XF_COASTAL_CONVOYS) | \
-	      ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 == 'w')));
+    if ((dipent.xflags & XF_AIRLIFTS))
+	return 1;  /* we have airlifts enabled: possible anywhere! */
+
+    if (water(p)) 
+        return 1; /* province has water */
+
+    if ((dipent.xflags & XF_COASTAL_CONVOYS))
+    	return 1; /* Game has costal convoys */
+
+    if ((dipent.xflags & XF_PROV_DUALITY) && (pr[p].type2 == 'w'))
+        return 1; /* Province can also act as water and game is duality */
+
+    return 0;  /* Other cases, nothing doing! */
+
 }
 
 int dual_province(int p)
@@ -144,18 +202,19 @@ static int NoValidConvoyingFleet(char *s, int u)
     pr[p].order_index = 1;
     u1 = GetUnitIndex(p, MASTER);
     do {
-        if (unit[u1].order != 'c' || unit[u1].unit != u ||
+        if ((unit[u1].order != 'c' && unit[u1].order != 'a') || unit[u1].unit != u ||
            (unit[u1].dest != unit[u].dest &&
 	     unit[u1].dest != unit[(int) *(s + 1)].loc)) {
-	    /* Fleet found but is doing something else */
+	    /* Unit found but is doing something else */
 	} else {
-	    /* Fleet found and IS convoying this one! */
+	    /* Unit found and IS convoying/airlifting this one! */
 	    ret_code = 0;
 	}
         u1 = GetUnitIndex(p, MASTER);
     } while (ret_code == 1 && pr[p].order_index > 1);
 
     pr[p].order_index = 1; /* Reset the index so will start from first unit */
+
     return ret_code;
 }
 
@@ -225,7 +284,9 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 	case 's':
 	case 'a':
 		if (order == 'a' && !(dipent.xflags & XF_AIRLIFTS)) {
-		    /*INVALID_ORDER(p1,u);*/
+		    errmsg("Invalid order for the unit at %s.\n",
+		           pr[p1].name);
+	            return E_WARN;
 		}
 		s = get_type(s, &c);
 		s = get_prov(s, &p2, &c2);
@@ -317,7 +378,7 @@ int move_syntaxcheck( char *in_line, int precheck, char *out_string )
 			errmsg("Valid power must be specified for proxy order.\n");
 			return E_WARN;
 		}
-		if (!(dipent.flags & F_PROXY)) {
+		if (!(dipent.x2flags & X2F_PROXY)) {
 			errmsg("Game %s does not allow proxy orders.\n", dipent.name);
 			return E_WARN;
 		}
@@ -430,8 +491,9 @@ int movein(char **s, int p)
 	u = GetUnitIndex(p1, p); /* return next unit if multi-unit province */
 
 	unit[u].railway_index = -1;  /* to reset */
-	if (p != unit[u].owner && p != MASTER) {
-		if (!(dipent.flags & (F_PROXY))) {
+	if (p != unit[u].owner && p != MASTER && !(dipent.flags & F_INTIMATE 
+					&& (unit[u].controller == 0 || unit[u].controller == p))) {
+		if (!((dipent.x2flags & (X2F_PROXY)))) {
 			errmsg("%s doesn't own the %s %s %s.\n", powers[p], utype(c),
 			 mov_type(p1, u), pr[p1].name);
 			errmsg("Game %s does not allow proxy orders.\n", dipent.name);
@@ -644,8 +706,9 @@ int movein(char **s, int p)
 				unit[i].railway_index = -1;
 				bp = &heap[hp];
 				while (c == 'm' && !railway_flag) {
-					if (!railway(p2) &&(!valid_move(i, p2, &c2, &j) || !convoyable(p2) ||
-					 (!(u2 = pr[p2].unit) || unit[u2].type != 'F'))) {
+					if (!railway(p2) &&(!valid_aw_move(i, p2, &c2, &j) || !convoyable(p2) ||
+					 (!(u2 = pr[p2].unit) || !CheckValidACUnit(u2)))) {
+					 
 						errmsg("The army in %s can't convoy through %s%s.\n",
 						 pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
 						return E_WARN;
@@ -716,7 +779,7 @@ int movein(char **s, int p)
 			errmsg("Valid power must be specified for proxy order.\n");
 			return E_WARN;
 		}
-		if (!(dipent.flags & F_PROXY)) {
+		if (!(dipent.x2flags & X2F_PROXY)) {
 			errmsg("Game %s does not allow proxy orders.\n", dipent.name);
 			return E_WARN;
 		}
@@ -933,7 +996,8 @@ static int result[MAXUNIT];
 static float support[MAXUNIT];
 static int fail[NPROV+1]; /* Marked as failed when attacked, useful for transforms only */
 static unsigned char  contest[NPROV + 1];
- 
+static unsigned char last_type[MAXUNIT];
+
 /**** called to actually do move processing ****/
 static void DoMoves( void)
 {
@@ -954,6 +1018,7 @@ static void DoMoves( void)
     }
 
    for (u = 1; u <= nunit; u++) {
+	last_type[u] = '\0';  /* Empty the array first */
         if (unit[u].railway_index >= 0 && unit[u].owner)
             if (rw_used[unit[u].railway_index] > 1)
                 result[u] = BLOCKED;  /* Mark duplicate uses as BLOCKED moves */
@@ -1043,6 +1108,7 @@ static void DoMoves( void)
 					c1=0;
 					valid_move(*s, unit[*s].dest, &c1, &bl);
 					if (c1 == HX) support[u] -= 0.5;
+					last_type[u] = unit[*s].type; /* Remember last unit convoying/airlifting */
                                 }
                         } else if (unit[u].order == 'm' ) {
 
@@ -1062,6 +1128,22 @@ static void DoMoves( void)
 
                         }
                 }
+
+/* Pass 2aa, void all supports for airlifts */
+
+        for (u = 1; u <= nunit; u++) {
+            if (unit[u].owner <= 0)
+                   continue;
+            if (unit[u].order == 's' && 
+                last_type[unit[u].unit] == 'W' ) {
+		   if (!result[u]) {
+		       support[unit[u].unit] -= supval(u);
+		       result[u] = VOID;
+		   }
+	    }
+        }
+
+
 /* Pass 2a: Check for support cut from non-convoyed units */
                 for (u = 1; u <= nunit; u++) {
                         if (unit[u].owner <= 0 || result[u])
@@ -1684,7 +1766,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 	for (p = 0, u = 1; u <= nunit; u++) {
 		if (unit[u].owner <= 0)
 			continue;
-		if (processing || pt == unit[u].owner || pt == MASTER) {
+		if (processing || pt == unit[u].owner || pt == MASTER ||
+		    (dipent.flags & F_INTIMATE && unit[u].controller == pt)) {
 			if (unit[u].owner != p)
 				fprintf(rfp, "\n");
 			if ((unit[u].owner != p) && (pt == MASTER)) {
@@ -1747,12 +1830,13 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				if (unit[u].type == ' ') {
 					fprintf(rfp, " HOLD");
 				} else
-			*/	if (unit[u].owner != AUTONOMOUS && unit[u].owner != NEUTRAL) {
+			*/	if (unit[u].owner != AUTONOMOUS && unit[u].owner != NEUTRAL &&
+			 	    unit[u].controller != AUTONOMOUS) {
 					fprintf(rfp, ", No Order Processed");
 					if (dipent.phase[0] != 'F' || pr[unit[u].loc].type != 'v')
 						more_orders++;
 				} else 
-				    fprintf(rfp, " HOLD");  /* For neutrals, to hold */
+				    fprintf(rfp, " HOLD");  /* For autonomous and neutrals, to hold */
 
 				break;
 			case 'p':
@@ -1945,7 +2029,8 @@ unit[u].dcoast = 0;***/ /* non-fleets not transforming have no coast */
 				for (s = pr[unit[u].loc].move; 
 				 (!(dipent.xflags & XF_AUTODISBAND)) &&
 				  (unit[u].owner != dipent.has_natives) &&
-				  (unit[u].owner != NEUTRAL) &&
+				  (unit[u].owner != NEUTRAL &&
+				   unit[u].controller != AUTONOMOUS) &&
 				  (p = *s++) ; 
 				 s++) {
 					if ((!contest[p] || IsMultiProvince(p))

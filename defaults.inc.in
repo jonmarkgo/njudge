@@ -8,6 +8,7 @@
 #define D_FLAGS          F_NONMR|F_NOPLAGUE|F_GRACEDAYS|F_NOLIST       /* F_* */
 #define D_XFLAGS         0 /* XF_* */
 #define D_X2FLAGS	 0 /* X2F_* */
+#define D_X3FLAGS        0 /* X3F_* */
 #define D_DEDICATE       -10000
 #define D_MOVE_CLOCK     1410
 #define D_MOVE_MINT      12.0

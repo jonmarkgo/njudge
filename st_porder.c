@@ -110,11 +110,13 @@ static int HongKongCheck(int, int);
    Return positive if builds are needed
    Return negative if victory occurred            
  */
-int ownership(void)
+int ownership(int new_flag)
 {
-	int nu[NPOWER + 1], np[NPOWER + 1], i, j, n, l, p, u, maxcen,
+	int nu[NPOWER + 1], np[NPOWER + 1], i, ii, j, n, l, p, u, maxcen,
 	 tmpi, numwin;
 	int statusval;
+	int p_count;
+	static int p_list[NPOWER+1];
 	char *s, buf[1024];
 
 	fprintf(rfp, "\nOwnership of supply centers:\n\n");
@@ -316,6 +318,84 @@ int ownership(void)
 	/* Raised in Bug 104 */
 	}
 
+	/* OK, let's print out the controllers of each power */
+
+	if (IS_DUPLEX(dipent) && !(dipent.xflags & X2F_SECRET)) {
+	    /* Some kind of mis-match game! */
+	   putc('\n', rfp);
+	   PrintTwoColTable("Power Control", "Power", "Controlled By");
+
+	   if (!(dipent.flags & F_INTIMATE)) {
+		/* OK, normal duplex game: work out the player numers */
+
+		for (i = 0; i <= NPOWER; i++)
+		    p_list[i] = 0;
+				 
+		/* First loop, go around the players that are playing */
+
+		p_count = 0;
+		for (i = 0; i < dipent.n; i++) {
+		    p = dipent.players[i].power;
+		    if (p >= WILD_PLAYER) continue;
+		    if (dipent.players[i].controlling_power == 0) {
+			p_count++;
+			p_list[p] = p_count;
+		    }
+		}
+		/* OK, now go through the non-playing powers, substituting player index */
+		for (i = 0; i < dipent.n; i++) {
+		    p = dipent.players[i].power;
+		    if (p >= WILD_PLAYER) continue;
+		    if (dipent.players[i].controlling_power != 0) {
+		        p_list[p] = p_list[dipent.players[i].controlling_power];
+		    }
+		}
+	   }
+
+	   for (i = 0; i < dipent.n; i++) {
+	       p = dipent.players[i].power;
+	       if (p >= WILD_PLAYER) continue;
+	       fprintf(rfp, "%s: ", powers[p]);
+	       for (ii = strlen(powers[p]); ii < LPOWER; ii++)
+	           putc(' ', rfp);
+	       if (dipent.flags & F_INTIMATE) {
+	           if (dipent.players[i].controlling_power == 0)
+		       fprintf(rfp, "%s", powers[p]);
+	           else
+		       fprintf(rfp, "%s", powers[dipent.players[i].controlling_power]);
+	       } else {
+	           if (p_list[p])
+		       fprintf(rfp, "Player %d", p_list[p]);
+	       }
+	       fprintf(rfp, ".\n");
+	   }
+	}
+
+
+	if (dipent.flags & F_INTIMATE) {
+	   SetupIntimateTreasury();
+	   putc('\n', rfp);
+	   PrintTwoColTable("Treasury Totals", "Power", "Balance");
+	   /* Print out treasury changes */
+
+	   for (i = 0; i < dipent.n; i++) {
+	       if (dipent.players[i].controlling_power != 0) continue;
+	       p = dipent.players[i].power;
+	       if (p >= WILD_PLAYER) continue;
+	       fprintf(rfp, "%s: ", powers[p]);
+               for (ii = strlen(powers[p]); ii < LPOWER; ii++)
+                   putc(' ', rfp);
+	       fprintf(rfp, "%d", ducats[p].treasury);
+	       if (new_flag) {
+		   /* It is a new turn, so recalculate treasury */
+                   fprintf(rfp, " + %d = %d", 
+                       np[p], ducats[p].treasury + np[p]);
+                   ducats[p].treasury += np[p]; 
+	       } 
+	       fprintf(rfp, ".\n");
+	           
+	   }
+        }
 	return statusval;
 }
 
@@ -335,20 +415,183 @@ void CheckCaptureWin(int *status)
 
 
 }
+static int OnlyOneSurvivor()
+{
+   /* See if only one player has survive */
+    int i, win = 0, pow = 0;
+
+    for (i = 0; i < dipent.np && win < 2; i++) {
+        if (!(dipent.players[i].status & SF_DEAD) && dipent.players[i].controlling_power == 0 &&
+	    dipent.players[i].power < WILD_PLAYER) {
+	    win++;
+	    pow = i;
+	}
+    }
+
+     if (win == 1)
+	return pow;
+    else if (win == 0)
+	return -1; /* no body left alive! */
+     else
+	return 0;  /* No-body won yet */
+}
+
+static int AnotherPlayersHC( int u, int possible_victor[MAXPLAYERS] )
+{
+    /* See if unit is occupying another players HC */
+
+    int win = 0, owner_index, player_index;
+    
+    if (centre(unit[u].loc)) {
+        if (pr[unit[u].loc].type != 'x') {
+	    /* OK, got a powers centre, now find the player */
+
+	    player_index = FindPower(power(pr[unit[u].loc].type));
+	    owner_index = FindPower(unit[u].owner);
+	    if (player_index != owner_index &&
+                player_index >= 0 && player_index < dipent.np) {
+	        if (dipent.players[player_index].controlling_power == 0) {
+	            win = unit[u].owner;
+		    possible_victor[owner_index]++;
+		}
+	    }
+	 }
+    }
+
+    return win;
+}
+
+int FindMaximum(int possible_victor[MAXPLAYERS], int limit)	
+{
+    /* See if there is only one in the array with a value >= limit */
+
+    int i;
+    int win = 0, count = 0;
+    int maxval = 0;
+
+    for (i = 0; i < dipent.np; i++) {
+        if (possible_victor[i] > maxval) {
+           win = dipent.players[i].power;
+	   maxval = min(limit, possible_victor[i]);
+	   count++;
+        }
+    }
+
+    if (count > 1) {
+
+       /* More than one possible winner, so zap all other entries */
+       for (i = 0; i < dipent.np; i++) {
+	    if (possible_victor[i] < maxval) {
+	        possible_victor[i] = 0;
+	    } else {
+	        possible_victor[i] = maxval;
+	    }
+        }
+        return 0;
+    }
+    
+    return win;
+}
+       
+static int FindRichest(int possible_victor[MAXPLAYERS])
+{
+    /* Find if one of the players has more money than the others */
+
+    int i;
+    int win = 0, count = 0;
+    int maxval = 0;
+
+    for (i = 0; i < dipent.np; i++) {
+        if (ducats[i].treasury == maxval && maxval != 0) {
+	    count++;
+	} else if (ducats[i].treasury > maxval) {
+	    count = 1;
+	    win = i;
+	    maxval = ducats[i].treasury;
+	}
+    }
+
+    if (count == 1)
+        return win;
+    else
+	return 0;
+}
+
+
+
+int CheckIntimateVictory()
+{
+/* OK, see if we have conditions for an intimate victory */
+/* return positive if so, otherwise 0 if still playing, or -1 if all dead */
+	
+
+/* Firstly, see how many powers have a unit on another players HC */
+
+    int occupied = 0;
+    int i, u, v;
+    int possible_victor[MAXPLAYERS];
+
+    for (i=0; i < MAXPLAYERS; i++)
+	possible_victor[i] = 0;
+
+    victor = OnlyOneSurvivor();
+
+    if (victor != 0)
+	return victor;
+
+
+    for (u = 1; u <= nunit; u++) {
+	v = AnotherPlayersHC(u, possible_victor);
+	if (v) {
+	    victor = v;
+	    occupied++;
+	    if (occupied > 1) victor = 0;
+	}
+    }
+
+    if (occupied == 1)
+        return victor;  /* only one power is occupying */
+    if (occupied == 0)
+	return 0; /* No winner */
+
+    /* OK, to be here we have more than one power occupying a home centre 
+     * So now, let's see if just one person has one
+     */
+
+    victor = FindMaximum(possible_victor, 3);  /* Only count up to 3 */
+
+    if (victor > 0)
+	return victor;  /* Only one person won */
+
+    /* OK, more than one person has occupied, find the richest one */
+
+    victor = FindRichest(possible_victor);  
+
+    if (victor)
+	return victor;  /* There was only one richest person */
+
+    return 0;  /* No one was in conditions to have won */
+}
 
 static void next_phase(void)
 {
-	int status;
+	int status = 0;
+
+	if (dipent.flags & F_INTIMATE) 
+	    status = CheckIntimateVictory();
+
+	if (status != 0) 
+	    dipent.phase[6] = 'X';
 
 	if (dipent.phase[0] == 'F') {
 
 		/* Init build phase or advance to the next spring */
 		newowner();
-		status = ownership();
+		status = ownership(1);
 		if (status >=0 && (dipent.x2flags & X2F_CAPTUREWIN))
 		    CheckCaptureWin(&status);
 
-		if (status < 0) {	/* VICTORY */
+		if (status < 0 && !(dipent.flags & F_INTIMATE)) {	/* VICTORY */
 			dipent.phase[6] = 'X';
 			/* fix bug 219 -- increment the phase even if the game
 			 * is over, just in case somebody resumes it.
@@ -363,6 +606,8 @@ static void next_phase(void)
 	} else {
 	 	if ((dipent.x2flags & X2F_SUMMER) && dipent.phase[0] != 'U') 
 		    dipent.phase[0] = 'U';
+		else if (dipent.phase[5] == 'A')
+		    dipent.phase[5] = 'M';
 		else
 		    dipent.phase[0] = 'F';
 		init_movement();
@@ -381,7 +626,7 @@ static void newowner(void)
 	}
 }
 
-void process_input(int pt, char phase, int player)
+void process_input(int pt, char phase)
 {
 	char *s;
 	int u, p;
@@ -409,11 +654,11 @@ void process_input(int pt, char phase, int player)
 			if ((GAME_SETUP)) {
 			    status = setupin(&s, p);
 			} else {
-			if ((player >= 0) && (dipent.players[player].status & SF_NOT_APPROVED)) {
-			    status = 1;
-			    fprintf(rfp, "You are not approved to make moves: please contact the Master.\n\n");
-			} else 
 			switch (phase) {
+			case 'A':
+				SetupIntimateTreasury();
+				status = bidin(&s, p);
+				break;
 			case 'B':
 				status = buildin(&s, p);
 				break;
@@ -447,6 +692,15 @@ int process_output(int pt, char phase)
 	    return 1;
 	}
 	switch (phase) {
+
+	case 'A':		/* Bids */
+		bidout(pt);
+		if (processing) {
+		    next_phase();
+		}
+		break;
+
+		
 	case 'B':		/* Adjustments */
 		buildout(pt);
 		if (processing) {

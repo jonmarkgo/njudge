@@ -1,8 +1,5 @@
 /*
  * $Log$
- * Revision 1.48  2004/03/28 09:52:12  millis
- * Fix bug 282 (reset msg_header_done on closing rfp file)
- *
  * Revision 1.47  2004/02/14 23:32:11  millis
  * Allow use of fixed time via parameter (for debugging)
  *
@@ -963,7 +960,6 @@ void CheckRemindPlayer(int player, long one_quarter)
 			fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
 	}
 	fclose(rfp);
-	msg_header_done = 0;  /* Bug 282, header will need to be redone */
 
 	sprintf(line, "%s '%s:%s - %s Reminder'",
 	  temp_file, JUDGE_CODE, dipent.name, dipent.phase);
@@ -1271,8 +1267,6 @@ int process(void)
                  	       		fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 			}
 			fclose(rfp);
-		        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
 		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
@@ -1384,8 +1378,6 @@ int process(void)
                         				fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 					}
 					fclose(rfp);
-				        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
 				}
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
@@ -1410,11 +1402,7 @@ int process(void)
 		if (dipent.xflags & XF_MANUALPROC) {
 			if (!(dipent.players[0].status & SF_PROCESS)) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
-				if (!Dflg) {
-				    fclose (rfp);
-			            msg_header_done = 0;  /* Bug 282, header will need to be redone */
-				}
-
+				if (!Dflg) fclose (rfp);
 				for (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
@@ -1440,10 +1428,8 @@ int process(void)
 		if ((i = porder('M', -1, 0))) {
 			fprintf(rfp, "Error %d processing orders.\n", i);
 			fprintf(stderr, "Error %d processing orders.\n", i);
-			if (!Dflg) {
+			if (!Dflg)
 				fclose(rfp);
-        			msg_header_done = 0;  /* Bug 282, header will need to be redone */
-			}
 			sprintf(line, "dip.result 'Diplomacy error'");
 			MailOut(line, GAMES_MASTER);
 			bailout(1);
@@ -1510,10 +1496,15 @@ int process(void)
 			}
 
 			{
-				InformCustodians(dipent.name,
-						 "%s '%s: Victory in game %s'",
-						 dipent.variant, 
-						 dipent.flags & F_GUNBOAT);
+				if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
+					sprintf(line, "dip.temp 'MNC: Victory in game %s'",
+					      dipent.name);
+					MailOut(line, MN_CUSTODIAN);
+				} else {
+					sprintf(line, "dip.temp 'BNC: Victory in game %s'",
+					      dipent.name);
+					MailOut(line, BN_CUSTODIAN);
+				}
 			}
 
 			/*
@@ -1555,6 +1546,7 @@ int process(void)
 				dipent.name,
 				dipent.phase[5] == 'M' ? "Movement" :
 				dipent.phase[5] == 'R' ? "Retreats" : "Adjustments",
+				dipent.phase[5] == 'A' ? "Year" : 
 				dipent.phase[5] == 'B' ? "Winter" :
 				dipent.phase[0] == 'F' ? "Fall" :
 				dipent.phase[0] == 'U' ? "Summer" : "Spring", dipent.phase + 1);
@@ -1562,15 +1554,18 @@ int process(void)
 			    fprintf(rfp,"Requested absence(s) activated.\n");
 			fprintf(rfp, "The deadline for orders will be %s.\n",
 				ptime(&dipent.deadline));
-			if (dipent.phase[5] == 'B' && 
-				 (dipent.x2flags & X2F_MORE_HOMES)) {
+			if ((dipent.phase[5] == 'B' && 
+				 (dipent.x2flags & X2F_MORE_HOMES)) ||
+			    (dipent.phase[5] == 'A')) {
 			    /* game allows home centre assignments */
+			    /* Or has an adjustment phase */
 			    /* Thus set active players in a wait state */
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
 					if (dipent.players[i].power != MASTER &&
-					  !(dipent.players[i].status & SF_DEAD)) {
+					  !(dipent.players[i].status & SF_DEAD) &&
+					    dipent.players[i].controlling_power == 0) {
 					/* A real player, set wait status */
 						dipent.players[i].status |= SF_WAIT;
 					}
@@ -1589,8 +1584,6 @@ int process(void)
 		                        fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 			}
 			fclose(rfp);
-		        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
 		}
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)

@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.6  2002/04/15 12:55:47  miller
+   ** Multiple changes for blind & Colonial & setup from USTV
+   **
    ** Revision 1.4.2.1  2001/10/19 23:13:17  dema
    ** Added missing include
    **
@@ -149,7 +152,7 @@ void status(int pt)
                 balance(pt, 0, 1);
                 ma_ownership();
           } else
-                ownership();
+                ownership(0);
         }
 
 	putc('\n', rfp);

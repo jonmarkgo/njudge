@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2003/02/17 21:24:12  millis
+ * Add missing quote
+ *
  * Revision 1.13  2003/02/17 12:41:41  millis
  * Fixed Bug 108, make lines >=1024 terminate in '\n'
  *
@@ -173,6 +176,8 @@ int conf_init(void)
 	conf_set("BLOCK_FILE", ""); /* File to block dip running */
 
 	conf_set("JUDGE_TZ", "");	/* Judge timezone, if different from localtime */
+
+	conf_set("NULL_EMAIL", "nobody@localhost");  /* email to no-one */
 
 	return 1;
 }

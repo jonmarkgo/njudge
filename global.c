@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2004/01/04 11:34:35  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.12  2003/05/14 07:59:17  nzmb
  * Fixed bug #122 -- splits dip.reply into part created before and after
  * the GM issues a "become" command.
@@ -65,6 +68,8 @@ int ncown[NPROV + 1];		/* New city owner             (Machiavelli)          */
 struct treasury ducats[NPOWER + 1];
 struct expense expense[NPOWER + 1][4];
 struct vincome vincome[MAXVINC];
+short bids[NPOWER + 1][NPOWER + 1];  /* Who is bidding what for whom  */
+
 
 unsigned char chits[NPOWER + 1][MAX_CHIT];	/* Assassination chits      */
 short payments[NPOWER + 1][NPOWER + 1];		/* Who is paying whom what  */
@@ -148,3 +153,5 @@ int process_set; 		/* Set to 1 if process command has been set */
 int bailout_recovery = 0;       /* Set to 1 if recovering from a bail-out	*/
 
 int GM_Became = 0;		/* if GM issued the become command */
+
+int has_treasury = 0;		/* Set to 1 if the datafile supplies treasury information */

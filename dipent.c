@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.21  2004/02/14 23:32:11  millis
+ * Allow use of fixed time via parameter (for debugging)
+ *
  * Revision 1.20  2003/07/17 22:59:29  millis
  * Bug 185
  *
@@ -131,7 +134,7 @@ int getdipent(FILE * fp)
  */
 
 	int i, j, tempvp, tempplayers;
-	int old_flags, old_xflags, old_x2flags;  /* Remember flags settings! */
+	int old_flags, old_xflags, old_x2flags, old_x3flags;  /* Remember flags settings! */
 	time_t now;
 	unsigned char line[1000];
 	char *s; 
@@ -141,26 +144,25 @@ int getdipent(FILE * fp)
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x%d", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d%x%d%x", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
 		   &dipent.flags, &tempvp, &tempplayers,
 		   &dipent.xflags, &dipent.max_absence_delay,
-		   &dipent.x2flags, &dipent.num_homes);
+		   &dipent.x2flags, &dipent.num_homes,
+		   &dipent.x3flags);
+	switch (i) {
 
-	if (i == 7) {
+	    case 7:
 		dipent.flags = F_NONMR;
-		i = 8;
-	}
-	if (i == 8) {
+	
+	    case 8:
 		tempvp = 0;
-		i = 9;
-	}
-	if (i == 9) {
+	
+	    case 9:
 		tempplayers = 0;
-		i = 10;
-	}
-	if (i == 10) {
+	
+	    case 10:
 		dipent.xflags = 0;
 		if ((dipent.variant == V_h31)
                     || (dipent.variant == V_h32)
@@ -169,37 +171,55 @@ int getdipent(FILE * fp)
 			dipent.xflags |= XF_BUILD_ANYCENTRES;
 		}
 		if (dipent.variant == V_aberration) dipent.xflags |= XF_BUILD_ONECENTRE;
-		i = 11;
-	}
-	if (i == 11) {
+	
+	    case 11:
 		dipent.max_absence_delay = 0;
 		dipent.rrded = 1.000;
 		dipent.orded = 0.000; /* Set ded settings for migrated games */
-		i = 12;
-	}
 
-        if (i == 12) {
+            case 12:
                 if (dipent.variant == V_machiavelli)
                     dipent.xflags |= XF_COASTAL_CONVOYS;
-                i = 13;
 		dipent.x2flags = 0;
-        }
-	if (i == 13) {
-	    dipent.num_homes = 0;
-	    i = 14;
-	}
+	
+	    case 13:
+	        dipent.num_homes = 0;
 
-	if (i != 14) {
+	    case 14:
+		dipent.x3flags = 0;
+		/* F_PROXY became F_INTIMATE */
+	        if (dipent.flags & F_INTIMATE) {
+		    dipent.flags &= ~F_INTIMATE;
+		    dipent.x2flags |= X2F_PROXY;
+		}
+		if (dipent.flags & F_SPARE1) {
+		    dipent.flags &= ~F_SPARE1;
+		    dipent.x2flags |= X2F_NODIAS;
+		}
+		if (dipent.flags & F_SPARE2) {
+		    dipent.flags &= ~F_SPARE2;
+                    dipent.x2flags |= X2F_STRWAIT;
+                }
+
+	    case 15:
+		/* All ok, exit out */
+		break;  /* Dont forget to remove this if adding new cases! */
+
+	
+	    default:
 		fprintf(stderr, "Bad header in master file (returned %d).\n%s\n", i ,line);
 		bailout(E_FATAL);
+	    
 	}
 	/* tempcentres will remember centres setting */
 	old_flags = dipent.flags;
 	old_xflags = dipent.xflags;
 	old_x2flags = dipent.x2flags;
+	old_x3flags = dipent.x3flags;
 	SETNP(dipent.variant);
 	dipent.xflags = old_xflags;
 	dipent.x2flags = old_x2flags;
+	dipent.x3flags = old_x3flags;
 	dipent.flags = old_flags;
 	dipent.has_natives = GetNativeIndex();
 
@@ -381,14 +401,16 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d\n", 
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d %x\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
 		dipent.no_of_players, dipent.xflags,
 		dipent.max_absence_delay,
                 dipent.x2flags, /* This indicates version 0.8.9 onwards */
-		dipent.num_homes /* This indicates version 1.1.1 onwards */
+		dipent.num_homes, /* This indicates version 1.1.1 onwards */
+		dipent.x3flags    /* This indicates version 1.7 onwards */
+		
 	);
 
 	if (dipent.process)
@@ -452,6 +474,7 @@ void newdipent(char *name, int variant)
 	dipent.flags = D_FLAGS;
 	dipent.xflags = D_XFLAGS;
 	dipent.x2flags = D_X2FLAGS;
+	dipent.x3flags = D_X3FLAGS;
 	dipent.dedicate = D_DEDICATE;
 	dipent.variant = variant;
 	SETNP(variant);
@@ -661,14 +684,14 @@ void getplay(char *line, Player * p)
 
 	*p->pref = '\0';
 	/* You'd better be really sure you've not messed with absence array limit! */
-	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s %d %d %d %ld %ld %ld %ld %ld %ldi %ld", &c, &p->status,
+	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s %d %d %d %ld %ld %ld %ld %ld %ld %ld %d", &c, &p->status,
 		   &p->units, &p->centers, &p->userid, &p->siteid,
 		   p->password, p->address, &p->late_count, &p->centres_blockaded,
 		   &p->absence_count, 
 		   &p->absence_start[0], &p->absence_end[0],
 		   &p->absence_start[1], &p->absence_end[1],
 		   &p->absence_start[2], &p->absence_end[2],
-		   &p->absence_total);
+		   &p->absence_total, &p->controlling_power);
 	switch (i)
 	{
 		case 8: {
@@ -688,10 +711,14 @@ void getplay(char *line, Player * p)
 		case 17: {
 			/* versions 0.8.7 and up are fine here! */
 			p->absence_total = 0;
-                     break;
                     }
 		case 18: {
+			/* New for 1.7.0 onwards */
+			p->controlling_power = 0;
+		    }
+		case 19: {
 			/* OK, this is the latest one! */
+			break;
 		    }
 
 		
@@ -734,7 +761,7 @@ void putplay(FILE * fp, Player * p, int dopw)
 		    
 		if (isupper(c = dipent.pl[p->power]))
 			c = tolower(c);
-		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld\n",
+		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld %d\n",
 			c, &out_power[1],
 		   p->status, p->units, p->centers, p->userid, p->siteid,
 			dopw ? p->password : "xxx", p->address,p->late_count, p->centres_blockaded,
@@ -742,7 +769,7 @@ void putplay(FILE * fp, Player * p, int dopw)
                    p->absence_start[0], p->absence_end[0],
                    p->absence_start[1], p->absence_end[1],
                    p->absence_start[2], p->absence_end[2],
-		   p->absence_total);
+		   p->absence_total, p->controlling_power);
 		if (*(p->pref))
 			fprintf(fp, "_pref: %s\n", p->pref);
 	}

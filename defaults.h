@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2003/07/16 14:50:57  millis
+   ** Used D_X2FLAGS to allow default setting for X2FLAGS for games (if desired)
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Extracted out judge-specific (i.e. site poliy) seetings to
    ** defaults.inc
@@ -37,4 +40,8 @@
 #ifndef D_X2FLAGS
 #define D_X2FLAGS 0
 #endif
+#ifndef D_X3FLAGS
+#define D_X3FLAGS 0
+#endif
+
 #endif

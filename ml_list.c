@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.10  2003/07/28 14:23:09  millis
+   ** Fix bug 205
+   **
    ** Revision 1.9  2003/01/14 13:51:37  millis
    ** Merges from USTV
    **
@@ -363,6 +366,9 @@ void mail_listbrief(void)
 	if (dipent.flags & F_WINGS)
 		fprintf(rfp, ", Wings");
 
+	if (dipent.flags & F_INTIMATE)
+	        fprintf(rfp, ", Intimate");
+
 	if (!(dipent.flags & F_NONMR))
 		fprintf(rfp, ", NMR");
 
@@ -446,13 +452,13 @@ void mail_listbrief(void)
 	}
         
 	if (dipent.phase[6] != 'X' && dipent.seq[0] == 'x') {
-		n = dipent.np - (dipent.seq[1] - '0');
+		n = dipent.no_of_players - (dipent.seq[1] - '0');
 		if (n == 0) fprintf(rfp, "%21.21sFormed: waiting to be started.\n","");
 		else if (dipent.x2flags & X2F_SECRET) {
 		    fprintf(rfp, "%21.21sForming: more players needed.\n", "" );
 		} else {
 		     fprintf(rfp, "%21.21sForming: %d%s player%s needed.\n", "",
-		        n, n == dipent.np ? "" : " more", n == 1 ? "" : "s");
+		        n, n == dipent.no_of_players ? "" : " more", n == 1 ? "" : "s");
 		}
 	} else if (dipent.phase[6] != 'X') {
 		n = 0;

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2003/02/17 12:41:41  millis
+ * Fixed Bug 108, make lines >=1024 terminate in '\n'
+ *
  * Revision 1.9  2003/02/05 23:53:43  millis
  * Removed dipstats files.
  * Also added in new JUDGE_TZ variable, to specify timezone
@@ -90,6 +93,7 @@
 #define NOBODY		config("NOBODY")
 #define BLOCK_FILE	config("BLOCK_FILE");
 #define JUDGE_TZ	config("JUDGE_TZ");
+#define NULL_EMAIL	config("NULL_EMAIL")
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think

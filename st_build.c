@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.27  2004/01/04 11:34:35  millis
+   ** Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+   **
    ** Revision 1.26  2003/07/24 23:00:43  millis
    ** Fix bug 202
    **
@@ -454,7 +457,7 @@ int buildin(char **s, int p)
 
 	char type, order;
 	unsigned char *t;
-	int i, j, u=0, p1, c1;
+	int i, j, u=0, p1, c1, p2;
 
 	/*
 	   **  Process lines of the form:
@@ -476,8 +479,18 @@ int buildin(char **s, int p)
 		if (pr[p1].unit) {
 			p = unit[pr[p1].unit].owner;
 		} else {
-			p = power(pr[p1].type);
+			p = pr[p1].owner;
 		}
+	}
+	if (dipent.flags & F_INTIMATE) {
+	    /* See if I am ordering for one of my controlled powers */
+	    /* Either in its province or one of its units */
+	    p2 = pr[p1].owner;
+	    if (p2 == 0)
+	        if (pr[p1].unit)
+		    p2 = unit[pr[p1].unit].owner;
+	    if (p == PowerControlledBy(p2))
+	        p = p2; /* Yes, so become that power */
 	}
 	if (order == 'x' && !(dipent.xflags & XF_ALTBUILD))
 		order = nu[p] >= 0 ? 'b' : 'r';
@@ -887,14 +900,14 @@ void buildout(int pt)
             p_index = FindPower(p);
 	    one_printed = 0;
             if (p_index >= dipent.n) continue; /* Not a valid power */
-	    if (!(processing || pt == p || pt == MASTER)) continue;	
+	    if (!(processing || pt == p || pt == MASTER || pt == PowerControlledBy(p))) continue;	
 	    for (u = 1; u <= nunit; u++) {
 		if (p == unit[u].owner) {
 
 			if (unit[u].status == 'b') {
 
 				num_units[unit[u].owner]++;
-				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+				fprintf(rfp, "%s: ", powers[unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
 				fprintf(rfp, "Builds %s in %s", autype(unit[u].type),
@@ -907,7 +920,7 @@ void buildout(int pt)
 				one_printed++;
 
 			} else if (unit[u].status == 'd' && unit[u].exists) {
-				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+				fprintf(rfp, "%s: ", powers[unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
 				fprintf(rfp, "Removes the %s %s %s.\n",
@@ -923,7 +936,7 @@ void buildout(int pt)
 
 			} else if (unit[u].status == 'w') {
 				num_units[unit[u].owner]++;
-				fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+				fprintf(rfp, "%s: ", powers[unit[u].owner]);
 				for (i = strlen(powers[p]); i < LPOWER; i++)
 					putc(' ', rfp);
 				fprintf(rfp, "Build waived.\n");
@@ -933,7 +946,7 @@ void buildout(int pt)
 			} else if (unit[u].status == 't') {
 				num_units[unit[u].owner]++;
 				/* Only notify when changing type */
-                                        fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+                                        fprintf(rfp, "%s: ", powers[unit[u].owner]);
                                         for (i = strlen(powers[p]); i < LPOWER; i++)
                                                 putc(' ', rfp);
                                         fprintf(rfp, "Transform the %s %s %s to %s",
@@ -955,7 +968,7 @@ void buildout(int pt)
 			    num_units[unit[u].owner]++;
 				/* only notify when explictly maintaining units */
 			    if (!processing && !predict) {		
-				fprintf(rfp, "%s: ", powers[p= unit[u].owner]);
+				fprintf(rfp, "%s: ", powers[unit[u].owner]);
 				 for (i = strlen(powers[p]); i < LPOWER; i++)
                                                 putc(' ', rfp);
                                         fprintf(rfp, "Maintains the %s %s %s.\n",
@@ -968,7 +981,7 @@ void buildout(int pt)
 			} else if (unit[u].status == ':') {
 			    num_units[unit[u].owner]++;
 			    if (dipent.xflags & XF_ALTBUILD) {
-                                fprintf(rfp, "%s: ", powers[p = unit[u].owner]);
+                                fprintf(rfp, "%s: ", powers[unit[u].owner]);
                                 for (i = strlen(powers[p]); i < LPOWER; i++)
                                                 putc(' ', rfp);
                                 fprintf(rfp, "No order for the %s %s %s", 
@@ -984,7 +997,7 @@ void buildout(int pt)
                         }
 		}
 	    }
-	    if (!processing && !predict && pt == MASTER)
+	    if (!processing && !predict && pt == MASTER )
 		if (one_printed)
                     fprintf(rfp,"\n"); /* Extra blank for master */
 
@@ -992,7 +1005,7 @@ void buildout(int pt)
 
 	for (p = 1; p <= NPOWER; p++) {
 		assumed[p]=0;
-		if  (processing || pt == p || pt == MASTER) {
+		if  (processing || pt == p || pt == MASTER || PowerControlledBy(p) == pt) {
 		    p_index = FindPower(p);
 		    if (p_index >= dipent.n) continue; /* Not a valid power */
                     counting_centres = dipent.players[p_index].centers -

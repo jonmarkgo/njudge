@@ -303,13 +303,6 @@ void params(FILE * fp)
 	if (dipent.flags & F_BLIND) {
 		strcat(line, ", Blind");
 	}
-	if (IS_DUPLEX(dipent)) {
-	        strcat(line, ", Duplex");
-		if (!(dipent.x2flags & X2F_SECRET)) {
-		    sprintf(temp1," %d/%d", dipent.no_of_players,dipent.np);
-		    strcat(line,temp1);
-		}
-	}
 	if (!(dipent.flags & F_MACH)) {
 	    if (dipent.flags & F_AFRULES) {
 		strcat(line, ", AF_Rules");
@@ -320,7 +313,18 @@ void params(FILE * fp)
 	    if (dipent.flags & F_WINGS) {
 		strcat(line, ", Wings");
  	    }
+	    if (dipent.flags & F_INTIMATE) {
+		strcat(line, ", Intimate");
+	    }
 	}	
+	if (IS_DUPLEX(dipent)) {
+	    strcat(line, ", Duplex");
+	    if (!(dipent.x2flags & X2F_SECRET)) {
+	        sprintf(temp1," %d/%d", dipent.no_of_players,dipent.np);
+	        strcat(line,temp1);
+	    }
+	}
+
 	strcat(line, ".");
 	print_params(fp, line);
 
@@ -339,12 +343,12 @@ void params(FILE * fp)
 	if (dipent.flags & F_NOREVEAL) {
 		strcat(line, ", NoReveal");
 	}
-	if (dipent.flags & F_PROXY) {
+	if (dipent.x2flags & X2F_PROXY) {
 		strcat(line, ", Proxy");
 	} else {
 		strcat(line, ", NoProxy");
 	}
-	if (dipent.flags & F_NODIAS) {
+	if (dipent.x2flags & X2F_NODIAS) {
 		strcat(line, ", NoDIAS");
 	} else {
 		strcat(line, ", DIAS");
@@ -352,7 +356,7 @@ void params(FILE * fp)
 	if (!(dipent.flags & F_GRACEDAYS)) {
 		strcat(line, ", StrictGrace");
 	}
-	if (dipent.flags & F_STRWAIT) {
+	if (dipent.x2flags & X2F_STRWAIT) {
 		strcat(line, ", StrictWait");
 	}
 	if (dipent.flags & F_NOSHOW) {
@@ -548,7 +552,7 @@ void params(FILE * fp)
         }
 	if (dipent.xflags & XF_MOVEDISBAND)
 		strcatf(line, "Disband", &first_flag);
-	if ((dipent.xflags & XF_NOCONCESSIONS) && !(dipent.flags & F_NODIAS)){
+	if ((dipent.xflags & XF_NOCONCESSIONS) && !(dipent.x2flags & X2F_NODIAS)){
 		strcatf(line, "No concessions", &first_flag);
 	} else {
 		strcatf(line, "Concessions", &first_flag);
@@ -612,10 +616,6 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_EXTRA_HC ) {
 		strcatf(line, "ExtraHomeCentres", &first_flag);
 	}
-
-	if (dipent.x2flags & X2F_APPROVAL ) {
-                strcatf(line, "Approval", &first_flag);
-        }
 
 	if (dipent.flags & F_BLIND) {
 	    if (dipent.x2flags & X2F_BLIND_CENTRES) {

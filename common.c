@@ -174,5 +174,8 @@ void next_year(void)
 	while (dipent_year >= 10000)
 		dipent_year -= 10000;
 	sprintf(dipent.phase, "S%04dM", dipent_year);
-	init_movement();
+	if (dipent.flags & F_INTIMATE)
+		dipent.phase[5] = 'A'; /* Intimate adjustment phase */
+	else 
+	    init_movement();
 }

@@ -94,12 +94,6 @@ void mast_rpt(int current_power, int line_up)
 				tmp = 1;
 				fprintf(rfp, " WAIT");
 			};
-			if (dipent.players[cnt].status & SF_NOT_APPROVED) {
-			        if (tmp)
-                                        fprintf(rfp, ",");
-                                tmp = 1;
-                                fprintf(rfp, " Not Approved");
-			}
 			fprintf(rfp, ".");
 		};
 	};

@@ -77,7 +77,6 @@
 #include "functions.h"
 
 static char line[1024]; /* Local temporary buffer */
-extern int msg_header_done;
 
 int phase(char *s)
 {
@@ -243,7 +242,7 @@ void phase_pending(void)
 
 				case WAIT:
 					if (!skip) {
-						if (dipent.flags & F_STRWAIT) {
+						if (dipent.x2flags & X2F_STRWAIT) {
 						    if (dipent.players[n].status & SF_MOVE) {
 							dipent.players[n].status |= SF_WAIT;
 						    }
@@ -276,8 +275,6 @@ void phase_pending(void)
 			if (porder('T', n, 0) == E_FATAL) {
 				sprintf(line, "dip.reply 'Pending orders error'");
 				fclose(rfp);
-			        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
 				MailOut(line, GAMES_MASTER);
 			} else {
 
@@ -293,8 +290,6 @@ void phase_pending(void)
 				sprintf(line, "dip.reply '%s:%s - %s Pending Orders'",
 					JUDGE_CODE, dipent.name, dipent.phase);
 				fclose(rfp);
-			        msg_header_done = 0;  /* Bug 282, header will need to be redone */
-
 				MailOut(line, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;

@@ -84,6 +84,19 @@
 
 static int variant = 0;		/* The currently loaded variant */
 
+/* Set unit controller value to country's controller value */
+static void UpdateUnitControllers()
+{
+    int u, p;
+    for (u = 1; u <= nunit; u++) {
+        p = FindPower(unit[u].owner);
+	if (p >= dipent.n) 
+	    unit[u].controller = AUTONOMOUS;
+	else
+	    unit[u].controller = dipent.players[p].controlling_power;
+    }
+
+}
 void UpdateBlockades()
 {
 	int i,u;
@@ -220,8 +233,7 @@ int po_init(void)
 			pr[i].unit = 0;
 			pr[i].gunit = 0;
 			pr[i].unit_held = 1;
-			pr[i].order_index = 0;
-			pr[i].blockaded = 0;
+			pr[i].order_index =0;
 			if (pr[i].type == 'r' || pr[i].type == 'g' )
 			    pr[i].move = NULL;
 		}
@@ -380,12 +392,16 @@ int gamein(void)
 	}
 	if (strncmp(phase, dipent.phase, 6)) {
 		if (strcmp(dipent.phase, "?1901?")) {
+		    if (!((dipent.flags & F_INTIMATE) && dipent.phase[5] == 'A' )) {
 			fprintf(rfp, "Phase %s for '%s' does not match master file.\n",
 				dipent.phase, dipent.name);
 			err++;
+		    }
 		}
-		fprintf(rfp, "Assuming game phase of %s in file %s.\n", phase, line);
-		strcpy(dipent.phase, phase);
+		if (!((dipent.flags & F_INTIMATE) && dipent.phase[5] == 'A' )) {
+		    fprintf(rfp, "Assuming game phase of %s in file %s.\n", phase, line);
+		    strcpy(dipent.phase, phase);
+		}
 	}
 	/*
 	 *  Read unit positions "E: xF London".
@@ -610,6 +626,7 @@ int gamein(void)
 					 */
 
 				case 'D':
+					has_treasury++;
 					t = line + 2;
 					while (isspace(*t))
 						t++;
@@ -757,6 +774,9 @@ int gamein(void)
 	    if (!pr[p].unit) 
 		pr[p].unit_held = 0;  /* if no units, can't be same unit holding! */
 	}
+
+	if (dipent.flags & F_INTIMATE)
+		UpdateUnitControllers();
 
 	return err;
 }
@@ -914,7 +934,7 @@ int gameout(void)
 		}
 	}
 
-	if (dipent.flags & F_MACH) {
+	if (dipent.flags & F_MACH || dipent.flags & F_INTIMATE) {
 		for (i = 1; i < WILD_PLAYER; i++) {
 			if (dipent.pl[i] != 'x') {
 				fprintf(ifp, "D: %c %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
@@ -925,7 +945,7 @@ int gameout(void)
 				ducats[i].loan[3], ducats[i].interest[3],
 				ducats[i].loan[4], ducats[i].interest[4],
 				ducats[i].loan[5], ducats[i].interest[5]);
-				if (chits[i][0]) {
+				if (chits[i][0] && !(dipent.flags & F_INTIMATE)) {
 					fprintf(ifp, "A: %c ", dipent.pl[i]);
 					for (j = 0; chits[i][j]; j++) {
 						if (chits[i][j] == WILD_PLAYER)
@@ -934,7 +954,7 @@ int gameout(void)
 					}
 					fputc('\n', ifp);
 				}
-				if (dipent.phase[5] == 'R') {
+				if (dipent.phase[5] == 'R'  && !(dipent.flags & F_INTIMATE)) {
 					int n = 0;
 					for (j = 1; j < WILD_PLAYER; j++) {
 						if (i != j && allies[i][j]) {
@@ -975,8 +995,20 @@ int gameout(void)
 				    dipent.players[u].units <= 0 ) 
 				  dipent.players[u].status |= SF_DEAD;
 			}
-			if (need_order[p] && !(dipent.players[u].status & SF_DEAD))
-				dipent.players[u].status |= SF_MOVE;
+			if (need_order[p] && !(dipent.players[u].status & SF_DEAD)) {
+				if (dipent.players[u].controlling_power != 0 &&
+				    dipent.players[u].controlling_power < AUTONOMOUS) {
+				    dipent.players[FindPower(dipent.players[u].controlling_power)].status |= SF_MOVE;
+				} else {
+				    if (dipent.players[u].controlling_power == 0)
+				        dipent.players[u].status |= SF_MOVE;
+				}
+			}
+			if (dipent.phase[5] == 'A' && dipent.flags & F_INTIMATE) 
+			    if (dipent.players[u].controlling_power == 0 && 
+				!(dipent.players[u].status & SF_DEAD) &&
+				ducats[u].treasury > 0)
+			        dipent.players[u].status |= (SF_MOVE | SF_WAIT); /* Bid phase, player can bid */
 		} else {
 			dipent.players[u].units = 0;
 			dipent.players[u].centers = 0;

@@ -64,10 +64,10 @@ int porder(char c, int player, int listflg)
 		more_orders = 0;
 
 		if (dipent.flags & F_MACH) {
-			ma_process_input(power, dipent.phase[5], player);
+			ma_process_input(power, dipent.phase[5]);
 			ma_process_output(power, dipent.phase[5]);
 		} else {
-			process_input(power, dipent.phase[5], player);
+			process_input(power, dipent.phase[5]);
 			process_output(power, dipent.phase[5]);
 		}
 
