@@ -1,4 +1,6 @@
 (28th August 2002)
+Removed bgreet.c and bgreet targets
+Set BUGS file to zero length
 Fixed a small mach bug in ma_porder.c
 (27th August 2002)
 Fixed a mach Victory bug. Also:

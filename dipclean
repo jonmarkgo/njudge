@@ -8,13 +8,3 @@ find . -name "[MTP]*" -atime +90 -exec rm {} \;
 ./newlogs
 ./flock
 
-# If today is Sunday then check for birthdays. This should only be
-# run once a week otherwise people get the birthday greeting more 
-# than once since bgreet checks for the next week not for the current 
-# day.
-
-#date | grep Sun > /dev/null
-#if [ "$status" -eq 0 ] ;  then
-#if [ $? -eq 0 ] ;  then
-#	./bgreet
-#fi
