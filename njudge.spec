@@ -1,12 +1,12 @@
 Summary: Internet Diplomacy Adjudicator
 Name: njudge
-Version: 1.3.0pre_20021221
+Version: 1.3.0
 Release: 1
 Group: Games
 Copyright: free for non-commercial use.  See COPYING for details.
 Packager: Jaldhar H. Vyas <judgekeeper@braincells.com>
 URL: http://www.njudge.org/
-Source: %{name}-1.3.0-pre.tar.gz
+Source: %{name}-%{version}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -16,7 +16,7 @@ the turn of the 20th Century.  They must vie through conquest and
 negotiation to dominate the continent. This package will install in /home/judge
 
 %prep
-%setup -n %{name}-1.3.0-pre
+%setup -n %{name}-%{version}
 
 %build
 ./configure --mandir=/usr/share/man --with-dir=/home/judge --with-user=root
