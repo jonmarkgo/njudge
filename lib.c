@@ -1,5 +1,9 @@
 	/*
 	 * $Log$
+	 * Revision 1.30  2004/07/07 22:50:40  millis
+	 * Bug91: further fixes for Duplex code
+	 * (these mainly to get absences and late handling working)
+	 *
 	 * Revision 1.29  2004/07/04 03:25:24  millis
 	 * Fix bug 328, implement Portage variant
 	 *
@@ -927,7 +931,8 @@ int deadline(sequence *seq, int new)
         int i, k;
         long now, temp;
         struct tm *tm, *localtime();
-        int ret = 0;
+        int did_absence = 0;
+	int adjusted = 0;
 
         time(&now);
         if (dipent.phase[6] == 'X') {
@@ -955,7 +960,7 @@ int deadline(sequence *seq, int new)
         if (new) {
 		do {
 			rec_count++;
-
+			adjusted = 0;
         	        temp = now + (int) (seq->next * HRS2SECS);
 
 			dipent.dedapplied = 0; 
@@ -968,26 +973,36 @@ int deadline(sequence *seq, int new)
                         if (i < 0)
                                 i += 24 * 60 * 60;
                         temp += i;
+			if (i > 0) adjusted = 1;
                 }
                 for (k = 0; k < 8; k++) {
                         tm = localtime(&temp);
                         if (seq->days[tm->tm_wday] == '-')
+			{
                                 temp += 24 * 60 * 60;
+				adjusted = 1;
+			}
                         else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
+			{
                                 temp += (12 - tm->tm_hour) * 60 * 60 - tm->tm_min * 60 - tm->tm_sec;
+				adjusted = 1;
+			}
                         else
                                 break;
                 }
 
-		ret = absence_adjust(&temp);
+		did_absence = absence_adjust(&temp);
 
 		/* If old deadline was huge, keep it */
 		dipent.deadline = max(temp,  dipent.deadline) ;
 
 		/* set mailing flag so we can advise an absence adjust */
-		if (ret == 1)
+		if (did_absence == 1)
+		{
 			broadcast_absence_adjust = 1;
-	    } while (ret == 1 && rec_count < 50);
+			adjusted = 1;
+		}
+	    } while (adjusted == 1 && rec_count < 50);
 
                 dipent.process = temp;
                 temp += (int) (seq->grace * HRS2SECS);
