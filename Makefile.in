@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.20  2003/03/21 13:57:36  millis
+# Added ascii2rec target
+#
 # Revision 1.19  2003/02/26 16:57:25  millis
 # Removed README.statistics and added README.timezone
 #
@@ -577,8 +580,8 @@ lenlimit(EXEEXT): $(lenlimit_OBJECTS) $(lenlimit_DEPENDENCIES)
 	@rm -f lenlimit$(EXEEXT)
 	$(LINK) $(lenlimit_LDFLAGS) $(lenlimit_OBJECTS) $(lenlimit_LDADD) $(LIBS)
 ascii2rec(EXEEXT): $(ascii2rec_OBJECTS) $(ascii2rec_DEPENDENCIES)
-        @rm -f ascii2rec$(EXEEXT)
-        $(LINK) $(ascii2rec_LDFLAGS) $(ascii2rec_OBJECTS) $(ascii2rec_LDADD) $(LIBS
+	@rm -f ascii2rec$(EXEEXT)
+	$(LINK) $(ascii2rec_LDFLAGS) $(ascii2rec_OBJECTS) $(ascii2rec_LDADD) $(LIBS
 )
 ded_to_ascii$(EXEEXT): $(ded_to_ascii_OBJECTS) $(ded_to_ascii_DEPENDENCIES) 
 	@rm -f ded_to_ascii$(EXEEXT)
