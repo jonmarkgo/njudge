@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                       24 May, 2003
+Greetings from the Diplomacy* Adjudicator!!                    15 July, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
-with a brief description.  It is current as of njudge version 1.4.1.
+with a brief description.  It is current as of njudge version 1.4.2.
 
 For information on how to enter Diplomacy orders, get the file 'syntax' (see
 "GET file", below).
@@ -215,6 +215,12 @@ any/    OBSERVE name password
         To become an observer.  This command is equivalent to "SIGNON oname
         password".
 
+mod/	PAUSE							       {future}
+	Will place the game on pause (hold). No messages will be sent out for
+	late players, and no players can submit commands (press, orders etc.).
+	A periodic warning wil lbe broadcast that the game is paused, and this
+	can be cleared either by the 'RESUME' command or via 'TERMINATE'.
+
 ply/    PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.  Get file 'syntax'.
@@ -260,7 +266,7 @@ ply/    RESIGN
         cannot RESIGN.  See command "EJECT".
 
 ply/    RESUME
-        To restart a completed or terminated game.  The "SET [NO]RESUME"
+        To restart a paused, completed or terminated game.  The "SET [NO]RESUME"
         command (below) determines whether this command will be accepted from
         any player, or only from a Master.
 
@@ -319,7 +325,7 @@ adm/    SET ALLOW PLAYER|MASTER [-]address
 mod/bgs SET ANY CENTRE[S]|CENTER[S]                                    {0.8.9}
         Allows a power to build in any owned centre during a build phase.
 
-mod/bgs+SET ANY DISBAND                                               {future}
+mod/bgs SET ANY DISBAND                                               {1.4.0}
         Allow powers to disband any unit during a build phase (and thus
         gaining the option to rebuild on a buildable centre if desired).  A
         'wait' is set for all active players during the build phase.  Opposite
@@ -332,7 +338,7 @@ mod/bgs SET [NO] ATTACK TRANSFORM                                      {0.8.9}
         Transformations on attacked but not dislodged units will fail/work.
         Get file 'transform' for more details.
 
-mod/	SET [NO] AUTO CREATE					       {1.4.1}
+mod/	SET [NO] AUTO CREATE					       {future}
  	Disables/enables the automatic creation of a game with identical 
 	parameters when the current one finished (in a draw or victory), except
 	that the game will be set to 'NoList'. Fails if a sequence number cannot
@@ -356,7 +362,7 @@ mod/bgs SET [NO] AUTO START                                            {0.8.9}
 mod/mac SET [NO] BANK[ERS]
         Equivalent to "SET [NO] LOANS".
 
-mod/bgs!SET [NO] BCENTERS|BCENTRES
+mod/bgs SET [NO] BCENTERS|BCENTRES
         Enable/disable the display of ALL owned centres (not just those of
         the power sending the command) in "Blind" variant.  Default disabled.
 
@@ -663,7 +669,7 @@ mod/bgs SET PLAYERS number
         to play multiple powers.  Get file 'info.duplex' for more information
         and an example.
 
-mod/   !SET [NO] POSTAL PRESS                                          {1.2.0}
+mod/    SET [NO] POSTAL PRESS                                          {1.2.0}
         Turns postal press on/off.  Postal press is press published with the
         results of the turn.  See command "POSTAL PRESS" for more details.
 
@@ -786,7 +792,7 @@ mod/mac SET [NO] STORM[S]                                              {1.0.2}
         Disables/enables storms.  Works as per plague, except causes fleets at
         sea to be eliminated randomly (in a storm).
 
-mod/   !SET [NO] STRICT CONVOY                                         {0.8.9}
+mod/    SET [NO] STRICT CONVOY                                         {0.8.9}
         Allows/disallows "implausible" convoys.  Default disabled, so fleets
         can be ordered to convoy any army to any province defined in the map
         file.  If set, only convoys that could conceivably succeed may be
@@ -821,6 +827,10 @@ mod/    SET UNLIST
 
 mod/    SET UNMODERATE[D]
         Changes a game from moderated to unmoderated.
+
+mod/	SETUP							       {future}
+	Allows the game to be setup, altering units, year etc. 
+	See file 'setup' for more information
 
 ply/    SET [NO] VACATION[S]                                           {0.8.7}
         Same as SET [NO] ABSENCE.
@@ -888,6 +898,11 @@ any/    SIGN ON ?name password [variant] [options]
         "options" specifications are required if, and only if, these options
         were used in the CREATE or SET VARIANT command.  See "SET VARIANT".
         Only registered users may signon to a forming game.
+
+mod/	SPAWN name						    {future}
+	To create a gamecalled 'name' with parameters identical to the current
+	game. It will be created with no players, and set 'nolist', but the 
+	master(s) will be copied over.
 
 any/    SUMMARY name
         To get an historical summary of the specified game indicating who took
