@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.22  2003/03/29 18:20:28  christ
+# Added VariantsHOWTO* to Makefile.am
+#
 # Revision 1.21  2003/03/29 17:55:20  christ
 # Added InstallationHOWTO.* in Makefike.*.
 #
@@ -281,6 +284,7 @@ install-data-hook: flist magic
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 	${INSTALL_DATA} dip.conf ${DESTDIR}${bindir}/dip.conf
 	touch ${DESTDIR}${bindir}/dip.msg
+	touch ${DESTDIR}${bindir}/dip.footer
 	touch ${DESTDIR}${bindir}/dip.addr
 	touch ${DESTDIR}${bindir}/dip.whois
 	touch ${DESTDIR}${bindir}/dip.blist
@@ -297,8 +301,8 @@ install-data-hook: flist magic
 	-@chown ${USER} ${DESTDIR}${bindir}/*
 	-@chown ${USER} ${DESTDIR}${datadir}/*
 	@echo 
-	@echo "you must now edit ${bindir}/dip.conf and "
-	@echo "${bindir}/dip.msg (which last may be left empty)"
+	@echo "you must now edit ${bindir}/dip.conf, ${bindir}/dip.msg "
+	@echo "${bindir}/dip.footer (which last two may be left empty)"
 	@echo "To start the judge, move ${bindir}/${USER}-forward to ${HOME}/../${USER}/.forward"
 	@echo
 

@@ -49,6 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/cron.weekly/njudge
 %config /home/judge/dip.conf
 %config /home/judge/dip.msg
+%config /home/judge/dip.footer
 %config /home/judge/dip.master
 %config /home/judge/dip.addr
 %config /home/judge/dip.whois
