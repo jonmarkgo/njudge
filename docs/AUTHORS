@@ -10,14 +10,14 @@ Gregory A.Greenman	: Many things
 David Kovar		: Many things
 Dietmar Kulsch		: German translation coordinator (DEAC)
 Philippe Lalande	: Some code from FROG
-Ken Lowe		: Original development, coded first version, from 1987; and others things like NMR/NoNMR
+Ken Lowe		: Original development, coded 90% of the judge, from 1987; and others things like NMR/NoNMR
 David Norman		: Many fixes, duplex code, countless variants
 C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
 Millis Miller		: many things, including maintenance, CVS and tarball maintenance
 Tim Miller		: plyrdata, Crowded_1898, and many other things
 Rob Paar		: Many things (1996), old RCS system
 Larry Richardson        : allow/deny (1995)
-Kevin A. Roust		:
+Kevin A. Roust		: maintenance (as far as he can remember)
 T.Ruelle		: (1994) params.c
 Andy Schwartz		:
 Nathan Wagner		: (1997)

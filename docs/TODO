@@ -29,9 +29,6 @@ completed)
 
 - Documentation update (C.Courtois)
 
-- Merge FAQs, install-howto, README files... into an
-Administrator Guide (C.Courtois)
-
 - help files translations (C.Courtois)
 
 -----------------------------------------------------------------
@@ -53,10 +50,24 @@ distribution of linux in the <string.h> include. If it is the case with the
 other platform, my guess is that we could simply remove those files from 
 the compilation.
 
+- Add a warning (and only a warning) when set centers > numbers of centers on board 
+
+- (Tim Miller 13/02/2002) 
+There's a bug in the crowded_1898 variant that causes a judge to crash
+if it attempts to generate a summary for a game of this variant. I don't
+think any such games are ongoing on any judges other than NZMB. I'm
+*very* busy this week, but I'll try to have a fix up this weekend.
+
 -----------------------------------------------------------------
 WISHLIST:
 
 - Diary to make EOGs easier ; Millis thinks it is not so difficult 
 (C.Courtois 25th Jan 2002)
+
 - Delete registrations without altering dip.whois and dip.addr (Tim Miller 22th Jan 2002)
+
 - Translation of judge messages (see DEAC ; cf Alain Tesio message 22nd Dec 2001 about 'set english')
+
+- Merge FAQs, install-howto, README files... into an
+Administrator Guide (C.Courtois)
+
