@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.42  2004/07/25 16:07:14  millis
+ * Bug 151, allow less powers than variant default.
+ *
  * Revision 1.41  2004/07/04 03:10:44  millis
  * Display new irregular and portage flags
  *
@@ -327,7 +330,7 @@ void params(FILE * fp)
 	if (IS_DUPLEX(dipent)) {
 	    strcat(line, ", Duplex");
 	    if (!(dipent.x2flags & X2F_SECRET)) {
-	        sprintf(temp1," %d/%d", dipent.no_of_players,dipent.np);
+	        sprintf(temp1," %d/%d", dipent.no_of_players,dipent.powers);
 	        strcat(line,temp1);
 	    }
 	}
