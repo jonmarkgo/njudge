@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2002/03/05 23:19:49  miller
+ * Fix special bleagured garisson bug
+ *
  * Revision 1.3.2.1  2001/10/19 23:37:01  dema
  * Added NoMoney handling, and correct calculatinos for lifting sieges
  *
@@ -390,6 +393,10 @@ int ma_movein(char **s, int p)
 			       pr[p1].name);
 			return E_WARN;
 		}
+
+                if (c == 'x')
+                        c = unit[u].type;
+
 		/* MLM 12/06/2001 do not allow fleets to convert if not a port */
 		if (c== 'F' && !has_port(p1)) {
 			errmsg("%s is not a port.  Cannot convert.\n",
