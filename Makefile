@@ -171,7 +171,7 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 		ln -f -s ${INSTALLDIR}/smail ${DESTDIR}; \
 	fi;
 	rm -f data/RCS
-	cp data/* ${INSTALLDIR}/data
+	cp -p data/* ${INSTALLDIR}/data
 	@if [ ${DESTDIR} != ${INSTALLDIR} ] ; then \
 	-@ln -f -s  ${INSTALLDIR}/data ${DESTDIR} \
 	fi; 
