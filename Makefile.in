@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.21  2003/03/21 14:02:04  millis
+# Changed spaces to tab
+#
 # Revision 1.20  2003/03/21 13:57:36  millis
 # Added ascii2rec target
 #
@@ -581,8 +584,7 @@ lenlimit(EXEEXT): $(lenlimit_OBJECTS) $(lenlimit_DEPENDENCIES)
 	$(LINK) $(lenlimit_LDFLAGS) $(lenlimit_OBJECTS) $(lenlimit_LDADD) $(LIBS)
 ascii2rec(EXEEXT): $(ascii2rec_OBJECTS) $(ascii2rec_DEPENDENCIES)
 	@rm -f ascii2rec$(EXEEXT)
-	$(LINK) $(ascii2rec_LDFLAGS) $(ascii2rec_OBJECTS) $(ascii2rec_LDADD) $(LIBS
-)
+	$(LINK) $(ascii2rec_LDFLAGS) $(ascii2rec_OBJECTS) $(ascii2rec_LDADD) $(LIBS)
 ded_to_ascii$(EXEEXT): $(ded_to_ascii_OBJECTS) $(ded_to_ascii_DEPENDENCIES) 
 	@rm -f ded_to_ascii$(EXEEXT)
 	$(LINK) $(ded_to_ascii_LDFLAGS) $(ded_to_ascii_OBJECTS) $(ded_to_ascii_LDADD) $(LIBS)
