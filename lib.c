@@ -1,12 +1,6 @@
 
 /*
  * $Log$
- * Revision 1.4  2001/05/30 21:16:46  miller
- * better lookfor fix
- *
- * Revision 1.3  2001/05/30 21:03:48  miller
- * Lookfor will terminate search only if string has really ended
- *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Lots of changes, including
  *  - get_die_magic() Get DIE_MAGIC value from .magic.dat (or cerate if not found)
@@ -400,6 +394,7 @@ char *lookfor(char *l, char *w[], int len, int *n)
 {
     return lookforv(l, w, len, n, 0);
 }
+
 char *lookforv(char *l, char *w[], int len, int *n, int exact_word)
 {
 
@@ -436,7 +431,8 @@ char *lookforv(char *l, char *w[], int len, int *n, int exact_word)
 			}
 		}
 
-                if (!*t && (!exact_word || ((!*s || isspace(*s) || strchr("(;/,)",*s))))) {
+		if (!*t && (!exact_word || ((!*s || isspace(*s) || strchr("(;/,)",*s))))) 
+		{
 			*n = i;
 			while (isspace(*s))
 				s++;
@@ -814,6 +810,8 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
 
         if (new) {
                 temp = now + (int) (seq->next * HRS2SECS);
+
+		dipent.dedapplied = 0; 
 
                 if (temp < dipent.deadline)
                         temp = dipent.deadline;
