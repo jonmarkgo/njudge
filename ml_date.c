@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.1  1998/02/28 17:49:42  david
+   ** Initial revision
+   **
    ** Revision 1.1  1996/10/20 12:29:45  rpaar
    ** Morrolan v9.0
    **
@@ -26,6 +29,7 @@
 #include <string.h>
 
 #include "port.h"
+#include "dip.h"
 
 char *lookfor();
 
@@ -48,6 +52,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 	struct tm *tm, t;
 	int dow, mon, dom, hour, mins, year;
 	int i, j, change;
+	int clockhours, clockmins;
 
 	static char *dows[] =
 	{"", "sun", "mon", "tue", "wed", "thu", "fri", "sat"};
@@ -114,10 +119,40 @@ int mail_date(char **p, long *date, int past, FILE * rfp)
 
 	}
 
+	/* Want this not to default to 23:30
+	 * fix by Tim Miller on inspiration from Eugene Hung
+	 */
+	switch(dipent.phase[5])
+	{
+		case 'M':
+			clockhours = dipent.movement.clock;
+			clockmins = dipent.movement.clock % 60;
+			break;
+		case 'R':
+			clockhours = dipent.retreat.clock;
+			clockmins = dipent.retreat.clock % 60;
+			break;
+		case 'B':
+			clockhours = dipent.builds.clock;
+			clockmins = dipent.builds.clock % 60;
+			break;
+		default:
+			/* oh oh */
+			clockhours = clockmins = -1;
+	}
+
+	if(clockhours >= 0)
+		clockhours /= 60;
+	else
+	{
+		clockhours = 23;
+		clockmins = 30;
+	}	
+
 	if (hour == -1)
-		hour = past ? 0 : 23;
+		hour = past ? 0 : /*23*/ clockhours;
 	if (mins == -1)
-		mins = past ? 0 : 30;
+		mins = past ? 0 : /*30*/ clockmins;
 	if (dom == -1 && dow == -1 && mon != -1 && past)
 		dom = 1;
 
