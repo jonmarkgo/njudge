@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.54  2004/09/13 01:33:35  nzmb
+ * Trivial typo fix
+ *
  * Revision 1.53  2004/09/07 13:19:57  millis
  * Invert sense of ALLIEDWIN flag
  *
@@ -337,6 +340,7 @@
 #define XF_LIMIT_TYPES          XF_MACH2  /* Certain countries have unit limits */
 #define XF_NO_MIXED_CONTROL     XF_MACH2  /* Cannot own province if city is not empty */
 #define XF_CITY_ONLY_VICTORY    XF_MACH2  /* Only need to win cities for victory */
+#define XF_BESEIGED_CAN_DISLODGE XF_MACH2  /* A supported convert can dislodge if beseiged */
 
 /* Extra 2 flags */
 #define X2F_RAILWAYS		0x1	/* allows railways */

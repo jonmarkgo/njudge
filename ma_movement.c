@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2004/05/22 08:58:22  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.25  2003/12/07 00:04:04  millis
  * Fix Bug 249, so that disbanding garrisons prevent setting siege state
  *
@@ -1168,8 +1171,10 @@ int ma_moveout(int pt)
 						unit[u2].status = 'r';
 						bounce++;
 					    } else {
-					         if (!result[u2] && unit[u2].order != 'd')
+					         if (!result[u2] && unit[u2].order != 'd' &&
+                                                     !(dipent.xflags & XF_BESEIGED_CAN_DISLODGE))
                                                    result[u2] = BESIEGE; /* Bug2, must not be disbanding */
+									 /* Bug375, Mach2 cannot prevent besieger dislodging */
 					    }
 					}
 				}
