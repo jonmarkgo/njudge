@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2001/07/15 09:17:53  greg
+ * added support for game directories in a sub directory
+ *
  * Revision 1.9  2001/07/08 23:00:05  miller
  * New commands XF_COSTALCONVOY, MOVEDISBAND
  *
@@ -1127,6 +1130,8 @@ void mail_setp(char *s)
 				fprintf(rfp, "You may not change the preference list after the game %s",
 					"begins.\n");
 			} else {
+				sprintf(subjectline, "%s:%s - %s Preference Change", JUDGE_CODE, dipent.name, dipent.phase);
+
 				for (t = s; *s && !isspace(*s) && *s != ','; s++);
 				if (*s)
 					*s++ = '\0';
