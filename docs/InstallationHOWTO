@@ -1,6 +1,6 @@
 Install-HOWTO for the Diplomacy judge
 
-v.1.0.1.5
+v.1.0.1.6
 
 Christophe Courtois ( christophe@courtois.cc )
 - 1.0.1.x : February 2002
@@ -949,8 +949,10 @@ judge can do, which known bugs he has and so on. For example,
 http://gem.win.co.nz/judge/judgevers.html contains versions of
 public running judges.
 
- - The SRCDIR variable must only be changed if you don't use a
-symlink.
+ - The SRCDIR variable in Makefile.defines.base must only be changed 
+if you don't use a symlink and don't compile from the judge source
+main directory.
+
 
 10.4 Patching or upgrading source code
 
