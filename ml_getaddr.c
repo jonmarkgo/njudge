@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.3  2002/08/27 22:27:54  millis
+   ** Updated for automake/autoconf functionality
+   **
    ** Revision 1.2  2000/11/14 14:27:37  miller
    ** Small correction
    **
@@ -32,6 +35,71 @@
 
 #include <string.h>
 
+/****
+ * See if passed email is valid
+ *
+ * Will assume that it is two emails (or more) emails with ',' and ';' as 
+ * separators.
+ *
+ * Fails if:
+ *  - first character is not alphanum
+ *  - first character is '@'
+ *  - string is empty
+ *  - more than one '@' character
+ *  - any character that is not alpha-numeric, '_', '.', '-'
+ *  
+ *  Return 1 if email is ok, 0 if not
+ *
+****/
+
+static int check_email_address(char *t)
+{
+    int at_count= 0;
+    int ret = 1;
+    int start = 1;
+
+    if (!isalnum(*t)) return 0;
+    if(*t == '@') return 0;
+    if (!*t) return 0;
+    
+    while (*t && ret) {
+	if (start) {
+	    /* new email needs a alphanum to be valid */
+	    if (!isalnum(*t)) return 0;
+	    if(*t == '@') return 0;
+	    if (!*t) return 0;
+	    start = 0;
+	}
+        if (*t == '@') {
+	    at_count++;
+	    if (at_count > 1)
+	        ret = 0;
+	}
+	if (!isalnum(*t)) {
+	    switch (*t) {
+	        case '.':
+	        case '-':
+	        case '_':
+		case '@':
+	            break;
+
+		case ';':
+		case ',':
+		    /* another email, reset flags */
+		    at_count = 0;
+		    start = 1;
+		    break;
+
+	        default:
+		    /* Unexpected character, set error */
+		    ret = 0;
+	    }
+	}
+	t++;
+    }
+    return ret;
+}
+	    
 /***************************************************************************/
 
 int mail_getaddr(char *s, char *addr)
@@ -49,7 +117,7 @@ int mail_getaddr(char *s, char *addr)
 	char c, *t, buf[100], line[150];
 	char *percent, *at, *bang;
 	int period, period1, quote;
-
+	int valid_email;
 
 	period1 = period = quote = 0;
 	at = bang = percent = NULL;
@@ -134,7 +202,9 @@ int mail_getaddr(char *s, char *addr)
 		return E_WARN;
 	}
 	t = bang ? bang + 1 : buf;
-	if (!strncasecmp(t, "mailer", 6) ||
+	valid_email = check_email_address(t);
+	if (!valid_email ||
+	    !strncasecmp(t, "mailer", 6) ||
 	    !strncasecmp(t, "mail-daemon", 11) ||
 	    !strncasecmp(t, "root", 4) ||
 	    !strncasecmp(t, "uucp", 4) ||
@@ -149,7 +219,7 @@ int mail_getaddr(char *s, char *addr)
 
 		*addr = '*';	/* Ensure that we don't reply */
 
-		fprintf(log_fp, "Ignoring mail from funny address.\n");
+		fprintf(log_fp, "Ignoring mail from funny address %s.\n", t);
 
 		bang = 0;
 		while (fgets(line, sizeof(line), inp)) {
