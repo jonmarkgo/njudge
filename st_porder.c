@@ -1,5 +1,8 @@
   /*
   ** $Log$
+  ** Revision 1.24  2004/05/22 10:28:45  millis
+  ** Restored 1.22 version changes mistakenly deleted
+  **
   ** Revision 1.23  2004/05/22 08:52:22  millis
   ** Bug 297: Add Intimate Diplomacy
   **
@@ -148,7 +151,7 @@ int ownership(int new_flag)
 		for (p = strlen(powers[i]) + 2; p < GetMaxCountryStrlen() +2; p++)
 			*s++ = ' ';
 		for (p = 0, n = 1; n <= npr; n++) {
-			if ((pr[n].type == 'x' || !islower(pr[n].type)) &&
+			if ((pr[n].type == 'x' || !islower((int) pr[n].type)) &&
 			    (pr[n].owner == i || (i == 0 && pr[n].owner == AUTONOMOUS))) {
 				np[i]++;
 				if (p++) {
@@ -456,7 +459,11 @@ static int AnotherPlayersHC( int u, int possible_victor[MAXPLAYERS] )
 	    owner_index = FindPower(unit[u].owner);
 	    if (player_index != owner_index &&
                 player_index >= 0 && player_index < dipent.np) {
-	        if (dipent.players[player_index].controlling_power == 0) {
+	        /* If the the unit and home centres are both a real players
+                 * and the province's owner is not dead, it is a match */
+                if (dipent.players[player_index].controlling_power == 0 &&
+                    dipent.players[owner_index].controlling_power == 0 &&
+                    !(dipent.players[player_index].status & SF_DEAD)) {
 	            win = unit[u].owner;
 		    possible_victor[owner_index]++;
 		}
