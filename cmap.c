@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/12/11 14:57:12  millis
+ * Allow '\r' as blank line character
+ *
  * Revision 1.7  2002/12/11 14:46:47  millis
  * Restore version 1.5
  *
@@ -81,7 +84,7 @@ int main(int argc, char *argv[])
 		dir[0] = '\0';
 		break;
 	case 2:
-		sprintf(dir, "%s/", argv[1]);
+		sprintf(dir, "%s", argv[1]);
 		break;
 	default:
 		fprintf(stderr, "Usage %s [directory]\n", *argv);
@@ -96,16 +99,16 @@ int main(int argc, char *argv[])
 	for (v = 1; v < NVARIANT; v++) {
 		nrw=0; ngw = 0;  /* Initialise variables */
 		if (v == 1)
-			sprintf(line, "%sdata/map", dir);
+			sprintf(line, "%s/map", dir);
 		else
-			sprintf(line, "%sdata/map.%s", dir, variants[v]);
+			sprintf(line, "%s/map.%s", dir, variants[v]);
 		if (stat(line, &sbuf)) {
 			perror(line);
 			exit(1);
 		}
 		t1 = sbuf.st_mtime;
 
-		sprintf(file, "%smap.%d", dir, v);
+		sprintf(file, "%s/../map.%d", dir, v);
 		if (stat(file, &sbuf))
 			t2 = 0;
 		else
