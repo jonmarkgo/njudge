@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                     19 Jul, 2003
+Greetings from the Diplomacy* Adjudicator!!                     10 Aug, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
-with a brief description.  It is current as of njudge version 1.5.0.
+with a brief description.  It is current as of njudge version 1.5.1.
 
 For information on how to enter Diplomacy orders, get the file 'syntax' (see
 "GET file", below).
@@ -817,6 +817,13 @@ mod/    SET [NO] STRICT WAIT
         STRICTWAIT is set, only players who have moves currently required will
         be allowed to set wait.  If NOSTRICTWAIT is set (default), any
         currently active player can set wait.
+
+mod/	   SET [NO] TOUCH PRESS						{1.5.1}
+	Enables/Disables Touch Press. When enabled, players can only send
+	one broadcast message per turn, and can only send partial press to
+	players with whom they are touching (defiend as a legal Wing move).
+	Players can always send partial press to the GM, and cannot press to
+	the Observer. 
 
 mod/    SET TRANSFORM transform-option                                 {0.8.9}
         SET TRAFO transform-option
