@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/04/15 21:21:22  miller
+ * Correctly show pending orders when late warning is sent
+ *
  * Revision 1.4  2001/02/22 23:25:17  miller
  * Fixed bug
  *
@@ -274,8 +277,8 @@ void init(int argc, char **argv)
 			case 'C':
                                 if (*++s)
                                         CONFIG_DIR = s;
-                                else if (++i < argc)
-                                        CONFIG_DIR = argv[i];
+                                else if (i < argc+1)
+                                        CONFIG_DIR = argv[i+1];
                                 else {
                                         fprintf(stderr, "Directory must follow C option.\n");
                                         goto usage;
