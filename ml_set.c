@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/06/24 05:49:30  nzmb
+ * Added functionality to set ontime ratio, resignation ratio in a game.
+ *
  * Revision 1.5  2001/05/14 22:58:21  miller
  * Corrected transformation setting/display. Also disabled Mach1,2,3 flags (to be removed later for good).
  *
@@ -95,6 +98,10 @@ char * SetSubkey(int act, char *s);
 #define CheckMach() if (!(dipent.flags & F_MACH)) fprintf(rfp, "Game '%s' is not Machiavelli, option is useless.\n\n", dipent.name);
 
 #define CheckNoMach() if ((dipent.flags & F_MACH)) fprintf(rfp, "Game '%s' is Machiavelli, option is useless.\n\n", dipent.name); 
+
+#define CheckMach2() if (!(dipent.xflags & XF_MACH2)) fprintf(rfp, "Game '%s' is not Machiavelli2, option is useless.\n\n", dipent.name);
+
+#define CheckNoMach2() if ((dipent.xflags & XF_MACH2)) fprintf(rfp, "Game '%s' is Machiavelli2, option is useless.\n\n", dipent.name);
 
 #define CheckPress() if (!HasPress(dipent)) fprintf(rfp, "Game '%s' has no press enabled,  option is useless.\n\n", dipent.name); 
 
@@ -511,10 +518,12 @@ void mail_setp(char *s)
 #define PRV_NOMINORPRESS 'm'
 #define SET_MACH2	110
 #define PRV_MACH2	'm'
-#define SET_MACH1       111
-#define PRV_MACH1       'm'
+#define SET_NOMACH2     111
+#define PRV_NOMACH2     'm'
+/*
 #define SET_MACH3       112
 #define PRV_MACH3       'm'
+*/
 #define SET_AIRLIFT     113
 #define PRV_AIRLIFT     'm'
 #define SET_NOAIRLIFT   114
@@ -542,6 +551,11 @@ void mail_setp(char *s)
 #define PRV_ONTIMERAT     'm'
 #define SET_RESRAT        126
 #define PRV_RESRAT        'm'
+#define SET_COASTALCONVOY   127
+#define PRV_COASTALCONVOY  'm'
+#define SET_NOCOASTALCONVOY 128
+#define PRV_NOCOASTALCONVOY 'm'
+
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -639,8 +653,7 @@ void mail_setp(char *s)
 	 "minor press", "minorpress",
 	 "no minor press", "nominor press", "nominorpress",
 	 "mach2", "machiavelli2", "mach-2", "machiavelli-2",
-	 "mach1", "machiavelli1", "mach-1", "machiavelli-1",
-	 "mach3", "machiavelli3", "mach-3", "machiavelli-3",
+         "no mach2", "no machiavelli2", "no mach-2", "no machiavelli-2",
 	 "airlifts", "airlift", "air lifts", "air lift",
 	 "noairlifts", "noairlift", "no air lifts", "no air lift",
 	 "blank board", "blankboard", "enpty board", "emptyboard",
@@ -655,8 +668,11 @@ void mail_setp(char *s)
 	 "normal disband", "normaldisband",
 	 "attack transform", "attack transforms",
 	 "no attack transforms", "noattack transforms", 
-	 "no attack tranform", "noattack transform"
-	};
+	 "no attack tranform", "noattack transform",
+         "coastal convoys", "coastalconvoys", "coastal convoy", "coastalconvoy",
+         "no coastal convoys", "nocoastalconvoys", "no coastalconvoys", "no coastal convoy",
+         "nocoastalconvoy", "no coastalconvoy"
+ 	};
 
 
 	static char action[] =
@@ -759,8 +775,7 @@ void mail_setp(char *s)
 	 SET_MINORPRESS, SET_MINORPRESS,
 	 SET_NOMINORPRESS, SET_NOMINORPRESS, SET_NOMINORPRESS,
          SET_MACH2, SET_MACH2, SET_MACH2, SET_MACH2,
-         SET_MACH1, SET_MACH1, SET_MACH1, SET_MACH1,
-         SET_MACH3, SET_MACH3, SET_MACH3, SET_MACH3,
+         SET_NOMACH2, SET_NOMACH2, SET_NOMACH2, SET_NOMACH2,
          SET_AIRLIFT, SET_AIRLIFT, SET_AIRLIFT, SET_AIRLIFT,
 	 SET_NOAIRLIFT, SET_NOAIRLIFT, SET_NOAIRLIFT, SET_NOAIRLIFT,
 	 SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD, SET_BLANKBOARD,
@@ -775,7 +790,11 @@ void mail_setp(char *s)
         SET_NORMALDISBAND, SET_NORMALDISBAND,
 	SET_ATTACKTRANS , SET_ATTACKTRANS,
         SET_NOATTACKTRANS, SET_NOATTACKTRANS,
-	SET_NOATTACKTRANS, SET_NOATTACKTRANS
+	SET_NOATTACKTRANS, SET_NOATTACKTRANS,
+        SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY, SET_COASTALCONVOY,
+        SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY,
+        SET_NOCOASTALCONVOY,  SET_NOCOASTALCONVOY, SET_NOCOASTALCONVOY
+
 
     };
 
@@ -880,8 +899,7 @@ void mail_setp(char *s)
          PRV_MINORPRESS, PRV_MINORPRESS,
          PRV_NOMINORPRESS, PRV_NOMINORPRESS, PRV_NOMINORPRESS,
 	 PRV_MACH2, PRV_MACH2, PRV_MACH2,
-         PRV_MACH1, PRV_MACH1, PRV_MACH1, PRV_MACH1,
-         PRV_MACH3, PRV_MACH3, PRV_MACH3, PRV_MACH3,
+         PRV_NOMACH2, PRV_NOMACH2, PRV_NOMACH2, PRV_NOMACH2,
          PRV_AIRLIFT, PRV_AIRLIFT, PRV_AIRLIFT, PRV_AIRLIFT,
          PRV_NOAIRLIFT, PRV_NOAIRLIFT, PRV_NOAIRLIFT, PRV_NOAIRLIFT,
 	 PRV_BLANKBOARD, PRV_BLANKBOARD, PRV_BLANKBOARD, PRV_BLANKBOARD,
@@ -896,7 +914,10 @@ void mail_setp(char *s)
         PRV_NORMALDISBAND, PRV_NORMALDISBAND,
 	PRV_ATTACKTRANS, PRV_ATTACKTRANS,
 	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
-	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS
+	PRV_NOATTACKTRANS, PRV_NOATTACKTRANS,
+        PRV_COASTALCONVOY, PRV_COASTALCONVOY,  PRV_COASTALCONVOY, PRV_COASTALCONVOY,
+        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY,
+        PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY, PRV_NOCOASTALCONVOY
 
 };
 
@@ -2338,10 +2359,10 @@ void mail_setp(char *s)
                         }
 			break;
 
-/*** MLM 15/5/2001 disabled prior to proper Mach implementation
 		case SET_MACH2:
                         CheckMach();
                         fprintf(rfp, "Mach2 flag not yet supported!\n\n");
+			/*** MLM Temp disabled 2001/07/01
 			if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Mach2 flag!\n\n",
                                     dipent.name);
@@ -2350,38 +2371,25 @@ void mail_setp(char *s)
                                            "Machiavelli will now be played according to 2nd Edition rules.\n",
                                             CATF_NORMAL);
                         }
-                        break;
+                        ***/
+			break;
 
-                case SET_MACH1:
-                        CheckMach();
-                        fprintf(rfp, "Mach1 flag not yet supported!\n\n");
-                        if (dipent.seq[0] != 'x') {
-                            fprintf(rfp, "Game '%s' has already started: not allowed to set Mach1 flag!\n\n",
-                                    dipent.name);
-                        } else {
-                                CheckAndToggleFlag(&dipent.xflags,  XF_MACH1, "Mach1", CATF_SETON,
-                                           "Machiavelli will now be played according to original 1st Edition rules.\n",
-                                            CATF_NORMAL);
-                        }
-                        break;
+                case SET_NOMACH2:
+                         CheckMach();
+                       if (dipent.seq[0] != 'x') {
+                               fprintf(rfp, "Game '%s' has already started: not allowed to clear Mach2 flag!\n\n",
+                                        dipent.name);
+                          } else {
+                                      CheckAndToggleFlag(&dipent.xflags,  XF_MACH2, "Mach2", CATF_SETOFF,
+                                               "Machiavelli will now be played according to 1st Edition rules.\n",
+                                        CATF_NORMAL);
+                          }
+                  break;
 
-                case SET_MACH3:
-                        CheckMach();
-			fprintf(rfp, "Mach3 flag not yet supported!\n\n");
 
-                        if (dipent.seq[0] != 'x') {
-                            fprintf(rfp, "Game '%s' has already started: not allowed to set Mach3 flag!\n\n",
-                                    dipent.name);
-                        } else {
-                                CheckAndToggleFlag(&dipent.xflags,  XF_MACH3, "Mach3", CATF_SETON,
-                                           "Machiavelli will now be played according to Special(?) rules.\n",
-                                            CATF_NORMAL);
-                        }
-
-                        break;
-*****/
                 case SET_FORT:
                         CheckMach();
+                        CheckNoMach2();
                         if (dipent.seq[0] != 'x') {
                             fprintf(rfp, "Game '%s' has already started: not allowed to set Forts flag!\n\n",
                                     dipent.name);
@@ -2403,6 +2411,29 @@ void mail_setp(char *s)
                                             CATF_NORMAL);
                         }
                         break;
+
+               case SET_COASTALCONVOY:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to set CostalConvoy flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CostalConvoy", CATF_SETON,
+                                           "Costal convoys will now be permitted.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
+                case SET_NOCOASTALCONVOY:
+                        if (dipent.seq[0] != 'x') {
+                            fprintf(rfp, "Game '%s' has already started: not allowed to clear CostalConvoy flag!\n\n",
+                                    dipent.name);
+                        } else {
+                                CheckAndToggleFlag(&dipent.xflags,  XF_COASTAL_CONVOYS, "CostalConvoy", CATF_SETOFF,
+                                           "Costal convoys are now NOT allowed.\n",
+                                            CATF_NORMAL);
+                        }
+                        break;
+
 
 /*
                 case SET_AIRLIFT:
@@ -2834,7 +2865,6 @@ void process_allowdeny(char **info, char *basename)
 
 	*info = s;
 }
-
 /*
  * Alter the transformation settings as requested
  * Return 0 if failure, !0 if ok
@@ -2843,68 +2873,68 @@ void process_allowdeny(char **info, char *basename)
 void ChangeTransform( char *s)
 {
 
-	int i;
-	char *t;
+        int i;
+        char *t;
 /* First set up the various types of changes possible */
-#define TSET_NOOP	0
-#define TSET_BUILD	1
-#define TSET_MOVE	2
-#define TSET_ANYWHERE	3
-#define TSET_HOME	4
-#define TSET_ONEC	5
-#define TSET_ANYC	6
-#define TSET_NONE	7
-#define TSET_SUBKEY	8
+#define TSET_NOOP       0
+#define TSET_BUILD      1
+#define TSET_MOVE       2
+#define TSET_ANYWHERE   3
+#define TSET_HOME       4
+#define TSET_ONEC       5
+#define TSET_ANYC       6
+#define TSET_NONE       7
+#define TSET_SUBKEY     8
 
         static char *keys[] =
-        {"", ",", ":", 
-	 "builds", "build",
-	 "moves", "move",
-	 "none", "no", "never"
-	};
+        {"", ",", ":",
+         "builds", "build",
+         "moves", "move",
+         "none", "no", "never"
+        };
 
-	static char action[] = 
-	{ 'x', TSET_NOOP, TSET_SUBKEY, 
-	 TSET_BUILD, TSET_BUILD,
-	 TSET_MOVE, TSET_MOVE
-	};
+        static char action[] =
+        { 'x', TSET_NOOP, TSET_SUBKEY,
+         TSET_BUILD, TSET_BUILD,
+         TSET_MOVE, TSET_MOVE
+        };
 
-	int last_type = TSET_BUILD;
+        int last_type = TSET_BUILD;
 
-	while (*s)
-	{
-		s = lookfor(t = s, keys, nentry(keys), &i);
-		switch (action[i])
-		{
+        while (*s)
+        {
+                s = lookfor(t = s, keys, nentry(keys), &i);
+                switch (action[i])
+                {
 
-		case TSET_NOOP:  /* No command, wait for another one */
-		    break;
+                case TSET_NOOP:  /* No command, wait for another one */
+                    break;
 
-		case TSET_BUILD:
-		    dipent.xflags |= XF_TRANS_BUILD;
-		    last_type = TSET_BUILD;
-		    break;
+                case TSET_BUILD:
+                    dipent.xflags |= XF_TRANS_BUILD;
+                    last_type = TSET_BUILD;
+                    break;
 
-		case TSET_MOVE:
-		    dipent.xflags |= XF_TRANS_MOVE;
-		    last_type = TSET_MOVE;
-		    break;
+                case TSET_MOVE:
+                    dipent.xflags |= XF_TRANS_MOVE;
+                    last_type = TSET_MOVE;
+                    break;
 
-		case TSET_NONE:
-		    dipent.xflags &= ~(XF_TRANS_MOVE | XF_TRANS_BUILD);
-		    break;
+                case TSET_NONE:
+                    dipent.xflags &= ~(XF_TRANS_MOVE | XF_TRANS_BUILD);
+                    break;
 
-		case TSET_SUBKEY:
-		     s = SetSubkey(last_type,s);
-		     break;
+                case TSET_SUBKEY:
+                     s = SetSubkey(last_type,s);
+                     break;
 
-		default:
-		    fprintf(rfp, "Invalid transform command: %s\n", t);
+                default:
+                    fprintf(rfp, "Invalid transform command: %s\n", t);
                         return;
-		}
-	    while (*s && isspace(*s))
+                }
+            while (*s && isspace(*s))
                         s++;
-	}
+        }
 }
 
 char * SetSubkey(int act, char *s)
@@ -2923,61 +2953,60 @@ char * SetSubkey(int act, char *s)
         };
 
         static char subaction[] =
-        { 'x', 
+        { 'x',
          TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME, TSET_HOME,
          TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC, TSET_ANYC,
          TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC, TSET_ONEC,
          TSET_ANYWHERE, TSET_ANYWHERE,
          TSET_NONE, TSET_NONE, TSET_NONE
         };
-	char *t;
-	int i;
+        char *t;
+        int i;
 
     s = lookfor(t = s, subkeys, nentry(subkeys), &i);
     switch (subaction[i])
-  
+
     {
                 case TSET_HOME:
-		    if (act == TSET_MOVE) {
-                    	dipent.xflags &= ~(XF_TRANS_MANYC | XF_TRANS_MONEC);
-		    } else {
-			dipent.xflags &= ~(XF_TRANS_BANYC | XF_TRANS_BONEC);
-		    }
+                    if (act == TSET_MOVE) {
+                        dipent.xflags &= ~(XF_TRANS_MANYC | XF_TRANS_MONEC);
+                    } else {
+                        dipent.xflags &= ~(XF_TRANS_BANYC | XF_TRANS_BONEC);
+                    }
                     break;
 
                 case TSET_ONEC:
-		    if (act == TSET_MOVE) {
+                    if (act == TSET_MOVE) {
                     dipent.xflags |= XF_TRANS_MONEC;
                     dipent.xflags &= ~XF_TRANS_MANYC;
-		    } else {
-		        dipent.xflags |= XF_TRANS_BONEC;
+                    } else {
+                        dipent.xflags |= XF_TRANS_BONEC;
                         dipent.xflags &= ~XF_TRANS_BANYC;
-		    }
+                    }
                     break;
 
                 case TSET_ANYC:
-		    if (act == TSET_MOVE) {
+                    if (act == TSET_MOVE) {
                     dipent.xflags |= XF_TRANS_MANYC;
                     dipent.xflags &= ~XF_TRANS_MONEC;
                     } else {
-			dipent.xflags |= XF_TRANS_BANYC;
+                        dipent.xflags |= XF_TRANS_BANYC;
                         dipent.xflags &= ~XF_TRANS_BONEC;
-		    }break;
+                    }break;
 
                 case TSET_ANYWHERE:
-		    if (act == TSET_MOVE) {
+                    if (act == TSET_MOVE) {
                      dipent.xflags |= (XF_TRANS_MANYC | XF_TRANS_MONEC);
-		    } else { 
-			dipent.xflags |= (XF_TRANS_BANYC | XF_TRANS_BONEC);
-		    }
+                    } else {
+                        dipent.xflags |= (XF_TRANS_BANYC | XF_TRANS_BONEC);
+                    }
                      break;
 
               default:
                     fprintf(rfp, "Invalid transform qualifier: %s\n", t);
-	}
-	return s;
+        }
+        return s;
 }
-
 void ShowTransformSettings(FILE* rfp)
 {
         fprintf(rfp,"Current tansform setting:");
