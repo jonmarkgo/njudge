@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/04/22 21:27:40  miller
+ * Small bug that allowed illegal converts
+ *
  * Revision 1.6  2002/03/05 23:19:49  miller
  * Fix special bleagured garisson bug
  *
@@ -216,13 +219,6 @@ int ma_movein(char **s, int p)
 			errmsg("The convoy order should specify source %s\n",
 			       "and final destination of an army.");
 			return E_WARN;
-		}
-		/* MLM 27/5/001 Mach2 convoy: costal convoys not allowed */
-		if (!(dipent.xflags & XF_COASTAL_CONVOYS)) {
-		    if (order == 'c' && !water(unit[u].loc) && !is_venice(unit[u].loc)) {
-			errmsg("No costal convoys permitted!\n");
-			return E_WARN;
-		    }
 		}
 
 		c1 = 0;
