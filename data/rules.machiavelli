@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   Dec 02, 2003
+Greetings from the Diplomacy* Adjudicator!!                   Dec 09, 2003
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -483,7 +483,7 @@ four sources:
      b) 1 ducat for each controlled province.
      c) 1 ducat for each normal city controlled.  For major cities that
         contain a number: the number is the ducats received.  Do note that a
-        besieged city produces income.
+        besieged city does NOT produce income.
      d) Variable income for each controlled home country and for certain
         cities.  Based on a 1d6 die roll.
 
@@ -1279,6 +1279,8 @@ v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how
 v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
     provinces. Auth. S. Lidsell.
 v2.5 2nd December 2003. Added coastal specification description for converts.
+    Author Millis Miller.
+v2.6 9th December 2003. Specify that besieged cities do NOT produce income.
     Author Millis Miller.
 
 
