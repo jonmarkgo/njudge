@@ -1,6 +1,6 @@
 #!/bin/sh -e
 cd /home/judge
 find . -name "[MTP]*" -atime +90 -exec rm {} \;
-./flock ./dip.log
+./flock ./dip.log > /dev/null
 ./newlogs
-./flock
+./flock > /dev/null
