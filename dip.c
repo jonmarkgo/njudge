@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.62  2004/08/16 21:51:34  millis
+ * Refix bug 347 (games can go NoNMR) and also Bug 355 (no abandoned player(s)
+ * messages.
+ *
  * Revision 1.60  2004/08/03 21:57:04  millis
  * Fix Bug 347 (games incorrectly process when NoNMR and abandoned playerss)
  * Fix Bug 350 (too many powers shown as abandoned in Intimate)
@@ -1207,6 +1211,7 @@ int process(void)
 					if (w && n == -1) {
 						if (!(dipent.players[i].status & SF_ABAND)) {
 							dipent.players[i].status |= SF_ABAND;
+							just_now_abandoned++;
 							if (!(dipent.flags & F_NORATE) &&
 							    dipent.players[i].controlling_power == 0) {
 								ded[dipent.players[i].userid].r += D_ABANDON;
