@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2003/09/13 22:54:51  millis
+ * fix bug 228. Also prohibit press to non-masters while game is paused.
+ *
  * Revision 1.8  2003/08/10 15:27:51  millis
  * Fix bug 25 (Add TouchPress)
  *
@@ -518,7 +521,7 @@ void mail_press(char *s, int need_opts)
 	}
 
 	if (partial) {
-		if (dipent.x2flags & X2F_TOUCHPRESS && !master_press) {
+		if (dipent.x2flags & X2F_TOUCHPRESS && !master_press && dipent.phase[6] != 'X') {
 		    xctr =0;
                     while ((part_list[xctr] = toupper(part_list[xctr])) != '\0') {
 		        if (!IsAdjacent(dipent.players[player].power, power(part_list[xctr]))) {
@@ -530,7 +533,7 @@ void mail_press(char *s, int need_opts)
 		    }
 		}
         } else {
-            if (dipent.x2flags & X2F_TOUCHPRESS && !master_press)  {
+            if (dipent.x2flags & X2F_TOUCHPRESS && !master_press && dipent.phase[6] != 'X')  {
                 if ( dipent.players[player].status & SF_BROAD_SENT) {
                        fprintf(rfp,"Sorry, you have already sent one broadcast: wait until next turn!\n");
                        bad_cmd = 1;
