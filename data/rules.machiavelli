@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!               November 21, 2004
+Greetings from the Diplomacy* Adjudicator!!                 January 14, 2005
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -376,14 +376,26 @@ Additional considerations about Piombino and Messina
         fleet the same turn it converted.  The hostile fleet will suffer all 
         effects described in a) above.
      f) If a fleet converts to a garrison it will *not* block a hostile
-        fleet in the same turn as it converts. 
-     g) If a fleet moving away is bounced back into Piombino or Messina it will 
+        fleet in the same turn as it converts.
+     g) If a fleet moves away from Piombino or Messina it will *not* block a 
+        hostile fleet in the same turn.
+     h) If a fleet moving away is bounced back into Piombino or Messina it will 
+        block a hostile fleet. The hostile fleet will suffer all effects 
+        described in a) above.
+     i) A fleet in Piombino or Messina that is convoying or supporting will 
         block a hostile fleet.  The hostile fleet will suffer all effects 
         described in a) above.
-     h) A retreating fleet will suffer all effects described in a) above.  But 
+     j) A retreating fleet will suffer all effects described in a) above.  But 
         a fleet *retreating into* Piombino or Messina, will *not* block other 
         fleets retreating through the straits (in the same turn).
-     i) Adjacency for bribe purposes is not affected by blocking fleets. 
+     k) Adjacency for bribe purposes is not affected by blocking fleets. 
+
+Notice that d) and g) also cover the case when a Fleet in PIO/MES is displaced. 
+If the attacker is a fleet, the attacking fleet will block passage: rule d). If 
+the attacker is an army (or garrison) the fleet is regarded as moving away 
+(albeit without intent or own will, it can be regarded as having its blocking 
+operation disrupted--compare with the case that a siege is broken if the 
+besiegeing army is displaced) and thus rule g) applies.
 
 What essentially happens is that the straits become 'land' for all fleet 
 purposes.
@@ -1341,7 +1353,8 @@ v2.4d 25th Aug 2004.  Appendix 6 added.  Appendix 4 corrected and
     clarified. Rebellion effects on support clarified (p6).  Grouped the 
     Mach-Dip diffs in the intro into diffs under basic rules and diffs under
     advanced rules.  Author Sergio Lidsell.
-v2.5 21th Nov 2004.  Clarified that units cannot trade places (movement 
+v2.5 21st Nov 2004.  Clarified that units cannot trade places (movement 
     rules) and how elite autonomous garrisons can appear.  Author S. Lidsell.
+v2.5b 14th Jan 2005.  Clarified PIO/MES rules.  Author Sergio Lidsell.
 
 This document is free to distribute for non-commercial and non-profit purposes.
