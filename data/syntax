@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                      19 May, 2003
+Greetings from the Diplomacy* Adjudicator!!                      17 June, 2003
 Syntax.
 
 The format of your diplomacy orders depends on the phase of the game:
@@ -145,6 +145,9 @@ override earlier ones if more build orders are received than you have
 supply centers.  Thus, when submitting orders for future build phases,
 you should list your builds in reverse order of preference in case you
 don't get as many supply centers as you were expecting.
+
+Note: You can only submit phase orders for up to five years into the future.
+
 
 CONDITIONAL ORDERS
 
