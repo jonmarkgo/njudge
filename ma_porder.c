@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2002/12/16 23:19:03  nzmb
+ * Fixed bug that was causing the victor in games to be reported incorrectly. Also fixed a typo in ma_porder.c.
+ *
  * Revision 1.16  2002/12/11 16:13:16  millis
  * Added new flag to set up autonomous garrisons in every fort (for Mach)
  *
@@ -118,6 +121,7 @@ static void next_phase(int power)
 		/* Check victory conditions */
 		/* Init build phase */
 		fam_plag(FAMINE);
+		fam_plag(STORM);  /* Storms occur at the end of fall phase */
 		if (!(dipent.xflags & XF_NOMONEY))
 		    income(1);
 		if (!(dipent.xflags & XF_NOMONEY))
@@ -133,7 +137,6 @@ static void next_phase(int power)
 			dipent.phase[0] = 'F';
 		} else {
 			fam_plag(PLAGUE);
-			fam_plag(STORM);
 			dipent.phase[0] = 'U';	/* End of spring */
 		}
 		init_movement();
@@ -204,6 +207,7 @@ static void newowner(void)
 
 	int p_elim [WILD_PLAYER ];
 	int someone_eliminated = 0;
+	int something_changed = 0;
 
 	/* 
 	   ** Update the pr[].gunit and unit info
@@ -235,6 +239,7 @@ static void newowner(void)
 	}
 
 	if (p <= npr) {
+		something_changed = 1;
 		fprintf(rfp, "\nOwnership of provinces changing hands:\n\n");
 		for (u = 1; u < WILD_PLAYER; u++) {
 			if (dipent.pl[u] == 'x')
@@ -272,6 +277,7 @@ static void newowner(void)
 	}
 
 	if (p <= npr) {
+		something_changed = 1;
 		fprintf(rfp, "\nOwnership of cities changing hands:\n\n");
 		for (u = 1; u < WILD_PLAYER; u++) {
 			if (dipent.pl[u] == 'x')
@@ -419,6 +425,9 @@ static void newowner(void)
 	if (dipent.xflags & XF_NOMONEY) {
 	    ma_ownership();
 	}
+
+	if (something_changed != 0)
+	    fprintf(rfp,"\n");  /* Add blank line, Bug 70 */
 
 }
 
