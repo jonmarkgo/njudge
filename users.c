@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -426,7 +429,7 @@ void send_package(char *addr)
 			if (stat(line, &sbuf)) {
 				fprintf(rfp, "Package file %s is not available.\n", line);
 			} else {
-				sprintf(cmd, "./smail %s 'Diplomacy file %s' '%s'", line, line, addr);
+				sprintf(cmd, "%s %s 'Diplomacy file %s' '%s'", SMAIL_CMD,line, line, addr);
 				execute(cmd);
 				fprintf(rfp, "Package file %s sent.\n", line);
 			}
@@ -839,8 +842,8 @@ int setsite(char *s)
 		perror(MASTER_FILE);
 		bailout(1);
 	}
-	if (!(fp2 = fopen("dip.tmast", "w"))) {
-		perror("tmast");
+	if (!(fp2 = fopen(TMASTER_FILE, "w"))) {
+		perror(TMASTER_FILE);
 		bailout(1);
 	}
 	while (getdipent(fp1)) {
@@ -876,7 +879,7 @@ int setsite(char *s)
 	ferrck(fp2, 4006);
 	fclose(fp2);
 	fclose(fp3);
-	rename("dip.tmast", MASTER_FILE);
+	rename(TMASTER_FILE, MASTER_FILE);
 
 	/* TODO check this return value.  there was no return at all originally,
 	 * but there is a return of zero above on what appears to be an error
@@ -923,6 +926,13 @@ int is_allowed(int type_flag)
 		}
 		sprintf(fname, "D%s/players", dipent.name);
 		break;
+	case GAME_MASTER:
+		 if (strlen(dipent.name) == 0) {
+                        perror("nogame");
+                        return 0;
+                }
+                sprintf(fname, "D%s/masters", dipent.name);
+                break;
 	case GLOBAL_PLAYER:
 	default:
 		strcpy(fname, "players");
