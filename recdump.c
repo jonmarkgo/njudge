@@ -12,7 +12,6 @@ $ID$
 #include <unistd.h>
 #include <string.h>
 
-#include "config.h"
 #include "plyrdata.h"
 
 void writetodata(void);
@@ -47,11 +46,11 @@ int main(int argc, char *argv[])
 					return 0;
 				} else {
 					fprintf(fp,"Record %d\n",i);
-					fprintf(fp,"Ontime %lu\n",rec.ontime);
-					fprintf(fp,"Total %lu\n",rec.total);
-					fprintf(fp,"Started %lu\n",rec.started);
-					fprintf(fp,"Tookover %lu\n",rec.tookover);
-					fprintf(fp,"Resigned %lu\n",rec.resigned);
+					fprintf(fp,"Ontime %lu\n",get_long(rec.ontime));
+					fprintf(fp,"Total %lu\n",get_long(rec.total));
+					fprintf(fp,"Started %lu\n",get_long(rec.started));
+					fprintf(fp,"Tookover %lu\n",get_long(rec.tookover));
+					fprintf(fp,"Resigned %lu\n",get_long(rec.resigned));
 				}
 			}
 		}
@@ -117,9 +116,9 @@ void writetodata(void)
                         "Started = %lu\n"
                         "Resigned = %lu\n"
                         "Tookover = %lu\n",
-                        a, rec.ontime, rec.total,
-                        rec.started, rec.resigned,
-                        rec.tookover );
+                        a, get_long(rec.ontime), get_long(rec.total),
+                        get_long(rec.started), get_long(rec.resigned),
+                        get_long(rec.tookover));
         }               
 	printf("Choose a field to modify, 1 for ontime, 2 for total, 3 for\n");
 	printf("started, 4 for resigned, or 5 for tookover.\n");
@@ -130,23 +129,23 @@ void writetodata(void)
 	switch(b)
 	{
 		case 1:
-			rec.ontime = c;
+			rec.ontime = put_long(c);
 			break;
 
 		case 2:
-			rec.total = c;
+			rec.total = put_long(c);
 			break;
 
 		case 3:
-			rec.started = c;
+			rec.started = put_long(c);
 			break;
 		
 		case 4:
-			rec.resigned = c;
+			rec.resigned = put_long(c);
 			break;
 
 		case 5:
-			rec.tookover = c;
+			rec.tookover = put_long(c);
 			break;
 
 		default:
@@ -166,9 +165,9 @@ void writetodata(void)
                         "Started = %lu\n"
                         "Resigned = %lu\n"
                         "Tookover = %lu\n",
-                        a, rec.ontime, rec.total,
-                        rec.started, rec.resigned,
-                        rec.tookover );
+                        a, get_long(rec.ontime), get_long(rec.total),
+                        get_long(rec.started), get_long(rec.resigned),
+                        get_long(rec.tookover) );
         }               
 	close_plyrdata();
 }
