@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.38  2004/04/04 15:58:38  millis
+ * Fixed bug 285 (inform extra custodians of game start)
+ *
  * Revision 1.36  2004/02/14 23:11:16  millis
  * Forced ocmmit, no changes
  *
@@ -706,7 +709,8 @@ int mail_signon(char *s)
 				if (mail_access(i, userid, siteid, level, &j))
 					return E_WARN;
 
-				if (dipent.players[i].status & SF_DEAD) {
+				if ((dipent.players[i].status & SF_DEAD) &&
+				     (userid != dipent.players[i].userid)) {
 					fprintf(rfp, "Player is eliminated - takeover not allowed.\n");
 					return E_WARN;
 				}
