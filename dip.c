@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.42  2003/08/14 22:56:32  millis
+ * Fix bug 158
+ *
  * Revision 1.41  2003/07/17 22:59:29  millis
  * Bug 185
  *
@@ -1347,7 +1350,7 @@ int process(void)
 		 * See if manual processing is enabled, and block if so
                  */
 		if (dipent.xflags & XF_MANUALPROC) {
-			if (!process_set) {
+			if (!(dipent.players[0].status & SF_PROCESS)) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
 				if (!Dflg) fclose (rfp);
 				for (i = 0; i < dipent.n; i++) {
@@ -1509,7 +1512,6 @@ int process(void)
 			    for  (i = 0; i < dipent.n; i++) {
 					if (dipent.players[i].power < 0)
 						continue;
-					dipent.players[i].status &= ~SF_TURNGO;
 					if (dipent.players[i].power != MASTER &&
 					  !(dipent.players[i].status & SF_DEAD)) {
 					/* A real player, set wait status */

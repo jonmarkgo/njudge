@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.19  2003/07/23 00:11:43  millis
+	 * Bug 192
+	 *
 	 * Revision 1.18  2003/07/19 14:04:27  millis
 	 * fixed bug in address handling
 	 *
@@ -955,7 +958,7 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
 
                 if (dipent.players[i].status & SF_PROCESS) {
                         temp = now - 1 * HRS2SECS;
-                        dipent.players[i].status &= (~SF_PROCESS & ~SF_TURNGO);
+                        dipent.players[i].status &= ~SF_PROCESS;
                 }
                 if (dipent.players[i].status & SF_WAIT && now < dipent.deadline) {
                         temp = dipent.deadline;

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.55  2003/07/22 00:13:15  millis
+ * Fix bug 198
+ *
  * Revision 1.54  2003/07/20 08:38:34  millis
  * Removed incorrect execute(line) calls
  * Also deleted some unused variables
@@ -534,6 +537,7 @@ int mail(void)
 	PLYRDATA_RECORD record;
 	static unsigned int no_of_infop = 0;
 	time_t now_time;
+	int temp1;
 
 	someone = "someone@somewhere";
 
@@ -814,7 +818,6 @@ int mail(void)
 
 				case SIGNON:	/* signon name password */
 					command++;
-					process_set = 0;  /* No valid process command yet */
 
 					/*
 					 *  Open the master file and a new copy.
@@ -1868,11 +1871,10 @@ int mail(void)
 					dipent.start -= 24 * 60 * 60;
 					for (i = 0; i < dipent.n; i++)
 						dipent.players[i].status &= ~(SF_WAIT | SF_MOVE | SF_WAIT);
-					dipent.players[0].status |= SF_PROCESS | SF_TURNGO;
+					dipent.players[0].status |= SF_PROCESS;
 					fprintf(rfp, "Phase %s of '%s' will be processed immediately.\n\n",
 					      dipent.phase, dipent.name);
 
-					process_set = 1; /* Can do a process */
 					break;
 
 				case ROLLBACK:
@@ -2343,7 +2345,9 @@ int mail(void)
 			}
 		}
 
+		temp1 = (dipent.players[0].status & SF_PROCESS);
 		deadline((sequence *) NULL, 0);
+		dipent.players[0].status |= temp1;
 
 		for (i = 0; fgets(line, sizeof(line), pfp);) {
 			if (dipent.players[player].power == MASTER ||

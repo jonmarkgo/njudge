@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.35  2003/08/18 23:16:43  millis
+ * Refix bug 211
+ *
  * Revision 1.34  2003/08/14 12:46:26  millis
  * Fix bug 211
  *
@@ -339,7 +342,7 @@ typedef struct Sequence {
 #define SF_RESIGN  0x800	/* This player has resigned 			*/
 #define SF_LATE	   0x1000	/* This player has already been told is late    */
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
-#define SF_TURNGO  0x4000	/* Set by the master to make a manual turn go   */
+#define SF_UNUSED  0x4000	/*** NOT CURRENTLY USED ***/ 
 #define SF_CONC    0x8000     /* Player agreed to concession */
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
 #define SF_BROAD_SENT 0x20000 /* Player has sent one broadcast message this turn */
@@ -458,8 +461,6 @@ extern int predict;		/* =1 when predicting a turn			*/
 extern int canbuild;	/* can a player build? (used when being reminded to move */
 
 extern int victor;              /* Set to power index if there is a game winner */
-
-extern int process_set; 	/* Set to 1 if process has been set */
 
 extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       */
 
