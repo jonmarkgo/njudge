@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.39  2004/05/12 23:44:04  millis
+ * Fix Bug 305 so that same player can return, even if dead
+ *
  * Revision 1.38  2004/04/04 15:58:38  millis
  * Fixed bug 285 (inform extra custodians of game start)
  *
@@ -790,7 +793,8 @@ int mail_signon(char *s)
                             	    if (dipent.players[j].power < 0 || i == j)
                                         continue;
 
-				    if((dipent.players[j].status & (SF_CD | SF_ABAND)) && dipent.players[j].centers) {
+				    if((dipent.players[j].status & (SF_CD | SF_ABAND)) && 
+				       (atoi(dipent.seq) == 1 || dipent.players[j].centers)) {
 				        one_abandoned++;
 				    }
 				}	
