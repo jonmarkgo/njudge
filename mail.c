@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.25  2002/11/08 21:57:45  millis
+ * fix bug 36, so that players not given blackist message if judge is
+ * a private one.
+ * Also, do not delete player's email on resignation
+ *
  * Revision 1.24  2002/08/27 22:27:52  millis
  * Updated for automake/autoconf functionality
  *
@@ -2568,7 +2573,7 @@ void send_press(void)
 			if (dipent.players[i].power < 0)
 				continue;
 			/* Don't broadcast to those with nobroad set */
-			if (dipent.players[i].status & SF_NOBROAD) continue;
+			if (dipent.players[i].status & SF_NOBROAD & !broad_part) continue;
 
 			if ((i != player || dipent.players[i].power == MASTER) &&
 			    *dipent.players[i].address != '*') {
@@ -2576,7 +2581,7 @@ void send_press(void)
 					for (s = broad_list; *s; s++)
 						if (power(*s) == dipent.players[i].power)
 							break;
-					if (!(!*s ^ !broad_allbut))
+					if (!(!*s ^ !broad_allbut) && dipent.players[i].power != MASTER)
 						continue;
 				}
 				if (dipent.players[i].power == MASTER) {
