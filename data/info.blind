@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   Apr 15, 2002
+Greetings from the Diplomacy* Adjudicator!!                   Dec 30, 2002
 Info.Blind.
 
 Any game can be played with the 'blind' variant modifier. This is intended
@@ -11,13 +11,17 @@ not of interest for the player involved. This has the result that:
     If an observer, no unit movements are shown. Master receives complete 
     turn results.
 
- -  For build turns, only the centres owned by each power will be show: no
-    indication is given of unit count.
+ -  Supported units are shown as "unknown unit": neither owners identity or 
+    unit type is divulged (if there is even a unit there!).
 
- -  The 'list' command will not give details to non-moderators whilest a game is
-    in progress on unit positions.
+ -  For build turns, only the centres owned by the particular power will be
+    shown (unless over-ridden by the 'set bcentres' command): no indication 
+    is given of unit count.
 
- - The summary position will not give historic centre progression whilest a 
+ -  The 'list' command will not give details to non-moderators whilst a game
+    is in progress on unit positions.
+
+ - The summary position will not give historic centre progression whilst a 
     blind game is in progress.
 
  - No information will be given to players attempting illegal moves to try to 
