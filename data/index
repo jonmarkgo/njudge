@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     03 Sep, 2003
+Greetings from the Diplomacy* Adjudicator!!                     02 Dec, 2003
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -93,24 +93,27 @@ any/bgs CREATE ?name password [variant] [option [option ...]]
         "SET VARIANT" command, below.  Get file 'master' for more detail on
         creating games.
 
-ply/	DIARY [option [option]]                                        {1.5.0}
-	Diaries allow a player to record his thoughts during the game for
-	broadcast at the end of the game.  If the diary command is given
-	with no options, it will default to "diary record". Options are:
+ply/    DIARY [option [option]]                                        {1.5.0}
+        Diaries allow a player to record his thoughts during the game for
+        broadcast at the end of the game.  If the diary command is given
+        with no options, it will default to "diary record". Options are:
 
-	RECORD: "DIARY RECORD" begins a new, numbered diary entry. The
-	Judge will read until encountering "ENDPRESS", "ENDBROADCAST",
-	or "SIGN OFF" (just like a normal press entry).
-	LIST: When a player issues "DIARY LIST", the Judge will return
-	a numbered list of his created entries, and the date and time they
-	were created.
-	READ [number]: Issuing "DIARY READ" allows a player to read an
-	entry he has already made. The number of the entry to read must
-	be specified (it can be obtained from "DIARY LIST").
-	DELETE [number]: Deletes the specified diary entry numbers. Note
-	that diary entries are not reused, so it's possible to have
-	"holes" in the numbering scheme if any entry but the most recent
-	one is deleted.
+        RECORD: "DIARY RECORD" begins a new, numbered diary entry. The
+        Judge will read until encountering "ENDPRESS", "ENDBROADCAST",
+        or "SIGN OFF" (just like a normal press entry).
+
+        LIST: When a player issues "DIARY LIST", the Judge will return
+        a numbered list of his created entries, and the date and time they
+        were created.
+
+        READ [number]: Issuing "DIARY READ" allows a player to read an
+        entry he has already made. The number of the entry to read must
+        be specified (it can be obtained from "DIARY LIST").
+
+        DELETE [number]: Deletes the specified diary entry numbers. Note
+        that diary entries are not reused, so it's possible to have
+        "holes" in the numbering scheme if any entry but the most recent
+        one is deleted.
 
 mod/    EJECT power|email                                              {0.8.9}
         A moderator-only command to resign a particular power.  This can be
@@ -220,11 +223,11 @@ any/    OBSERVE name password
         To become an observer.  This command is equivalent to "SIGNON oname
         password".
 
-mod/	PAUSE							      {1.5.0}
-	To suspend a game. Players can still press, but moves will be blocked.
-	No game processing or deadline expiration will occur. Periodic messages 
-	will be sent to remind of the pause state. To resume the game, the 
-	master should issue the 'resume' command.
+mod/    PAUSE                                                          {1.5.0}
+        To suspend a game. Players can still send press, but moves will be
+        blocked.  No game processing or deadline expiration will occur.
+        Periodic messages will be sent to remind of the pause state. To
+        resume the game, the master should issue the “RESUME” command.
 
 ply/    PHASE season year phase
         To specify that any following orders should be held until the
@@ -271,9 +274,9 @@ ply/    RESIGN
         cannot RESIGN.  See command "EJECT".
 
 ply/    RESUME
-        To restart a paused, completed or terminated game.  The "SET [NO]RESUME"
-        command (below) determines whether this command will be accepted from
-        any player, or only from a Master.
+        To restart a paused, completed or terminated game.  The
+        "SET [NO] RESUME" command (below) determines whether this command 
+        will be accepted from any player, or only from a Master.
 
 mod/    ROLLBACK turn
         Rolls the game back to a previously processed turn.  Get file
@@ -332,9 +335,10 @@ mod/bgs SET ANY CENTRE[S]|CENTER[S]                                    {0.8.9}
 
 mod/bgs SET ANY DISBAND                                                {1.4.0}
         Allow powers to disband any unit during a build phase (and thus
-        gaining the option to rebuild on a buildable centre if desired).  
-	Players must order for every unit (use 'maintain' for units that are
-	to be kept).  Opposite of "SET NORMAL DISBAND", see below.
+        gain the option to rebuild on a buildable center if desired). 
+        Players must submit an adjustment order for every unit (use “maintain” 
+        for units that are to be kept).  Opposite of "SET NORMAL DISBAND", see
+        below.
 
 mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
         Disables/enables optional assassination rules.
@@ -343,11 +347,11 @@ mod/bgs SET [NO] ATTACK TRANSFORM                                      {0.8.9}
         Transformations on attacked but not dislodged units will fail/work.
         Get file 'transform' for more details.
 
-mod/	SET [NO] AUTO CREATE					       {1.4.1}
- 	Disables/enables the automatic creation of a game with identical 
-	parameters when the current one finished (in a draw or victory), except
-	that the game will be set to 'NoList'. Fails if a sequence number cannot
-	be added/incremented on current game name. 	
+mod/    SET [NO] AUTO CREATE                                           {1.4.1}
+        Instructs the Judge (or cancel an instruction) to create a new game 
+        with identical parameters when the current one finishes (in a draw or
+        victory), except that the new game will be set to 'NoList'. Fails if a 
+        sequence number cannot be added/incremented on current game name.
 
 mod/bgs SET [NO] AUTO DISBAND                                          {0.8.9}
         Disables/enables the autodisband rule.  This rule when enables means
@@ -499,6 +503,9 @@ mod/mac SET [NO] FAMINE
 mod/mac SET [NO] FORT[RESS]                                            {0.8.9}
         Disables/enables optional fortress rules.
 
+mod/mac SET [NO] GARRISON[S]                                           {1.5.0}
+        Disables/enables use of garrisons.
+
 mod/bgs SET [NO] GATEWAYS                                             {0.8.11}
         Disables/enables gateways, in a variant that has this option coded
         into its map file.  Get file 'info.colonial'.
@@ -630,7 +637,7 @@ mod/    SET NORMAL PRESS
 
 mod/    SET OBSERVER ANY [PRESS]
         Permits observers to submit press with the same restrictions as regular
-	players.
+        players.
 
 mod/    SET OBSERVER NO [PRESS]
         Disallows press from observers.
@@ -816,12 +823,19 @@ mod/    SET [NO] STRICT WAIT
         be allowed to set wait.  If NOSTRICTWAIT is set (default), any
         currently active player can set wait.
 
-mod/	SET [NO] TOUCH PRESS						{1.5.1}
-	Enables/Disables Touch Press. When enabled, players can only send
-	one broadcast message per turn, and can only send partial press to
-	players with whom they are touching (defiend as a legal Wing move).
-	Players can always send partial press to the GM, and cannot press to
-	the Observer. 
+mod/bgs SET [NO] SUMMER                                                {1.5.0}
+        Disables/enables a “summer” phase between Spring and Fall.  (This
+        phase is abbreviated “U” for purposes of commands such as “HISTORY”,
+        “PHASE” and “ROLLBACK”.)  Enabled by default for Machiavelli, disabled
+        by default for Standard games.
+
+mod/    SET [NO] TOUCH PRESS                                           {1.5.1}
+        Enables/Disables Touch Press. When enabled, players can only send
+        one broadcast message per turn, and can only send partial press to
+        players with whom they are touching (defined as a legal Wing move).
+        Players can always send partial press to Masters, and cannot send 
+        press to Observers.  When disabled (default), standard press settings
+        apply.
 
 mod/    SET TRANSFORM transform-option                                 {0.8.9}
         SET TRAFO transform-option
@@ -948,16 +962,15 @@ any/pre WHO GAME name [FULL]
         "name".  If the game is gunboat this command can only be used by the
         moderator (and only after he signs on).  The optional "FULL" argument
         will return information for observers as well, while the default only
-	returns information for the players and the moderator.  See also 
-	"WHOIS" below.
+        returns information for the players and Masters.  See also "WHO IS",
+        below.
 
 ply/    WHO GAME [FULL]
         Retrieves WHOIS information for all players associated with the
-        currently signed on game.  If the game is gunboat, only the moderator
+        currently signed on game.  If the game is gunboat, only a Master
         can use this command.  The optional "FULL" argument will return
         information for observers as well, while the default only returns 
-	information for the players and the moderator.  See also
-        "WHOIS" below.
+        information for the players and Masters.  See also "WHO IS", below.
 
 any/    WHO IS user [user ...]
         To retrieve registration information for particular players.  All
