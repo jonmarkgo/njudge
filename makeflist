@@ -1,5 +1,3 @@
-#!/usr/bin/env perl
-
 =pod
 
 =head1 NAME
@@ -18,7 +16,6 @@ called during the installation process.  What it does is:
 =cut
 
 use strict;
-use warnings;
 use POSIX qw/strftime/;
 
 my $dir = shift or die "Need a directory\n";

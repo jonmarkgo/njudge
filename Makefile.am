@@ -21,6 +21,7 @@ HEAD=@HEAD@
 MAIL=@_MAIL_@
 AWK=@AWK@
 LN_S=@LN_S@
+PERL=@PERL@
 
 bin_PROGRAMS= dip rdip pdip size_check cmap summary deddump delgame flock \
 	fmtwho ign ded_to_ascii ascii_to_ded zpblind recdump
@@ -207,7 +208,7 @@ defaults.inc:
 
 flist:
 	cp starter.flist flist.info
-	./makeflist ${DESTDIR}${datadir} > flist
+	${PERL} -w ./makeflist ${DESTDIR}${datadir} > flist
 	${INSTALL_DATA} flist ${DESTDIR}${datadir}
 
 magic:

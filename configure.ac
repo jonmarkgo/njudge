@@ -30,6 +30,7 @@ AC_PROG_AWK
 AC_PROG_LN_S
 AC_PATH_PROG(HEAD, head)
 AC_PATH_PROG(_MAIL_, mail) # MAIL often is already set
+AC_PATH_PROG(PERL, perl)
 
 dnl Checks for functions
 AC_CHECK_FUNCS(strdup) 

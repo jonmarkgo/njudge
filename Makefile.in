@@ -84,6 +84,7 @@ HEAD = @HEAD@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LN_S = @LN_S@
 PACKAGE = @PACKAGE@
+PERL = @PERL@
 STRIP = @STRIP@
 
 # set the judge user
@@ -992,13 +993,13 @@ uninstall-man: uninstall-man6
 ign.o: ign.c
 	${CC} ${DEFS} ${INCLUDES} ${AM_CFLAGS} ${CFLAGS} -DMAIL_PROG=\"${MAIL}\" -c $<
 
-upgrade:
+upgrade: defaults.h ${bin_PROGRAMS}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
 
-upgrade-strip:
+upgrade-strip: defaults.h ${bin_PROGRAMS}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} -s $$i ${DESTDIR}$(bindir)/$$i; \
@@ -1014,7 +1015,7 @@ defaults.inc:
 
 flist:
 	cp starter.flist flist.info
-	./makeflist ${DESTDIR}${datadir} > flist
+	${PERL} -w ./makeflist ${DESTDIR}${datadir} > flist
 	${INSTALL_DATA} flist ${DESTDIR}${datadir}
 
 magic:
