@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -17,6 +20,12 @@
  *  Lowe.
  */
 
+/*
+ *  02 Dec 1999 Millis Miller Added 'wing' ptions for F_WINGS
+ *  04 Dec 1999 Millis Miller Added 'transform' option for builds
+ */
+
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -32,6 +41,7 @@ char *get_action(char *l, char *a)
 	int i;
 	static char *words[] =
 	{"0",
+	 "trafo", "transform to", "transforms to", "transform", "transforms", "tr#",
 	 "besieges", "besiege", "sieges", "siege", "b#",
 	 "convoys", "convoy", "transports", "transport", "t",
 	 "fast ferry", "ferry", "ff", "f",
@@ -49,11 +59,14 @@ char *get_action(char *l, char *a)
 	 "supports", "support", "s",
 	 "convert to#", "converts to#", "converts", "convert",
 	 "conversion", "conversion to#",
-	 "d", "c"};
+	 "d", "c",
+	 "air", "airlift", "airlifts", "air lift", "air lifts", "a"
+	};
 
 	static char reply[] =
 	{'x',
-	 'b', 'b', 'b', 'b', 'b',
+	  't', 't', 't', 't', 't', 't',
+	  'b', 'b', 'b', 'b', 'b',
 	 'c', 'c', 'c', 'c', 'c',
 	 'c', 'c', 'c', 'c',
 	 'd', 'd',
@@ -70,7 +83,9 @@ char *get_action(char *l, char *a)
 	 's', 's', 's',
 	 'v', 'v', 'v', 'v',
 	 'v', 'v',
-	 'D', 'C'};
+	 'D', 'C',
+	 'a', 'a', 'a', 'a', 'a', 'a'
+	};
 
 
 	l = lookfor(l, words, nentry(words), &i);
@@ -241,12 +256,15 @@ char *get_order(char *l, char *o)
 	{"0", "build", "b#", "debuild",
 	 "remove", "r#", "disband", "d#",
 	 "maintain", "m#",
-	 "waive", "w#"};
+	 "waive", "w#",
+	 "transform", "trafo", "t#"};
 	static char reply[] =
 	{'x', 'b', 'b', 'r',
 	 'r', 'r', 'r', 'r',
 	 'm', 'm',
-	 'w', 'w'};
+	 'w', 'w',
+	 't', 't', 't'
+	};
 
 
 	l = lookfor(l, words, nentry(words), &i);
@@ -312,7 +330,7 @@ char *get_type(char *l, char *t)
 {
 
 	/*
-	 * Check input for optional unit type of 'a', 'army', 'f' or 'fleet'.
+	 * Check input for optional unit type of 'a', 'army', 'f' or 'fleet', 'w' or 'wing'.
 	 *
 	 * Exit: t = Unit type or 'x' if invalid.
 	 */
@@ -324,23 +342,29 @@ char *get_type(char *l, char *t)
 
 	static char *words[] =
 	{"0", "army / fleet", "a/f#", "af#",
+	 "wing", "w#", 
 	 "army", "a#",
 	 "fleet", "f#",
 	 "garrison", "g#",
+	 "unit",
 	 "spy"};
 
 	static char reply[] =
 	{'x', 'T', 'T', 'T',
+	 'W', 'W', 
 	 'A', 'A',
 	 'F', 'F',
 	 'G', 'G',
+	 'U',
 	 'S'};
 
 	static int flags[] =
 	{0, F_AFRULES, F_AFRULES, F_AFRULES,
+	 F_WINGS, F_WINGS,
 	 F_ANY, F_ANY,
 	 F_ANY, F_ANY,
 	 F_MACH, F_MACH,
+	 F_ANY,
 	 F_BLIND};
 
 	s = lookfor(l, words, nentry(words), &i);
