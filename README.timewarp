@@ -31,3 +31,9 @@ Even with the NoNMR code it would bad, but not quite so messy.
 
 -Ken
 
+Now the judge is made more resilient: a time-warp will no longer cause the
+judge to bailout but instead it will automatically bump up all
+deadlines by their standard values when it detects a warp to a future
+date. No notifications of this are made, but it is better than nothing.
+
+-Millis Miller 6th Oct 2000
