@@ -3,6 +3,10 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.31  2003/07/23 06:00:37  jaldhar
+# Force calls to date in Makefile.am to use the 'C' locale.  (Fixes Bug 138)
+# auxilliary files regenerated to match this change.
+#
 # Revision 1.30  2003/07/23 05:36:43  jaldhar
 # Autogenerate dip.conf (fixes bug 154)
 #
@@ -288,7 +292,6 @@ magic:
 	fi;
 
 remap: dirs
-	rm -f ${DESTDIR}${bindir}/map.*
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 
 install: install-check install-am
