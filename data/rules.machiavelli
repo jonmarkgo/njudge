@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   Sept 27, 2003
+Greetings from the Diplomacy* Adjudicator!!                   Nov 16, 2003
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -34,6 +34,7 @@ The main changes from standard Diplomacy are (also see appendix 3):
      8) Bribery.
      9) New order types.
     10) Three movement seasons: spring, summer and fall.
+
 
 ADVANCED AND BASIC RULES
 Machiavelli comes with two sets of rules: 'Basic' and 'Advanced'.  
@@ -1076,7 +1077,9 @@ of this setting you will still be assassinated by the *bankers* if you do
 not repay your loans.
 
 set [no]garrisons
-To disable/enable the garrison unit types.  Always disabled by default.
+To disable/enable the garrison unit types.  You may not use, build or 
+convert to these.  Any garrison setup info will be ignored.  
+Always disabled by default.
 
 set [no]special
 To disable/enable the special unit types.
@@ -1221,6 +1224,24 @@ What are the differences with Diplomacy if I play "2-season mach w/o garr" ?
 None !!!
 
 
+APPENDIX 4 -- PROVISIONAL RULE FOR MULTI-COASTAL PROVINCES
+
+How conversiosn are to be resolved in multi-coastal areas containing a city (e.g.
+St. Petersburg).
+
+Current status: all coasts are available for conversion regardless of placement 
+of anchor symbol.
+
+Probable future rules (used at GM's discretion):
+
+Version 1: Fleets may only convert to garrison or vice versa from/to a sea area 
+containing the anchor symbol.  Would both coasts have the anchor then both 
+coasts would be eligible for conversion.
+
+Version 2: Fleets may only convert to garrison or vice versa from/to a sea area 
+containing the anchor symbol.  Only one "anchored" coast may exist.
+
+
 -----
 * AVALON HILL, MACHIAVELLI AND DIPLOMACY ARE TRADEMARKS OF HASBRO INC., ALL
 RIGHTS RESERVED.
@@ -1249,7 +1270,9 @@ v2.1b 23rd Feb. 2003. Moved section on version differences here from
 v2.2 20th July 2003. Section clarifying conversions added. New rule re
     straits and support orders. New commands described. Auth. S. Lidsell.
 v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how 
-    to play in standard diplomacy style.
+    to play in standard diplomacy style. Auth. S. Lidsell.
+v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
+    provinces. Auth. S. Lidsell.
 
 
 This document is free to distribute for non-commercial and non-profit  purposes.
