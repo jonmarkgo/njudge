@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2003/03/18 13:53:24  millis
+ * Added checking for filename exists or not
+ *
  * Revision 1.1  2003/02/17 12:41:41  millis
  * Fixed Bug 108, make lines >=1024 terminate in '\n'
  *
@@ -50,7 +53,7 @@ int main(int argc, char *argv[])
 	    line[max_size-1] = '\n';
 	    line[max_size] = '\0';
 	}
-	puts(line);
+	fputs(line,stdout);
     };
 
     fclose(fptr);
