@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2003/05/02 22:23:39  millis
+ * Added valid_artillery_move()
+ *
  * Revision 1.5  2003/01/13 22:38:51  millis
  * merged in from ustv
  *
@@ -48,6 +51,7 @@ int valid_artillery_move(int u, int p, int *c, int *b)
 
 /* Create a dummy unit */
 	nunit++;
+	unit[nunit].coast = MV;  /* Artillery moves as a land unit */
 	
 
         for (t = pr[unit[u].loc].move; *t && !ok; t++) {
