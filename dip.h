@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2002/12/28 00:52:18  millis
+ * Proper fix to CR 17
+ *
  * Revision 1.18  2002/12/11 16:13:16  millis
  * Added new flag to set up autonomous garrisons in every fort (for Mach)
  *
@@ -244,6 +247,8 @@
 /* Define for X2F flags for params.c to display */
 #define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
 
+/* Define for X2F flags for params.c to display */
+#define X2F_PRINT_OPTIONS 	(~X2F_COLONIAL & ~X2F_PREFRANDALLOW & ~X2F_PREFRANDONLY)
 
 #define GAME_TERMINATED       (dipent.phase[6] == 'X')
 #define GAME_PAUSED           (dipent.phase[6] == 'P')
@@ -277,6 +282,7 @@ typedef struct Sequence {
 #define SF_REMIND  0x2000	/* This player has been reminded to make a move */
 #define SF_TURNGO  0x4000	/* Set by the master to make a manual turn go   */
 #define SF_CONC    0x8000     /* Player agreed to concession */
+#define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
 
 #define WAITING(s)  (((s) & (SF_MOVE | SF_MOVED | SF_CD)) == SF_MOVE)
 #define MAXPLAYERS 50		/* Maximum number of players/observers per game */
@@ -341,6 +347,7 @@ struct dipent {
         int num_homes;		/* Maximum number of configurable homes		*/
 	int has_natives;	/* index of native power, 0 if no natives       */
 	int has_multi_unit_provs; /* !0 if has multi-unit provinces, else 0     */
+	int extra_centres;	/* !0 if X2F_INITIAL_CENTRES set */
 };
 
 #define MAXUSER 8000
