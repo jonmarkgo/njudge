@@ -13,6 +13,8 @@
 # PARTICULAR PURPOSE.
 
 @SET_MAKE@
+
+# Process this file with automake to produce Makefile.in
 SHELL = @SHELL@
 
 srcdir = @srcdir@
@@ -92,7 +94,7 @@ am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 
-AUTOMAKE_OPTIONS = foreign dist-tarZ dist-zip
+AUTOMAKE_OPTIONS = foreign dist-zip
 docdir = @DIR@
 
 # compiler/linker options
@@ -844,10 +846,6 @@ dist-gzip: distdir
 	$(AMTAR) chof - $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
 	$(am__remove_distdir)
 
-dist-tarZ: distdir
-	$(AMTAR) chof - $(distdir) | compress -c >$(distdir).tar.Z
-	$(am__remove_distdir)
-
 dist-zip: distdir
 	-rm -f $(distdir).zip
 	zip -rq $(distdir).zip $(distdir)
@@ -855,7 +853,6 @@ dist-zip: distdir
 
 dist dist-all: distdir
 	$(AMTAR) chof - $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
-	$(AMTAR) chof - $(distdir) | compress -c >$(distdir).tar.Z
 	-rm -f $(distdir).zip
 	zip -rq $(distdir).zip $(distdir)
 	$(am__remove_distdir)
@@ -977,11 +974,11 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 uninstall-man: uninstall-man6
 
 .PHONY: GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic dist dist-all dist-gzip dist-tarZ dist-zip \
-	distcheck distclean distclean-compile distclean-depend \
-	distclean-generic distclean-hdr distclean-local distclean-tags \
-	distcleancheck distdir dvi dvi-am info info-am install \
-	install-am install-binPROGRAMS install-binSCRIPTS install-data \
+	clean-generic dist dist-all dist-gzip dist-zip distcheck \
+	distclean distclean-compile distclean-depend distclean-generic \
+	distclean-hdr distclean-local distclean-tags distcleancheck \
+	distdir dvi dvi-am info info-am install install-am \
+	install-binPROGRAMS install-binSCRIPTS install-data \
 	install-data-am install-dist_dataDATA install-dist_docDATA \
 	install-exec install-exec-am install-info install-info-am \
 	install-man install-man6 install-strip installcheck \

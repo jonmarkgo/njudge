@@ -1,8 +1,8 @@
-## Process this file with automake to produce Makefile.in
+# Process this file with automake to produce Makefile.in
 ## njudge/Makefile.am
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 
-AUTOMAKE_OPTIONS=foreign dist-tarZ dist-zip
+AUTOMAKE_OPTIONS=foreign dist-zip
 
 # set the judge user
 USER=@USER@
