@@ -185,13 +185,13 @@ dist_doc_DATA=	docs/README.bailout \
 		docs/README.timewarp \
 		docs/TODO
 
-upgrade:
+upgrade: defaults.h ${bin_PROGRAMS}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} $$i ${DESTDIR}$(bindir)/$$i; \
 	done;
 
-upgrade-strip:
+upgrade-strip: defaults.h ${bin_PROGRAMS}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
 	@for i in ${bin_PROGRAMS}; \
 	do ${INSTALL_PROGRAM} -s $$i ${DESTDIR}$(bindir)/$$i; \
