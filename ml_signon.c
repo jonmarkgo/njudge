@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2003/01/14 13:51:38  millis
+ * Merges from USTV
+ *
  * Revision 1.15  2002/08/27 22:27:55  millis
  * Updated for automake/autoconf functionality
  *
@@ -112,7 +115,6 @@
 #include "ml_signon.h"
 #include "variant.h"
 #include "functions.h"
-#include "dipstats.h"
 #include "plyrdata.h"
 
 char *generic_names[] =
@@ -419,7 +421,6 @@ int mail_signon(char *s)
 			} else {
 				fprintf(rfp, "No preference list has been established.\n");
 			}
-			StatLog(STAT_GAME, "%s\n", &name[1]);
 			return 0;
 		}
 		if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2003/01/15 13:43:00  millis
+ * Fixed small compiler errors
+ *
  * Revision 1.28  2003/01/13 22:15:03  millis
  * ustv merge
  *
@@ -141,7 +144,6 @@
 #include "mail.h"
 #include "functions.h"
 #include "conf.h"
-#include "dipstats.h"
 #include "diplog.h"
 #include "plyrdata.h" /* Change Sep 23, 2001 */
 
@@ -598,7 +600,6 @@ int mail(void)
 				create = moreaddr = 0;
 				switch (pvalue[i]) {
 				case FROM:	/*  From: */
-				       StatLog(STAT_EMAIL,s);
 				       DIPINFO(s);
 					if (got_reply)
 						break;

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2003/01/14 13:51:37  millis
+ * Merges from USTV
+ *
  * Revision 1.29  2002/12/28 01:00:57  millis
  * Small text change
  *
@@ -178,7 +181,6 @@
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
-#include "dipstats.h"
 #include "diplog.h"
 #include "plyrdata.h"
 
@@ -1165,7 +1167,6 @@ void mail_setp(char *s)
 
 		s = lookfor(t = s, keys, nentry(keys), &i);
 		sprintf(stat_text, "%3.3d %s", action[i], dipent.name);
-		StatLog(STAT_COMMAND,"%s\n", stat_text);
 		DIPDEBUG(stat_text);
 
 		if (privs[i] == 'm' && !PRIVOK) {
