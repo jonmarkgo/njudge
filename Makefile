@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.19  2002/02/18 20:18:14  miller
+# Include document subdirectory
+#
 # Revision 1.18  2002/01/06 22:49:45  miller
 # depend target now addes Makefile dependency
 #
@@ -234,12 +237,12 @@ install: ${INSTALLDIR} ${DESTDIR} ${INSTALLDIR}/data dip ${INSTALLDIR}/data/flis
 	@echo "Process   " `date '+%a %b %d %X %Y' --date '1 year'` >> ${DESTDIR}/dip.master
 	@echo "Start     " `date '+%a %b %d %X %Y'` >> ${DESTDIR}/dip.master
 	@echo "-" >> ${DESTDIR}/dip.master
-	@echo ",\"| ${DESTDIR}/rdip -b -d ${DESTDIR} \"" > /home/${USER}/forward
+	@echo ",\"| ${DESTDIR}/rdip -b -d ${DESTDIR} \"" > ${HOME}/../${USER}/forward
 	-@chown ${USER} ${DESTDIR}/*
 	@echo
 	@echo "you must now edit ${INSTALLDIR}/smail, ${INSTALLDIR}/atrun,"
 	@echo "${DESTDIR}/dip.conf and ${DESTDIR}/dip.msg (which last may be left empty)"
-	@echo "To start the judge, rename /home/${USER}/forward to .forward"
+	@echo "To start the judge, rename ${HOME}/../${USER}/forward to .forward"
 	@echo
 
 remap: cmap
