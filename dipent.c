@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2003/05/12 23:47:59  millis
+ * Fix bug 110, shift process time out on a timewarp.
+ *
  * Revision 1.12  2003/04/16 04:31:32  millis
  * Fixed a bug that zapped the x/x2/flags settings on getdipent calls
  *
@@ -315,10 +318,15 @@ int getdipent(FILE * fp)
 		} else {
 			notifies = "*";
 		}
+		if (bailout_recovery) {
+		    sprintf(line, "%s /dev/null 'Bailout recovery initiated' '%s'", SMAIL_CMD, GAMES_MASTER);
+                        execute(line);
+		    DIPNOTICE("Bailout recovery detected.");
+		}
 	} else {
-	    /* Non control game, check for a time-warp set */
-	    if (time_warp) {
-		/* Try to fix the warp by adjusting deadline */
+	    /* Non control game, check for a time-warp or bailout recovery set */
+	    if (time_warp || bailout_recovery) {
+		/* Try to fix the warp/recovery by adjusting deadline */
 		/* Rather simplistic, but will do for now */
 		deadline(NULL,1);
 	        

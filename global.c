@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2003/05/12 23:23:46  millis
+ * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
+ *
  * Revision 1.8  2003/01/14 13:51:36  millis
  * Merges from USTV
  *
@@ -128,5 +131,6 @@ int predict = 0; 		/* =1 to predict a move for master */
 int canbuild = 1;		/* can the power being reminded to move build? */
 int victor = 0;			/* Set to index of power when there is a victor */
 
-int process_set; /* Set to 1 if process command has been set */
+int process_set; 		/* Set to 1 if process command has been set */
 
+int bailout_recovery = 1;       /* Set to 1 if recovering from a bail-out	*/

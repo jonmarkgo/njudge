@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.38  2003/05/12 23:23:45  millis
+ * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
+ *
  * Revision 1.37  2003/05/12 02:37:17  millis
  * Removed superfluos SF_WAIT for transform games
  * Also deleted incorrect use of uninitilized variable
@@ -209,6 +212,8 @@ int main(int argc, char *argv[])
 	char exe_name[100];
 	char tz_name[50];
 	char *t;	
+        struct stat buf;
+
 	init(argc, argv);
 	
 
@@ -228,6 +233,12 @@ int main(int argc, char *argv[])
 
 	OPENDIPLOG(exe_name);
 	DIPINFO("Started dip");
+
+	/* Check if xforward file exists, indicating a bailout-recovery situation */
+
+	if (!stat(XFORWARD, &buf)) {
+	    bailout_recovery = 1;
+	}
 
         CheckSizes();
 

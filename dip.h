@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2003/05/12 23:23:46  millis
+ * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
+ *
  * Revision 1.26  2003/05/09 11:09:57  millis
  * Added display of Mach2 flag
  *
@@ -426,8 +429,10 @@ extern int predict;		/* =1 when predicting a turn			*/
 
 extern int canbuild;	/* can a player build? (used when being reminded to move */
 
-extern int victor;             /* Set to power index if there is a game winner  */
+extern int victor;              /* Set to power index if there is a game winner */
 
-extern int process_set; /* Set to 1 if process has been set */
+extern int process_set; 	/* Set to 1 if process has been set */
+
+extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       */
 
 #endif				/* _DIP_H */
