@@ -1,0 +1,16 @@
+#!/bin/csh
+# $LOG: smail-test,v $
+#
+# Test version of smail, for replacing real smail for tests
+#
+# $1 = message file
+# $2 = Subject
+# $3 = Destination email
+
+
+/bin/rm smail.out
+
+echo "===== mail sent to $3/$2" >> smail.out
+cat $1 >> smail.out
+echo "===== end of mail ======" >> smail.out
+/bin/rm -f dip.xfail

@@ -1,0 +1,18 @@
+From: player9@localhost
+To: judge@localhost
+
+REGISTER
+Name:      Player 9
+Phone:     (505) 555-5555
+Site:      University of Hodunk
+Address:   1515 St. Claws Lane, Kris Mass
+Country:   USA
+Timezone:  Eastern
+Email:     player9@localhost
+Level:     Novice
+Birthdate: Dec 25, 1907
+Sex:       Female
+Package:   No
+END
+
+
