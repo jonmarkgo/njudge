@@ -13,6 +13,9 @@ void open_press(void);
 void mail_reply(int err);
 void send_press(void);
 
+/* defined in ml_short.c */
+int mail_shorthand(char *text);
+
 /* defined in lib.c */
 char *NowString(void);
 void archive(char *file, char *subject);
@@ -29,9 +32,24 @@ void die_rolls(int seed);
 int die(int n, int s);
 char *strcap();
 char *Utype();
+char *mov_type(int prov_index, int unit_index);
+int FindPower(int);
+int GetOneWord(char *text);
+int despace(char *intext);
+void display_absence(int pnum, FILE *fptr);
+void AddCoastToOrder(char *text, int c1);
+void AddUnitToOrder(char *text, int unit);
+void AddPlaceToOrder(char *text, int place);
+void AddProvinceToOrder(char *text, int place);
+void AddUnitProvinceToOrder(char *text, int unit, int place);
+void AddPowerToOrder(char *text, int power);
+void AddOrderToOrder(char *text, int order);
 
 /* defined in bailout.c */
-void bailout(int);
+void real_bailout(int, char *, int);
+#define bailout(btype) real_bailout(btype, __FILE__, __LINE__ )
+
+/* void bailout(int); */
 
 /* defined in dip.c */
 void master(void);
@@ -61,6 +79,7 @@ void errmsg(char *fmt,...);
 void errputc(char c, FILE * fp);
 void junk(char **stream);
 int preprocess(char **s, int *p);
+int canpreprocess(char *s);
 
 /* defined in st_porder.c */
 int process_output(int pt, char phase);
@@ -71,14 +90,17 @@ int ownership(void);
 int buildin(char **s, int p);
 void init_build(void);
 void buildout(int pt);
+int build_syntaxcheck(char *s, int precheck, char *out_string);
 
 /* defined in st_retreat.c */
 int retreatin(char **s, int pt);
 void retreatout(int pt);
+int retreat_syntaxcheck(char *s, int precheck, char *out_string);
 
 /* defined in st_movement.c */
 int movein(char **s, int p);
 int moveout(int pt);
+int move_syntaxcheck(char *s, int precheck, char *out_string);
 
 /* defined in common.c */
 void next_year(void);
@@ -152,6 +174,7 @@ int po_init(void);
 int gamein(void);
 int gameout(void);
 void po_chkmov(void);
+void UpdateBlockades(void);
 
 /* defined in st_status.c */
 void status(int pt);
@@ -175,21 +198,24 @@ void mail_listbrief(void);
 void version(FILE * rfp);
 
 /* defined in history.c */
-int history(char *line);
+int history(char *line, int power_type);
 
 /* defined in ml_set.c */
+void ShowPreferences(FILE *);
 void mail_setp(char *s);
 void process_allowdeny(char **info, char *basename);
 
 /* defined in ml_press.c */
 void mail_press(char *s, int need_opts);
+int parse_powers(char **s, char *list, size_t size, int *count, int put_output);
+void list_powers(char *line, char *list);
 
 /* defined in po_get.c */
 char *get_power(char *l, int *o);
 
 /* defined in phase.c */
 int phase(char *s);
-void phase_syntax(int phase, char *s);
+int phase_syntax(int phase, char *s);
 
 /* defined in draw.c */
 int check_can_vote(int i);
