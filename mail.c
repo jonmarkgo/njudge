@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.30  2003/01/15 13:59:25  millis
+ * Removed Dipstats
+ *
  * Revision 1.29  2003/01/15 13:43:00  millis
  * Fixed small compiler errors
  *
@@ -273,7 +276,7 @@ static int cvalue[] =
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
  EJECT, RECORD, INFOPLAYER, UNSTART,
- SETUP, PAUSE, PAUSE, POSTALPRESS,
+ SET, PAUSE, PAUSE, POSTALPRESS,
  FORCE_BEGIN,
  COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
