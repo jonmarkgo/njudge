@@ -4,7 +4,7 @@ Version: 1.3.0pre_20021221
 Release: 1
 Group: Games
 Copyright: free for non-commercial use.  See COPYING for details.
-Packager: Jaldhar H. Vyas <jaldhar@braincells.com>
+Packager: Jaldhar H. Vyas <judgekeeper@braincells.com>
 URL: http://www.njudge.org/
 Source: %{name}-1.3.0-pre.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
