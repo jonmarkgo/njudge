@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.20  2003/03/22 09:22:57  millis
+# Added plyrdata.c to ascii2rec sources
+#
 # Revision 1.19  2003/03/12 07:44:38  nzmb
 # Fix to try to get ascii2rec.c to link correctly.
 #
@@ -198,7 +201,8 @@ man_MANS=	judge.6
 
 dist_data_DATA=	data/*
 
-dist_doc_DATA=	docs/InstallationHOWTO \
+dist_doc_DATA=	docs/InstallationHOWTO.txt \
+		docs/InstallationHOWTO.html \
 		docs/README.bailout \
 		docs/README.flags \
 		docs/README.flist \

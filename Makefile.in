@@ -13,6 +13,9 @@
 # PARTICULAR PURPOSE.
 #
 # $Log$
+# Revision 1.23  2003/03/22 09:22:57  millis
+# Added plyrdata.c to ascii2rec sources
+#
 # Revision 1.22  2003/03/21 14:07:14  millis
 # Small bug fix
 #
@@ -286,7 +289,8 @@ man_MANS = judge.6
 
 dist_data_DATA = data/*
 
-dist_doc_DATA = docs/InstallationHOWTO \
+dist_doc_DATA = docs/InstallationHOWTO.txt \
+		docs/InstallationHOWTO.html \
 		docs/README.bailout \
 		docs/README.flags \
 		docs/README.flist \
