@@ -1541,7 +1541,7 @@ void mail_setp(char *s)
 			break;
 
 		case SET_DRAW:
-			if (check_can_vote(player))
+			if (check_can_vote(player, "draw"))
 				break;
 			if (dipent.flags & F_NODIAS) {
 
@@ -1572,7 +1572,7 @@ void mail_setp(char *s)
 			}
 			break;
 		case SET_NODRAW:
-			if (check_can_vote(player))
+			if (check_can_vote(player, "draw"))
 				break;
 			if (dipent.flags & F_NODIAS)
 				fprintf(rfp, "You will now only accept a concession.\n");
