@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.45  2004/08/03 21:55:08  millis
+ * Fix Bug 349 and 352
+ *
  * Revision 1.44  2004/07/27 23:09:44  millis
  * Signon problems fixed (Bug 91)
  *
@@ -1425,9 +1428,9 @@ void mail_igame(void)
 	}
 	seq.clock = dipent.movement.clock;
 	seq.mint = dipent.movement.mint;
-	seq.next = dipent.movement.next * 2;
+	seq.next = dipent.movement.next * ((DIPENT_NO_PRESS) ? 1 : 2);
 	seq.grace = dipent.movement.grace;
-	seq.delay = dipent.movement.delay * 2;
+	seq.delay = dipent.movement.delay * ((DIPENT_NO_PRESS) ? 1 : 2);
 	strcpy(seq.days, dipent.movement.days);
 	deadline(&seq, 1);
 
