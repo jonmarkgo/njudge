@@ -271,7 +271,11 @@ dist_doc_DATA = docs/README.bailout \
 		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
-		docs/TODO
+		docs/TODO \
+		AUTHORS \
+		COPYING \
+		ChangeLog \
+		README
 
 
 EXTRA_DIST = config.h.in defaults.inc.in dip.conf dip.template starter.flist \

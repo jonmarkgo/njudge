@@ -184,7 +184,11 @@ dist_doc_DATA=	docs/README.bailout \
 		docs/README.statistics \
 		docs/README.syslog \
 		docs/README.timewarp \
-		docs/TODO
+		docs/TODO \
+		AUTHORS \
+		COPYING \
+		ChangeLog \
+		README
 
 upgrade: defaults.h ${bin_PROGRAMS}
 	$(mkinstalldirs) ${DESTDIR}${bindir}
