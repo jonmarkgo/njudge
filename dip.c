@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/02/03 10:36:16  miller
+ * fixed blind crashing bug
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Many changes, including -
  *   Reminding players to make moves when close to deadline
@@ -1096,7 +1099,7 @@ int process(void)
 
 /*
  * This looks as good a place as any to clear draw flags...
- *    (P Ùositron, 11 Mar 1993)
+ *    (Pãositron, 11 Mar 1993)
  */
 			dipent.players[i].status &= ~SF_DRAW;
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) {
@@ -1106,7 +1109,7 @@ int process(void)
 				execute(line);
 			    }
 			}
-			if (dipentlags & F_BLIND) {
+			if (dipent.flags & F_BLIND) {
 			    /* Ooops, it's a blind variant */
 			    /* Special routine to work out what to tell who */
 			    inform_party_of_blind_turn(i, phase);
