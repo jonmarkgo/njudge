@@ -1,5 +1,11 @@
  /*
  * $Log$
+ * Revision 1.10  2003/02/12 07:46:06  nzmb
+ * Fixed several bugs in the concession handling code, including a severe one
+ *
+ * that could, in rare circumstances, lead to an undeserved concession being
+ * granted
+ *
  * Revision 1.9  2002/08/27 22:27:50  millis
  * Updated for automake/autoconf functionality
  *
@@ -77,6 +83,10 @@ int check_can_vote(int i, int flag)
 		fprintf(rfp, "You cannot declare a game which has not begun a %s!\n",s);
 		return 1;
 	}
+	if(dipent.phase[6] == 'X') {
+                fprintf(rfp, "This game is complete. You can't vote for a %s.\n",s);
+                return 1;
+        }
  	
 	if (!dipent.players[i].units && !dipent.players[i].centers) {
 		fprintf(rfp, "You have no units or centers and cannot vote on a %s.\n",s);
