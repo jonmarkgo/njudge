@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2003/05/10 00:22:39  millis
+ * Fix bug 126, not always correctly registering province ownership changes
+ *
  * Revision 1.17  2003/05/03 23:33:49  millis
  * Fix bug 150 (NO_GARRISONS flag)
  *
@@ -1346,13 +1349,6 @@ int ma_moveout(int pt)
 			}
 		}
 
-		/* Bug 126, correct the units in province, setting to zero if unit is not really there */
-		for (p = 1; p <= npr; p++)
-                    if (unit[pr[p].unit].loc != p)
-                        pr[p].unit = 0;
-                    if (unit[pr[p].gunit].loc != p)
-                        pr[p].gunit = 0;
-
 		if (bounce)
 			fprintf(rfp, "\n\nThe following units were dislodged:\n\n");
 		bounce = 0;
@@ -1469,5 +1465,14 @@ int ma_moveout(int pt)
 			}
 		}
 	}
+
+	 /* Bug 126, correct the units in province, setting to zero if unit is not really there */
+	if (processing)
+	        for (p = 1; p <= npr; p++)
+		    if (unit[pr[p].unit].loc != p)
+                        pr[p].unit = 0;
+		    if (unit[pr[p].gunit].loc != p)
+		        pr[p].gunit = 0;
+
 	return bounce;		/* return true if retreats are needed */
 }
