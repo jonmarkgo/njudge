@@ -221,7 +221,7 @@ int phase(char *s);
 int phase_syntax(int phase, char *s);
 
 /* defined in draw.c */
-int check_can_vote(int i, const char *s); /* Change Aug 12, 2001 */
+int check_can_vote(int i, int flag); /* Change Aug 28, 2001 */
 int chkdraw(char *to_check);
 int process_draw(void);
 /* Tim Miller's concession stuff */

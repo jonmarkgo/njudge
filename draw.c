@@ -34,16 +34,22 @@
 #include "functions.h"
 #include "mail.h"
 
-int check_can_vote(int i, const char *s)
+int check_can_vote(int i, int flag)
 {
-	if( (strcmp(s,"draw") != 0) && (strcmp(s,"concession") != 0))
-	{
-		fprintf(stderr,"Invalid argument %s for check_can_vote.\n",
-			s);
-		bailout(E_FATAL); /* Is this right? */
-	}
+	char *s;
+
+	if(flag == 1)
+        {
+		s = "draw";
+	} else if (flag == 2) {
+		s = "concession";
+	} else {
+                fprintf(stderr,"Invalid argument %d for check_can_vote.\n",
+                        flag);
+                bailout(E_FATAL); /* Is this right? */
+        }
 	/* Don't want concessions in games where they aren't allowed. */
-	if((strcmp(s, "concession") == 0) && (dipent.xflags & XF_NOCONCESSIONS))
+	if((flag == 1) && (dipent.xflags & XF_NOCONCESSIONS))
 	{
 		fprintf(rfp,"No concessions are permitted in this game.\n");
 		return 1;
