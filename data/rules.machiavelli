@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   July 20, 2003
+Greetings from the Diplomacy* Adjudicator!!                   Sept 27, 2003
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -23,7 +23,7 @@ A PostScript map is available via the adjudicator with the "get
 machiavelli.ps" command or on various sites on the Internet.
 The time frame of Machiavelli is Renaissance Italy from 1385 to 1529.
 
-The main changes from standard Diplomacy are:
+The main changes from standard Diplomacy are (also see appendix 3):
      1) Powers have finances.
      2) The use of money to buy, build, disband and maintain units.
      3) Famine and plague events.
@@ -1075,10 +1075,13 @@ To disable/enable the use of the assassination *expenditure*.  Regardless
 of this setting you will still be assassinated by the *bankers* if you do
 not repay your loans.
 
+set [no]garrisons
+To disable/enable the garrison unit types.  Always disabled by default.
+
 set [no]special
 To disable/enable the special unit types.
 
-set [no]fort[ress]
+set [no]fortresses | [no]forts
 To allow or not the use of additional fortified cities.  Always disabled 
 by default.
 
@@ -1114,11 +1117,11 @@ The status of these options are listed in the "full" listing of the games
 under the heading "flags".  The default settings for the various Mach
 variants are (missing flags cannot be set/used):
      1) Mach1: famine, noplague, loans, assassinations, dice, special,
-        nofort, adjacency, nostorm, money, coastalconvoy, nodisband
+        noforts, adjacency, nostorm, money, coastalconvoy, nodisband
      2) Mach2: famine, noplague, loans, assassinations, dice, special,
-        nofort, adjacency, nostorm, money, nocoastalconvoy, nodisband
+        noforts, adjacency, nostorm, money, nocoastalconvoy, nodisband
      3) Basic mach: nofamine, noplague, noloans, noassassinations, nodice,
-        nospecial, nofort, noadjacency, nostorm, nomoney, coastalconvoy, 
+        nospecial, noforts, noadjacency, nostorm, nomoney, coastalconvoy, 
         disband.
 
 
@@ -1165,6 +1168,8 @@ cro-nc: crn ist aus   and for the south coast   cro-sc: dal ist
 ets-xc: psa/cc pio sie pat tiv gon mes pal wts
 ets-cc: psa
 
+For more information see the file njudgemapdatahowto.htm.
+
 
 APPENDIX 2 -- MAIN DIFFERENCES BETWEEN OLDER VERSIONS OF MACH
 
@@ -1178,6 +1183,42 @@ Differences between AH 1980 and 1983 (the first 2nd edition) editions.
     income roll.
 4)  Struggle for Dominance I scenario.  Control of Genoa or Florence city
     and province awards 1d6 variable income roll.
+
+
+APPENDIX 3 -- HOW TO DISABLE MACHIAVELLI FEATURES AS TO BE ABLE TO PLAY
+              IN STANDARD DIPLOMACY STYLE
+
+To play on the standard map choose the variant "dipmach".
+
+To be able to play as 3-season Diplomacy you must set up the game thus:
+     create ?gamename yourpassword variantname
+     set mach2     (this flag enables the "diplomacy build rules")
+     set nodice    (this removes disasters, variable income and more)
+     set nomoney   (this removes all use of money)
+     set nospecial (this removes the use of elite and militia units)
+
+What are the differences with Diplomacy if I play "3-season mach w garr" ?
+Just these few:
+     1) you can garrison* an A or F by ordering e.g. A LON C G or 
+        F LON C G (fleets only in provinces with an anchor symbol).
+     2) you can convert* an A to an F by e.g. ordering in spring 
+        A LON C G and in summer G LON C F.
+     3) a garrisoned unit may be eliminated by siege by e.g. ordering 
+        A LON B G for two *consecutive seasons*
+        (you do not have to write A LON B G LON as an army can only 
+        besiege a G in the province that the army is present in).
+     4) there is also a summer season
+
+*Only some SC's (cities) may be garrisoned, these are indicated by square 
+SC symbols. (The number in some cities is for Mach play only and can be 
+ignored in this case.)
+
+To play 100% Standard Diplomacy also set these flags
+     set nogarrisons (this removes the use of garrisons)
+     set nosummer (this removes the summer moves and plagues)
+
+What are the differences with Diplomacy if I play "2-season mach w/o garr" ?
+None !!!
 
 
 -----
@@ -1207,3 +1248,8 @@ v2.1b 23rd Feb. 2003. Moved section on version differences here from
     updated. Author Sergio Lidsell.
 v2.2 20th July 2003. Section clarifying conversions added. New rule re
     straits and support orders. New commands described. Auth. S. Lidsell.
+v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how 
+    to play in standard diplomacy style.
+
+
+This document is free to distribute for non-commercial and non-profit  purposes.
