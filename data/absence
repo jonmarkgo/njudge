@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   8th June, 2000
+Greetings from the Diplomacy* Adjudicator!!             20th Februrary 2001
 Absence.
 
 An attempt to remove the greatest burden from moderators: that of 
@@ -9,7 +9,7 @@ not be available and when the game should extend its deadlines automatically.
 
 The concerned player commands are:
 
-    SET ABSENCE start_date [TO end_date]
+  SET ABSENCE start_date [TO end_date]
     Requests an absence between the date sepcified (or the single day if no
     end date is given. Neither start_date nor end_date can be before the
     current date. If end_date is before the current deadline, it will be
@@ -17,7 +17,7 @@ The concerned player commands are:
     absences. 
     
 
-    SET NOABSENCE start_date [TO end_date]
+  SET NOABSENCE start_date [TO end_date]
     Cancel a requested absence period. The period cancelled is one which 
     includes the specified start_date. The end_date is ignored. The first
     absence found which includes the specified date is the one cancelled.
@@ -29,7 +29,8 @@ requested, and he will also see the pending future absences every time he sends
 a message for the game (as per moves). 
 
 If an absence request exceeds the game limit, a message will be sent to the master
-who must manually activate the absencei for it to take effect.
+who must manually activate the absence for it to take effect. (One technique 
+is to use the 'become' command and set the absence for the player.)
 
 When it is time for the next turn deadline to be calculated, the deadline is 
 increased for each absence requested when at least one of the following 
