@@ -33,5 +33,14 @@ The "RECORD" command allows the Judge Keeper to modify a player's entry via
 an e-mail command. Please see file 'index' and look under the "RECORD"
 entry for details.
 
+If you need to convert an ascii text.rec file to the binary plyrdata format,
+the ascii2rec utility is provided. The first command line argument to this
+program must be the file you wish to read in from. Since the outfile will be
+called plyrdata *back up any other plyrdata file(s) in your working directory
+so they don't get overwritten.* Combined with recdump, this utility provides
+additional protection when moving a binary plyrdata file between two
+different architectures.
+
 Tim Miller
-April 28, 2002 
+Initially written, April 28, 2002
+Revised last March 4, 2003 
