@@ -1,24 +1,30 @@
 /*
- * $Log$
- * Revision 1.1  2002/04/11 13:23:32  miller
- * First entry, from testing on USTV
- *
- */
-
-/*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Jan 2002
- * to be included in njudge package.
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Sep 2002
+ * included in njudge package.
  */
 
 #ifndef ZMACRO_X_H
 #define ZMACRO_X_H
 
 #include <stdio.h>
+
+#ifndef yLINUX
 #define yLINUX
+#endif
 
 #ifdef DEBUG
+#define DEBUG_PARSE
+#endif
+
+#if defined(DEBUG_PARSE) || defined(DEBUG_OUTPUT) || defined(DEBUG_VAR)
+#define DEBUG_any
+#endif
+
+#ifdef DEBUG_any
+#ifndef fDebug
 #define fDebug stderr
 #endif
+#endif //if DEBUG...
 
 #define nil 0
 #define false 0
@@ -42,7 +48,7 @@ void faultHandler (int thisSignalId) ;
 #ifdef TEST_LEX
 #ifdef TEST_YACC
 #error Test LEX and YACC both defined?
-#endif
+#endif //TEST_YACC
 #endif
 /*
   .
@@ -51,5 +57,5 @@ void faultHandler (int thisSignalId) ;
 typedef char bool;
 typedef unsigned char t_uchar;
 
-#endif
+#endif //ZMACRO_X_H
 

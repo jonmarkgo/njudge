@@ -1,20 +1,10 @@
 /*
- * $Log$
- */
-
-/*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Jan 2002
- * to be included in njudge package.
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Sep 2002
+ * included in njudge package.
  */
 
 #ifndef ZPARSEB_X_H
 #define ZPARSEB_X_H
-
-#ifdef DEBUG
-#define DEBUG_PARSE
-#else
-#define fDebug stdout
-#endif
 
 #include "zmacro.h"
 /* --------------------------------------------------------
@@ -25,6 +15,7 @@ typedef struct {
   char* powerAdj;
   bool doUseFileIn;
   bool doUseFileOut;
+  bool varHideAllCentre;
   FILE* fIn;
   FILE* fOut;
   FILE* fTemp;
@@ -45,11 +36,12 @@ typedef struct {
 } ArrayResStr;
 
 typedef enum {
-  e_Result_Start,
-  e_Result_Moves,
-  e_Result_Dislodged,
-  e_Result_Ownership,
-  e_Result_Builds
+  e_Result_Start = 0,
+  e_Result_Moves = 1,
+  e_Result_Dislodged = 2,
+  e_Result_Ownership = 3,
+  e_Result_Builds = 4,
+  e_Result_invalid
 } eResultState;
 /* --------------------------------------------------------
    Own definitions
@@ -60,5 +52,5 @@ int ParseInput (ArrayResStr* lPtr, IoOptions* ioPtr) ;
 
 void ArrayDelete (ArrayResStr* lPtr) ;
 
-#endif
+#endif //ZPARSEB_X_H
 
