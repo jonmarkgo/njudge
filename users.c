@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2001/05/08 07:47:47  greg
+ * minor fix to allow whogame command by players after a gunboat game ends, unless it's noreveal
+ *
  * Revision 1.3  2001/01/06 18:20:42  davidn
  * Correction to parsing of players.DENY to only read lines with = at the
  * start. This stops it reading lines which are commented out.
@@ -34,6 +37,7 @@
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
+#include "plyrdata.h"
 
 /*  Max. number of lines in which necessary information must appear  */
 
@@ -649,6 +653,7 @@ void whois(char *t)
 int send_dedication(char *raddr)
 {
 	int userid, siteid, level;
+	float orat,rrat;
 
 	if (!getuser(raddr, &userid, &siteid, &level)) {
 		if (!msg_header_done)
@@ -661,6 +666,29 @@ int send_dedication(char *raddr)
 		return E_WARN;
 	}
 	fprintf(rfp, "Your current dedication is: %d\n\n", ded[userid].r);
+	fprintf(rfp, "You have submitted %lu turns ontime\n",get_data(userid,ontime));
+	fprintf(rfp, "Out of a total of %lu.\n\n",get_data(userid,total));
+	fprintf(rfp, "You've started %lu new games and taken over %lu abandoned positions.\n",
+		get_data(userid,started),get_data(userid,tookover));
+	fprintf(rfp, "You've resigned from %lu games.\n",get_data(userid,resigned));
+	if(get_data(userid,total) == 0)
+	{
+		fprintf(rfp, "You've played 0 turns; you have a perfect timeliness record.\n");
+	}
+	else
+	{
+		orat = 1.0 * get_data(userid,ontime)/get_data(userid,total);
+		fprintf(rfp, "Your ontime ratio is %.3f.\n", orat);
+	}
+	if(get_data(userid,started) == 0 && get_data(userid,tookover) == 0)
+	{
+		fprintf(rfp, "You haven't started any games; you have a perfect resignation record.\n");
+	}
+	else
+	{
+		rrat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
+		fprintf(rfp, "Your resignation record is %.3f.\n", rrat);
+	}
 	/* TODO i'm not sure what to return here, was no return at all -- nw */
 	return 0;
 }
