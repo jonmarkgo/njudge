@@ -1,0 +1,561 @@
+Greetings from the Diplomacy* Adjudicator!!                 10 February, 2003
+guide.
+
+
+                    The Newbie's Quick Guide to the Judge**
+
+This guide is designed to get you started quickly on the Diplomacy
+Adjudicator, better known as "the Judge."
+
+This is not a guide to playing the game of Diplomacy.  If you are unfamiliar
+with Diplomacy, you may want to check out the Diplomatic Pouch Home Page at:
+http://www.diplom.org/ 
+
+     Contents
+     --------
+
+Step 1: What's This "Judge" Anyway?
+Step 2: Getting Judge Files
+Step 3: Registering with a Judge
+Step 4: Getting a List of Openings
+Step 5: Understanding a Game Listing
+Step 6: Observing a Game (optional)
+Step 7: Signing on to a Forming Game
+Step 8: Signing on to a Game as a Replacement
+Step 9: Sending Press
+Step 10a: Submitting Moves (for a movement phase)
+Step 10b: Submitting Moves (for a retreat phase)
+Step 10c: Submitting Moves (for a builds/removals phase)
+Step 11: Understanding Error Flags
+Step 12: Understanding Promptness
+
+
+     Step 1) What's This "Judge" Anyway?
+
+Since this is the short guide, I'll give a short answer: the Judge is a
+software program that manages Diplomacy games.  It keeps track of the
+players, enforces deadlines, handles "press" or messages between players,
+accepts and adjudicates orders, and sends out the results.  The basic Judge
+software was originally written by Ken Lowe, and has been modified by many
+others over the years.  (Thus, you'll often see people refer to the "Ken Lowe 
+Judges.")
+
+The Ken Lowe Judges communicate with players solely by email.  Don't ask
+"where is the web page for Judge So-and-So?" There isn't one! (Well, some
+Judges do have associated web pages that provide some information about the
+Judge, but you can't use these pages to play Diplomacy.)  You send emails to
+the Judge, and the Judge sends emails to you.  Since the Judge is a computer
+program, not a person, it only understands specific commands typed in a
+particular format.  If you're getting error messages from the Judge and you
+think you typed everything correctly, the most likely cause is your email
+program.  Make sure it is set to send "Plain Text" or ASCII, and not HTML or
+"Rich Text" or "formatted text." For more about error messages, see Step 11.
+
+Any time you send an email to the Judge, you should receive a reply.  If the
+Judge and your own email service are both working right, this should come
+back within a matter of seconds or minutes, but if not, be a little patient.  
+Incidentally, the Judges don't read the subject line of emails; you can put
+anything you want there.  Also, the Judges normally don't care whether you
+type in UPPER or lower case (there is one obscure exception you won't need to
+worry about unless you decide to become a game moderator).
+
+     Step 2) Getting Judge Files
+
+Send an email to the Judge, and in the body of your message, type the words:
+ 
+     get package
+
+You'll get a series of files that you should print and read later.  (If you
+haven't gotten them already!)  Or, you can skip to Step 3 and include the
+following line in your registration form, which will do the same thing:
+
+     package: yes
+
+By the way, if the Judge is unresponsive, just wait.  Don't keep sending
+repeated emails to a Judge that is down; when it comes back up, it will flood
+your mailbox with replies!
+
+     Step 3) Registering
+
+Each Judge is effectively an island unto itself.  While they are basically
+similar, each is running a slightly different version of the Judge software
+so there is a little variation among them (some of the later versions support
+more variants and have a few bugs ironed out), but for the most part they are
+just different places to play the same game.  Since Diplomacy players are a
+fairly addictive type, many people play games on several Judges just in
+case one needs to go down for an extended period of time.  By playing on
+multiple Judges, you can hedge your risk of losing a lot of games with one
+freak electrical storm.  Plus, by not being limited to one or two Judges, you
+get more options when you're looking for a new game by searching the entire
+list of open games (I will explain this below, in Step 4: Getting a List of
+Openings).
+
+The easiest way to register is to use the Diplomacy Pouch registration page:
+
+     http://devel.diplom.org/Email/registration.html
+
+This allows players with web access to register for any Judge desired (one
+Judge at a time) in one convenient step.  Be sure to come back here when
+you're done, though, because there is more to learn! 
+
+If you want to play games on multiple Judges you will have to register with
+each one.  The Judges do not share registration information.  This includes
+dedication rating (I will briefly explain dedication below, in Step 12:
+Understanding Promptness) which attempts to measure how consistently prompt
+you are on all games on an individual Judge.
+
+The other way to register is by email.  Many people find it convenient to
+register with all the Judges at once by sending out a blanket email (the
+registration form is identical).  So, if you wish to do this, simply include
+more than one address in the TO: field when you register in the step we're
+about to undertake.  If you are unsure if you want to register with many
+Judges, just pick one for now, and you can always register at the others
+later.
+
+To register by email:
+
+Copy the registration form below (either cut and paste it or retype it).  Do
+not change the first and last lines (REGISTER and END), or the first word on
+each line (up to and including the : symbol).  _DO_ change everything else to
+reflect your personal information.
+
+Send it to the Judge, or to as many as you wish if you are registering at
+more than one Judge.
+
+Currently, the default House Rules require that your registration include, at
+a minimum, the Name (first and last), Email, Level, Address (city and state
+only), and Country fields.  Some GMs may have other requirements in their
+particular house rules.  If you register as Charles V. Habsburg or put
+other obviously phony information in your registration, or leave out the
+required fields, you very likely will not be permitted to play on that Judge.
+The Judge Keepers are sick and tired of phony registrations.  The Judge
+Keepers are volunteers, and it's not nice to make their lives more
+complicated than they already are.
+
+REGISTER
+Name:      Charles V. Habsburg             (CHANGE THIS OR FACE CONSEQUENCES)
+Phone:     (510) 555-1212                  (CHANGE THIS)
+Site:      Holy Roman Empire (Don't put "Home" here; your best bet is to put
+                         the name of your school, company, or some other
+                         organization you are affiliated with)
+Address:   Monastery of San Geronimo de Yuste, Estremadura
+Country:   Spain
+Email:     charles.v.habsburg@holy.roman.empire
+Level:     Novice, Intermediate or Expert  (PICK ONLY ONE!!!)
+Birthdate: February 24, 1500
+Sex:       Male
+END
+
+Your "Level" should reflect your diplomacy skills, not your Judge skills.
+Don't submit this without picking one and only one level.  We are sick of
+seeing people who claim to be Charles the Fifth and "Novice, Intermediate or
+Expert." Your registration will eventually be deleted (and you may have
+problems) unless you submit accurate info.
+
+     Step 4) Getting a List of games
+
+Take a look at the Openings List on the Diplomacy Pouch site:
+
+     http://www.diplom.org/openings/
+
+If for some reason, the www.diplom.org system is down, each individual Judge
+can always give you a list of all its public games (with or without
+openings).  Send an email to the Judge, and in the body type:
+
+     list
+
+The long file you get back will list all the public games on the Judge that
+you have chosen to start with.
+
+Another way to find a game to join is to put your name on the Diplomacy Pouch
+Game Queue.  Go to:
+
+     http://www.diplom.org/DP-cgi/setqueue
+
+You can sign up to join a standard game for "newbies," or a no-press game, or
+to standby for a replacement position.  Be prepared to wait anywhere from a
+few days to a few weeks once your name is on the queue before you get emailed
+to join a game.
+
+     Step 5) Understanding the List of Games
+
+Look at this sample game listing:
+
+andy  S1901M Standard, Gunboat, 48 hrs, Moderated (andyhre),Press:W-P-.
+Judge newcomer game!
+Forming: 1 more players needed.
+
+Most of the crucial information is on the first line.  The game name is
+"andy."  The season is Spring 1901 (movement phase).  The Variant is standard 
+Diplomacy (Standard) but the names of the actual people playing each country
+are kept secret (Gunboat).  Deadlines occur every 48 hours.  Andyhre is the
+moderator who assists the Judge's automated processes.  The press setting
+determines how players can communicate with each other.  In this case, the
+setting "W-P-" means the game is White/Partial, so the country of origin of
+each letter is revealed (white), so that you cannot send anonymous (or even
+better, forged) message, and you may send letters to one or more players
+without sending the letter to everyone (partial).  If the press setting is
+"----" then no messages at all may be passed between players.  See Step 9 for
+more on press.
+
+     Step 6) Observing a game
+
+This is optional.  Some newcomers find observing a game to be a good way to
+get their feet wet.  Others wish to dive right in.  If you prefer total
+immersion, please skip to Step 7.  Otherwise, read on.
+
+Pick a game (I'll use andy).  Pick a password (I'll use password, but you
+should use some other word).  Send the equivalent of this message to your
+favorite Judge:
+
+     signon oandy password
+     signoff
+
+The first word is always signon (not singon or sign on).  The second is the
+letter "o" for observer and then the game name combined.  The third should be
+your password.  The Judge will reply saying you are accepted (if you typed it
+right) and from now on you'll receive all broadcast press and game results.
+But you won't see any of the private messages sent between players.
+
+Note: Instead of saying "signon ogamename password" you can also say "observe
+gamename password".  I mention this because the DEAC Judge, which uses German
+translations, allows you to use the second format but not the first [it uses
+"Z" instead of "O" (Zuschauer rather than Observer) so the command is signon
+zgamename password] and thus it may be safer to learn this second format if
+you ever have to interact with a non-English Judge.  The other option is to
+learn the word for observe in any language for which there is a Judge!
+
+HINT FOR OBSERVING: Try to find a game without partial press (the third
+character of the press code is a dash, not a P).  These games are more fun to
+observe because the players must broadcast to communicate.
+
+     Step 7) Signing on to a forming game as a player
+
+So you want to join the game andy as a player and start the ball rolling.
+You need to sign on and give the Judge your list of preferences, as follows:
+
+     signon ?andy password standard gunboat
+     set preference AEFGIRT
+     signoff
+
+Let's examine each element of this message:
+
+     signon ?andy
+
+This command is similar to joining as an observer except you use "?" as the
+first character of the 2nd word (instead of "o") combined with the game name.
+
+     password
+
+Pick an easily remembered word, but don't use "password"!!
+ 
+     standard gunboat 
+
+After your password, you must enter the name of the variant or the Judge will
+reject your request (with a friendly note explaining why).  The word
+"standard" is optional, however.  The name of the variant appears in the game
+listing (which you can get with the command "list andy").
+
+     set preference AEFGIRT 
+
+The 3rd word in the preference line should reflect your actual preference for
+powers (a more typical one might be GFERTIA if you like playing a western
+power).  In my example, I've told the Judge my first choice is Austria (the
+"A") then England (the "E") then France, etc.  If you do not set a
+preference, you will be assigned a power randomly from those not requested by
+the other players.  You can also put some powers in brackets if you don't
+care which one you get within that group; for example, if you like Eastern
+powers better than Western, and hate Italy, you could put [ART][EFG]I.  In my
+experience, omitting your list of preferences will mean you will play Austria
+or Italy.
+
+     signoff
+
+This command is technically optional, but you should treat it as absolutely
+necessary!  It tells the Judge, "this is the end of the commands in this
+message, don't read anything else."  This is necessary because many mail
+programs will add a signature, an advertisement, or other information to the
+body of your message, and if the Judge tries to process this text, it will
+lead to error messages.  The worst problems are caused by mail clients that
+insist on formatting messages as HTML or MIME attachments; these stick all
+kinds of weird characters into the body where the Judge is just expecting to
+find plain text.  The "signoff" command tells the Judge to ignore anything
+that comes after your commands, and avoids most problems related to mail
+formatting.
+
+     Step 8) Signing on as a replacement
+
+It is sometimes easier to find a stalled game than a new game forming, so be
+prepared to take over a power whose player has quit.  Also, taking a "mercy"
+position can be a good way to get your feet wet with the Judge without having
+to worry about actually winning!  Look at this sample listing:
+
+jenifer S1903R  Standard, Gunboat, 48 hrs, Moderated (andyhre), Press:W-P-.
+Openings: Austria (3/3)
+
+You decide to learn the Judge by helping these players finish their game (by
+taking over the 3-unit Austria).  You should get a detailed listing of the
+game (send "list jenifer" to the Judge) to make sure the game is not for
+Albanians-only or some such restriction, and you should consider sending an
+email to the person listed as the GM to make sure the power is really
+abandoned.  Assuming you qualify, type:
+
+     signon ajenifer password standard gunboat
+     signoff
+
+In the 2nd word, you now replace "?" with "a" since you know for a fact which
+country (a=Austria) is available.
+
+If the game accepts you (it might reject you if it has a flag that prevents
+new players from joining, or if someone else grabbed the position before you
+did), you'll be told that you've been allowed to take over the position, and
+you'll be given a deadline for moves.  Now you just need to send some press
+and enter your moves!
+
+     Step 9) Sending Press
+
+There are two basic types of press, partials (sent to one or more individual
+players) and broadcasts (sent to everyone in the game at once).
+
+     Broadcast press
+
+To send a broadcast in the game jenifer, type:
+
+     signon ajenifer password
+     broadcast
+     Hey, the New Austria will conquer you all ...
+     (or whatever message you wish)
+     Your press can be as many lines long as you need.
+     endpress
+     signoff
+
+Two notes: (1) Once you've joined the game, you no longer need to enter the
+variant information when you sign on.  (2) Be careful typing endpress as one
+word all by itself on a line or else you may end up sending more information
+than you wish.  You have been warned.
+
+     Partial press
+
+Now say you want to write to Russia and Turkey and tell them how great you
+are:
+
+     signon ajenifer password
+     press to RT
+     Austria will conquer you both
+     endpress
+     signoff
+
+The key is line 2.  "RT" means Russia and Turkey.  Had you wanted just Italy,
+you'd type "press to I".  Also, anything between the press line and endpress
+line will be sent, so please remember to type endpress (not end press or
+endpres)!
+
+This is also a good time to write to the master and tell her/him you are a
+newbie:
+
+     signon ajenifer password
+     press to M
+     Austria is a clueless newbie.  Thanks for letting me play.
+     endpress
+     signoff
+
+(The M in Press to M stands for Master.  Typing Press to GM (don't do this)
+will send a copy to both Germany and the Master.) 
+
+By the way, the above are _not_ examples of good press! The game is called
+"Diplomacy," after all, and you may want to be a little more diplomatic in
+your own writings.
+
+     Step 10a) Submitting Moves
+
+Here is a sample of how you'd enter moves for Austria:
+
+     signon ajenifer password
+     A Vie-Gal
+     A Bud S A Vie-Gal
+     F Tri-Alb
+     signoff
+
+Note how the moves follow standard Diplomacy syntax.  Vienna is moving to
+Galicia with support from Budapest, and Trieste is taking Albania.  If this
+syntax does not make sense to you, you need to learn how to play Diplomacy,
+which is not the purpose of this document.  The Judge accepts 3-letter
+abbreviations for provinces where possible, but you can always enter the full
+name.  For some provinces, like Liverpool and Livonia, you need to use other
+abbreviations (Lpl and Lvn, respectively).  You can learn the legal
+abbreviations by requesting "get map" from the Judge.  You can also use a
+variety of other symbols for move commands, like -> or the word "moves" or
+the letter "m", and you can omit the "army" and "fleet" designations if you
+want; the Judge will fill them in for you (at least in standard games).
+
+Convoy orders are a little tricky.  The syntax for fleets is the same as you
+are used to from face-to-face games:  "F Nth C A Lon-Nwy", for example.  But
+the army orders have a special syntax (because trying to program the Judge to
+figure out all the possible convoy routes on its own turns out to be
+extremely complicated): you have to order the army to pass through each sea
+space along the route.  In the above example, you have to write
+
+     A Lon-Nth-Nwy
+
+Just writing "A Lon-Nwy" will give you a very confusing error message, and
+might cause you to get marked as "late" when you really weren't.  You can use
+the same syntax for more complicated convoys, such as "A Tun-Ion-Eas-Smy", as
+long as each of the fleets you name is in place and actually gives the
+corresponding convoy order.
+
+If you ever are uncertain where the units are, simply list the game (send
+"list jenifer" to the Judge) and you'll get the scoop on each piece's
+location.
+  
+     Step 10b) Submitting Retreats
+
+Sadly, everyone must retreat at some time or other.  Retreat syntax mirrors
+moves, so a Fleet retreating from Greece to Albania would be ordered like
+this: 
+
+     signon ajenifer password
+     F Gre - Alb
+     signoff
+
+If you'd rather disband the unit for strategic reasons, you'd say:
+
+     signon ajenifer password
+     F Gre Disband
+     signoff
+
+"Disband F Gre" won't work; the name of the unit has to come first for
+retreats.
+
+     Step 10c) Submitting Builds/Removals
+
+The syntax for adjustments varies somewhat from that used for moves and
+retreats.  You have to list the action (build or remove) before the province,
+so to build an army in Vienna, type:
+
+     signon ajenifer password
+     Build A Vie
+     signoff
+
+If faced with the need to remove a unit, say in Bohemia, you'd type:
+
+     signon ajenifer password
+     Remove A Boh
+     signoff
+
+Note that the syntax for a disbandment during a retreat (A Boh Disband)
+differs from a removal during the adjustment phase (Remove A Boh).  This can
+cause some confusion at first.
+
+If you have more than one build or removal to make, put each one on a
+separate line.
+
+     Step 11) Understanding Error Flags
+
+When the Judge replies to your emails, especially when you submit your moves,
+always check to see if it has found any errors.  A typical error comes from
+confusing a fleet with an army.  A stray word can also cause this (like
+typing singoff).  If you make any sort of error when you submit moves, even
+if all of your moves are accepted, you will get an error message from the
+Judge saying an error was (or several errors were) encountered.  Do not
+ignore this, even if your moves look 100% correct.  If the Judge says there
+is an error, you must clear the error flag or your moves will not be
+processed.
+
+To clear a flag, just signon and signoff, like this:
+
+     signon ajenifer password
+     signoff
+
+This sounds basic, but every new player I know has been late (and one was
+kicked out) simply from having an uncorrected error flag.  Of course, if the
+error caused an order to be ignored, you should resubmit the order correctly
+in addition to merely clearing the error flag.
+
+     Step 12) Understanding Promptness
+
+Every player has a dedication rating.  Every turn has a deadline and a grace
+period.  Get moves in on-time, and your dedication rating goes up.  Miss the
+deadline and your dedication rating goes down.  Miss the grace period, and
+your rating goes WAY down, and your position may be taken over by someone
+else!!  The Judges now keep track of how often you miss deadlines, and how
+many games you drop out of, and Masters can use these statistics to limit who
+is eligible to play in their games.  So ALWAYS be on-time.  Note also, that
+even if you are on-time, but you have an error flag as mentioned above, you
+will still be considered late and you still risk being kicked out at the end
+of the grace period, so always check your Judge replies carefully.
+
+For more details on reading a game listing and understanding when the
+deadlines will fall, you should send "get deadline" to the Judge.  The
+following is a quick introduction to how deadlines work:
+
+When you list out a game you will see the game's deadline parameters, which
+will look something like this:
+
+The parameters for 'bob' are as follows:
+  Move    clock  660 min 12.00 next  72.00 grace  48.00 delay 0.25 days -MTWTF-
+  Retreat clock  660 min  0.00 next  24.00 grace  24.00 delay 0.25 days -MTWTF-
+  Adjust  clock  660 min  0.00 next  24.00 grace  24.00 delay 0.25 days -MTWTF-
+
+There are three sets of parameters (for Move, Retreat, and Adjust phases). 
+In each set you will see a list of parameter names with each one followed by
+a value (it gets confusing, so remember the value comes after the name).  The
+deadline settings are as follows:
+
+Clock 
+
+No matter what else, the deadlines in this game will always fall at 660
+minutes after midnight (11am). A more typical setting, by the way, is "clock
+1410", which is 11:30 pm. Whatever it says here, it is minutes after midnight
+in whatever time zone the Judge uses.
+
+If you see a -1, it means the deadline (for that phase) can fall at any time
+of day.
+
+Min 
+
+Regardless of how soon moves are submitted, this game will not process for at
+least twelve hours, but during retreats and adjustments, there is no minimum
+before adjudication.  Yes, that's right, the Judge will _not_ wait for the
+deadline (unless you tell it to, using "SET WAIT"); it will process orders as
+soon as the Min time has passed and all players have submitted orders.
+
+Next 
+
+NEXT is the most important setting. This game has move deadlines every 72
+hours and retreats/adjustments one day after the moves/retreat process.
+When people say a game is fast or slow, they mean it has a small or large
+NEXT setting.  The deadlines can be longer than these settings (to advance
+the deadline due to the Clock or Days settings), but never shorter, unless
+the Master changes it manually.
+ 
+Grace
+
+If you are late (Don't be!), you'll have this many hours before you get
+kicked out of the game.
+
+Delay 
+
+If you are the last to enter moves, you'll have this many hours to change
+your mind before the judge processes, unless someone has asked the judge to
+wait for the deadline (set wait).  Typically, you get 30 minutes (0.5 hours).
+ 
+Days
+
+The deadlines will only fall on the days listed. A small letter means no
+morning deadlines.  (Yes, this is the one obscure exception in which the
+Judge treats CAPITAL and small letters differently!)
+
+     Conclusion
+
+You should be set for basic Judge play now.  For more detail, read the Judge
+files you got in Step 2 (you printed them out like I told you, yes?).
+Experiment a little as well.  The worst that can happen is you can be
+eliminated by the end of 1902, but you will learn a lot and you will have
+cool stories to tell afterwards.  Have fun and good luck!
+
+-----
+
+*  Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+   rights reserved.  Used with permission.
+
+** Adapted by Russ Blau from material originally written by Andy Schwarz.
