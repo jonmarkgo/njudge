@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -10,7 +13,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "port.h"
+#include "config.h"
 
 /*
  *  Flock, theory of operation.

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.4  2003/04/08 09:58:31  millis
+ * Fix bug 131 (problems with dip.lock2 lock)
+ *
  * Revision 1.3  2003/03/25 23:35:33  millis
  * Comment out "Exit" line, as meses up on exim installations
  *
@@ -23,6 +26,7 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include "config.h"
 #include "functions.h"
 #include "diplog.h"
 
@@ -48,7 +52,6 @@
  *   16) Release interlock on dip.lock1. 
  *   17) Release interlock on dip.lock2. 
  */
-#include "port.h"
 
 #define LOCK1	"dip.lock1"
 #define LOCK2	"dip.lock2"

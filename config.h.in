@@ -1,5 +1,11 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define to 1 if you have the `flock' function. */
+#undef HAVE_FLOCK
+
+/* Define to 1 if you have the `mrand48' function. */
+#undef HAVE_MRAND48
+
 /* Define to 1 if you have the `strdup' function. */
 #undef HAVE_STRDUP
 
@@ -23,3 +29,17 @@
 
 /* Version number of package */
 #undef VERSION
+
+#ifdef HAVE_FLOCK
+  #include <sys/file.h>
+  #define lockfd(f,nb) flock(f, LOCK_EX | (nb ? LOCK_NB : 0))
+#else
+  #include <fcntl.h>
+  #define lockfd(f,nb)  lockf(f, (nb ? F_TLOCK : F_LOCK), 0)
+#endif
+
+#ifdef HAVE_MRAND48
+  #define random() mrand48()
+  #define srandom(seed) srand48((long)seed)
+#endif
+

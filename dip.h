@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.36  2003/08/25 14:39:36  millis
+ * Fixed bug 220
+ *
  * Revision 1.35  2003/08/18 23:16:43  millis
  * Refix bug 211
  *
@@ -423,7 +426,6 @@ struct dedication {
 	long d0;		/* Date for expanded formula */
 };
 
-#include "port.h"
 #include "variant.h"
 
 #define PRINT_POWER \

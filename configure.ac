@@ -56,6 +56,8 @@ fi
 
 dnl Checks for functions
 AC_CHECK_FUNCS(strdup) 
+AC_CHECK_FUNCS(flock)
+AC_CHECK_FUNCS(mrand48)
 
 AC_OUTPUT(Makefile smail dipclean dip.conf)
 

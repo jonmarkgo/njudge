@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2002/08/27 22:27:50  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -13,7 +16,6 @@
 #include <ctype.h>
 #include "config.h"
 #include "functions.h"
-#include "port.h"
 
 /* TODO rewrite this in perl */
 

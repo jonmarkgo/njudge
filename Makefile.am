@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.32  2003/07/23 21:47:07  millis
+# Remove delete of map files from remap target.
+#
 # Revision 1.31  2003/07/23 06:00:37  jaldhar
 # Force calls to date in Makefile.am to use the 'C' locale.  (Fixes Bug 138)
 # auxilliary files regenerated to match this change.
@@ -90,7 +93,8 @@ bin_SCRIPTS= atrun dipclean diprun newlogs rundipmap runlistmap smail makeflist
 
 # all headers except defaults.h this one has a special make rule below
 
-noinst_HEADERS=	conf.h  \
+noinst_HEADERS=	acconfig.h \
+		conf.h  \
 		config.h \
 		dip.h   \
 		diplog.h   \
@@ -101,7 +105,6 @@ noinst_HEADERS=	conf.h  \
 		ml_signon.h  \
 		plyrdata.h \
 		porder.h \
-		port.h \
 		variant.h \
 		zmacro.h \
 		zparseb.h

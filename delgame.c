@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2002/08/27 22:27:48  millis
+   ** Updated for automake/autoconf functionality
+   **
    ** Revision 1.3  2001/10/20 12:11:11  miller
    ** Merged in changes from DEMA and USTV CVS: ----------------------------------------------------------------------
    **
@@ -21,7 +24,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "port.h"
 #include "config.h"
 #include "dip.h"
 
