@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2002/05/14 23:05:49  miller
+ * Allow signalling convoys in Mach2 games
+ *
  * Revision 1.7  2002/04/22 21:27:40  miller
  * Small bug that allowed illegal converts
  *
@@ -56,7 +59,7 @@ int ma_movein(char **s, int p)
 	/* char **s; Input stream */
 	/* int p; Power specification */
 
-	char c, order, *t;
+	char c, order, *t, target_type;
 	char cc; /* MLM 12/06/2001 remember unit type for convert order */
 	int i, j, p1, p2, u, u1, u2, c1, c2, bl;
 	unsigned char *bp;
@@ -158,6 +161,7 @@ int ma_movein(char **s, int p)
 	case 'c':
 	case 's':
 		*s = get_type(*s, &c);
+		target_type = c;  /* Remember type of unit being convoyed/supported */
 		*s = get_prov(*s, &p2, &c2);
 		if (!p2) {
 			errmsg("Unrecognized source province for support/convoy -> %s", *s);
@@ -200,6 +204,12 @@ int ma_movein(char **s, int p)
 			if (!p2) {
 				errmsg("Support/convoy movement to unrecognized province -> %s",
 				       *s);
+				return E_WARN;
+			}
+			if (pr[p2].flags & PF_VENICE && 
+			    dipent.xflags & XF_MACH2 &&
+			    target_type == 'A') {
+				errmsg("Armies not allowed in %s.\n", *s);
 				return E_WARN;
 			}
 		}
@@ -277,6 +287,12 @@ int ma_movein(char **s, int p)
 			       water(p1) ? "the " : "", pr[p1].name, *s);
 			return E_WARN;
 		}
+		if (pr[p2].flags & PF_VENICE && unit[u].type == 'A' &&
+		    dipent.xflags & XF_MACH2)
+		{
+			errmsg("Armies not allowed in %s.\n", *s);
+			return E_WARN;
+		}
 		t = get_action(*s, &c);
 
 		if (c == 'm') {
@@ -288,7 +304,8 @@ int ma_movein(char **s, int p)
 				while (c == 'm') {
 					if (!valid_move(i, p2, &c2, &j) ||
 					    !convoyable(p2) ||
-					    (!(u2 = pr[p2].unit) || unit[u2].type != 'F')) {
+					    (!(u2 = pr[p2].unit) || unit[u2].type != 'F') ||
+					    (pr[p2].flags & PF_VENICE && dipent.xflags & XF_MACH2)) {
 						errmsg("The army in %s can't convoy through %s%s.\n",
 						       pr[p1].name, water(p2) ? "the " : "", pr[p2].name);
 						return E_WARN;
@@ -387,6 +404,12 @@ int ma_movein(char **s, int p)
 		if (cc == 'F' && !has_port(p1)) {
 			errmsg("%s is not a port.  Can only convert to an army.\n",
 			       pr[p1].name);
+			return E_WARN;
+		}
+		if (cc == 'A' && 
+		    pr[p1].flags & PF_VENICE && 
+		    dipent.xflags & XF_MACH2) {
+			errmsg("Armies not allowed in %s.\n", pr[p1].name);
 			return E_WARN;
 		}
 

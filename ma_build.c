@@ -1,6 +1,10 @@
 
 /*
  * $Log$
+ * Revision 1.5  2002/05/31 12:38:28  millis
+ * Correct problem not allowing builds in Venice to change mind
+ * Also allow first turn to have an over-spend (needed for scenarios)
+ *
  * Revision 1.4  2002/02/25 11:51:51  miller
  * Various updates for Machiavelli bug fixes
  *
@@ -82,6 +86,11 @@ int ma_buildin(char **s, int p)
 		}
 		if (type == 'A') {
 			c1 = MV;
+			if (pr[p1].type & PF_VENICE && dipent.xflags & XF_MACH2) {
+			        errmsg("Armies not allowed in %s.\n", pr[p1].name);
+				return E_WARN;
+			}
+
 		} else if (type == 'F') {
 			if (!has_port(p1)) {
 				errmsg("Cannot build a fleet in %s which isn't a port.\n",

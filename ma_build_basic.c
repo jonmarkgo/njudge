@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.4  2002/02/25 11:51:51  miller
+   ** Various updates for Machiavelli bug fixes
+   **
    ** Revision 1.1.2.1  2001/10/19 23:34:42  dema
    ** First proper version to allow builds in NoMoney Mach games
    **
@@ -196,6 +199,11 @@ int ma_buildin_basic(char **s, int p)
 				pr[p1].name);
 			return E_WARN;
 		}
+		if (type == 'A' && pr[p1].flags & PF_VENICE && dipent.xflags & XF_MACH2) {
+			errmsg("Armies not allowed in %s.\n", pr[p1].name);
+			return E_WARN;
+		}
+
 		if (type != 'F')
 			c1 = MV;
 		else {
