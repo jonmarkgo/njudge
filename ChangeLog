@@ -1,3 +1,527 @@
+2004-07-30 15:06  millis
+
+	* BUGS, NEWS: Update for 1.7.0 release
+
+2004-07-30 15:01  millis
+
+	* variant.c, variant.h, data/info.minorpower, data/map.minorpower,
+	  data/seed.minorpower: Updated Minorpower variant to have real
+	  power names
+
+2004-07-28 10:02  millis
+
+	* st_bid.c: Fix to allow bids in first turn of game!
+
+2004-07-27 16:48  millis
+
+	* st_bid.c: Don't allow bids for powers with no centers
+
+2004-07-27 16:14  millis
+
+	* st_porder.c: Bug 341, don't show eliminated Mercenary powers in
+	  intimate
+
+2004-07-27 16:12  millis
+
+	* params.c: Bug 344, show special Intimate winning conditions
+
+2004-07-27 16:09  millis
+
+	* ml_signon.c: Signon problems fixed (Bug 91)
+
+2004-07-27 16:07  millis
+
+	* dip.c: Bug 343 (say how many missing players) and Bug 247 (extra
+	  dots in secret game late warning)
+
+2004-07-27 16:04  millis
+
+	* common.c: Fix bug 342, no bidding phase in Intimate if no
+	  mercenaries alive
+
+2004-07-26 16:18  millis
+
+	* data/absence: Updated description for Bug 340
+
+2004-07-26 16:17  millis
+
+	* dip.c, functions.h, history.c, ml_date.c, ml_set.c: Bug 340:
+	  default to 00:00 for absence start and 23:59 for absence end.
+	  All other uses of date function stay unaltered.
+
+2004-07-26 15:40  millis
+
+	* cmap.c: Fix bug 291 fix, as was failing for variants with
+	  seed.<n> files only
+
+2004-07-26 15:32  millis
+
+	* params.c: Small change to show Duplex vs number of powers
+	  actually playing
+
+2004-07-26 15:32  millis
+
+	* ml_signon.c: Bug fix for Bug 91, new signons were acting as if
+	  master!
+
+2004-07-25 09:13  millis
+
+	* dip.c, dip.h, functions.h, ml_signon.c, st_build.c, st_porder.c,
+	  st_retreat.c, st_status.c: Bug fixes for Bug 91 (Duplex powers),
+	  Bug 233 (Abandoned power cannot return in duplex) and Bug 206
+	  (allow takeover of unknown abandoned countries)
+
+2004-07-25 09:07  millis
+
+	* params.c, ml_set.c, dipent.c, data/index: Bug 151, allow less
+	  powers than variant default.
+
+2004-07-25 09:01  millis
+
+	* draw.c: Bug 336, allow draw/concede for Intimate games
+
+2004-07-12 17:29  millis
+
+	* st_build.c: Fix bug 339, allowing build transform games to permit
+	  players changing mind about builds without allowing too many.
+
+2004-07-12 17:20  millis
+
+	* data/index: Bug 117: explain set notrafo now working 1.7.0
+	  onwards
+
+2004-07-12 17:14  millis
+
+	* ml_set.c: Allow Transformation to be switched off (Bug 117)
+
+2004-07-12 02:46  millis
+
+	* dip.c: Bug 226: ON reflection, 3 day reminders for paused games
+	  seems right (as if less, players would get most annoyed!).
+
+2004-07-11 17:41  millis
+
+	* ml_list.c: Fix bug 335 (don't special list Any-Site games)
+
+2004-07-11 17:29  millis
+
+	* ml_press.c: Don't show normal press warnings if game is PAUSED.
+
+2004-07-11 17:21  millis
+
+	* dip.c: Fix Bug 226: remind every move frequency for paused games.
+	  Also a fix for Bug 91 / Bug 297, to only mail real players on a
+	  game pause.
+
+2004-07-11 16:32  millis
+
+	* st_porder.c: Bug297: Improved Intimate victory checking.
+
+2004-07-10 00:18  nzmb
+
+	* st_movement.c: Final tweaks to new convoy code. Fixes bug #290.
+
+2004-07-09 10:57  millis
+
+	* st_movement.c: Restored disabled code for multi-province units
+	  checks
+
+2004-07-08 21:07  nzmb
+
+	* st_movement.c: Major convoy changes -- the convoy field in the
+	  unit struct now is a list of provinces being convoyed through,
+	  not a list of units. This simplifies convoy processing in blind
+	  (it allows us to accept all convoys, which allows a fix to bug
+	  #290). Fair warning: this code compiles but is not tested --
+	  that's coming.
+
+2004-07-08 20:32  nzmb
+
+	* po_mastrpt.c: Missing #include of functions.h.
+
+2004-07-08 15:20  millis
+
+	* mail.c, ml_set.c, po_mastrpt.c: Bug 91: small changes to improve
+	  status handling and show only real player information to master
+
+2004-07-07 16:20  millis
+
+	* ml_list.c: Bug 332: Do not reveal player move status in a secret
+	  game
+
+2004-07-07 15:50  millis
+
+	* dip.c, lib.c, ml_set.c: Bug91: further fixes for Duplex code
+	  (these mainly to get absences and late handling working)
+
+2004-07-07 15:00  millis
+
+	* st_movement.c: Small fix as was showing 'Unit' not real type for
+	  convoyed units
+
+2004-07-05 00:17  nzmb
+
+	* st_movement.c: Partial fix to bug 290. Unfortunately, convoys in
+	  blind seem to be somewhat broken because of this fix (by my
+	  testing, long convoys don't work). I'll fix this as soon as I
+	  can.
+
+2004-07-04 23:33  nzmb
+
+	* st_movement.c: Code cleanup: fixed unnecessary tests in if
+	  clauses and fixed formatting in part of movein.
+
+2004-07-04 21:01  nzmb
+
+	* cmap.c: Fix bug #291.
+
+2004-07-03 20:53  millis
+
+	* porder.c: Fix bug 299 (do not send moves on terminated game)
+
+2004-07-03 20:49  alange
+
+	* ml_date.c: Bug 323. Rewrite date calculation logic to take
+	  advantage of mktime().  Semantics may be slightly different in
+	  evaluating ambiguous dates.
+
+2004-07-03 20:33  millis
+
+	* dip.h: Added Portage and irregular flags
+
+2004-07-03 20:28  millis
+
+	* dip.c: Bug 97: don't make each power have to move if duplex and
+	  supress extra 'reminder' messages.
+
+2004-07-03 20:25  millis
+
+	* functions.h, lib.c, po_init.c, porder.h, st_movement.c,
+	  data/index, data/info.portage: Fix bug 328, implement Portage
+	  variant
+
+2004-07-03 20:10  millis
+
+	* params.c: Display new irregular and portage flags
+
+2004-07-03 20:10  millis
+
+	* ml_set.c: Bug 329, allow changes of settigns when game is
+	  running, just set the 'irregular' flag
+
+2004-06-28 10:47  millis
+
+	* st_bid.c: Limit bids only to 9999 or less
+
+2004-06-28 10:26  russblau
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: Updated
+	  User's Manual for forthcoming version 1.7.0.
+
+	  Note the new "cover page" in the HTML version!
+
+2004-06-27 04:00  millis
+
+	* st_bid.c: Bug 297: Changed to prevent oversized bids
+
+2004-06-26 18:50  millis
+
+	* dip.c, functions.h, lib.c, phase.c, po_init.c, st_bid.c,
+	  st_build.c, st_porder.c: Futher Intimate fixes (Bug 297)
+	  specifically to allow phased orders and correct turns not
+	  processing, plus more information printed.
+
+2004-06-16 23:12  nzmb
+
+	* rdip.c: Made rdip handle an early death of the dip program much
+	  more gracefully.  Instead of bailing out, it assumes the judge
+	  couldn't process the message and skips it.
+
+2004-06-16 00:54  nzmb
+
+	* bailout.c, functions.h, rdip.c: A couple of changes to improve
+	  the interaction between rdip and bailout, and make rdip a bit
+	  more fault tolerant: (1) rdip now handles SIGPIPE and bails the
+	  judge out gracefully should it     occur (previously, things died
+	  in mysterious and unpleasant ways).  (2) Fixed segfaults that
+	  occured when rdip calls bailout.
+
+2004-06-15 16:50  millis
+
+	* st_porder.c: Bug 297: fixed problem with using dipent.np and not
+	  dipent.n
+
+2004-06-15 16:48  millis
+
+	* st_porder.c: Bug 297: fix a problem with detecting intimate
+	  victory
+
+2004-06-12 12:19  millis
+
+	* st_movement.c: Fix bug 322 (not showing proxied supported units
+	  correctly)
+
+2004-06-12 06:00  alange
+
+	* lib.c: Fixed logic error in safety code from previous commit.
+
+2004-06-11 14:01  alange
+
+	* lib.c: Bug 132: Cleaned up absence and deadline calculation. No
+	  more recursion.
+
+2004-06-11 10:27  millis
+
+	* st_bid.c: Bug 297: Minor change to not show zero bids in results
+
+2004-06-09 15:05  millis
+
+	* lib.c, ml_list.c, st_bid.c, st_retreat.c: More fixes for Bug 297,
+	  Intimate Diplomacy
+
+2004-06-08 01:02  millis
+
+	* st_porder.c: Bug 297: Fix so that only real, alive players can
+	  win
+
+2004-06-05 02:00  millis
+
+	* st_bid.c, po_init.c: Bug 297 : problems with calculating
+	  effective bids fixed
+
+2004-06-03 15:57  millis
+
+	* po_init.c: Bug 297 - fix for Intimate where not marking player as
+	  needing to make moves (status value was being lost)
+
+2004-06-01 16:16  millis
+
+	* po_init.c: Fix bug 316 (incorrect blockaded centres)
+
+2004-05-25 05:45  millis
+
+	* smail.in: Fix Bug 267, allow accented characters and don't mess
+	  up '=' sequences
+
+2004-05-23 15:48  millis
+
+	* st_build.c: Fix for Intimate, show default disbands for
+	  controlled powers
+
+2004-05-23 08:53  millis
+
+	* dip.c: Restored inadvertently deleted 1.49 and 1.48 changes.
+
+2004-05-22 03:31  millis
+
+	* functions.h: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 03:28  millis
+
+	* st_porder.c: Restored 1.22 version changes mistakenly deleted
+
+2004-05-22 03:02  millis
+
+	* porder.c: Oh dear: shouldn't check in before trying to compile!
+
+2004-05-22 03:00  millis
+
+	* porder.c: Restored version 1.4 changes mistakenly lost
+
+2004-05-22 02:39  millis
+
+	* dip.h: Repleaced inadvertently lost changes from 1.46 and 1.45
+
+2004-05-22 02:23  millis
+
+	* ml_signon.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 02:18  millis
+
+	* mail.c, lib.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 02:13  millis
+
+	* ml_set.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 02:08  millis
+
+	* draw.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 02:01  millis
+
+	* dipent.c, conf.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 01:58  millis
+
+	* global.c, ma_movement.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 01:54  millis
+
+	* dip.h, conf.h, defaults.h, params.c, phase.c, ml_list.c: Bug 297:
+	  Add Intimate Diplomacy
+
+2004-05-22 01:51  millis
+
+	* st_status.c, porder.c, st_build.c, st_movement.c, po_mastrpt.c,
+	  po_init.c, st_porder.c, common.c, dip.c: Bug 297: Add Intimate
+	  Diplomacy
+
+2004-05-22 01:47  millis
+
+	* Makefile.in, defaults.inc.in, data/info.intimate,
+	  data/rules.intimate, st_bid.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 01:37  millis
+
+	* mach.h, porder.h, Makefile.am: Bug 297: Add Intimate Diplomacy
+
+2004-05-21 06:36  millis
+
+	* smail.in: Bug 301: Send the njudge version number as well
+
+2004-05-20 08:48  russblau
+
+	* ml_set.c: Fix bug 123 (SET ALLOW|DENY MASTER works when it
+	  shouldn't)
+
+2004-05-20 07:08  russblau
+
+	* ml_set.c: Fix Bug 310 (Wrong error message when using inverted
+	  flag logic)
+
+2004-05-19 19:21  russblau
+
+	* ml_set.c: Fixed Bug 308 (Error parsing powerlist in SET APPROVE
+	  command)
+
+2004-05-17 19:05  nzmb
+
+	* tm_xpress.c: Fixed wrong e-mail title and compiler warning in
+	  send_diary() function.
+
+2004-05-13 11:40  russblau
+
+	* data/index: Formatting.
+
+2004-05-13 06:45  machmstr
+
+	* data/info.dipmach2: Minor correction of income for Russia.
+	  Eminently playable variant. Better than standard ;-)
+
+2004-05-13 06:35  machmstr
+
+	* data/map.dipmach2: Minor correction of income for Russia.
+	  Eminently playable variant. Better than standard ;-)
+
+2004-05-13 06:33  machmstr
+
+	* data/: info.dipmach3, map.dipmach3, seed.dipmach3: no message
+
+2004-05-13 05:56  machmstr
+
+	* data/: info.dipmach3, map.dipmach3, seed.dipmach3: Some minor
+	  income changes and addition of garrisons in Sweden, Denmark,
+	  Holland, Belgium, Spain and Portugal. Very nice variant. High
+	  playbility.
+
+2004-05-13 05:50  machmstr
+
+	* data/: info.mach_aoc, map.mach_aoc, seed.machaoc: MACH AOC
+	  version 3. All countries have 3SC. Papacy removed in favour for
+	  Savoy. (Notice that AOCv2 is playable, but very difficult to play
+	  for the 2SC powers, and too crowded in central Italy.)
+
+2004-05-13 05:46  machmstr
+
+	* data/: map.machiavelli, map.mach2_sfd2, map.machiavelli2,
+	  map.mach2_span, map.mach_eos, map.mach_sfd1, map.mach_sfd2,
+	  map.mach_span, map.mach2_sfd1: Changes of some abbreviations to
+	  "dis-ambiguate" them. Carinthia car->cri  to avoid confusion with
+	  carniola (crn). Pistoia pis->pst to avoid confusion with Pisa
+	  (psa). Salerna sal->slr (in analogy with Saluzzo-slz). Treviso
+	  tre->trv to avoid confusion with trent (trt). Romagna rom->rma in
+	  analogy with Rome (rme).
+
+2004-05-13 05:42  machmstr
+
+	* data/: info.machiavelli, info.machiavelli2: CR/LF fix
+
+2004-05-13 05:41  machmstr
+
+	* data/rules.machiavelli: Note about support into multi-coastal
+	  provinces added.
+
+2004-05-12 17:17  millis
+
+	* lib.c, mail.c: Don't send emails to NOBODY (Bug 306)
+
+2004-05-12 16:56  millis
+
+	* ml_signon.c: Fix bug 298, don't advance deadline if first turn
+	  and other players still CD on takeover.
+
+2004-05-12 16:44  millis
+
+	* ml_signon.c: Fix Bug 305 so that same player can return, even if
+	  dead
+
+2004-05-12 11:09  millis
+
+	* data/index: Small updates to show incompletely implemented
+	  commands.
+
+2004-05-11 13:10  jaldhar
+
+	* Makefile.am, Makefile.in, configure: Fixed duplication of datadir
+	  in upgrade-data target of Makefile.am.  Other automake files
+	  regenerated in the process.
+
+2004-05-10 07:21  jaldhar
+
+	* Makefile.am, Makefile.in, aclocal.m4: Fixed bug 215 by ensuring
+	  that the data files were copied before we tried to run cmap.
+	  Automake files regenerated in the process.
+
+2004-05-09 12:44  millis
+
+	* ma_build.c: Fix Bug 303 (crash in build results output)
+
+2004-05-09 12:02  millis
+
+	* ma_build.c: Fixed bug 302 (prevent armies being built in Mach2 in
+	  Venice)
+
+2004-05-05 14:45  russblau
+
+	* plyrdata.c: [no log message]
+
+2004-05-05 14:43  russblau
+
+	* plyrdata.c: Fixed minor typos in strings and comments, and some
+	  funky whitespace.
+
+2004-04-15 07:29  russblau
+
+	* data/countries.x: A band-aid on a broken leg.  <g>
+
+2004-04-06 17:03  millis
+
+	* common.c: Fix Bug 287 (artillery support not working)
+
+2004-04-06 17:01  millis
+
+	* st_movement.c: fix bug 286 (allow artillery to be convoyed)
+
+2004-04-05 13:06  millis
+
+	* docs/: njudge-work-guide.html, njudge-work-guide.sxw: First
+	  proper version
+
+2004-04-04 09:37  njudge
+
+	* ChangeLog: Autobuild njudge_1_6_0
+
 2004-04-04 09:10  millis
 
 	* njudge.spec, configure.ac: Next version
