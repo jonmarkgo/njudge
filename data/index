@@ -313,9 +313,9 @@ mod/mac SET [NO] ADJACENT|ADJACENCY
         Disables/enables optional rule that allows bribes from nonadjacent
         players.
 
-mod/bgs	SET [NO] ALLIED VICTORY                                       {1.7.2}
+mod/bgs	SET [NO] ALLIED WIN                                            {1.7.2}
 	Disables/enables victory condition of an alliance, in duplex games.
-	Get 'info.duplex'.	
+	Get 'info.duplex'. Defaults to enabled.	
 
 mod/    SET ALL PRESS
         To request that all partial press be sent to you as the moderator of
