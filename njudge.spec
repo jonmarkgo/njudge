@@ -28,6 +28,7 @@ make install DESTDIR=$RPM_BUILD_ROOT docdir=/usr/share/doc/njudge mandir=/usr/sh
 rm $RPM_BUILD_ROOT/home/judge/newlogs
 install -m 0755 debian/newlogs $RPM_BUILD_ROOT/home/judge/newlogs
 install -D -m 0755 debian/cron.weekly $RPM_BUILD_ROOT/etc/cron.weekly/njudge
+echo After installing this package, you must edit /home/judge/dip.conf
 
 %post
 /usr/sbin/useradd -d /home/judge -M -c"Diplomacy Adjudicator" judge || true
