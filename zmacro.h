@@ -1,5 +1,5 @@
 /*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Sep 2002
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Apr 2003
  * included in njudge package.
  */
 
@@ -16,15 +16,10 @@
 #define DEBUG_PARSE
 #endif
 
-#if defined(DEBUG_PARSE) || defined(DEBUG_OUTPUT) || defined(DEBUG_VAR)
-#define DEBUG_any
-#endif
-
-#ifdef DEBUG_any
 #ifndef fDebug
 #define fDebug stderr
 #endif
-#endif //if DEBUG...
+
 
 #define nil 0
 #define false 0

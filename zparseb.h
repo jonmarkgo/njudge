@@ -1,5 +1,5 @@
 /*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Sep 2002
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Apr 2003
  * included in njudge package.
  */
 
@@ -41,12 +41,13 @@ typedef enum {
   e_Result_Dislodged = 2,
   e_Result_Ownership = 3,
   e_Result_Builds = 4,
-  e_Result_invalid
+  e_Result_invalid      // Must be the last+1 for debugging (i.e.=5)
 } eResultState;
 /* --------------------------------------------------------
    Own definitions
 */
 unsigned FindString (char* sub, char* str) ;
+unsigned FindStringDislodged (char* sub, char* str) ;
 
 int ParseInput (ArrayResStr* lPtr, IoOptions* ioPtr) ;
 

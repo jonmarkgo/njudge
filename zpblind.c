@@ -1,13 +1,13 @@
 /* zpblind.c
-   - Diplomacy Blind Parsing - main program - Version 0.7
+   - Diplomacy Blind Parsing - main program - Version 0.8
  */
 
 /*
- * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Dec 2002
+ * Coded by H. Moreira (henrique@moreira.dnsalias.net) in Apr 2003
  * included in njudge package.
  */
 
-#define yZPBLIND_VERSION "v0.7"
+#define yZPBLIND_VERSION "v0.8"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,7 +99,7 @@ int go (IoOptions* ioPtr)
    str[--len] = 0;
    if ( len>0 && str[--len]=='\r' ) str[len] = 0;
    len--;
-   // Trim right
+   // Trim right -- This is VERY IMPORTANT!
    while ( len>=0 && (str[len]==' ' || str[len]=='\t') )
      str[len--] = 0;
    // Write temporary file
