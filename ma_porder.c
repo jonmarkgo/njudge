@@ -160,14 +160,15 @@ static void newowner(void)
 	   ** Update the pr[].gunit and unit info
 	 */
 
-	   for (u = 1; u <= nunit; u++)
-	   if (unit[u].owner <= 0)
+	   for (u = 1; u <= nunit; u++) {
+	       if (unit[u].owner <= 0)
                         continue;
-	   if (unit[u].type == 'G')
-	      pr[unit[u].loc].gunit = u;
-	   else
-	      pr[unit[u].loc].unit = u;
-
+	       if (unit[u].type == 'G') {
+	          pr[unit[u].loc].gunit = u;
+	       } else {
+	          pr[unit[u].loc].unit = u;
+	       }
+	   }
 
 	/*
 	   **  Compute the new owner based on what units are around.
