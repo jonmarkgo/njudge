@@ -34,6 +34,7 @@ echo After installing this package, you must edit /home/judge/dip.conf
 /usr/sbin/useradd -d /home/judge -M -c"Diplomacy Adjudicator" judge || true
 chown -R judge:judge /home/judge
 perl -pi -e 's!\.\./!\./!g;' /home/judge/dip.conf || true
+perl -pi -e 's/root/judge/g;' /home/judge/dip.conf || true
 mv /home/judge/root-forward /home/judge/.forward || true
 perl -pi -e 's/root/judge/g;' /home/judge/smail || true
 

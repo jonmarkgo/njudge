@@ -8,6 +8,7 @@ if [ "$1" = "configure" ]; then
   /usr/sbin/adduser --home /home/judge --no-create-home --gecos "Diplomacy Adjudicator" --disabled-password --quiet judge || true;
   `chown -R judge:judge /home/judge`;
   perl -pi -e 's!\.\./!\./!g;' /home/judge/dip.conf || true
+  perl -pi -e 's/root/judge/g;' /home/judge/dip.conf || true
   mv /home/judge/root-forward /home/judge/.forward || true
   perl -pi -e 's/root/judge/g;' /home/judge/smail || true
 fi
