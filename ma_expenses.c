@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2002/02/25 11:51:51  miller
+ * Various updates for Machiavelli bug fixes
+ *
  * Revision 1.3.2.1  2001/10/19 23:35:11  dema
  * Do not allow expenses if NoMoney game
  *
@@ -446,10 +449,14 @@ void expout(int pt)
 	unsigned char result[WILD_PLAYER][4];
 	unsigned char counter[MAXUNIT];
 	unsigned char amount[WILD_PLAYER][4];
-	unsigned char assassin[WILD_PLAYER];
+	unsigned char assassin[WILD_PLAYER];  /* incremented if player is assassinated */
+	int nosiege[NPROV+1];
 
 	if (dipent.xflags & XF_NOMONEY)
 	    return;
+
+	for (p1=1; p1 <= NPROV; p1++)
+		nosiege[p1] = 0;   /* Initialise array */
 
 	if (err)
 		fprintf(rfp, "\n");
@@ -1049,13 +1056,17 @@ void expout(int pt)
 			for (u = 1; u <= nunit; u++) {
 				if (unit[u].owner == p) {
 					unit[u].order = 'n';
-					if (is_sieged(p1 = unit[u].loc)) {
-						remove_siege(p1);
+					/* See if province is besieged or has a unit besieging it */
+					if (is_sieged(p1 = unit[u].loc) || (pr[p1].unit && unit[pr[p1].unit].order == 'b')) {
+						nosiege[p1]++; /* Remember to clear siege later */
 						if (unit[u].type == 'G') {
+						   /* See if besieger was not assassinated too */
+						    if (!assassin[unit[pr[p1].unit].owner]) {
 							unit[u].owner = 0;
 							ncown[p1] = unit[pr[p1].unit].owner;
 							pr[p1].gunit = 0;
 							fprintf(rfp, "Besieged Garrison %s disbands.\n", pr[p1].name);
+						    }
 						} else {
 							fprintf(rfp, "Siege on %s lifted.\n", pr[p1].name);
 						}
@@ -1081,9 +1092,19 @@ void expout(int pt)
 							fprintf(rfp, "%5d   Okay       %s\n", k, pr[p1].name);
 						}
 					}
+				} else if (pr[p1].cown == p && cityvalue(p1)) {
+					/* Bug 29, shown cities too, so as not forgotten
+					 * but they will never able to rebel */
+					fprintf(rfp, "        No effect  %s\n", pr[p1].name);
 				}
 			}
 		}
+	}
+
+	/* Pass 6, clear sieges involving assassinated units (as found above) */
+	for (p1 = 1; p1 <= npr; p1++) {
+	    if (nosiege[p1])
+		remove_siege(p1);
 	}
 	if (!nl)
 		fputs("\nNone.\n", rfp);
