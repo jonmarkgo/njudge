@@ -1,0 +1,25 @@
+
+Timezone
+--------
+
+If you want to run the judge so that it uses a different timezone to the 
+default for the system, this is easily done using the UNIX environment 
+variable 'TZ'.
+
+If, for example, you wish the judge to run according to British time, add 
+the following line to the judge's .bashrc file (assuming using bash):
+
+export TZ=GMT0BST
+
+Then the judge will adjust all times to this new standard. You can check 
+this simply by issuing the 'date' system command.
+
+The format is explained in the tzset() man page, but is simply:
+
+<tz-name><offset><dtz-name> , where:
+
+ - <tz-name> is 3+ character name for normal timezone
+ - offset is hour offset from Universal time
+ - <dtz-name> is 3+ character ame for summer timezone
+
+Millis Miller, 5th February 2003 
