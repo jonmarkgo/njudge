@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                   Nov 16, 2003
+Greetings from the Diplomacy* Adjudicator!!                   Dec 02, 2003
 Rules.Machiavelli*
 
 INTRODUCTION
@@ -946,7 +946,7 @@ Movement orders:
 <type> <s-prov> <support> <type> <s-prov>
 <type> <s-prov> <support> <type> <s-prov> <moves> <d-prov>
 <type> <s-prov> <convoy>  <type> <s-prov> <moves> <d-prov>
-<type> <s-prov> <convert> <type>
+<type> <s-prov> <convert> <type> <coast>
 <type> <s-prov> <besiege>
 <type> <s-prov> <lift>
 
@@ -972,6 +972,7 @@ Where:
 <s-prov>   = Source province.
 <d-prov>   = Destination province.
 <c-prov>   = Intermediate water province in a convoy route.
+<coast>    = <empty>, "nc", "sc", "ec" or "wc"
 <holds>    = "h", "hold", "holds", "stand", "stands".
 <moves>    = "-", "->", "m", "move", "moves", "move to", "moves to".
 <support>  = "s", "support", "supports".
@@ -998,6 +999,10 @@ features)
 'Tech note'.  In original Machiavelli a unit may be disbanded anytime and
 anywhere by writing for example "a mil 0".  That is not allowed in judge
 Mach.
+'Tech note1'. In Machiavelli variants, some ports exist on bi-coastal 
+provinces. For these, when converting from a garrison to a fleet, the
+coast must be specified. For all other conversions, the coast should
+be not specifed (left as <empty>).
 
 
 EXAMPLE OF ORDERS
@@ -1273,6 +1278,8 @@ v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how
     to play in standard diplomacy style. Auth. S. Lidsell.
 v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
     provinces. Auth. S. Lidsell.
+v2.5 2nd December 2003. Added coastal specification description for converts.
+    Author Millis Miller.
 
 
 This document is free to distribute for non-commercial and non-profit  purposes.
