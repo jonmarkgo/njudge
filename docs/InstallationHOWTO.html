@@ -21,28 +21,77 @@
 
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.3.2.3
+<p align=center>v.1.3.2.7
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
-<table align=center width="50%" summary="Summary">
-<tr><td>
-<a href="#1">1. Introduction</a>
-<br><a href="#2">2. Before installing</a>
-<br><a href="#3">3. Compilation and installation</a>
-<br><a href="#4">4. Installing the Debian package</a>
-<br><a href="#5">5. Configuring your new judge</a>
-<br><a href="#6">6. What are these files?</a>
-<br><a href="#7">7. Testing the judge, first game</a>
-<br><a href="#8">8. Troubleshooting</a>
-<br><a href="#9">9. Other customisations</a>
+<table align=center width="80%" summary="Summary"><tr valign=top><td>
+
+<small>
+<br><a href="#1">1 Introduction</a>
+<br><a href="#1.1">1.1 History</a>
+<br><a href="#1.2">1.2 Last version</a>
+<br><a href="#1.3">1.3 Why?</a>
+<br><a href="#1.4">1.4 Configuration</a>
+<br><a href="#2">2 Before installing</a>
+<br><a href="#2.1">2.1 Material, learning and paperwork</a>
+<br><a href="#2.2">2.2 Getting the source code or the package</a>
+<br><a href="#2.3">2.3 Judge user: unix level configuration</a>
+<br><a href="#2.4">2.4 Configure before compilation</a>
+<br><a href="#2.5">2.5 The Makefile</a>
+<br><a href="#2.6">2.6 smail.in script</a>
+<br><a href="#2.7">2.7 sendmail problems</a>
+<br><a href="#2.8">2.8 atrun script</a>
+<br><a href="#2.9">2.9 Changing default parameters in defaults.inc.in</a>
+<br><a href="#2.10">2.10 Other source modifications</a>
+<br><a href="#2.11">2.11 Patches</a>
+<br><a href="#3">3 Compilation and installation</a>
+<br><a href="#3.1">3.1 Compilation</a>
+<br><a href="#3.2">3.2 Installation</a>
+<br><a href="#3.3">3.3 Cleaning</a>
+<br><a href="#4">4 Installing the Debian package</a>
+<br><a href="#5">5 Configuring your new judge</a>
+<br><a href="#5.1">5.1 Dip.conf</a>
+<br><a href="#5.2">5.2 Other dip.* files</a>
+<br><a href="#5.3">5.3 dipclean</a>
+<br><a href="#5.4">5.4 .forward</a>
+<br><a href="#5.5">5.5 dip.control date problems</a>
+<br><a href="#5.6">5.6 Ready?</a>
+<br><a href="#5.7">5.7 Customise e-mails from the judge</a>
+</small></td><td>
+<br><a href="#6">6 What are these files?</a>
+<br><a href="#6.1">6.1 Documentation</a>
+<br><a href="#6.2">6.2 Binaries</a>
+<br><a href="#6.3">6.3 Shell scripts</a>
+<br><a href="#6.4">6.4 Parameter and data files</a>
+<br><a href="#6.5">6.5 Maps and 'data' directory</a>
+<br><a href="#6.6">6.6 Games</a>
+<br><a href="#6.7">6.7 Log files</a>
+<br><a href="#6.8">6.8 Temporary files</a>
+<br><a href="#6.9">6.9 Files created or left behind by a crashed judge</a>
+<br><a href="#6.10">6.10 Other files</a>
+<br><a href="#7">7 Testing the judge, first game</a>
+<br><a href="#7.1">7.1 Manual basic testing</a>
+<br><a href="#7.2">7.2 Automatic judge tester</a>
+<br><a href="#8">8 Troubleshooting</a>
+<br><a href="#9">9 Other customisations</a>
 <br><a href="#10">10. Backup</a>
-<br><a href="#11">11. Upgrading and patching a judge</a>
-<br><a href="#12">12. Misc.</a>
+<br><a href="#11">11 Upgrading and patching a judge</a>
+<br><a href="#11.1">11.1 Locking the judge</a>
+<br><a href="#11.2">11.2 Archiving</a>
+<br><a href="#11.3">11.3 Makefile variables</a>
+<br><a href="#11.4">11.4 Patching or upgrading source code</a>
+<br><a href="#11.5">11.5 Recompiling and installation</a>
+<br><a href="#11.6">11.6 Relaunching the judge</a>
+<br><a href="#12">12 Misc</a>
+<br><a href="#12.1">12.1 The author</a>
+<br><a href="#12.2">12.2 Thanks</a>
+<br><a href="#12.3">12.3 Copyright and boring stuff</a>
+</small>
 </td></tr></table>
 
 <hr>
 
-<h1><a name="1">1.Introduction</a></h1>
+<h1><a name="1">1 Introduction</a></h1>
 
 <h2><a name="1.1">1.1 History</a></h2>
 
@@ -396,7 +445,7 @@ only the owner has write permission to the <tt>.forward</tt> file.
 <br> (Briefly: <tt>smrsh</tt> allows only programs from a unique directory to call
 sendmail, allowing the system administrator to choose the set of acceptable commands).
 
-<h2><a name="2.8">atrun script</a></h2>
+<h2><a name="2.8">2.8 atrun script</a></h2>
 
 <p> '<tt>atrun</tt>' is responsible for putting the '<tt>diprun</tt>' script in the '<tt>at</tt>'
 queue. '<tt>at</tt>' is a system command to schedule launch of programs. '<tt>diprun</tt>'
@@ -429,7 +478,7 @@ and one on another queue, and then search by queue.
 <br>     rm -f dip.xfail
 </tt>
 
-<h2><a name="2.9">2.9 defaults.inc.in: changing default parameters</a></h2>
+<h2><a name="2.9">2.9 Changing default parameters in defaults.inc.in </a></h2>
 
 <p>- This file contains judge default parameters that can't be change without recompiling the judge.
 See README.hackers if you want to change some.
@@ -445,7 +494,7 @@ set by default to 8000, may be increased.
 so much fun anymore ;-)
 
 
-<h1><a name="3">3. Compilation and installation</a></h1>
+<h1><a name="3">3 Compilation and installation</a></h1>
 
 <h2><a name="3.1">3.1 Compilation</a></h2>
 
@@ -619,12 +668,12 @@ English-speaking, and does not put a capital at the beginning, it will bail out.
 
 <p> At this point, the judge should be ready to run.
 
-<h2><a name="5.7">5.7 Customise e-mails fomr the judge</a></h2>
+<h2><a name="5.7">5.7 Customise e-mails from the judge</a></h2>
 
 <p>It's time to configure the <tt>dip.msg</tt> and <tt>dip.footer</tt> in the new binaries directory.
 
 
-<h1><a name="6">6. What are these files?</a></h1>
+<h1><a name="6">6 What are these files?</a></h1>
 
 <h2><a name="6.1">6.1 Documentation</a></h2>
 
@@ -640,7 +689,7 @@ but may be useful for old versions of the judge, for migrating, or for historica
 <p> (If you used the Debian package, documentation is in <tt>/usr/share/doc/njudge</tt>).
 
 
-<h1><a name="6.2">6.2 Binaries</a></h1>
+<h2><a name="6.2">6.2 Binaries</a></h2>
 
 <table border=1 cellpadding=3 summary="Binaries">
 <tr><td><tt>rdip</tt> <td>Its purpose is to read in mail and copy it to a file
@@ -803,7 +852,7 @@ the judge is stacked when the .forward file is not there.  (The exact
 path may change according to your system and distribution).</tr>
 </table>
 
-<h1><a name="7">7. Testing the judge, first game</a></h1>
+<h1><a name="7">7 Testing the judge, first game</a></h1>
 
 <h2><a name="7.1">7.1 Manual basic testing</a></h2>
 
@@ -899,7 +948,7 @@ full commands than a standard.  A 'chess' variant (not yet on a 1.3.2 judge) wou
 <p>Yes, it would be fine to have one.  As far as I know, nobody finished one.
 
 
-<h1><a name="8">8. Troubleshooting</a></h1>
+<h1><a name="8">8 Troubleshooting</a></h1>
 
 <p>These are some problems and solutions:
 
@@ -935,7 +984,7 @@ check the existence of all files (including <tt>dip.master</tt>, <tt>dip.whois</
 And don't forget to read <tt>README.bailout</tt>.
 
 
-<h1><a name="9">9. Other customisations</a></h1>
+<h1><a name="9">9 Other customisations</a></h1>
 
 <p>- You can change the text in <tt>dip.msg</tt> and <tt>dip.footer</tt> any way you want,
 these are just files added at the beginning or the end of mails sent by the judge.
@@ -947,7 +996,7 @@ break software like DipChief or web observers...)
 
 <p>You can read <tt>README.hackers</tt> if you change the code.
 
-<h1><a name="10">10. Backup</a></h1>
+<h1><a name="10">10 Backup</a></h1>
 
 <p> As far as I know and have experimented, the easiest way to backup the
 judge is to make a big archive of it and put it anywhere else where it
@@ -967,7 +1016,7 @@ only newer files):
 with data in <tt>/var/njudge</tt> for example.
 
 
-<h1><a name="11">11. Upgrading and patching a judge</a></h1>
+<h1><a name="11">11 Upgrading and patching a judge</a></h1>
 
 <h2><a name="11.1">11.1 Locking the judge</a></h2>
 
@@ -1054,7 +1103,7 @@ you won't break anything. It was not the case before 0.8.10 :-)
 <p>- Go into the '<tt>dip/</tt>' directory, unlock the judge ('<tt>flock</tt>') and test it!
 
 
-<h1><a name="12">12.Misc</a></h1>
+<h1><a name="12">12 Misc</a></h1>
 
 <h2><a name="12.1">12.1 The author</a></h2>
 

@@ -2,44 +2,379 @@
 
                  Creating variants for the Diplomacy judge
 
-                                   v.0.1
+                                   v.0.2
               [1]Christophe Courtois (christophe@courtois.cc)
-
-                             [2]1. Introduction
      _________________________________________________________________
 
-                                1.Introduction
+                             [2]1 Introduction
+                               [3]1.1 History
+                            [4]1.2 Last version
+                                [5]1.3 Why?
+                       [6]2 What you can and must do
+                            [7]2.1 Possibilities
+                          [8]2.3. Variant options
+                            [9]3 Data to provide
+                             [10]3.1. Map files
+                 [11]3.1.1 Declaration of lands and centers
+                            [12]3.1.2 Movements
+                [13]3.1.3 ordering for summaries (optional)
+                       [14]3.1.4 Other optional data
+                             [15]3.2 Seed file
+                         [16]3.2.1 Seed file format
+             [17]3.2.2 When units do not begin on home centers
+              [18]3.2.3 Special seed files (seed_b, seed_w...)
+                           [19]3.2.4 In the code
+                             [20]3.3 Info files
+                             [21]3.4 Variant.h
+                               [22]4 Examples
+                        [23]4.1 H32 (Hundred) Wings
+                         [24]4.2 Fleet in Marseille
+                            [25]4.3 Switzerland
+                               [26]4.4 Chess
+                               [27]5 floc.net
+                               [28]6 Mapmaker
+                                [29]7 Addmap
+                           [30]8 Automatic tests
+                           [31]9 Troubleshooting
+              [32]10 Integration in the official judge source
+                   [33]11 Moving variants between judges
+                                [34]12 Misc
+                            [35]12.1 The author
+                              [36]12.2 Thanks
+                    [37]12.3 Copyright and boring stuff
+     _________________________________________________________________
+
+                                1 Introduction
 
 1.1 History
 
-   - 0.1 : Mar 2003
+   - 0.2 : Mar-Apr 2003
 
 1.2 Last version
 
    This is a guide which aims to help people creating variants for the
-   Diplomacy judge alone.
+   Diplomacy judge.
    The reference version is the HTML version. The text should be
    automatically generated against the HTML.
    Anyway, the last version of this file should always be in the last CVS
-   snapshot of the judge at [3]http://www.njudge.org/.
+   snapshot of the judge at [38]http://www.njudge.org/.
 
 1.3 Why?
 
-   Creating a variant is almost impossible for someone alone. [4]David
-   Norman provides some useful help but many things don't need to go
-   through him now that everyone can have a judge at home.
+   There seems to lack documentation on how to make a variant. [39]David
+   Norman provides some useful help but I think that many things shoudn't
+   need to go through him now that everyone can have a judge at home.
 
-                              7. Automatic tests
+   I'll try to sum up here most knowledge on variants creation, beginning
+   by the basic ones, made from existing maps. I won't cover variants
+   with new rules not yet implemented in the judge.
+
+                          2 What you can and must do
+
+2.1 Possibilities
+
+   Trivial "almost-variants" without recompilation needed are:
+     * Add maps for wings or blind options to existing variants (see
+       [40]Special seed files).
+     * Change start units positions of existing variants (see [41]Seed
+       files), but it will not be compatible with the 'official' set of
+       variants.
+
+   Easy variants covered here are:
+     * Variants with an existing map slightly modified
+     * Variants with a simple map
+     * Variants with new powers
+
+   A bit more difficult, which will lead you to use MapMaker and perhaps
+   contacting David Norman:
+     * Variants with totally new and complex maps
+
+   You'll have to understand the code of the judge yourself for changing
+   any rule...
+
+   And creating the map files and pictures if currently out of subject.
+
+2.3. Variant options
+
+   There are variants based on maps, like standard, modern, h32... , and
+   there are the variant options or modifiers: Wings, Gunboat, Blind,
+   Shorthand. See the info file for each of them, but basically Shorthand
+   and Gunboat only affect press, while Blind and Wings may have impact
+   on map files.
+
+                               3 Data to provide
+
+   For a complete new variant, you MUST provide this:
+     * Map file: this lists the territories, the way they communicate
+       with each other, the order which must be used in summary reports.
+       Example: data/map, data/map.loeb9
+     * Seed file : this lists the units beginning positions and what are
+       the home centers.
+       Example: data/seed.1
+     * Report file : this file is sent at game start, giving the initial
+       positions.
+       Example: data/report.38
+
+   You MUST modify theses files in the source code of the judge:
+     * variant.h
+     * variant.c
+
+   And you MAY provide these files, but the judge will work without them.
+   They will be necessary for the players though.
+     * Info file: It contains the differences between the standard game
+       and the variant.
+       Example: data/info.wings, data/info.h32
+     * Rules file: Only if you create a whole new game.
+       Example: data/rules.machiavelli
+
+   There are some additional files to modify to package a new variant
+   into the official judge, see later.
+
+3.1. Map files
+
+   A map file is in the data/ subdirectory. The name is
+   map.<variant_name>.
+
+   The format is fully described by a document from Sergio Lidsell that
+   is part of the judge package: [42]njudgemapdatahowto.htm. Following
+   are juste examples from the standard map to sum it up.
+
+  3.1.1 Declaration of lands and centers
+
+   Switzerland,
+   (Neutral land) l swi switz swiss
+   (Possible names)
+   Adriatic Sea,
+   (Sea)                           w adr adriatic
+   Ankara,
+   (Home center of T)              T ank ankar
+   Belgium,
+   (Neutral center with sea shore) xw bel belgi
+
+  3.1.2 Movements
+
+   swi-mv:
+   (Switzerland, no possible move) swi
+
+   adr-xc:
+   (Between a coast and its neighbours) alb apu ven tri ion
+
+   bud-mv:
+   (Between a land and its neighbours) vie gal rum ser tri
+
+   con-mv:
+   con-xc:
+   (Special case for Constantinophe) bul ank smy
+   bul/sc bul/ec bla ank smy aeg
+
+  3.1.3 ordering for summaries (optional)
+
+   Center order for summary report:
+     ven rom nap tun edi lon lvp bre par mar por spa bel hol mun kie ber
+     den swe nor stp war mos sev con ank smy bul rum gre ser bud vie tri
+   #End of center ordering
+
+  3.1.4 Other optional data
+
+   Hong Kong flag, railways, and so on, are described in
+   [43]njudgemapdatahowto.htm. For a good example, see map.colonial.
+
+3.2 Seed file
+
+  3.2.1 Seed file format
+
+   The seed file is in the data/ subdirectory. The name is
+   seed.<variant_number>. (The variant number is obtained when modifying
+   the source; see below).
+
+   The first line contains the first game season. This is a redundancy
+   with what is in variant.c, but both sources must give the same value.
+   If the seed file and variant.c don't match on the start season, the
+   judge will crash at the first resolution of orders. (Even if the test
+   disappears some day, the file format probably won't change to preserve
+   variant files compatibility with [DEL: obsolete :DEL] old judges).
+   Then follow the positions of the units at the start of the game for
+   each power, and the centers that each player possess at the beginning.
+   On the standard map you obtain (file seed.1):
+
+   S1901M
+   A: A Budapest
+   A: A Vienna
+   A: F Trieste
+   E: A Liverpool
+   E: F Edinburgh
+   ...
+   T: F Ankara
+   -1 Null ownership/contested record will initialize from the map data.
+   -1
+
+   The last line indicates the start position of each power. In the
+   standard game and most variants, it is not given, and the home centers
+   are the one occupied by units.
+
+  3.2.2 When units do not begin on home centers
+
+   Another example is the seed for the Chaos variant (seed.5) :
+
+   F1900B
+   -1
+   ....A....BC..DEF..GH.I....J...K..LN.PQ.RST...U.V..W.X.YZ0..1234.56....
+   78.9..
+   -1
+
+   There is no unit at the beginning. Each character is a territory. Each
+   dot is one without a unit, and letters and numbers indicate the power
+   who possess the center at the beginning. There is no list of units
+   ready to begin, and the first season is Fall, so the players must
+   begin by building a unit.
+
+   For the last version of the Hundred variant, called h32 (seed.22) we
+   have:
+
+   S1425M
+   B: A Dijon
+   B: A Flanders
+   B: A Luxembourg
+   B: F Holland
+   E: A Calais
+   E: A Guyenne
+   E: A Normandy
+   E: F English Channel
+   E: F London
+   F: A Dauphine
+   F: A Orleanais
+   F: A Paris
+   F: A Toulouse
+   F: A Provence
+   -1
+   ........E...FEB.B.EB..E.B..E..FF.......F.
+   -1
+
+   In this seed, France begins with 5 units on the board, but possess
+   only 4 centers, and will have to gain a center in the first year to
+   avoid to disband a unit.
+
+  3.2.3 Special seed files (seed_b, seed_w...)
+
+   There are special seed files for the special variants options (wings,
+   gunboat...). For example, a variant with the wings option can have a
+   seed file ending by _w. If such a file does not exist, the standard
+   seed file is used, and the game begins without any wing units on the
+   board. The only seed file with such a property currently in the source
+   tree is seed_w.19, the wings version of the Modern variant. It is the
+   same file as seed.19, except that some units at the beginning are
+   planes (see info.wings):
+
+   B: W London
+   F: W Bordeaux
+
+   There is no example of a seed_b or seed_bw file, although all is in
+   place in the judge code to use it (it may be removed in the future).
+   There is little point in having special seed files for Blind
+   variants...
+
+  3.2.4 In the code
+
+   The part of the code responsible for opening the seed file is
+   ml_signon.c. Probably the place to change for the one who wants to
+   have seed.<variant> instead of seed.<number>.
+
+3.3 Info files
+
+   The info<variant> contains all informations on your variant:
+   differences against the standard map, new units or territory, special
+   territories, starting positions and home centers, default variant
+   modifiers (wings...), supply centers and how many must be won, who
+   made the variant... See other info files as example.
+
+   They are useful only for the players, who will get them with get
+   info.<variant>. The judge itself doesn't need them.
+
+3.4 Variant.h
+
+   A variant must be declared in this file. The variant number is set up
+   there.
+
+                                  4 Examples
+
+4.1 H32 (Hundred) Wings
+
+   H32 (Hundred Years War) with wings seems at first sight stupid, but I
+   think the game would be changed by it. We need for this the seed_w
+   file to place the first wings, and the report_w file to let it know to
+   the players. We need just to copy the seed.22 and report.22 as
+   seed_w.22 and report_w.22, and modifying them for example this way:
+     * seed_w.22:
+       B: A Dijon
+       B: W Flanders
+       B: A Luxembourg
+       B: F Holland
+       E: A Calais
+       E: A Guyenne
+       E: A Normandy
+       E: F English Channel
+       E: W London
+       F: A Dauphine
+       F: A Orleanais
+       F: A Paris
+       F: W Toulouse
+       F: A Provence
+     * report_w.22:
+       Starting position for Spring of 1425.
+       Burgundy:Army Dijon.
+       Burgundy:Wing Flanders.
+       ...
+       France: Wing Toulouse.
+       France: Army (unpaid and angry) Provence.
+
+4.2 Fleet in Marseille
+
+4.3 Switzerland
+
+   Let's imagine that Switzerland is a territory like any other one.
+
+4.4 Chess
+
+   For this small variant, you don't need anything more. You can test it
+   immediately:
+
+   create ?testh32w password h32 wings
+   set players 1
+
+                                  5 floc.net
+
+                                  6 Mapmaker
+
+   DN : There are a number of files you need - a map, a report, a seed
+   and an info file, plus you have to update the variant.h (and variant.c
+   in the newer versions of the judge). It can be done without MapMaker.
+   But by using MapMaker : (1) It takes a fraction of the time (2) You
+   get Mapper, Mapit and a PS map too (3) You get floc.net support And
+   also, you get my experience of getting a variant through draft
+   versions without confusing the various systems that run around the
+   judges...
+
+                                   7 Addmap
+
+                               8 Automatic tests
 
    None known. David Norman may have some.
 
-                              8. Troubleshooting
+                               9 Troubleshooting
 
    These are some problems and solutions:
 
    * *
 
-                                    12.Misc
+                  10 Integration in the official judge source
+
+   CVS, Makefile.am
+
+                       11 Moving variants between judges
+
+   Numbers ???,
+
+                                    12 Misc
 
 12.1 The author
 
@@ -75,7 +410,50 @@
 
 References
 
+   Visible links
    1. mailto:christophe@courtois.cc
    2. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#1
-   3. http://www.njudge.org/
-   4. http://www.ellought.demon.co.uk/
+   3. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#1.1
+   4. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#1.2
+   5. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#1.3
+   6. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2
+   7. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2.1
+   8. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2.3.
+   9. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3
+  10. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.1.
+  11. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.1.1
+  12. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.1.2
+  13. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.1.3
+  14. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.1.4
+  15. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.2
+  16. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.2.1
+  17. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.2.2
+  18. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.2.3
+  19. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.2.4
+  20. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.3
+  21. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#3.4
+  22. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#4
+  23. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#4.1
+  24. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#4.2
+  25. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#4.3
+  26. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#4.4
+  27. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#5
+  28. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#6
+  29. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#7
+  30. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#8
+  31. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#9
+  32. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#10
+  33. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#11
+  34. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#12
+  35. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#12.1
+  36. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#12.2
+  37. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#12.3
+  38. http://www.njudge.org/
+  39. http://www.ellought.demon.co.uk/
+  40. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2.2.3
+  41. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html#2
+  42. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
+  43. file://localhost/home/alex/cvs/njudge/docs/njudgemapdatahowto.htm
+
+   Hidden links:
+  44. file://localhost/home/alex/cvs/njudge/docs/VariantsHOWTO.html
