@@ -126,8 +126,8 @@ long get_long( long in )
 int get_plyrdata_record( int recno, PLYRDATA_RECORD *record)
 {
 	size_t record_size;
-	fpos_t end;
-	fpos_t pos;
+	long end;
+	long pos;
 	
 	/* Check that record is within the file */
 	fseek( fp, 0, SEEK_END );
