@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.4  1997/03/16 06:53:13  rpaar
  *
  * Revision 1.3  1997/02/16 20:43:18  davidn
@@ -949,6 +952,18 @@ void mail_igame(void)
 			memcpy(&temp_player, &dipent.players[i], sizeof(Player));
 			memcpy(&dipent.players[i], &dipent.players[k], sizeof(Player));
 			memcpy(&dipent.players[k], &temp_player, sizeof(Player));
+
+			/* If we have just moved the record referenced by the variable "player",
+			 * then adjust player to the new location of the record */
+
+			if ( i == player )
+			{
+				player = k;
+			}
+			else if ( k == player )
+			{
+				player = i;
+			}
 		}
 	}
 
