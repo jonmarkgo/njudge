@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.3  1996/11/10 14:22:47  rpaar
  * changed the "broad#" to "broad" in the keys[] array.
  * modified the return text to include newlines.
@@ -143,9 +146,14 @@ static void hist_date(long *date, long *pos, int print)
 
 /***************************************************************************/
 
-int history(char *line)
+int history(char *line, int power_type)
 {
 
+	/* 
+	 * power_type is the type of the plyer requesting history
+         * Set to OBSERVER if power type is unknown
+         */
+	
 	/*
 	 *  The input line consists of [name] [from date] [to date] [lines n].
 	 *            or: [name] exclstart turn [exclend turn] [broad].
@@ -183,6 +191,25 @@ int history(char *line)
 	flagb = 0;		/* Rp - define flagb = 1 include broadcast, 0 excluded */
 	flagt = 1;		/* Rp - define flagt = 1 do time-wise, define flagt = 0 as exclude */
 
+
+         /* Check if a blind game - if so, only the master can do this */
+	if (dipent.flags & F_BLIND ) {
+		if (dipent.phase[6] != 'X' ) {
+		    /* Non-finished blind games have restrictions on history */	
+		    switch (power_type)
+		    {
+			case OBSERVER:
+				fprintf(rfp,"Observers are not allowed history command in blind games.\n");
+				return 0;
+			case MASTER:
+				break; /* No problem for the master! */
+
+			default:
+				fprintf(rfp, "Players are not allowed history command in blind games.\nContact the master for help in this.\n");
+				return 0;
+		    }
+	       }
+	}
 	while (isspace(*s))
 		s++;
 
