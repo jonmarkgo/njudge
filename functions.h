@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2003/05/02 21:30:03  millis
+ * Added an artilery support funciton
+ *
  * Revision 1.16  2003/02/17 15:39:20  millis
  * bug 10, prevent overlapping absences
  * Also improve text output for absences.
@@ -167,6 +170,7 @@ void init_build(void);
 void buildout_td(int pt);
 void buildout(int pt);
 int build_syntaxcheck(char *s, int precheck, char *out_string);
+int ExtraCentres( void );
 
 /* defined in st_setup.c */
 int setupin(char **s, int p);
