@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.13  2003/01/15 14:12:04  millis
+	 * Merged from ustv
+	 *
 	 * Revision 1.12  2002/12/28 00:02:54  millis
 	 * Fixed bug 77, adding wrap_char() function
 	 *
@@ -526,6 +529,10 @@ char *autype(char c)
 		return ("an army/fleet");
 	else if (c == 'S')
 		return ("a spy");
+	else if (c == 'C')
+		return ("a cavalry unit");
+	else if (c == 'R')
+		return ("an artillery unit");
 	else if (c ==' ')
 		return "";
 	else
@@ -574,6 +581,10 @@ char *utype(char c)
 		return ("army/fleet");
 	else if (c == 'S')
 		return ("spy");
+	else if (c == 'C')
+		return ("cavalry");
+	else if (c == 'R')
+		return ("artillery");
 	else if (c == ' ')
 		return "";
 	else
@@ -597,6 +608,10 @@ char c;
 		return ("Army/Fleet");
 	else if (c == 'S')
 		return ("Spy");
+	else if (c == 'C')
+		return ("Cavalry");
+	else if (c == 'R')
+		return ("Artillery");
 	else if (c == ' ')
 		return "";
 	else
