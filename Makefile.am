@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.34  2003/11/18 14:42:00  millis
+# Added manual.htm (Russell Blau's DJUM)
+#
 # Revision 1.33  2003/09/09 18:51:22  jaldhar
 # Got rid of port.h and replaced with some extra configure checks.  The
 # include strings.h was not carried over because it is commented out and
@@ -103,6 +106,7 @@ noinst_HEADERS=	acconfig.h \
 		config.h \
 		dip.h   \
 		diplog.h   \
+		diptime.h  \
 		functions.h \
 		hashtable.h \
 		mach.h \
@@ -123,6 +127,7 @@ dip_SOURCES=	assign.c \
 		dip.c \
 		dipent.c \
 		diplog.c \
+		diptime.c \
 		draw.c \
 		global.c \
 		hashtable.c \
@@ -176,6 +181,7 @@ ascii_to_ded_SOURCES=	ascii_to_ded.c \
 ascii2rec_SOURCES=   ascii2rec.c plyrdata.c
 
 cmap_SOURCES=	cmap.c \
+		diptime.c \
 		jm.c \
 		lib.c \
 		bailout.c \
@@ -204,6 +210,7 @@ fmtwho_SOURCES=	fmtwho.c
 
 rdip_SOURCES=	rdip.c \
 		diplog.c \
+		diptime.c \
 		bailout.c \
 		conf.c \
 		strdup.c \
@@ -218,6 +225,7 @@ size_check_SOURCES=size_check.c
 summary_SOURCES=summary.c \
 		dipent.c \
 		diplog.c \
+		diptime.c \
 		jm.c \
 		lib.c \
 		params.c \

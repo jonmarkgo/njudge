@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.39  2003/12/29 17:59:53  millis
+ * Work for Bug 91 (keep duplex powers together)
+ *
  * Revision 1.38  2003/12/28 00:00:40  millis
  * Fix bug 262 (add Extra Units flag for 1900 SteamRoller)
  *
@@ -180,12 +183,15 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include <time.h>
+#include "diptime.h"
 
 #include "conf.h"
 
 #define min(a,b)      ((a) < (b) ? (a) : (b))
 #define max(a,b)      ((a) > (b) ? (a) : (b))
+
+/* Redefine time() so it can be over-ridden for testing purposes */
+#define time(a)	      diptime(a)
 
 #define nentry(x)     (sizeof(x)/sizeof(x[0]))
 #define E_FATAL  -2
