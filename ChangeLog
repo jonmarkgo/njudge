@@ -1,3 +1,66 @@
+2003-06-05 16:52  millis
+
+	* NEWS: Update for 1.4.1
+
+2003-06-05 16:44  millis
+
+	* configure, configure.ac, njudge.spec: Next version update
+
+2003-06-04 16:17  millis
+
+	* st_movement.c: Fix bug 165, mis-ajudication over TSR
+
+2003-06-03 15:23  millis
+
+	* zpblind.c: Fix bug 170, comment out signal handler for OS X
+	compatibility
+
+2003-05-24 16:57  millis
+
+	* mail.c, mail.h, ml_set.c, ml_signon.c: Bug 97, removed Generic
+	Handling code
+
+2003-05-24 16:42  millis
+
+	* ml_signon.c: Fix bug 32, do not show signon if game terminated
+
+2003-05-24 15:55  millis
+
+	* ml_set.c, params.c, data/index: Bug 142, allow use of AutoCreate
+	flag
+
+2003-05-24 14:19  millis
+
+	* ml_signon.c: Bug fix 130, allow seed.variant and report.variant
+	file names
+
+2003-05-19 12:45  russblau
+
+	* data/: syntax, transform: Corrections to adjust-phase syntax for
+	Transform orders.
+
+2003-05-19 11:31  millis
+
+	* configure, configure.ac: Reverse the premature version number
+	change to 1.4.0
+
+2003-05-18 02:22  christ
+
+	* docs/: InstallationHOWTO.txt, InstallationHOWTO.html:
+	Documentation update on the footer and --with-sendmail
+
+2003-05-16 18:10  millis
+
+	* configure, configure.ac: Up version number to 1.4.1
+
+2003-05-16 17:33  millis
+
+	* NEWS, BUGS: New versions of files with Bugzilla edited summary
+
+2003-05-16 16:10  njudge
+
+	* ChangeLog: [no log message]
+
 2003-05-16 15:45  millis
 
 	* st_porder.c: Fix bug 156 (ownership() was having winning
@@ -218,8 +281,8 @@
 
 2003-05-03 14:21  millis
 
-	* data/: report.34, report.38, seed.34, seed.38: changed colonial
-	to .34 not .38
+	* data/: report.colonial96, report.38, seed.38, seed.colonial96:
+	changed colonial to .34 not .38
 
 2003-05-03 09:25  millis
 
@@ -1319,8 +1382,8 @@
 2002-12-17 06:00  millis
 
 	* data/: map.aberration, map.asia, map.classical, map.empire,
-	map.youngstown, report.18, report.2, report.32, report.6: Resolved
-	bug 53 (various small map file defects)
+	map.youngstown, report.asia, report.britain, report.crowded_1898,
+	report.youngstown: Resolved bug 53 (various small map file defects)
 
 2002-12-17 05:30  millis
 
@@ -1512,9 +1575,10 @@
 
 2002-09-26 14:52  millis
 
-	* data/info.machiavelli2, data/map.machiavelli2, data/report.33,
-	data/rules.machiavelli2, data/seed.33, starter.flist, variant.c,
-	variant.h: Added Machiavelli2 variant
+	* data/info.machiavelli2, data/map.machiavelli2,
+	data/report.machiavelli2, data/rules.machiavelli2,
+	data/seed.machiavelli2, starter.flist, variant.c, variant.h: Added
+	Machiavelli2 variant
 
 2002-08-30 07:41  jaldhar
 
@@ -2319,8 +2383,8 @@
 
 2001-10-31 11:16  nzmb
 
-	* data/: map.crowded_1898, report.32, seed.32: seed, report, and
-	map files for crowded_1898
+	* data/: map.crowded_1898, report.crowded_1898, seed.crowded_1898:
+	seed, report, and map files for crowded_1898
 
 2001-10-29 15:41  miller
 
@@ -2363,8 +2427,8 @@
 
 2001-10-22 00:59  miller
 
-	* data/: duality, info.ancient_med, map.ancient_med, report.31,
-	seed.31: Added Ancient med files
+	* data/: duality, info.ancient_med, map.ancient_med,
+	report.ancient_med, seed.ancient_med: Added Ancient med files
 
 2001-10-20 05:11  miller
 
@@ -3034,9 +3098,11 @@
 
 2001-04-05 11:35  miller
 
-	* data/: report.24, report.25, report.26, report.27, report.28,
-	report.29, report.30, seed.24, seed.25, seed.26, seed.27, seed.28,
-	seed.29, seed.30: Initial revision
+	* data/: report.african2, report.empire, report.layered,
+	report.sailho, report.sailho_crowded, report.shift_around,
+	report.wraparound2, seed.african2, seed.empire, seed.layered,
+	seed.sailho, seed.sailho_crowded, seed.shift_around,
+	seed.wraparound2: Initial revision
 
 2001-04-05 11:29  miller
 
@@ -3160,8 +3226,8 @@
 
 	* data/: absence, convoys, info.a-f, info.blind, info.mach1,
 	info.mach2, info.mach3, info.shorthand, info.wings, report.blank,
-	report_w.19, rules.mach1, rules.mach2, rules.mach3, seed_w.19,
-	transform, wings: Initial revision
+	report_w.modern, rules.mach1, rules.mach2, rules.mach3,
+	seed_w.modern, transform, wings: Initial revision
 
 2000-11-14 07:58  miller
 
@@ -3193,7 +3259,7 @@
 
 2000-11-14 07:58  miller
 
-	* data/seed.21: small fix
+	* data/seed.h31: small fix
 
 2000-11-14 07:58  miller
 
@@ -3511,20 +3577,23 @@
 	data/info.hundred3, data/info.loeb9, data/info.machiavelli,
 	data/info.milan, data/info.modern, data/info.pure, data/info.rootz,
 	data/info.shift, data/info.v1898, data/info.wraparound,
-	data/info.youngstown, data/seed.1, data/seed.10, data/seed.11,
-	data/seed.12, data/seed.13, data/seed.14, data/seed.15,
-	data/seed.16, data/seed.17, data/seed.18, data/seed.19,
-	data/seed.2, data/seed.20, data/seed.21, data/seed.22,
-	data/seed.23, data/seed.3, data/seed.4, data/seed.5, data/seed.6,
-	data/seed.7, data/seed.8, data/seed.9, data/report.1,
-	data/report.10, data/report.11, data/report.12, data/report.13,
-	data/report.14, data/report.15, data/report.16, data/report.17,
-	data/report.18, data/report.19, data/report.2, data/report.20,
-	data/report.21, data/report.22, data/report.23, data/report.3,
-	data/report.4, data/report.5, data/report.6, data/report.7,
-	data/report.8, data/report.9, data/HOFpointer, data/asia.asc,
-	data/map, data/info, data/modern.ps, data/hofpointer: Initial
-	revision
+	data/info.youngstown, data/seed,1898, data/seed,aberration,
+	data/seed.asia, data/seed.britain, data/seed.chaos,
+	data/seed.chromatic, data/seed.classical, data/seed.colonial,
+	data/seed.crowded, data/seed.fleet_rome, data/seed.h31,
+	data/seed.h32, data/seed.loeb9, data/seed.machiavelli,
+	data/seed.milan, data/seed.modern, data/seed.pure, data/seed.rootz,
+	data/seed.shift_right, data/seed.standard, data/seed.wraparound,
+	data/seed.youngstown, data/report.1898, data/report.aberration,
+	data/report.asia, data/report.britain, data/report.chaos,
+	data/report.chromatic, data/report.classical, data/report.colonial,
+	data/report.crowded, data/report.fleet_rome, data/report.h31,
+	data/report.h32, data/report.loeb9, data/report.machiavelli,
+	data/report.milan, data/report.modern, data/report.pure,
+	data/report.rootz, data/report.shift_right, data/report.standard,
+	data/report.wraparound, data/report.youngstown,
+	data/seed.shift_left, data/HOFpointer, data/asia.asc, data/map,
+	data/info, data/modern.ps, data/hofpointer: Initial revision
 
 1998-02-28 09:59  david
 
