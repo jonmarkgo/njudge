@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
 	<META NAME="CREATED" CONTENT="20030910;23563300">
-	<META NAME="CHANGED" CONTENT="20030924;22570500">
+	<META NAME="CHANGED" CONTENT="20030925;23235900">
 	<META NAME="Info 1" CONTENT="Christophe Courtois">
 	<STYLE>
 	<!--
@@ -29,15 +29,17 @@
 of e-mail format of Diplomacy electronic Judges</FONT></FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
-<P CLASS="western">Version 0.1-0.3 Christophe Courtois - September
+<P CLASS="western">Version 0.1-0.4 Christophe Courtois - September
 2003</P>
 <P CLASS="western"><BR><BR>
 </P>
 <H1 CLASS="western">Introduction</H1>
-<P CLASS="western">This document describes the output format of <I>the
-njudge Diplomacy adjudicator.</I></P>
+<P CLASS="western">This document describes the output format of <SPAN STYLE="font-style: normal">the
+njudge Diplomacy adjudicator.</SPAN></P>
 <P CLASS="western"><FONT COLOR="#ff0000"><I>WARNING : </I>This is
-work in progress; please report any mistake, incoherence, gap...</FONT></P>
+work in progress; please report any mistake, incoherence, gap...
+<BR>Variants, and  especially Macchivelli, may not be well described
+here.</FONT></P>
 <P CLASS="western"><BR><BR>
 </P>
 <OL>
@@ -183,8 +185,7 @@ e-mail, with the same provisions as the header.</P>
 			<LI><P CLASS="western">followed by a space</P>
 			<LI><P CLASS="western">if available, and by the variant modifier
 			(Gunboat, Blind, AF_Rules, Shorthand, Wings at least 1.0-1.5.x
-			njudge) [<FONT COLOR="#ff0000">TO SOLVE : confirm for &lt;1.0
-			judges</FONT>]</P>
+			njudge)</P>
 		</UL>
 		<LI><P CLASS="western">End of first line</P>
 	</UL>
@@ -465,7 +466,6 @@ for the first movement orders is Tue Dec 11 2001 23:30:00 +0100.</FONT></FONT></
 </P>
 <OL START=7>
 	<LI><H1 CLASS="western">Movement results</H1>
-	<P CLASS="western"></P>
 </OL>
 <P CLASS="western">This can be rather complicated. The different
 parts are:</P>
@@ -513,15 +513,16 @@ parts are:</P>
 				<LI><P CLASS="western">A space</P>
 				<LI><P CLASS="western">The territory name (lowercase with first
 				letter uppercase)</P>
-				<LI><P CLASS="western">For a non-movemen<SPAN STYLE="font-style: normal">t
-				(if turn was resolved without all orders): </SPAN>
+				<LI><P CLASS="western">For a non-movement (if turn was resolved
+				without all orders): 
 				</P>
 				<UL>
-					<LI><P CLASS="western"><SPAN STYLE="font-style: normal">A</SPAN>
-					comma, 
+					<LI><P CLASS="western">A comma, 
 					</P>
 					<LI><P CLASS="western">a space,</P>
 					<LI><P CLASS="western">the words &ldquo;No Order Processed&rdquo;</P>
+					<LI><P CLASS="western">If necessary: two spaces, and
+					&ldquo;(*dislodged*)&rdquo;.</P>
 				</UL>
 				<LI><P CLASS="western">For a simple movement: 
 				</P>
@@ -533,11 +534,20 @@ parts are:</P>
 					<LI><P CLASS="western">a space,</P>
 					<LI><P CLASS="western">the destination territory,</P>
 					<LI><P CLASS="western">a dot,</P>
-					<LI><P CLASS="western">If necessary: two spaces, and
-					&ldquo;(*bounce*)&rdquo; or &ldquo;(*bounce, destroyed*)&rdquo;
-					or &ldquo;(*bounce, dislodged*)&rdquo;. <FONT COLOR="#ff0000">TO</FONT>
-					<FONT COLOR="#ff0000">SOLVE : what are Block,destroyed ? See
-					status in ma_movement.c</FONT></P>
+					<LI><P CLASS="western">If necessary: two spaces, and some
+					indication on why the order failed:</P>
+					<UL>
+						<LI><P CLASS="western">&ldquo;(*bounce*)&rdquo; 
+						</P>
+						<LI><P CLASS="western">or &ldquo;(*bounce, destroyed*)&rdquo; 
+						</P>
+						<LI><P CLASS="western">or &ldquo;(*bounce, dislodged*)&rdquo;<FONT COLOR="#000000">
+						</FONT>
+						</P>
+						<LI><P CLASS="western"><FONT COLOR="#000000">or (Macchiavelli
+						only) &ldquo;(*blocked*)&rdquo;, or &ldquo;(*blocked,
+						destroyed*)&rdquo;</FONT></P>
+					</UL>
 				</UL>
 				<LI><P CLASS="western">For a support:</P>
 				<UL>
@@ -547,18 +557,65 @@ parts are:</P>
 					<LI><P CLASS="western">a space,</P>
 					<LI><P CLASS="western">the movement of the supported unit, as
 					described in the previous paragraph, including the last dot</P>
-					<LI><P CLASS="western">followed if necessary by two spaces and
-					&ldquo;(*cut*)&rdquo; or &ldquo;(*cut,dislodged*)&rdquo;</P>
-					<P CLASS="western"></P>
-					<LI><P CLASS="western"><FONT COLOR="#ff0000">TO CONTINUE</FONT></P>
+					<LI><P CLASS="western">followed if necessary by two spaces and:</P>
+					<UL>
+						<LI><P CLASS="western">&ldquo;(*cut*)&rdquo;,</P>
+						<LI><P CLASS="western">or &ldquo;(*cut, dislodged*)&rdquo;,</P>
+						<LI><P CLASS="western">or &ldquo;(*void*)<FONT COLOR="#000000">&rdquo;
+						</FONT>
+						</P>
+					</UL>
 				</UL>
-				<LI><P CLASS="western">For a hold</P>
-				<LI><P CLASS="western">...<BR><BR><BR>
-				</P>
+				<LI><P CLASS="western">For a hold:</P>
+				<UL>
+					<LI><P CLASS="western">A space,</P>
+					<LI><P CLASS="western">the word &ldquo;HOLD&rdquo; (uppercase),</P>
+					<LI><P CLASS="western">a space</P>
+					<LI><P CLASS="western">If necessary: two spaces, and
+					&ldquo;(*dislodged*)&rdquo;.</P>
+				</UL>
+				<LI><P CLASS="western">For a convoy:</P>
+				<UL>
+					<LI><P CLASS="western">A space,</P>
+					<LI><P CLASS="western">the word &ldquo;SUPPORT&rdquo;
+					(uppercase)</P>
+					<LI><P CLASS="western">a space,</P>
+					<LI><P CLASS="western">the movement of the convoyed unit, as
+					described in the previous paragraph, including the last dot</P>
+					<LI><P CLASS="western">followed if necessary by two spaces and
+					&ldquo;(*dislodged*&rdquo;)</P>
+					<P CLASS="western"></P>
+				</UL>
 			</UL>
-			<P CLASS="western"></P>
 		</UL>
-		<P CLASS="western"></P>
+		<LI><P CLASS="western">Two blank lines</P>
+		<LI><P CLASS="western">If necessary, the list of dislodged or
+		destroyed armies:</P>
+		<UL>
+			<LI><P CLASS="western">&ldquo;The&rdquo;, and a space,</P>
+			<LI><P CLASS="western">the adjective describing the power
+			(lowercase with the first letter uppercase), and a space,</P>
+			<LI><P CLASS="western">the unit type (lowercase with the first
+			letter uppercase), and a space,</P>
+			<LI><P CLASS="western">&ldquo;in&rdquo; or &ldquo;in the&rdquo;
+			(depending on the territory type), and a space</P>
+			<LI><P CLASS="western">the full territory name (lowercase with the
+			first letter of each word uppercase), a space</P>
+			<LI><P CLASS="western"> &ldquo;with no valid retreats was
+			destroyed&rdquo;<BR>OR:<BR>&ldquo;can retreat to&rdquo;, followed
+			by:</P>
+			<UL>
+				<LI><P CLASS="western"> a space,</P>
+				<LI><P CLASS="western">territory full names (lowercase with the
+				first letter of each word uppercase),</P>
+				<LI><P CLASS="western">separated by a space, &ldquo;or&rdquo; and
+				a space if there is more than one,</P>
+			</UL>
+			<LI><P CLASS="western">a point.</P>
+			<LI><P CLASS="western"></P>
+			<LI><P CLASS="western"><FONT COLOR="#ff0000">TO BE CONTINUED...</FONT><BR><BR><BR>
+			</P>
+		</UL>
 	</UL>
 </UL>
 <P CLASS="western"><BR><BR>
@@ -675,6 +732,128 @@ Army in Warsaw can retreat to Silesia or Prussia.</FONT></FONT></P>
 phase of 's1b6p2' will be Retreats for Fall of 1920.</FONT></FONT></P>
 <P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The deadline
 for orders will be Wed Oct 30 2002 23:30:00 +0100.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western">Example with convoys:</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Judge:
+FROG &nbsp;Game: S1b6p2 &nbsp;Variant: Standard Gunboat</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Deadline:
+F1903M Mon Feb 25 2002 23:30:00 +0100 &nbsp;</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>:: Map:
+http://frog.born2play.org/~observer/cartes.php3?Partie=s1b6p2</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Movement
+results for Fall of 1903. &nbsp;(s1b6p2.010)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Bulgaria SUPPORT Army Galicia -&gt; Rumania. &nbsp;(*cut*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Serbia SUPPORT Army Bulgaria.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Fleet Greece SUPPORT Army Bulgaria.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Galicia -&gt; Rumania. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Austria:
+Army Budapest SUPPORT Army Galicia -&gt; Rumania.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Army Norway SUPPORT Russian Army Livonia -&gt; St Petersburg.
+&nbsp;(*void*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Fleet Sweden -&gt; Denmark.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Fleet London -&gt; North Sea. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>England:
+Fleet English Channel CONVOY French Army Gascony -&gt; Switzerland.
+&nbsp;(*dislodged*)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: Army
+Gascony -&gt; Burgundy. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France: Army
+Burgundy -&gt; Picardy. &nbsp;(*bounce, dislodged*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Liverpool CONVOY German Army Holland -&gt; London.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Mid-Atlantic Ocean SUPPORT Fleet Brest -&gt; English Channel.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>France:
+Fleet Brest -&gt; English Channel.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Holland -&gt; Ruhr.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Belgium -&gt; Picardy. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet Denmark -&gt; Baltic Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Fleet Helgoland Bight -&gt; North Sea. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Munich SUPPORT Army Ruhr -&gt; Burgundy.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Germany:
+Army Ruhr -&gt; Burgundy.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy: Army
+Syria -&gt; Smyrna. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy: Army
+Venice HOLD.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy: Fleet
+Eastern Mediterranean SUPPORT Fleet Ionian Sea -&gt; Aegean Sea.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Italy: Fleet
+Ionian Sea -&gt; Aegean Sea.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: Army
+Livonia -&gt; Prussia.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: Army
+Rumania SUPPORT Turkish Army Constantinople -&gt; Bulgaria. &nbsp;(*cut*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia:
+Fleet Sevastopol SUPPORT Army Rumania.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia:
+Fleet Gulf of Bothnia -&gt; St Petersburg (south coast).</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Russia: Army
+Warsaw -&gt; Silesia.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey: Army
+Constantinople -&gt; Bulgaria. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey: Army
+Smyrna -&gt; Syria. &nbsp;(*bounce*)</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey:
+Fleet Black Sea SUPPORT Army Constantinople -&gt; Bulgaria.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>Turkey:
+Fleet Aegean Sea -&gt; Eastern Mediterranean. &nbsp;(*bounce,
+dislodged*)</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The
+following units were dislodged:</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The English
+Fleet in the English Channel can retreat to Irish Sea or Wales.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The French
+Army in Burgundy can retreat to Marseilles or Paris.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The Turkish
+Fleet in the Aegean Sea with no valid retreats was destroyed.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The next
+phase of 's1b6p2' will be Retreats for Fall of 1903.</FONT></FONT></P>
+<P CLASS="western"><FONT FACE="Courier New"><FONT SIZE=2>The deadline
+for orders will be Tue Feb 26 2002 23:30:00 +0100.</FONT></FONT></P>
+<P CLASS="western"><BR><BR>
+</P>
+<P CLASS="western"><BR><BR>
+</P>
 <P CLASS="western"><BR><BR>
 </P>
 <OL START=7>
