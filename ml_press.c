@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.4  2002/03/14 03:12:26  nzmb
+ *
+ * Added fix to ml_press.c to prevent people from getting warning messages (of if nno late press is on being prohibited from) sending press when the game is over.
+ *
  * Revision 1.3  2001/05/10 09:05:05  greg
  * added subjectlines
  *
@@ -461,7 +465,7 @@ void mail_press(char *s, int need_opts)
 
 
 /* OK, let's see if press from late powers is allowed */
-//	if (partial && !(dipent.phase[6] == 'X')) 
+	if (!(dipent.phase[6] == 'X')) 
 	{
 		if (WAITING(dipent.players[player].status)) {
 			/* it is not, let us see if this power is late and not pressing to master */
