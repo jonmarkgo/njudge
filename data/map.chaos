@@ -1,77 +1,86 @@
+# chaos variant map file
+# 34 powers, each with their own (single) supply centre
+#
+# $Log$
+# Revision 1.2.2.1  2001/10/15 22:57:16  ustv
+# Added duality and made all supply centres owned by owners
+#
+#
+#
 Switzerland,           l swi switz
 Adriatic Sea,          w adr adriatic  
 Aegean Sea,            w aeg aegean 
 Albania,               l alb
-Ankara,                x ank
+Ankara,                A ank
 Apulia,                l apu
 Armenia,               l arm
 Baltic Sea,            w bal baltic
 Barents Sea,           w bar barents
-Belgium,               x bel
-Berlin,                x ber
+Belgium,               B bel
+Berlin,                C ber
 Black Sea,             w bla black
 Bohemia,               l boh
-Brest,                 x bre
-Budapest,              x bud
-Bulgaria,              x bul
+Brest,                 D bre
+Budapest,              E bud
+Bulgaria,              F bul
 Burgundy,              l bur
 Clyde,                 l cly
-Constantinople,        x con
-Denmark,               x den
+Constantinople,        Gw con
+Denmark,               Hw den
 Eastern Mediterranean, w eas emed east eastern eastmed ems eme
-Edinburgh,             x edi
+Edinburgh,             I edi
 English Channel,       w eng english channel ech
 Finland,               l fin
 Galicia,               l gal
 Gascony,               l gas
-Greece,                x gre
+Greece,                J gre
 Gulf of Lyon,          w lyo gol gulfofl lyon
 Gulf of Bothnia,       w bot gob both gulfofb bothnia
 Helgoland Bight,       w hel helgoland
-Holland,               x hol
+Holland,               K hol
 Ionian Sea,            w ion ionian
 Irish Sea,             w iri irish
-Kiel,                  x kie
-Liverpool,             x lvp livp lpl
+Kiel,                  L kie
+Liverpool,             N lvp livp lpl
 Livonia,               l lvn livo lvo lva
-London,                x lon
-Marseilles,            x mar mars
+London,                P lon
+Marseilles,            Q mar mars
 Mid-Atlantic Ocean,    w mao mid midatlantic mat
-Moscow,                x mos
-Munich,                x mun
-Naples,                x nap
+Moscow,                R mos
+Munich,                S mun
+Naples,                T nap
 North Atlantic Ocean,  w nao nat
 North Africa,          l naf nora
 North Sea,             w nth norsea nts
-Norway,                x nor nwy norw
+Norway,                U nor nwy norw
 Norwegian Sea,         w nwg norwsea nrg norwegian
-Paris,                 x par
+Paris,                 V par
 Picardy,               l pic
 Piedmont,              l pie
-Portugal,              x por
+Portugal,              W por
 Prussia,               l pru
-Rome,                  x rom
+Rome,                  X rom
 Ruhr,                  l ruh
-Rumania,               x rum
-Serbia,                x ser
-Sevastopol,            x sev sevastapol
+Rumania,               Y rum
+Serbia,                Z ser
+Sevastopol,            0 sev sevastapol
 Silesia,               l sil
 Skagerrak,             w ska
-Smyrna,                x smy
-Spain,                 x spa
-St Petersburg,         x stp
-Sweden,                x swe
+Smyrna,                1 smy
+Spain,                 2 spa
+St Petersburg,         3 stp
+Sweden,                4 swe
 Syria,                 l syr
-Trieste,               x tri
-Tunis,                 x tun
+Trieste,               5 tri
+Tunis,                 6 tun
 Tuscany,               l tus
 Tyrolia,               l tyr tyl trl
 Tyrrhenian Sea,        w tys tyrr tyrrhenian tyn tyh
 Ukraine,               l ukr
-Venice,                x ven
-Vienna,                x vie
+Venice,                7 ven
+Vienna,                8 vie
 Wales,                 l wal
-Warsaw,                x war
+Warsaw,                9 war
 Western Mediterranean, w wes wmed west western westmed wms wme
 Yorkshire,             l yor york yonkers
 -1

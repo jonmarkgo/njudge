@@ -1,3 +1,12 @@
+#
+# rootz variant map file
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 23:04:44  ustv
+# Added duality for Denamrk One & Two, Constantinople One & Two
+#
+#
+#
 Switzerland,               l swi switz
 Adriatic Sea One,          w adr1 adriatic1  
 Aegean Sea One,            w aeg1 aegean1 
@@ -16,8 +25,8 @@ Budapest One,              A bud1
 Bulgaria One,              x bul1
 Burgundy One,              l bur1
 Clyde One,                 l cly1
-Constantinople One,        T con1
-Denmark One,               x den1
+Constantinople One,        Tw con1
+Denmark One,               xw den1
 Eastern Mediterranean One, w eas1 emed1 east1 eastern1 eastmed1 ems1 eme1
 Edinburgh One,             E edi1
 English Channel One,       w eng1 english1 channel1 ech1
@@ -91,8 +100,8 @@ Budapest Two,              1 bud2
 Bulgaria Two,              x bul2
 Burgundy Two,              l bur2
 Clyde Two,                 l cly2
-Constantinople Two,        7 con2
-Denmark Two,               x den2
+Constantinople Two,        7w con2
+Denmark Two,               xw den2
 Eastern Mediterranean Two, w eas2 emed2 east2 eastern2 eastmed2 ems2 eme2
 Edinburgh Two,             2 edi2
 English Channel Two,       w eng2 english2 channel2 ech2

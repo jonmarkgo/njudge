@@ -1,3 +1,12 @@
+#
+# Layered variant map file
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 23:00:41  ustv
+# Made Con and Den dual provinces
+#
+#
+#
 Adriatic Sea1, w adr1 adriatic1
 Adriatic Sea2, w adr2 adriatic2
 Aegean Sea1,         w aeg1 aegean1
@@ -32,10 +41,10 @@ Burgundy1,              l bur1
 Burgundy2, l bur2
 Clyde1, l cly1
 Clyde2,                 l cly2
-Constantinople1,  T con1
-Constantinople2, T con2
-Denmark1,            x den1
-Denmark2, x den2
+Constantinople1,  Tw con1
+Constantinople2, Tw con2
+Denmark1,            xw den1
+Denmark2, xw den2
 Eastern Mediterranean1, w eas1 emed1 east1 eastern1 eastmed1 ems1 eme1
 Eastern Mediterranean2, w eas2 emed2 east2 eastern2 eastmed2 ems2 eme2
 Edinburgh1,             E edi1

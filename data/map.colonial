@@ -1,3 +1,13 @@
+#
+# Colonial variant map file
+# This is the standard (1994) version, with only one land bridge
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 22:59:34  ustv
+# Added Duality for Cebu and Colonial settings (hongkong, gateways and railways)
+#
+#
+#
 Himalayas,      l him himal
 Abyssinia,      l aby
 Aden,   B ade
@@ -22,7 +32,7 @@ Bombay, B bom
 Borneo, H bor
 Cambodia,       l cam
 Canton, C can
-Cebu,   x ceb
+Cebu,   xw ceb
 Celebes Sea,    w cels cs
 Celebes,        l cel
 Ceylon, x cey sri
@@ -301,10 +311,21 @@ Center order for summary report:
    can chu sha pek mac vla part seo fus sak ota tok kyo kyu for mna 
    ceb dav gui sar bor jav sum sig
 #End of center ordering
--1
+#-1
      
-     
-     
+HongKong setting
+C: HK
+#end of HongKong setting
+
+Gateway
+SC:Egy med red 
+#end of GAteway setting
+
+Railway     
+TSR:R Mos Prm Oms Kra Irk Vla
+#end of Railway setting
+
+-1    
      
      
      

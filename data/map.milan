@@ -1,3 +1,14 @@
+#
+# milan variant map file
+# slightly re-arranged map to crete Milan instead of Venice and
+# avoid Venice/Trieste hotspot in standard
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 23:06:10  ustv
+# Make Con and Den dual provinces
+#
+#
+#
 Switzerland,           l swi switz
 Adriatic Sea,          w adr adriatic  
 Aegean Sea,            w aeg aegean 
@@ -16,8 +27,8 @@ Budapest,              A bud
 Bulgaria,              x bul
 Burgundy,              l bur
 Clyde,                 l cly
-Constantinople,        T con
-Denmark,               x den
+Constantinople,        Tw con
+Denmark,               xw den
 Eastern Mediterranean, w eas emed east eastern eastmed ems
 Edinburgh,             E edi
 English Channel,       w eng english channel ech

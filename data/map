@@ -1,3 +1,12 @@
+#
+# Standard map file
+#
+# $Log$
+# Revision 1.1.2.1  2001/10/15 23:19:45  ustv
+# Made Con and Den duality provinces
+#
+#
+#
 Switzerland,           l swi switz
 Adriatic Sea,          w adr adriatic  
 Aegean Sea,            w aeg aegean 
@@ -16,8 +25,8 @@ Budapest,              A bud
 Bulgaria,              x bul
 Burgundy,              l bur
 Clyde,                 l cly
-Constantinople,        T con
-Denmark,               x den
+Constantinople,        Tw con
+Denmark,               xw den
 Eastern Mediterranean, w eas emed east eastern eastmed ems eme
 Edinburgh,             E edi
 English Channel,       w eng english channel ech
