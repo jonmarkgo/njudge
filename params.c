@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2001/07/08 23:00:51  miller
+ * New flags and tidy-up
+ *
  * Revision 1.6  2001/07/01 23:19:29  miller
  * Coastal convoy
  *
@@ -163,7 +166,7 @@ void params(FILE * fp)
 	strcat(line, ".");
         print_params(fp, line);
 
-	if (dipent.orded != 0.000 && dipent.rrded != 1.000) {
+	if (dipent.orded != 0.000 || dipent.rrded != 1.000) {
 		sprintf(line, "  DSettng:" );
 		sprintf(&line[strlen(line)], 
 			" Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",
@@ -400,8 +403,14 @@ void params(FILE * fp)
         if (dipent.xflags & XF_COASTAL_CONVOYS) {
                 strcatf(line, "CostalConvoy", &first_flag);
         }
-	if (dipent.xflags & XF_MOVEDISBAND)
+	if (dipent.xflags & XF_MOVEDISBAND) {
 		strcatf(line, "Disband", &first_flag);
+	}
+	if ((dipent.xflags & XF_NOCONCESSIONS) && !(dipent.flags & F_NODIAS)){
+		strcat(line, ", No concessions");
+	}else{
+		strcat(line, ", Concessions");
+	}
 
 	if (first_flag != 1) {
 		/* Only show xflags if there are some to show! */
