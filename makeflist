@@ -55,7 +55,7 @@ closedir(DIR);
 
 =cut
 
-open(INFO, '<', './flist.info') or die "$!\n";
+open(INFO, '<./flist.info') or die "$!\n";
 my @lines = <INFO>;
 close INFO;
 
