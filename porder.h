@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2003/01/15 14:14:34  millis
+ * Added missing Native defines
+ *
  * Revision 1.10  2003/01/13 22:29:48  millis
  * Merged from ustv
  *
@@ -87,6 +90,7 @@
 
 #define NATIVE_POWER '+'
 #define isNativePower(p) (pletter[dipent.variant][p] == NATIVE_POWER)
+#define isNativeUnit(u)  (isNativePower(unit[u].owner))
 
 extern int cmap[CMAP_SIZE];
 
