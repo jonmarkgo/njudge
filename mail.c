@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2002/08/27 22:27:52  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.23  2002/07/16 18:14:21  nzmb
  * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
  *
@@ -592,6 +595,18 @@ int mail(void)
 						got_resent++;
 					mail_getaddr(s, raddr);
 					if (!is_allowed(GLOBAL_PLAYER)) {
+					    if (!is_disallowed(GLOBAL_PLAYER)) {
+                                                fprintf(rfp, "You are not an allowed player on this judge.\n");
+                                                fprintf(rfp, "Please contact the judge keeper to be permitted to play.\n");
+                                                while (fgets(line, sizeof(line), inp)) {
+                                                        fputs(line, log_fp);
+                                                        fputs(line, ifp);
+                                                }
+                                                mail_reply(E_WARN);
+                                                return E_WARN;
+
+					    } else {
+					
 						fprintf(rfp, "You have been blacklisted from this judge.\n");
 						fprintf(rfp, "Please contact the judge keeper if you want to dispute this decision.\n");
 						while (fgets(line, sizeof(line), inp)) {
@@ -600,6 +615,7 @@ int mail(void)
 						}
 						mail_reply(E_WARN);
 						return E_WARN;
+					    }
 					}
 					break;
 				case JUNKMAIL:
@@ -2631,7 +2647,7 @@ void send_press(void)
                      }
                      dipent.players[i].siteid = 0;
 		     strcpy(dipent.players[i].password,GONE_PWD);
-	             strcpy(dipent.players[i].address,"*");
+			     /*strcpy(dipent.players[i].address,"*");*/
 		}
 		/* Let's also take advantage and see if a master-only
 		   message should be sent */
