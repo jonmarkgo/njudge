@@ -1,3 +1,61 @@
+2003-06-20 16:52  millis
+
+	* NEWS: Next version
+
+2003-06-20 16:51  millis
+
+	* configure, configure.ac, njudge.spec: Preparing for the next
+	version
+
+2003-06-20 16:25  millis
+
+	* draw.c, ml_press.c: Fix bug 180, missing press messages (due to
+	too much stack variables)
+
+2003-06-19 17:21  millis
+
+	* dipent.c: Tried to fix it correctly!
+
+2003-06-19 16:43  millis
+
+	* dipent.c: Added a repeat test flag.
+
+2003-06-19 16:27  millis
+
+	* dipent.c: Bug 181, bailout recovery only for control game, and
+	adjust deadlines for non-control games.
+
+2003-06-18 12:21  nzmb
+
+	* mail.c: Fixed bug 166 so that the error flag is no longer set for
+	players who have no moves due (they still get told their commands
+	couldn't be processed).
+
+2003-06-17 00:35  millis
+
+	* data/syntax: Added explicatory note to say can only phase up to 5
+	years ahead.
+
+2003-06-11 08:48  millis
+
+	* lib.c: Remove the 'unit' text
+
+2003-06-11 05:00  millis
+
+	* ma_famplag.c: Remove compile warning
+
+2003-06-10 03:33  millis
+
+	* Makefile.am, Makefile.in: Bug174 fix, delete the map files first
+
+2003-06-10 03:06  millis
+
+	* ma_famplag.c: Bug 173, missed a '=' in use of npr
+
+2003-06-05 17:18  njudge
+
+	* ChangeLog: Autobuild njudge_1_4_1
+
 2003-06-05 16:52  millis
 
 	* NEWS: Update for 1.4.1
