@@ -1,5 +1,8 @@
  /*
  * $Log$
+ * Revision 1.9  2002/08/27 22:27:50  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.8  2002/04/06 04:23:32  nzmb
  * Fixed bug in draw.c that caused the noconcessions flag to also reject
  * draw votes.
@@ -434,21 +437,20 @@ int process_conc(void)
 	FILE *ofp, *dfp;
 	long now;
 
-	for(i = 1; i <= dipent.n; i++)
+	for(i = 0; i < dipent.n; i++)
 	{
 		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
 			continue;
-
 		if(largest == -1)
 		{
 			largest = i;
 			continue;
 		}
-
 		if(dipent.players[i].centers > dipent.players[largest].centers)
 			largest = i;
 	}
-	for(i = 1; i <= dipent.n; i++)
+
+	for(i = 0; i < dipent.n; i++)
 	{
 		if(i == largest) continue;
 		if(dipent.players[i].power == OBSERVER || dipent.players[i].power == MASTER)
@@ -473,7 +475,9 @@ int process_conc(void)
         msg_header(ofp);   
                         
         time(&now);
-        fprintf(dfp, "Concession declared: %s\n", ctime(&now));
+        fprintf(dfp, "Concession declared: %s\n\n", ctime(&now));
+	fprintf(dfp, "The game was conceded to %s.\n", powers[dipent.players[largest].power]);
+	fclose(dfp);
 
 	sprintf(line,"Game %s conceded to %s.\n",dipent.name,powers[dipent.players[largest].power]);
 
@@ -484,6 +488,7 @@ int process_conc(void)
 
 	strcat(line, "The game is over. Thank you for playing.");
         strcat(line2, ".");   
+
 	/* We think this code just wraps lines. */
 	for (t = s = line, i = 0; *s; s++, i++) {
                 if (i > 78) {
@@ -511,8 +516,6 @@ int process_conc(void)
                         i = 0;
                 }
         }
-	fprintf(dfp, "%s\n", t);
-        fclose(dfp);
 	fclose(ofp);
 
 	/* Now we must notify the various custodians of the concession. */

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.15  2003/01/18 23:57:43  millis
+ * Updated from USTV
+ *
  * Revision 1.14  2002/08/27 22:27:58  millis
  * Updated for automake/autoconf functionality
  *
@@ -737,12 +740,12 @@ int main(int argc, char **argv)
 		fclose(tfp);
 	}
     /*
- 
+
      * or concession ...
  
      */
  
-     sprintf(line, "%s/%s/conc", GAME_DIR, dipent.name);
+     sprintf(line, "%s%s/conc", GAME_DIR, dipent.name);
  
      if((tfp = fopen(line, "r"))) {
  
