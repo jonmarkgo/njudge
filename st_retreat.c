@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.3  2000/11/14 14:27:37  miller
+   ** Allow wing units
+   ** REcalcultate blockade settings
+   ** Allow retreat moves syntax checking
+   **
    ** Revision 1.2  1999/07/13 19:55:05  davidn
    ** Size of array increased as array is indexed by owner number, not index of
    ** player in master file entry.
@@ -209,7 +214,7 @@ void retreatout(int pt)
 
 /*  Pass one, check for conflicts. */
 
-	if (processing) {
+	if (processing || predict) {
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].status == 'r') {
 				if (unit[u].order == 'm') {
@@ -288,7 +293,7 @@ void retreatout(int pt)
 	}
 
 /* Pass 3: recalculate blockade settings */
-        if ((dipent.flags & F_WINGS) && processing) {
+        if ((dipent.flags & F_WINGS) && (processing || predict)) {
                 /* Firstly, set all provinces to 'unblockaded' */
                 for (i = 1; i <= npr;i++) {
                         pr[i].blockaded = 0;
