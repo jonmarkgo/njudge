@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2003/02/17 14:33:32  millis
+ * fixed bug 6, detected returning player
+ *
  * Revision 1.18  2003/01/16 22:52:24  millis
  * Removed STAT function
  *
@@ -1012,7 +1015,7 @@ int mail_access(int ignore, int userid, int siteid, int level, int *idx)
 	{
 		if(!msg_header_done)
 			msg_header(rfp);
-		fprintf(rfp,"Sorry, game '%s' requires a minimum resignation ratio of %.3f.\n", 
+		fprintf(rfp,"Sorry, game '%s' requires a minimum CD ratio of %.3f.\n", 
 			dipent.name,dipent.rrded);
 		fprintf(rfp,"You are currently rated %.3f.\n",res_rat);
 		return -1;

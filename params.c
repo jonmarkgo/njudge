@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.24  2003/02/18 14:26:01  millis
+ * Fixed small errors (missing '&')
+ *
  * Revision 1.23  2003/02/18 14:03:25  millis
  * Added display of some new parameters
  *
@@ -239,7 +242,7 @@ void params(FILE * fp)
 	if (dipent.orded != 0.000 || dipent.rrded != 1.000) {
 		sprintf(line, "   DSettng:" );
 		sprintf(&line[strlen(line)], 
-			" Minimum ontime ratio: %.3f. Maximum resignation ratio: %.3f",
+			" Minimum ontime ratio: %.3f. Maximum CD ratio: %.3f",
 			dipent.orded,dipent.rrded);
 		strcat(line, ".");
 		print_params(fp, line);

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.33  2003/02/25 11:11:24  russblau
+ * Improved absence documentation and related Judge message strings.
+ *
  * Revision 1.32  2003/02/17 15:39:20  millis
  * bug 10, prevent overlapping absences
  * Also improve text output for absences.
@@ -105,7 +108,7 @@
  * Add costal convoys
  *
  * Revision 1.7  2001/06/24 05:49:30  nzmb
- * Added functionality to set ontime ratio, resignation ratio in a game.
+ * Added functionality to set ontime ratio, CD ratio in a game.
  *
  * Revision 1.5  2001/05/14 22:58:21  miller
  * Corrected transformation setting/display. Also disabled Mach1,2,3 flags (to be removed later for good).
@@ -1595,21 +1598,21 @@ void mail_setp(char *s)
 				fprintf(rfp,"set resrat %.3f\n",f);
 				fprintf(rfp,"Ratio value must be between 0 and 1.\n");
 			} else if(f == dipent.rrded) {
-				fprintf(rfp,"The resignation ratio is already %.3f.\n", dipent.rrded);
+				fprintf(rfp,"The CD ratio is already %.3f.\n", dipent.rrded);
 			} else if(f < temprat) {
 				fprintf(rfp,"set resrat %.3f\n",f);
-				fprintf(rfp,"You may not set a minimum resignation ratio lower than your own.\n");
+				fprintf(rfp,"You may not set a minimum CD ratio lower than your own.\n");
 				fprintf(rfp,"Use 'get dedication' to check your record.\n");
 			} else {
 				dipent.rrded = f;
-				fprintf(rfp,"Resignation ratio in game '%s' set to %.3f.\n",dipent.name,dipent.rrded);
-				pprintf(cfp,"%s%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+				fprintf(rfp,"CD ratio in game '%s' set to %.3f.\n",dipent.name,dipent.rrded);
+				pprintf(cfp,"%s%s as %s in '%s' set the\nCD ratio to %.3f.\n",
 					NowString(),
 					xaddr,powers[dipent.players[player].power],
 					dipent.name,dipent.rrded);
-				fprintf(bfp,"%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+				fprintf(bfp,"%s as %s in '%s' set the\nCD ratio to %.3f.\n",
 					xaddr,PRINT_POWER,dipent.name,dipent.rrded);
-				fprintf(mbfp,"%s as %s in '%s' set the\nresignation ratio to %.3f.\n",
+				fprintf(mbfp,"%s as %s in '%s' set the\nCD ratio to %.3f.\n",
 					xaddr,PRINT_POWER,dipent.name,dipent.rrded);
 				broadcast = 1;
 				}

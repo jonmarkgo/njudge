@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2002/11/24 23:22:23  millis
+ * Removed unused function "checklist"
+ *
  * Revision 1.10  2002/11/08 21:59:26  millis
  * Fixed bug 36, to check if player is really blacklisted or simply trying
  * on a restricted judge
@@ -711,7 +714,7 @@ int send_dedication(char *raddr)
 	else
 	{
 		rrat = 1.0 * get_data(userid,resigned) / (get_data(userid,started) + get_data(userid,tookover));
-		fprintf(rfp, "Resignation ratio: %.3f\n\n", rrat);
+		fprintf(rfp, "CD ratio: %.3f\n\n", rrat);
 	}
 	/* TODO i'm not sure what to return here, was no return at all -- nw */
 	return 0;
