@@ -1,0 +1,332 @@
+Greetings from the Diplomacy* Adjudicator!!                Apr. 10, 2004.
+Info.machaoc*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+
+AGE OF COMMUNES, version 3
+
+This Machiavelli scenario is played on the standard Machiavelli map.  It
+starts in 1335.  The powers and their initial starting locations and owned
+is described in this document.
+
+The scenario was created by Sergio Lidsell, Stockholm, Sweden.
+
+
+Setup
+
+Time frame 1335-1402.  Game begins in Spring 1335.
+
+A: (della Scala state) Scaligeri Ver (A), Pad (A), Vic (A), Trv, Bre
+
+P: (Republic of) Pisa            Pio (F), Pisa (G), Luc (A)
+
+G: (Republic of) Genoa           Gen (F), Cor (F), Mon (A)
+
+I: (Duchy of) Milan              Mil (A), Cre (A), Ber (A), Pia, Com
+
+L: (Republic of) Florence        Flo (A), Per (G), Are (A), Pst
+
+N: (Angevine Kingdom of) Naples  Bar (F), Nap (F), Mar (G), Slr (A), Aqu, Pro
+
+S: (Duchy of) Savoy              Slz (A), Avi (A), Tur (A)
+
+T: (Kingdom of) Trinacria        Mes (F), Pal (F), Tun (G)
+
+V: (Republic of) Venice          Lag (F), Dal (A), Rag (F), Ven
+
+R: (County of) Provence          Pro, Mar: Begins as neapolitan conq. home c.
+
+&: Autonomous garrisons in:      Anc, Bol, Fer, Man, Mod, Pav, Rme, Sav, 
+                                 Sie, Trt
+
+The country letters are used for signing on and for sending individual 
+press messages.
+
+
+Special rules
+
+1. Fortresses are not used. *If* you use fortresses you set up an autonomous 
+   garrison in For, Par, Pat, Spo, Rma, Urb, Tiv, Tyr.  (But not in: Aqu, 
+   Pia, Bre, Vic as those are part of home countries.)
+
+2. Provence and Marseille are treated as a neapolitan *conquered home 
+   country*.
+
+3. Albania, Austria, Bosnia, Durazzo, Herzegovina, Hungary, Slavonia and 
+   Swiss are impassable.
+
+4. Corsica is a fortified port city -- not an unfortified port.
+
+5. Naples is a fortified port city giving 1 ducat income -- not a major city.
+
+6. Palermo is a major port city giving 2d income -- not a fortified port city.
+
+7. Salerno is a fortified port city giving 1 ducat income -- not a fortress.
+
+8. Tunis is an unfortified port giving 1 ducat inome -- not a major port city.
+
+9. Verona is a major city giving 2 ducats income -- not a fortified city.
+
+10. Bergamo is a fortified city giving 1 ducat income -- not a fortress.
+
+11. Tyrol is a fortress giving 0 ducat income -- not a fortified city.
+
+12. Plague only from U1348 and on (as it did not reach Europe until late 1347).
+
+13. Storms and Disband rules recommended.
+
+14. variable income (mci=major city income, -=not a major city)
+Variable income:  City         dice   1  2  3  4  5  6  mci
+        Scaligeri Verona        2     1  2  3  3  4  4   2
+                  Florence      1     2  2  3  3  4  5   3
+                  Genoa         2     1  1  2  3  3  4   3
+                  Milan         2     1  2  2  3  3  4   3
+                  Naples        1     1  2  2  3  3  4   -
+                  Savoy         1     1  2  3  4  5  6   -
+                  Pisa          1     2  2  3  4  4  5   -
+        Trinacria Palermo       1     1  1  2  3  4  5   2
+                  Venice        2     1  1  2  3  3  4   3
+         Provence Marseille     1     0  0  0  1  0  0   -
+
+
+Optional rules
+
+1. First time a player attacks Rome that player will suffer a rebellion 
+(use assassination reb. procedure).
+
+2. If the Mach2 board is used Milan controls Parma instead of (the 
+non-existent) Piancenza, while Scaligeri lose the provinces of Brescia and 
+Vicenza but gains Friuli. Use this start income: GIVLS 2d, AT 1d, PN 0d. 
+No unit restrictions are implemented.
+
+
+Disasters
+
+See the judge map file. The tables are different from standard.
+
+
+Map notes
+
+Savoy is not part of the Duchy of Savoy as whoever made the original Mach 
+map made a major blooper.  Savoy on the map corresponds to the historical 
+County of Nice and a bunch of Italian statelets.  I have kept the name, 
+even if it may be confusing, as I did not want to rename  a map area.
+
+The historically accurate Savoy corresponds to more or less to northern 
+Pro and east Avi on the Mach map. Today it is part of France.
+
+For changes in cities and provinces see the special rules above.
+
+
+Default victory conditions:
+
+The first player to control at least 15 cities and have control of at
+least two power's original home countries (eg: his own and one other
+player's) is declared the winner.
+
+
+Background notes
+
+Europe has begun cooling and is moving towards the "little ice age". Climate 
+is getting erratical, with rainspells or dryspells at unexpected times of the 
+year. As agricultural practices are not adapted to this new climate regime 
+and the population is very high, the spectre of famine has begun showing its 
+ugly head. But another threat looms far off in Asia -- the black plague. At 
+the end of 1347 it strikes in Sicily and then moves quickly inland... You 
+begin the game a couple of years earlier.
+
+AD 1335. Charles I of Anjous plans for an empire stretching from France to 
+Jerusalem are all but dust. Scores of members of the Anjou family sitting on 
+weak thrones around Europe are embroiled in internal wars for the control of 
+the Regno (the Kingdom of Naples--also called Kingdom of Sicily to confuse the
+issue). The most notable and successful exception is the angevine Louis the 
+Great of Hungary who controls an empire stretching from Dalmatia to the Black
+Sea and from about 1370 including Poland.
+
+The Regno is run by the angevine Robert the Wise of Napels who's losing power
+to the local barons and exerts almost no control over the Principality of
+Taranto (roughly from the "spur" to the tip of the heel plus the middle 3rd of 
+"Otranto" up towards Salerno). Calabria (the toe) is mostly in the hands of 
+monastic orders and the church. About 1345 the Regno is invaded by various 
+branches of the Anjou family (the Hungarian branch and the Durazzo branch) and 
+a free for all ensues between them and Queen Joanna and the Prince of Taranto. 
+By 1350 the Regno is split between Durazzo ("Aquila"), Hungary ("Capua", 
+"Naples"), Taranto ("heel") and Joanna ("Naples" city, "Salerno" and Calabria).
+
+After various coups and counter-coups Joanna gets back in charge (at least 
+nominally) of the Regno around 1362. By 1382 she controls not much more than the 
+city of Naples when she is murdered and the Regno is invaded by the french 
+angevines and more years of chaos follow. By 1390 the Regno is effectively 
+divided in roughly two halves: one ruled by Ladislas of Hungary of the Durazzo 
+angevines and one by Louis of Anjou of the french angevines. A situation that 
+furthers the local aristocracy's ambition to carve out small statelets for 
+themselves.
+
+In the Kingdom of Trinacria (that is: the islands of Sicily and Malta/Gozo) the 
+situation is chaotic too. The downward road started during the reign of 
+Fredrick III (also ruler of the Duchy of Athens between 1311 and 1337)--which 
+was marked by repeated famines (1311 to 1335) and slow economic collapse--ends 
+for all practical purposes in civil war at his death in 1337. Four baronial 
+families (Ventimiglia, Moncada, ...) essentially 
+carve out small statelets for themselves and the city of Messina almost manages 
+to create  a city state. Some control is restored as the aragonese invade the 
+island in 1392. Massive population decline, from an estimated 850000 to 350000 
+during the 14th century, and the plague do also exacerbate the situation.
+
+(Trivia note: between about 1100- Tunis was tributary to Sicily.
+1535-1574 Tunis city was under Spanish control.)
+
+In the north Genoa kick out the angevine overlord just to find themselves soon 
+under milanese rule as the Visconti family are fast extending Milans influence in 
+northern Italy. Power which will peak around 1390 under the rule of Gian Galeazzo 
+Visconti (who's risen to power by assassinating all his brothers -- a typical 
+ruling family of the times). Genoa was rich but weak mainly because its style of 
+government more resembled Chicago in the twenties than a centralized well run state.
+
+The north is also the home of the powerful state of the della Scala (Scaligeri) 
+family -- probably the richest or 2nd richest of Europe at the time. Under the 
+rule of Mastino I and II (mastiff, the dog type) and Can Grande I ('big dog', yes 
+I am serious), they had gained control of a good chunk of north-eastern Italy by 
+1335. (BTW Fratricide was a pastime of this family too.) But they had also enraged 
+most of their neighbours. In 1337 Milan, Venice, Florence, d'Este (Modena and other
+cities) and Gonzaga (Montferrat) allied to crush the state.
+
+The Papacy was weak at the time and controlled just the territory close by Rome and 
+Avignon. The 14th century was also the century that saw *three* simultaneous popes 
+and the Papacy going practically bankrupt.
+
+Between France and Italy the ambitious counts/dukes of Savoy are slowly and 
+discreetly expanding their domains.
+
+
+Game notes
+
+The game is fairly historical in its setup, with some changes for playability. 
+Angevine control over Naples was divided between brothers and robber barons, that's 
+why Naples does not control all neapolitan (btw this is the 'correct' spelling
+although the inhabitants of the Kingdom, the Regno, were called "regnicoli" at the 
+time) provinces. Notice also the construction with Provence. That is partly because 
+the angevines got those lands by marriage and partly because they were constantly 
+warring between brothers, sisters and cousins about who would rule what (another 
+typical ruling family of the times). The angevines also controlled a slew of small 
+towns (of no consequence) mainly in Piedmont in northern Italy that on a lot of maps
+are bunched together to look like a sizeable province. As that is not the case
+those towns have been ignored.
+
+(Trivia note: the word mafia is said to be a contraction of "maranu li francheschi" 
+-- death to the french. Which describes the general sentiment in 13th century 
+Sicily about the rule of Charles I of Anjou.)
+
+
+The Balcans are also mostly impassable as these lands were ruled by various
+warlords and for some decades by three successive Tsars Stefan of Serbia.
+
+As the Hungarian Angevines were mostly concerned with consolidation of their power 
+and expansion eastwards, their territories are impassable except for Croatia. The 
+cities of the Dalmatian coast passed between Venice and nominal Hungarian
+control several times during this epoch, but for practical game reasons Dalmatia
+and Ragusa are considered to be venetian as Venice controlled the Adriatic Sea. 
+Venice may seem boxed in in its"mare nostrum". This is intentional as Venice lost 
+a lot of its possessions along the Adriatic Coast in the 14th century.
+
+In version one Austria was given the role of major threat over Venice, but as that 
+was not really historical the della Scala State replaced Austria in version 2. 
+Tyrol and Trent were free states at the time.
+
+Tunis symbolizes the Kingdom of Aragon in Spain in this scenario. Even if it did not 
+control Trinacria per se it was always ready to interfere. The island of Sardinia 
+is controlled by the Kingdom of Aragon (actually by the Kingdom of Majorca) but 
+treated as neutral for game purposes.
+
+Della Scala also controlled Parma and Lucca, but for game reasons this is ignored 
+and Lucca is awarded to Pisa.
+
+The Papacy was removed as a power in version 3 and the Duchy of Savoy is instead 
+one of the contenders.  This was both due to the fact that the north needed another 
+power for game balance, and the fact that Rome was weak combined with the need to 
+make central Italy less crowded.
+
+Saluzzo was only incorporated into Savoy later on, but has been awarded the Duchy 
+of Savoy to give the latter three cities. Historically the County of Nice (called 
+Savoy on the mach map) passed under savoiard (yes it is called thus) control at 
+this time, but that would leave TDOS a too smeared out state, so I used SLZ instead. 
+Avignon is to be regarded as the historical Savoy in this game and not as the very 
+small papal Avignon. 
+
+Notice that in version 1 and 2 Milan, Genoa and Florence started with only two 
+cities in their home countries !
+
+Perugia is under florentine control as to give Florence three cities. Historically 
+Perugia switched between free commune and Papal control.
+
+Bergamo was at this time under milanese control, and thus is milans third city.
+
+Genoa has gotten Montferrat.
+
+Note: the possessive of Savoy is sabaud or savoiard !
+
+
+Trivia
+
+Opinions about the Regno (Kingdom of Naples) from contemporaries:
+
+"Men completely inimical to any kind of civilization.",
+Niccolo Machiavelli in "Discorsi".
+
+"Nothing by a school of ambition, avarice and tyranny.",
+Pandolfo Collenuccio of Pesaro.
+
+"Could not be called lands, but... rather thieves' den's, full of bloody 
+entrails and other crude parts.", Niccolo Acciaiuoli, Grand Seneschal 
+of the Kingdom !!
+
+"Malicious, evil, endowed with little talent and traitorous to the bone."
+"Arlotto"
+
+"A paradise peopled by devils." Popular saying (related by Benedetto Croce in 
+"History of the Kingdom of Naples").
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.
+
+REVISION HISTORY
+v1 Oct 5 2001. Original version. Included Austria.
+v2 Feb 17 2002. Austria dropped and the Scaligeri state added. Some minor 
+       changes to the variable income table. Verona added as major (2d) city.
+v3 Nov 22 2003. The Papacy dropped and replaced with the Duchy of Savoy. 
+       Corrections of this text and changes of the income tables. Famine table 
+       was changed to avoid Turin and Avignon and Palermo and Tunis getting 
+       famined at the same time. Plague table was changed to avoid Palermo and 
+       Tunis and  Savoy and Turin to get struck simultaneously. UAS moved on 
+       storm table to avoid simultaneous storm in UAS and ION.
+V3b March 21 2004. A TUN changed to F TUN. All home countries have 3SC:s each. 
+       Some Mach2 notes added. Changed country letters.
+v3c Apr 10 2004. Revision of text and setup.
+
+
+Copyright Sergio Lidsell. 2001, 2002, 2003, 2004.
+
+1. Without limiting the rights under copyright reserved above, no part of this
+publication may be reproduced, stored in or introduced into a retrieval system,
+or transmitted, in any form, or by any means (electronic, mechanical,
+photocopying, recording or otherwise), without the prior written permission of
+the copyright owner.
+
+2. Players of Machiavelli or Diplomacy are permitted to use, store and distribute 
+this document in source and binary forms, with or without modification, 
+under the following conditions:
+
+a) That the above copyright notice and this list of conditions is retained 
+or reproduced.
+
+b) That the name of the copyright holder not be used to endorse or promote 
+products derived from this document without the prior written permission of the 
+copyright owner.
+
+c) That distribution or use for commercial or profit purposes is strictly 
+prohibited without the prior written permission of the copyright owner.
