@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.51  2004/09/03 13:30:17  millis
+ * Added use of AlliedWin value.
+ *
  * Revision 1.50  2004/07/25 16:13:43  millis
  * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
  * return in duplex) and Bug 206 (allow takeover of unknown abandoned
@@ -542,7 +545,10 @@ extern int predict;		/* =1 when predicting a turn			*/
 
 extern int canbuild;	/* can a player build? (used when being reminded to move */
 
-extern int victor;              /* Set to power index if there is a game winner */
+extern int victor;              /* Set to power count if there is a game winner */
+				/* (could be > 1 if duplex game) */
+
+extern int victors[MAXPLAYERS];	/* Powers that have won */
 
 extern int bailout_recovery;    /* Set to 1 if recovering from a bail-out       */
 

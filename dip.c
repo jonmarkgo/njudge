@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.63  2004/08/17 09:49:01  millis
+ * Bug 355: missed incrementing just_now_abandoned flag.
+ *
  * Revision 1.62  2004/08/16 21:51:34  millis
  * Refix bug 347 (games can go NoNMR) and also Bug 355 (no abandoned player(s)
  * messages.
@@ -1047,6 +1050,9 @@ int process(void)
 	char late[51];
 	struct stat ppinfo;
 	int one_printed = 0;
+	int vic, vic_count;
+	static char vic_string[MAXPLAYERS+1];
+	char temps[2];
 	int just_now_abandoned = 0;  /* Set to non-zero if at least one power hsa just abandoned */
 
 	if (GAME_PAUSED) return 0;  /* game is paused, do not process! */
@@ -1573,9 +1579,26 @@ int process(void)
 
 			/*  Find out who has won */
 
-			fprintf(ofp, "%s.\n\n", powers[victor]);
-			fprintf(dfp, "%s.\n", powers[victor]);
-			fprintf(gfp, "%s.\n", powers[victor]);
+		
+			vic_string[0] = '\0';
+			for (vic_count = 0; vic_count < victor; vic_count++)
+			{
+			    vic = victors[vic_count];
+			    if (vic_count > 0) {
+		                fprintf(ofp, ", ");
+                                fprintf(dfp, ", ");
+                                fprintf(gfp, ", ");
+			    }
+			    fprintf(ofp, "%s", powers[vic]);
+			    fprintf(dfp, "%s", powers[vic]);
+			    fprintf(gfp, "%s", powers[vic]);
+			    sprintf(temps, "%c", dipent.pl[vic]);
+			    strcat(vic_string, temps);
+			}
+			fprintf(ofp, ".\n\n");
+                        fprintf(dfp, ".\n");
+                        fprintf(gfp, ".\n");
+
 
 			fprintf(gfp, "Congratulations on a well deserved victory!");
 
@@ -1592,8 +1615,8 @@ int process(void)
 
 				if (*(dipent.players[i].address) != '*' && !Dflg && 
 				    RealPlayerIndex(i) == i ) {
-					sprintf(line, "dip.victory '%s:%s - %s Victory: %c'",
-					  JUDGE_CODE, dipent.name, phase, dipent.pl[victor]);
+					sprintf(line, "dip.victory '%s:%s - %s Victory: %s'",
+					  JUDGE_CODE, dipent.name, phase, vic_string);
 					MailOut(line, dipent.players[i].address);
 				}
 			}

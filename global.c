@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2004/05/22 08:58:22  millis
+ * Bug 297: Add Intimate Diplomacy
+ *
  * Revision 1.13  2004/01/04 11:34:35  millis
  * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
  *
@@ -146,7 +149,8 @@ int control = 0;
 int predict = 0; 		/* =1 to predict a move for master */
 
 int canbuild = 1;		/* can the power being reminded to move build? */
-int victor = 0;			/* Set to index of power when there is a victor */
+int victor = 0;			/* Set to number of victorious powers */
+int victors[MAXPLAYERS];	/* Array of victors */
 
 int process_set; 		/* Set to 1 if process command has been set */
 
