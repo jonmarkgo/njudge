@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.14  2002/08/27 22:27:58  millis
+ * Updated for automake/autoconf functionality
+ *
  * Revision 1.13  2002/06/12 21:08:30  millis
  * second value in player record is hex, thus us %x and not %d
  *
@@ -134,6 +137,7 @@ int main(int argc, char **argv)
 	char string[30], *s, *t, *name;
         char exe_name[100];
 	int lflg=0;
+	int tooMany = 0; /* Set to 1 if too many builds were made */
 
 	variant = 1;
 	name = NULL;
@@ -903,11 +907,17 @@ int main(int argc, char **argv)
 				n = (ix[i + sy] == turn - 1) || (dipent.flags & F_MACH) ?
 				    m : units[ix[i + sy] + 1][p];
 				if (!bflg) {
-					fprintf(ifp, "%3d%c", m, outc[m - n]);
+					
+					if (n > m) {
+					    fprintf(ifp, "%3dX", m); 
+					    tooMany = 1;
+					}
+					else 
+					    fprintf(ifp, "%3d%c", m, outc[m - n]);
 				} else {
 					fprintf(ifp, "%3d ", m);
 				}
-				outn[m - n]++;
+				if (n <= m) outn[m - n]++;
 				sqrs[i] += m * m;
 			}
 			fprintf(ifp, "%*s%s\n", 4 * (YPL - i) + 2, "", names[player[ix[j + sy]][p]]);
@@ -925,6 +935,9 @@ int main(int argc, char **argv)
 	}
 
 	if (!bflg) {
+		if (tooMany) 
+			fprintf(ifp, "X = too many build(s).\n");
+		
 		for (i = 1; i < sizeof(outc); i++) {
 			if (outn[i]) {
 				fprintf(ifp, "%c = %d unused build%s.\n", outc[i], i, i == 1 ? "" : "s");
