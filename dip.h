@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.6  2001/07/01 23:19:29  miller
+ * New Mach flags
+ *
  * Revision 1.5  2001/06/24 06:12:35  nzmb
  * Added dipent variables (dedapplied, orded, rrded) for use in new dedication
  * and deadline features.
@@ -145,6 +148,9 @@
 #define XF_NOATTACK_TRANS  0x2000000 /* An attacked unit fails transformations  */
 #define XF_COASTAL_CONVOYS  0x4000000 /* Convoys allowed by fleets on coasts */
 #define XF_PROV_DUALITY 0x8000000 /* Provinces can be both land and water  */
+#define XF_NOMONEY	0x10000000 /* Set to have no money (basic game Mach) */
+#define XF_MOVEDISBAND  0x20000000 /* Allow disbands in movement turns 	     */
+
 
 /* Mach2 flags, currently combined into one flag, XF_MACH2 */
 #define XF_GCONVERT_ANYTIME     XF_MACH2  /* Can retreat to a garrison anytime */

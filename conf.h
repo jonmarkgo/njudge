@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/01/06 18:48:43  davidn
+ * Changes to allow game creator to be automatically made master
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Added new dip.conf variable. Plus allowed dip.conf path to be passed in as a parameter
  *
@@ -61,6 +64,8 @@
 #define SYSLOG_FLAG	atoi(config("SYSLOG_FLAG"))
 #define STATS_FLAG	atoi(config("STATS_FLAG"))
 #define STATS_DIR	config("STATS_DIR")
+#define TIME_TOLERANCE  atoi(config("TIME_TOLERANCE"))
+#define WARP_FILE	config("WARP_FILE")
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think
