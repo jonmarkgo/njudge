@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.5  2004/06/27 01:50:22  millis
+   ** Futher Intimate fixes (Bug 297) specifically to allow phased orders
+   ** and correct turns not processing, plus more information printed.
+   **
    ** Revision 1.4  2004/06/11 17:27:48  millis
    ** Bug 297: Minor change to not show zero bids in results
    **
@@ -253,8 +257,15 @@ int bidin(char **s, int p, int syntaxcheck)
             return E_WARN;
         }
 
-	if (!syntaxcheck)
-	    bids[p][pow] = p1;
+        if (!syntaxcheck) {
+           if (ducats[p].treasury < p1) {
+               errmsg("Amount %d is larger than your treasury %d.\n");
+               return E_WARN;
+           }
+
+	    if (!syntaxcheck)
+	        bids[p][pow] = p1;
+ 	}
 
 	return 0;
 
