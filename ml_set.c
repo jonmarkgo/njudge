@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.65  2004/09/03 13:30:18  millis
+ * Added use of AlliedWin value.
+ *
  * Revision 1.64  2004/08/01 18:28:58  millis
  * Fix Bug 345 and 346
  *
@@ -930,6 +933,10 @@ void mail_setp(char *s)
 #define PRV_NOPORTAGE	  'm'
 #define SET_POWERS	  179
 #define PRV_POWERS	  'm'
+#define SET_ALLIEDWIN	  180
+#define PRV_ALLIEDWIN	  'm'
+#define SET_NOALLIEDWIN	  181
+#define PRV_NOALLIEDWIN   'm'
 
 
 /***********************************************************************
@@ -1043,7 +1050,8 @@ void mail_setp(char *s)
 	    "touch press", "no touch press",
 	    "approval", "no approval",
 	    "approved", "approve", "not approved", "not approve",
-	    "portage", "no portage", "powers"
+	    "portage", "no portage", "powers",
+	    "allied win", "no allied win"
 	};
 
 	static unsigned char action[] = {
@@ -1137,7 +1145,8 @@ void mail_setp(char *s)
 	    SET_TOUCHPRESS, SET_NOTOUCHPRESS,
 	    SET_APPROVAL, SET_NOAPPROVAL,
 	    SET_APPROVED, SET_APPROVED, SET_NOTAPPROVED, SET_NOTAPPROVED,
-	    SET_PORTAGE, SET_NOPORTAGE, SET_POWERS
+	    SET_PORTAGE, SET_NOPORTAGE, SET_POWERS,
+	    SET_ALLIEDWIN, SET_NOALLIEDWIN
 	};
 
 	static char privs[] = {
@@ -1229,7 +1238,8 @@ void mail_setp(char *s)
 	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS,
             PRV_APPROVAL, PRV_NOAPPROVAL,
             PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED,
-	    PRV_PORTAGE, PRV_NOPORTAGE, PRV_POWERS
+	    PRV_PORTAGE, PRV_NOPORTAGE, PRV_POWERS,
+	    PRV_ALLIEDWIN, PRV_NOALLIEDWIN
 	};
 
 	chk24nmr = 0;
@@ -2532,8 +2542,9 @@ void mail_setp(char *s)
 				fprintf(bfp, "%s as %s in '%s' set the winning centers to %d.\n",
 					xaddr, PRINT_POWER,
 					dipent.name, dipent.vp);
-				if (IS_DUPLEX(dipent) && !(dipent.flags & F_INTIMATE) && !(dipent.x3flags & X3F_NOALLIEDWIN))
-				    fprintf(bfp, "%s as %s in '%s' set the allied win centers to %d.\n", dipent.avp);	
+				if (IS_DUPLEX(dipent) && !(dipent.flags & F_INTIMATE) && (dipent.x3flags & X3F_ALLIEDWIN))
+				    fprintf(bfp, "%s as %s in '%s' set the allied win centers to %d.\n", 
+				            xaddr, PRINT_POWER, dipent.name, dipent.avp);	
 				broadcast = 1;
 				sprintf(subjectline, "%s:%s - %s Winning Centers Changed to %d",
 					JUDGE_CODE, dipent.name, dipent.phase, dipent.vp);
@@ -2771,10 +2782,23 @@ void mail_setp(char *s)
 		    break;
 
 		case SET_NOPORTAGE:
-		     CheckAndToggleFlag(&dipent.x2flags,  X2F_APPROVAL, "Portage", CATF_SETOFF,
+		     CheckAndToggleFlag(&dipent.x2flags,  X2F_PORTAGE, "Portage", CATF_SETOFF,
 		                        "Armies cannot convoy fleets (no portage).\n",
 		                        CATF_NORMAL, CATF_NOSTART);
 		    break;
+
+		case SET_ALLIEDWIN:
+		     CheckAndToggleFlag(&dipent.x3flags,  X3F_ALLIEDWIN, "AlliedWin", CATF_SETON,
+				       "Allied Win now enabled.\n",
+		                        CATF_NORMAL, CATF_NOSTART);
+		     break;
+
+		case SET_NOALLIEDWIN:
+		     CheckAndToggleFlag(&dipent.x3flags,  X3F_ALLIEDWIN, "AlliedWin", CATF_SETOFF,
+			                "Allied Win disabled.\n",
+	                                 CATF_NORMAL, CATF_NOSTART);
+	             break;
+
 
 		case SET_STRCONVOY:
 			CheckNoMach();

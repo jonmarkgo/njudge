@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                     04 Jul 2004
+Greetings from the Diplomacy* Adjudicator!!                     13 Sep, 2004
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
@@ -315,7 +315,7 @@ mod/mac SET [NO] ADJACENT|ADJACENCY
 
 mod/bgs	SET [NO] ALLIED WIN                                            {1.7.2}
 	Disables/enables victory condition of an alliance, in duplex games.
-	Get 'info.duplex'. Defaults to enabled.	
+	Get 'info.duplex'. Defaults to disabled.	
 
 mod/    SET ALL PRESS
         To request that all partial press be sent to you as the moderator of
