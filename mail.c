@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.34  2003/03/08 23:25:26  russblau
+ * Fixed minor spacing glitch in "set wait" notification.
+ *
  * Revision 1.33  2003/03/07 21:24:08  russblau
  * Editorial changes.
  *
@@ -515,7 +518,8 @@ int mail(void)
 		/* are we dealing with postal press here? */
 		if(ppress_read || ppress_skip)
 		{
-			if(!strcasecmp(s,"signoff\n"))
+			if(!strcasecmp(s,"signoff\n") ||
+			   !strcasecmp(s,"sign off\n"))
 				skipping++;
 			else if(!strcasecmp(s,"endpress\n") ||
 			        !strcasecmp(s,"endbroadcast\n"))
@@ -546,7 +550,8 @@ int mail(void)
 		   we see 'signoff' alone on a line.  */
 
 		if (broad_read || broad_skip) {
-			if (!strcasecmp(s, "signoff\n")) {
+			if (!strcasecmp(s, "signoff\n") ||
+			    !strcasecmp(s, "sign off\n")) {
 				skipping++;
 
 				/*
