@@ -1,5 +1,8 @@
 /*
 $Log$
+Revision 1.2  2003/12/08 18:47:52  millis
+Removed compile warning
+
 Revision 1.1  2003/03/05 02:42:09  nzmb
 Added ascii2rec which will convert a text plyrdata record dump (generated
 by recdump) into a binary plyrdata file.
@@ -19,7 +22,7 @@ A very quick hack by Tim Miller
 int main(int argc, char **argv)
 {
 	FILE *ifp;
-	int put;
+	int put = 0;
 	char type[LINELEN], line[LINELEN];
 	unsigned long val, recno = 0, lineno = 0;
 	PLYRDATA_RECORD rec;
