@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.46  2003/05/24 23:57:14  millis
+ * Bug 97, removed Generic Handling code
+ *
  * Revision 1.45  2003/05/14 07:59:18  nzmb
  * Fixed bug #122 -- splits dip.reply into part created before and after
  * the GM issues a "become" command.
@@ -2401,7 +2404,17 @@ int mail(void)
 		} else {
 			dipent.players[player].status &= ~SF_MOVED;
 			fprintf(rfp, "\n\n%d error%s encountered.\n\n", i, i == 1 ? "" : "s");
-			errorflag++;
+
+			/* don't set error flag if player doesn't have
+			   moves do -- Tim Miller Jun 18, 2003 */
+			if(dipent.players[player].status & SF_MOVE)
+			{
+				errorflag++;
+				fprintf(rfp,"Error flag set.\n\n");
+			} else {
+				fprintf(rfp,"Since you have no moves due, the error flag is not set.\n\n");
+			}
+
 			if ((dipent.players[player].status & SF_MOVE) &&
                            (dipent.players[player].power != MASTER) &&
                             !GAME_PAUSED) {
