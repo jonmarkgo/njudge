@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.2  1997/01/26 16:55:29  rpaar
  * Applied Kevin's year patch to remove some bugs in year handling.
  *
@@ -28,31 +31,38 @@ int valid_move(int u, int p, int *c, int *b)
 	 *
 	 *  If the destination coast is CC (conditional) then the next entry in
 	 *  the movement table contains the province that controls the straits.
+	 *   
+         *  Additionally, if the unit is a wing, it can do anything!
 	 */
 
 	unsigned char *t, fc;
+	int ret;
 
 	*b = 0;
+	if (u <= 0) return 0; /* Invalid unit index */
 	for (t = pr[unit[u].loc].move; *t; t++) {
 		if (*t++ == p
-		    && (unit[u].coast == (fc = (*t >> 4)) || (unit[u].coast == XC && fc))
-		    && (*c == (*t & 0x0F) || !*c)) {
+		    && ((unit[u].type == 'W') || 
+			 ((unit[u].coast == (fc = (*t >> 4)) || (unit[u].coast == XC && fc))
+		          && (*c == (*t & 0x0F) || !*c)))) {
 			if (!*c)
 				*c = (*t & 0x0F);
 			if (*c == CC) {
 				*b = *++t;
 				*c = XC;
 			}
-			return 1;
+			ret = 1;
+			return ret;
 		}
 	}
-	return 0;
+	ret = 0;
+	return ret;
 }
 
 
-int lookup(char *name)
+int lookup(unsigned char *name)
 {
-	char *s, *t;
+	unsigned char *s, *t;
 
 	/*
 	 * Do a linear search on the heap for a specified province abbreviation
@@ -68,7 +78,7 @@ int lookup(char *name)
 			while (*++t == '.' || isspace(*t));
 		}
 		if (!*s && !*t)
-			return *++t;
+			return (int) *++t;
 		while (*t++);
 		t++;
 	}
