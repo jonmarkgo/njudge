@@ -140,6 +140,8 @@ int CheckForMultiUnitProvinces(void);
 int GetUnitIndex(int p, int power);
 void MailOut(char *out_line, char *address);
 char *get_coast(char * coast_string, int *coast);
+void PrintTwoColTable( char * title, char *power_col, char *other_col );
+int PowerControlledBy( int p);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int);
@@ -182,7 +184,13 @@ int canpreprocess(char *s);
 /* defined in st_porder.c */
 int process_output(int pt, char phase);
 void process_input(int pt, char phase, int player);
-int ownership(void);
+int ownership(int new_type);
+
+/* defined in st_bid.c */
+int bidin(char **s, int p);
+void bidout(int pt);
+int bid_syntaxcheck(char *s, int precheck, char *out_string);
+
 
 /* defined in st_build.c */
 int CountCentres( int p );
@@ -306,6 +314,7 @@ int mail_getaddr(char *s, char *addr);
 int mail_signon(char *s);
 void mail_igame(void);
 int chkpref(char *s, int wp[], int wv[]);
+void SetupIntimateTreasury(void);
 
 /* defined in ml_list.c */
 void mail_listit(void);
