@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.10  2001/07/08 22:53:25  miller
+ * Use define for warp file
+ *
  * Revision 1.9  2001/06/24 05:19:25  nzmb
  * Added inteface to player data database so player records are recorded,
  * and also provided option of have D_LATE applied at the deadline or
@@ -1258,7 +1261,7 @@ int process(void)
 		phase_pending();
 		deadline((sequence *) NULL, 0);
 	}
-	dipent.dedapplied = dedtest;
+
 	return 0;		/* reached ? */
 }
 /***********************************************************************/
