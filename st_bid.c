@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.8  2004/07/27 23:48:01  millis
+   ** Don't allow bids for powers with no centers
+   **
    ** Revision 1.7  2004/06/28 17:47:34  millis
    ** Limit bids only to 9999 or less
    **
@@ -243,8 +246,8 @@ int bidin(char **s, int p, int syntaxcheck)
 
 	for (i = 0; i < dipent.n && !bid_power; i++) {
 	    if (dipent.players[i].power == pow ) {
-                if (dipent.players[i].controlling_power == 0 || dipent.players[i].centers == 0) {
-                    errmsg("Cannot bid to control %s", *s);
+                if (dipent.players[i].controlling_power == 0 || (dipent.players[i].centers == 0 && atoi(dipent.seq) > 1)) {
+                    errmsg("Cannot bid to control %s", powers[pow]);
                     return E_WARN;
                 } else {
                     bid_power = i;
