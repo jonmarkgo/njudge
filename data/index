@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                26th July 2001
+Greetings from the Diplomacy* Adjudicator!!                15th April 2001
 index.
 
 (Note: New commands for this judge version are marked with an '*'.
-       Still to be implemented ones are marked with a '+'.)
+	 Still to be implemented ones are marked with a '+'.)
 
 This is an alphabetical list of all the commands that the adjudicator will
 process with a brief description.  Each command is preceded by a who/where
@@ -46,12 +46,6 @@ any/aft BROADCAST [options] ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
 
 any/aft CLEAR
         To clear any pending orders entered with the PHASE command.
-
-mod/aft*EJECT power-or-email
-        A master-only command to resign a particular power. This can be done at
-        any time by the master. The master MUST use this form to resign himself.
-        The <power-or-email> specification can also be an email address, and will
-        work with observers too.
 
 adm/pre FIXID siteid site_name
         Sets all players who have registered with the specified site name
@@ -180,10 +174,6 @@ any/aft PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.
 
-mod/aft*PREDICT
-	Will send to the master a prediction of the current turn, using partial
-	orders already entered.
-	
 any/aft PRESS options ... [ENDBROADCAST|ENDPRESS|SIGNOFF]
         To send a press message; options must be specified, and the message
         may be terminated by 'ENDBROADCAST', 'ENDPRESS', 'SIGNOFF', or the
@@ -194,6 +184,12 @@ mod/aft*PROMOTE address
 
 any/any REGISTER ... END  
         To register yourself.  See file 'form'.
+
+mod/aft*RESIGN power-or-email
+	A master-only command to resign a particular power. This can be done at
+	any time by the master. The master MUST use this form to resign himself.
+	The <power-or-email> specification can also be an email address, and will
+	work with observers too.
 
 any/aft RESIGN
         To withdraw from the game.  This must be the LAST command in the
@@ -296,17 +292,12 @@ mod/aft SET [NO]CD
         Same as "set [no]nmr".
 
 mod/aft SET CENTERS number
-	Set the number of centers required to win the game to "number".
+        Set the number of centers required to win the game to "number".
 	This will cause the game to end when the first player reaches this
 	number of winning centers. If more than one player reaches this
 	value, then it is advanced to one more center than the top
 	players have. If a draw is acceptable then a vote is required
 	using the SET DRAW command.
-
-mod/aft*SET [NO]COASTAL CONVOYS
-	Disables/enables fleets in coastal provinces from participatin in
-	a convoy. Default enabled for Machiavelli games, disabled for all
-	other variants.
 
 mod/aft SET COMMENT text
 	Sets the comment that appears in the brief listing format.  The
@@ -326,21 +317,34 @@ mod/aft SET DEDICATION level
 	level can not be higher than the Moderator's current dedication
 	rating.  See file 'deadlines'.
 
+mod/aft SET ONTIMERAT level
+	Restricts access to the game to those people with an ontime ratio
+	equal then or greater than the indicated level. The indicated
+	level can not be higher than the moderator's.
+
+mod/aft SET RESRAT level
+	Restricts access to the game to those people with a resignation
+	ratio lower than or equal to the indicated level. The indicated
+	level can not be lower than the moderator's.
+
 mod/aft SET [NO]DIAS
         Disables/enables requirement that all draws must include all
         survivors. See file 'draws'.
+
+mod/aft SET [NO]CONCESSIONS ** new in njudge 0.8.10 **
+	Disables/enables concessions in DIAS games. See file
+	'concessions'.
 
 mod/mac SET [NO]DICE
         Disables/enables optional rules that introduce random events into
         the game: Variable income, bank loans, assassinations, famine and 
         plague.
 
-mod/aft*SET [NO]DISBAND
-	Disabled/enables the use of a disband order during a normal movement
-	phase. 
-
 any/aft SET [NO]DRAW [powerlist]
         Cast a vote in an automated draw. See file 'draws'.
+
+any/aft SET [NO]CONC [P] ** new in njudge 0.8.10 **
+	Cast a vote for or against a concession. See file 'concessions'.
 
 mod/aft*SET EMPTYBOARD
 	The same as SET BLANKBOARD, see above.
@@ -362,7 +366,7 @@ mod/aft SET EP number
 mod/mac SET [NO]FAMINE
         Disables/enables optional famine rules.
 
-mod/mac*SET [NO]FORT[RESS]
+mod/mac+SET [NO]FORT[RESS]
         Disables/enables optional fortress rules.
 
 mod/aft SET GRACE date
@@ -408,8 +412,20 @@ mod/mac SET [NO]LOANS
         Disables/enables optional rules allowing players to borrow money
         from the bank.
 
-mod/aft+SET[NO]MACH2
-	Disables/enables Machiavelli 2nd Edition (1995) rules.
+mod/mac+SET MACH[-]1
+mod/mac+SET MACHIAVELLI[-]1
+        Enables original rules for a Machiavelli game. Can only be set
+        before game starts. See rules.mach1 for details.
+
+mod/mac+SET MACH[-]2
+mod/mac+SET MACHIAVELLI[-]2
+        Enables 2nd Edition rules for a Machiavelli game. Can only be set
+        before game starts. See rules.mach2 for details.
+
+mod/mac+SET MACH[-]3
+mod/mac+SET MACHIAVELLI[-]3
+	Enables Special rules for a Machiavelli game. Can only be set
+	before game starts. See rules.mach3 for details.
 
 mod/aft*SET [NO]MANUALPROCESS
 	Disables/enables the requirement that the turn will only occur 
