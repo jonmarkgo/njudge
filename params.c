@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2003/05/06 01:53:07  millis
+ * Bug in displaying Summer turn
+ *
  * Revision 1.27  2003/05/02 22:20:59  millis
  * Further flags (NoSummer, CaptureHome)
  *
@@ -336,7 +339,11 @@ void params(FILE * fp)
 	    print_params(fp, line);
 	}
 	if (dipent.flags & F_MACH) {
-        sprintf(line, "    Mach:   ");
+	    if (dipent.xflags & XF_MACH2) {
+	        sprintf(line, "   Mach2:   ");
+	    } else {
+	        sprintf(line, "    Mach:   ");
+	    }
 
 	    if (dipent.flags & F_NODICE) {
 			strcat(line, "NoDice");
