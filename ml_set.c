@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.23  2002/06/11 16:26:19  nzmb
+ *
+ * Added set [no]mustorder to require players to submit avalid set of orders
+ * before they may send press (to be used in conjunction with set wait).
+ *
  * Revision 1.22  2002/05/11 09:15:33  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -694,6 +699,10 @@ void mail_setp(char *s)
 #define PRV_MUSTORDER	  'm'
 #define SET_NOMUSTORDER   156
 #define PRV_NOMUSTORDER   'm'
+#define SET_POSTALPRESS   157
+#define PRV_POSTALPRESS   'm'
+#define SET_NOPOSTALPRESS 158
+#define PRV_NOPOSTALPRESS 'm'
 
 	static char *keys[] =
 	{"", ",", "press",
@@ -827,8 +836,9 @@ void mail_setp(char *s)
 	 "prflist", "prfboth", "prfrand",
 	 "mustorder", "nomustorder",
 	 "secret",
-	 "nosecret", "no secret"
-         "not variant", "notvariant"
+	 "nosecret", "no secret",
+         "not variant", "notvariant",
+	 "postalpress", "nopostalpress"
  	};
 
 
@@ -965,12 +975,12 @@ void mail_setp(char *s)
 	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY,
 	SET_STORM, SET_STORM,
 	SET_NOSTORM, SET_NOSTORM, SET_NOSTORM, SET_NOSTORM,
-/*	SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, SET_NORAILWAY, */
 	SET_PREFLIST, SET_PREFBOTH, SET_PREFRAND,
 	SET_MUSTORDER, SET_NOMUSTORDER,
 	SET_SECRET,
 	SET_NOSECRET, SET_NOSECRET,
-	SET_NOTVARIANT, SET_NOTVARIANT
+	SET_NOTVARIANT, SET_NOTVARIANT,
+	SET_POSTALPRESS, SET_NOPOSTALPRESS
     };
 
 
@@ -1112,7 +1122,8 @@ void mail_setp(char *s)
 	PRV_NOMUSTORDER, PRV_NOMUSTORDER,
 	PRV_SECRET,
 	PRV_NOSECRET, PRV_NOSECRET,
-        PRV_NOTVARIANT, PRV_NOTVARIANT
+        PRV_NOTVARIANT, PRV_NOTVARIANT,
+	PRV_POSTALPRESS, PRV_NOPOSTALPRESS
 	};
 
 	chk24nmr = 0;
@@ -3370,10 +3381,23 @@ void mail_setp(char *s)
 			break;
 
 		case SET_NOMUSTORDER:
-			fprintf(log_fp,"executing 3374.\n");
 			fprintf(rfp,"Players now need not have orders submitted to send press.\n");
 			SETX2FLAGS(0, X2F_MUSTORDER);
 			broad_params = 1;
+			break;
+
+		case SET_POSTALPRESS:
+			fprintf(rfp,"Szine style press enabled.\n");
+			SETX2FLAGS(X2F_POSTALPRESS, X2F_POSTALPRESS);
+			broad_params = 1;
+			broadcast = 1;
+			break;
+
+		case SET_NOPOSTALPRESS:
+			fprintf(rfp,"Szine style press disabled.\n");
+			SETX2FLAGS(0, X2F_POSTALPRESS);
+			broad_params = 1;
+			broadcast = 1;
 			break;
 
 		default:

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.22  2002/06/11 14:50:38  hauer
+ * Reject conditional orders in Blind.
+ *
  * Revision 1.21  2002/05/31 22:55:33  nzmb
  *
  * Fixed bug in mail.c that was causing the judge to do a segmentation fault
@@ -180,6 +183,7 @@ static int errorflag = 0;	/* Is the error flag set?			*/
 #define SETUP		43
 #define PAUSE		44
 #define COND            45      /* -- Tamas -- 2002-06-11 -- */
+#define POSTALPRESS	46
 
 static char *prelim[] =
 {"", "list", "help", "from:",
@@ -228,8 +232,8 @@ static char *commands[] =
  "process", "roll back", "map",
  "promote", "predict",
  "eject", "record", "infoplayer", "unstart",
- "setup", "suspend" 
- ,"if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
+ "setup", "suspend", "postalpress", 
+ "if", "else", "endif"         /* -- Tamas -- 2002-06-11 -- */
 			     /* , "ded game", "dedicate#", "ded#" */ };
 
 static int cvalue[] =
@@ -244,8 +248,8 @@ static int cvalue[] =
  PROCESS, ROLLBACK, MAP,
  PROMOTE, PREDICT,
  EJECT, RECORD, INFOPLAYER, UNSTART,
- SETUP, PAUSE
- ,COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
+ SETUP, PAUSE, POSTALPRESS,
+ COND, COND, COND                    /* -- Tamas -- 2002-06-11 -- */
 			     /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 extern char *generic_names[];
@@ -436,7 +440,7 @@ int mail(void)
 
 /*  Scan the mail file for something recognizable  */
 
-	got_reply = got_resent = 0;
+	got_reply = got_resent = ppress_done = 0;
 	fprintf(log_fp, "===== Received mail:\n");
 
 	if (!(ifp = fopen("dip.incoming", "w+"))) {
@@ -464,6 +468,36 @@ int mail(void)
 
 		if (!*s)
 			done_headers = 1;
+
+		/* are we dealing with postal press here? */
+		if(ppress_read || ppress_skip)
+		{
+			if(!strcasecmp(s,"signoff\n"))
+				skipping++;
+			else if(!strcasecmp(s,"endpress\n") ||
+			        !strcasecmp(s,"endbroadcast\n"))
+			{
+				fprintf(rfp,"End of message.\n");
+				if(!ppress_skip)
+				{
+					fprintf(ppfp,"End of press message.\n");
+					fprintf(mbfp,"End of press message.\n");
+					fclose(ppfp);
+				}
+				ppress_read = ppress_skip = 0;
+				ppress_done = 1;
+			}
+			else
+			{
+				fputs(line, rfp);
+				if(!ppress_skip)
+				{
+					fputs(line, mbfp);
+					fputs(line, ppfp);
+				}
+			}
+			continue;
+		}
 
 		/*  If we're reading or skipping press, get out and set 'skipping' flag if
 		   we see 'signoff' alone on a line.  */
@@ -1405,11 +1439,25 @@ int mail(void)
 
 				case PRESS:
 				case BROADCAST:
-					if (any_broadcast) {
+					if (any_broadcast || ppress_done) 
+					{
 						send_press();
 						open_press();
+						if(ppress_done)
+							ppress_done = 0;
 					}
 					mail_press(s, (cvalue[i] == PRESS ? 1 : 0));
+					break;
+
+				case POSTALPRESS:
+					if(any_broadcast || ppress_done)
+					{
+						send_press();
+						open_press();
+						if(ppress_done)
+							ppress_done = 0;
+					}
+					process_ppress();
 					break;
 
 				case CLEAR:

@@ -184,6 +184,13 @@ any/aft PHASE season year phase
         To specify that any following orders should be held until the
         specified phase before processing.
 
+any/aft!POSTALPRESS
+	If postal press is enabled, this command will append the lines
+	following it to the postal press file, until an "endpress",
+	"endbroadcast", or "signoff" is encountered. When the orders
+	process, the postal press file is mailed to everyone signed on to
+	the game.
+
 mod/aft!PREDICT
 	Will send to the master a prediction of the current turn, using partial
 	orders already entered.
@@ -344,6 +351,11 @@ mod/aft!SET ONTIMERAT level
 	Restricts access to the game to those people with an ontime ratio
 	equal then or greater than the indicated level. The indicated
 	level can not be higher than the moderator's.
+
+mod/aft!SET [NO]POSTALPRESS
+	Turns postal press on/off. Postal press is press published with
+	the results of the turn. See the POSTALPRESS entry for more
+	details.
 
 mod/aft!SET RESRAT level
 	Restricts access to the game to those people with a resignation

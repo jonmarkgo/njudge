@@ -1,5 +1,16 @@
 /*
    ** $Log$
+   ** Revision 1.4  2002/05/11 09:15:33  greg
+   ** Minor bug fixes
+   ** - fixed subjectline for absence requests
+   ** - fixed phase length, so it's no longer hard coded for responses
+   ** - partial fix for unusable builds, players with only unusable builds
+   **    will no longer be flagged as having orders due, however players
+   **    with some usable builds will need to waive any unusable builds,
+   **    also, if one or more players have unusable builds, but no
+   **    player has usable builds, the build phase will process after
+   **    a short delay
+   **
    ** Revision 1.3  2001/07/01 23:19:29  miller
    ** Add predict flag
    **
@@ -69,6 +80,9 @@ char *somepower;		/* Generic power name for gunboat games         */
 char name[20];			/* Signon name: pname, p=power, name=game       */
 int master_press;		/* Set to 1 if press is also to master, else 0  */
 int master_only_press;		/* Set to 1 if press only for master's eyes     */
+int ppress_read;		/* set to 1 if reading postal press */
+int ppress_skip;		/* set to 1 if skipping postal press */
+int ppress_done;		/* control variable */
 
 char Mfile[40];			/* Movement orders file name                    */
 char Tfile[40];			/* Temporary movement orders file name          */
@@ -81,6 +95,7 @@ FILE *mail_qfp;			/* Terminate result for Custodians file pointer */
 FILE *mail_ifp;			/* Incoming message (copy thereof) file pointer */
 FILE *mail_pfp;			/* Future phase file pointer                    */
 FILE *mail_tfp;			/* Temporary file pointer                       */
+FILE *mail_ppfp;		/* postal press file pointer*/
 char mail_bfile[20];		/* Name of broadcast file                       */
 char mail_mbfile[20];		/* Name of master broadcast file                */
 char *mail_rfile;		/* Name of reply file                           */
@@ -108,6 +123,7 @@ char *mail_rfile;		/* Name of reply file                           */
 #define bfile		mail_bfile
 #define mbfile          mail_mbfile
 #define rfile		mail_rfile
+#define ppfp		mail_ppfp
 
 char *lookfor();
 

@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.13  2002/06/11 16:26:20  nzmb
+ *
+ * Added set [no]mustorder to require players to submit avalid set of orders
+ * before they may send press (to be used in conjunction with set wait).
+ *
  * Revision 1.12  2002/04/18 04:44:34  greg
  * Added the following commands:
  * - unstart
@@ -531,6 +536,11 @@ void params(FILE * fp)
 	} else {
 		strcat(line, " (except to Master)");
 	}
+
+	if(dipent.x2flags & X2F_POSTALPRESS)
+		strcat(line,", postal style press");
+	else
+		strcat(line,", no postal style press");
 
 	switch (dipent.flags & (F_OBWHITE | F_OBNONE)) {
                 case (F_OBWHITE | F_OBNONE):

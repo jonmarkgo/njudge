@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.24  2002/05/16 13:05:33  miller
+ * Added used of X2F_MORE:HOMES flags
+ * Don't send blind games to openings list
+ * Allow blind games to not show centres
+ *
  * Revision 1.23  2002/05/11 09:15:30  greg
  * Minor bug fixes
  * - fixed subjectline for absence requests
@@ -130,6 +135,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <errno.h>
 
 #include "dip.h"
 #include "mail.h"
@@ -818,11 +824,14 @@ int process(void)
 	FILE *dfp, *gfp,
 	*lfp, *mlfp; /* late file pointers */
 	char line[150];
+	char pppath[70];
+	char ppline[200];
 	char title_text[150];
 	char phase[sizeof(dipent.phase)];
 	int process_set; /* Set to 1 if process has been set */
 	static char *dedfmt = "Adding %d to user %d's dedication to yield %d.\n";
 	char late[51];
+	struct stat ppinfo;
 
 	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
 	rfp = NULL;
@@ -1442,14 +1451,29 @@ int process(void)
  */
 			dipent.players[i].status &= ~SF_CONC;
 			dipent.players[i].status &= ~SF_DRAW;
-			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) {
+
+			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) 
+			{
 				sprintf(line, "%s dip.result '%s:%s - %s Results' '%s'",
 				  SMAIL_CMD, JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
-
-			    if (*(dipent.players[i].address) != '*' && !Dflg) {
-				execute(line);
-			    }
 			}
+
+		        /* let's do postal press */
+			/* TODO: tidy this code up */ 
+			sprintf(pppath, "%s%s/ppress-%s", GAME_DIR, dipent.name, phase);
+		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != ENOENT))
+	    		    sprintf(ppline, "%s %s%s/ppress-%s '%s:%s - %s game press' '%s'",
+	        		SMAIL_CMD, GAME_DIR, dipent.name, phase,
+				JUDGE_CODE, dipent.name, phase, dipent.players[i].address);
+
+			if (*(dipent.players[i].address) != '*' && !Dflg) 
+			{
+			    if(!(dipent.flags & F_BLIND) || dipent.players[i].power == MASTER)
+				execute(line);
+			    if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != ENOENT))
+				execute(ppline);
+			}
+
 			if (dipent.flags & F_BLIND) {
 			    /* Ooops, it's a blind variant */
 			    /* Special routine to work out what to tell who */

@@ -1,5 +1,19 @@
 /*
  * $Log$
+ * Revision 1.12  2002/04/18 04:44:33  greg
+ * Added the following commands:
+ * - unstart
+ * - set secret
+ * - set [prflist|prfrand|prfboth]
+ *
+ * Fixed Set Absence so that "to" is not case sensitive
+ *
+ * Fixed Quiet games so that new players are announced
+ * before the game starts
+ *
+ * Fixed ascii_to_ded.c so thatit no longer generates an
+ * error when compiled
+ *
  * Revision 1.11  2001/11/12 11:12:54  miller
  * Fix to correct res_rat if over 1.0
  *
@@ -319,7 +333,8 @@ int mail_signon(char *s)
 		}
 	} else {
 		if ((name[0] == '?')
-		    && (variant != dipent.variant || (dipent.flags & F_VFLAGS) != flags)) {
+		    && (variant != dipent.variant || (dipent.flags & F_VFLAGS) != (flags & F_VFLAGS))) 
+		{
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Game '%s' is not of the", dipent.name);

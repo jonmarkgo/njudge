@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.11  2002/05/04 02:06:17  nzmb
+ * Added code to display the time left until the deadline and grace at the
+ * bottom of their reply whenever a player signs on.
+ *
  * Revision 1.10  2002/04/18 04:44:31  greg
  * Added the following commands:
  * - unstart
@@ -295,3 +299,6 @@ void assignment(int a[][], int n, int m, int x[]);
 int strcasecmp(char *s1, char *s2);
 int strncasecmp(char *s1, char *s2, register int n);
 #endif
+
+/* defined in tm_xpress.c */
+int process_ppress(void);

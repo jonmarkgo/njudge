@@ -1,6 +1,9 @@
 # Diplomacy Adjudicator.
 #
 # $Log$
+# Revision 1.29  2002/05/17 11:22:22  miller
+# Small correction to dist1
+#
 # Revision 1.28  2002/05/16 12:02:22  miller
 # Attempt to have two distribution targets, dist and dist1
 # Also removed list and more targets (as not used)
@@ -137,6 +140,7 @@ SRCS = 	assign.c \
 		st_status.c \
 		strcasecmp.c \
 		strdup.c \
+		tm_xpress.c \
 		users.c \
 		variant.c \
 		version.c
@@ -557,6 +561,7 @@ st_status.o: Makefile Makefile.defines st_status.c dip.h conf.h port.h variant.h
  porder.h
 strcasecmp.o: Makefile Makefile.defines strcasecmp.c
 strdup.o: Makefile Makefile.defines strdup.c
+tm_xpress.o: Makefile Makefile.defines dip.h mail.h tm_xpress.c
 users.o: Makefile Makefile.defines users.c dip.h conf.h port.h variant.h mail.h functions.h \
  plyrdata.h
 variant.o: Makefile Makefile.defines variant.c dip.h conf.h port.h variant.h
