@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.22  2003/07/27 15:50:07  millis
+** Fix bug 204
+**
 ** Revision 1.21  2003/07/22 23:32:21  millis
 ** Fix Bug 201
 **
@@ -125,6 +128,29 @@ int dual_land(int p)
 	return dual_province(p) && pr[p].type != 'w';
 }
 
+static int NoValidConvoyingFleet(char *s, int u)
+{
+    int ret_code = 1;
+    int p = unit[(int) *s].loc;
+    int u1;
+
+    pr[p].order_index = 1;
+    u1 = GetUnitIndex(p, MASTER);
+    do {
+        if (unit[u1].order != 'c' || unit[u1].unit != u ||
+           (unit[u1].dest != unit[u].dest &&
+	     unit[u1].dest != unit[(int) *(s + 1)].loc)) {
+	    /* Fleet found but is doing something else */
+	} else {
+	    /* Fleet found and IS convoying this one! */
+	    ret_code = 0;
+	}
+        u1 = GetUnitIndex(p, MASTER);
+    } while (ret_code == 1 && pr[p].order_index > 1);
+
+    pr[p].order_index = 1; /* Reset the index so will start from first unit */
+    return ret_code;
+}
 
 extern int one_owned[];
 int StrictConvoy(int p_index)
@@ -993,9 +1019,7 @@ static void DoMoves( void)
 
                         } else if (unit[u].order == 'm' && unit[u].convoy != NULL) {
                                 for (s = unit[u].convoy; *s; s++) {
-                                        if (unit[*s].order != 'c' || unit[*s].unit != u ||
-                                        (unit[*s].dest != unit[u].dest &&
-                                         unit[*s].dest != unit[*(s + 1)].loc)) {
+					if (NoValidConvoyingFleet(s, u)) {
                                             if (pr[unit[*s].loc].type != 'r') {
                                                 /* only disallow if not a railway unit involved */
                                                 result[u] = NO_CONVOY;

@@ -1,6 +1,9 @@
 
 	/*
 	 * $Log$
+	 * Revision 1.21  2003/09/14 08:25:13  millis
+	 * Fix bug 225
+	 *
 	 * Revision 1.20  2003/08/25 14:39:36  millis
 	 * Fixed bug 220
 	 *
@@ -1405,9 +1408,11 @@ int IsMultiProvince(int p)
 int GetUnitIndex(int p, int power)
 {
     int u;
-    int index = 0; /* 'n'th unit found in this province */
+    int index = 1; /* 'n'th unit found in this province */
     int *nordinal = &pr[p].order_index;
     int first_unit = pr[p].unit;
+
+    if (*nordinal == 0) *nordinal = 1;  /* Always start from 1 */
 	
     if (!IsMultiProvince(p))
         return pr[p].unit;  /* Normal province, return first unit */
@@ -1425,7 +1430,7 @@ int GetUnitIndex(int p, int power)
 	}
     }
 
-    *nordinal = 0;  /* not found requested unit, so reset ordinal */
+    *nordinal = 1;  /* not found requested unit, so reset ordinal */
     return first_unit;  /* wrapped round to first unit in province */
 }
 
