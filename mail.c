@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.3  2001/01/06 18:48:43  davidn
+ * Changes to allow game creator to be automatically made master
+ *
  * Revision 1.2  2000/11/14 14:27:37  miller
  * Innumerous changes, some of which are:
  *  - Add new command 'promote'
@@ -44,15 +47,16 @@
 #include "dipstats.h"
 #include "diplog.h"
 
-static int junkmail = 0;	/* Non zero if no reply to be sent            */
-static int command = 0;		/* Non zero if some intelligable command found */
-static int skipping = 0;	/* Non zero if skipping rest of input         */
-static int movement = 0;	/* Non zero if movement orders received       */
-static char subject[80];	/* Reply mail subject                         */
-static char line[1024];		/* Temporary line buffer                      */
-static char temp[40];		/* Temporary file name                        */
-static char rdcom[256];		/* Temp file for executing rundipmap          */
-static int press_number = 0;	/* Number for distinct press filenames */
+static int junkmail = 0;	/* Non zero if no reply to be sent		*/
+static int command = 0;		/* Non zero if some intelligable command found	*/
+static int skipping = 0;	/* Non zero if skipping rest of input		*/
+static int movement = 0;	/* Non zero if movement orders received		*/
+static char subject[80];	/* Reply mail subject				*/
+static char line[1024];		/* Temporary line buffer			*/
+static char temp[40];		/* Temporary file name				*/
+static char rdcom[256];		/* Temp file for executing rundipmap		*/
+static int press_number = 0;	/* Number for distinct press filenames 		*/
+static int errorflag = 0;	/* Is the error flag set?			*/
 
 /* Comment this out if you don't want the MAP command */
 #define MAP_COMMAND
@@ -108,7 +112,7 @@ static char *prelim[] =
  "nocontrol", "adjust",
  "version", "history",
  "who game#", "who is#", "who#", "fixid",
- "map" /* , "ded game#", "dedicate#", "ded#" */ };
+ "map", "signoff" /* , "ded game#", "dedicate#", "ded#" */ };
 
 static int pvalue[] =
 {0, LIST, HELP, FROM,
@@ -123,7 +127,7 @@ static int pvalue[] =
  NOCONTROL, ADJUST,
  VERSION, HISTORY,
  WHOGAME, WHOIS, WHOIS, FIXID,
- MAP /* , DEDGAME, DEDICATE, DEDICATE */ };
+ MAP, SIGNOFF /* , DEDGAME, DEDICATE, DEDICATE */ };
 
 static char *commands[] =
 {"", "list", "help", "get", "send me", "send",
@@ -1017,6 +1021,10 @@ int mail(void)
 					}
 					break;
 
+				case SIGNOFF:
+					skipping++;
+					break;
+
 				default:;
 
 				}
@@ -1138,6 +1146,8 @@ int mail(void)
 					    fprintf(rfp, "%s has resigned from game '%s'.\n\n",
 						powers[dipent.players[resign_index].power], dipent.name);
 					    /* WAS mfprintf  1/95 BLR */
+					sprintf(subjectline, "%s:%s - %s Resignation: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[dipent.players[player].power]);
+
 					fprintf(bfp, "%s has resigned %s\nas %s in game '%s'.\n\n", xaddr,
 					   ((dipent.flags & F_GUNBOAT) &&
 					    (dipent.players[resign_index].power != MASTER))
@@ -1252,6 +1262,8 @@ int mail(void)
 						bailout(E_FATAL);
 					}
 					msg_header(qfp);
+
+					sprintf(subjectline, "%s:%s - %s Game Terminated", JUDGE_CODE, dipent.name, dipent.phase);
 
 					pprintf(cfp, "%s%s as %s has terminated\n",
 						NowString(), xaddr, powers[dipent.players[player].power]);
@@ -1373,6 +1385,8 @@ int mail(void)
 						 dipent.phase[0] == 'U' ? "Summer" : "Spring", dipent.phase + 1);
 					mfprintf(bfp, "The deadline for orders will be %s.\n",
 						 ptime(&dipent.deadline));
+
+					sprintf(subjectline, "%s:%s - %s Game Resumed", JUDGE_CODE, dipent.name, dipent.phase);
 
 					/*
 					 * Force regeneration of the summary file if it's a
@@ -1519,9 +1533,15 @@ int mail(void)
 						fclose(tfp);
 						break;
 					}
+
+					sprintf(subjectline, "%s:%s - %s Rollback to ", JUDGE_CODE, dipent.name, dipent.phase);
+
 					line[strlen(line) - 1] = '\0';
 					strcpy(dipent.phase, line);
 					sprintf(dipent.seq, "%3.3d", i);
+
+					strcat(subjectline, dipent.phase);
+
 					fprintf(rfp, "Game '%s' rolled back to turn %s, %s.\n\n",
 						dipent.name, dipent.seq, dipent.phase);
 					mfprintf(bfp, "Game '%s' rolled back to turn %s, %s by %s.\n\n",
@@ -1778,6 +1798,7 @@ int mail(void)
 		} else {
 			dipent.players[player].status &= ~SF_MOVED;
 			fprintf(rfp, "\n\n%d error%s encountered.\n\n", i, i == 1 ? "" : "s");
+			errorflag++;
 			if (dipent.players[player].status & SF_MOVE) {
 				long then;
 				if (time(NULL) <= dipent.deadline) {
@@ -1890,7 +1911,8 @@ void mail_reply(int err)
 
 	char line[1024];
 	char *s;
-	int i;
+	int i, x, slen;
+	char jline[50];
 
 	if ((err != E_FATAL) && (!junkmail))
 		send_press();
@@ -1914,12 +1936,100 @@ void mail_reply(int err)
 	if (junkmail)
 		return;
 
-	if (signedon)
+	if (!strncmp(subject, "Re: ", 4)) {
+		x = 0;
+		do  {
+			subject[x] = subject[x+4];
+			x++;
+		}
+		while (subject[x+3] != '\0');
+
+		if (!strncmp(subject, "[Error Flag] ", 13)) {
+			x = 0;
+			do {
+				subject[x] = subject[x+13];
+				x++;
+			}
+			while (subject[x+12] != '\0');
+		}
+
+		if (!strncmp(subject, "[You are late!] ", 16)) {
+			x = 0;
+			do {
+				subject[x] = subject[x+16];
+				x++;
+			}
+			while (subject[x+15] != '\0');
+		}
+
+		if (!strncmp(subject, JUDGE_CODE, 4)) {
+			x = 0;
+			do  {
+				subject[x] = subject[x+4];
+				x++;
+			}
+			while (subject[x+3] != '\0');
+
+			if (!strncmp(subject, ":", 1)) {
+				x = 0;
+				do  {
+					subject[x] = subject[x+1];
+					x++;
+				}
+				while (subject[x] != '\0');
+
+				slen = strlen(dipent.name);
+
+				if (!strncmp(subject, dipent.name, slen)) {
+					x = 0;
+					do  {
+						subject[x] = subject[x+slen];
+						x++;
+					}
+					while (subject[x+slen-1] != '\0');
+
+					if (!strncmp(subject, " - ", 3)) {
+						x = 0;
+						do  {
+							subject[x] = subject[x+3];
+							x++;
+						}
+						while (subject[x+2] != '\0');
+
+						if (!strncmp(subject, dipent.phase, 6)) {
+							x = 0;
+							do  {
+								subject[x] = subject[x+6];
+								x++;
+							}
+							while (subject[x+5] != '\0');
+
+							if (!strncmp(subject, " ", 1)) {
+								x = 0;
+								do  {
+									subject[x] = subject[x+1];
+									x++;
+								}
+								while (subject[x] != '\0');
+							}
+						}
+
+					}
+				}
+			}
+		}
+	}
+
+	if (signedon) {
 		s = dipent.players[player].address;
-	else
+		sprintf(jline, "%s:%s - %s", JUDGE_CODE, dipent.name, dipent.phase);
+	} else {
 		s = raddr;
+		sprintf(jline, "%s", JUDGE_CODE);
+	}
 	if (*s && *s != '*' && !Dflg) {
-		sprintf(line, "%s %s 'Re: %s' '%s'", SMAIL_CMD, rfile, subject, s);
+		sprintf(line, "%s %s 'Re: %s%s %s' '%s'", SMAIL_CMD, rfile, errorflag ? "[Error Flag] " : "", jline, subject, s);
+
 		if ((i = execute(line))) {
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, s);
 		}
@@ -1928,7 +2038,7 @@ void mail_reply(int err)
 
 		/* TODO make the ./smail configurable */
 		/* done ;-) */
-		sprintf(line, "%s %s 'Re: %s' '%s'", SMAIL_CMD, rfile, subject, raddr);
+		sprintf(line, "%s %s 'Re: %s %s' '%s'", SMAIL_CMD, rfile, jline, subject, raddr);
 		if ((i = execute(line))) {
 			/* TODO, why not just have execute() write it's errors to the log */
 			fprintf(log_fp, "Error %d sending mail to %s.\n", i, raddr);
@@ -2062,8 +2172,9 @@ void send_press(void)
 				}
 				if (dipent.players[i].power == MASTER) {
 					broadcast_master_only = 0; /* We're sending to master anyway */
-					sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
-						SMAIL_CMD, mbfile, dipent.name, dipent.players[i].address);
+					sprintf(line, "%s %s '%s' '%s'",
+						SMAIL_CMD, mbfile, subjectline, dipent.players[i].address);
+
 				       if ((j = execute(line))) {
                                         fprintf(log_fp, "Error %d sending master broadcast message to %s.\n",
                                            j, dipent.players[i].address);
@@ -2073,8 +2184,9 @@ void send_press(void)
 					  (master_only_press && dipent.players[i].power == power(broad_list[0]))) {
 					/* send if not master only press or if master-only but this is the
 					   destination power */
-					sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
-						SMAIL_CMD, bfile, dipent.name, dipent.players[i].address);
+					sprintf(line, "%s %s '%s' '%s'",
+						SMAIL_CMD, bfile, subjectline, dipent.players[i].address);
+
 				    if ((j = execute(line))) {
                                         fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
                                            j, dipent.players[i].address);
@@ -2131,8 +2243,9 @@ void send_press(void)
 		/* Let's also take advantage and see if a master-only
 		   message should be sent */
 		if (broadcast_master_only && dipent.players[i].power == MASTER ) {
-                     sprintf(line, "%s %s 'Diplomacy notice: %s' '%s'",
-                              SMAIL_CMD, mbfile, dipent.name, dipent.players[i].address);
+			sprintf(line, "%s %s '%s' '%s'",
+				SMAIL_CMD, bfile, subjectline, baddr);
+
                      if ((j = execute(line))) {
                             fprintf(log_fp, "Error %d sending broadcast message to %s.\n",
                                     j, dipent.players[i].address);
