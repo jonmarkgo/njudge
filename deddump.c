@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -81,7 +84,7 @@ int main(int argc, char **argv)
 			perror("dip.ded");
 			exit(1);
 		} else {
-			nded = read(fd, ded, MAXUSER * sizeof(ded[0])) / sizeof(ded[0]);
+			nded = (read(fd, ded, MAXUSER * sizeof(ded[0])) /sizeof(ded[0])) + 1;
 			close(fd);
 		}
 
