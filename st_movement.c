@@ -1,5 +1,9 @@
 /*
 ** $Log$
+** Revision 1.24  2004/02/14 23:19:36  millis
+** Fix so that blocked gateway movement doesn't contest movement (so that space
+** can be considered for retreats)
+**
 ** Revision 1.23  2004/01/11 01:02:29  millis
 ** Fix bug 265, so that convoys work in high seas.
 **
@@ -505,10 +509,9 @@ int movein(char **s, int p)
 		 }
 		 if ((order == 'a' || order == 'c') &&
 			!(dipent.flags & F_BLIND) && 
-			unit[u2].type != 'A') {
-			errmsg("The %s order should specify source %s\n",
-			 order == 'c' ? "convoy" : "airlift",
-			 "and final destination of an army.");
+			unit[u2].type != 'A' && unit[u2].type != 'R') {
+			errmsg("The specified unit is of a type that cannot be %sed.\n",
+			 order == 'c' ? "convoy" : "airlift");
 			return E_WARN;
 		 }
 		 if ((c != 'x' && c != unit[u2].type && !(dipent.flags & F_BLIND))) {
