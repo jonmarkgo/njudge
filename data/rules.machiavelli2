@@ -58,8 +58,10 @@ A unit can always retreat into a city, even if it can retreat into
 another province.
 A unit need not issue a lift siege order to be able to move away from
 an ongoing siege.
-Conversions are treated as attacks, thus besiegeing units of lesser 
-strength cannot block conversions.
+Conversions are treated as attacks.
+Besieging units of lesser strength cannot block conversions.
+Besieged units may convert: thus their *conversion* can be successfully
+supported against the besieging unit.
 Only a fleet *already present* in Messina can block moves, support and 
 transport (convoys).  The fleet will *not* be able to block if it is 
 converting to or from garrison.
@@ -195,5 +197,5 @@ v1.2  20th July 2003. Note on conversion of besieged units and straits.
       Author Sergio Lidsell.
 v1.2b 25th August 2004. Removed incorrect disband note. Auth S Lidsell.
 v1.3  17th October 2004. Venice sea area effects, winning conditions, 
-      handling of home country conquest and assassination rules 
-      clarified. Author Sergio Lidsell.
+      handling of home country conquest, besieged conversion and 
+      assassination rules clarified. Author Sergio Lidsell.
