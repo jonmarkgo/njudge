@@ -1,5 +1,11 @@
 /*
  * $Log$
+ * Revision 1.18  2004/08/07 01:35:00  Sergio Lidsell
+ * All AH Mach variants added and then some
+
+ * Revision 1.17  2004/07/30 22:01:28  millis
+ * Updated Minorpower variant to have real power names
+ *
  * Revision 1.16  2004/03/16 07:52:41  nzmb
  * dded the minorpowers variant.
  *
@@ -133,6 +139,22 @@ enum {
         V_machiavelli2,         /* 33 Mach2                          */
         V_colonial96,           /* 34 Colonial 1996 Diplomacy        */
 	V_minorpower,		/* 35 Minor power diplomacy	     */
+	V_mach_eos,		/* 36 Mach1 Expansion of States	     */
+	V_mach_este,		/* 37 Mach1 Expansion of States Este */
+	V_mach_sfd1,		/* 38 Mach1 Struggle for Dominance part 1 */
+	V_mach_sfd2,		/* 39 Mach1 Struggle for Dominance part 2 */
+	V_mach_span,		/* 40 Mach1 Spanish Preponderanc     */
+	V_mach_aoc,		/* 41 Mach1 Age of Communes	     */
+	V_dipmach,		/* 42 Mach played on the Standard map */
+	V_machfive,		/* 43 Machfive-Sort of five italies mach */
+	V_mach2_sfd1,		/* 44 Mach2 Struggle for D. part 1   */
+	V_mach2_sfd2,		/* 45 Mach2 Struggle for D. part 2   */
+	V_mach2_span,		/* 46 Mach2 Spanish Preponderance    */
+	V_mach2_fotl,		/* 47 Mach2 Fall of the Lombards     */
+	V_mach2_eai,		/* 48 Mach2 Empire and Invaders	     */
+	V_mach2_pamt,		/* 49 Mach2 Papal Ascendancy and Mongol Threat */
+	V_mach2_pa,		/* 50 Mach2 4 player pamt	     */
+	V_mach2_ttr,		/* 51 Mach2 To The Renaissance	     */
 /** ADD NEW VARIANTS ABOVE THIS LINE! **/
 	NVARIANT		/* Last variant + 1                  */
 };
@@ -143,7 +165,7 @@ enum {
 #define LPOWER        24	/* Length of the longest power name              */
 
 /* Do not exceed byte limit as these are used in char arrays */
-#define WILD_PLAYER  123  /* First non-player player ordinal               */
+#define WILD_PLAYER  140  /* First non-player player ordinal    123+17 new mach */
 #define NEUTRAL	     (WILD_PLAYER +1) /* Neutral power 			   */
 #define AUTONOMOUS   (NEUTRAL +1)     /* Non-player ordinal                */
 #define OBSERVER     (AUTONOMOUS +1)  /* Non-player ordinal                */
@@ -190,11 +212,27 @@ enum {
     case V_layered: 	dipent.np = 7; dipent.vp = 35; break; \
     case V_sailho:	dipent.np = 4; dipent.vp = 9; break; \
     case V_sailho_crowded: dipent.np = 6; dipent.vp = 10; break; \
-    case V_ancient_med: 	dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
+    case V_ancient_med:  dipent.np = 5; dipent.vp = 18; dipent.xflags |= XF_PROV_DUALITY; break; \
     case V_crowded_1898: dipent.np = 11; dipent.vp = 18; break; \
     case V_machiavelli2: dipent.np =  8; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
-    case V_colonial96:    dipent.np =  7; dipent.vp = 30; dipent.xflags |= XF_PROV_DUALITY; break;          \
-    case V_minorpower:    dipent.np = 19; dipent.vp = 18; break; \
+    case V_colonial96:   dipent.np =  7; dipent.vp = 30; dipent.xflags |= XF_PROV_DUALITY; break;          \
+    case V_minorpower:   dipent.np = 19; dipent.vp = 18; break; \
+    case V_mach_eos:   dipent.np =  4; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; dipent.xflags |= XF_FORT; break;   \
+    case V_mach_este:  dipent.np =  5; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; dipent.xflags |= XF_FORT; break;   \
+    case V_mach_sfd1:  dipent.np =  6; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; break;          \
+    case V_mach_sfd2:  dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; break;          \
+    case V_mach_span:  dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; break;          \
+    case V_mach_aoc:   dipent.np =  9; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; dipent.xflags |= XF_STORMS; break; \
+    case V_dipmach:    dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; break;          \
+    case V_machfive:   dipent.np =  5; dipent.vp = 15; dipent.xflags |= XF_COASTAL_CONVOYS; dipent.xflags |= XF_STORMS; break; \
+    case V_mach2_sfd1: dipent.np =  6; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_sfd2: dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_span: dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_fotl: dipent.np =  4; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_eai:  dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_pamt: dipent.np =  5; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_pa:   dipent.np =  4; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
+    case V_mach2_ttr:  dipent.np =  7; dipent.vp = 15; dipent.xflags |= XF_MACH2; dipent.xflags &= ~XF_FORT; break;  \
 /* ADD NEW VARIANTS ABOVE THIS LINE! */                                 \
     default:                                                            \
       fprintf(stderr,"Bad variant %d for %s.\n",variant,dipent.name);   \
