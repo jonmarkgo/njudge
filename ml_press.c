@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.11  2004/03/28 10:17:06  millis
+ * Fix Bug 281: generate error if press rejected by MustOrder flag.
+ *
  * Revision 1.10  2004/02/18 00:11:06  millis
  * Fix bug 275, not checking for touch press when game terminated.
  *
@@ -491,7 +494,7 @@ void mail_press(char *s, int need_opts)
 	}
 
 /* Have we submitted orders yet? */
-	if (!(dipent.phase[6] == 'X'))
+	if (!(dipent.phase[6] == 'X') && !GAME_PAUSED)
 	{
 		if((!(dipent.players[player].status & SF_MOVED)) && (dipent.players[player].status & SF_MOVE) && (dipent.x2flags & X2F_MUSTORDER))
 		{
@@ -524,7 +527,7 @@ void mail_press(char *s, int need_opts)
 		}
 	}
 
-	if (partial) {
+	if (partial && !GAME_PAUSED) {
 		if (dipent.x2flags & X2F_TOUCHPRESS && !master_press && dipent.phase[6] != 'X') {
 		    xctr =0;
                     while ((part_list[xctr] = toupper(part_list[xctr])) != '\0') {
@@ -536,7 +539,7 @@ void mail_press(char *s, int need_opts)
 		        xctr++;
 		    }
 		}
-        } else {
+        } else if (!GAME_PAUSED) {
             if (dipent.x2flags & X2F_TOUCHPRESS && !master_press && dipent.phase[6] != 'X')  {
                 if ( dipent.players[player].status & SF_BROAD_SENT) {
                        fprintf(rfp,"Sorry, you have already sent one broadcast: wait until next turn!\n");
