@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.60  2004/07/08 22:20:46  millis
+ * Bug 91: small changes to improve status handling and show only
+ * real player information to master
+ *
  * Revision 1.59  2004/07/07 22:50:40  millis
  * Bug91: further fixes for Duplex code
  * (these mainly to get absences and late handling working)
@@ -3614,7 +3618,8 @@ int ChangeTransform( char *s)
         static char action[] =
         { 'x', TSET_NOOP, TSET_SUBKEY,
          TSET_BUILD, TSET_BUILD,
-         TSET_MOVE, TSET_MOVE
+         TSET_MOVE, TSET_MOVE,
+	 TSET_NONE, TSET_NONE, TSET_NONE
         };
 
         int last_type = TSET_BUILD;
