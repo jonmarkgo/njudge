@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.33  2003/08/27 12:04:57  millis
+ * Fix bug 222
+ *
  * Revision 1.32  2003/08/12 23:04:10  millis
  * Fix bug 216
  *
@@ -657,6 +660,22 @@ int mail_signon(char *s)
 						}
 					}
 				}
+				/*
+				 * check whether we have a miscreant who went
+				 * into CD returning
+				 */
+				if((!(dipent.flags & F_NONMR)) && (dipent.players[i].status & SF_CD))
+				{
+					broad_signon = 1;
+					sprintf(subjectline, "%s:%s - %s %s is no longer in CD",
+						JUDGE_CODE, dipent.name, dipent.phase, powers[dipent.players[i].power]);
+					fprintf(bfp, "%s has returned as %s in %s. %s is no longer in CD.",
+						xaddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
+					fprintf(mbfp, "%s has returned as %s in %s. %s is no longer in CD.",
+						raddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
+					pprintf(cfp, "%s has returned as %s in %s. %s is no longer in CD.",
+						xaddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
+				}
 				break;
 			}
 			if (dipent.players[i].status & (SF_CD | SF_ABAND) ||
@@ -752,7 +771,6 @@ int mail_signon(char *s)
                                         continue;
 
 				    if((dipent.players[j].status & (SF_CD | SF_ABAND)) && dipent.players[j].centers) {
-
 				        one_abandoned++;
 				    }
 				}	
