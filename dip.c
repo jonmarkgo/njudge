@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2002/10/19 22:44:17  millis
+ * Removed a simple warning
+ *
  * Revision 1.27  2002/08/27 23:56:09  millis
  * Added better victory display (fixing Mach victory bug)
  *
@@ -1109,7 +1112,11 @@ int process(void)
 			sprintf(title_text, "Diplomacy game %s startup waiting", dipent.name);
 		} else {
 			sprintf(subjectline, "%s:%s - Waiting for More Players", JUDGE_CODE, dipent.name);
-			fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
+			if (dipent.x2flags & X2F_SECRET) {
+			    fprintf(rfp, "Diplomacy game '%s' is still waiting for some player(s) to sign on.\n", dipent.name);
+			} else {	
+			    fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
+			}
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
 			sprintf(title_text, "Diplomacy game %s signup waiting", dipent.name);
 		}
