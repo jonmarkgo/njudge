@@ -21,10 +21,11 @@
 
 <h1 align=center>Installation-HOWTO for the Diplomacy judge</h1>
 
-<p align=center>v.1.3.2.1
+<p align=center>v.1.3.2.3
 <br><a href="mailto:christophe@courtois.cc">Christophe Courtois (christophe@courtois.cc)</a>
 
-<table align=center width="50%">
+<table align=center width="50%" summary="Summary">
+<tr><td>
 <a href="#1">1. Introduction</a>
 <br><a href="#2">2. Before installing</a>
 <br><a href="#3">3. Compilation and installation</a>
@@ -37,7 +38,7 @@
 <br><a href="#10">10. Backup</a>
 <br><a href="#11">11. Upgrading and patching a judge</a>
 <br><a href="#12">12. Misc.</a>
-</table>
+</td></tr></table>
 
 <hr>
 
@@ -98,10 +99,10 @@ If you know of some platform-specific installation problems, please ask me to ad
 
 <p> The present HOWTO comes from my experience in installing the judge ALEX on my Linux box.
 
-<table><tr>
-<td>Computer: <td>Pentium 75</tr>
-<td>OS:       <td>Linux Debian 3.0 (woody)</tr>
-<td>Judge:    <td>njudge 1.3.2 compiled from source</tr>
+<table summary="Config">
+<tr><td>Computer: <td>Pentium 75</tr>
+<tr><td>OS:       <td>Linux Debian 3.0 (woody)</tr>
+<tr><td>Judge:    <td>njudge 1.3.2 compiled from source</tr>
 </table>
 
 
@@ -298,40 +299,39 @@ modified anymore (as in the good old times).
 
 <p>- The following targets exist in the <tt>Makefile</tt>, with their use:
 
-<table border=1 cellpadding=3>
-<tr><td><tt>all</tt>:            <td>Rebuild all programs
-<tr><td><tt>ascii_to_ded</tt>:   <td>Convert text file ded.txt to dip.ded
-<tr><td><tt>ded_to_ascii</tt>:	<td>Convert dip.ded to text file
-<tr><td><tt>dip</tt>:            <td>Rebuild dip program
-<tr><td><tt>cmap</tt>:           <td>Rebuild cmap program
-<tr><td><tt>summary</tt>:        <td>Rebuild summary program
-<tr><td><tt>deddump</tt>:        <td>Rebuild deddump program
-<tr><td><tt>delgame</tt>:        <td>Rebuild delgame program (to erase permanentely a game)
-<tr><td><tt>flock</tt>:          <td>Rebuild flock program (used for locking of dip.log)
-<tr><td><tt>fmtwho</tt>:         <td>Rebuild fmtwho program
-<tr><td><tt>ign</tt>:            <td>Rebuild ign program
-<tr><td><tt>pdip</tt>:           <td>Rebuild pdip program (no longer used?)
-<tr><td><tt>rdip</tt>:           <td>Rebuild rdip program
+<table border=1 cellpadding=3 summary="targets">
+<tr><td><tt>all</tt>:            <td>Rebuild all programs</tr>
+<tr><td><tt>ascii_to_ded</tt>:   <td>Convert text file ded.txt to dip.ded</tr>
+<tr><td><tt>ded_to_ascii</tt>:	<td>Convert dip.ded to text file</tr>
+<tr><td><tt>dip</tt>:            <td>Rebuild dip program</tr>
+<tr><td><tt>cmap</tt>:           <td>Rebuild cmap program</tr>
+<tr><td><tt>summary</tt>:        <td>Rebuild summary program</tr>
+<tr><td><tt>deddump</tt>:        <td>Rebuild deddump program</tr>
+<tr><td><tt>delgame</tt>:        <td>Rebuild delgame program (to erase permanentely a game)</tr>
+<tr><td><tt>flock</tt>:          <td>Rebuild flock program (used for locking of dip.log)</tr>
+<tr><td><tt>fmtwho</tt>:         <td>Rebuild fmtwho program</tr>
+<tr><td><tt>ign</tt>:            <td>Rebuild ign program</tr>
+<tr><td><tt>pdip</tt>:           <td>Rebuild pdip program (no longer used?)</tr>
+<tr><td><tt>rdip</tt>:           <td>Rebuild rdip program</tr>
 <tr><td><tt>install</tt>:        <td>build and install a judge (Note: this will check if dip.master
                 file exists and refuse to run if so, avoiding inadvertently
-                deleting an existing njudge installation.)
+                deleting an existing njudge installation.)</tr>
 <tr><td><tt>upgrade</tt>:        <td>Rebuild all the programs and install them in correct
-                directory (used principally for updating a running
-                judge)
+                directory (used principally for updating a running judge) </tr>
 <tr><td><tt>install-strip, upgrade-strip</tt>:
-		<td>Same as above, with smaller binary files.
-<tr><td><tt>remap</tt>:          <td>Force binary map files to be regenerated if required
-<tr><td><tt>flist</tt>:          <td>Rebuild the help file "flist"
-<tr><td><tt>dist</tt>:           <td>Build an update distribution (calls targz)
-<tr><td><tt>clean</tt>:          <td>Remove all output files
-<tr><td><tt>magic</tt>:		<td>Used to generate .magic.dat file (for random seed).
+		<td>Same as above, with smaller binary files.</tr>
+<tr><td><tt>remap</tt>:          <td>Force binary map files to be regenerated if required</tr>
+<tr><td><tt>flist</tt>:          <td>Rebuild the help file "flist"</tr>
+<tr><td><tt>dist</tt>:           <td>Build an update distribution (calls targz)</tr>
+<tr><td><tt>clean</tt>:          <td>Remove all output files</tr>
+<tr><td><tt>magic</tt>:		<td>Used to generate .magic.dat file (for random seed).</tr>
 <tr><td><tt>size_check</tt>:	<td>Builds executable that checks sizes of char, int
 		and long (to give error if judge ported to a
-		machine with different values for this!)
-<tr><td><tt>zpblind</tt>:	<td>Blind post-processor executable
-<tr><td><tt>dist-gzip</tt>:	<td>Create a tar.gz of the judge source code
-<tr><td><tt>dist-zip</tt>:	<td>Idem, with zip instead of gzip
-<tr><td><tt>dist (or dist-all)</tt>: <td>Makes both
+		machine with different values for this!)</tr>
+<tr><td><tt>zpblind</tt>:	<td>Blind post-processor executable</tr>
+<tr><td><tt>dist-gzip</tt>:	<td>Create a tar.gz of the judge source code</tr>
+<tr><td><tt>dist-zip</tt>:	<td>Idem, with zip instead of gzip</tr>
+<tr><td><tt>dist (or dist-all)</tt>: <td>Makes both</tr>
 </table>
 
 <h2><a name="2.6">2.6 smail.in script</a></h2>
@@ -422,7 +422,7 @@ and one on another queue, and then search by queue.
 <br>     #          or: atrun dorm time month day
 <br>     #
 <br> if ("$1" == "dorm") then
-<br>       atrm `atq | awk '{print $1}'` &gt;& /dev/null
+<br>       atrm `atq | awk '{print $1}'` &gt;&amp; /dev/null
 <br>     endif
 <br>
 <br>     at -q b -f diprun $2 $3 $4
@@ -478,7 +478,7 @@ information.  If you want to make compiled programs a little smaller,
 you can type '<tt>make install-strip</tt>' or '<tt>make upgrade-strip</tt>' instead.  This
 may give a few harmless errors (when it tries to strip scripts) but you can ignore them.
 
-<h2><a name="3.2">3.3 Cleaning</a></h2>
+<h2><a name="3.3">3.3 Cleaning</a></h2>
 
 <p>- You can remove the program binaries and object files from the
 source code directory by typing `<tt>make clean</tt>'.  To also remove the
@@ -514,11 +514,13 @@ containing all binaries and data files (yes, it is against the Debian policy).
 <p>- In the binary of the executables, the configuration file <tt>dip.conf</tt>
 contains all non-hard-coded parameters before compilation.  You must check the following variables:
 
-<p>   * <tt>GAMES_MASTER</tt> (put YOUR email address or an alias on it, NOT the judge address!!).
-<br>   * <tt>OURSELVES</tt> (the Unix user name of the judge; it is used to
-avoid mail loops); you can keep the name 'judge' if this is its name.
-<br>   * <tt>JUDGE_CODE</tt> (codename of your judge: ALEX,FROG,USEF...),
-<br>   * <tt>SPECIAL_PW</tt> (the password for the judge-keeper, keep it for yourself!).
+<p>   * <tt>GAMES_MASTER</tt>: put YOUR email address or an alias on it, NOT the judge address!!.
+<br>   * <tt>OURSELVES</tt>: the Unix user name of the judge; it is used to
+avoid mail loops; you can keep the name 'judge' if this is its name.
+<br>   * <tt>JUDGE_CODE</tt>: codename of your judge (ALEX,FROG,USEF...), you MUST change it.
+<br>   * <tt>SPECIAL_PW</tt>: the password for the judge-keeper, keep it for yourself!).
+<br>   * <tt>AUTO_MASTER</tt>: yes or no; whatever the default is, you should put 'yes' for an 'official'
+judge, 'no' for an experimental one.
 
 <p>- Optionally, you can decide in which directory must go all running games
 by setting the <tt>GAME_DIR</tt> variable.  You MUST create the directory before running the judge.
@@ -640,75 +642,75 @@ but may be useful for old versions of the judge, for migrating, or for historica
 
 <h1><a name="6.2">6.2 Binaries</a></h1>
 
-<table border=1 cellpadding=3>
+<table border=1 cellpadding=3 summary="Binaries">
 <tr><td><tt>rdip</tt> <td>Its purpose is to read in mail and copy it to a file
-for later processing, it is invoked by incoming mail.
-<tr><td><tt>dip</tt><td>Main file.  Invoked by rdip.
+for later processing, it is invoked by incoming mail.</tr>
+<tr><td><tt>dip</tt><td>Main file.  Invoked by rdip.</tr>
 <tr><td><tt>pdip</tt> <td>Reads a mail file and pass each message to dip.  Used when the
-judge has bailed out and mail has stacked up in the spool queue.
+judge has bailed out and mail has stacked up in the spool queue.</tr>
 <tr><td><tt>flock</tt> <td>It must be used when you modify more or less anything in the
 dip directory. Lock the judge by entering '<tt>flock dip.log</tt>'.  It will
 remind you every 5&nbsp;minutes on your console that the judge is locked.
-To unlock the judge, just execute <tt>flock</tt>.
-<tr><td><tt>deddump</tt> <td>Dump/load the binary dedication file to/from a text file.
-<tr><td><tt>delgame</tt> <td>Used to delete a game (even an active game!)
-<tr><td><tt>ign</tt> <td>Used to process bounced mail.  See <tt>README.ignore</tt>.
-<tr><td><tt>fmtwho</tt> <td>Used for the maintenance of the user base.  See <tt>README.fixids</tt>
-<tr><td><tt>cmap</tt> <td>Responsible for generation of compiled map files from textual map files.
-<tr><td><tt>summary</tt> <td> Creates the summary of a game.
+To unlock the judge, just execute <tt>flock</tt>.</tr>
+<tr><td><tt>deddump</tt> <td>Dump/load the binary dedication file to/from a text file.</tr>
+<tr><td><tt>delgame</tt> <td>Used to delete a game (even an active game!)</tr>
+<tr><td><tt>ign</tt> <td>Used to process bounced mail.  See <tt>README.ignore</tt>.</tr>
+<tr><td><tt>fmtwho</tt> <td>Used for the maintenance of the user base.  See <tt>README.fixids</tt></tr>
+<tr><td><tt>cmap</tt> <td>Responsible for generation of compiled map files from textual map files.</tr>
+<tr><td><tt>summary</tt> <td> Creates the summary of a game.</tr>
 </table>
 
 <h2><a name="6.3">6.3 Shell scripts</a></h2>
 
-<table border=1 cellpadding=3>
-<tr><td><tt>diprun</tt><td>This is the script which is called by '<tt>at</tt>' and launches <tt>rdip</tt>.
+<table border=1 cellpadding=3 summary="Shells">
+<tr><td><tt>diprun</tt><td>This is the script which is called by '<tt>at</tt>' and launches <tt>rdip</tt>.</tr>
 <tr><td><tt>dipclean</tt><td>This is a csh script that cleans old log files. It
 should put itself onto the at queue for subsequent runs on Saturdays at
-2pm. This script relies on the flock program.
+2pm. This script relies on the flock program.</tr>
 <tr><td><tt>smail</tt><td>Shell script which creates and launch the mails to the
-players. See above.
+players. See above.</tr>
 <tr><td><tt>atrun</tt><td>Shell script which puts the judge in the '<tt>at</tt>' queue to awaken
 it when needed.  (<b>NB:</b> If you put a deadline in the very near future
 (less than one hour for example), don't expect the judge to awaken exactly
 at this time. You can check the next time the judge will wake up by
-looking the at queue with the command '<tt>atq</tt>').
+looking the at queue with the command '<tt>atq</tt>').</tr>
 <tr><td><tt>newlogs</tt><td>Shell scripts which compress old dip.log, dip.rlog,
-mail.log files into compressed *.Z files. (You can use '<tt>uncompress</tt>' to extract them).
+mail.log files into compressed *.Z files. (You can use '<tt>uncompress</tt>' to extract them).</tr>
 </table>
 
 <h2><a name ="6.4">6.4 Parameter and data files</a></h2>
 
 <p>(See content for more information)
 
-<table border=1 cellpadding=3>
+<table border=1 cellpadding=3 summary="Config and data files">
 <tr><td><tt>dip.conf</tt><td>All parameters on the judge which can be changed
-without recompiling the judge.
+without recompiling the judge.</tr>
 <tr><td><tt>dip.master</tt><td>It contains all the information on the games:
-parameters, players...
+parameters, players...</tr>
 <tr><td><tt>dip.whois</tt><td>This is a database containing the registration
-information for the people who have registered with the adjudicator.
+information for the people who have registered with the adjudicator.</tr>
 <tr><td><tt>dip.addr</tt><td>This file associates a user number and siteid with an
-email address and vice versa.  Each user may have multiple email addresses.
+email address and vice versa.  Each user may have multiple email addresses.</tr>
 <tr><td><tt>dip.msg, dip.footer</tt><td>Messages at the end and at the beginning of
-each mail sent by the judge.  Used by smail.
+each mail sent by the judge.  Used by smail.</tr>
 <tr><td><tt>dip.nocreate</tt><td>If you add this file, game creation is disabled.
 When someone tries to create a game, the content of this file is sent
-back to them, so please put there the reason why game creation is not allowed.
-<tr><td><tt>dip.ded</tt><td>binary file where dedication are stored.
-<tr><td><tt>dip.dedicate</tt><td>Binary dedication database.
+back to them, so please put there the reason why game creation is not allowed.</tr>
+<tr><td><tt>dip.ded</tt><td>binary file where dedication are stored.</tr>
+<tr><td><tt>dip.dedicate</tt><td>Binary dedication database.</tr>
 </table>
 
 <h2><a name="6.5">6.5 Maps and 'data' directory</a></h2>
 
-<table border=1 cellpadding=3>
-<tr><td><tt>map.n</tt><td>Compiled data files, one for each variant.
-<tr><td><tt>data/map.<variant_name></tt><td>Real map source files
-<tr><td><tt>data/info</tt><td>Help file sent to players
-<tr><td><tt>data/seed.n</tt><td>Initial position of units on the map
+<table border=1 cellpadding=3 summary="Data">
+<tr><td><tt>map.n</tt><td>Compiled data files, one for each variant.</tr>
+<tr><td><tt>data/map.&lt;variant_name&gt;</tt><td>Real map source files</tr>
+<tr><td><tt>data/info</tt><td>Help file sent to players</tr>
+<tr><td><tt>data/seed.n</tt><td>Initial position of units on the map</tr>
 <tr><td><tt>data/report.n</tt><td>Initial position report in a game.  (You can put
-any other information, text or joke there!!)
+any other information, text or joke there!!)</tr>
 <tr><td><tt>data/</tt><td>Other files that can get by the players by the '<tt>get</tt>'
-command (help files...)
+command (help files...)</tr>
 </table>
 
 <h2><a name="6.6">6.6 Games</a></h2>
@@ -717,36 +719,36 @@ command (help files...)
 whose name begins by a D.  You can change that with the <tt>GAME_DIR</tt> parameter
 in <tt>dip.conf</tt> (see above).
 
-<table border=1 cellpadding=3>
-<tr><td><tt>Dxxx/</tt><td>All the data of the game xxx is stored in this directory.
-<tr><td><tt>Dxxx/Gnnn</tt><td>File for turn nnn of the game xxx.
+<table border=1 cellpadding=3 summary="Games">
+<tr><td><tt>Dxxx/</tt><td>All the data of the game xxx is stored in this directory.</tr>
+<tr><td><tt>Dxxx/Gnnn</tt><td>File for turn nnn of the game xxx.</tr>
 <tr><td><tt>Dxxx/Mnnn</tt><td>This is the current set of moves for game xxx.  Only the
 highest numbered file is necessary unless you have a rollback.  The
-dipclean script will remove movement files that have not been accessed for more than 90 days.
+dipclean script will remove movement files that have not been accessed for more than 90 days.</tr>
 <tr><td><tt>Dxxx/Pnnn</tt><td>The P files contain the pending orders for a particular
 turn.  Only the highest numbered file is necessary.  Most of these files
-will be zero length because people don't usually send their orders in ahead of time.
+will be zero length because people don't usually send their orders in ahead of time.</tr>
 <tr><td><tt>Dxxx/Tnnn</tt><td>These files are temporary files that can be cleaned up
-if they are found left lying around.  The dipclean script will get rid of them eventually.
+if they are found left lying around.  The dipclean script will get rid of them eventually.</tr>
 <tr><td><tt>Dxxx/archive</tt><td>This is the archive of broadcasts and game information
 that an observer would see for any given game.  This information can be
-retrieved with the HISTORY command.
+retrieved with the HISTORY command.</tr>
 <tr><td><tt>Dxxx/info</tt><td>Information about the game, which can be set with the SET
-COMMENT command.  This information is shown in the summary, and in the full list.
-<tr><td><tt>Dxxx/summary</tt><td>The summary, as seen by a player in the game.
-<tr><td><tt>Dxxx/msummary</tt><td>The summary, as seen by a master of the game.
+COMMENT command.  This information is shown in the summary, and in the full list.</tr>
+<tr><td><tt>Dxxx/summary</tt><td>The summary, as seen by a player in the game.</tr>
+<tr><td><tt>Dxxx/msummary</tt><td>The summary, as seen by a master of the game.</tr>
 <tr><td><tt>Dxxx/start</tt><td>The date and time when the game started (the point when
-the countries were assigned).  This is used in the summary.
+the countries were assigned).  This is used in the summary.</tr>
 <tr><td><tt>Dxxx/draw</tt><td>Contains the date and time when the game ended, and the
 result. This is used in the summary.  If this file has been created, it
-will be deleted if another turn processes.
+will be deleted if another turn processes.</tr>
 </table>
 
 
 <h2><a name="6.7">6.7 Log files</a></h2>
 
-<table border=1 cellpadding=3>
-<tr><td><tt>install.log</tt><td>Logs all variant map files compiled with cmap.
+<table border=1 cellpadding=3 summary="Logs">
+<tr><td><tt>install.log</tt><td>Logs all variant map files compiled with cmap.</tr>
 <tr><td><tt>dip.log</tt><td>This is an interlock file that keeps two dips from running
 at the same time.  In addition, all received mail is written to this file
 to allow reconstruction should some drastic event occur.  The <tt>dipclean</tt>
@@ -754,51 +756,51 @@ script will move this file to <tt>dip.log.0</tt> once per week to keep it from
 getting out of hand.  Before editing <tt>dip.master</tt> or any of the other
 databases that the adjudicator maintains you should lock this file to
 shut it out.  The <tt>flock</tt> program can be used to do this interlocking.  This
-is the first place to go and look when a problem occurs.  This file can become huge!
-<tr><td><tt>dip.rlog</tt><td>Logs the activity of rdip.
-<tr><td><tt>mail.log</tt><td>This logs all the mails sent by the judge.
-<tr><td><tt>dip.ignore</tt><td>Bounce mail is written to this file. See <tt>README.ignore</tt>.
-<tr><td><tt>dip.log.xxx.Z</tt><td>Compressed archives of the same files.
+is the first place to go and look when a problem occurs.  This file can become huge!</tr>
+<tr><td><tt>dip.rlog</tt><td>Logs the activity of rdip.</tr>
+<tr><td><tt>mail.log</tt><td>This logs all the mails sent by the judge.</tr>
+<tr><td><tt>dip.ignore</tt><td>Bounce mail is written to this file. See <tt>README.ignore</tt>.</tr>
+<tr><td><tt>dip.log.xxx.Z</tt><td>Compressed archives of the same files.</tr>
 <tr><td><tt>stats</tt><td>Statistics directory (if enabled by <tt>STATS_FLAG=1</tt> in <tt>dip.conf</tt>).
-See <tt>README.statistics</tt>.
+See <tt>README.statistics</tt>.</tr>
 </table>
 
 <h2><a name="6.8">6.8 Temporary files</a></h2>
 
-<table border=1 cellpadding=3>
-<tr><td><tt>dip.incoming</tt><td>File containing the last mail received or processed.
-<tr><td><tt>dip.lock1, dip.lock2</tt><td>Used internally by <tt>flock</tt>.
-<tr><td><tt>dip.broadcast.xxxx</tt><td>
-<tr><td><tt>dip.mbroadcast.xxxx</tt><td>
-<tr><td><tt>dip.control</tt><td>
-<tr><td><tt>dip.xcontrol</tt><td>
-<tr><td><tt>dip.xfail</tt><td>If it exists, the judge bails out (used to check if <tt>smail</tt> works.)
-<tr><td><tt>dip.tmast</tt><td>Temporary backup file of <tt>dip.master</tt>.
-<tr><td><tt>dip.reply</tt><td>
-<tr><td><tt>dip.result</tt><td>
-<tr><td><tt>dip.temp</tt><td>Used for mail construction.
+<table border=1 cellpadding=3 summary="Temporary files">
+<tr><td><tt>dip.incoming</tt><td>File containing the last mail received or processed.</tr>
+<tr><td><tt>dip.lock1, dip.lock2</tt><td>Used internally by <tt>flock</tt>.</tr>
+<tr><td><tt>dip.broadcast.xxxx</tt><td></tr>
+<tr><td><tt>dip.mbroadcast.xxxx</tt><td></tr>
+<tr><td><tt>dip.control</tt><td></tr>
+<tr><td><tt>dip.xcontrol</tt><td></tr>
+<tr><td><tt>dip.xfail</tt><td>If it exists, the judge bails out (used to check if <tt>smail</tt> works.)</tr>
+<tr><td><tt>dip.tmast</tt><td>Temporary backup file of <tt>dip.master</tt>.</tr>
+<tr><td><tt>dip.reply</tt><td></tr>
+<tr><td><tt>dip.result</tt><td></tr>
+<tr><td><tt>dip.temp</tt><td>Used for mail construction.</tr>
 </table>
 
 <h2><a name="6.9">6.9 Files created or left behind by a crashed judge</a></h2>
 
-<table border=1 cellpadding=3>
+<table border=1 cellpadding=3 summary="Files created">
 <tr><td><tt>zforward</tt><td>See <tt>README.bailout</tt>.  After a judge crash, <tt>.forward</tt> is
-renamed to zforward, and the judge won't be run by an incoming email.
+renamed to zforward, and the judge won't be run by an incoming email.</tr>
 </table>
 
 <h2><a name="6.10">6.10 Other files</a></h2>
 
-<table border=1 cellpadding=3>
+<table border=1 cellpadding=3 summary="Other files">
 <tr><td><tt>xforward </tt><td>When healing a dead judge, <tt>zforward</tt> must be renamed to
-xforward. See <tt>README.bailout</tt>.
+xforward. See <tt>README.bailout</tt>.</tr>
 <tr><td><tt>text.ded</tt> (generated by <tt>deddump</tt>),<br> <tt>recdump, plyrdata, text.rc</tt>
-</tt><td>(From Tim Miller) My <tt>recdump</tt> program (for viewing the new <tt>plyrdata</tt> records)
+<td>(From Tim Miller) My <tt>recdump</tt> program (for viewing the new <tt>plyrdata</tt> records)
 creates a file called <tt>text.rec</tt>, which is similar (<tt>recdump</tt> also allows
 the JK to modify the binary <tt>plyrdata</tt> file, but that's covered in the
-<tt>README.plyrdata</tt> I put in with my changes).
+<tt>README.plyrdata</tt> I put in with my changes).</tr>
 <tr><td><tt>/var/spool/mail/&lt;user_name&gt;</tt><td>System spool file where the mail for
 the judge is stacked when the .forward file is not there.  (The exact
-path may change according to your system and distribution).
+path may change according to your system and distribution).</tr>
 </table>
 
 <h1><a name="7">7. Testing the judge, first game</a></h1>
@@ -831,8 +833,10 @@ standard judge), the number of registered players and running games.
 
 <p>- Then, verify in dip.addr and dip.whois that you are registered.
 
-<p>- Create a new game.  Take a script for a standard game (let's call it
-'<tt>test<:tt>'), and send it. For example :
+<p>- Create a new game.  Don't set it 'private' or 'nolist'.  Don't become master now
+(NB: you may have to change <tt>AUTO_MASTER</tt> in <tt>dip.conf</tt>), or use different e-mail accounts
+for game creator and players.
+<br>Take a script for a standard game (let's call it '<tt>test</tt>'), and send it. For example :
 
 <p><tt>create ?test password standard
 <br>set list
@@ -853,9 +857,6 @@ standard judge), the number of registered players and running games.
 <br>set retreat delay 0
 </tt>
 
-<p> Don't set it 'private' or 'nolist'.  Don't become master now
-(NB: Some judges (FROG) automatically promote you as the master of the
-game, see parameter AUTO_MASTER above), or use another e-mail account.
 
 <p>- Send another message to the judge : '<tt>list</tt>'.  Then '<tt>list full</tt>'.
 Then '<tt>list test</tt>'.  The judge should answer you and give you the game parameters.
@@ -902,29 +903,29 @@ full commands than a standard.  A 'chess' variant (not yet on a 1.3.2 judge) wou
 
 <p>These are some problems and solutions:
 
-<table border=1 cellpadding=3>
+<table border=1 cellpadding=3 summary="Troubleshooting">
 <tr><td>Nothings happen when sending something to the judge and in <tt>dip.log</tt>,
 the judge complains he didn't find rm, date, echo... and other commands
 <td>This is a PATH problem.  Be careful : The script uses csh as a
 shell, and not bash that often.  Check '.cshrc' in the home directory.
 Check that mail and head are in the locations defined in
-Makefile (to avoid a reinstallation, add symbolic links).
+Makefile (to avoid a reinstallation, add symbolic links).</tr>
 
 <tr><td>Judges makes a bailout<td>The judge can send to the judgekeeper a
 message saying 'Bailout executed'.  It means that the judge died.  It has
 crashed.  <tt>.forward</tt> was renamed to <tt>zforward</tt>.  To solve the problem without
-losing some mails, you must follow the instructions in <tt>README.bailout</tt>.
+losing some mails, you must follow the instructions in <tt>README.bailout</tt>.</tr>
 
 <tr><td>The judge complains that <tt>dip.input</tt> exists<td>You didn't clean this
 file after a previous crash.  See <tt>README.bailout</tt> if you don't want to
-lose what it contains.
+lose what it contains.</tr>
 
 <tr><td>The judge crashes at the first time, in <tt>dipent.c</tt>
 <td>Check that the <tt>dip.master</tt>
-file was not generated with a bad format in <tt>dip.control</tt> (see <a href="#5.5"5.5</a>).
+file was not generated with a bad format in <tt>dip.control</tt> (see <a href="#5.5">5.5</a>).</tr>
 
 <tr><td>The judge crashes when you try a new variant<td>Look in <tt>install.log</tt>
-what variants are installed.  Check that all files (source and compiled) are there.
+what variants are installed.  Check that all files (source and compiled) are there.</tr>
 </table>
 
 <p>For other problems, read all the log files, the answer must be there.
@@ -1089,7 +1090,7 @@ send me a copy of the thing you're making while you're at it).
 (no translation known for the moment).
 
 <hr>
-</div>
+
 </body>
 </html>
 

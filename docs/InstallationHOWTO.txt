@@ -2,7 +2,7 @@
 
                  Installation-HOWTO for the Diplomacy judge
 
-                                 v.1.3.2.1
+                                 v.1.3.2.3
               [1]Christophe Courtois (christophe@courtois.cc)
 
                              [2]1. Introduction
@@ -80,7 +80,8 @@
    ALEX on my Linux box.
 
    Computer: Pentium 75
-   OS:       Linux Debian 3.0 (woody) Judge: njudge 1.3.2 compiled from source
+   OS:       Linux Debian 3.0 (woody)
+   Judge:    njudge 1.3.2 compiled from source
 
                               2 Before installing
 
@@ -495,13 +496,16 @@ atrun script
    contains all non-hard-coded parameters before compilation. You must
    check the following variables:
 
-   * GAMES_MASTER (put YOUR email address or an alias on it, NOT the
-   judge address!!).
-   * OURSELVES (the Unix user name of the judge; it is used to avoid mail
-   loops); you can keep the name 'judge' if this is its name.
-   * JUDGE_CODE (codename of your judge: ALEX,FROG,USEF...),
-   * SPECIAL_PW (the password for the judge-keeper, keep it for
+   * GAMES_MASTER: put YOUR email address or an alias on it, NOT the
+   judge address!!.
+   * OURSELVES: the Unix user name of the judge; it is used to avoid mail
+   loops; you can keep the name 'judge' if this is its name.
+   * JUDGE_CODE: codename of your judge (ALEX,FROG,USEF...), you MUST
+   change it.
+   * SPECIAL_PW: the password for the judge-keeper, keep it for
    yourself!).
+   * AUTO_MASTER: yes or no; whatever the default is, you should put
+   'yes' for an 'official' judge, 'no' for an experimental one.
 
    - Optionally, you can decide in which directory must go all running
    games by setting the GAME_DIR variable. You MUST create the directory
@@ -692,7 +696,7 @@ atrun script
 6.5 Maps and 'data' directory
 
    map.n Compiled data files, one for each variant.
-   data/map. Real map source files
+   data/map.<variant_name> Real map source files
    data/info Help file sent to players
    data/seed.n Initial position of units on the map
    data/report.n Initial position report in a game. (You can put any
@@ -815,8 +819,11 @@ atrun script
 
    - Then, verify in dip.addr and dip.whois that you are registered.
 
-   - Create a new game. Take a script for a standard game (let's call it
-   'test'), and send it. For example :
+   - Create a new game. Don't set it 'private' or 'nolist'. Don't become
+   master now (NB: you may have to change AUTO_MASTER in dip.conf), or
+   use different e-mail accounts for game creator and players.
+   Take a script for a standard game (let's call it 'test'), and send it.
+   For example :
 
    create ?test password standard
    set list
@@ -835,10 +842,6 @@ atrun script
    set move delay 0.01
    set adjust delay 0
    set retreat delay 0
-
-   Don't set it 'private' or 'nolist'. Don't become master now (NB: Some
-   judges (FROG) automatically promote you as the master of the game, see
-   parameter AUTO_MASTER above), or use another e-mail account.
 
    - Send another message to the judge : 'list'. Then 'list full'. Then
    'list test'. The judge should answer you and give you the game
@@ -906,7 +909,7 @@ atrun script
    what it contains.
    The judge crashes at the first time, in dipent.c Check that the
    dip.master file was not generated with a bad format in dip.control
-   (see [32]). 
+   (see [32]5.5).
    The judge crashes when you try a new variant Look in install.log what
    variants are installed. Check that all files (source and compiled) are
    there.
