@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.7  2001/05/09 05:59:50  greg
+** minor bug fix
+**
 ** Revision 1.6  2001/04/18 12:33:53  miller
 ** Fixed blind flag problem
 **
