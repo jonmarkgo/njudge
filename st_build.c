@@ -1,5 +1,9 @@
 /*
    ** $Log$
+   ** Revision 1.18  2003/02/09 23:07:09  millis
+   ** Corrected order of GetUnit() call
+   ** Also removed superfluous blank line on order output
+   **
    ** Revision 1.17  2003/02/05 01:10:00  millis
    ** Fixed small bug with pending build unit count
    **
@@ -173,6 +177,12 @@ int CheckOwnedOK( char type, int u, int p, int p1, int *c1)
                         errmsg("This game does not allow wings.\n");
                         return 0;
                 }
+	} else if (type == 'R') {	
+		*c1 = MV;
+		if (!(dipent.x2flags & X2F_ARTILLERY)) {
+			errmsg("This game does not allow artillery.\n");
+			return 0;
+		}
         } else {
                 if (!(*c1))
                         *c1 = XC;
@@ -304,7 +314,14 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
 			if (!(dipent.flags & F_WINGS)) {
 				errmsg("This game does not allow wings.\n");
 				return E_WARN;
-			}	
+			}
+		} else if (type == 'R') {
+                    c1 = MV;
+                    if (!(dipent.x2flags & X2F_ARTILLERY)) {
+                        errmsg("This game does not allow artillery.\n");
+                        return E_WARN;
+		    }
+
 		} else {
 			if (!c1)
 				c1 = XC;
@@ -361,6 +378,13 @@ int build_syntaxcheck(char *in_text, int precheck, char *out_string)
                                 return E_WARN;
                         }
 		}
+		if (type == 'R') {
+                    if (!(dipent.x2flags & X2F_ARTILLERY)) {
+                        errmsg("This game does not allow artillery.\n");
+                        return E_WARN;
+		    }
+                }
+
 
 		break;
 
@@ -454,7 +478,13 @@ int buildin(char **s, int p)
 				errmsg("This game does not allow wings.\n");
 				return E_WARN;
 			}	
-		} else {
+		} else if (type == 'R') {
+                        c1 = MV;
+                        if (!(dipent.x2flags & X2F_ARTILLERY)) {
+                            errmsg("This game does not allow artillery.\n");
+                            return E_WARN;
+			}
+                } else {
 			if (!c1)
 				c1 = XC;
 			for (t = (char *) pr[p1].move; *t; t++)
@@ -735,7 +765,7 @@ int buildin(char **s, int p)
 
 void buildout(int pt)
 {
-	int i, u, p, c1, p_index, counting_centres, u_diff[NPOWER + 1], p1;
+	int i, u, p, c1, p_index, counting_centres, u_diff[NPOWER + 1], p1, pp;
 	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
         int num_units[NPOWER +1];
         int num_hc;
@@ -816,6 +846,7 @@ void buildout(int pt)
 
 				unit[u].owner = 0;
 				unit[u].status = ':';
+				pr[unit[u].loc].unit_held = 0;
 				one_printed++;
 
 
@@ -943,7 +974,10 @@ void buildout(int pt)
         }
 
 	for (u = 1; u <= nunit; u++) {
-		if ((p = unit[u].owner) && u_diff[p] > 0 && pr[unit[u].loc].owner != p) {
+		if ((p = unit[u].owner) && 
+	            u_diff[p] > 0 && 
+		    pr[unit[u].loc].owner != p && 
+		    FindPower(p) < dipent.n) {
 			nu[p]++;
 			unit[u].owner = 0;
 			if (processing || pt == p || pt == MASTER) {
@@ -958,13 +992,27 @@ void buildout(int pt)
 		}
 	}
 
-        one_printed = 0;
-        for (p1 = 1;  p1<= npr; p1++) {
+ /* Now see if there are centres that have become home centres */
+      for (p1 = 1;  p1<= npr && (dipent.x2flags & X2F_HOMETRANSFER); p1++) {
+            if (pr[p1].unit && pr[p1].unit_held &&
+                (PossibleHomeCentre(pletter[dipent.variant][pr[p1].home]) ||
+		 (!pr[p1].home && pr[p1].type == 'x')) &&
+                unit[pr[p1].unit].owner != pr[p1].home) {
+                pr[p1].home = unit[pr[p1].unit].owner;
+            }
+        }
+
+       for (pp = 1; pp <= NPOWER; pp++) { /* This loop is just to order by power */
+            p_index = FindPower(pp);
+            one_printed = 0;
+            if (p_index >= dipent.n) continue; /* Not a valid power */
+          one_printed = 0;
+          for (p1 = 1;  p1<= npr; p1++) {
             p = pr[p1].home;
             if ( pr[p1].type != pletter[dipent.variant][pr[p1].home] &&
                 PossibleHomeCentre(pletter[dipent.variant][pr[p1].home])) {
                  assumed[p]++;
-                 if (processing || pt == p || pt == MASTER) {
+                 if (pp == p && (processing || pt == p || pt == MASTER)) {
                     one_printed++;
                     fprintf(rfp, "\n%s: ", powers[p]);
                                 for (i = strlen(powers[p]); i < LPOWER; i++)
@@ -973,6 +1021,7 @@ void buildout(int pt)
                                         pr[p1].name);
                 }
             }
+          }
         }
         if (one_printed) fprintf(rfp, "\n");
 
@@ -999,5 +1048,11 @@ void buildout(int pt)
         }
 	
         if (one_printed) fprintf(rfp, "\n");
+
+ /* Adjust the unit_held values */
+      for (p1 = 1;  p1<= npr && processing; p1++) {
+            if (pr[p1].unit )
+                pr[p1].unit_held = 1;
+        }
 }	        
 /****************************************************************************/
