@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.5  2001/07/08 22:56:29  miller
+ * Add TIME_TOLERANCE and WARP_FILE
+ *
  * Revision 1.4  2001/07/01 23:19:29  miller
  * New variant guardians
  *
@@ -80,6 +83,7 @@ int conf_init(void)
 	conf_set("RUNDIPMAP_CMD", "./rundipmap");
 	conf_set("DIP_CMD","./dip");
 	conf_set("ATRUN_CMD","./atrun");
+	conf_set("GAME_DIR","D");
 
 	conf_set("GAMES_MASTER", "judge_request");
 	/* games_opener is place to send opening moves for statistics */
