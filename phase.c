@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.2  2000/11/14 14:27:37  miller
+ * Limited syntax checking for phased orders added (only in non-Mach games)
+ *
  * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
@@ -232,8 +235,8 @@ void phase_pending(void)
 				}
 
 				rename(Tfile, Mfile);
-				sprintf(line, "%s dip.reply 'Diplomacy pending orders %s %s' '%s'",
-					SMAIL_CMD, dipent.name, dipent.phase, dipent.players[n].address);
+				sprintf(line, "%s dip.reply '%s:%s - Pending Orders' '%s'",
+					SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;
 				dipent.players[n].status &= ~(SF_ABAND | SF_CD);
