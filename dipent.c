@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.2  1997/02/16 20:43:18  davidn
  * Additions to dipent structure and associated code, to allow duplex variants.
  * Command is "set players n".
@@ -20,6 +23,8 @@
  * ?? ??? 1987 Ken Lowe     He wrote it *  29 Dec 1996 David Norman
  * Addition of dipent.no_of_players *  29 Dec 1996 David Norman Protection 
  * against killing dip.master added 
+ * 26 Nov 1999 Millis Miller Added player late_count to payer structure
+ *                           Also added use of xflags structure.
  */
 
 #include <fcntl.h>
@@ -33,6 +38,7 @@
 #include "dip.h"
 #include "defaults.h"
 #include "functions.h"
+#include "diplog.h"
 
 extern int Dflg;
 
@@ -44,6 +50,7 @@ void gettime(char *line, long *time);
 void getplay(char *line, Player * p);
 void putplay(FILE * fp, Player * p, int dopw);
 
+int time_warp = 0; /* Set to 1 when a time warp was detected */
 /************************************************************************/
 
 int getdipent(FILE * fp)
@@ -54,16 +61,20 @@ int getdipent(FILE * fp)
  */
 
 	int i, j, tempvp, tempplayers;
-	long now;
-	char line[1000], *s, *malloc();
+	int tempcentres;
+	time_t now;
+	unsigned char line[1000];
+	char *s; 
+	char *malloc();
 
 	memset(&dipent, 0, sizeof(dipent));
 	if (!fgets(line, sizeof(line), fp))
 		return 0;
-	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d", dipent.name, dipent.seq, dipent.phase,
+	i = sscanf(line, "%s%s%s%d%d%d%d%x%d%d%x%d", dipent.name, dipent.seq, dipent.phase,
 		   &dipent.access, &dipent.variant,
 		   &dipent.level, &dipent.dedicate,
-		   &dipent.flags, &tempvp, &tempplayers);
+		   &dipent.flags, &tempvp, &tempplayers,
+		   &dipent.xflags, &dipent.max_absence_delay);
 
 	if (i == 7) {
 		dipent.flags = F_NONMR;
@@ -77,11 +88,30 @@ int getdipent(FILE * fp)
 		tempplayers = 0;
 		i = 10;
 	}
-	if (i != 10) {
-		fprintf(stderr, "Bad header in master file.\n%s\n", line);
+	if (i == 10) {
+		dipent.xflags = 0;
+		if ((dipent.variant == V_h31)
+                    || (dipent.variant == V_h32)
+                    || (dipent.variant == V_classical)
+                    || (dipent.variant = V_chaos)) {
+			dipent.xflags |= XF_BUILD_ANYCENTRES;
+		}
+		if (dipent.variant == V_aberration) dipent.xflags |= XF_BUILD_ONECENTRE;
+		i = 11;
+	}
+	if (i == 11) {
+		dipent.max_absence_delay = 0;
+		i = 12;
+	}
+
+	if (i != 12) {
+		fprintf(stderr, "Bad header in master file (returned %d).\n%s\n", i ,line);
 		bailout(E_FATAL);
 	}
+	/* tempcentres will rember centres setting */
+	tempcentres = dipent.xflags & XF_BUILD_ONECENTRE;
 	SETNP(dipent.variant);
+	dipent.xflags |= tempcentres;
 
 	if (tempvp != 0)
 		dipent.vp = tempvp;
@@ -183,9 +213,15 @@ int getdipent(FILE * fp)
 			fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
 			fprintf(stderr, "< %24.24s.\n", ctime(&dipent.process));
 			fprintf(stderr, "Time warp indicated.  GM notified.\n");
-			sprintf(line, "./smail /dev/null 'Diplomacy time warp' '%s'", GAMES_MASTER);
+			sprintf(line, "%s /dev/null 'Diplomacy time warp' '%s'", SMAIL_CMD, GAMES_MASTER);
 			execute(line);
-			bailout(E_FATAL);
+			/* bailout(E_FATAL); */
+			/* Try to fix time warp by advancing deadline */
+			deadline(NULL, 1);
+			time_warp = 1;
+			DIPNOTICE("TimeWarp detected.");
+		} else {
+		    time_warp = 0;
 		}
 		dipent.start = now - 1;
 		dipent.process = now + 168 * HRS2SECS;
@@ -202,7 +238,14 @@ int getdipent(FILE * fp)
 		} else {
 			notifies = "*";
 		}
-	}
+	} else {
+	    /* Non control game, check for a time-warp set */
+	    if (time_warp) {
+		/* Try to fix the warp by adjusting deadline */
+		/* Rather simplistic, but will do for now */
+		deadline(NULL,1);
+	    }
+        }
 	return 1;
 }
 
@@ -218,10 +261,12 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d\n", dipent.name, dipent.seq,
+	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d\n", 
+		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
-		dipent.no_of_players);
+		dipent.no_of_players, dipent.xflags,
+		dipent.max_absence_delay);
 	if (dipent.process)
 		fprintf(fp, "Process   %24.24s (%ld)\n",
 			ctime(&dipent.process), dipent.process);
@@ -250,7 +295,7 @@ void putdipent(FILE * fp, int dopw)
 	}
 	if (fprintf(fp, "-\n") == 0) {
 		fprintf(stderr, "Error writing to dip.master. Disk error suspected. Bailing out\n");
-		sprintf(line, "./smail /dev/null 'File error writing dip.master' '%s'", GAMES_MASTER);
+		sprintf(line, "%s /dev/null 'File error writing dip.master' '%s'", SMAIL_CMD, GAMES_MASTER);
 		execute(line);
 		bailout(E_FATAL);
 	}
@@ -276,6 +321,7 @@ void newdipent(char *name, int variant)
 	dipent.access = D_ACCESS;
 	dipent.level = D_LEVEL;
 	dipent.flags = D_FLAGS;
+	dipent.xflags = D_XFLAGS;
 	dipent.dedicate = D_DEDICATE;
 	dipent.variant = variant;
 	SETNP(variant);
@@ -303,6 +349,7 @@ void newdipent(char *name, int variant)
 	strcpy(dipent.builds.days, D_BUILDS_DAYS);
 	dipent.n = 0;
 	dipent.no_of_players = dipent.np;
+	dipent.max_absence_delay = D_MAX_ABSENCE_DELAY;
 }
 
 /***********************************************************************/
@@ -333,6 +380,8 @@ void testdipent(int seq, int variant)
 		dipent.players[i].status = 0;
 		dipent.players[i].siteid = 0;
 		dipent.players[i].userid = 0;
+		dipent.players[i].late_count = 0;
+		dipent.players[i].centres_blockaded = 0;
 		strcpy(dipent.players[i].password, "spud");
 		strcpy(dipent.players[i].address, "*");
 	}
@@ -477,13 +526,47 @@ void getplay(char *line, Player * p)
 	char c;
 
 	*p->pref = '\0';
-	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s", &c, &p->status,
+	/* You'd better be really sure you've not messed with absence array limit! */
+	i = sscanf(line, "%c%*s %x %d %d %d %d %s %s %d %d %d %ld %ld %ld %ld %ld %ldi %ld", &c, &p->status,
 		   &p->units, &p->centers, &p->userid, &p->siteid,
-		   p->password, p->address);
-	if (i != 8) {
+		   p->password, p->address, &p->late_count, &p->centres_blockaded,
+		   &p->absence_count, 
+		   &p->absence_start[0], &p->absence_end[0],
+		   &p->absence_start[1], &p->absence_end[1],
+		   &p->absence_start[2], &p->absence_end[2],
+		   &p->absence_total);
+	switch (i)
+	{
+		case 8: {
+		     /* versions prior to 0.8.7 which had no late count */
+		     p->late_count = 0;  /* initialise it to something! */
+		    }
+		case 9: {
+		     p->centres_blockaded = 0;
+		}
+		case 10: {
+		     /* versions 0.8.7 and up are fine here! */
+			p->absence_count = 0; 
+                   	p->absence_start[0] = p->absence_end[0] = 0;
+			p->absence_start[1] = p->absence_end[1] = 0; 
+                        p->absence_start[2] = p->absence_end[2] = 0;
+		    }
+		case 17: {
+			/* versions 0.8.7 and up are fine here! */
+			p->absence_total = 0;
+                     break;
+                    }
+		case 18: {
+			/* OK, this is the latest one! */
+		    }
+
+		
+		default: {
+		    /* OK, we've got a problem: bailout */	
 		fprintf(stderr, "Bad player entry for '%s'.  Only found %d items.\n%s\n",
 			dipent.name, i, line);
 		bailout(E_FATAL);
+		}
 	}
 	/*
 	 * The following 2 lines are to intended to cover the removal of the
@@ -507,10 +590,15 @@ void putplay(FILE * fp, Player * p, int dopw)
 	if (p->power >= 0) {
 		if (isupper(c = dipent.pl[p->power]))
 			c = tolower(c);
-		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s\n",
+		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld\n",
 			c, powers[p->power] + 1,
 		   p->status, p->units, p->centers, p->userid, p->siteid,
-			dopw ? p->password : "xxx", p->address);
+			dopw ? p->password : "xxx", p->address,p->late_count, p->centres_blockaded,
+	p->absence_count,
+                   p->absence_start[0], p->absence_end[0],
+                   p->absence_start[1], p->absence_end[1],
+                   p->absence_start[2], p->absence_end[2],
+		   p->absence_total);
 		if (*(p->pref))
 			fprintf(fp, "_pref: %s\n", p->pref);
 	}

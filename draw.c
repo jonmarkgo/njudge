@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.2  1997/03/16 06:52:44  rpaar
  *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
@@ -35,6 +38,7 @@ int check_can_vote(int i)
 		fprintf(rfp, "You cannot declare a game which has not begun a draw!\n");
 		return 1;
 	}
+ 	
 	if (!dipent.players[i].units) {
 		fprintf(rfp, "You have no units and cannot vote.\n");
 		return 1;
@@ -270,11 +274,12 @@ int process_draw(void)
 
 	{
 		if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT)
-			sprintf(line, "./smail dip.temp 'MNC: Draw in game %s' '%s'",
+			sprintf(line, "%s dip.temp 'MNC: Draw in game %s' '%s'",
+				SMAIL_CMD,
 				dipent.name, MN_CUSTODIAN);
 		else
-			sprintf(line, "./smail dip.temp 'BNC: Draw in game %s' '%s'",
-				dipent.name, BN_CUSTODIAN);
+			sprintf(line, "%s dip.temp 'BNC: Draw in game %s' '%s'",
+				SMAIL_CMD, dipent.name, BN_CUSTODIAN);
 	}
 	execute(line);
 
@@ -295,15 +300,16 @@ int process_draw(void)
 		gflg = (dipent.flags & F_GUNBOAT &&
 			(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
 		mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
-		sprintf(line, "./summary -%s%s%slv%d %s", mflg, gflg,
+		sprintf(line, "%s -C %s -%s%s%slv%d %s", CONFIG_DIR, mflg, gflg,
+			SUMMARY_CMD,
 			dipent.flags & F_QUIET ? "q" : "", dipent.variant, dipent.name);
 		system(line);
 	}
 
 	/*  Mail summary to HALL_KEEPER */
 
-	sprintf(line, "./smail D%s/summary 'HoF: Draw in %s' '%s'",
-		dipent.name, dipent.name, HALL_KEEPER);
+	sprintf(line, "%s D%s/summary 'HoF: Draw in %s' '%s'",
+		SMAIL_CMD, dipent.name, dipent.name, HALL_KEEPER);
 	execute(line);
 
 	broadcast = 1;
