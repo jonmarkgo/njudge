@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.13  2002/07/16 18:14:23  nzmb
+ * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
+ *
  * Revision 1.12  2002/04/18 04:44:33  greg
  * Added the following commands:
  * - unstart
@@ -621,51 +624,70 @@ int mail_signon(char *s)
 				broad_signon = 1;
 				pcontrol++;
 				strcpy(baddr, dipent.players[i].address);
-				strcpy(dipent.players[i].address, raddr);
-				strcpy(dipent.players[i].password, password);
-				dipent.players[i].userid = userid;
+                                strcpy(dipent.players[i].address, raddr);
+                                strcpy(dipent.players[i].password, password);
 				dipent.players[i].siteid = siteid;
-				dipent.players[i].late_count = 0;  /* reset old late_count */
 				player = i;
-				signedon = 1;
-				listflg = 0;
-				/* Reset the user's waiting flags */
-				dipent.players[i].status &= ~(SF_LATE | SF_REMIND);
-				dipent.players[i].status |= SF_WAIT;  
+                                signedon = 1;
+                                listflg = 0;
 
-				if (!msg_header_done)
-					msg_header(rfp);
-				put_data(dipent.players[i].userid,tookover);
-				fprintf(rfp, "Take over of abandoned %s allowed.\n\n", powers[n]);
-				fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
-				time(&now);
-				if (dipent.deadline < now + 24 * 60 * 24 && dipent.phase[5] == 'M'
-				    && !(dipent.flags & F_MODERATE)) {
-					now = now + 48 * 60 * 60;
-					then = now + 168 * 60 * 60;
-					fprintf(rfp, "To give yourself time to communicate with the other ");
-					fprintf(rfp, "players, you may wish\n");
-					fprintf(rfp, "to submit commands to extend the current deadline ");
-					fprintf(rfp, "and/or grace periods.\n");
-					fprintf(rfp, "Suggested commands are:\n\n");
-					fprintf(rfp, "    set grace    %-6.6s 23:30\n", ctime(&then) + 4);
-					fprintf(rfp, "    set deadline %-6.6s 23:30\n\n", ctime(&now) + 4);
-				}
-				/* WAS mfprintf  1/94 BLR */
-				sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+				if (dipent.players[i].userid == userid) {
+				    /* Same player returning */
+				    if (!msg_header_done)
+                                        msg_header(rfp);
+				    sprintf(subjectline, "%s:%s - %s Player Return: %c",
+                                            JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
 
-				fprintf(bfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
-					xaddr, powers[n], dipent.name);
-				fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
-					raddr, powers[n], dipent.name);
-				pprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
-					xaddr, powers[n], dipent.name);
+                                    fprintf(bfp, "%s has returned to play\n%s in game '%s'.\n",
+                                            xaddr, powers[n], dipent.name);
+                                    fprintf(mbfp, "%s has returned to play\n%s in game '%s'.\n",
+                                            raddr, powers[n], dipent.name);
+                                    pprintf(cfp, "%s%s has returned to play \n%s in game '%s'.\n", NowString(),
+                                            xaddr, powers[n], dipent.name);
+				    
+				} else {
+				    /* New player taking over */
 
-				time(&now);
+				    dipent.players[i].userid = userid;
+				    dipent.players[i].late_count = 0;  /* reset old late_count */
+				    /* Reset the user's waiting flags */
+				    dipent.players[i].status &= ~(SF_LATE | SF_REMIND);
+				    dipent.players[i].status |= SF_WAIT;  
+
+				    if (!msg_header_done)
+				    	msg_header(rfp);
+				    put_data(dipent.players[i].userid,tookover);
+				    fprintf(rfp, "Take over of abandoned %s allowed.\n\n", powers[n]);
+				    fprintf(rfp,"Wait has been set automatically for you - send 'set nowait' to clear.\n");
+				    time(&now);
+				    if (dipent.deadline < now + 24 * 60 * 24 && dipent.phase[5] == 'M'
+				        && !(dipent.flags & F_MODERATE)) {
+				    	    now = now + 48 * 60 * 60;
+					    then = now + 168 * 60 * 60;
+					    fprintf(rfp, "To give yourself time to communicate with the other ");
+					    fprintf(rfp, "players, you may wish\n");
+					    fprintf(rfp, "to submit commands to extend the current deadline ");
+					    fprintf(rfp, "and/or grace periods.\n");
+					    fprintf(rfp, "Suggested commands are:\n\n");
+					    fprintf(rfp, "    set grace    %-6.6s 23:30\n", ctime(&then) + 4);
+					    fprintf(rfp, "    set deadline %-6.6s 23:30\n\n", ctime(&now) + 4);
+				    }
+				    /* WAS mfprintf  1/94 BLR */
+				    sprintf(subjectline, "%s:%s - %s New Player Signon: %c", 
+					    JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+
+				    fprintf(bfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
+					    xaddr, powers[n], dipent.name);
+				    fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
+					    raddr, powers[n], dipent.name);
+				    pprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
+					    xaddr, powers[n], dipent.name);
+
+				    time(&now);
 				
-				/* bump up takeover in accordance with phase settings */
-				/* TBD: bump up only if no other abandoned country */
-				deadline( (sequence * ) NULL, 1);
+				    /* bump up takeover in accordance with phase settings */
+				    /* TBD: bump up only if no other abandoned country */
+				    deadline( (sequence * ) NULL, 1);
 
 					fprintf(rfp, "Deadline for '%s' advanced to %s.\n",
 						dipent.name, ptime(&dipent.deadline));
@@ -679,6 +701,7 @@ int mail_signon(char *s)
 						 dipent.name, ptime(&dipent.grace));
 					pprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.grace));
+				}
 				break;
 			}
 		}
