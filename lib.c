@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.25  2004/06/09 22:05:08  millis
+	 * More fixes for Bug 297, Intimate Diplomacy
+	 *
 	 * Revision 1.24  2004/05/22 09:20:20  millis
 	 * Bug 297: Add Intimate Diplomacy
 	 *
@@ -842,13 +845,10 @@ int GetOneWord(char *text)
         return non_blank;
 }
 
-int deadline_recursive( sequence *seq, int new, int *rec_count);
-
+int absence_adjust(long *deadline)
 /****************************************************************************/
 /* Look and see if any requested absences */
 /* and adjust deadline parameter accordingly if so */
-
-int absence_adjust(long *deadline)
 {
         int ret = 0; /* Set to 1 if adjusted times */
         int i,j;
@@ -857,7 +857,7 @@ int absence_adjust(long *deadline)
         {
                 for ( j=0; j < MAX_ABSENCES; j++)
                 {
-                        if (dipent.players[i].absence_start[j] < *deadline ) {
+                        if (dipent.players[i].absence_start[j] <= *deadline ) {
                                 if (dipent.players[i].absence_end[j] > *deadline ) {
 				    /* Check if a player has a pending move and (no press or strictwait)
 				       or game is quiet
@@ -906,28 +906,15 @@ int absence_adjust(long *deadline)
 
 int deadline(sequence *seq, int new)
 {
-        int rec_count = 0;
-        return deadline_recursive(seq, new, &rec_count);
-}
-
-
-/****************************************************************************/
-
-
-int deadline_recursive(sequence * seq, int new, int *rec_count)
-{
-
 /*
  *  Compute a new deadline for this dip entry.
  */
 
+        int rec_count = 0;
         int i, k;
         long now, temp;
         struct tm *tm, *localtime();
         int ret = 0;
-
-        (*rec_count)++;
-        if (*rec_count > 50) return 0; /* safety code */
 
         time(&now);
         if (dipent.phase[6] == 'X') {
@@ -953,15 +940,15 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
          */
 
         if (new) {
-                temp = now + (int) (seq->next * HRS2SECS);
+		do {
+			rec_count++;
 
-		dipent.dedapplied = 0; 
+        	        temp = now + (int) (seq->next * HRS2SECS);
+
+			dipent.dedapplied = 0; 
 
                 if (temp < dipent.deadline)
                         temp = dipent.deadline;
-                /* OK, adjust the time requested according to pending absences */
-                ret = absence_adjust(&temp);
-
                 if (seq->clock >= 0) {
                         tm = localtime(&temp);
                         i = seq->clock * 60 - ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec);
@@ -979,8 +966,16 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
                                 break;
                 }
 
-                /* If old deadline was huge, keep it */
+		ret = absence_adjust(&temp);
+
+		/* If old deadline was huge, keep it */
 		dipent.deadline = max(temp,  dipent.deadline) ;
+
+		/* set mailing flag so we can advise an absence adjust */
+		if (ret == 1)
+			broadcast_absence_adjust = 1;
+	    } while (ret == 1 || rec_count < 50);
+
                 dipent.process = temp;
                 temp += (int) (seq->grace * HRS2SECS);
                 if (dipent.flags & F_GRACEDAYS) {
@@ -1033,13 +1028,6 @@ int deadline_recursive(sequence * seq, int new, int *rec_count)
             temp < dipent.process)
                 dipent.process = max(dipent.start, temp);
 
-        if (ret == 1) {
-                /* We have adjusted the deadline due to an absence */
-                /* Recursively call to re-adjust if necessary */
-                deadline_recursive(seq, new, rec_count);
-                /* set the mailing flag so we can advise an absence adjust */
-                broadcast_absence_adjust = 1;
-        }
         return 0;
 
 }
