@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.2  1999/07/13 19:55:05  davidn
+   ** Size of array increased as array is indexed by owner number, not index of
+   ** player in master file entry.
+   ** Was causing core dump on USTR July 1999
+   **
    ** Revision 1.1  1998/02/28 17:49:42  david
    ** Initial revision
    **
@@ -23,10 +28,77 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "dip.h"
 #include "functions.h"
 #include "porder.h"
+
+
+int retreat_syntaxcheck( char *in_text, int precheck, char *out_string)
+{
+/*  Read retreat orders in from input file.  */
+
+        char c, order;
+        int p1, p2, c1, c2;
+        char *s;
+	char *out_text = NULL;
+	char temp_out[256];
+	temp_out[0]='\0';
+	s = in_text;
+        if (out_string != NULL ) out_text = temp_out;
+
+/*  Process lines of the form:
+
+ *    cmd ::= <power>: <move list>
+ *    move list ::= <move>{; <move list>}
+ *    move ::= <type> <province> - <province>
+ *           | <type> <province> disband
+ *    type ::= Army | Fleet
+ */
+
+        /* 
+         * See if a precheck is possible
+         * If so, see if it is an canprocess line and assume ok if so
+         */
+
+        if (precheck)
+        {
+                if (canpreprocess(s))  return 0;
+        }
+
+        s = get_type(s, &c);
+        s = get_prov(s, &p1, &c1);
+        AddUnitProvinceToOrder(out_text, c, p1);
+	if (!p1) {
+                errmsg("Unrecognized source province -> %s", *s);
+                return E_WARN;
+        }
+        s = get_action(s, &order);
+        AddOrderToOrder(out_text, order);
+	switch (order) {
+        case 'm':
+                s = get_prov(s, &p2, &c2);
+		AddProvinceToOrder(out_text, p2);
+                if (!p2) {
+                        errmsg("Movement from %s%s to unrecognized province -> %s",
+                               water(p1) ? "the " : "", pr[p1].name, *s);
+                        return E_WARN;
+                }
+        case 'd':
+                break;
+
+
+        default:
+                errmsg("Invalid order for the unit in %s.\n",
+                       pr[p1].name);
+                return E_WARN;
+        }
+
+	*s = '\0';  /* end of string */
+	if (out_text != NULL) strcat(out_string, out_text);
+	return 0;
+}
 
 int retreatin(char **s, int pt)
 {
@@ -64,14 +136,14 @@ int retreatin(char **s, int pt)
 	}
 	if (c != 'x' && c != unit[u].type) {
 		errmsg("The unit %s %s is %s, not %s.\n",
-		       water(p1) ? "in the" : "in", pr[p1].name,
+		       mov_type(p1, u), pr[p1].name,
 		       autype(unit[u].type), autype(c));
 		return E_WARN;
 	}
 	if (unit[u].status != 'r') {
 		errmsg("The %s %s %s was not dislodged.\n",
 		       utype(unit[u].type),
-		       water(p1) ? "in the" : "in", pr[p1].name);
+		       mov_type(p1, u), pr[p1].name);
 		return E_WARN;
 	}
 	*s = get_action(*s, &order);
@@ -86,7 +158,7 @@ int retreatin(char **s, int pt)
 		if (!valid_move(u, p2, &c2, &bl)) {
 			errmsg("The %s %s %s can't get to %s%s.\n",
 			       utype(unit[u].type),
-			       water(p1) ? "in the" : "in", pr[p1].name,
+			       mov_type(p1, u), pr[p1].name,
 			       water(p2) ? "the " : "", pr[p2].name);
 			return E_WARN;
 		}
@@ -94,7 +166,7 @@ int retreatin(char **s, int pt)
 		if (!*b) {
 			errmsg("The %s %s %s can't retreat to %s%s.\n",
 			       utype(unit[u].type),
-			       water(p1) ? "in the" : "in", pr[p1].name,
+			       mov_type(p1, u), pr[p1].name,
 			       water(p2) ? "the " : "", pr[p2].name);
 			return E_WARN;
 		}
@@ -106,7 +178,7 @@ int retreatin(char **s, int pt)
 
 	default:
 		errmsg("Invalid order for the %s %s %s.\n", utype(unit[u].type),
-		       water(p1) ? "in the" : "in", pr[p1].name);
+		       mov_type(p1,u), pr[p1].name);
 		return E_WARN;
 	}
 
@@ -123,7 +195,7 @@ void retreatout(int pt)
 {
 
 	int p, i, u, u2;
-	char mastrpt_pr[ NPOWER + 1 ];	// Used to be [MAXPLAYERS]. DAN 13/07/99
+	char mastrpt_pr[ NPOWER + 1 ];  // Used to be [MAXPLAYERS]. DAN 13/07/99
 
 /*  Generate report  */
 
@@ -158,7 +230,7 @@ void retreatout(int pt)
 /*  Pass two, display results and move the units.  */
 
 	if (pt == MASTER) {
-		for (u = 0; u < NPOWER + 1; u++)
+		for (u = 0; u <  NPOWER + 1; u++)
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
@@ -214,6 +286,27 @@ void retreatout(int pt)
 
 		}
 	}
+
+/* Pass 3: recalculate blockade settings */
+        if ((dipent.flags & F_WINGS) && processing) {
+                /* Firstly, set all provinces to 'unblockaded' */
+                for (i = 1; i <= npr;i++) {
+                        pr[i].blockaded = 0;
+                }
+                /* Now, go through all units and set to blockaded if occupied by an
+                   enemy wing
+                 */
+                 for (u = 1; u <= nunit; u++) {
+                        if (unit[u].status == ':' && unit[u].owner != 0 ) {
+                                /* only non-retreating units */
+                                if (unit[u].type == 'W' && unit[u].owner != pr[unit[u].loc].owner) {
+                                        /* we can mark non-scs as blockaded, but who cares! */
+                                        pr[unit[u].loc].blockaded = 1;
+                                }
+                        }
+                }
+        }
+
 
 }
 
