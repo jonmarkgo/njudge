@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.2  2003/01/17 23:28:11  millis
+   ** Updated from USTV
+   **
    ** Revision 1.1.2.1  2003/01/13 16:04:59  millis
    ** ustv latest versions
    **
@@ -31,6 +34,8 @@
 #include "dip.h"
 #include "functions.h"
 #include "porder.h"
+
+static int ValidPower(int);
 
 
 int setupin(char **s, int p)
@@ -263,11 +268,9 @@ void setupout(int pt)
 
 }
 
-int ValidPower(int p)
+static int ValidPower(int p)
 {
 /* Return 1 if power is a valid player power in this game, else 0 */
-
-    int i;
 
     switch (pletter[dipent.variant][p]) {
 
