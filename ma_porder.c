@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -34,9 +37,22 @@ static void next_phase(int power)
 {
 	int status;
 
-	newowner();
+	if (!(dipent.xflags & XF_MACH2))
+		newowner();
+	else
+	    if (dipent.phase[0] == 'F')
+		    newowner();
+
 	balance(power, 1, 0);
-	status = victory();
+	if (!(dipent.xflags & XF_MACH2))
+		status = victory();
+	else
+	{
+	    status = 0;
+	    if (dipent.phase[0] == 'F')
+		status = victory();
+	}
+
 	if (status == 1) {	/* VICTORY */
 		dipent.phase[6] = 'X';
 		return;
@@ -52,6 +68,7 @@ static void next_phase(int power)
 			dipent.phase[0] = 'F';
 		} else {
 			fam_plag(PLAGUE);
+			fam_plag(STORM);
 			dipent.phase[0] = 'U';	/* End of spring */
 		}
 		init_movement();
@@ -68,6 +85,7 @@ static void newowner(void)
 	int i, j, u, p;
 	char *t, buf[1024];
 
+	int p_elim [WILD_PLAYER ];
 
 	/* 
 	   ** Update the pr[].gunit info
@@ -92,7 +110,11 @@ static void newowner(void)
 				npown[p] = unit[u].owner;
 			}
 		} else {
-			npown[p] = unit[u].owner;
+			/* MLM change ownership to autonomous for Mach2 if other city owner */
+			if (!(dipent.xflags & XF_NO_MIXED_CONTROL) || pr[unit[u].loc].gunit == 0)
+				npown[p] = unit[u].owner;
+			else if ((dipent.xflags & XF_NO_MIXED_CONTROL) && unit[u].owner != unit[pr[unit[u].loc].gunit].owner)
+				npown[p] = AUTONOMOUS;
 			if (cityvalue(p) && pr[unit[u].loc].gunit == 0) {
 				ncown[p] = unit[u].owner;
 			}
@@ -131,7 +153,7 @@ static void newowner(void)
 			}
 			if (t != buf) {
 				sprintf(t, ".\n");
-				fprintf(rfp, "%s:%*s", powers[u], 9 - strlen(powers[u]), "");
+				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
 				wrap(rfp, buf, 10, 11);
 			}
 		}
@@ -168,7 +190,7 @@ static void newowner(void)
 			}
 			if (t != buf) {
 				sprintf(t, ".\n");
-				fprintf(rfp, "%s:%*s", powers[u], 9 - strlen(powers[u]), "");
+				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
 				wrap(rfp, buf, 10, 11);
 			}
 		}
@@ -189,6 +211,7 @@ static void newowner(void)
 	 */
 
 	for (i = 1; i < WILD_PLAYER; i++) {
+		p_elim[i] = 0; /* Init array flags */
 		if (dipent.pl[i] == 'x')
 			continue;
 
@@ -202,6 +225,13 @@ static void newowner(void)
 
 		if (p > npr) {
 			if (u)
+			    p_elim[i] = 1;
+		}
+	}
+	/* MachMLM 28/4/01 fix for simultaeneous eliminations */
+	for (i = 1; i < WILD_PLAYER; i++) {
+	          if (p_elim[i]) {
+
 				fprintf(rfp, "\n%s has been eliminated due to having no home cities.\n",
 					powers[i]);
 
@@ -227,7 +257,7 @@ static void newowner(void)
 					pr[p].home = AUTONOMOUS;
 				}
 			}
-
+			/* TODO: Also make player himself as dead via SF_DEAD flag */
 			ducats[i].treasury = 0;
 			for (p = 0; p < 6; p++) {
 				ducats[i].loan[p] = 0;
@@ -313,6 +343,8 @@ int victory(void)
 	/* formula to get the number of countries needed 
 	   15 cities -> 2 countries, 23 cities -> 3 countries */
 	maxcou = (maxcen + 1) / 8;
+	if (dipent.xflags & XF_CITY_ONLY_VICTORY)
+		maxcou = 0; /* Mach2, no need to conquer countries, only cities */
 	numwin = 0;
 	/* Determine the maximum number of cities a power with enough countries
 	   has */
@@ -326,7 +358,7 @@ int victory(void)
 	for (pl = 1; pl <= NPOWER; pl++) {
 		if (dipent.pl[pl] == 'x')
 			continue;
-		if ((ncities[pl] > maxcen) && (ncountries[pl] >= maxcou)) {
+		if ((ncities[pl] >= maxcen) && (ncountries[pl] >= maxcou)) {
 			numwin++;
 			winner = pl;
 		}
