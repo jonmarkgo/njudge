@@ -4,7 +4,7 @@
   #include <sys/file.h>
   #define lockfd(f,nb) flock(f, LOCK_EX | (nb ? LOCK_NB : 0))
 #else
-  #include <fcntl.h>
+  #include <unistd.h>
   #define lockfd(f,nb)  lockf(f, (nb ? F_TLOCK : F_LOCK), 0)
 #endif
 
