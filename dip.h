@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.41  2004/01/04 11:34:34  millis
+ * Implement Bug #262 (ExtraCentres for 1900 Steamroller)
+ *
  * Revision 1.40  2004/01/02 10:00:15  millis
  * no message
  *
@@ -447,6 +450,11 @@ struct dedication {
 	time_t ls;		/* Last signon time */
 	time_t md;		/* Last motd time */
 	long d0;		/* Date for expanded formula */
+};
+
+struct extra_centre {
+    char power_letter;		/* Letter of power that is involved */
+    int count;			/* How many extra centres this power has */
 };
 
 #include "variant.h"
