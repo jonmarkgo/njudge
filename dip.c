@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.43  2003/08/25 14:39:35  millis
+ * Fixed bug 220
+ *
  * Revision 1.42  2003/08/14 22:56:32  millis
  * Fix bug 158
  *
@@ -909,10 +912,13 @@ void CheckRemindPlayer(int player, long one_quarter)
 	fprintf(rfp,"\nPlease do so before you are marked as late.\n\n");
 	now=time(NULL);
 
-	if(now < dipent.deadline)
-		fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-	if(now < dipent.grace)
-		fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
+        if(dipent.phase[6] != 'X')
+        {
+		if(now < dipent.deadline)
+	   		fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+		if(now < dipent.grace)
+			fprintf(rfp, "Time to grace period expiration: %s.\n",timeleft(&dipent.grace));
+	}
 	fclose(rfp);
 
 	sprintf(line, "%s '%s:%s - %s Reminder'",
@@ -1213,10 +1219,13 @@ int process(void)
 		if (!Dflg)
 		{
 			now=time(NULL);   
-                	if(now < dipent.deadline)
-                        	fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-                	if(now < dipent.grace)
-                 	       fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+			if(dipent.phase[6] != 'X')
+			{
+                		if(now < dipent.deadline)
+                        		fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                		if(now < dipent.grace)
+                 	       		fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+			}
 			fclose(rfp);
 		}
 		for (i = 0; i < dipent.n; i++) {
@@ -1320,13 +1329,13 @@ int process(void)
 
 				if (!Dflg)
 				{
-					if(signedon)
+					if(signedon && (dipent.phase[6] != 'X'))
 					{
 						now=time(NULL);   
-			                if(now < dipent.deadline)
-                        			fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
-                			if(now < dipent.grace)
-                        			fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
+			                	if(now < dipent.deadline)
+                        				fprintf(rfp, "\nTime to deadline: %s.\n", timeleft(&dipent.deadline));
+                				if(now < dipent.grace)
+                        				fprintf(rfp, "Time to grace period expiration: %s.\n", timeleft(&dipent.grace));
 					}
 					fclose(rfp);
 				}
@@ -1523,7 +1532,7 @@ int process(void)
 
 		if (!Dflg)
 		{
-			if(signedon)
+			if(signedon && (dipent.phase[6] != 'X'))
 			{
 				now=time(NULL);   
                 		if(now < dipent.deadline)

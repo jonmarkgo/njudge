@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.56  2003/08/25 14:39:36  millis
+ * Fixed bug 220
+ *
  * Revision 1.55  2003/07/22 00:13:15  millis
  * Fix bug 198
  *
@@ -2284,18 +2287,21 @@ int mail(void)
 					if (time(NULL) > dipent.deadline) {
 						 fprintf(rfp, "\n\nNote: you are LATE and orders are still not");
 						 fprintf(rfp, " received for all units.\n");
-					} else {
+					} else if(dipent.phase[6] != 'X') {
 					    fprintf(rfp, "\n\nOrders not received for all units.  If complete ");
 					    fprintf(rfp, "orders are not\n");
 					    fprintf(rfp, "received by %s, you will ", ptime(&dipent.deadline));
 					    fprintf(rfp, "be considered late.\n");
 					}
-					if (dipent.flags & F_NONMR) {
-						fprintf(rfp, "You will be considered abandoned if all orders\nare not ");
-						fprintf(rfp, "received by\n%s.\n\n", ptime(&dipent.grace));
-					} else {
-						fprintf(rfp, "The partial orders will be processed if nothing ");
-						fprintf(rfp, "is received by\n%s.\n\n", ptime(&dipent.grace));
+					if(dipent.phase[6] != 'X')
+					{
+						if (dipent.flags & F_NONMR) {
+							fprintf(rfp, "You will be considered abandoned if all orders\nare not ");
+							fprintf(rfp, "received by\n%s.\n\n", ptime(&dipent.grace));
+						} else {
+							fprintf(rfp, "The partial orders will be processed if nothing ");
+							fprintf(rfp, "is received by\n%s.\n\n", ptime(&dipent.grace));
+						}
 					}
 				}
 			} else {
@@ -2326,7 +2332,7 @@ int mail(void)
 
 			if ((dipent.players[player].status & SF_MOVE) &&
                            (dipent.players[player].power != MASTER) &&
-                            !GAME_PAUSED) {
+                            !GAME_PAUSED && (dipent.phase[6] != 'X')) {
 				long then;
 				if (time(NULL) <= dipent.deadline) {
 				    fprintf(rfp, "Unless error-free orders are received by the deadline ");
@@ -2435,7 +2441,7 @@ void mail_reply(int err)
 	}
 	if (!Dflg)
 	{
-		if(signedon)
+		if(signedon && (dipent.phase[6] != 'X'))
 		{
 			now=time(NULL);   
         	        if(now < dipent.deadline)
