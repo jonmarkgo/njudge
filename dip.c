@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.17  2002/03/10 12:32:52  miller
+ * Added automatic wait for all players in BUILD_TRANSFORM games
+ *
  * Revision 1.16  2001/11/20 07:43:45  greg
  * VSFixed last (hopefully) problem with "Waiting for Master to Start" subjectlinE: 
  *
@@ -1349,7 +1352,7 @@ int process(void)
 			    inform_party_of_blind_turn(i, phase);
 			}
 			/* If a build transfer, set a wait for all players playing */
-                        if ((dipent.phase[5] == 'B') && !(dipent.players[i].status &= SF_DEAD)
+                        if ((dipent.phase[5] == 'B') && !(dipent.players[i].status & SF_DEAD)
                             && (dipent.xflags & XF_TRANS_BANYW)) {
                             dipent.players[i].status |= SF_WAIT;
                         }
