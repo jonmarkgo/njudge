@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.1  1998/02/28 17:49:42  david
+ * Initial revision
+ *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
  * Morrolan v9.0
  */
@@ -320,8 +323,13 @@ int main(int argc, char **argv)
 				fprintf(stdout, "%d\t%s %2d %4x %-16.16s %s\n",
 					u, months[users[u].month - 1].name, users[u].day, users[u].flags,
 					users[u].name, users[u].addr);
+#ifdef LINUX
+				sprintf(line, "at %2.2d00 %s %d", sh,
+					months[users[u].month - 1].name, users[u].day);
+#else
 				sprintf(line, "at -s %2.2d00 %s %d", sh,
 					months[users[u].month - 1].name, users[u].day);
+#endif
 				if (!dflg) {
 					if (!(fp = popen(line, "w"))) {
 						perror(line);
