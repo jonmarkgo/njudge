@@ -1,3 +1,4 @@
+#Fixed bug 53 MLM 17/Dec/2002
 Aegean Sea,                              w aeg aegean
 Alexandria,                              E ale alex
 Antigonid Sea,                           w ans antigonid
@@ -298,7 +299,7 @@ wsa-mv: tri lep esa mau
 -1
 Center order for summary report:
    sag sar mas cis rom bru cap syr pan car lep cyr cyd kno ale
-   the pet jer tyr dam ant tra rho per tro che kal pel cas ath
-   del cor spa
+   the mem pet jer tyr dam ant tra rho per tro che kal pel cas
+   ath del cor spa nax
 #End of center ordering
 -1

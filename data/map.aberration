@@ -1,3 +1,4 @@
+#Fixed bug 53 MLM 17/Dec/2002
 Adriatic Sea,          w adr adriatic
 Aegean Sea,            w aeg aegean
 Aitolia,               l ait
@@ -137,7 +138,7 @@ Turkestan,             x tur turk
 Tuscany,               l tus
 Tyrol,                 l tyr trl tyl tyrolia
 Tyrrhenian Sea,        w tys tyrr tyrrhenian tyn tyh
-Ulster,                l uls bel belfast
+Ulster,                l uls belfast
 Umbria,                l umb
 Utica Sea,             w uti utica
 Valencia,              S val

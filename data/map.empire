@@ -1,3 +1,4 @@
+#Fixed bug 53 MLM 17/Dec/2002
 Anchorage,                       B anc ak alaska
 Yukon,                           l yuk
 North West Territories,          l nwt
@@ -37,7 +38,7 @@ Montana,                         l mta monta mt
 Dallas,                          T dal
 Oklahoma,                        l okl ok
 Kansas,                          x kan ks
-Nebraska,                        l neb nb
+Nebraska,                        l neb
 Dakotas,                         l dak
 Minneapolis,                     H min mn
 Iowa,                            l iow ia
@@ -71,7 +72,7 @@ Virginia,                        l vir va
 West Virginia,                   l wvi wvir wv wva
 Kentucky,                        l ken ky
 Tennessee,                       x ten tn
-Deep South,                      l dso dsou ds al mi dsouth deep dee
+Deep South,                      l dso dsou ds al dsouth deep dee
 Georgia,                         x geo ga
 South Carolina,                  l sca scaro sc scarolina
 North Carolina,                  x nca ncaro nc ncarolina
