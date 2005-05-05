@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                Oct 17, 2004
+Greetings from the Diplomacy* Adjudicator!!                   Mar 27, 2004
 Rules.machiavelli2
 
 
@@ -132,6 +132,11 @@ intact for support.  This is *not* implemented by the judge.
 No 'Expansion of States 1385-1425' scenario.  Fixed amounts of starting
 money.  Minor differences in setup due to the differing maps.
 
+5) Bribes  **IMPORTANT DIFFERENCE**
+Two equal bribes directed at the same unit should, according to the 
+Mach2 rules, be resolved by a toss of a die.  The nJudge ignores this 
+and uses the Mach1 rule that states that both bribes are wasted.
+
 
 APPENDIX 1 -- FEATURES THAT ARE *NOT* IMPLEMENTED
 
@@ -199,3 +204,4 @@ v1.2b 25th August 2004. Removed incorrect disband note. Auth S Lidsell.
 v1.3  17th October 2004. Venice sea area effects, winning conditions, 
       handling of home country conquest, besieged conversion and 
       assassination rules clarified. Author Sergio Lidsell.
+v1.3b 27th March 2005. Bribe handling note added. Author Sergio Lidsell.
