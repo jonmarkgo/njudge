@@ -1,5 +1,8 @@
 /*
 ** $Log$
+** Revision 1.37  2005/03/06 22:20:47  millis
+** Fix Bug 408, convoy incorrectly voided in Modern
+**
 ** Revision 1.36  2004/12/04 20:47:17  millis
 ** Fixed Bug 387, support being incorrectly voided.
 **
@@ -290,7 +293,7 @@ int dual_land(int p)
 	return dual_province(p) && pr[p].type != 'w';
 }
 
-static int NoValidConvoyingFleet(char *s, int u)
+static int NoValidConvoyingFleet(unsigned char *s, int u)
 {
     /*
      * *s is now an entry into the province table, not the unit table.
