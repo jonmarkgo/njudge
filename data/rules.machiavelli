@@ -1,5 +1,59 @@
-Greetings from the Diplomacy* Adjudicator!!                 January 14, 2005
-Rules.Machiavelli*
+Greetings from the Diplomacy* Adjudicator!!                  March 27, 2005
+Rules.Machiavelli* version 2.7.
+
+
+CONTENTS
+Introduction
+Advanced and basic rules
+Provinces
+Game year
+Movement
+Convoys
+Additional units
+Garrison units
+Autonomous garrisons
+Special (elite) units (advanced option)
+Sieges
+Conversions between unit types
+Control of provinces and cities
+Control of another player's home country
+Player elimination
+Victory
+Special mapboard features
+   Straits
+   Provence, Croatia, Istria, Dalmatia
+   Venice
+   Ports
+   Fortresses
+Sequence of play for adjustment phases
+   Famine
+   Income
+   Military unit adjustment
+Sequence of play for move phases
+   Plague (advanced option)
+   Borrowing and loans (advanced option)
+   Expenditures (advanced option)
+      Bribes
+      Rebellions
+      Assassinations
+Self-bribes
+Sequence of play and order resolution
+Province abbreviations
+Order syntax
+   Order examples
+   Order shorthand
+variant specific judge commands for game options
+Appendices
+   Explanation of the map file
+   Main differences between older versions of Mach
+   How to play Diplomacy with a Machiavelli map or how to disable
+      Machiavelli features as to be able to play Standard Diplomacy
+   Rules for multi-coastal provinces
+   Income quick reference chart
+   How do I know what ruleset the game I joined uses
+Revision history
+Legal
+
 
 INTRODUCTION
 Machiavelli is a board game by Avalon Hill.  It is similar to Diplomacy,
@@ -193,18 +247,19 @@ SIEGES
 To displace a garrison it must be besieged.  To besiege a garrison, an army
 or fleet in the containing province must issue the besiege order for two
 consecutive campaigns.  Fleets can only besiege port cities.  A fleet must
-move to the containing province to be able to besiege a port city.  After
-successfully issuing the first besiege order, the besieging unit must
-either issue a second besiege order or a "lift siege" order in the
-subsequent movement phase.  When the siege is complete, the garrison is
-eliminated.  (Also see 'effects of assassination' for additional
-information.)
+move to the containing province to be able to besiege a port city.
+
 A besieged garrison (one whose city's siege started during the previous
 campaign) cannot convert regardless of strength (also see Conversion...
 below), although it can support another unit moving into its province to 
-displace the besieging unit.  A besieging unit must issue a besiege, hold 
-or lift siege order in the second campaign after having started a siege.  
-Any other order will automatically be converted to hold.
+displace the besieging unit.
+
+To successfully conclude a siege the besieging unit must also issue a 
+besiege order in the following campaign. *Any other order* will automatically 
+be converted to *hold* and *the siege will be aborted*.  When the siege is 
+complete, the garrison is eliminated.  (Also see 'effects of assassination' 
+for additional information.) You may formally end a siege by issuing a lift 
+siege order, although you will still be holding in the province. 
 
 In the following cases the siege lapses and the besieging unit is free to
 issue other orders in what would be the second campaign of the siege (that
@@ -360,52 +415,78 @@ in this province controls the straits between the mainland and the island.
 
 A fleet in Messina controls the straits between Messina and Otranto.
 
+Control is always with the fleet beginning the movement in any of the two 
+provinces, and changes only after movement, but before retreats.  But see 
+exceptions in c) and d).
+
 Additional considerations about Piombino and Messina
-     a) As long as there is a fleet in either Messina or Piombino, no hostile
-        fleet can move, support or convoy between the Gulf of Naples and the 
-        Ionian Sea or the Eastern Thyrrenian Sea and Pisa.
-     b) No player may use the straits without the controlling player's
-        permission.  A player wishing to allow another player to use the
+     a) The power that controls Piombino or Messina and that has a fleet in 
+        the same provinces will also control the straits. This means that 
+        as long as there *already* is a fleet in either Messina or Piombino, 
+        no hostile fleet can move, support or convoy between the Gulf of 
+        Naples and the Ionian Sea or the Eastern Thyrrenian Sea and Pisa.
+     b) If control of Piombino or Messina is divided between powers (that 
+        is: contain a garrison of another power in addition to your fleet), 
+        the power owning the fleet will control the straits.
+     c) If a fleet successfully advances (that is: is *not bounced*) into a 
+        *fleet-less* Piombino or Messina in the same turn as a hostile 
+        fleet attempts to use the straits, the hostile fleet suffers all 
+        effects described in a) above. (As if the entering fleet already 
+        was in the province.)
+     d) If a garrison successfully converts to fleet (that is: is *not 
+        bounced*) into a *fleet-less* Piombino or Messina in the same turn 
+        as a hostile fleet attempts to use the straits, the hostile fleet 
+        suffers all effects described in a) above. (As if the entering 
+        fleet already was in the province.)
+     e) If a fleet is *ordered* to convert to garrison a hostile fleet 
+        still suffers all effects described in a) above.  See h) too.
+     f) If a fleet moves away from Piombino or Messina province a hostile 
+        fleet still suffers all effects described in a) above.  See h) too.
+     g) If a fleet moving away (or being ordered to garrison) from Piombino 
+        or Messina province is bounced back into Piombino or Messina 
+        province it will block a hostile fleet as per a) above. (The fleet 
+        does in this case both comply with beginning control and ending 
+        control rules.)
+     h) A retreating fleet will suffer all effects described in a) above. 
+        But a fleet *retreating into* Piombino or Messina, will *not* block 
+        other fleets retreating through the straits (in the same turn).
+        And neither will a fleet *forced* to retreat into garrison or 
+        having been dislodged, as control has passed to the attackers fleet 
+        or been lost if the attacker was an army.
+     i) A fleet in Piombino or Messina may simultaneously be convoying or 
+        supporting or besiegeing while it blocks a hostile fleet.
+     j) Adjacency for bribe purposes is not affected by blocking fleets. 
+     k) No player may use the straits without the controlling player's 
+        permission.  A player wishing to allow another player to use the 
         straits must include an "ally" command with his movement orders.
-     c) An army unit or garrison in either of these provinces does not control
-        the straits.
-     d) If a fleet successfully advances into Piombino or Messina in the same
-        turn as a hostile fleet attempts to use the straits, the hostile fleet
-        suffers all effects described in a) above.
-     e) If a garrison successfully converts to a fleet it will block a hostile 
-        fleet the same turn it converted.  The hostile fleet will suffer all 
-        effects described in a) above.
-     f) If a fleet converts to a garrison it will *not* block a hostile
-        fleet in the same turn as it converts.
-     g) If a fleet moves away from Piombino or Messina it will *not* block a 
-        hostile fleet in the same turn.
-     h) If a fleet moving away is bounced back into Piombino or Messina it will 
-        block a hostile fleet. The hostile fleet will suffer all effects 
-        described in a) above.
-     i) A fleet in Piombino or Messina that is convoying or supporting will 
-        block a hostile fleet.  The hostile fleet will suffer all effects 
-        described in a) above.
-     j) A retreating fleet will suffer all effects described in a) above.  But 
-        a fleet *retreating into* Piombino or Messina, will *not* block other 
-        fleets retreating through the straits (in the same turn).
-     k) Adjacency for bribe purposes is not affected by blocking fleets. 
+     l) An army or garrison unit does not control the straits.
 
-Notice that d) and g) also cover the case when a Fleet in PIO/MES is displaced. 
-If the attacker is a fleet, the attacking fleet will block passage: rule d). If 
-the attacker is an army (or garrison) the fleet is regarded as moving away 
-(albeit without intent or own will, it can be regarded as having its blocking 
-operation disrupted--compare with the case that a siege is broken if the 
-besiegeing army is displaced) and thus rule g) applies.
+Notice that a fleet beginning in Piombino and that is dislodged, will be 
+*destroyed* if the attacker is another fleet, as the entering fleet will 
+control the straits at the time of retreat.
 
-What essentially happens is that the straits become 'land' for all fleet 
-purposes.
+Notice also that in Machiavelli 2 the rules apply only to fleets in Messina 
+and that rules c) and d) only apply to Classic Machiavelli (as the Mach2 
+rules have no rule about fleets moving to Messina). 
 
-Note that in Machiavelli 2 rules 1d-e above are not applicable, as only fleets
-that are *already present* in the province (Messina only in this case) affect 
-the straits.
+'Tech note 1.' Rules c) and d) are there because the Classic machiavelli 
+rules state that “Notes concerning Piombino and Messina: If a Fleet unit is 
+ordered to, and makes, an advance into Piombino or Messina at the same time 
+as a hostile Fleet tries to move or transport through the straits, the 
+movement through the straits becomes impossible...”
 
-'Tech note': It would really have been much simpler if Battleline or Avalon 
-Hill had added an Intercept order type for this situation. Alas they did not.
+'Tech note 2.' Why do retreats not affect control? Why should they? A 
+retreating unit is not performing any offensive action. Any orders are 
+annulled and all strengths are regarded as equal. Thus it would be odd if a 
+fleet retreating into/from either Pio or Mes suddenly could take offensive 
+action such as blocking other fleets. (Notice that all the judge versions 
+previous to 1.7 let retreating units affect control as no distinction was 
+made between normal moves and retreat moves in this special case.)
+
+'Tech note 3.' An earlier revision of (current) rules e) and f), stated that 
+if a fleet moved away (or converted to garrison) it lost control of the 
+straits.  This was changed to make the rules more consistent with the 
+control rules.
 
 2) Croatia and Provence
 These provinces have a north and south coast that are treated just like the 
@@ -872,8 +953,9 @@ L) Assassination.
 "assassination chit" for each of the other players.  You must have such a
 chit to attempt an assassination on another player.  Once an attempt is
 made, the corresponding chit is destroyed.  Chits can be traded among the
-players.  Such a trade is an immediate event that is not reported to the
-receiver.  You can not change your mind and rescind the order.
+players (by issuing the 'expense' "give Turkey to Naples).  Such a trade is 
+an immediate event that is not reported to the receiver.  Although you will 
+get this message: "Turkish assassination chit given to Naples".  You can not change your mind and rescind the order.
 When an assassination is executed, a 1d6 die roll is made.  For every 12
 ducats paid for the attempt, the chances of being successful increase by
 one sixth.  36 is the maximum, giving a 50% possibility for success (3/6).
@@ -917,6 +999,25 @@ effects of assassination merely show the often chaotic effects of a sudden
 shift in power at the top.
 
 (List of allowed expenditures and bribes ends here!)
+
+
+SELF-BRIBES
+Yes you can bribe your own units, although why you would want to do so when  
+counter-bribes are cheaper will elude every other player.  In fact all the 
+bribes except 'buy' can be used against your own units or provinces.  'Buy' 
+cannot be done due to a judge 'feature'; you get e.g. the message:
+"Turkey: Garrison Durazzo, No Order Processed".
+
+If you direct a bribe at one of your units at the same time as another player 
+tries to bribe the same unit, both will fail as they also would have if two 
+enemy powers had tried to bribe your unit.
+Naples:  E1: 18d, Buy Turkish fleet Tunis  ** Larger bribe, wasted
+Turkey:  E1: 18d, Disband Turkish fleet Tunis  ** Larger bribe, wasted
+
+'Tech note'.  Self-bribes are not allowed according to the Machiavelli or 
+Machiavelli 2 rules.  Mach1 rules state that bribes can only be "directed at 
+a specific enemy".  Mach2 rules say that they must be directed against 
+"enemy controlled" provinces, or against "another player".
 
 
 SEQUENCE OF PLAY AND ORDER RESOLUTION
@@ -984,6 +1085,8 @@ Expenditure orders:
 <give>    <power>  to <power>          (assassination chits)
 <expense> <amount> <etype> <type> <s-prov>
 <ally>    <power>
+   The alliance command is confirmed by this message:
+   E.g.: "Florence allowing Naples and Turkey to use straits.
 
 Retreat orders:
 <type> <s-prov> <moves>   <d-prov>
@@ -1017,8 +1120,9 @@ Where:
 <give>     = "loan", "give", "pay"
 <amount>   = <number> "ducats", <number> "d"
 <power>    = Power name or abbreviation of 2 or more letters.
-<ally>     = "allow", "alliance", "ally with", "ally" (see mapboard
-features)
+<ally>     = "ally with", "allies", "alliance", "allow", "unally", 
+             "not allies", "unalliance", "don't allow", "dont allow"
+             (see mapboard features)
 <expense>  = "expense" <number 1-4> ":"
 <etype>    = "famine relief", "pacify rebellion", "counter-bribe",
 "disband", "buy", "garrison to autonomous", "cause rebellion",
@@ -1053,10 +1157,42 @@ revision containing:
 
 Signon Lname <password>
 Pay 0 ducats to Milan
+Ally Naples
+Ally Turkey
 Expense 1: 21 ducats buy Army Bologna
 Expense 2: none
 Army Bologna -> Ferrara
 Signoff
+
+Notice that your ordering of Bologna will be ignored if you decide not to 
+buy the unit, even if the order may continue to be shown in the replies.
+
+
+ORDER SHORTHAND
+Some bribes/expenses need not be spelled out, but have abbreviated forms.
+Expense 1: buy fer = 18 ducats buy [a|f|g] fer.
+Expense 1: disband dur = 12 ducats disband [a|f|g] dur.
+Notice that the judge only chooses 'g' if there is no 'a' or 'f' present in 
+the province.
+If you instead qualify the unit 'disband g dur' the statement would default 
+to '12 ducats disband g dur'.
+
+Then there are some oddities due to the parsing of text and math handling 
+that give e.g. these results:
+Expense 1: +3 ducats... = "6 ducats..."
+Expense 1: +6 ducats... = "12 ducats..."
+Expense 1: 6+3 ducats... = "9 ducats..."
+
+
+ORDER ODDITIES
+The judge behaves a bit unexpectedly when you building and disband new 
+units.  If you e.g. order B G|A|F BAR and then change your mind and issue 
+R|D G|A|F BAR you'll get the error message: 
+   N: b g bar
+   Cannot debuild and build in Bari.
+To successfully remove the unwanted build you must first send a maintain 
+order, M G|A|F BAR, and then, after getting the judge reply, send the 
+remove/disband order.
 
 
 VARIANT SPECIFIC JUDGE COMMANDS FOR GAME OPTIONS
@@ -1190,6 +1326,10 @@ Bay of Tunis,  w0.  bot        =  water prov., 0d, no city.
 Venice,        V3PV ven venic  =  Venetian home, 3d, fortif. port,
                                      "venice" rules apply
 
+Notice that to count a neutral province you must define it as 'x'. If you 
+identify it with 'l' it will generate zero ducat income and ownership will 
+be ignored and not reported.
+
 Adjacency and 'convoyability' information is described thus:
 province-adjacency type   adjacent provinces/sea areas.
 The types of adjacencies are: adjacencies for armies (mv), adjacencies for
@@ -1220,8 +1360,9 @@ Differences between AH 1980 and 1983 (the first 2nd edition) editions.
     and province awards 1d6 variable income roll.
 
 
-APPENDIX 3 -- HOW TO DISABLE MACHIAVELLI FEATURES AS TO BE ABLE TO PLAY
-              IN STANDARD DIPLOMACY STYLE
+APPENDIX 3 -- HOW TO PLAY DIPLOMACY WITH A MACHIAVELLI MAP OR HOW TO 
+              DISABLE MACHIAVELLI FEATURES AS TO BE ABLE TO PLAY
+              STANDARD DIPLOMACY
 
 To play on the standard map choose the variant "dipmach".
 
@@ -1259,13 +1400,13 @@ What are the differences with Diplomacy if I play "2-season mach w/o garr" ?
 None !!!
 
 
-APPENDIX 4 -- PROVISIONAL RULE FOR MULTI-COASTAL PROVINCES
+APPENDIX 4 -- RULES FOR MULTI-COASTAL PROVINCES
 
 How conversions are to be resolved in multi-coastal areas containing a city (e.g.
 St. Petersburg).
 
-Current status: all coasts are available for conversion or builds regardless of 
-placement of city or anchor symbol.
+Current status: all coasts are available for conversion or builds regardless 
+of placement of city or anchor symbol.
 
 Probable future rule (used at GM's discretion):
 
@@ -1278,8 +1419,8 @@ a sea area containing the anchor symbol.  Only *one anchored* coast may exist.
 
 Support from fleets into multi-coastal provinces
 
-As in Diplomacy support is only successful if the fleet giving support can move 
-to the coast that the supported fleet is on. 
+As in Diplomacy support is only successful if the fleet giving support can 
+move to the coast that the supported fleet is on. 
 
 
 APPENDIX 5 -- INCOME QUICK REFERENCE CHART
@@ -1321,7 +1462,7 @@ RIGHTS RESERVED.
 REVISION HISTORY
 v1 11th December 1991. Author Ken Lowe??.
 v1b 25th May 2000. Minor revision. Avalon Hill changed to Hasbro Inc.
-    Correction of erroneous unit limist, besieged garrison income and 
+    Correction of erroneous unit limits, besieged garrison income and 
     of assassination handling on the nJudge.  Author Millis Miller.
 v2 30th June 2001. Major rewrite. Clarifications to most rules. Author
     Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and 
@@ -1343,18 +1484,27 @@ v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how
     to play in standard diplomacy style. Auth. S. Lidsell.
 v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
     provinces. Auth. S. Lidsell.
-v2.4a 9th Dec 2003.  Coastal spec for coversions.  Correction of typo re 
+v2.4a 9th Dec 2003. Coastal spec for coversions.  Correction of typo re 
     income for besieged cities.  Author Millis Miller.
-v2.4b 22nd Jan 2004.  'Income quick ref chart' (app 5).  Minor correction 
+v2.4b 22nd Jan 2004. 'Income quick ref chart' (app 5).  Minor correction 
     re coasts and disbands.  Venice 5e corrected.  Author Sergio Lidsell.
-v2.4c 3rd March 2004.  Note about support into multi-coastal provinces 
+v2.4c 3rd March 2004. Note about support into multi-coastal provinces 
     added.  Author Sergio Lidsell.
-v2.4d 25th Aug 2004.  Appendix 6 added.  Appendix 4 corrected and 
+v2.4d 25th Aug 2004. Appendix 6 added.  Appendix 4 corrected and 
     clarified. Rebellion effects on support clarified (p6).  Grouped the 
     Mach-Dip diffs in the intro into diffs under basic rules and diffs under
     advanced rules.  Author Sergio Lidsell.
-v2.5 21st Nov 2004.  Clarified that units cannot trade places (movement 
+v2.5 21st Nov 2004. Clarified that units cannot trade places (movement 
     rules) and how elite autonomous garrisons can appear.  Author S. Lidsell.
-v2.5b 14th Jan 2005.  Clarified PIO/MES rules.  Author Sergio Lidsell.
+v2.5b 14th Jan 2005. Clarified PIO/MES rules.  Author Sergio Lidsell.
+v2.6 15th Feb 2005. Siege info reworded for clarity. PIO/MES rules rewritten
+    to handle paradoxes.  Author Sergio Lidsell.
+v2.7 25th Mar 2005. Straits rules rephrased and corrected. Self-bribes 
+    explained. Example of ally/unally command added. Samples of bribe 
+    'shorthands' and order oddities added. Contents listing added. Minor 
+    rephrasing of siege rules. Explanation of difference between'x' and 'l' 
+    province arguments. Author Sergio Lidsell.
+
 
 This document is free to distribute for non-commercial and non-profit purposes.
+All rights reserved.
