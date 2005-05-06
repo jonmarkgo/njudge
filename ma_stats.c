@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.7  2003/07/26 12:45:58  millis
+   ** Fix Bug 203
+   **
    ** Revision 1.6  2003/01/05 00:06:43  millis
    ** Fix bug 90
    **
@@ -95,11 +98,13 @@ void balance(int pt, int next, int listflg)
 			y = pt + 1;
 		}
 		for (p = i; p < y; p++) {
-			if (dipent.pl[p] == 'x')
+			if (dipent.pl[p] == 'x' ||
+			    dipent.players[FindPower(p)].status & SF_DEAD )
 				continue;
 			s = buf;
 			for (i = 0; chits[p][i]; i++) {
-				if (chits[p][i] == WILD_PLAYER)
+				if (chits[p][i] == WILD_PLAYER ||
+				    dipent.players[FindPower(chits[p][i])].status & SF_DEAD )
 					continue;
 				sprintf(s, "%s%s", s == buf ? "" : ", ", powers[chits[p][i]]);
 				while (*s)
@@ -169,7 +174,8 @@ void ma_ownership(void)
 		}
 		first_country = 1;
 		for (i = 1; i<= NPOWER + 1; i++)
-                    if (owned_country[i] && i != WILD_PLAYER) {
+                    if ((owned_country[i] && i != WILD_PLAYER ) ||
+			(i == WILD_PLAYER && first_country)) {
 			if (!first_country) {
 			    *s++ = ','; *s++ = ' ';
 			}
