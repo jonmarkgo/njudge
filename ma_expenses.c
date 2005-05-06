@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2002/12/04 23:33:14  millis
+ * Fixed Bug 47 (incorrect ownership change for proxied orders)
+ *
  * Revision 1.6  2002/11/13 22:26:38  millis
  * Bug 28, besieged garrisons must be eliminated when assassinated
  *
@@ -237,6 +240,10 @@ int expin(char **s, int p)
 				errmsg("Invalid power specified -> %s", *s);
 				return E_WARN;
 			}
+			if (p == u) {
+				errmsg("Sorry, it does not make sense to let you assassinate yourself!\n");
+				return E_WARN;
+			}
 			break;
 		case 'b':	/* buy                          */
 		case 'c':	/* counter-bribe                */
@@ -279,6 +286,10 @@ int expin(char **s, int p)
 			if (!PermittedMachUnit(p, unit[u].type,
 					       unit[u].stype, PP_BUY)) {
 				errmsg("You are not permitted to buy this unit type.\n");
+				return E_WARN;
+			}
+			if (p == unit[u].owner && order != 'c') {
+				errmsg("You cannot bribe your own units, do you mean to counter-bribe?\n");
 				return E_WARN;
 			}
 			break;
