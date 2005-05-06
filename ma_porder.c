@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2004/10/24 09:02:31  millis
+ * Small victory handling corrections
+ *
  * Revision 1.25  2004/04/04 15:15:01  millis
  * Fix bug 193 (add approval mechanism to allow moves)
  *
@@ -95,6 +98,7 @@
 static void next_phase(int);
 static void newowner(void);
 static void CreateFortGarrisons(void);
+static int DisplayOwnershipChanges(int elimination);
 
 /************************************************************************/
 
@@ -232,7 +236,6 @@ static void newowner(void)
  */
 
 	int i, j, u, p;
-	char *t, buf[1024];
 
 	int p_elim [WILD_PLAYER ];
 	int someone_eliminated = 0;
@@ -260,84 +263,8 @@ static void newowner(void)
 
 	CalculateNewOwners();
 
-	/*
-	   **  Display changes in province ownership.
-	 */
+	something_changed = DisplayOwnershipChanges(0);
 
-	for (p = 1; p <= npr; p++) {
-		if (npown[p] && npown[p] != pr[p].owner)
-			break;
-	}
-
-	if (p <= npr) {
-		something_changed = 1;
-		fprintf(rfp, "\nOwnership of provinces changing hands:\n\n");
-		for (u = 1; u < WILD_PLAYER; u++) {
-			if (dipent.pl[u] == 'x')
-				continue;
-			t = buf;
-			for (p = 1; p <= npr; p++) {
-				if (pr[p].owner == u && npown[p] != 0 && npown[p] != u) {
-					if (t != buf)
-						*t++ = ',';
-					sprintf(t, " -%s", pr[p].name);
-					while (*t)
-						t++;
-				} else if (pr[p].owner != u && npown[p] == u) {
-					if (t != buf)
-						*t++ = ',';
-					sprintf(t, " +%s", pr[p].name);
-					while (*t)
-						t++;
-				}
-			}
-			if (t != buf) {
-				sprintf(t, ".\n");
-				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
-				wrap(rfp, buf, 10, 11);
-			}
-		}
-	}
-	/*
-	   **  Ditto for the changes in city ownership.
-	 */
-
-	for (p = 1; p <= npr; p++) {
-		if (ncown[p] && ncown[p] != pr[p].cown)
-			break;
-	}
-
-	if (p <= npr) {
-		something_changed = 1;
-		fprintf(rfp, "\nOwnership of cities changing hands:\n\n");
-		for (u = 1; u < WILD_PLAYER; u++) {
-			if (dipent.pl[u] == 'x')
-				continue;
-			t = buf;
-			for (p = 1; p <= npr; p++) {
-				if (!cityvalue(p))
-                                    continue;
-				if (pr[p].cown == u && ncown[p] != 0 && ncown[p] != u) {
-					if (t != buf)
-						*t++ = ',';
-					sprintf(t, " -%s", pr[p].name);
-					while (*t)
-						t++;
-				} else if (pr[p].cown != u && ncown[p] == u) {
-					if (t != buf)
-						*t++ = ',';
-					sprintf(t, " +%s", pr[p].name);
-					while (*t)
-						t++;
-				}
-			}
-			if (t != buf) {
-				sprintf(t, ".\n");
-				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
-				wrap(rfp, buf, 10, 11);
-			}
-		}
-	}
 	/*
 	   **  Actually transfer the ownership.
 	 */
@@ -446,7 +373,13 @@ static void newowner(void)
 
 	/* Redo calculations as an elimination may have changed this */
 	if (someone_eliminated) {
+	    /* Reset npown and cown to see if any ownership changes occur */
+	    for (p = 1; p <=npr; p++) {
+		npown[p] = pr[p].owner;
+	    	ncown[p] = pr[p].cown;
+	    }
 	    CalculateNewOwners();
+	    something_changed = DisplayOwnershipChanges(1);
 	    SetNewOwners();
 	}
 
@@ -779,4 +712,92 @@ int ma_process_output(int pt, char phase)
 		return E_FATAL;
 	}
 	return 1;		/* reached ? */
+}
+
+static int DisplayOwnershipChanges(int elimination)
+{
+    int p,u;
+    int something_changed = 0;
+
+    char *t, buf[1024];
+	/*
+	   **  Display changes in province ownership.
+	 */
+
+	for (p = 1; p <= npr; p++) {
+		if (npown[p] && npown[p] != pr[p].owner)
+			break;
+	}
+
+
+	if (p <= npr) {
+		something_changed = 1;
+		fprintf(rfp, "\nOwnership of provinces changing hands:\n\n");
+		for (u = 1; u < WILD_PLAYER; u++) {
+			if (dipent.pl[u] == 'x')
+				continue;
+			t = buf;
+			for (p = 1; p <= npr; p++) {
+				if (pr[p].owner == u && npown[p] != 0 && npown[p] != u) {
+					if (t != buf)
+						*t++ = ',';
+					sprintf(t, " -%s", pr[p].name);
+					while (*t)
+						t++;
+				} else if (pr[p].owner != u && npown[p] == u) {
+					if (t != buf)
+						*t++ = ',';
+					sprintf(t, " +%s", pr[p].name);
+					while (*t)
+						t++;
+				}
+			}
+			if (t != buf) {
+				sprintf(t, ".\n");
+				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
+				wrap(rfp, buf, 10, 11);
+			}
+		}
+	}
+	/*
+	   **  Ditto for the changes in city ownership.
+	 */
+
+	for (p = 1; p <= npr; p++) {
+		if (ncown[p] && ncown[p] != pr[p].cown)
+			break;
+	}
+
+	if (p <= npr) {
+		something_changed = 1;
+		fprintf(rfp, "\nOwnership of cities changing hands:\n\n");
+		for (u = 1; u < WILD_PLAYER; u++) {
+			if (dipent.pl[u] == 'x')
+				continue;
+			t = buf;
+			for (p = 1; p <= npr; p++) {
+				if (!cityvalue(p))
+                                    continue;
+				if (pr[p].cown == u && ncown[p] != 0 && ncown[p] != u) {
+					if (t != buf)
+						*t++ = ',';
+					sprintf(t, " -%s", pr[p].name);
+					while (*t)
+						t++;
+				} else if (pr[p].cown != u && ncown[p] == u) {
+					if (t != buf)
+						*t++ = ',';
+					sprintf(t, " +%s", pr[p].name);
+					while (*t)
+						t++;
+				}
+			}
+			if (t != buf) {
+				sprintf(t, ".\n");
+				fprintf(rfp, "%s:%*s", powers[u], (int) (9 - strlen(powers[u])), "");
+				wrap(rfp, buf, 10, 11);
+			}
+		}
+	}
+        return something_changed;
 }
