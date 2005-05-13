@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                  March 27, 2005
-Rules.Machiavelli* version 2.7.
+Greetings from the Diplomacy* Adjudicator!!                     May 13, 2005
+Rules.Machiavelli* version 2.7b.
 
 
 CONTENTS
@@ -145,6 +145,8 @@ Retreats differ from diplomacy as listed below:
      1) Retreats are *not* allowed into a rebelling city (locked city gates).
      2) Retreats are allowed into a rebelling province.
      3) Rebelling units can not and do not support retreats.
+     4) Retreating units liberate rebellions (if the rebellion is not 
+        directed against the retreating power-then it remains). 
      4) Multistrength units (the elites) are treated as normal one-strength
         units during retreat (thus this is a bounce: a mil m pav,
         elite a tur m pav).
@@ -475,7 +477,7 @@ ordered to, and makes, an advance into Piombino or Messina at the same time
 as a hostile Fleet tries to move or transport through the straits, the 
 movement through the straits becomes impossible...”
 
-'Tech note 2.' Why do retreats not affect control? Why should they? A 
+'Tech note 2.' Why do retreats not affect fleet moves? Why should they? A 
 retreating unit is not performing any offensive action. Any orders are 
 annulled and all strengths are regarded as equal. Thus it would be odd if a 
 fleet retreating into/from either Pio or Mes suddenly could take offensive 
@@ -486,7 +488,7 @@ made between normal moves and retreat moves in this special case.)
 'Tech note 3.' An earlier revision of (current) rules e) and f), stated that 
 if a fleet moved away (or converted to garrison) it lost control of the 
 straits.  This was changed to make the rules more consistent with the 
-control rules.
+control rules and the actual judge implementation.
 
 2) Croatia and Provence
 These provinces have a north and south coast that are treated just like the 
@@ -934,9 +936,10 @@ EFFECTS OF REBELLIONS:
         one campaign with an army or fleet to "put down" a rebellion in the
         province (note that a rebelling city must still be besieged).
      3) A player who the rebellion is *not* directed against will
-        immediately "liberate" any rebellion upon entering a rebelling city
-        or province.  If there is a rebellion in both the city and the
-        province proper *both* rebellions will be liberated.
+        immediately "liberate" any rebellion upon entering (*including 
+        retreats*) a rebelling city or province.  If there is a rebellion 
+        in both the city and the province proper *both* rebellions will be 
+        liberated.
      4) A player who the rebellion is *not* directed against will
         immediately "liberate" any rebellion if it buys an army or fleet
         or garrison in the rebelling province (if the bought unit was owned
@@ -1504,6 +1507,7 @@ v2.7 25th Mar 2005. Straits rules rephrased and corrected. Self-bribes
     'shorthands' and order oddities added. Contents listing added. Minor 
     rephrasing of siege rules. Explanation of difference between'x' and 'l' 
     province arguments. Author Sergio Lidsell.
+v2.7b 13th May 2005. Clarified rebs and retreats.  Author Sergio Lidsell.
 
 
 This document is free to distribute for non-commercial and non-profit purposes.
