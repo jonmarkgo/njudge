@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                   Mar 27, 2004
-Rules.machiavelli2
+Greetings from the Diplomacy* Adjudicator!!                    May 13, 2005
+Rules.machiavelli2 version 1.3c
 
 
 YOU MUST ALSO READ RULES.MACHIAVELLI
@@ -67,6 +67,10 @@ transport (convoys).  The fleet will *not* be able to block if it is
 converting to or from garrison.
 The default setting for coastal convoys is: *not allowed*, which is 
 contrary to the earlier editions.  As this is a game flag you may change it.
+
+'Tech note'.  Rebellion units can support *any number of powers* entering a 
+province in rebellion (except the power they rebel against). But the 
+current judge implementation use the Classic Mach rules.
 
 
 SPECIAL UNITS  **IMPORTANT DIFFERENCE**
@@ -205,3 +209,4 @@ v1.3  17th October 2004. Venice sea area effects, winning conditions,
       handling of home country conquest, besieged conversion and 
       assassination rules clarified. Author Sergio Lidsell.
 v1.3b 27th March 2005. Bribe handling note added. Author Sergio Lidsell.
+v1.3c 13th May 2005. Rebellion support note added. Author S. Lidsell.
