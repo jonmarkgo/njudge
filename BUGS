@@ -1,8 +1,9 @@
-The following bugs were outstanding as of 1.7.4
+The following bugs were outstanding as of 1.7.5
 
 --------------------
 
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
+425 	maj 	P2 	Oth 	MachFix@yahoogroups.com 	NEW 		Rebellion changed ownership because of retreat and was no...
 282 	maj 	P3 	All 	judge-maint@diplom.org 	REOP 		'::' summary lines sometimes not sent
 382 	maj 	P3 	All 	judge-maint@diplom.org 	ASSI 		resign command no longer works
 394 	maj 	P3 	All 	judge-maint@diplom.org 	NEW 		Bailout on terminating started game with no moves made
@@ -15,7 +16,7 @@ ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
 253 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		signons with password=«judge» don't work
 256 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Abandoned player can't signon due to low dedication
-257 	nor 	P3 	All 	dip@alange.net 	NEW 		Masters not warned on deadline shift after bailout recovery
+257 	nor 	P3 	All 	dip@alange.net 	ASSI 		Masters not warned on deadline shift after bailout recovery
 259 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline advanced for no apparent reason
 269 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		unstart not working for Machiavelli games
 292 	nor 	P3 	All 	judgekeeper@braincells.com 	NEW 		Alter smail & atrun to use paths
@@ -28,6 +29,11 @@ ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 379 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex summary problem
 380 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex didn't flag victory on results line
 381 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex unclear victory conditions
+397 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Are Andy Schwarzes issues with the TSR rule in Colonial s...
+406 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Master wrongly waits on new player signon
+419 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Diary command "write only" on DEDO and USTV
+422 	min 	P2 	All 	judge-maint@diplom.org 	NEW 		2way draw results in concession to two powers
+426 	min 	P2 	Oth 	MachFix@yahoogroups.com 	NEW 		Confusing rebellion removal information
 35 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player with unusable builds must waive
 40 	min 	P3 	All 	millis@faztek.org 	NEW 		Sort out summary report spacing
 100 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Wrong person sent termination
@@ -47,9 +53,12 @@ ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
 348 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		hardcoded plague start year
 356 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Players Marked as Late in Completed Game
 362 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set draw should return who gets in the draw
+369 	min 	P3 	All 	dip@alange.net 	REOP 		Deadline not set to "clock" time after change to DST
 373 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player receives notice with wrong header
 378 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Game is terminated, not completed
 383 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Disband-mantain parsing error
 390 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Self-bounce gives message (*siege required*)
+398 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Reminder problems
 255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
-49 bugs found. 
+421 	tri 	P3 	All 	judge-maint@diplom.org 	NEW 		Spurious "End of message." in parameter change notification
+58 bugs found. 

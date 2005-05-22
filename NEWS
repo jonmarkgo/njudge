@@ -1,10 +1,17 @@
 This is a bug-fix release.
 
-The following bugs were fixed in 1.7.4
+The following bugs were fixed in 1.7.5
 
 (ordered by Severity)
 
-ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
-395    	cri   	P3   	All   	judge-maint@diplom.org   	RESO   	FIXE   	Partial Press sent to too many players
-393 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Mach2 game besieged unit fails to break siege
-391 	nor 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Bailout executes twice
+ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 		Status  	 Resolution  	 Summary
+408 	maj 	P3 	All 	judge-maint@diplom.org 		RESO 	FIXE 	Convoy incorrectly disallowed in Modern
+423 	maj 	P3 	All 	judge-maint@diplom.org 		RESO 	FIXE 	Mis-ajudication of convoy orders
+407 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Control does not change after elimination of power
+410 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminating country not detected if bribed
+416 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Unally command not documented
+417 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Current straits rules are unclear
+409 	min 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminated power in listing problem
+415 	tri 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Buy auto-bribe oddity
+400 	enh 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Allow dyslexic spelling of 'siege'
+9 bugs found. 
