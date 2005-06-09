@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.46  2004/09/28 20:38:40  alange
+ * Bug 353 Faster deadline for first turn when NO_PRESS
+ *
  * Revision 1.45  2004/08/03 21:55:08  millis
  * Fix Bug 349 and 352
  *
@@ -821,7 +824,10 @@ int mail_signon(char *s)
 				    for (j = 0; j < dipent.n; j++) {
                                         if (dipent.players[j].power < 0)
                                             continue;
-
+                                        if (dipent.players[j].power == OBSERVER ||
+					    dipent.players[j].power == MASTER )
+                                            continue;
+					
                                         if(!(IsPlayerDead(j))) {
 					    if (dipent.players[RealPlayerIndex(j)].status & SF_MOVE ||
 						!DIPENT_NO_PRESS)
