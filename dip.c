@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.67  2004/10/24 09:02:31  millis
+ * Small victory handling corrections
+ *
  * Revision 1.66  2004/10/23 22:43:28  millis
  * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
  *
@@ -235,7 +238,7 @@
  *   Reminding players to make moves when close to deadline
  *   Special handling for blind games
  *   Passing of '-C' option for specifying dip.conf path
- *   Informaing all masters when a time-warp was detected
+ *   Informing all masters when a time-warp was detected
  *   Handling of NOLATEPRESS and MANUALSTART flags
  *   Adding automatic wati for all players in a build phase of a transform game
  *
@@ -818,8 +821,8 @@ void master(void)
 			/* A global time-warp was detected: inform all found masters of this */
 			ibmfp = fopen(WARP_FILE, "w");
 			if (ibmfp != NULL) {
-			    fprintf(ibmfp, "A time warp was detected. Check that your game deadlines");
-			    fprintf(ibmfp, " are correct and inform players accordingly.\n");
+			    fprintf(ibmfp, "A time warp was detected on the %s judge. Please check that",JUDGE_CODE);
+			    fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
 			    fclose(ibmfp);
 
                            for (i = 0; i < dipent.n; i++) {
@@ -828,13 +831,39 @@ void master(void)
 			    if (dipent.players[i].power == MASTER && 
 				!(dipent.players[i].status & SF_RESIGN)) {
                                 sprintf(line,
-                                        "%s 'Diplomacy time-warp: %s'",
-                                         WARP_FILE, dipent.name);
+                                        "%s '%s:%s - %s Diplomacy time-warp'",
+                                         WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
 				MailOut(line, dipent.players[i].address);
 			      }
   
 			    }
 			}
+		}
+
+		if (bailout_recovery)
+		{
+		    /* Judge is recovering from a bailout: inform all found masters of this */
+		    ibmfp = fopen(WARP_FILE, "w");
+		    if (ibmfp != NULL) 
+		    {
+			fprintf(ibmfp, "The %s judge is recovering from a bailout. Please check that", JUDGE_CODE);
+			fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
+			fclose(ibmfp);
+
+                        for (i = 0; i < dipent.n; i++) 
+			{
+                            if (dipent.players[i].power < 0)
+                                continue;
+			    if (dipent.players[i].power == MASTER && 
+				!(dipent.players[i].status & SF_RESIGN)) 
+			    {
+				sprintf(line, "%s '%s:%s - %s Bailout recovery'",
+		  			WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
+				MailOut(line, dipent.players[i].address);
+			    }
+  
+			}
+		     }
 		}
 
 		if (dipent.process <= now) {

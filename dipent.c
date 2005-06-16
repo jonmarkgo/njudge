@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.26  2004/10/23 22:43:29  millis
+ * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+ *
  * Revision 1.25  2004/09/13 01:48:09  nzmb
  * Removed redefinition of malloc (incorrectly, I may add) that was causing
  * compile to fail on FreeBSD.
@@ -365,6 +368,13 @@ int getdipent(FILE * fp)
 
 	if (!strcmp(dipent.name, "control")) {
 		time(&now);
+			/* If recovering from bailout, notify the GAMES_MASTER */
+           		if (bailout_recovery && !recover_print) {
+                    	    sprintf(line, "/dev/null 'Bailout recovery initiated'");
+			    MailOut(line, GAMES_MASTER);
+                            recover_print = 1;
+			}
+			
 		/* MLM 26/5/2001 only notify warp on shift more than TIME_TOLERANCE */
 		if (dipent.process && (dipent.start > (now +TIME_TOLERANCE) || 
 		    now > (TIME_TOLERANCE + dipent.process))) {
@@ -382,13 +392,6 @@ int getdipent(FILE * fp)
 			time_warp = 1;
 			DIPNOTICE("TimeWarp detected.");
 
-			/* If recovering from bailout, notify the GAMES_MASTER */
-           		if (bailout_recovery && !recover_print) {
-                    	    sprintf(line, "/dev/null 'Bailout recovery initiated'");
-			    MailOut(line, GAMES_MASTER);
-                            recover_print = 1;
-			}
-			
 		} else {
 		    time_warp = 0;
 		}
