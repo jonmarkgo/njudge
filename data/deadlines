@@ -1,4 +1,4 @@
-Greetings from the Diplomacy* Adjudicator!!                 25 February, 2003
+Greetings from the Diplomacy* Adjudicator!!                 22 June 2005
 Deadlines.
 
 Unless otherwise specified, orders will be processed on the following
@@ -154,20 +154,20 @@ The day of the week is converted into the next date (after the current date)
 that falls on that day of the week.  So, if today is a Tuesday, 
 "SET DEADLINE Tue" will set the deadline one week from today.
 
-If no year is specified, the current year is assumed *unless* the month 
-specified is earlier than the current month and is no more than six months 
-away; in that case, the following year will be assumed.  So, if it is currently
-December, "SET DEADLINE 10 Jan" will advance the deadline to the next year; but
-if it is currently February, the same command will return an error message.
+If no year is specified, the judge will assume the you want the next occurrence
+of the date you specify. If an assumption takes the date more than 120 days
+into the future, the judge will return an error and ask for all of year, month,
+and day to be specified. So, if it is currently December, "SET DEADLINE 10 Jan"
+will advance the deadline to the next year, but if it is currently February,
+the same command will return an error message.
 
 If a day number but no month is specified, the next date with that day number
 will be used.  If today is June 1, then "SET DEADLINE 15" will advance the
 deadline to June 15.  If today is June 20, however, the same command will
 advance the deadline to July 15.
 
-If a month but no day is specified, the first day of the month will be
-assumed, unless it is the current month, in which case the current day will
-be assumed.  
+If a month but no day is specified, the last day of the month will be
+assumed.
 
 If no month, day, or year is specified, the current day is assumed.
 
