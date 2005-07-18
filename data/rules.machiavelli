@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                     May 13, 2005
-Rules.Machiavelli* version 2.7b.
+Greetings from the Diplomacy* Adjudicator!!                    July 17, 2005
+Rules.Machiavelli* version 2.7c.
 
 
 CONTENTS
@@ -1101,7 +1101,10 @@ Adjustment orders:
 <maintain> <type>  <s-prov>
 
 Where:
-<stype>    = Special type or <empty> followed by <type>.
+<stype>    = <Special type> or <empty> followed by <type>.
+             "citizen's militia", "militia", "cm"
+	     "elite mercenary", "mercenary", "mercenaries", "em",
+	     "elite professional", "professional", "ep"
 <type>     = "army", "a", "fleet", "f", "garrison", "g", or <empty>.
 <s-prov>   = Source province.
 <d-prov>   = Destination province.
@@ -1110,26 +1113,33 @@ Where:
 <holds>    = "h", "hold", "holds", "stand", "stands".
 <moves>    = "-", "->", "m", "move", "moves", "move to", "moves to".
 <support>  = "s", "support", "supports".
-<convoy>   = "t", "transport", "transports", "convoy", "convoys"
-<convert>  = "c", "convert", "convert to".
-<besiege>  = "b", "besiege", "siege".
-<lift>     = "l", "lift", "lift siege".
-<disband>  = "d", "disband".
+<convoy>   = "t", "transport", "transports", "convoy", "convoys".
+<convert>  = "c", "convert", "convert to", "conversion".
+<besiege>  = "b", "besiege", "siege" (nJudge 1.7.5 and later also 
+             the misspelled "beseige", "seige") and genitive forms.
+<lift>     = "l", "ls", "lift", "lift siege" and genitive forms.
+<disband>  = "d", "disband", "disbands".
 <build>    = "b", "build".
-<remove>   = "r", "remove", "d", "disband".
+<remove>   = "r", "remove", "d", "disband", "debuild".
 <maintain> = "m", "maintain".
 <borrow>   = "borrow".
 <duration> = "for 1 year", "for 2 years"
 <give>     = "loan", "give", "pay"
-<amount>   = <number> "ducats", <number> "d"
+<amount>   = <number> "ducats", <number> "ducats", <number> "d"
 <power>    = Power name or abbreviation of 2 or more letters.
-<ally>     = "ally with", "allies", "alliance", "allow", "unally", 
+<ally>     = "ally", "allies", "alliance", "allow", "unally", 
              "not allies", "unalliance", "don't allow", "dont allow"
              (see mapboard features)
 <expense>  = "expense" <number 1-4> ":"
-<etype>    = "famine relief", "pacify rebellion", "counter-bribe",
-"disband", "buy", "garrison to autonomous", "cause rebellion",
-"assassinate", "none"
+<etype>    = "famine relief", "famine", "relief", "fr"
+             "pacify rebellion", "pacify", "pr"
+             "counter-bribe", "counter", "cb"
+             "disband", "d"
+             "buy", "purchase", "b"
+             "garrison to autonomous", "gta", "g", "to a"
+             "cause rebellion", "cause", "rebellion", "cb"
+             "assassinate", "a"
+             "none"
 
 'Tech note'.  In original Machiavelli a unit may be disbanded anytime and
 anywhere by writing for example "a mil 0".  That was not allowed in older
@@ -1145,6 +1155,7 @@ Signon Lname <password>
 Pay 14 ducats to bank                  All loans from bank must be paid
 Pay  6 ducats to Milan                 before giving to another power
 Borrow 25 ducats for 2 years           but then more could be borrowed.
+       or "Borrow 25 ducats for 2" or "Borrow 25 ducats for two".
 Expense 1: 12 ducats Disband Army Bologna
 Expense 2:  3 ducats Counter-bribe Army Arezzo
 Expense 3: 24 ducats Assassinate Papacy
@@ -1420,10 +1431,11 @@ both coasts would be eligible for conversion.
 Version 2: Fleets may only be built or convert to garrison or vice versa from/to 
 a sea area containing the anchor symbol.  Only *one anchored* coast may exist.
 
-Support from fleets into multi-coastal provinces
-
+Support from fleets into multi-coastal provinces:
 As in Diplomacy support is only successful if the fleet giving support can 
-move to the coast that the supported fleet is on. 
+move to the coast that the supported fleet is on.
+
+Ordering: e.g. G STP C F /NC and F STP/NC C G
 
 
 APPENDIX 5 -- INCOME QUICK REFERENCE CHART
@@ -1508,6 +1520,7 @@ v2.7 25th Mar 2005. Straits rules rephrased and corrected. Self-bribes
     rephrasing of siege rules. Explanation of difference between'x' and 'l' 
     province arguments. Author Sergio Lidsell.
 v2.7b 13th May 2005. Clarified rebs and retreats.  Author Sergio Lidsell.
+v2.7c 17th July 2005. Added som missing order syntax.  Author Sergio Lidsell.
 
 
 This document is free to distribute for non-commercial and non-profit purposes.
