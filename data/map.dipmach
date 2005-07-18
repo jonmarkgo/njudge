@@ -1,4 +1,4 @@
-#Dipmach variant by Sergio Lidsell,          Vers. 2c. July 27th 2004
+#Dipmach variant by Sergio Lidsell,          Vers. 2d. July 17th 2005
 #Major city incomes corrected. Alb and Naf changed from x to l
 #Variable incomes changed. Correction of abbreviation in plague table
 Switzerland,           l0. swi switz
@@ -213,8 +213,8 @@ Famine:   2     3     4     5     6     7     8     9    10    11    12
      8: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
      9: denma ----- apuli ----- ----- ----- ----- bohem ----- ----- -----
     10: venic siles ----- finla ----- ----- ----- ukrai armen ----- serbi
-    11: spain galic ankar naple ----- ----- ----- ----- ruman warsa kiel 
-    12: mosco smyrn holla piedm ----- ----- ----- clyde swede tries ruhr 
+    11: spain galic ankar naple ----- ----- ----- ----- ruman warsa ruhr 
+    12: mosco smyrn holla piedm ----- ----- ----- clyde swede tries kiel 
 
 #plague is in this case viral epidemics, typhus, trench fever etc
 Plague:   2     3     4     5     6     7     8     9    10    11    12
