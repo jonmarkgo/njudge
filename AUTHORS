@@ -35,7 +35,7 @@ Jaldhar H. Vyas		: autoconfiscation and debian packaging.
 -----------------------------------------------------------------------
 People or pseudonyms found in the source code or logs but who are they?
 
-Positron
+Positron = Jonathan Scott Haas: positron@eecs.umich.edu and positron@morrolan.eff.org (test judge for new code, Jonathan Haas) that coded the DRAW code, see draw.c.
 BLR
 Curt
 Jimmy
