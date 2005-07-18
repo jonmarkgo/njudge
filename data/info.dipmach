@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!          July 27, 2004
-info.dipmach
+Greetings from the Diplomacy* Adjudicator!!          July 17, 2005
+info.dipmach 2.1b
 
 
 Introduction
@@ -112,8 +112,7 @@ b) Machiavelli notes
    Austria: no elite professional AGF; only bribe/maintain citizens militia
       F units.
    Italy: no elite professional AGF.
-   Turkey: no elite professional AGF; no citizens militia F; only 
-      mercenary F units available.
+   Turkey: no elite professional AGF; no citizens militia F.
    
    Fleet limits are based on the fleet availability about 1914, as those 
    figures were easy to find.  The only diffrence with 1901 is that 
@@ -158,3 +157,5 @@ v2b,November 16th 2003.  Clarification on StP and F/G conversion.  Added
     short explanation of nosummer and nogarrison flags.  By Sergio Lidsell.
 v2c,May 13th 2004. Correction of Russian VI. By SL.
 v2.1,July 27th 2004. Additional notes re. the scenario construction. By SL.
+v2.1b,July 17th 2005. Removed erroneous line stating that T could only 
+    have mercenary fleets. By SL.
