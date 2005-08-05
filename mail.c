@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.76  2005/01/06 00:56:26  millis
+ * Fix Bug 395, don't allow press to be copied inadvertently
+ *
  * Revision 1.75  2004/10/23 21:27:43  millis
  * Bug 374, skip rest of input if 'become' command fails
  *
@@ -2785,7 +2788,7 @@ void send_press(void)
 			    dipent.players[i].status &= ~SF_PRESS;
 
 			/* Don't broadcast to those with nobroad set */
-			if (dipent.players[i].status & SF_NOBROAD & !broad_part) continue;
+			if (dipent.players[i].status & SF_NOBROAD && !broad_part) continue;
 
 			if ((i != player || dipent.players[i].power == MASTER) &&
 			    *dipent.players[i].address != '*') {
