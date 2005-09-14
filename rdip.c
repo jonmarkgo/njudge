@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.8  2004/06/17 06:12:58  nzmb
+ * Made rdip handle an early death of the dip program much more gracefully.
+ * Instead of bailing out, it assumes the judge couldn't process the message
+ * and skips it.
+ *
  * Revision 1.6  2003/09/14 22:08:19  jaldhar
  * Included fcntl.h for symbols not defined in unistd.h
  *
@@ -78,7 +83,7 @@ char line1[1024];
 static struct stat sbuf;
 static short badmail = 0;
 
-static int Aflg, xflg, bflg;
+int Aflg, xflg, bflg;
 int Dflg;
 
 /*

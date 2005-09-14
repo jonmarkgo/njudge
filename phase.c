@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.16  2004/06/27 01:50:22  millis
+ * Futher Intimate fixes (Bug 297) specifically to allow phased orders
+ * and correct turns not processing, plus more information printed.
+ *
  * Revision 1.15  2004/05/22 08:56:52  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -79,7 +83,7 @@
 #include "porder.h"
 #include "functions.h"
 
-static char line[1024]; /* Local temporary buffer */
+static char lline[1024]; /* Local temporary buffer */
 
 int phase(char *s)
 {
@@ -222,10 +226,10 @@ void phase_pending(void)
 				bailout(1);
 			}
 			if ((mfp = fopen(Mfile, "r"))) {
-				while (fgets(line, sizeof(line), mfp)) {
-					if (!strcmp(line, "X-marker\n"))
-						*line = 'Y';
-					fputs(line, tfp);
+				while (fgets(lline, sizeof(lline), mfp)) {
+					if (!strcmp(lline, "X-marker\n"))
+						*lline = 'Y';
+					fputs(lline, tfp);
 				}
 				fclose(mfp);
 			}
@@ -234,9 +238,9 @@ void phase_pending(void)
 		found = 0;
 		skip = -1;
 		rewind(ifp);
-		while (fgets(line, sizeof(line), ifp)) {
-			if (power(*line) == p) {
-				s = lookfor(line + 3, words, nentry(words), &i);
+		while (fgets(lline, sizeof(lline), ifp)) {
+			if (power(*lline) == p) {
+				s = lookfor(lline + 3, words, nentry(words), &i);
 				switch (i) {
 				case PHASE:
 					if (!(skip = phase(s)))
@@ -264,10 +268,10 @@ void phase_pending(void)
 				}
 
 				if (!skip) {
-					fputs(line, tfp);
+					fputs(lline, tfp);
 					found++;
 				} else if (skip > 0)
-					fputs(line, ofp);
+					fputs(lline, ofp);
 			}
 		}
 
@@ -276,9 +280,9 @@ void phase_pending(void)
 			fclose(tfp);
 			rfp = fopen("dip.reply", "w");
 			if (porder('T', n, 0) == E_FATAL) {
-				sprintf(line, "dip.reply 'Pending orders error'");
+				sprintf(lline, "dip.reply 'Pending orders error'");
 				fclose(rfp);
-				MailOut(line, GAMES_MASTER);
+				MailOut(lline, GAMES_MASTER);
 			} else {
 
 				dipent.players[n].status |= SF_PART;
@@ -290,10 +294,10 @@ void phase_pending(void)
 				}
 
 				rename(Tfile, Mfile);
-				sprintf(line, "dip.reply '%s:%s - %s Pending Orders'",
+				sprintf(lline, "dip.reply '%s:%s - %s Pending Orders'",
 					JUDGE_CODE, dipent.name, dipent.phase);
 				fclose(rfp);
-				MailOut(line, dipent.players[n].address);
+				MailOut(lline, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')
 					continue;
 				dipent.players[n].status &= ~(SF_ABAND | SF_CD);

@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.30  2004/07/26 23:17:23  millis
+ * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
+ * All other uses of date function stay unaltered.
+ *
  * Revision 1.29  2004/07/25 16:13:43  millis
  * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
  * return in duplex) and Bug 206 (allow takeover of unknown abandoned
@@ -382,7 +386,7 @@ int chkconc(char *to_check);
 int process_conc(void);
 
 /* defined in assign.c */
-void assignment(int a[][], int n, int m, int x[]);
+void assignment(int **a, int n, int m, int *x);
 
 /* defined in strcasecmp.c */
 #if 0

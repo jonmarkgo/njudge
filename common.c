@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.9  2004/07/27 23:04:26  millis
+ * Fix bug 342, no bidding phase in Intimate if no mercenaries alive
+ *
  * Revision 1.8  2004/05/22 08:53:14  millis
  * Bug 297: Add Intimate Diplomacy
  *
@@ -126,7 +129,7 @@ int lookup(unsigned char *name)
 	 * The structure of the heap is name, 0, number, name, 0, number ...
 	 */
 
-	t = (char *) heap;
+	t = (unsigned char *) heap;
 	while (*t) {
 		s = name;
 		while (*t && toupper(*s) == toupper(*t)) {
