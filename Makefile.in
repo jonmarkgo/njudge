@@ -17,6 +17,9 @@
 # Process this file with automake to produce Makefile.in
 #
 # $Log$
+# Revision 1.42  2005/09/18 13:32:54  millis
+# Fix bug 428, automake problems and install dependency error
+#
 # Revision 1.41  2004/09/17 19:15:28  nzmb
 # Fix bug #351.
 #

@@ -1,3 +1,144 @@
+2005-09-18 06:43  millis
+
+	* NEWS: Final list for njudge-1.7.5
+
+2005-09-18 06:32  millis
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure: Fix bug 428,
+	  automake problems and install dependency error
+
+2005-09-14 04:54  millis
+
+	* common.c, functions.h, phase.c, rdip.c: Bug 436, fix gcc 4.0
+	  compile errors.
+
+2005-08-04 18:13  alange
+
+	* mail.c: Bug 435 SET [NO]BROADCAST
+
+2005-07-18 09:51  machmstr
+
+	* AUTHORS: Uhm forgot these pseudonyms: Curt = Curt Marcus Eric =
+	  Eric Wagoner Sean = Sean Starkey Travis =  Travis C. Ruelle
+
+2005-07-18 09:23  machmstr
+
+	* AUTHORS: Positron = Jonathan Scott Haas coder of SET DRAW
+
+2005-07-18 09:20  machmstr
+
+	* data/map.dipmach: swapped places between ruh and kie in famine
+	  table
+
+2005-07-18 09:19  machmstr
+
+	* data/info.dipmach: Removed erroneous line stating that T could
+	  only have mercenary fleets
+
+2005-07-18 09:18  machmstr
+
+	* data/rules.machiavelli: Added missing order definitions for
+	  special units and some other cases
+
+2005-06-22 19:32  alange
+
+	* data/deadlines: Update to match date handling documentation to
+	  current code.
+
+2005-06-22 19:10  alange
+
+	* data/absence: Reverted to version 1.7, and corrected examples for
+	  current behavior.
+
+2005-06-15 18:44  alange
+
+	* dip.c, dipent.c: Bug 257: Notify masters on bailout recovery and
+	  time-warp.
+
+2005-06-09 02:45  alange
+
+	* ml_signon.c: Fix bug 406. Masters and observers no longer set to
+	  wait on takeover.
+
+2005-05-22 11:56  millis
+
+	* aclocal.m4: njudge_1_7_5 version
+
+2005-05-22 11:55  millis
+
+	* BUGS, Makefile.in, NEWS, configure, configure.ac, njudge.spec:
+	  New build for njudge_1.7.5
+
+2005-05-13 09:34  machmstr
+
+	* data/rules.machiavelli2: tech note on rebellion support
+
+2005-05-13 09:33  machmstr
+
+	* data/rules.machiavelli: clarified rebellion removal on retreats
+
+2005-05-08 09:01  machmstr
+
+	* data/seed.mach_eos: Spelling of Genoa corrected (was Genova)
+
+2005-05-06 16:18  millis
+
+	* ma_expenses.c: Bug 415, do not let power try to bribe/assassinate
+	  themselves!
+
+2005-05-06 16:05  millis
+
+	* ma_stats.c: Bug 409, show eliminated countries as unonwned but
+	  not their chits.
+
+2005-05-06 15:20  millis
+
+	* ma_porder.c: Bug 407, correctly show power eliminated when last
+	  home centre captured.
+
+2005-05-05 16:48  millis
+
+	* st_movement.c: Bug 423 fix, stopping some valid convoys from
+	  working.
+
+2005-05-05 09:36  machmstr
+
+	* data/rules.machiavelli2: v1.3b 27th March 2005. Bribe handling
+	  note added. Author Sergio Lidsell.
+
+2005-05-05 09:34  machmstr
+
+	* data/rules.machiavelli: v2.6 15th Feb 2005. Siege info reworded
+	  for clarity. PIO/MES rules rewritten	   to handle paradoxes and
+	  reflect coding.  Author Sergio Lidsell.  v2.7 25th Mar 2005.
+	  Straits rules rephrased and corrected. Self-bribes	 explained.
+	  Example of ally/unally command added. Samples of bribe
+	  'shorthands' and order oddities added. Contents listing added.
+	  Minor     rephrasing of siege rules. Explanation of difference
+	  between'x' and 'l'	 province arguments. Author Sergio Lidsell.
+
+2005-05-05 09:23  machmstr
+
+	* data/info.machfive: setup correction
+
+2005-03-06 14:20  millis
+
+	* st_movement.c: Fix Bug 408, convoy incorrectly voided in Modern
+
+2005-02-13 16:54  millis
+
+	* po_get.c: Bug 400, allow dyslexic siege spelling
+
+2005-01-14 08:50  machmstr
+
+	* data/rules.machiavelli: Some minor clarifications re straits (new
+	  g and i points) and a "notice"
+
+2005-01-05 17:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_4
+
 2005-01-05 17:10  millis
 
 	* data/: info.dipmach1, report.dipmach1, seed.dipmach1: [no log
