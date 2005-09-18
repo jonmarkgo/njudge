@@ -3,6 +3,9 @@
 ## (C) 2002, Consolidated Braincells Inc.  Released into the public domain
 #
 # $Log$
+# Revision 1.41  2004/09/17 19:15:28  nzmb
+# Fix bug #351.
+#
 # Revision 1.40  2004/08/18 09:58:59  millis
 # Change name of document to njudgeMapFileHOWTO
 #
@@ -263,9 +266,9 @@ zpblind_SOURCES=zpblind.c \
 
 man_MANS=	judge.6
 
-dist_data_DATA=	data/*
+dist_data_DATA=data/*
 
-dist_doc_DATA=	docs/InstallationHOWTO.txt \
+dist_doc_DATA=docs/InstallationHOWTO.txt \
 		docs/InstallationHOWTO.html \
 		docs/VariantsHOWTO.txt \
 		docs/VariantsHOWTO.html \
@@ -337,7 +340,7 @@ magic:
 remap: dirs
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 
-install: install-check install-am
+install: install-check upgrade-data install-am
 
 install-check:
 	@if [ -f ${DESTDIR}$(bindir)/dip.master ]; then \
@@ -351,7 +354,7 @@ install-check:
 		exit 1 ; \
 	fi
 
-install-data-hook: dirs flist magic
+install-data-hook: upgrade-data dirs flist magic
 	./cmap ${DESTDIR}${datadir} >> ${DESTDIR}${datadir}/install.log
 	${INSTALL_DATA} dip.conf ${DESTDIR}${bindir}/dip.conf
 	touch ${DESTDIR}${bindir}/dip.msg
