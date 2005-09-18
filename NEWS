@@ -5,13 +5,18 @@ The following bugs were fixed in 1.7.5
 (ordered by Severity)
 
 ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 		Status  	 Resolution  	 Summary
-408 	maj 	P3 	All 	judge-maint@diplom.org 		RESO 	FIXE 	Convoy incorrectly disallowed in Modern
-423 	maj 	P3 	All 	judge-maint@diplom.org 		RESO 	FIXE 	Mis-ajudication of convoy orders
+428    	blo   	P2   	All   	judgekeeper@braincells.com   	RESO   	FIXE   	automake error
+436 	nor 	P2 	All 	judge-maint@diplom.org 	RESO 	FIXE 	GCC 4.0 compatibility problems
+435 	min 	P2 	Oth 	dip@alange.net 	RESO 	FIXE 	Set no broadcast has no effect
+408 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Convoy incorrectly disallowed in Modern
+423 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Mis-ajudication of convoy orders
 407 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Control does not change after elimination of power
 410 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminating country not detected if bribed
 416 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Unally command not documented
 417 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Current straits rules are unclear
+257 	nor 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Masters not warned on deadline shift after bailout recovery
+406 	nor 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Master wrongly waits on new player signon
 409 	min 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminated power in listing problem
 415 	tri 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Buy auto-bribe oddity
 400 	enh 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Allow dyslexic spelling of 'siege'
-9 bugs found. 
+14 bugs found. 
