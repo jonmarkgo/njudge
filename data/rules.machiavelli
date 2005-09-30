@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                    July 17, 2005
-Rules.Machiavelli* version 2.7c.
+Greetings from the Diplomacy* Adjudicator!!                      Sep 28, 2005
+Rules.Machiavelli* version 2.8.
 
 
 CONTENTS
@@ -364,20 +364,34 @@ all four provinces if no one else has moved into them.
 
 CONTROL OF ANOTHER PLAYER'S HOME COUNTRY
 Home countries are gained/lost in a block as they were defined at setup.
-To gain control of another power's home country, you must gain control of
-all its original provinces and cities.
-If a power controls two or more home countries it can lose its original
-home country (as defined at setup) without being eliminated (see player
-elimination though).
-A power only loses control of a home area if it is eliminated, or another
-power takes control of the area.
+To gain control of another power's Home Country, you must gain control of
+*all* its original provinces and cities.
+
+Once a Home Country has lost its original controlling player it will be 
+treated as a "Non Player Country" (NPC).
+
+A power (actually a player) controlling one or more NPCs can lose its 
+Original Home Country (as defined at setup) without being eliminated (see 
+player elimination though) as one of the NPCs will automatically be treated 
+as the new Home Country of that player.
+
+A power (actually a player) controlling one or more NPCs will gain the 
+Variable Income of each of those. The Variable Income can only be lost if 
+another power gains control of any of the NPCs according to the rules in 
+paragraphs one and two above. (See "Income Phase" below for more info.)
 
 
 PLAYER ELIMINATION
-A power/player who controls no cities in his home country (or countries if
-he has taken over other home countries) at the end of a campaign is
-eliminated from the game and all his units are immediately removed from the
-mapboard and all his provinces and cities revert to unowned status.
+A power/player who controls no cities in his home country at the end of a 
+campaign is eliminated from the game and all of his units are immediately 
+removed from the mapboard and all of his provinces and cities revert to 
+unowned status.
+
+If the player also controls several NPCs (see Control of another...) the 
+rule above will only apply if all (remaining) cities of all his NPCs are 
+lost simultaneously. In all other cases NPC elimination/control follow the 
+"Control of another player's Home Country" rules.
+
 Do note that autonomous garrisons affect control, but that rebellions do not.
 
 WARNING: If Power A takes control of Power B's home area in the same season
@@ -406,6 +420,13 @@ The standard victory limits are:
 'Tech note'.  The judge calculates required home countries thus: 
 (cities+1)/8.  This translates for advanced games in: 1-7 cities = 1 HC, 
 8-15 = 2 HCs, 16-23 = 3 HCs and 24-31 = 4 HCs.
+
+IMPORTANT: The home country control requirement in 2) and 3) above only 
+requires you to be in control of at least one city of any home country you 
+are in control of. Thus if you are in control of Milan and Austria home 
+countries you may win by controlling say MIL, TYR and 13 or 21 non-milanese 
+and non-austrian cities!  Even if enemy units control any other province of 
+said home countries and also besiege MIL and TYR!
 
 
 SPECIAL MAPBOARD FEATURES AND RULES
@@ -597,11 +618,11 @@ four sources:
      d) Variable income for each controlled home country and for certain
         cities.  Based on a 1d6 die roll.
 
-If one player gains control of another player's home country, the variable
+If a player gains control of another player's home country, the variable
 income of that home country is also gained.  Variable income is not
 prevented by rebellions, sieges in progress, famines, loss of capital, or
-any other factor as long as no other power has taken control of the home
-area.
+any other factor as long as no third player takes control of the same home
+country. (Also see the Control of another... section above.)
 
 Ownership of the Genoa variable income roll is determined solely by
 ownership of the city of Genoa.
@@ -1521,6 +1542,9 @@ v2.7 25th Mar 2005. Straits rules rephrased and corrected. Self-bribes
     province arguments. Author Sergio Lidsell.
 v2.7b 13th May 2005. Clarified rebs and retreats.  Author Sergio Lidsell.
 v2.7c 17th July 2005. Added som missing order syntax.  Author Sergio Lidsell.
+v2.7d 5th Aug 2005. Clarified victory conditions.  Author Sergio Lidsell.
+v2.8 28th Sep 2005. Clarified power elimination and Home Country control 
+    rules (NPCs and Variable Income). Author Sergio Lidsell.
 
 
 This document is free to distribute for non-commercial and non-profit purposes.
