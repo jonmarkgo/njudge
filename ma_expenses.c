@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.8  2005/05/06 23:18:08  millis
+ * Bug 415, do not let power try to bribe/assassinate themselves!
+ *
  * Revision 1.7  2002/12/04 23:33:14  millis
  * Fixed Bug 47 (incorrect ownership change for proxied orders)
  *
@@ -128,6 +131,12 @@ int expin(char **s, int p)
 		errmsg("Cannot submit expense as master.  Use 'become' command.\n");
 		return E_WARN;
 	}
+
+	if (IsPlayerDead(FindPower(p))) {
+                errmsg("Sorry, dead players cannot submit expenses!\n");
+                return E_WARN;
+        }
+
 
 	switch (c) {
 	case 'a':		/* Ally with power, power, power... */
