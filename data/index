@@ -1,8 +1,8 @@
-Greetings from the Diplomacy* Adjudicator!!                     13 Sep, 2004
+Greetings from the Diplomacy* Adjudicator!!                     10 Nov, 2005
 index.
 
 This is an alphabetical list of all the commands that the Judge will process
-with a brief description.  It is current as of njudge version 1.5.1.
+with a brief description.  
 
 For information on how to enter Diplomacy orders, get the file 'syntax' (see
 "GET file", below).
@@ -536,6 +536,11 @@ mod/bgs SET [NO] GATEWAYS                                             {0.8.11}
 mod/    SET GRACE date
         Changes the grace period for the current phase.  Get file 'deadlines'.
 
+mod/	SET [NO] GRACE PRESS					       {1.7.6}
+	Disables/enables press from any player when one or more has not
+	submitted complete moves (excluding to the moderator, who can always
+	receive press).
+	
 mod/    SET GREY [PRESS]
         Sets press option to grey only.  Get file 'press'.
 
@@ -552,6 +557,10 @@ ply/    SET [NO] HOLIDAY[S]                                            {0.8.7}
 mod/bgs SET HOME CENTRE[S]|CENTER[S]                                   {0.8.9}
         Allow builds to be made only in the building power's home centers
         during build phase.  (Default setting for Standard games.)
+
+mod/bgs	SET [NO] HOME TRANSFER					       {1.7.6}
+	Disallow/allow powers to make a centre their home centre, if it is 
+	occupied continuously for a full season.
 
 mod/bgs SET [NO] HONG KONG                                            {0.8.11}
         Disables/Enables "HongKong" rule in a variant that has this option
