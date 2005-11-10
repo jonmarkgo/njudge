@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.31  2005/09/14 11:54:20  millis
+ * Bug 436, fix gcc 4.0 compile errors.
+ *
  * Revision 1.30  2004/07/26 23:17:23  millis
  * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
  * All other uses of date function stay unaltered.
@@ -173,6 +176,7 @@ int RealPlayerIndex(int index);
 int IsPlayerDead(int index);
 void PrintTreasury(int pt, int power_bid_total[], int processing, int predict);
 int LandLocked(int p);	
+int IsAnyoneLate(void);
 
 /* defined in bailout.c */
 void real_bailout(int, char *, int, int);

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.46  2004/09/13 23:03:46  millis
+ * Further changes for Bug 363
+ *
  * Revision 1.45  2004/09/03 13:30:18  millis
  * Added use of AlliedWin value.
  *
@@ -657,6 +660,9 @@ void params(FILE * fp)
 
 	if (dipent.x2flags & X2F_PORTAGE) 
 	    strcatf(line, "Portage", &first_flag);
+
+	if (dipent.x2flags & X2F_HOMETRANSFER)
+	    strcatf(line, "HomeTransfer", &first_flag);
 	
 	if (!first_flag) 
 		strcat(line,".");
@@ -755,7 +761,11 @@ void params(FILE * fp)
 	if (dipent.x2flags & X2F_TOUCHPRESS) {
 		strcatf(line, "TouchPress", &first_flag);
 	}
-	if(dipent.xflags & XF_NOLATEPRESS)
+	if (dipent.x3flags & X3F_NOGRACEPRESS)
+	{
+		strcatf(line, "No grace press", &first_flag);
+	} 
+	else if(dipent.xflags & XF_NOLATEPRESS)
 	{
 		strcatf(line, "No late press", &first_flag);
 	}

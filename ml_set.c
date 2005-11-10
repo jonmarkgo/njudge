@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.68  2004/10/23 22:43:29  millis
+ * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+ *
  * Revision 1.67  2004/10/23 19:17:09  millis
  * Bug 370 & 371, missing breaks added to case statement end
  *
@@ -943,6 +946,14 @@ void mail_setp(char *s)
 #define PRV_ALLIEDWIN	  'm'
 #define SET_NOALLIEDWIN	  181
 #define PRV_NOALLIEDWIN   'm'
+#define SET_NOGRACEPRESS  182
+#define PRV_NOGRACEPRESS  'm'
+#define SET_GRACEPRESS	  183
+#define PRV_GRACEPRESS	  'm'
+#define SET_HOMETRANSFER  184
+#define PRV_HOMETRANSFER  'm'
+#define SET_NOHOMETRANSFER 185
+#define PRV_NOHOMETRANSFER 'm'
 
 
 /***********************************************************************
@@ -1057,7 +1068,9 @@ void mail_setp(char *s)
 	    "approval", "no approval",
 	    "approved", "approve", "not approved", "not approve",
 	    "portage", "no portage", "powers",
-	    "allied win", "no allied win"
+	    "allied win", "no allied win",
+	    "grace press", "no grace press",
+	    "home transfer", "no home transfer"
 	};
 
 	static unsigned char action[] = {
@@ -1152,7 +1165,9 @@ void mail_setp(char *s)
 	    SET_APPROVAL, SET_NOAPPROVAL,
 	    SET_APPROVED, SET_APPROVED, SET_NOTAPPROVED, SET_NOTAPPROVED,
 	    SET_PORTAGE, SET_NOPORTAGE, SET_POWERS,
-	    SET_ALLIEDWIN, SET_NOALLIEDWIN
+	    SET_ALLIEDWIN, SET_NOALLIEDWIN,
+	    SET_GRACEPRESS, SET_NOGRACEPRESS,
+	    SET_HOMETRANSFER, SET_NOHOMETRANSFER
 	};
 
 	static char privs[] = {
@@ -1245,7 +1260,9 @@ void mail_setp(char *s)
             PRV_APPROVAL, PRV_NOAPPROVAL,
             PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED,
 	    PRV_PORTAGE, PRV_NOPORTAGE, PRV_POWERS,
-	    PRV_ALLIEDWIN, PRV_NOALLIEDWIN
+	    PRV_ALLIEDWIN, PRV_NOALLIEDWIN,
+	    PRV_GRACEPRESS, PRV_NOGRACEPRESS,
+	    PRV_HOMETRANSFER, PRV_NOHOMETRANSFER
 	};
 
 	chk24nmr = 0;
@@ -2953,6 +2970,21 @@ CATF_SETOFF,
 					    CATF_INVERSE, CATF_OK);
 			break;
 
+		case SET_GRACEPRESS:
+			CheckPress();
+		        CheckAndToggleFlag(&dipent.x3flags,  X3F_NOGRACEPRESS, "GracePress", CATF_SETOFF,
+	                                   "Press will be permitted even if anyone is late.\n",
+	                                    CATF_INVERSE, CATF_OK);
+	                break;
+
+	        case SET_NOGRACEPRESS:
+		        CheckPress();
+		        CheckAndToggleFlag(&dipent.xflags,  XF_NOLATEPRESS, "GracePress", CATF_SETON,
+		                           "Press will NOT be allowed while anyone is late.\n",
+		                            CATF_INVERSE, CATF_OK);
+		        break;
+
+
 		case SET_BLANKPRESS:
                         CheckPress();
                         CheckAndToggleFlag(&dipent.xflags,  XF_BLANKPRESS, "BlankPress", CATF_SETON,
@@ -3119,7 +3151,21 @@ CATF_SETOFF,
                                            "No airlifts are now permitted.\n",
                                             CATF_NORMAL, CATF_NOSTART);
                         break;
-		
+
+		case SET_HOMETRANSFER:
+			CheckNoMach();
+			CheckAndToggleFlag(&dipent.x2flags, X2F_HOMETRANSFER, "HomeTransfer",	
+					CATF_SETON,
+					"Powers now gain a centre if it is occupied one whole season.\n",
+					CATF_NORMAL, CATF_NOSTART);
+
+		case SET_NOHOMETRANSFER:
+			CheckNoMach();
+			CheckAndToggleFlag(&dipent.x2flags, X2F_HOMETRANSFER, "HomeTransfer",
+					CATF_SETOFF,
+					"No home transfer is now permitted.\n",
+					CATF_NORMAL, CATF_NOSTART);
+
 		case SET_BLANKBOARD:
                         CheckNoMach();
                         CheckAndToggleFlag(&dipent.xflags,  XF_BLANKBOARD, "BlankBoard", CATF_SETON,

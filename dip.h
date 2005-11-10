@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.56  2004/10/23 22:43:28  millis
+ * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+ *
  * Revision 1.55  2004/10/23 21:08:59  millis
  * Fix Bug 375, Mach2 allow besieged to dislodge
  *
@@ -382,6 +385,7 @@
 #define X2F_PORTAGE		0x40000000 /* Game has armies able to convoy */
 
 #define X3F_ALLIEDWIN	0x1 /* If set, duplex game can end with an allied win */
+#define X3F_NOGRACEPRESS 0x2 /* If set, no press allowed if any player late */
 
 /* Define for X2F flags for params.c to display */
 /* Only display special press settings */

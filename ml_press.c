@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.12  2004/07/12 00:29:09  millis
+ * Don't show normal press warnings if game is PAUSED.
+ *
  * Revision 1.11  2004/03/28 10:17:06  millis
  * Fix Bug 281: generate error if press rejected by MustOrder flag.
  *
@@ -26,7 +29,8 @@
  *
  * Revision 1.4  2002/03/14 03:12:26  nzmb
  *
- * Added fix to ml_press.c to prevent people from getting warning messages (of if nno late press is on being prohibited from) sending press when the game is over.
+ * Added fix to ml_press.c to prevent people from getting warning messages (or if no late press is 
+ * on being prohibited from) sending press when the game is over.
  *
  * Revision 1.3  2001/05/10 09:05:05  greg
  * added subjectlines
@@ -512,7 +516,10 @@ void mail_press(char *s, int need_opts)
 		    if (!((count == 1) && (power(part_list[0]) == MASTER))) {
 			/* We are waiting for him, see if messag is only to master */
 			if (time(NULL) > dipent.deadline) { 
-		          if (dipent.xflags & XF_NOLATEPRESS) {
+		          if (dipent.x3flags & X3F_NOGRACEPRESS && IsAnyPlayerLate()) {
+				fprintf(rfp, "One or more players are late, so no press is allowed.\n");
+				bad_cmd = 1;
+			} else if (dipent.xflags & XF_NOLATEPRESS) {
 			  	fprintf(rfp, "Game '%s' does not allow press from late players.\n",
                                                 dipent.name);
 				fprintf(rfp, "You must submit moves for ALL your units before pressing.\n");

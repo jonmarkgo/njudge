@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.31  2004/10/17 22:18:48  alange
+	 * Fix Bug 369: deadline problems ater time changes.
+	 *
 	 * Revision 1.30  2004/07/07 22:50:40  millis
 	 * Bug91: further fixes for Duplex code
 	 * (these mainly to get absences and late handling working)
@@ -1696,3 +1699,16 @@ int LandLocked(int p)
 	return 1;
 }
 
+/* See if any player is late */
+int IsAnyPlayerLate(void)
+{
+    int i;
+
+    for (i = 0; i < dipent.n; i++)
+        if (dipent.players[i].controlling_power != 0 &&
+	    dipent.players[i].power < WILD_PLAYER &&
+	    dipent.players[i].status & SF_LATE)
+	    return 1;
+ 
+    return 0;
+}
