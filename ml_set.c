@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.69  2005/11/10 12:08:05  millis
+ * Bug 442, NoGracePress flag handling.
+ *
  * Revision 1.68  2004/10/23 22:43:29  millis
  * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
  *
@@ -997,7 +1000,7 @@ void mail_setp(char *s)
 	    "dedication", "ontimerat", "resrat",
 	    "show", "no show", "dias", "no dias", 
 	    "concessions", "no concessions",
-	    "conc", "concede", "no conc", "no concede",
+	    "concede", "no concede", "conc#", "no conc#",
 	    "draw", "no draw", 
 	    "ep", "ep number", "ep num", 
 	    "centres", "centers",
@@ -1033,7 +1036,7 @@ void mail_setp(char *s)
 	    "minor press", "no minor press",
 	    "mach2", "machiavelli2", "mach-2", "machiavelli-2",
 	    "no mach2", "no machiavelli2", "no mach-2", "no machiavelli-2",
-	     "air lifts", "air lift",
+	    "air lifts", "air lift",
 	    "no air lifts", "no air lift",
 	    "blank board", "empty board",
 	    "fortresses", "fortress", "forts", "fort",
@@ -1041,7 +1044,7 @@ void mail_setp(char *s)
 	    "resume", "no resume",
 	    "auto disband", "no auto disband",
 	    "any disband", "normal disband",
-	    "attack transform", "attack transforms", "no attack transforms", "no attack tranform",
+	    "attack transform", "attack transforms", "no attack transforms", "no attack transform",
 	    "coastal convoys", "coastal convoy",
 	    "no coastal convoys", "no coastal convoy",
 	    "money", "no money",
@@ -1095,9 +1098,9 @@ void mail_setp(char *s)
 	    SET_NOSPECIAL, SET_ALLPRESS, SET_NOALLPRESS, SET_COMMENT,
 	    SET_COMMENT, SET_COMMENT, SET_QUIET, SET_NOQUIET, SET_RATE,
 	    SET_NORATE, SET_ACCESS, SET_LEVEL, SET_VARIANT, SET_DEDICATE,
-	    SET_ONTIMERAT, SET_RESRAT, SET_SHOW, SET_NOSHOW, SET_DIAS,
-	    SET_NODIAS, SET_CONCESSIONS, 
-	    SET_NOCONCESSIONS, SET_CONC, SET_CONC, SET_NOCONC, SET_NOCONC,
+	    SET_ONTIMERAT, SET_RESRAT, SET_SHOW, SET_NOSHOW,
+			SET_DIAS, SET_NODIAS, SET_CONCESSIONS, SET_NOCONCESSIONS,
+			SET_CONC, SET_NOCONC, SET_CONC, SET_NOCONC,
 	    SET_DRAW, SET_NODRAW, SET_EPNUM, SET_EPNUM,
 	    SET_EPNUM, SET_CENTERS, SET_CENTERS,
 	    SET_BN_MN, SET_BN_MN, SET_BN_MN, 
@@ -1194,7 +1197,7 @@ void mail_setp(char *s)
 	    PRV_NORATE, PRV_ACCESS, PRV_LEVEL, PRV_VARIANT, PRV_DEDICATE,
 	    PRV_ONTIMERAT, PRV_RESRAT, PRV_SHOW, PRV_NOSHOW, PRV_DIAS,
 	    PRV_NODIAS, PRV_CONCESSIONS, 
-	    PRV_NOCONCESSIONS, PRV_CONC, PRV_CONC, PRV_NOCONC, PRV_NOCONC,
+	    PRV_NOCONCESSIONS, PRV_CONC, PRV_NOCONC, PRV_CONC, PRV_NOCONC, 
 	    PRV_DRAW, PRV_NODRAW, PRV_EPNUM, PRV_EPNUM,
 	    PRV_EPNUM, PRV_CENTERS, PRV_CENTERS,
 	    PRV_BN_MN, PRV_BN_MN, PRV_BN_MN, 
@@ -1257,8 +1260,8 @@ void mail_setp(char *s)
 	    PRV_NEUTRALS, PRV_NONEUTRALS, PRV_CAPTUREWIN, PRV_NOCAPTUREWIN,
 	    PRV_AUTOCREATE, PRV_NOAUTOCREATE,
 	    PRV_TOUCHPRESS, PRV_NOTOUCHPRESS,
-            PRV_APPROVAL, PRV_NOAPPROVAL,
-            PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED,
+      PRV_APPROVAL, PRV_NOAPPROVAL,
+      PRV_APPROVED, PRV_APPROVED, PRV_NOTAPPROVED, PRV_NOTAPPROVED,
 	    PRV_PORTAGE, PRV_NOPORTAGE, PRV_POWERS,
 	    PRV_ALLIEDWIN, PRV_NOALLIEDWIN,
 	    PRV_GRACEPRESS, PRV_NOGRACEPRESS,
