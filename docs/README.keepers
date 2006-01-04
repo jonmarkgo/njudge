@@ -1,0 +1,32 @@
+Njudge Keepers addresses.
+
+Njudge has a series of addresses that are sent notifications when *important*
+things happen to a game.
+
+These are defined as follows:
+
+ GAMES_OPENER 
+   Receives first move for all games (except blind) 
+ HALL_KEEPER 
+   Receives summary for a game that ends in a victory, concession, draw, 
+termination 
+ BN_CUSTODIAN 
+   Receives summary for all standard, non-gunboat games that end in VCDT 
+and start information on game start.   
+ MN_CUSTODIAN 
+   Receives summary for all non-standard or gunboat games that end in VCDTa 
+nd start information on game start.   
+ EP_CUSTODIAN 
+   Not used in the code 
+ CUSTODIAN_<variant> 
+   Receives summary for all <variant>games that end in VCDT and start 
+information on game start.   
+
+They can have explicit definitions in dip.conf, and implicit ones in conf.c
+
+This means that their normal value is defined in conf.c but can be overridden 
+in dip.conf.
+
+
+Millis Miller
+4th January 2006
