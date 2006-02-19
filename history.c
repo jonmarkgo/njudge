@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.10  2004/07/26 23:17:24  millis
+ * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
+ * All other uses of date function stay unaltered.
+ *
  * Revision 1.9  2002/08/27 22:27:50  millis
  * Updated for automake/autoconf functionality
  *
@@ -231,27 +235,35 @@ int history(char *line, int power_type)
 	while (isspace(*s))
 		s++;
 
+	/*
+	 * We must extrace a gamename BEFORE going into the options processing
+	 * loop or else we'll see funny behavior when someone names a game
+	 * with one of the keys, e.g. broadway
+	 */
+        if(!signedon) {
+		for (i = 0; *s && !isspace(*s) && i < sizeof(name) - 1; i++) {
+			/* TODO this should allow case insensitive history commands */
+			/* double check that the tolower has that effect */
+			name[i] = tolower(*s);
+			s++;
+		}
+		name[i] = '\0';
+		while (isspace(*s))
+			s++;
+	} else {
+		strcpy(name, dipent.name);
+	}
+
 	while (*s) {
 		s = lookfor(s, keys, nentry(keys), &i);
 
 		switch (value[i]) {
 		case 'x':
-			if (*name) {
-				if ((!msg_header_done) && (!signedon))
-					msg_header(rfp);
-				fprintf(rfp, "history %s", line);
-				fprintf(rfp, "Unrecognized keyword: %s", s);
-				return 1;
-			}
-			while (isspace(*s))
-				s++;
-			for (i = 0; *s && !isspace(*s) && i < sizeof(name) - 1; i++) {
-				/* TODO this should allow case insensitive history commands */
-				/* double check that the tolower has that effect */
-				name[i] = tolower(*s);
-				s++;
-			}
-			name[i] = '\0';
+			if ((!msg_header_done) && (!signedon))
+				msg_header(rfp);
+			fprintf(rfp, "history %s", line);
+			fprintf(rfp, "Unrecognized keyword: %s", s);
+			return 1;
 			break;
 
 		case 'f':
@@ -331,30 +343,19 @@ int history(char *line, int power_type)
 	 *  Now read that archive file.
 	 */
 
-	if (!*name) {
-		if (!signedon) {
+	if (!signedon) {
+		if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
-			fprintf(rfp, "history %s", line);
-			fprintf(rfp, "Game name not specified.\n");
+			fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
 			return 1;
 		}
-		strcpy(name, dipent.name);
-	} else {
-		if (!signedon) {
-			if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
-				if (!msg_header_done)
-					msg_header(rfp);
-				fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
-				return 1;
+		while ((not_eof = getdipent(mfp))) {
+			if (!strcmp(dipent.name, name)) {
+				break;
 			}
-			while ((not_eof = getdipent(mfp))) {
-				if (!strcmp(dipent.name, name)) {
-					break;
-				}
-			}
-			fclose(mfp);
 		}
+		fclose(mfp);
 	}
 
 	sprintf(file, "%s%s/archive", GAME_DIR, name);
