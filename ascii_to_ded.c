@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.4  2002/08/27 22:27:44  millis
+   ** Updated for automake/autoconf functionality
+   **
    ** Revision 1.3  2002/05/14 23:44:46  miller
    ** Added simple error checking for ded.txt on fopen()
    **
@@ -23,6 +26,7 @@
 
   */
 
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -30,9 +34,6 @@
 #include <fcntl.h>
 #include "config.h"
 #include "dip.h"
-
-int write();
-int close();
 
 struct dedication ded[MAXUSER];
 int main()

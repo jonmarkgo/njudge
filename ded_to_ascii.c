@@ -1,11 +1,15 @@
 /*
    ** $Log$
+   ** Revision 1.2  2002/08/27 22:27:47  millis
+   ** Updated for automake/autoconf functionality
+   **
    ** Revision 1.1  2002/04/11 23:49:00  miller
    ** First draft.
    **
 
  */
 
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -13,9 +17,6 @@
 #include <fcntl.h>
 #include "config.h"
 #include "dip.h"
-
-int close();  /*missing prototype */
-int read();
 
 struct dedication ded[MAXUSER];
 int main()
