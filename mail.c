@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.77  2005/08/05 01:13:58  alange
+ * Bug 435 SET [NO]BROADCAST
+ *
  * Revision 1.76  2005/01/06 00:56:26  millis
  * Fix Bug 395, don't allow press to be copied inadvertently
  *
@@ -1613,6 +1616,8 @@ int mail(void)
 						break;;
 					}
 					fprintf(rfp, "You have terminated game '%s'.  ", dipent.name);
+					sprintf(subjectline, "%s:%s - %s Game Terminated", JUDGE_CODE, dipent.name, dipent.phase);
+
 					if (dipent.seq[0] == 'x') {
 					      fprintf(rfp,"The game will self destruct in one week.\n");
 
@@ -1651,8 +1656,6 @@ int mail(void)
 						bailout(E_FATAL);
 					}
 					msg_header(qfp);
-
-					sprintf(subjectline, "%s:%s - %s Game Terminated", JUDGE_CODE, dipent.name, dipent.phase);
 
 					pprintf(cfp, "%s%s as %s has terminated\n",
 						NowString(), xaddr, powers[dipent.players[player].power]);
