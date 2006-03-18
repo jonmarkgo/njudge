@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.70  2005-12-28 14:13:02  russblau
+ * Fix "SET CONCEDE" bug; Judge should now be able to distinguish between
+ * SET CONCEDE and SET CONC XYZ.
+ *
  * Revision 1.69  2005/11/10 12:08:05  millis
  * Bug 442, NoGracePress flag handling.
  *
@@ -3449,7 +3453,7 @@ CATF_SETOFF,
 				break;
 			}
 
-			if (mail_date(&s, &dates, 0, rfp, 0)) {
+			if (mail_date(&s, &dates, 1, rfp, DT_ABS_START)) {
 				fprintf(rfp, "%sInvalid absence cancel date specified.\n\n", t);
 				s = "";
 				break;
