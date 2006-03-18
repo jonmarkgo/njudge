@@ -1,6 +1,10 @@
 
 /*
    ** $Log$
+   ** Revision 1.6  2004/07/26 23:17:24  millis
+   ** Bug 340: default to 00:00 for absence start and 23:59 for absence end.
+   ** All other uses of date function stay unaltered.
+   **
    ** Revision 1.5  2004/07/04 03:49:40  alange
    ** Bug 323. Rewrite date calculation logic to take advantage of mktime().
    ** Semantics may be slightly different in evaluating ambiguous dates.
@@ -261,23 +265,23 @@ int mail_date(char **p, long *date, int past, FILE * rfp, int date_type)
 	if (t1 == -1)
 	{
 		fprintf(rfp,"Unable to calculate date:  ");
-                fprintf(rfp,"%4.4d-%2.2d-%2.2d %2.2d:%2.2d:%2.2d\n",
-			t.tm_year+1900, t.tm_mon+1, t.tm_mday,
+                fprintf(rfp,"%2.2d %2.2d %4.4d %2.2d:%2.2d:%2.2d\n",
+			t.tm_mday, t.tm_mon+1, t.tm_year+1900,
 			t.tm_hour, t.tm_min, t.tm_sec);
                 return 1;
 	}
 
 	if (!past && t1 < t2)
 	{
-		fprintf(rfp,"The given date (%4.4i-%2.2i-%2.2i %i:%2.2i) should be in the future, but it is in the past.\n",
-                    t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min);
+		fprintf(rfp,"The given date (%2.2i %s %4.4i %i:%2.2i) should be in the future, but it is in the past.\n",
+                    t.tm_mday, mons[t.tm_mon+1], t.tm_year+1900, t.tm_hour, t.tm_min);
                 return 1;
 	}
 
 	if (!past && (year == -1 || mon == -1 || dom == -1) && t1 - t2 > 120*24*60*60)
 	{
-		fprintf(rfp,"The caluculated date (%4.4i-%2.2i-%2.2i %i:%2.2i) is more than 120 days in the future.\nIf this is what you want, then specify all of year, month and day.\n",
-                    t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min);
+		fprintf(rfp,"The caluculated date (%2.2i %s %4.4i %i:%2.2i) is more than 120 days in the future.\nIf this is what you want, then specify all of year, month and day.\n",
+                    t.tm_mday, mons[t.tm_mon+1], t.tm_year+1900, t.tm_hour, t.tm_min);
                 return 1;
         }
 
