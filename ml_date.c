@@ -1,6 +1,10 @@
 
 /*
    ** $Log$
+   ** Revision 1.7  2006-03-18 22:21:13  alange
+   **
+   ** Make error message more clear when guessed date is not what was expected.
+   **
    ** Revision 1.6  2004/07/26 23:17:24  millis
    ** Bug 340: default to 00:00 for absence start and 23:59 for absence end.
    ** All other uses of date function stay unaltered.
@@ -280,7 +284,7 @@ int mail_date(char **p, long *date, int past, FILE * rfp, int date_type)
 
 	if (!past && (year == -1 || mon == -1 || dom == -1) && t1 - t2 > 120*24*60*60)
 	{
-		fprintf(rfp,"The caluculated date (%2.2i %s %4.4i %i:%2.2i) is more than 120 days in the future.\nIf this is what you want, then specify all of year, month and day.\n",
+		fprintf(rfp,"The calculated date (%2.2i %s %4.4i %i:%2.2i) is more than 120 days in the future.\nIf this is what you want, then specify all of year, month and day.\n",
                     t.tm_mday, mons[t.tm_mon+1], t.tm_year+1900, t.tm_hour, t.tm_min);
                 return 1;
         }
