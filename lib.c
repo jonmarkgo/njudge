@@ -1,4 +1,9 @@
 	/* $Log$
+	/* Revision 1.33  2006-05-03 01:25:00  alange
+	/*
+	/* Bug 369. Use time functions to deal with deadline advances. Prevent
+	/* unexpected results when Daylight Saving Time (Summer Time) begins.
+	/*
 	 * Revision 1.32  2005-11-10 12:08:06  millis
 	 * Bug 442, NoGracePress flag handling.
 	 *
@@ -874,6 +879,8 @@ int absence_adjust(long *deadline)
 {
         int ret = 0; /* Set to 1 if adjusted times */
         int i,j;
+	long now;
+	time (&now);
 
         for (i =0; i < dipent.n; i++ )
         {
@@ -906,8 +913,8 @@ int absence_adjust(long *deadline)
                 {
                     if (dipent.players[i].absence_start[j] != 0L ) {
 
-                        if (dipent.players[i].absence_start[j] <= *deadline ) {
-                                if (dipent.players[i].absence_end[j] <= *deadline ) {
+                        if (dipent.players[i].absence_start[j] <= now) {
+                                if (dipent.players[i].absence_end[j] <= now) {
                                         /* OK, This deadline is no longer needed */
 					/* but bump up total anyway */
 					dipent.players[i].absence_total += 
