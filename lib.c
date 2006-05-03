@@ -1,5 +1,7 @@
-	/*
-	 * $Log$
+	/* $Log$
+	 * Revision 1.32  2005-11-10 12:08:06  millis
+	 * Bug 442, NoGracePress flag handling.
+	 *
 	 * Revision 1.31  2004/10/17 22:18:48  alange
 	 * Fix Bug 369: deadline problems ater time changes.
 	 *
@@ -970,24 +972,54 @@ int deadline(sequence *seq, int new)
 
                 if (temp < dipent.deadline)
                         temp = dipent.deadline;
-                if (seq->clock >= 0) {
+		/* Deal with clock parameter */
+                if (seq->clock >= 0) 
+		{
                         tm = localtime(&temp);
-                        i = seq->clock * 60 - ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec);
-                        if (i < 0)
-                                i += 24 * 60 * 60;
-                        temp += i;
-			if (i > 0) adjusted = 1;
+			if ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec > seq->clock * 60)
+				tm->tm_mday ++;
+			tm->tm_hour = 0;
+			tm->tm_min = seq->clock % 1440;
+			tm->tm_sec = 0;
+			tm->tm_isdst = -1;
+			temp = mktime(tm);
+			if (temp < 0)
+			{
+				tm->tm_isdst = 0;
+				temp = mktime(tm);
+			}
+			adjusted = 1;
                 }
+		/* Deal with days parameter */
                 for (k = 0; k < 8; k++) {
                         tm = localtime(&temp);
                         if (seq->days[tm->tm_wday] == '-')
 			{
-                                temp += 24 * 60 * 60;
+				tm->tm_isdst = -1;
+				tm->tm_mday ++;
+				tm->tm_hour = 0;
+				tm->tm_min = 0;
+				tm->tm_sec = 0;
+                        	temp = mktime(tm);
+				if (temp < 0)
+				{
+					tm->tm_isdst = 0;
+	                                temp = mktime(tm);
+	                        }
 				adjusted = 1;
 			}
                         else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
 			{
-                                temp += (12 - tm->tm_hour) * 60 * 60 - tm->tm_min * 60 - tm->tm_sec;
+				tm->tm_isdst = -1;
+				tm->tm_hour = 12;
+				tm->tm_min = 0;
+				tm->tm_sec = 0;
+                        	temp = mktime(tm);
+				if (temp < 0)
+				{
+					tm->tm_isdst = 0;
+	                                temp = mktime(tm);
+	                        }
 				adjusted = 1;
 			}
                         else
@@ -1009,13 +1041,35 @@ int deadline(sequence *seq, int new)
 
                 dipent.process = temp;
                 temp += (int) (seq->grace * HRS2SECS);
-                if (dipent.flags & F_GRACEDAYS) {
-                        for (k = 0; k < 8; k++) {
+                if (dipent.flags & F_GRACEDAYS) 
+		{
+                        for (k = 0; k < 8; k++) 
+			{
                                 tm = localtime(&temp);
                                 if (seq->days[tm->tm_wday] == '-')
-                                        temp += 24 * 60 * 60;
+				{
+					tm->tm_wday++;
+					tm->tm_isdst = -1;
+					temp = mktime(tm);
+					if (temp < 0)
+					{
+						tm->tm_isdst = 0;
+						temp=mktime(tm);
+					}
+				}
                                 else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
-                                        temp += (12 - tm->tm_hour) * 60 * 60 - tm->tm_min * 60 - tm->tm_sec;
+				{
+					tm->tm_hour = 12;
+					tm->tm_min = 0;
+					tm->tm_sec = 0;
+					tm->tm_isdst = -1;
+					temp = mktime(tm);
+					if (temp < 0)
+					{
+						tm->tm_isdst = 0;
+						temp = mktime(tm);
+					}
+				}
                                 else
                                         break;
                         }
