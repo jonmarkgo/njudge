@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2005/06/16 01:44:52  alange
+ * Bug 257: Notify masters on bailout recovery and time-warp.
+ *
  * Revision 1.26  2004/10/23 22:43:29  millis
  * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
  *
@@ -614,7 +617,7 @@ int getseq(FILE * fp, char *line, sequence * seq)
 		s = lookfor(s, keys, nentry(keys), &i);
 		switch (action[i]) {
 		case 'c':
-			if (sscanf(s, "%d", &i) != 1 || i > 1440) {
+			if (sscanf(s, "%d", &i) != 1 || i >= 1440) {
 				fprintf(fp, "%sBad clock specification.\n", line);
 				return 1;
 			}
