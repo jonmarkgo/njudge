@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.68  2005/06/16 01:44:52  alange
+ * Bug 257: Notify masters on bailout recovery and time-warp.
+ *
  * Revision 1.67  2004/10/24 09:02:31  millis
  * Small victory handling corrections
  *
@@ -1065,7 +1068,7 @@ void CheckRemindPlayer(int player, long one_quarter)
 	if (*(dipent.players[player].address) != '*' &&
 	    !(dipent.players[player].status & SF_RESIGN)) {
 		MailOut(line, dipent.players[player].address);
-		sprintf(line,"Move reminder send to %s in game %s", dipent.players[player].address, dipent.name);
+		sprintf(line,"Move reminder sent to %s in game %s", dipent.players[player].address, dipent.name);
 		DIPINFO(line);
 	}
 }
@@ -1715,7 +1718,10 @@ int process(void)
 				dipent.phase[0] == 'F' ? "Fall" :
 				dipent.phase[0] == 'U' ? "Summer" : "Spring", dipent.phase + 1);
 			if (broadcast_absence_adjust)
+			{
 			    fprintf(rfp,"Requested absence(s) activated.\n");
+			    broadcast_absence_adjust = 0;
+			}
 			fprintf(rfp, "The deadline for orders will be %s.\n",
 				ptime(&dipent.deadline));
 			if ((dipent.phase[5] == 'B' && 
