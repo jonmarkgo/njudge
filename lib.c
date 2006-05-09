@@ -1,9 +1,13 @@
 	/* $Log$
-	/* Revision 1.33  2006-05-03 01:25:00  alange
-	/*
-	/* Bug 369. Use time functions to deal with deadline advances. Prevent
-	/* unexpected results when Daylight Saving Time (Summer Time) begins.
-	/*
+	 * Revision 1.34  2006-05-03 02:38:41  alange
+	 *
+	 * Bug 466.
+	 *
+	 * Revision 1.33  2006-05-03 01:25:00  alange
+	 *
+	 * Bug 369. Use time functions to deal with deadline advances. Prevent
+	 * unexpected results when Daylight Saving Time (Summer Time) begins.
+	 *
 	 * Revision 1.32  2005-11-10 12:08:06  millis
 	 * Bug 442, NoGracePress flag handling.
 	 *
