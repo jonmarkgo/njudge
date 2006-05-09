@@ -1,4 +1,8 @@
-	/* $Log$
+	/*
+	 * $Log$
+	 * Revision 1.35  2006-05-09 22:51:45  millis
+	 * Removed unecessary comment '/'
+	 *
 	 * Revision 1.34  2006-05-03 02:38:41  alange
 	 *
 	 * Bug 466.
