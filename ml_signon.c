@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.47  2005/06/09 09:45:16  alange
+ * Fix bug 406. Masters and observers no longer set to wait on takeover.
+ *
  * Revision 1.46  2004/09/28 20:38:40  alange
  * Bug 353 Faster deadline for first turn when NO_PRESS
  *
@@ -1098,7 +1101,7 @@ int mail_access(int ignore, int luserid, int lsiteid, int llevel, int *idx)
 			msg_header(rfp);
 		fprintf(rfp, "Sorry, game '%s' requires a dedication of at least %d and you\n",
 			dipent.name, dipent.dedicate);
-		fprintf(rfp, "are currently rated at %d.  Use 'get deadline' for more info.\n",
+		fprintf(rfp, "are currently rated at %d.  Use 'get dedsystems' for more info.\n",
 			ded[luserid].r);
 		return -1;
 	}
