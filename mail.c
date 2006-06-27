@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.78  2006-03-18 22:50:32  alange
+ *
+ * Fix bug 460.
+ *
  * Revision 1.77  2005/08/05 01:13:58  alange
  * Bug 435 SET [NO]BROADCAST
  *
@@ -2560,7 +2564,7 @@ void mail_reply(int err)
 	if (junkmail)
 		return;
 
-	if (!strncmp(subject, "Re: ", 4)) {
+	if (!strncasecmp(subject, "Re: ", 4)) {
 		shiftleft(4);
 
 		if (!strncmp(subject, "[Error Flag] ", 13))
