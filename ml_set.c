@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.71  2006-03-18 22:22:42  alange
+ *
+ * Fix Bug 461 to allow cancellation of absence in the past.
+ *
  * Revision 1.70  2005-12-28 14:13:02  russblau
  * Fix "SET CONCEDE" bug; Judge should now be able to distinguish between
  * SET CONCEDE and SET CONC XYZ.
@@ -974,7 +978,7 @@ void mail_setp(char *s)
 	    "address", "ad#",
 	    "password#", "pw#", "p#",
 	    "wait", "w#", "no wait", "now#",
-	    "preference", "pref",
+	    "preferences", "preference", "pref",
 	    "moves", "builds", "adjusts", "retreats",
 	    "move", "build", "adjust", "retreat",
 	    "deadline", "start", "grace",
@@ -1082,7 +1086,7 @@ void mail_setp(char *s)
 
 	static unsigned char action[] = {
 	    'x', SET_NOOP, SET_NOOP, SET_ADD, SET_ADD, SET_PW, SET_PW, SET_PW,
-	    SET_WAIT, SET_WAIT, SET_NOWAIT, SET_NOWAIT, SET_PREF, SET_PREF,
+	    SET_WAIT, SET_WAIT, SET_NOWAIT, SET_NOWAIT, SET_PREF, SET_PREF, SET_PREF,
 	    SET_MOVES, SET_BUILD, SET_BUILD, SET_RETREAT, SET_MOVES, SET_BUILD,
 	    SET_BUILD, SET_RETREAT, SET_DEADLINE, SET_START, SET_GRACE,
 	    SET_NONMR, SET_NONMR, SET_NMR, SET_NMR, SET_MODERATE,
@@ -1179,7 +1183,7 @@ void mail_setp(char *s)
 
 	static char privs[] = {
 	    'x', PRV_NOOP, PRV_NOOP, PRV_ADD, PRV_ADD, PRV_PW, PRV_PW, PRV_PW,
-	    PRV_WAIT, PRV_WAIT, PRV_NOWAIT, PRV_NOWAIT, PRV_PREF, PRV_PREF,
+	    PRV_WAIT, PRV_WAIT, PRV_NOWAIT, PRV_NOWAIT, PRV_PREF, PRV_PREF, PRV_PREF,
 	    PRV_MOVES, PRV_BUILD, PRV_BUILD, PRV_RETREAT, PRV_MOVES, PRV_BUILD,
 	    PRV_BUILD, PRV_RETREAT, PRV_DEADLINE, PRV_START, PRV_GRACE,
 	    PRV_NONMR, PRV_NONMR, PRV_NMR, PRV_NMR, PRV_MODERATE,
