@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.47  2005-11-10 12:08:05  millis
+ * Bug 442, NoGracePress flag handling.
+ *
  * Revision 1.46  2004/09/13 23:03:46  millis
  * Further changes for Bug 363
  *
@@ -838,6 +841,11 @@ void params(FILE * fp)
 		}
 		fprintf(fp, "    Index:  %-3d\n", squares / dipent.np);
 	}
+
+	if (*dipent.comment) {
+	    fprintf(fp, "\n%s\n", dipent.comment);
+	}
+
 	return;
 }
 
