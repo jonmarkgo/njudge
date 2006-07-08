@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2004-12-28 10:04:40  millis
+ * Fixed Bug 393 (Mach2 siege break failed)
+ *
  * Revision 1.27  2004/10/23 21:08:59  millis
  * Fix Bug 375, Mach2 allow besieged to dislodge
  *
@@ -118,7 +121,7 @@ int ma_movein(char **s, int p)
 	/* int p; Power specification */
 
 	char c, order;
-	unsigned char *t;
+	char *t;
 	char target_type;
 	char cc; /* MLM 12/06/2001 remember unit type for convert order */
 	int i, j, p1, p2, u, u1, u2, c1, c2, bl;
@@ -556,7 +559,8 @@ int ma_moveout(int pt)
 /*  Process movement orders.  */
 
 	int u, u2, u3, u4,  bounce = 0, i, index, p, c1;
-	unsigned char *s, *t, c, contest[NPROV + 1], converted[NPROV+1];
+	char *t;
+	unsigned char *s, c, contest[NPROV + 1], converted[NPROV+1];
 	int unit_dislodged;
 	char cbuffer[1024];
 
@@ -1351,7 +1355,7 @@ int ma_moveout(int pt)
 				if (has_prebellion(p = unit[u].loc)) {
 					if (!i++)
 						fprintf(rfp, "\n");
-					fprintf(rfp, "Rebellion in %s put down.\n", pr[p].name);
+					fprintf(rfp, "Rebellion in the province of %s put down.\n", pr[p].name);
 					remove_prebellion(p);
 				}
 			}
@@ -1391,9 +1395,11 @@ int ma_moveout(int pt)
 					if (has_crebellion(p)) {
 						if (!i++)
 							fprintf(rfp, "\n");
-						fprintf(rfp, "Rebellion in %s put down.\n", pr[p].name);
+						fprintf(rfp, "Rebellion in the city of %s put down.\n", pr[p].name);
 					}
 					remove_siege(p);
+					if (has_prebellion(p)) 
+					    fprintf(rfp, "Rebellion in the province of %s put down.\n", pr[p].name);
 					remove_rebellion(p);
 				} else {
 					/* Bug 249, only set siege if garrison is not disbanding */
@@ -1421,7 +1427,7 @@ int ma_moveout(int pt)
 			if (unit[u].owner <= 0)
 				continue;
 			if (unit[u].status == 'r') {
-				unsigned char buffer[1024];
+				char buffer[1024];
 				unit[u].convoy = &heap[hp];
 				t = buffer;
 				sprintf(t, "The %s %s in %s%s", owners[unit[u].owner],
