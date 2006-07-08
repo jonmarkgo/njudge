@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.29  2006-07-08 20:45:32  root
+ * Fix Bug 426, adding description of whether province or city (or both) rebellion relieved. Also removed (some) compile warnings.
+ *
  * Revision 1.28  2004-12-28 10:04:40  millis
  * Fixed Bug 393 (Mach2 siege break failed)
  *
@@ -662,14 +665,15 @@ int ma_moveout(int pt)
 		case 'v':	/* CONVERT ORDER */
 			/* A besieged unit can not convert */
 			if (is_garrison(u)) {
-				if (is_sieged(p) && unit[pr[p].gunit].owner != unit[u].owner)
+				if (is_sieged(p) && unit[pr[p].unit].owner != unit[u].owner)
 					result[u] = BESIEGE;
 			} else {
 				/* 
 				   ** A city with a garrison or rebellion 
 				   ** can't be entered 
 				 */
-				if (has_garrison(p) || has_crebellion(p)) {
+				if ((has_garrison(p) && unit[pr[p].gunit].owner != unit[u].owner) 
+						|| has_crebellion(p)) {
 					result[u] = DOSIEGE;
 				}
 			}
