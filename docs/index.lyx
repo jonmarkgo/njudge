@@ -206,6 +206,11 @@ The increment is added to the player's dedication rating.
 
 \begin_layout Description
 ply/bgs BECOME MASTER
+\begin_inset LatexCommand \index{BECOME MASTER}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -223,7 +228,12 @@ master/moderator of that game.
 \end_layout
 
 \begin_layout Description
-mod/ BECOME power
+mod/ BECOME
+\begin_inset LatexCommand \index{BECOME}
+
+\end_inset
+
+ power
 \end_layout
 
 \begin_layout Standard
@@ -236,7 +246,12 @@ power.
 \end_layout
 
 \begin_layout Description
-ply/ BROADCAST [options]
+ply/ BROADCAST
+\begin_inset LatexCommand \index{BROADCAST}
+
+\end_inset
+
+ [options]
 \end_layout
 
 \begin_layout Standard
@@ -283,44 +298,43 @@ To clear any pending orders entered with the PHASE command.
 there is no way to clear orders entered for the current phase.)
 \end_layout
 
-\begin_layout Standard
+\begin_layout Description
 any/bgs CREATE ?name password [variant] [option [option ...]]
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To create a new game on the Judge.
- This command will fail, of course,
+ This command will fail, of course, if the game "name" already exists, or
+ if the Judge is not allowing creation of new games.
+ The game will be Standard unless a variant and/or options are specified.
+ The "variant" and "option" specifications for this command are the same
+ as those accepted by the "SET VARIANT" command, below.
+ 
 \end_layout
 
 \begin_layout Standard
-if the game "name" already exists, or if the Judge is not allowing
+Get file 'master' for more detail on creating games.
 \end_layout
 
-\begin_layout Standard
-creation of new games.
- The game will be Standard unless a variant
-\end_layout
+\end_deeper
+\begin_layout Description
+ply/ DIARY
+\begin_inset LatexCommand \index{DIARY}
 
-\begin_layout Standard
-and/or options are specified.
- The "variant" and "option"
-\end_layout
+\end_inset
 
-\begin_layout Standard
-specifications for this command are the same as those accepted by the
-\end_layout
-
-\begin_layout Standard
-"SET VARIANT" command, below.
- Get file 'master' for more detail on
-\end_layout
-
-\begin_layout Standard
-creating games.
-\end_layout
+ [option [option]] 
+\begin_inset Marginal
+status open
 
 \begin_layout Description
-ply/ DIARY [option [option]] {1.5.0}
+{1.5.0}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -356,7 +370,22 @@ DELETE [number]: Deletes the specified diary entry numbers.
 \end_layout
 
 \begin_layout Description
-mod/ EJECT power|email {0.8.9}
+mod/ EJECT
+\begin_inset LatexCommand \index{EJECT}
+
+\end_inset
+
+ power|email 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -373,75 +402,110 @@ A moderator-only command to resign a particular power.
 \end_deeper
 \begin_layout Description
 ply/ ENDBROADCAST
+\begin_inset LatexCommand \index{ENDBROADCAST}
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-ENDPRESS
+\begin_layout Description
+ply/ ENDPRESS
+\begin_inset LatexCommand \index{ENDPRESS}
+
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Terminate a Press or Broadcast message.
  Note that either form of this command will terminate either kind of message.
 \end_layout
 
+\end_deeper
 \begin_layout Description
-adm/ FIXID siteid site_name
+adm/ FIXID
+\begin_inset LatexCommand \index{FIXID}
+
+\end_inset
+
+ siteid site_name
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Sets all players who have registered with the specified site name to
+Sets all players who have registered with the specified site name to have
+ a siteid as indicated.
+ By default all users get their area code times 100 as a siteid and must
+ be fixed to some non- even multiple of 100.
 \end_layout
 
-\begin_layout Standard
-have a siteid as indicated.
- By default all users get their area code
-\end_layout
+\end_deeper
+\begin_layout Description
+mod/ FORCE BEGIN
+\begin_inset LatexCommand \index{FORCE BEGIN}
 
-\begin_layout Standard
-times 100 as a siteid and must be fixed to some non- even multiple of
-\end_layout
+\end_inset
 
-\begin_layout Standard
-100.
-\end_layout
+ 
+\begin_inset Marginal
+status open
 
 \begin_layout Description
-mod/ FORCE BEGIN {1.4.0}
+{1.4.0}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
 \begin_layout Standard
 Forces a game to begin, even if not enough players are signed on.
- The
+ The missing players will be filled in by 'dummy players' that are already
+ abandoned (to allow real people to signon).
 \end_layout
 
-\begin_layout Standard
-missing players will be filled in by 'dummy players' that are already
-\end_layout
-
-\begin_layout Standard
-abandoned (to allow real people to signon).
-\end_layout
-
+\end_deeper
 \begin_layout Description
-any/ GET file
+any/ GET 
+\family typewriter
+\series bold
+\shape italic
+<file>
+\family default
+\series default
+\shape default
+
+\begin_inset LatexCommand \index{GET <file>}
+
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To get a particular file.
- For a complete list of files, get file
+ 
 \end_layout
 
 \begin_layout Standard
-'flist'.
- Get file 'info' for a description of the more important
+For a complete list of files, get file 'flist'; get file 'info' for a descriptio
+n of only the more important files.
 \end_layout
 
-\begin_layout Standard
-files.
-\end_layout
-
+\end_deeper
 \begin_layout Description
 any/ GET DEDICATION
+\begin_inset LatexCommand \index{GET DEDICATION}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -464,6 +528,11 @@ dedication point count.
 
 \begin_layout Description
 any/ GET PACKAGE
+\begin_inset LatexCommand \index{GET PACKAGE}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -573,7 +642,17 @@ from
 
 \end_deeper
 \begin_layout Description
-any/ INFO PLAYER address {1.0.0}
+any/ INFO PLAYER address 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{1.0.0}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -611,6 +690,11 @@ along with unit positions and supply center holdings.
 
 \begin_layout Description
 ply/ LIST
+\begin_inset LatexCommand \index{LIST}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -623,6 +707,11 @@ currently signed on game.
 
 \begin_layout Description
 any/ MAP name [n]
+\begin_inset LatexCommand \index{MAP name [n]}
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -646,6 +735,11 @@ any/ MAP * [n]
 \end_deeper
 \begin_layout Description
 adm/ NOCONTROL
+\begin_inset LatexCommand \index{NOCONTROL}
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -667,7 +761,17 @@ To become an observer.
 
 \end_deeper
 \begin_layout Description
-mod/ PAUSE {1.5.0}
+mod/ PAUSE 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{1.5.0}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -693,7 +797,17 @@ To specify that any following orders should be held until the specified
 
 \end_deeper
 \begin_layout Description
-ply/ POSTAL PRESS {1.2.0}
+ply/ POSTAL PRESS 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{1.2.0}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -707,7 +821,22 @@ If postal press is enabled, this command will append the lines following
 
 \end_deeper
 \begin_layout Description
-mod/ PREDICT {0.8.9}
+mod/ PREDICT
+\begin_inset LatexCommand \index{PREDICT}
+
+\end_inset
+
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -731,7 +860,12 @@ To send a press message; options must be specified, and the message may
 
 \end_deeper
 \begin_layout Description
-mod/ PROCESS [season year phase]
+mod/ PROCESS
+\begin_inset LatexCommand \index{PROCESS}
+
+\end_inset
+
+ [season year phase]
 \end_layout
 
 \begin_deeper
@@ -756,7 +890,22 @@ Get file 'master' for further information.
 
 \end_deeper
 \begin_layout Description
-mod/ PROMOTE address {0.8.9}
+mod/ PROMOTE
+\begin_inset LatexCommand \index{PROMOTE}
+
+\end_inset
+
+ address 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -766,7 +915,12 @@ To promote the observer with the specified email address to also be a moderator.
 
 \end_deeper
 \begin_layout Description
-adm/ RECORD userid plyrdata_field value SPECIAL_PW {1.0.0}
+adm/ RECORD
+\begin_inset LatexCommand \index{RECORD}
+
+\end_inset
+
+ userid plyrdata_field value SPECIAL_PW {1.0.0}
 \end_layout
 
 \begin_deeper
@@ -779,349 +933,326 @@ Adjusts the given user's plyrdata record field given by field to a new value
 \end_layout
 
 \end_deeper
-\begin_layout Standard
-any/ REGISTER ...
+\begin_layout Description
+any/ REGISTER 
+\begin_inset LatexCommand \index{REGISTER }
+
+\end_inset
+
+...
  END
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To register yourself.
  Get file 'form'.
  Also, see command "IAMALSO".
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 ply/ RESIGN
+\begin_inset LatexCommand \index{RESIGN}
+
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To withdraw from the game.
- This must be the LAST command in the
-\end_layout
-
-\begin_layout Standard
-message to be effective; so if you want to broadcast a farewell
-\end_layout
-
-\begin_layout Standard
-message, do so before you enter the 'resign' command.
- The moderator
-\end_layout
-
-\begin_layout Standard
-cannot RESIGN.
+ This must be the LAST command in the message to be effective; so if you
+ want to broadcast a farewell message, do so before you enter the 'resign'
+ command.
+ The moderator cannot RESIGN.
  See command "EJECT".
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 ply/ RESUME
+\begin_inset LatexCommand \index{RESUME}
+
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To restart a paused, completed or terminated game.
- The
+ The "SET [NO] RESUME" command (below) determines whether this command will
+ be accepted from any player, or only from a Master.
 \end_layout
 
-\begin_layout Standard
-"SET [NO] RESUME" command (below) determines whether this command 
+\end_deeper
+\begin_layout Description
+mod/ ROLLBACK
+\begin_inset LatexCommand \index{ROLLBACK}
+
+\end_inset
+
+ turn
 \end_layout
 
-\begin_layout Standard
-will be accepted from any player, or only from a Master.
-\end_layout
-
-\begin_layout Standard
-mod/ ROLLBACK turn
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
 Rolls the game back to a previously processed turn.
- Get file
+ 
 \end_layout
 
 \begin_layout Standard
-'master'.
+Get file 'master' for more information.
 \end_layout
 
-\begin_layout Standard
-any/ SEND [ME] file
+\end_deeper
+\begin_layout Description
+any/ SEND [ME] <file>
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Equivalent to "GET file".
 \end_layout
 
-\begin_layout Standard
-ply/ SET [NO] ABSENCE start_date [TO end_date] {0.8.7}
+\end_deeper
+\begin_layout Description
+ply/ SET [NO] ABSENCE start_date [TO end_date] 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.7}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
 \begin_layout Standard
 Cancel/request an absence period.
- Does not affect the deadline for
-\end_layout
-
-\begin_layout Standard
-the current phase, but no subsequent deadlines will be set during the
-\end_layout
-
-\begin_layout Standard
-absence period.
+ Does not affect the deadline for the current phase, but no subsequent deadlines
+ will be set during the absence period.
  Get file 'absence' for details.
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/ SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To change what users can sign on.
  "ANY" is the default.
- Since the
+ Since the "site" setting is dependent on what users put in their registration
+ forms, this command is no longer widely used.
 \end_layout
 
-\begin_layout Standard
-"site" setting is dependent on what users put in their registration
-\end_layout
-
-\begin_layout Standard
-forms, this command is no longer widely used.
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 ply/ SET ADDRESS [reply_address]
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 To change where your reports go.
- If you don't specify an address, the
+ If you don't specify an address, the address from the mail headers (specificall
+y, the 
+\family typewriter
+\series bold
+\shape italic
+last
+\family default
+\series default
+\shape default
+ Reply-To: header encountered) will be used.
+ If you signon and the address in the mail headers does not match the reporting
+ address you will get two replies, one to each address.
+ This can be fixed by using "set address" with no reply address specified.
+ You can also specify multiple addresses separated by commas, but no spaces,
+ to receive reports at two (or more) addresses.
 \end_layout
 
-\begin_layout Standard
-address from the mail headers (specifically, the _last_ Reply-To:
-\end_layout
-
-\begin_layout Standard
-header encountered) will be used.
- If you signon and the address in
-\end_layout
-
-\begin_layout Standard
-the mail headers does not match the reporting address you will get two
-\end_layout
-
-\begin_layout Standard
-replies, one to each address.
- This can be fixed by using "set
-\end_layout
-
-\begin_layout Standard
-address" with no reply address specified.
- You can also specify
-\end_layout
-
-\begin_layout Standard
-multiple addresses separated by commas, but no spaces, to receive
-\end_layout
-
-\begin_layout Standard
-reports at two (or more) addresses.
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/mac SET [NO] ADJACENT|ADJACENCY
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Disables/enables optional rule that allows bribes from nonadjacent
+Disables/enables optional rule that allows bribes from nonadjacent players.
 \end_layout
 
-\begin_layout Standard
-players.
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/bgs SET [NO] ALLIED WIN {1.7.2}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Disables/enables victory condition of an alliance, in duplex games.
-\end_layout
-
-\begin_layout Standard
-Get 'info.duplex'.
+ Get 'info.duplex'.
  Defaults to disabled.
  
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/ SET ALL PRESS
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-To request that all partial press be sent to you as the moderator of
+To request that all partial press be sent to you as the moderator of the
+ game as well as to the intended recipients.
+ Use "SET NORMAL PRESS" to disable this feature.
+ Can be used by Observers if the SET WATCH ALL PRESS command has been sent
+ by a Master.
 \end_layout
 
-\begin_layout Standard
-the game as well as to the intended recipients.
- Use "SET NORMAL
-\end_layout
-
-\begin_layout Standard
-PRESS" to disable this feature.
- Can be used by Observers if the SET
-\end_layout
-
-\begin_layout Standard
-WATCH ALL PRESS command has been sent by a Master.
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/ SET ALLOW PLAYER [-]address
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Add an address to the "allow" list for the game; or, using the "-"
+Add an address to the "allow" list for the game; or, using the "-" prefix,
+ remove an address from that list.
+ IMPORTANT: if the moderator creates an "allow" list for a game, then *only*
+ addresses on that list will be able to sign on as a player or observer.
+ This can be used to set up an invitation-only game.
+ See also command "SET DENY PLAYER".
 \end_layout
 
-\begin_layout Standard
-prefix, remove an address from that list.
- IMPORTANT: if the
-\end_layout
-
-\begin_layout Standard
-moderator creates an "allow" list for a game, then *only* addresses on
-\end_layout
-
-\begin_layout Standard
-that list will be able to sign on as a player or observer.
- This can
-\end_layout
-
-\begin_layout Standard
-be used to set up an invitation-only game.
- See also command "SET DENY
-\end_layout
-
-\begin_layout Standard
-PLAYER".
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 adm/ SET ALLOW PLAYER|MASTER [-]address
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Modifies the global "allow" lists for all games on the Judge.
- If
-\end_layout
-
-\begin_layout Standard
-these lists exist, only addresses on the list will be allowed to
-\end_layout
-
-\begin_layout Standard
-signon to games (for the PLAYER list) or to CREATE games (for the
-\end_layout
-
-\begin_layout Standard
-MASTER list).
- This is only useful for a Judge limited to private
-\end_layout
-
-\begin_layout Standard
-games.
+ If these lists exist, only addresses on the list will be allowed to signon
+ to games (for the PLAYER list) or to CREATE games (for the MASTER list).
+ This is only useful for a Judge limited to private games.
  See also command "SET DENY".
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/bgs SET ANY CENTRE[S]|CENTER[S] {0.8.9}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Allows a power to build in any owned centre during a build phase.
 \end_layout
 
+\end_deeper
+\begin_layout Description
+mod/bgs SET ANY DISBAND
+\begin_inset LatexCommand \index{SET ANY DISBAND}
+
+\end_inset
+
+ {1.4.0}
+\end_layout
+
+\begin_deeper
 \begin_layout Standard
-mod/bgs SET ANY DISBAND {1.4.0}
+Allow powers to disband any unit during a build phase (and thus gain the
+ option to rebuild on a buildable center if desired).
 \end_layout
 
 \begin_layout Standard
-Allow powers to disband any unit during a build phase (and thus
+Players must submit an adjustment order for every unit (use maintain for
+ units that are to be kept).
+ Opposite of "SET NORMAL DISBAND", see below.
 \end_layout
 
-\begin_layout Standard
-gain the option to rebuild on a buildable center if desired).
- 
-\end_layout
-
-\begin_layout Standard
-Players must submit an adjustment order for every unit (use maintain 
-\end_layout
-
-\begin_layout Standard
-for units that are to be kept).
- Opposite of "SET NORMAL DISBAND", see
-\end_layout
-
-\begin_layout Standard
-below.
-\end_layout
-
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/ SET [NO] APPROVAL {1.6.0}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Add/remove the requirement for the master to approve new players
+Add/remove the requirement for the master to approve new players before
+ they can submit moves.
+ Actual approval is via the 'set approve' command (see below).
 \end_layout
 
-\begin_layout Standard
-before they can submit moves.
- 
+\end_deeper
+\begin_layout Description
+mod/ SET [NOT] APPROVE[D] 
+\family typewriter
+\series bold
+\shape italic
+<powerlist>
+\family default
+\series default
+\shape default
+
+\begin_inset LatexCommand \index{SET [NOT] APPROVE[D] <powerlist>}
+
+\end_inset
+
+ {1.6.0}
 \end_layout
 
-\begin_layout Standard
-Actual approval is via the 'set approve' command (see below).
-\end_layout
-
-\begin_layout Standard
-mod/ SET [NOT] APPROVE[D] powerlist {1.6.0}
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
 Disapprove/approve a player from making moves.
- Disapproved players
+ Disapproved players will have any move orders rejected by the judge.
+ A list of power letters to be processed follows.
 \end_layout
 
 \begin_layout Standard
-will have any move orders rejected by the judge.
- A list of power
+One use is for foreign-language press games, to allow the master to check
+ first if a new player really can speak the required language.
 \end_layout
 
-\begin_layout Standard
-letters to be processed follows.
+\end_deeper
+\begin_layout Description
+mod/mac SET [NO] ASSASSINS
+\begin_inset LatexCommand \index{SET [NO] ASSASSINS}
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-One use is for foreign-language press games, to allow the master to
+\begin_layout Description
+mod/mac SET [NO] ASSASSINATION[S]
+\begin_inset LatexCommand \index{SET [NO] ASSASSINATION[S]}
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-check first if a new player really can speak the required language.
-\end_layout
-
-\begin_layout Standard
-mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
 Disables/enables optional assassination rules.
 \end_layout
 
-\begin_layout Standard
-mod/bgs SET [NO] ATTACK TRANSFORM {0.8.9}
+\end_deeper
+\begin_layout Description
+mod/bgs SET [NO] ATTACK TRANSFORM
+\begin_inset LatexCommand \index{SET [NO] ATTACK TRANSFORM}
+
+\end_inset
+
+ {0.8.9}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Transformations on attacked but not dislodged units will fail/work.
 \end_layout
@@ -1130,49 +1261,43 @@ Transformations on attacked but not dislodged units will fail/work.
 Get file 'transform' for more details.
 \end_layout
 
-\begin_layout Standard
-mod/ !SET [NO] AUTO CREATE {1.4.1}
+\end_deeper
+\begin_layout Description
+mod/ !SET [NO] AUTO CREATE 
+\begin_inset LatexCommand \index{SET [NO] AUTO CREATE }
+
+\end_inset
+
+{1.4.1}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Instructs the Judge (or cancel an instruction) to create a new game 
-\end_layout
-
-\begin_layout Standard
-with identical parameters when the current one finishes (in a draw or
-\end_layout
-
-\begin_layout Standard
-victory), except that the new game will be set to 'NoList'.
- Fails if a 
-\end_layout
-
-\begin_layout Standard
-sequence number cannot be added/incremented on current game name.
+Instructs the Judge (or cancel an instruction) to create a new game with
+ identical parameters when the current one finishes (in a draw or victory),
+ except that the new game will be set to 'NoList'.
+ Fails if a sequence number cannot be added/incremented on current game
+ name.
 \end_layout
 
 \begin_layout Standard
 {In reality, no functionality has yet been added for this command.}
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout Description
 mod/bgs SET [NO] AUTO DISBAND {0.8.9}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
 Disables/enables the autodisband rule.
- This rule when enables means
+ This rule when enables means that units are automatically disbanded when
+ dislodged, i.e.
+ no retreats are permitted.
 \end_layout
 
-\begin_layout Standard
-that units are automatically disbanded when dislodged, i.e.
- no
-\end_layout
-
-\begin_layout Standard
-retreats are permitted.
-\end_layout
-
+\end_deeper
 \begin_layout Standard
 mod/ SET [NO] AUTO PROC[ESS] {0.8.9}
 \end_layout
@@ -1776,20 +1901,29 @@ during build phase.
  (Default setting for Standard games.)
 \end_layout
 
-\begin_layout Standard
-mod/bgs SET [NO] HOME TRANSFER {1.7.6}
+\begin_layout Description
+mod/bgs SET [NO] HOME TRANSFER
+\begin_inset LatexCommand \index{SET [NO] HOME TRANSFER}
+
+\end_inset
+
+ {1.7.6}
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-Disallow/allow powers to make a centre their home centre, if it is 
+Disallow/allow powers to make a centre their home centre, if it is occupied
+ continuously for a full season.
 \end_layout
 
+\end_deeper
 \begin_layout Standard
-occupied continuously for a full season.
-\end_layout
+mod/bgs SET [NO] HONG KONG
+\begin_inset LatexCommand \index{SET [NO] HONG KONG}
 
-\begin_layout Standard
-mod/bgs SET [NO] HONG KONG {0.8.11}
+\end_inset
+
+ {0.8.11}
 \end_layout
 
 \begin_layout Standard
@@ -1802,7 +1936,22 @@ coded into its map file.
 \end_layout
 
 \begin_layout Standard
-mod/ SET [NO] LATE COUNT {0.8.9}
+mod/ SET [NO] LATE COUNT
+\begin_inset LatexCommand \index{SET [NO] LATE COUNT}
+
+\end_inset
+
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Standard
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1824,7 +1973,22 @@ when a new player takes over.
 \end_layout
 
 \begin_layout Standard
-mod/ SET [NO] LATE PRESS {0.8.9}
+mod/ SET [NO] LATE PRESS
+\begin_inset LatexCommand \index{SET [NO] LATE PRESS}
+
+\end_inset
+
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Standard
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1899,73 +2063,130 @@ Disables/enables optional rules allowing players to borrow money from
 the bank.
 \end_layout
 
-\begin_layout Standard
-mod/bgs SET [NO] MACH2 {1.0.2}
+\begin_layout Description
+mod/bgs SET [NO] MACH2 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{1.0.2}
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
 \begin_layout Standard
 Disables/enables Machiavelli 2nd Edition (1995) rules.
 \end_layout
 
-\begin_layout Standard
-mod/ SET [NO] MANUAL PROCESS {0.8.9}
+\end_deeper
+\begin_layout Description
+mod/ SET [NO] MANUAL PROCESS 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
 \end_layout
 
-\begin_layout Standard
-Disables/enables the requirement that the turn will only occur when
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-the moderator executes the 'PROCESS' command.
+Disables/enables the requirement that the turn will only occur when the
+ moderator executes the 'PROCESS' command.
  Disabled by default.
 \end_layout
 
-\begin_layout Standard
-mod/bgs SET [NO] MANUAL START {0.8.9}
+\end_deeper
+\begin_layout Description
+mod/bgs SET [NO] MANUAL START
+\begin_inset LatexCommand \index{SET [NO] MANUAL START}
+
+\end_inset
+
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
 \end_layout
 
-\begin_layout Standard
-Disables/enables the requirement that the game will only start when
+\end_inset
+
+
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-the moderator allows.
- If game was ManualStart and ready to go, then
+Disables/enables the requirement that the game will only start when the
+ moderator allows.
+ If game was ManualStart and ready to go, then SET NO MANUAL START (or SET
+ AUTO START) will start it.
+ Disabled by default.
 \end_layout
 
-\begin_layout Standard
-SET NO MANUAL START (or SET AUTO START) will start it.
- Disabled by
+\end_deeper
+\begin_layout Description
+mod/ SET MAX ABSENCE
+\begin_inset LatexCommand \index{SET MAX ABSENCE}
+
+\end_inset
+
+ <number> 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.7}
 \end_layout
 
-\begin_layout Standard
-default.
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-mod/ SET MAX ABSENCE number {0.8.7}
-\end_layout
-
+\begin_deeper
 \begin_layout Standard
 Sets the maximum absence duration that a player can set, in days.
-\end_layout
-
-\begin_layout Standard
-Default is 15.
+ Default is 15.
  This does not apply to absences set by the moderator.
 \end_layout
 
 \begin_layout Standard
-The parameter 'number' can be set no higher than 31 and no lower than
+The parameter 'number' can be set no higher than 31 and no lower than 0.
+ 
 \end_layout
 
 \begin_layout Standard
-0.
- Get file 'absence' for further details.
+Get file 'absence' for further details.
 \end_layout
 
-\begin_layout Standard
-mod/bgs SET [NO] MINOR PRESS {0.8.9}
+\end_deeper
+\begin_layout Description
+mod/bgs SET [NO] MINOR PRESS
+\begin_inset LatexCommand \index{SET [NO] MINOR PRESS}
+
+\end_inset
+
+ 
+\begin_inset Marginal
+status open
+
+\begin_layout Description
+{0.8.9}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1986,37 +2207,38 @@ allow minor phase negotiations, Judge games historically have.
 be changed once the game is in progress.
 \end_layout
 
-\begin_layout Standard
-mod/ SET MN|MNC [NUMBER] number
+\begin_layout Description
+mod/ SET MN|MNC [NUMBER] <number>
 \end_layout
 
+\begin_deeper
 \begin_layout Standard
-{Note: This command is no longer of use as Miller numbers are no
+Sets the Miller number for a game.
+ This command should only be issued after receiving a number from the Miller
+ Number Custodian (MNC)
+\begin_inset Foot
+status collapsed
+
+\begin_layout Standard
+This command is no longer of use as Miller numbers are no
 \end_layout
 
 \begin_layout Standard
 longer being maintained.
- Retained for compatibility only.}
+ Retained for compatibility only.
 \end_layout
 
-\begin_layout Standard
-Sets the Miller number for a game.
- This command should only be issued
-\end_layout
+\end_inset
 
-\begin_layout Standard
-after receiving a number from the Miller Number Custodian (MNC).
+.
 \end_layout
 
 \begin_layout Standard
 Miller numbers are only assigned to non-Standard games.
- The MNC
+ The MNC number appears in the game's listing and summary.
 \end_layout
 
-\begin_layout Standard
-number appears in the game's listing and summary.
-\end_layout
-
+\end_deeper
 \begin_layout Standard
 
 \family sans
@@ -4395,6 +4617,14 @@ Equivalent to "RESIGN".
 \end_layout
 
 \begin_layout Standard
+\begin_inset LatexCommand \printindex{}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 
 \family sans
 \size footnotesize
@@ -4405,7 +4635,18 @@ Equivalent to "RESIGN".
 
 \family sans
 \size footnotesize
-* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+* 
+\family default
+\size default
+
+\begin_inset Foot
+status open
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
 \end_layout
 
 \begin_layout Standard
@@ -4414,6 +4655,11 @@ Equivalent to "RESIGN".
 \size footnotesize
 rights reserved.
  Used with permission.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
