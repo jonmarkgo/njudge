@@ -1,0 +1,4420 @@
+#LyX 1.4.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 245
+\begin_document
+\begin_header
+\textclass article
+\language english
+\inputencoding auto
+\fontscheme avant
+\graphics default
+\paperfontsize default
+\spacing single
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language swedish
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\end_header
+
+\begin_body
+
+\begin_layout Date
+Greetings from the Diplomacy* Adjudicator!! 10 Nov, 2005
+\end_layout
+
+\begin_layout Title
+index.
+\end_layout
+
+\begin_layout Standard
+This is an alphabetical list of all the commands that the Judge will process
+ with a brief description.
+ 
+\end_layout
+
+\begin_layout Standard
+For information on how to enter Diplomacy orders, get the file 'syntax'
+ (see "GET file", below).
+\end_layout
+
+\begin_layout Standard
+A number in {curly braces} near the right margin following a command indicates
+\end_layout
+
+\begin_layout Standard
+the earliest Judge version in which the command was implemented.
+ If no number is listed, then the command is believed to work on all Judge
+ versions currently in use, although this has not been verified.
+\end_layout
+
+\begin_layout Standard
+Commands prefixed by '!' have been incompletely implemented (as explained
+ in the description).
+\end_layout
+
+\begin_layout Standard
+Each command is preceded by a code that indicates who can execute the command
+ and (where applicable) additional restrictions on when the command can
+ be executed.
+\end_layout
+
+\begin_layout Standard
+The who options are:
+\end_layout
+
+\begin_layout Description
+any: Anyone can execute the command (no SIGNON required).
+ Some commands have both an "any" form and a "ply" form; the "any" form
+ is required if the command appears before a SIGNON line, and the "ply"
+ form is required if it appears after a SIGNON.ply: Only a signed-on player
+ or observer can execute the command.
+ (Unless otherwise noted, these commands can be used by a Master, too.) Any
+ exceptions are noted in the command description.
+\end_layout
+
+\begin_layout Description
+mod: Only a Master in moderated games, anyone in unmoderated games.
+\end_layout
+
+\begin_layout Description
+mas: Only a Master can use these commands; they are not available in unmoderated
+ games.
+\end_layout
+
+\begin_layout Description
+adm: Only the administrator.
+ These commands are listed to be complete, but should *NOT* be executed
+ by nonadministrators.
+ If there is any doubt, you are not an administrator.
+\end_layout
+
+\begin_layout Standard
+The when options are:
+\end_layout
+
+\begin_layout Description
+pre: Must appear before a SIGNON command.
+\end_layout
+
+\begin_layout Description
+mac: Can only be used in a Machiavelli variant game, and only before the
+ game starts.
+\end_layout
+
+\begin_layout Description
+bgs: Should only be used Before Game Starts.
+ If used afterwards, game will have an 'irregular' flag set and will not
+ count for any rating purposes.
+\end_layout
+
+\begin_layout Standard
+Items in uppercase are keywords and must be entered exactly as specified
+\end_layout
+
+\begin_layout Standard
+(although the command parser actually is not case-sensitive), items in
+\end_layout
+
+\begin_layout Standard
+lowercase are parameters and should have an appropriate value substituted
+ in.
+\end_layout
+
+\begin_layout Standard
+Items in [square brackets] are optional.
+ Words separated by vertical bars (|)
+\end_layout
+
+\begin_layout Standard
+indicate a choice of one of the words.
+ In most cases, spaces between keywords
+\end_layout
+
+\begin_layout Standard
+are optional (for example, SIGNON and SIGN ON are equally valid), but spaces
+\end_layout
+
+\begin_layout Standard
+inserted in the middle of a word will cause an error.
+\end_layout
+
+\begin_layout Standard
+Most command parameters are self-explanatory.
+ "name" means the name of a
+\end_layout
+
+\begin_layout Standard
+game, which must be no more than 8 alphanumeric characters.
+ "address" means a
+\end_layout
+
+\begin_layout Standard
+valid email address.
+ "power" means the name (not just the first letter) of
+\end_layout
+
+\begin_layout Standard
+one of the powers in the game, which depends on the variant being played.
+\end_layout
+
+\begin_layout Standard
+Please note: whenever any behavior is described as the "default," that means
+\end_layout
+
+\begin_layout Standard
+it is set that way in the standard Judge software package that is distributed
+\end_layout
+
+\begin_layout Standard
+from devel.diplom.org -- BUT, any Judgekeeper can modify these defaults on
+ his
+\end_layout
+
+\begin_layout Standard
+own Judge installation.
+ The best way to verify what settings are in effect in
+\end_layout
+
+\begin_layout Standard
+a particular game is to use the "LIST" command.
+\end_layout
+
+\begin_layout Description
+adm/ 
+\family typewriter
+\shape italic
+ADJUST
+\family default
+\shape default
+ userid increment
+\end_layout
+
+\begin_layout Subparagraph
+The increment is added to the player's dedication rating.
+\end_layout
+
+\begin_layout Description
+ply/bgs BECOME MASTER
+\end_layout
+
+\begin_layout Standard
+Allows the sole player signed onto a particular game to become the
+\end_layout
+
+\begin_layout Standard
+master/moderator of that game.
+ Get file 'master'.
+ See also command
+\end_layout
+
+\begin_layout Standard
+"PROMOTE".
+\end_layout
+
+\begin_layout Description
+mod/ BECOME power
+\end_layout
+
+\begin_layout Standard
+Allows the moderator for a game to assume the identity of a particular
+\end_layout
+
+\begin_layout Standard
+power.
+ Get file 'master'.
+\end_layout
+
+\begin_layout Description
+ply/ BROADCAST [options]
+\end_layout
+
+\begin_layout Standard
+To send a press message; options may or not be specified, and the
+\end_layout
+
+\begin_layout Standard
+message may be terminated by "ENDBROADCAST", "ENDPRESS", "SIGNOFF", or
+\end_layout
+
+\begin_layout Standard
+the end of the (incoming) mail message.
+ The adjudicator will send as
+\end_layout
+
+\begin_layout Standard
+press any text that it encounters until it reaches a line containing
+\end_layout
+
+\begin_layout Standard
+only one of these three keywords.
+ In particular, it will ignore any
+\end_layout
+
+\begin_layout Standard
+orders or other command keywords appearing in the text of press.
+ Get
+\end_layout
+
+\begin_layout Standard
+file 'press'.
+\end_layout
+
+\begin_layout Description
+ply/ CLEAR
+\end_layout
+
+\begin_layout Standard
+To clear any pending orders entered with the PHASE command.
+ (Note:
+\end_layout
+
+\begin_layout Standard
+there is no way to clear orders entered for the current phase.)
+\end_layout
+
+\begin_layout Standard
+any/bgs CREATE ?name password [variant] [option [option ...]]
+\end_layout
+
+\begin_layout Standard
+To create a new game on the Judge.
+ This command will fail, of course,
+\end_layout
+
+\begin_layout Standard
+if the game "name" already exists, or if the Judge is not allowing
+\end_layout
+
+\begin_layout Standard
+creation of new games.
+ The game will be Standard unless a variant
+\end_layout
+
+\begin_layout Standard
+and/or options are specified.
+ The "variant" and "option"
+\end_layout
+
+\begin_layout Standard
+specifications for this command are the same as those accepted by the
+\end_layout
+
+\begin_layout Standard
+"SET VARIANT" command, below.
+ Get file 'master' for more detail on
+\end_layout
+
+\begin_layout Standard
+creating games.
+\end_layout
+
+\begin_layout Description
+ply/ DIARY [option [option]] {1.5.0}
+\end_layout
+
+\begin_layout Standard
+Diaries allow a player to record his thoughts during the game for broadcast
+ at the end of the game.
+ If the diary command is given with no options, it will default to "diary
+ record".
+ Options are:
+\end_layout
+
+\begin_layout Itemize
+RECORD: "DIARY RECORD" begins a new, numbered diary entry.
+ The Judge will read until encountering "ENDPRESS", "ENDBROADCAST", or "SIGN
+ OFF" (just like a normal press entry).
+\end_layout
+
+\begin_layout Itemize
+LIST: When a player issues "DIARY LIST", the Judge will return a numbered
+ list of his created entries, and the date and time they were created.
+\end_layout
+
+\begin_layout Itemize
+READ [number]: Issuing "DIARY READ" allows a player to read an entry he
+ has already made.
+ The number of the entry to read must be specified (it can be obtained from
+ "DIARY LIST").
+\end_layout
+
+\begin_layout Itemize
+DELETE [number]: Deletes the specified diary entry numbers.
+ Note that diary entries are not reused, so it's possible to have "holes"
+ in the numbering scheme if any entry but the most recent one is deleted.
+\end_layout
+
+\begin_layout Description
+mod/ EJECT power|email {0.8.9}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+A moderator-only command to resign a particular power.
+ This can be done at any time by the moderator.
+ The moderator MUST use this form to resign himself.
+ If an email address is specified, the command will work to resign observers
+ too.
+ The "EJECT power" form will not work if more than one person is signed
+ on to the specified power.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+ply/ ENDBROADCAST
+\end_layout
+
+\begin_layout Standard
+ENDPRESS
+\end_layout
+
+\begin_layout Standard
+Terminate a Press or Broadcast message.
+ Note that either form of this command will terminate either kind of message.
+\end_layout
+
+\begin_layout Description
+adm/ FIXID siteid site_name
+\end_layout
+
+\begin_layout Standard
+Sets all players who have registered with the specified site name to
+\end_layout
+
+\begin_layout Standard
+have a siteid as indicated.
+ By default all users get their area code
+\end_layout
+
+\begin_layout Standard
+times 100 as a siteid and must be fixed to some non- even multiple of
+\end_layout
+
+\begin_layout Standard
+100.
+\end_layout
+
+\begin_layout Description
+mod/ FORCE BEGIN {1.4.0}
+\end_layout
+
+\begin_layout Standard
+Forces a game to begin, even if not enough players are signed on.
+ The
+\end_layout
+
+\begin_layout Standard
+missing players will be filled in by 'dummy players' that are already
+\end_layout
+
+\begin_layout Standard
+abandoned (to allow real people to signon).
+\end_layout
+
+\begin_layout Description
+any/ GET file
+\end_layout
+
+\begin_layout Standard
+To get a particular file.
+ For a complete list of files, get file
+\end_layout
+
+\begin_layout Standard
+'flist'.
+ Get file 'info' for a description of the more important
+\end_layout
+
+\begin_layout Standard
+files.
+\end_layout
+
+\begin_layout Description
+any/ GET DEDICATION
+\end_layout
+
+\begin_layout Standard
+To determine the user's current dedication rating statistics.
+ This
+\end_layout
+
+\begin_layout Standard
+returns exactly the same information as "INFO PLAYER" for the user's
+\end_layout
+
+\begin_layout Standard
+mail address.
+ Before version 1.0.0, it only returned the user's
+\end_layout
+
+\begin_layout Standard
+dedication point count.
+\end_layout
+
+\begin_layout Description
+any/ GET PACKAGE
+\end_layout
+
+\begin_layout Standard
+To get the 'new user package' of files.
+ These files are generally
+\end_layout
+
+\begin_layout Standard
+sent automatically to new users at the time they register with a Judge
+\end_layout
+
+\begin_layout Standard
+(see command "REGISTER"), but they can be specifically requested with
+\end_layout
+
+\begin_layout Standard
+this command.
+ These files are the ones that all new users should read
+\end_layout
+
+\begin_layout Standard
+before attempting any Judge Diplomacy games.
+\end_layout
+
+\begin_layout Description
+any/ HELP
+\end_layout
+
+\begin_layout Standard
+The general introduction text is returned, and any other text
+\end_layout
+
+\begin_layout Standard
+following this line in the email message is ignored.
+ This is
+\end_layout
+
+\begin_layout Standard
+equivalent to "GET INFO" followed by "SIGNOFF".
+\end_layout
+
+\begin_layout Description
+ply/ HELP
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Equivalent to "GET INFO".
+\end_layout
+
+\end_deeper
+\begin_layout Description
+any/ HISTORY [name] [FROM date] [TO date] [LINES n]
+\end_layout
+
+\begin_layout Description
+any/ HISTORY [name] EXCLSTART turnId [EXCLEND turnId] [BROAD]
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Retrieve (by email) history information for the specified game.
+ A "name" is required unless the command is given after a valid SIGNON,
+ in which case the signed-on game is assumed.
+ The history information is all the messages that an observer would have
+ seen had he been signed on for the time period.
+ This includes broadcasts, but not any partial press.
+ 
+\end_layout
+
+\begin_layout Standard
+The command "HISTORY [name]" without any other arguments will retrieve all
+ history for the period from one week ago (real time) to the present, up
+ to a maximum of 1000 lines.
+ Other command specifications can be used to change the time period covered
+ and the length of the response.
+ Get file 'history' for syntax details.
+\end_layout
+
+\begin_layout Standard
+Finally, note that much game history information can also be retrieved from
+ Alain Tésio's exceptional 
+\begin_inset LatexCommand \htmlurl[Diplomacy Tools Site]{http://www.floc.net}
+
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+any/ I AM ALSO address
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To register a new email address and link it to an existing registration.
+ If your return address changes you can use this command to tell the adjudicator
+ that you are the same person without having to resubmit a complete form.
+ You must send this command 
+\emph on
+from
+\emph default
+ the new address.
+ The address specified must be one that was registered previously.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+any/ INFO PLAYER address {1.0.0}
+\end_layout
+
+\begin_layout Standard
+Prints out the current dedication and plyrdata info for the given
+\end_layout
+
+\begin_layout Standard
+e-mail address.
+\end_layout
+
+\begin_layout Description
+any/ LIST [FULL|name]
+\end_layout
+
+\begin_layout Standard
+If no optional name or keyword is specified a short list of the
+\end_layout
+
+\begin_layout Standard
+current games is generated.
+ If the FULL keyword is specified a
+\end_layout
+
+\begin_layout Standard
+detailed report including the player list of each game is generated.
+\end_layout
+
+\begin_layout Standard
+If a name is specified, the full report for that game is generated
+\end_layout
+
+\begin_layout Standard
+along with unit positions and supply center holdings.
+\end_layout
+
+\begin_layout Description
+ply/ LIST
+\end_layout
+
+\begin_layout Standard
+The detailed report of all players and units will be generated for the
+\end_layout
+
+\begin_layout Standard
+currently signed on game.
+\end_layout
+
+\begin_layout Description
+any/ MAP name [n]
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+This command is disabled as of version 1.5.0 (but listed here toinform users
+ of earlier versions).
+ You can obtain maps of any game on "public" Judges in multiple formats
+ from Alain Tésio's outstanding "Diplomacy tools" site, http://www.floc.net/
+\end_layout
+
+\end_deeper
+\begin_layout Description
+any/ MAP * [n]
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+[Disabled: see previous entry.]
+\end_layout
+
+\end_deeper
+\begin_layout Description
+adm/ NOCONTROL
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Prevents broadcast message from actually being sent.
+ For debugging.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+any/ OBSERVE name password
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To become an observer.
+ This command is equivalent to "SIGNON oname password".
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mod/ PAUSE {1.5.0}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To suspend a game.
+ Players can still send press, but moves will be blocked.
+ No game processing or deadline expiration will occur.
+ Periodic messages will be sent to remind of the pause state.
+ To resume the game, the master should issue the RESUME command.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+ply/ PHASE season year phase
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To specify that any following orders should be held until the specified
+ phase before processing.
+ Get file 'syntax'.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+ply/ POSTAL PRESS {1.2.0}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+If postal press is enabled, this command will append the lines following
+ it to the postal press file, until an "END PRESS", "END BROADCAST", or
+ "SIGN OFF" is encountered.
+ When the orders process, the postal press file is mailed to everyone signed
+ on to the game.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mod/ PREDICT {0.8.9}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Will send to the moderator a prediction of the current turn, using partial
+ orders already entered.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+ply/ PRESS options
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To send a press message; options must be specified, and the message may
+ be terminated by "END BROADCAST", "END PRESS", "SIGN OFF", or the end of
+ the (incoming) mail message.
+ Get file 'press'.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mod/ PROCESS [season year phase]
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Force the judge to process orders immediately with whatever it has in its
+ list, even if some orders are missing or erroneous.
+ The "season year phase" specification is optional but 
+\family typewriter
+\series bold
+\shape italic
+strongly
+\family default
+\series default
+\shape default
+ recommended.
+ 
+\end_layout
+
+\begin_layout Standard
+Get file 'master' for further information.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mod/ PROMOTE address {0.8.9}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To promote the observer with the specified email address to also be a moderator.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+adm/ RECORD userid plyrdata_field value SPECIAL_PW {1.0.0}
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Adjusts the given user's plyrdata record field given by field to a new value
+ given by value.
+ Fields are 1 for ontime, 2 for total, 3 for start, 4 for resignations,
+ and 5 for tookovers.
+ The SPECIAL_PW is defined in dip.conf
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+any/ REGISTER ...
+ END
+\end_layout
+
+\begin_layout Standard
+To register yourself.
+ Get file 'form'.
+ Also, see command "IAMALSO".
+\end_layout
+
+\begin_layout Standard
+ply/ RESIGN
+\end_layout
+
+\begin_layout Standard
+To withdraw from the game.
+ This must be the LAST command in the
+\end_layout
+
+\begin_layout Standard
+message to be effective; so if you want to broadcast a farewell
+\end_layout
+
+\begin_layout Standard
+message, do so before you enter the 'resign' command.
+ The moderator
+\end_layout
+
+\begin_layout Standard
+cannot RESIGN.
+ See command "EJECT".
+\end_layout
+
+\begin_layout Standard
+ply/ RESUME
+\end_layout
+
+\begin_layout Standard
+To restart a paused, completed or terminated game.
+ The
+\end_layout
+
+\begin_layout Standard
+"SET [NO] RESUME" command (below) determines whether this command 
+\end_layout
+
+\begin_layout Standard
+will be accepted from any player, or only from a Master.
+\end_layout
+
+\begin_layout Standard
+mod/ ROLLBACK turn
+\end_layout
+
+\begin_layout Standard
+Rolls the game back to a previously processed turn.
+ Get file
+\end_layout
+
+\begin_layout Standard
+'master'.
+\end_layout
+
+\begin_layout Standard
+any/ SEND [ME] file
+\end_layout
+
+\begin_layout Standard
+Equivalent to "GET file".
+\end_layout
+
+\begin_layout Standard
+ply/ SET [NO] ABSENCE start_date [TO end_date] {0.8.7}
+\end_layout
+
+\begin_layout Standard
+Cancel/request an absence period.
+ Does not affect the deadline for
+\end_layout
+
+\begin_layout Standard
+the current phase, but no subsequent deadlines will be set during the
+\end_layout
+
+\begin_layout Standard
+absence period.
+ Get file 'absence' for details.
+\end_layout
+
+\begin_layout Standard
+mod/ SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
+\end_layout
+
+\begin_layout Standard
+To change what users can sign on.
+ "ANY" is the default.
+ Since the
+\end_layout
+
+\begin_layout Standard
+"site" setting is dependent on what users put in their registration
+\end_layout
+
+\begin_layout Standard
+forms, this command is no longer widely used.
+\end_layout
+
+\begin_layout Standard
+ply/ SET ADDRESS [reply_address]
+\end_layout
+
+\begin_layout Standard
+To change where your reports go.
+ If you don't specify an address, the
+\end_layout
+
+\begin_layout Standard
+address from the mail headers (specifically, the _last_ Reply-To:
+\end_layout
+
+\begin_layout Standard
+header encountered) will be used.
+ If you signon and the address in
+\end_layout
+
+\begin_layout Standard
+the mail headers does not match the reporting address you will get two
+\end_layout
+
+\begin_layout Standard
+replies, one to each address.
+ This can be fixed by using "set
+\end_layout
+
+\begin_layout Standard
+address" with no reply address specified.
+ You can also specify
+\end_layout
+
+\begin_layout Standard
+multiple addresses separated by commas, but no spaces, to receive
+\end_layout
+
+\begin_layout Standard
+reports at two (or more) addresses.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] ADJACENT|ADJACENCY
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional rule that allows bribes from nonadjacent
+\end_layout
+
+\begin_layout Standard
+players.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] ALLIED WIN {1.7.2}
+\end_layout
+
+\begin_layout Standard
+Disables/enables victory condition of an alliance, in duplex games.
+\end_layout
+
+\begin_layout Standard
+Get 'info.duplex'.
+ Defaults to disabled.
+ 
+\end_layout
+
+\begin_layout Standard
+mod/ SET ALL PRESS
+\end_layout
+
+\begin_layout Standard
+To request that all partial press be sent to you as the moderator of
+\end_layout
+
+\begin_layout Standard
+the game as well as to the intended recipients.
+ Use "SET NORMAL
+\end_layout
+
+\begin_layout Standard
+PRESS" to disable this feature.
+ Can be used by Observers if the SET
+\end_layout
+
+\begin_layout Standard
+WATCH ALL PRESS command has been sent by a Master.
+\end_layout
+
+\begin_layout Standard
+mod/ SET ALLOW PLAYER [-]address
+\end_layout
+
+\begin_layout Standard
+Add an address to the "allow" list for the game; or, using the "-"
+\end_layout
+
+\begin_layout Standard
+prefix, remove an address from that list.
+ IMPORTANT: if the
+\end_layout
+
+\begin_layout Standard
+moderator creates an "allow" list for a game, then *only* addresses on
+\end_layout
+
+\begin_layout Standard
+that list will be able to sign on as a player or observer.
+ This can
+\end_layout
+
+\begin_layout Standard
+be used to set up an invitation-only game.
+ See also command "SET DENY
+\end_layout
+
+\begin_layout Standard
+PLAYER".
+\end_layout
+
+\begin_layout Standard
+adm/ SET ALLOW PLAYER|MASTER [-]address
+\end_layout
+
+\begin_layout Standard
+Modifies the global "allow" lists for all games on the Judge.
+ If
+\end_layout
+
+\begin_layout Standard
+these lists exist, only addresses on the list will be allowed to
+\end_layout
+
+\begin_layout Standard
+signon to games (for the PLAYER list) or to CREATE games (for the
+\end_layout
+
+\begin_layout Standard
+MASTER list).
+ This is only useful for a Judge limited to private
+\end_layout
+
+\begin_layout Standard
+games.
+ See also command "SET DENY".
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET ANY CENTRE[S]|CENTER[S] {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Allows a power to build in any owned centre during a build phase.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET ANY DISBAND {1.4.0}
+\end_layout
+
+\begin_layout Standard
+Allow powers to disband any unit during a build phase (and thus
+\end_layout
+
+\begin_layout Standard
+gain the option to rebuild on a buildable center if desired).
+ 
+\end_layout
+
+\begin_layout Standard
+Players must submit an adjustment order for every unit (use maintain 
+\end_layout
+
+\begin_layout Standard
+for units that are to be kept).
+ Opposite of "SET NORMAL DISBAND", see
+\end_layout
+
+\begin_layout Standard
+below.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] APPROVAL {1.6.0}
+\end_layout
+
+\begin_layout Standard
+Add/remove the requirement for the master to approve new players
+\end_layout
+
+\begin_layout Standard
+before they can submit moves.
+ 
+\end_layout
+
+\begin_layout Standard
+Actual approval is via the 'set approve' command (see below).
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NOT] APPROVE[D] powerlist {1.6.0}
+\end_layout
+
+\begin_layout Standard
+Disapprove/approve a player from making moves.
+ Disapproved players
+\end_layout
+
+\begin_layout Standard
+will have any move orders rejected by the judge.
+ A list of power
+\end_layout
+
+\begin_layout Standard
+letters to be processed follows.
+\end_layout
+
+\begin_layout Standard
+One use is for foreign-language press games, to allow the master to
+\end_layout
+
+\begin_layout Standard
+check first if a new player really can speak the required language.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional assassination rules.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] ATTACK TRANSFORM {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Transformations on attacked but not dislodged units will fail/work.
+\end_layout
+
+\begin_layout Standard
+Get file 'transform' for more details.
+\end_layout
+
+\begin_layout Standard
+mod/ !SET [NO] AUTO CREATE {1.4.1}
+\end_layout
+
+\begin_layout Standard
+Instructs the Judge (or cancel an instruction) to create a new game 
+\end_layout
+
+\begin_layout Standard
+with identical parameters when the current one finishes (in a draw or
+\end_layout
+
+\begin_layout Standard
+victory), except that the new game will be set to 'NoList'.
+ Fails if a 
+\end_layout
+
+\begin_layout Standard
+sequence number cannot be added/incremented on current game name.
+\end_layout
+
+\begin_layout Standard
+{In reality, no functionality has yet been added for this command.}
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] AUTO DISBAND {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the autodisband rule.
+ This rule when enables means
+\end_layout
+
+\begin_layout Standard
+that units are automatically disbanded when dislodged, i.e.
+ no
+\end_layout
+
+\begin_layout Standard
+retreats are permitted.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] AUTO PROC[ESS] {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Lets the judge automatically process turns when possible.
+ It is the
+\end_layout
+
+\begin_layout Standard
+opposite of "SET [NO] MANUAL PROCESS", see below.
+ The default setting
+\end_layout
+
+\begin_layout Standard
+is AutoProcess.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] AUTO START {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Allows a game to automatically start when it has a quorum.
+ It is the
+\end_layout
+
+\begin_layout Standard
+opposite of "SET [NO] MANUAL START", see below.
+ This is the default
+\end_layout
+
+\begin_layout Standard
+setting.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] BANK[ERS]
+\end_layout
+
+\begin_layout Standard
+Equivalent to "SET [NO] LOANS".
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] BCENTERS|BCENTRES
+\end_layout
+
+\begin_layout Standard
+Enable/disable the display of ALL owned centres (not just those of
+\end_layout
+
+\begin_layout Standard
+the power sending the command) in "Blind" variant.
+ Default disabled.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET BLANK BOARD {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Set the game to start in a build phase, with no units, so that players
+\end_layout
+
+\begin_layout Standard
+can place a different initial stating unit position.
+ Can only be set
+\end_layout
+
+\begin_layout Standard
+before the game begins, and has no effect on games that already start
+\end_layout
+
+\begin_layout Standard
+in a build phase (such as Chaos).
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] BLANK PRESS {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables players to send blank press messages.
+ Usually not
+\end_layout
+
+\begin_layout Standard
+very useful to enable.
+\end_layout
+
+\begin_layout Standard
+mod/ SET BN|BNC [NUMBER] number
+\end_layout
+
+\begin_layout Standard
+{Note: This command is no longer of use as Boardman numbers are no
+\end_layout
+
+\begin_layout Standard
+longer being maintained.
+ Retained for compatibility only.}
+\end_layout
+
+\begin_layout Standard
+Sets the Boardman number for a game.
+ This command should only be
+\end_layout
+
+\begin_layout Standard
+issued after receiving a number from the Boardman Number Custodian
+\end_layout
+
+\begin_layout Standard
+(BNC).
+ Boardman numbers are only assigned to Standard games.
+ The BNC
+\end_layout
+
+\begin_layout Standard
+number appears in the game's listing and summary.
+\end_layout
+
+\begin_layout Standard
+ply/ SET [NO] BROADCAST [PRESS] {1.4.0}
+\end_layout
+
+\begin_layout Standard
+Disables/enables receiving broadcast press messages.
+ Only possible
+\end_layout
+
+\begin_layout Standard
+for observers or moderators.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] CD
+\end_layout
+
+\begin_layout Standard
+Same as "SET [NO] NMR".
+\end_layout
+
+\begin_layout Standard
+mod/ SET CENTERS number
+\end_layout
+
+\begin_layout Standard
+Set the number of centers required to win the game to "number".
+ This
+\end_layout
+
+\begin_layout Standard
+will cause the game to end when the first player reaches this number
+\end_layout
+
+\begin_layout Standard
+of winning centers.
+ If more than one player reaches this value, then
+\end_layout
+
+\begin_layout Standard
+it is advanced to one more center than the top players have.
+ If a
+\end_layout
+
+\begin_layout Standard
+draw is acceptable then a vote is required using the SET DRAW command.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] COASTAL CONVOYS {0.8.11}
+\end_layout
+
+\begin_layout Standard
+Disables/enables fleets in coastal provinces from participating in a
+\end_layout
+
+\begin_layout Standard
+convoy.
+ Default enabled for Machiavelli games, disabled for all other
+\end_layout
+
+\begin_layout Standard
+variants (including Machiavelli2).
+\end_layout
+
+\begin_layout Standard
+mod/ SET COMMENT text
+\end_layout
+
+\begin_layout Standard
+Sets the comment that appears in the brief listing format.
+ The text
+\end_layout
+
+\begin_layout Standard
+string should be under 60 characters in length.
+\end_layout
+
+\begin_layout Standard
+mod/ SET COMMENT BEGIN
+\end_layout
+
+\begin_layout Standard
+Sets the comment that appears in the full listing format.
+ The full
+\end_layout
+
+\begin_layout Standard
+comment consists of the rest of the input mail message up to (an
+\end_layout
+
+\begin_layout Standard
+optional) SIGNOFF command.
+\end_layout
+
+\begin_layout Standard
+ply/ SET [NO] CONC[EDE] p {0.8.10}
+\end_layout
+
+\begin_layout Standard
+Cast a vote for or against a concession to power 'p' (who must be the
+\end_layout
+
+\begin_layout Standard
+largest power in the game).
+ Even though you may only concede to the
+\end_layout
+
+\begin_layout Standard
+largest power, the Judge requires you to specify the power to be sure
+\end_layout
+
+\begin_layout Standard
+you really know who you are conceding to.
+ This command is used only
+\end_layout
+
+\begin_layout Standard
+in a DIAS game (since, in a NoDias game, you can just set a one-way
+\end_layout
+
+\begin_layout Standard
+draw).
+ "SET NO CONCEDE" cancels a previous concession.
+ As with
+\end_layout
+
+\begin_layout Standard
+draws, concessions are cleared every time orders are processed, so you
+\end_layout
+
+\begin_layout Standard
+need to re-set a concession (if you still want it) every phase.
+\end_layout
+
+\begin_layout Standard
+{Note: must be entered as "SET [NO] CONC" in versions before 1.4.0}
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] CONCESSIONS {0.8.10}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the concession mechanism (see SET CONCEDE, above) in
+\end_layout
+
+\begin_layout Standard
+DIAS games.
+ Enabled by default.
+ 
+\end_layout
+
+\begin_layout Standard
+mod/ SET DEADLINE date
+\end_layout
+
+\begin_layout Standard
+Changes the deadline for the current phase.
+ Get file 'deadlines'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET DEDICATION level
+\end_layout
+
+\begin_layout Standard
+Restricts access to the game to those people with a dedication rating
+\end_layout
+
+\begin_layout Standard
+equal or greater than the indicated level.
+ The indicated level can
+\end_layout
+
+\begin_layout Standard
+not be higher than the Moderator's current dedication rating.
+ For
+\end_layout
+
+\begin_layout Standard
+information on dedication ratings, get the file 'dedsystems'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET DENY PLAYER [-]address
+\end_layout
+
+\begin_layout Standard
+Add an address to the "deny" list for the game; or, using the "-"
+\end_layout
+
+\begin_layout Standard
+prefix, remove an address from that list.
+ Any address on this list
+\end_layout
+
+\begin_layout Standard
+will be unable to sign on as a player or observer.
+ See also "SET
+\end_layout
+
+\begin_layout Standard
+ALLOW PLAYER".
+ Note that the "deny" list is not checked if an "allow"
+\end_layout
+
+\begin_layout Standard
+list exists.
+\end_layout
+
+\begin_layout Standard
+adm/ SET DENY PLAYER|MASTER [-]address
+\end_layout
+
+\begin_layout Standard
+Modifies the global "deny" lists for all games on the Judge.
+ If these
+\end_layout
+
+\begin_layout Standard
+lists exist, addresses on the list will not be able to signon to games
+\end_layout
+
+\begin_layout Standard
+(for the PLAYER list) or to CREATE games (for the MASTER list).
+ See
+\end_layout
+
+\begin_layout Standard
+also "SET ALLOW".
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] DIAS
+\end_layout
+
+\begin_layout Standard
+Disables/enables requirement that all draws must include all
+\end_layout
+
+\begin_layout Standard
+survivors.
+ Default is "DIAS".
+ Get file 'draws'.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] DICE
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional rules that introduce random events into the
+\end_layout
+
+\begin_layout Standard
+game: Variable income, bank loans, assassinations, famine and plague.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] DISBAND {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the use of a disband order during a normal movement
+\end_layout
+
+\begin_layout Standard
+phase.
+ Default enabled for Machiavelli, disabled for Machiavelli2 and
+\end_layout
+
+\begin_layout Standard
+all other variants.
+\end_layout
+
+\begin_layout Standard
+ply/ SET [NO] DRAW [powerlist]
+\end_layout
+
+\begin_layout Standard
+Cast a vote in an automated draw.
+ The "powerlist" option is only
+\end_layout
+
+\begin_layout Standard
+valid if the game is set NoDIAS.
+ Any draw vote, DIAS or NoDIAS, is
+\end_layout
+
+\begin_layout Standard
+good for one phase only.
+ All draw votes are cleared at the end of a
+\end_layout
+
+\begin_layout Standard
+phase.
+ Get file 'draws'.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] DUALITY {0.8.11}
+\end_layout
+
+\begin_layout Standard
+Disables/enables provinces with dual behaviour (both land and water).
+\end_layout
+
+\begin_layout Standard
+This is disabled by default in Standard games, and is only available
+\end_layout
+
+\begin_layout Standard
+as an option in certain variants where it is coded into the map file.
+\end_layout
+
+\begin_layout Standard
+Get file 'duality'.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET EMPTY BOARD {0.8.9}
+\end_layout
+
+\begin_layout Standard
+The same as "SET BLANK BOARD", see above.
+\end_layout
+
+\begin_layout Standard
+mod/ SET EP number
+\end_layout
+
+\begin_layout Standard
+{Note: This command is no longer of use as EP numbers are no
+\end_layout
+
+\begin_layout Standard
+longer being maintained.
+ Retained for compatibility only.}
+\end_layout
+
+\begin_layout Standard
+Sets the Electonic Protocol number for a game.
+ This command should
+\end_layout
+
+\begin_layout Standard
+only be issued after receiving a number from the Electronic Protocol
+\end_layout
+
+\begin_layout Standard
+Number Keeper (EPNK).
+ The EP number appears in the game's listing and
+\end_layout
+
+\begin_layout Standard
+summary.
+\end_layout
+
+\begin_layout Standard
+mod/ SET NO FAKE [BROADCAST]
+\end_layout
+
+\begin_layout Standard
+Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] FAMINE
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional famine rules.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] FORT[RESS] {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional fortress rules.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] GARRISON[S] {1.4.0}
+\end_layout
+
+\begin_layout Standard
+Disables/enables use of garrisons.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] GATEWAYS {0.8.11}
+\end_layout
+
+\begin_layout Standard
+Disables/enables gateways, in a variant that has this option coded
+\end_layout
+
+\begin_layout Standard
+into its map file.
+ Get file 'info.colonial'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET GRACE date
+\end_layout
+
+\begin_layout Standard
+Changes the grace period for the current phase.
+ Get file 'deadlines'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] GRACE PRESS {1.7.6}
+\end_layout
+
+\begin_layout Standard
+Disables/enables press from any player when one or more has not
+\end_layout
+
+\begin_layout Standard
+submitted complete moves (excluding to the moderator, who can always
+\end_layout
+
+\begin_layout Standard
+receive press).
+\end_layout
+
+\begin_layout Standard
+mod/ SET GREY [PRESS]
+\end_layout
+
+\begin_layout Standard
+Sets press option to grey only.
+ Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET NO GREY [PRESS]
+\end_layout
+
+\begin_layout Standard
+Same as "SET WHITE".
+\end_layout
+
+\begin_layout Standard
+mod/ SET GREY/WHITE [PRESS]
+\end_layout
+
+\begin_layout Standard
+Sets press option to grey by default with white allowed.
+ Get file
+\end_layout
+
+\begin_layout Standard
+'press'.
+\end_layout
+
+\begin_layout Standard
+ply/ SET [NO] HOLIDAY[S] {0.8.7}
+\end_layout
+
+\begin_layout Standard
+Same as SET [NO] ABSENCE.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET HOME CENTRE[S]|CENTER[S] {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Allow builds to be made only in the building power's home centers
+\end_layout
+
+\begin_layout Standard
+during build phase.
+ (Default setting for Standard games.)
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] HOME TRANSFER {1.7.6}
+\end_layout
+
+\begin_layout Standard
+Disallow/allow powers to make a centre their home centre, if it is 
+\end_layout
+
+\begin_layout Standard
+occupied continuously for a full season.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] HONG KONG {0.8.11}
+\end_layout
+
+\begin_layout Standard
+Disables/Enables "HongKong" rule in a variant that has this option
+\end_layout
+
+\begin_layout Standard
+coded into its map file.
+ Get file 'info.colonial'.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] LATE COUNT {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables late counting.
+ If enabled, every time a player is
+\end_layout
+
+\begin_layout Standard
+late the late messages will include a count of the number of times
+\end_layout
+
+\begin_layout Standard
+this player has been late in the game.
+ This counter will be reset
+\end_layout
+
+\begin_layout Standard
+when a new player takes over.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] LATE PRESS {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables players who are marked as late from sending any
+\end_layout
+
+\begin_layout Standard
+press (except to the moderator).
+\end_layout
+
+\begin_layout Standard
+mod/ SET LEVEL ANY|NOVICE|AMATEUR|INTERMEDIATE|ADVANCED|EXPERT
+\end_layout
+
+\begin_layout Standard
+Restricts access to a particular class of player.
+ The three official
+\end_layout
+
+\begin_layout Standard
+classes are Novice, Intermediate, and Expert.
+ Amateur means either
+\end_layout
+
+\begin_layout Standard
+Novice or Intermediate, and Advanced means either Intermediate or
+\end_layout
+
+\begin_layout Standard
+Expert.
+ "Any" of course means any class of player may play (and is
+\end_layout
+
+\begin_layout Standard
+the default).
+ Players can change their classification (if they feel
+\end_layout
+
+\begin_layout Standard
+their level has changed) by re-registering.
+ See command "REGISTER".
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] LIST
+\end_layout
+
+\begin_layout Standard
+Enables/disables public listing of the game.
+ If a game is set NoList
+\end_layout
+
+\begin_layout Standard
+(the default) then only people who know about it will be able to see
+\end_layout
+
+\begin_layout Standard
+it.
+ Useful for "by invitation only" games.
+ Get file 'master'.
+\end_layout
+
+\begin_layout Standard
+mod/mac SET [NO] LOANS
+\end_layout
+
+\begin_layout Standard
+Disables/enables optional rules allowing players to borrow money from
+\end_layout
+
+\begin_layout Standard
+the bank.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] MACH2 {1.0.2}
+\end_layout
+
+\begin_layout Standard
+Disables/enables Machiavelli 2nd Edition (1995) rules.
+\end_layout
+
+\begin_layout Standard
+mod/ SET [NO] MANUAL PROCESS {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the requirement that the turn will only occur when
+\end_layout
+
+\begin_layout Standard
+the moderator executes the 'PROCESS' command.
+ Disabled by default.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] MANUAL START {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the requirement that the game will only start when
+\end_layout
+
+\begin_layout Standard
+the moderator allows.
+ If game was ManualStart and ready to go, then
+\end_layout
+
+\begin_layout Standard
+SET NO MANUAL START (or SET AUTO START) will start it.
+ Disabled by
+\end_layout
+
+\begin_layout Standard
+default.
+\end_layout
+
+\begin_layout Standard
+mod/ SET MAX ABSENCE number {0.8.7}
+\end_layout
+
+\begin_layout Standard
+Sets the maximum absence duration that a player can set, in days.
+\end_layout
+
+\begin_layout Standard
+Default is 15.
+ This does not apply to absences set by the moderator.
+\end_layout
+
+\begin_layout Standard
+The parameter 'number' can be set no higher than 31 and no lower than
+\end_layout
+
+\begin_layout Standard
+0.
+ Get file 'absence' for further details.
+\end_layout
+
+\begin_layout Standard
+mod/bgs SET [NO] MINOR PRESS {0.8.9}
+\end_layout
+
+\begin_layout Standard
+Disables/enables the sending of press message during minor phases
+\end_layout
+
+\begin_layout Standard
+(retreats and builds).
+ FTF (and many postal) games commonly do not
+\end_layout
+
+\begin_layout Standard
+allow minor phase negotiations, Judge games historically have.
+ Cannot
+\end_layout
+
+\begin_layout Standard
+be changed once the game is in progress.
+\end_layout
+
+\begin_layout Standard
+mod/ SET MN|MNC [NUMBER] number
+\end_layout
+
+\begin_layout Standard
+{Note: This command is no longer of use as Miller numbers are no
+\end_layout
+
+\begin_layout Standard
+longer being maintained.
+ Retained for compatibility only.}
+\end_layout
+
+\begin_layout Standard
+Sets the Miller number for a game.
+ This command should only be issued
+\end_layout
+
+\begin_layout Standard
+after receiving a number from the Miller Number Custodian (MNC).
+\end_layout
+
+\begin_layout Standard
+Miller numbers are only assigned to non-Standard games.
+ The MNC
+\end_layout
+
+\begin_layout Standard
+number appears in the game's listing and summary.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SET MODERATE[D]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Changes a game from unmoderated to moderated.
+ This is set by default
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+by the "BECOME MASTER" command.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/mac SET [NO] MONEY {0.8.11}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables money in Machiavelli games.
+ Without money,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Machiavelli is similar to normal Diplomacy, where you need to own one
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+city for each unit built.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET MOVE|RETREAT|ADJUST setting value [setting value ...]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To change the deadline calculation.
+ The "setting" may be any one (or
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+more) of CLOCK, MIN, NEXT, GRACE, DELAY, or DAYS.
+ "Value" is a
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+decimal number, except following "DAYS".
+ Get file 'deadlines'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] MUST ORDER {1.2.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets and unsets the MustOrder flag.
+ If this flag is set, players
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+must have valid orders submitted before sending press.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] NMR
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Allows/prevents processing of orders if all powers have not yet
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+submitted complete ones.
+ Default is "NONMR".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET NO PRESS
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables all press/broadcast messages.
+ Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [PRESS] NONE
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Same as "SET NO PRESS".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SET [NO] NORMAL BROADCAST {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Same as "SET [NO] BROADCAST [PRESS]", above.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET NORMAL DISBAND {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Uses the standard rules for disbands on a build turn; i.e., a power
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+can only disband when it has more units than centres.
+ Opposite of
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"SET ANY DISBAND" (see above).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET NORMAL PRESS
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables the "SET ALL PRESS" option where all partial press is sent to
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Masters.
+ May also be used by Observers if "SET WATCH ALL PRESS" has
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+been used.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET OBSERVER ANY [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Permits observers to submit press with the same restrictions as regular
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+players.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET OBSERVER NO [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disallows press from observers.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET OBSERVER WHITE [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disallows observers from submitting grey press.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET ONE CENTRE[S]|CENTER[S] {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Allow a power to build in any owned centre during a build phase, as
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+long as one home centre is still owned.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET ONTIMERAT level {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Restricts access to the game to those people with an ontime ratio
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+equal then or greater than the indicated level.
+ The indicated level
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+can not be higher than the moderator's.
+ For information on the ontime
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ratio, get the file 'dedsystems'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] PARTIAL [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Enables/disables the ability for players to send messages to
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+individual powers.
+ Get file 'press'.
+ (Partial press to and from the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+moderator is always enabled.)
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET PARTIAL [FAKES [BROADCAST]] [BY DEFAULT]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET PARTIAL MAY [BE FAKED]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SET PASSWORD new_password
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To change your password for the signed-on game.
+ Passwords must
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+contain only alphanumeric characters.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/mac SET [NO] PLAGUE
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables optional plague rules.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET PLAYERS number
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets the number of players (not powers) in the game.
+ When the number
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+of players is set to some number less than the number of powers, the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+game will begin when that number of players signs on to the game,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+assigning excess powers evenly among the players, thus enabling them
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+to play multiple powers.
+ Get file 'info.duplex' for more information
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+and an example.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET [NO]PORTAGE {1.7.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Enables/disables armies to convoy fleets.
+ See 'info.portage' for
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+more details.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] POSTAL PRESS {1.2.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Turns postal press on/off.
+ Postal press is press published with the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+results of the turn.
+ See command "POSTAL PRESS" for more details.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET POWERS number {1.7.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets the number of powers (not players) in the game.
+ When the number
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+of players is greater, this will be adjusted down.
+ Using this command
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+will result in a game playing with fewer powers than designed, so,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+for example, 'set powers 5' in a standard game will mean that two 
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+powers will not appear: their units will be missing and their centres
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+open for capture as per a normal neutral supply centre.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+This is more intended for variants where the number of powers can be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+variable and does not affect game balance.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/bgs SET PREFERENCE list
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To establish a preference list for power assignment.
+ Should appear
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+immediately after an initial SIGNON entering a forming game.
+ Can be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+modified up until the powers are actually assigned.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+There are two formats for "list", depending on the game's preference
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+setting (see SET PRFBOTH, SET PRFLIST, SET PRFRAND below).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+If the setting is PRFLIST or PRFBOTH, the "list" may contain initials
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+of the various powers in the game, arranged with the player's most
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+preferred power listed first.
+ For instance, "SET PREFERENCE ATRIFEG"
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+could be used by a player who has a strong desire to play an eastern
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+power.
+ A player may indicate that he has an equal preference for two
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+or more powers by enclosing them in square brackets.
+ For example,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"SET PREFERENCE E[FGR][TAI]" would indicate that the player's first
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+choice is England; after that, he would prefer any of France, Germany,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+or Russia equally; and after that would take any of the remaining
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+powers.
+ The Judge assigns powers by assigning each player's first
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+choice a weight of 7, the second choice a weight of 6, etc., and
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+averaging the weights for powers combined in square brackets; these
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+weights are used in an algorithm that maximizes the overall total
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+weight of the power assignments.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+If the setting is PRFBOTH OR PRFRAND, then "list" may be a single
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+asterisk ("SET PREFERENCE *").
+ (In fact, if the game setting is
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+PRFRAND, this is the only possible preference list, so there is really
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+no point in using SET PREFERENCE.) This signifies that the player
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+will receive a randomly selected power (and these assignments are made
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+*before* the Judge looks at other players' preference lists).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+If a player's preference list is empty, or the Judge runs out of
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+preferences because the player did not list all available powers, the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Judge will proceed as if all the remaining powers were listed in
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+square brackets at the end of the list.
+ As a practical matter, this
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+likely means that that player will receive a random assignment *after*
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+all other players' preference lists have been processed.
+ In other
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+words, an empty (or missing) preference list is *not* the same as "SET
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+PREFERENCE *".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET PRFBOTH {1.1.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To have the judge assign a random power to any player that requests it
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+(by entering "SET PREFERENCE *"), and powers according their
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+preference lists to all other players.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET PRFLIST {1.1.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To have the judge assign powers exclusively using the preference
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+lists entered by the players.
+ (This is the default.)
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET PRFRAND {1.1.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To have the judge randomly assign powers to all players.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET PRIVATE
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "SET NOLIST".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] PROXY
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Clear/set the flag that allows one player to give control of one or
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+more of his units to another player.
+ Proxy ordering is disabled by
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+default.
+ Get file 'syntax' for proxy syntax.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET PUBLIC
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "SET LIST".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] QUIET
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets (or clears) the "quiet" flag.
+ This flag prevents announcements
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+about power abandonment, power takeovers and such from being broadcast
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+to the other players or observers.
+ Its purpose is to prevent
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+information from being disclosed in gunboat games, particularly
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+tournaments where multiple games may lose the same player.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET [NO] RAILWAYS {0.8.11}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables railways, in a variant that has this option coded
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+into its map file.
+ Get file 'info.colonial'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [UN]RATED
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Changes a game to rated or unrated.
+ By default moderated games are
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+rated and unmoderated games are unrated.
+ Unrated games will not
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+affect the players' dedication rating.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET RESRAT level {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Restricts access to the game to those people with a CD ratio lower
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+than or equal to the indicated level.
+ The indicated level can not be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+lower than the moderator's.
+ For information on the CD ratio, get
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+file 'dedsystems'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] RESUME {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Enables/disables players from resuming a game.
+ If enabled, any player
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+can resume a terminated game.
+ If disabled, only the moderator can.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+WARNING: on many Judges, the default setting allows players to resume
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+games after termination.
+ In moderated games, the use of "SET
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+NO RESUME" is strongly recommended.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] REVEAL
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+If a gunboat game is set "NoReveal", the player list will not be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+revealed in summary output after the game terminates.
+ This flag is
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+useful for gunboat tournaments where player lists may be the same in
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+multiple games.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] SECRET {1.1.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets/clears the "Secret" flag.
+ This flag prevents any information
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+about the number of players in the game from being revealed to the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+players or observers.
+ It is intended for use in duplex games.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] SHOW
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+If a game is set to "NoSHow", changes to game settings will appear to
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+be made by 'someone@somewhere'.
+ Otherwise, the changer will have
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+their email shown.
+ The default is "NoShow" for Gunboat games, and
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"Show" for all other games.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/mac SET [NO] SPECIAL
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables optional rules that allow double strength units.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET START date
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets the earliest date/time at which orders can be processed for the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+current phase.
+ Get file 'deadlines'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/mac SET [NO] STORM[S] {1.0.2}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables storms.
+ Works as per plague, except causes fleets at
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+sea to be eliminated randomly (in a storm).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ !SET [NO] STRICT CONVOY {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Allows/disallows "implausible" convoys.
+ Default disabled, so fleets
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+can be ordered to convoy any army to any province defined in the map
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+file.
+ If set, only convoys that could conceivably succeed may be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ordered.
+ (As of the current version, the plausibility checking is
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+actually minimal; it only rejects convoys if either the origin or
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+destination space has no adjacent sea spaces.)
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] STRICT GRACE
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables enforcement of grace period as an ABSOLUTE time
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+interval after the deadline.
+ If disabled (default), then grace
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+periods will always end on an appropriate order processing day.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] STRICT WAIT
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Determines the ability of players who can set the WAIT flag.
+ If
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+STRICTWAIT is set, only players who have moves currently required will
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+be allowed to set wait.
+ If NOSTRICTWAIT is set (default), any
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+currently active player can set wait.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET [NO] SUMMER {1.4.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables/enables a summer phase between Spring and Fall.
+ (This
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+phase is abbreviated U for purposes of commands such as HISTORY,
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+PHASE and ROLLBACK.) Enabled by default for Machiavelli, disabled
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+by default for Standard games.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] TOUCH PRESS {1.5.1}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Enables/Disables Touch Press.
+ When enabled, players can only send
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+one broadcast message per turn, and can only send partial press to
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+players with whom they are touching (defined as a legal Wing move).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Players can always send partial press to Masters, and cannot send 
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+press to Observers.
+ When disabled (default), standard press settings
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+apply.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET TRANSFORM transform-option {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+SET TRAFO transform-option
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Enables unit transformations, according to 'transform-option'.
+ Get
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+file 'transform' for details.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET NO TRANSFORM {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+SET NO TRAFO
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disables the transformation of units.
+ This is the default for
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Standard games.
+ Warning: this command works only from njudge version
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+1.7.0 onwards!
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET UNLIST
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "SET NO LIST".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET UNMODERATE[D]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Changes a game from moderated to unmoderated.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SET [NO] VACATION[S] {0.8.7}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Same as SET [NO] ABSENCE.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET VARIANT variant|option
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To change the variant of a game, or add an optional rule.
+ This can
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+only be done before the powers are assigned and before the requisite
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+number of players for the new variant type have signed on.
+ SET
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+VARIANT can only be used to set one option per command (unlike
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+CREATE).
+ For a complete list of valid variants and options, send the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+command "SIGNON ?name password XXXX", or "SET VARIANT XXXX" if already
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+signed on as Master or as player in an unmoderated game (where XXXX is
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any invalid variant name).
+ Note: if the game has been set as a
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+variant and it is desired to un-set this, use "SET VARIANT STANDARD".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/bgs SET NOT VARIANT option
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Disable the specified optional rule.
+ This command can only be used to
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+remove options, not to change the underlying variant type.
+ To change
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+the variant itself, use "SET VARIANT".
+ 
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SET [NO] WAIT
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Clears/sets the wait flag; if the moderator or any (eligible) player
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+has this flag set, orders will not be processed until the deadline.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+See also "SET STRICT WAIT".
+ This flag is automatically cleared when
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+orders are actually processed (not necessarily at the deadline), and
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+must be set again for the next phase.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET [NO] WATCH ALL PRESS {0.8.9}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Allows observers to use the "SET ALL PRESS" command to see partial
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+press between players.
+ Use with caution to avoid gunboat security
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+breaches.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET WHITE [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets press option to white only.
+ Get file 'press'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET NO WHITE [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Same as "SET GREY".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ SET WHITE/GREY [PRESS]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Sets press option to white by default with grey allowed.
+ See
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+file 'press'.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ SIGN OFF
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To indicate the end of useful text.
+ The SIGN OFF command is used
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+to prevent your signature file (or taglines inserted by your e-mail
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+provider) from being interpreted as orders and/or being sent out as
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+part of a press message.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ SIGN ON pname password
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To sign onto an existing power that you own or to take over an
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+abandoned power.
+ Please note: it is only possible to have one SIGN ON
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+command (or equivalents, such as CREATE or OBSERVE) per mail message.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Only registered users may take over an abandoned power.
+ However, any
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+user may SIGN ON to an existing position if they use the correct
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+password.
+ This allows you to access your games from a secondary email
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+account.
+ If the SIGN ON command does not come from the player of
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+record, a copy of the Judge's response will be sent to that player as
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+a precaution against cheating.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ SIGN ON ? password
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To enter the next available game that is forming.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/bgs SIGN ON ?name password [variant] [options]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To enter a particular game that is forming.
+ The "variant" and
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"options" specifications are required if, and only if, these options
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+were used in the CREATE or SET VARIANT command.
+ See "SET VARIANT".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Only registered users may signon to a forming game.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ SUMMARY name
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To get an historical summary of the specified game indicating who took
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+what power over when and which supply centers each power owned
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+throughout the game.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ SUMMARY
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To get the summary report for the signed on game as above.
+ The
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+moderator in a gunboat game will get a slightly different summary that
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+includes the actual player names and addresses rather than the generic
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"someone@somewhere".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ TERMINATE
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To declare the game over.
+ If the game has not started, it will be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ended and no-one can ever sign onto it again.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+mod/ UNSTART {1.1.0}
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To return the game to the position immediately prior to the start of
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+the game.
+ Powers will be unassigned and the game will be flagged
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+manualstart.
+ Games can only be unstarted if no turns have yet
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+processed.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+The 'ManualStart' flag will be set by this command: the master must
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+send the 'SET AUTOSTART' command to start the game again.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+This can be useful if a player is ejected or resigns; the game can be
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+unstarted, so a replacement can enter a preference list rather than
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+have to take whichever power left.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/pre VERSION [level]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To see the current version of the software.
+ The optional level
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+specification is not currently used, but in some future version may
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+generate a log of changes since the specified version.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/pre WATCH name password
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "OBSERVE".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ WHO user [user ...]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "WHOIS".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/pre WHO GAME name [FULL]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Retrieves WHOIS information for all players associated with game
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+"name".
+ If the game is gunboat this command can only be used by the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+moderator (and only after he signs on).
+ The optional "FULL" argument
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+will return information for observers as well, while the default only
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+returns information for the players and Masters.
+ See also "WHO IS",
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+below.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ WHO GAME [FULL]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Retrieves WHOIS information for all players associated with the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+currently signed on game.
+ If the game is gunboat, only a Master
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+can use this command.
+ The optional "FULL" argument will return
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+information for observers as well, while the default only returns 
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+information for the players and Masters.
+ See also "WHO IS", below.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+any/ WHO IS user [user ...]
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+To retrieve registration information for particular players.
+ All
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+registered people with mail addresses that start with a prefix that
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+matches any of the "user" words specified will be listed.
+ Thus the
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+command "WHO IS p" will list all users who have an email address that
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+starts with a P.
+ The entire database can be retrieved with the "GET
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+WHOIS" command (although this may be disabled by the Judgekeeper).
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+ply/ WITHDRAW
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+Equivalent to "RESIGN".
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+-----
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\size footnotesize
+rights reserved.
+ Used with permission.
+\end_layout
+
+\end_body
+\end_document
