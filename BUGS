@@ -2,63 +2,78 @@ The following bugs were outstanding as of 1.7.5
 
 --------------------
 
-ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 Status  	 Resolution  	 Summary
-425 	maj 	P2 	Oth 	MachFix@yahoogroups.com 	NEW 		Rebellion changed ownership because of retreat and was no...
-282 	maj 	P3 	All 	judge-maint@diplom.org 	REOP 		'::' summary lines sometimes not sent
-382 	maj 	P3 	All 	judge-maint@diplom.org 	ASSI 		resign command no longer works
-394 	maj 	P3 	All 	judge-maint@diplom.org 	NEW 		Bailout on terminating started game with no moves made
-131 	nor 	P3 	All 	millis@faztek.org 	REOP 		Judge sometime hangs-up with empty dip.input file
-149 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Allow Mach games to be conceeded
-186 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Must order does not allow press when should
-218 	nor 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Set command(s) followed by 'become' do not work
-238 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Colonial: Verbose Suez Canal warnings
-239 	nor 	P3 	All 	judge-maint@diplom.org 	ASSI 		Whogame does not work with multiple emails
-252 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Build results out of sequence
-253 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		signons with password=«judge» don't work
-256 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Abandoned player can't signon due to low dedication
-257 	nor 	P3 	All 	dip@alange.net 	ASSI 		Masters not warned on deadline shift after bailout recovery
-259 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Deadline advanced for no apparent reason
-269 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		unstart not working for Machiavelli games
-292 	nor 	P3 	All 	judgekeeper@braincells.com 	NEW 		Alter smail & atrun to use paths
-300 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		History incorrectly shows press message
-357 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Listing of completed game hides player identities.
-358 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		diary -- when game finishes, send diary AFTER announcement
-359 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Limit Diary 'mail-bombing'
-361 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		First turn in duplex game does not process before deadline
-364 	nor 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Machiavelli duplex play
-379 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex summary problem
-380 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex didn't flag victory on results line
-381 	nor 	P3 	All 	millis@faztek.org 	NEW 		Duplex unclear victory conditions
-397 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Are Andy Schwarzes issues with the TSR rule in Colonial s...
-406 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Master wrongly waits on new player signon
-419 	nor 	P3 	All 	judge-maint@diplom.org 	NEW 		Diary command "write only" on DEDO and USTV
-422 	min 	P2 	All 	judge-maint@diplom.org 	NEW 		2way draw results in concession to two powers
-426 	min 	P2 	Oth 	MachFix@yahoogroups.com 	NEW 		Confusing rebellion removal information
-35 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player with unusable builds must waive
-40 	min 	P3 	All 	millis@faztek.org 	NEW 		Sort out summary report spacing
-100 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Wrong person sent termination
-103 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Summary incorrect
-104 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Only prompt for adjustments if homes still need to be dec...
-109 	min 	P3 	All 	millis@faztek.org 	NEW 		Better errors & documentation on Build transform
-128 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		press to none
-177 	min 	P3 	All 	millis@faztek.org 	NEW 		Summer-time alterations not working
-200 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set absence and press shows for master
-221 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set [no]show does nothing
-227 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Implement NoBlankPress functionality
-243 	min 	P3 	All 	tim@gem.win.co.nz 	ASSI 		Wrong email title sent
-266 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Send summary to HallKeeper if game changes to Reveal
-304 	min 	P3 	All 	judgekeeper@braincells.com 	NEW 		cmap invoked unecessarily in make process
-330 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		No summary file before game start causes termination prob...
-337 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		delgame does not show real games path
-348 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		hardcoded plague start year
-356 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Players Marked as Late in Completed Game
-362 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		set draw should return who gets in the draw
-369 	min 	P3 	All 	dip@alange.net 	REOP 		Deadline not set to "clock" time after change to DST
-373 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Player receives notice with wrong header
-378 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Game is terminated, not completed
-383 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Disband-mantain parsing error
-390 	min 	P3 	All 	MachFix@yahoogroups.com 	NEW 		Self-bounce gives message (*siege required*)
-398 	min 	P3 	All 	judge-maint@diplom.org 	NEW 		Reminder problems
-255 	tri 	P3 	All 	MachFix@yahoogroups.com 	NEW 		'.' in wrong place for maintain with coast
-421 	tri 	P3 	All 	judge-maint@diplom.org 	NEW 		Spurious "End of message." in parameter change notification
-58 bugs found. 
+ID  Opened  Changed  Sev  Assignee  Status  Resolution  Summary  
+425  2005-05-10  2006-07-08  maj  MachFix@yahoogroups.com  ASSI   Rebellion changed ownership because of retreat and was no...  
+463  2006-04-01  2006-04-02  maj  judge-maint@diplom.org  NEW   Taken over power still shown as CD  
+464  2006-04-03  2006-04-03  maj  MachFix@yahoogroups.com  NEW   Elimination performed before retreats instead of after  
+282  2004-03-27  2004-07-25  maj  judge-maint@diplom.org  REOP   '::' summary lines sometimes not sent  
+382  2004-11-02  2006-03-24  maj  judge-maint@diplom.org  ASSI   resign command no longer works  
+394  2005-01-03  2005-01-03  maj  judge-maint@diplom.org  NEW   Bailout on terminating started game with no moves made  
+434  2005-08-02  2005-08-02  nor  judge-maint@diplom.org  NEW   Broadcast sent before BECOME not sent to all powers  
+437  2005-09-18  2006-06-30  nor  judge-maint@diplom.org  NEW   Advance deadline when any replacement player signs on  
+439  2005-09-29  2005-09-29  nor  judge-maint@diplom.org  NEW   'NoReveal' setting should prevent sending of diary entrie...  
+447  2005-11-18  2006-06-30  nor  millis@faztek.org  ASSI   Eject command does not set SF_RESIGN  
+448  2005-12-05  2006-06-30  nor  millis@faztek.org  ASSI   In duplex games, players receive broadcasts several times  
+449  2005-12-11  2005-12-11  nor  judge-maint@diplom.org  NEW   Player cannot delete diary entries.  
+450  2005-12-14  2005-12-14  nor  judge-maint@diplom.org  NEW   Waiting for N players - bug  
+455  2006-01-23  2006-01-23  nor  judge-maint@diplom.org  NEW   Reveal command requires resume and terminate before summa...  
+470  2006-05-23  2006-05-23  nor  judge-maint@diplom.org  NEW   Unable to eject person with two positions (one player, on...  
+475  2006-06-20  2006-06-21  nor  judge-maint@diplom.org  NEW   Spelling out province names and "hold" generates error  
+477  2006-06-27  2006-06-27  nor  judge-maint@diplom.org  NEW   Incoming mail truncated. No response sent.  
+131  2003-04-08  2004-05-25  nor  millis@faztek.org  REOP   Judge sometime hangs-up with empty dip.input file  
+149  2003-05-03  2004-10-12  nor  MachFix@yahoogroups.com  NEW   Allow Mach games to be conceeded  
+186  2003-07-08  2004-10-28  nor  tim@gem.win.co.nz  ASSI   Must order does not allow press when should  
+218  2003-08-14  2003-12-19  nor  tim@gem.win.co.nz  ASSI   Set command(s) followed by 'become' do not work  
+238  2003-10-02  2004-01-12  nor  judge-maint@diplom.org  NEW   Colonial: Verbose Suez Canal warnings  
+239  2003-10-08  2006-05-24  nor  judge-maint@diplom.org  ASSI   Whogame does not work with multiple emails  
+252  2003-11-19  2004-10-12  nor  MachFix@yahoogroups.com  NEW   Build results out of sequence  
+253  2003-11-24  2003-11-24  nor  judge-maint@diplom.org  NEW   signons with password=?judge? don't work  
+256  2003-12-13  2003-12-13  nor  judge-maint@diplom.org  NEW   Abandoned player can't signon due to low dedication  
+259  2003-12-23  2004-04-06  nor  judge-maint@diplom.org  NEW   Deadline advanced for no apparent reason  
+269  2004-01-13  2004-01-13  nor  MachFix@yahoogroups.com  NEW   unstart not working for Machiavelli games  
+292  2004-04-16  2004-04-16  nor  judgekeeper@braincells.com  NEW   Alter smail & atrun to use paths  
+300  2004-05-08  2004-05-08  nor  judge-maint@diplom.org  NEW   History incorrectly shows press message  
+357  2004-08-19  2004-08-19  nor  judge-maint@diplom.org  NEW   Listing of completed game hides player identities.  
+358  2004-08-30  2004-08-30  nor  judge-maint@diplom.org  NEW   diary -- when game finishes, send diary AFTER announcement  
+359  2004-08-30  2004-10-05  nor  judge-maint@diplom.org  NEW   Limit Diary 'mail-bombing'  
+361  2004-08-31  2004-08-31  nor  judge-maint@diplom.org  NEW   First turn in duplex game does not process before deadline  
+364  2004-09-06  2004-10-05  nor  MachFix@yahoogroups.com  NEW   Machiavelli duplex play  
+379  2004-10-30  2004-10-30  nor  millis@faztek.org  NEW   Duplex summary problem  
+380  2004-10-30  2004-10-30  nor  millis@faztek.org  NEW   Duplex didn't flag victory on results line  
+381  2004-10-30  2004-10-30  nor  millis@faztek.org  NEW   Duplex unclear victory conditions  
+397  2005-01-14  2005-01-14  nor  judge-maint@diplom.org  NEW   Are Andy Schwarzes issues with the TSR rule in Colonial s...  
+419  2005-03-31  2005-03-31  nor  judge-maint@diplom.org  NEW   Diary command "write only" on DEDO and USTV  
+422  2005-04-24  2005-04-24  min  judge-maint@diplom.org  NEW   2way draw results in concession to two powers  
+430  2005-06-16  2006-05-03  min  judge-maint@diplom.org  NEW   signon ?game pass won't takeover a power in CD  
+440  2005-10-13  2005-10-13  min  judge-maint@diplom.org  NEW   Duplicate NMR low-grace warnings  
+443  2005-10-23  2005-10-23  min  judge-maint@diplom.org  NEW   Failed CREATE doesn't stop parsing of incoming email mess...  
+446  2005-11-12  2005-11-12  min  judge-maint@diplom.org  NEW   smail creates mail that does not conform to MIME standard  
+452  2005-12-27  2006-03-18  min  judge-maint@diplom.org  NEW   Adjusts terminated games on bailout recovery  
+479  2006-06-30  2006-06-30  min  judge-maint@diplom.org  NEW   Don't allow re-ejections of players  
+35  2002-11-07  2003-04-08  min  judge-maint@diplom.org  NEW   Player with unusable builds must waive  
+40  2002-11-09  2004-04-06  min  millis@faztek.org  NEW   Sort out summary report spacing  
+100  2003-01-13  2003-04-08  min  judge-maint@diplom.org  NEW   Wrong person sent termination  
+103  2003-01-15  2004-12-17  min  judge-maint@diplom.org  NEW   Summary incorrect  
+104  2003-01-15  2003-04-08  min  judge-maint@diplom.org  NEW   Only prompt for adjustments if homes still need to be dec...  
+109  2003-01-19  2004-04-06  min  millis@faztek.org  NEW   Better errors & documentation on Build transform  
+128  2003-03-23  2003-04-15  min  judge-maint@diplom.org  NEW   press to none  
+177  2003-06-18  2003-06-18  min  millis@faztek.org  NEW   Summer-time alterations not working  
+200  2003-07-21  2005-03-24  min  judge-maint@diplom.org  NEW   set absence and press shows for master  
+221  2003-08-26  2003-08-26  min  judge-maint@diplom.org  NEW   set [no]show does nothing  
+227  2003-09-09  2003-09-09  min  judge-maint@diplom.org  NEW   Implement NoBlankPress functionality  
+243  2003-10-09  2003-12-24  min  tim@gem.win.co.nz  ASSI   Wrong email title sent  
+266  2004-01-10  2004-01-10  min  judge-maint@diplom.org  NEW   Send summary to HallKeeper if game changes to Reveal  
+304  2004-05-12  2004-05-12  min  judgekeeper@braincells.com  NEW   cmap invoked unecessarily in make process  
+330  2004-07-02  2004-07-02  min  judge-maint@diplom.org  NEW   No summary file before game start causes termination prob...  
+337  2004-07-09  2004-07-09  min  judge-maint@diplom.org  NEW   delgame does not show real games path  
+348  2004-08-02  2004-10-12  min  MachFix@yahoogroups.com  NEW   hardcoded plague start year  
+356  2004-08-19  2004-08-19  min  judge-maint@diplom.org  NEW   Players Marked as Late in Completed Game  
+362  2004-09-06  2004-10-09  min  judge-maint@diplom.org  NEW   set draw should return who gets in the draw  
+373  2004-10-16  2004-10-16  min  judge-maint@diplom.org  NEW   Player receives notice with wrong header  
+378  2004-10-30  2004-10-30  min  judge-maint@diplom.org  NEW   Game is terminated, not completed  
+383  2004-11-03  2004-11-03  min  MachFix@yahoogroups.com  NEW   Disband-mantain parsing error  
+398  2005-01-20  2005-01-20  min  judge-maint@diplom.org  NEW   Reminder problems  
+255  2003-12-09  2003-12-09  tri  MachFix@yahoogroups.com  NEW   '.' in wrong place for maintain with coast  
+421  2005-04-07  2005-04-07  tri  judge-maint@diplom.org  NEW   Spurious "End of message." in parameter change notification  
+72 bugs found. 
+

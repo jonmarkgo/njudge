@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT("njudge", 1.7.5)
+AC_INIT("njudge", 1.7.6)
 AM_CONFIG_HEADER(config.h)
 AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)

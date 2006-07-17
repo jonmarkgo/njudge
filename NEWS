@@ -1,22 +1,24 @@
 This is a bug-fix release.
 
-The following bugs were fixed in 1.7.5
+The following bugs were fixed in 1.7.6
 
 (ordered by Severity)
 
-ID  	 Sev  	 Pri  	 Plt  	 Assignee  	 		Status  	 Resolution  	 Summary
-428    	blo   	P2   	All   	judgekeeper@braincells.com   	RESO   	FIXE   	automake error
-436 	nor 	P2 	All 	judge-maint@diplom.org 	RESO 	FIXE 	GCC 4.0 compatibility problems
-435 	min 	P2 	Oth 	dip@alange.net 	RESO 	FIXE 	Set no broadcast has no effect
-408 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Convoy incorrectly disallowed in Modern
-423 	maj 	P3 	All 	judge-maint@diplom.org 	RESO 	FIXE 	Mis-ajudication of convoy orders
-407 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Control does not change after elimination of power
-410 	maj 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminating country not detected if bribed
-416 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Unally command not documented
-417 	nor 	P3 	All 	sigge.lidsell@riksdagen.se 	RESO 	FIXE 	Current straits rules are unclear
-257 	nor 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Masters not warned on deadline shift after bailout recovery
-406 	nor 	P3 	All 	dip@alange.net 	RESO 	FIXE 	Master wrongly waits on new player signon
-409 	min 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Eliminated power in listing problem
-415 	tri 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Buy auto-bribe oddity
-400 	enh 	P3 	All 	MachFix@yahoogroups.com 	RESO 	FIXE 	Allow dyslexic spelling of 'siege'
-14 bugs found. 
+ID  Opened  Changed  Sev  Assignee  Status  Resolution  Summary  
+441  2005-10-13  2005-10-15  maj  MachFix@yahoogroups.com  RESO  FIXE  Lazarus attack - Bribe accepted from eliminated power  
+438  2005-09-29  2005-09-29  nor  judge-maint@diplom.org  RESO  FIXE  Diary entries are labeled NZMB when released at the end o...  
+458  2006-02-20  2006-02-20  nor  judge-maint@diplom.org  RESO  FIXE  Mach documentation description of winning is confusing  
+461  2006-03-16  2006-03-18  nor  alan@usal.info  RESO  FIXE  Judge does not allow canceling absence in past.  
+456  2006-02-14  2006-02-19  min  judge-maint@diplom.org  RESO  FIXE  History command fails if the game name contains "broad"  
+460  2006-03-15  2006-03-18  min  judge-maint@diplom.org  RESO  FIXE  Terminate notice has no subjectline  
+466  2006-04-06  2006-05-03  min  judge-maint@diplom.org  RESO  FIXE  Don't remove absences until entire absence has passed  
+467  2006-04-13  2006-05-03  min  judge-maint@diplom.org  RESO  FIXE  Absence Notice appears in results when no absence existed.  
+473  2006-06-07  2006-06-07  min  judge-maint@diplom.org  RESO  FIXE  Dedication too low message points to missing file  
+476  2006-06-27  2006-06-27  min  judge-maint@diplom.org  RESO  FIXE  No proper stripping of "RE: " for email clients that insi...  
+426  2005-05-10  2006-07-08  min  MachFix@yahoogroups.com  RESO  FIXE  Confusing rebellion removal information  
+369  2004-10-13  2006-05-03  min  alan@usal.info  RESO  FIXE  Deadline not set to "clock" time after change to DST  
+390  2004-12-06  2006-07-08  min  MachFix@yahoogroups.com  RESO  FIXE  Self-bounce gives message (*siege required*)  
+442  2005-10-13  2005-11-10  enh  judge-maint@diplom.org  RESO  FIXE  implement NOGRACEPRESS flag  
+453  2006-01-04  2006-01-04  enh  judge-maint@diplom.org  RESO  FIXE  document the Keeper addresses  
+432  2005-07-01  2006-06-30  enh  judge-maint@diplom.org  RESO  FIXE  Allow 'set preferences'  
+16 bugs found. 
