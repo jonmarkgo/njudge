@@ -1,3 +1,95 @@
+2006-07-17 12:10  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+
+2006-07-17 12:07  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+
+2006-07-17 11:40  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+	  njudge_1_7_6
+
+2006-07-17 11:28  njudge
+
+	* BUGS, NEWS, configure.ac, njudge.spec: For next version, 1.7.6
+
+2006-07-11 17:10  millis
+
+	* docs/index.lyx: more updates, still incomplete.
+
+2006-07-11 16:35  millis
+
+	* docs/index.lyx: First entry, properly formmated index data file.
+
+2006-07-08 22:44  root
+
+	* params.c: Fix Bug 389, show short comment in full game listing.
+
+2006-07-08 22:32  root
+
+	* ma_movement.c: Fix Bug 390.
+
+2006-07-08 20:45  root
+
+	* ma_movement.c: Fix Bug 426, adding description of whether
+	  province or city (or both) rebellion relieved. Also removed
+	  (some) compile warnings.
+
+2006-06-30 12:16  millis
+
+	* ml_set.c: Bug 432, allow 'set preferences' as well as 'set
+	  preference'
+
+2006-06-27 19:45  millis
+
+	* mail.c: Bug 476, make 'Re' case-insensitive when constructing
+	  reply subject
+
+2006-06-07 10:31  millis
+
+	* ml_signon.c: Fix Bug 473, specify dedsystems file.
+
+2006-05-09 22:54  millis
+
+	* lib.c: More '/' fixes
+
+2006-05-09 22:51  millis
+
+	* lib.c: Removed unecessary comment '/'
+
+2006-05-03 03:09  alange
+
+	* dip.c:
+	  Bug 467. Spurious absence activation notices quashed.
+
+2006-05-03 02:38  alange
+
+	* lib.c:
+	  Bug 466.
+
+2006-05-03 01:25  alange
+
+	* lib.c:
+	  Bug 369. Use time functions to deal with deadline advances.
+	  Prevent unexpected results when Daylight Saving Time (Summer
+	  Time) begins.
+
+2006-05-03 01:19  alange
+
+	* dipent.c:
+	  Prevent CLOCK setting from being exactly 1440. Part of Bug 369.
+
+2006-04-04 02:19  alange
+
+	* ml_date.c:
+	  Fix typo.
+
+2006-03-28 07:36  njudge
+
+	* ChangeLog: Convert times to GMT
+
 2006-03-18 22:50  alange
 
 	* mail.c:
@@ -1309,53 +1401,6 @@
 
 	* docs/njudge-work-guide.html: First draft
 
-2004-02-22 23:33  millis
-
-	* tests/: njudge-test.sh, smail-test, baseline/A-Reg01.dip-master,
-	  baseline/A-Reg01.out, baseline/A-Reg02.dip-master,
-	  baseline/A-Reg02.out, baseline/A-Reg03.dip-master,
-	  baseline/A-Reg03.out, baseline/A-Reg04.dip-master,
-	  baseline/A-Reg04.out, baseline/A-Reg05.dip-master,
-	  baseline/A-Reg05.out, baseline/A-Reg06.dip-master,
-	  baseline/A-Reg06.out, baseline/A-Reg07.dip-master,
-	  baseline/A-Reg07.out, baseline/A-Reg08.dip-master,
-	  baseline/A-Reg08.out, baseline/A-Reg09.dip-master,
-	  baseline/A-Reg09.out, baseline/A-Reg10.dip-master,
-	  baseline/A-Reg10.out, baseline/A-RegM-1.dip-master,
-	  baseline/A-RegM-1.out, baseline/A-RegM-2.dip-master,
-	  baseline/A-RegM-2.out, baseline/Bug91-01.dip-master,
-	  baseline/Bug91-01.out, baseline/Bug91-02.dip-master,
-	  baseline/Bug91-02.out, baseline/Bug91-03.dip-master,
-	  baseline/Bug91-03.out, baseline/Bug91-04.dip-master,
-	  baseline/Bug91-04.out, baseline/Bug91-05.dip-master,
-	  baseline/Bug91-05.out, baseline/Bug91-06.dip-master,
-	  baseline/Bug91-06.out, baseline/Bug91-07.dip-master,
-	  baseline/Bug91-07.out, baseline/Bug91-08.dip-master,
-	  baseline/Bug91-08.out, baseline/Bug91-09.dip-master,
-	  baseline/Bug91-09.out, baseline/Bug91-10.dip-master,
-	  baseline/Bug91-10.out, baseline/Bug91-11.dip-master,
-	  baseline/Bug91-11.out, baseline/Bug91-12.dip-master,
-	  baseline/Bug91-12.out, baseline/Bug91-13.dip-master,
-	  baseline/Bug91-13.out, baseline/Bug91-14.dip-master,
-	  baseline/Bug91-14.out, baseline/Bug91-15.dip-master,
-	  baseline/Bug91-15.out, baseline/Bug91-16.dip-master,
-	  baseline/Bug91-16.out, baseline/S001.dip-master,
-	  baseline/S001.out, input/A-Reg01.txt, input/A-Reg02.txt,
-	  input/A-Reg03.txt, input/A-Reg04.txt, input/A-Reg05.txt,
-	  input/A-RegM-1.in, input/A-RegM-1.txt, input/A-RegM-2.in,
-	  input/A-RegM-2.txt, input/Bug91-01.in, input/Bug91-01.txt,
-	  input/Bug91-02.in, input/Bug91-02.txt, input/Bug91-03.in,
-	  input/Bug91-03.txt, input/Bug91-04.in, input/Bug91-04.txt,
-	  input/Bug91-05.in, input/Bug91-05.txt, input/Bug91-06.in,
-	  input/Bug91-06.txt, input/Bug91-07.in, input/Bug91-07.txt,
-	  input/Bug91-08.in, input/Bug91-08.txt, input/Bug91-09.in,
-	  input/Bug91-09.txt, input/Bug91-10.in, input/Bug91-10.txt,
-	  input/Bug91-11.in, input/Bug91-11.txt, input/Bug91-12.in,
-	  input/Bug91-12.txt, input/Bug91-13.in, input/Bug91-13.txt,
-	  input/Bug91-14.in, input/Bug91-14.txt, input/Bug91-15.in,
-	  input/Bug91-15.txt, input/Bug91-16.in, input/Bug91-16.txt,
-	  input/S001.in, input/S001.txt: Test files, first version
-
 2004-02-22 23:26  millis
 
 	* dip.h: Small Bug91 change
@@ -1422,30 +1467,6 @@
 2004-01-21 00:53  millis
 
 	* mail.h: Comment added
-
-2004-01-18 01:12  millis
-
-	* tests/njudge-test.sh: Added credit to Jeff Smith
-
-2004-01-18 01:11  millis
-
-	* tests/njudge-test.sh: Make diff work via Unix 'diff' command
-
-2004-01-18 01:00  millis
-
-	* tests/input/: A-Reg06.txt, A-Reg07.txt, A-Reg08.txt, A-Reg09.txt,
-	  A-Reg10.txt: text fix.
-
-2004-01-18 00:56  millis
-
-	* tests/: njudge-test.sh, smail-test, input/A-Reg01.in,
-	  input/A-Reg01.txt, input/A-Reg02.in, input/A-Reg02.txt,
-	  input/A-Reg03.in, input/A-Reg03.txt, input/A-Reg04.in,
-	  input/A-Reg04.txt, input/A-Reg05.in, input/A-Reg05.txt,
-	  input/A-Reg06.in, input/A-Reg06.txt, input/A-Reg07.in,
-	  input/A-Reg07.txt, input/A-Reg08.in, input/A-Reg08.txt,
-	  input/A-Reg09.in, input/A-Reg09.txt, input/A-Reg10.in,
-	  input/A-Reg10.txt: First version
 
 2004-01-13 18:17  millis
 
@@ -3978,7 +3999,7 @@
 
 2002-08-30 04:18  jaldhar
 
-	* makeflist: Fixed typo in $Date$ tag.
+	* makeflist: Fixed typo in Date tag.
 
 2002-08-30 04:15  jaldhar
 
