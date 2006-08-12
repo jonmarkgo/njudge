@@ -21,13 +21,13 @@
 #define D_RETREAT_NEXT   23.0
 #define D_RETREAT_GRACE  71.0
 #define D_RETREAT_DELAY  0.5
-#define D_RETREAT_DAYS   "-MTWTF-"
+#define D_RETREAT_DAYS   "-mTWTF-"
 #define D_BUILDS_CLOCK   -1
 #define D_BUILDS_MINT    0.0
 #define D_BUILDS_NEXT    23.0
 #define D_BUILDS_GRACE   71.0
 #define D_BUILDS_DELAY   0.5
-#define D_BUILDS_DAYS    "-MTWTF-"
+#define D_BUILDS_DAYS    "-mTWTF-"
 
 #define D_MAX_ABSENCE_DELAY 15
 
