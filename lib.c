@@ -1,5 +1,8 @@
 	/*
 	 * $Log$
+	 * Revision 1.36  2006-05-09 22:54:02  millis
+	 * More '/' fixes
+	 *
 	 * Revision 1.35  2006-05-09 22:51:45  millis
 	 * Removed unecessary comment '/'
 	 *
@@ -1063,7 +1066,7 @@ int deadline(sequence *seq, int new)
                                 tm = localtime(&temp);
                                 if (seq->days[tm->tm_wday] == '-')
 				{
-					tm->tm_wday++;
+					tm->tm_mday++;
 					tm->tm_isdst = -1;
 					temp = mktime(tm);
 					if (temp < 0)
