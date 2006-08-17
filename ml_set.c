@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.72  2006-06-30 12:16:14  millis
+ * Bug 432, allow 'set preferences' as well as 'set preference'
+ *
  * Revision 1.71  2006-03-18 22:22:42  alange
  *
  * Fix Bug 461 to allow cancellation of absence in the past.
@@ -1380,9 +1383,29 @@ void mail_setp(char *s)
 						for (k = 0; k < 8; k++) {
 							tm = localtime(&dipent.grace);
 							if (seq->days[tm->tm_wday] == '-')
-								dipent.grace += 24 * 60 * 60;
+							{
+								tm->tm_mday++;
+								tm->tm_isdst = -1;
+								dipent.grace = mktime(tm);
+								if (dipent.grace < 0)
+								{
+									tm->tm_isdst = 0;
+									dipent.grace = mktime(tm);
+								}
+							}
 							else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
-								dipent.grace += (12 - tm->tm_hour) * 60 * 60 - tm->tm_min * 60 - tm->tm_sec;
+							{
+								tm->tm_hour = 12;
+								tm->tm_min = 0;
+								tm->tm_sec = 0;
+								tm->tm_isdst = -1;
+								dipent.grace = mktime(tm);
+								if (dipent.grace < 0)
+								{
+									tm->tm_isdst = 0;
+									dipent.grace = mktime(tm);
+								}
+							}
 							else
 								break;
 						}
