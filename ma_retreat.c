@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2003-07-23 23:13:39  millis
+ * Fix Bug 195, do not block retreat into straights if a fleet is retreating to the controlling province.
+ *
  * Revision 1.6  2003/05/10 00:46:15  millis
  * Bug 140 fix, display 'orders' when orders and 'results' when results
  *
@@ -162,8 +165,15 @@ int ma_retreatin(char **s, int p)
 
 void ma_retreatout(int pt)
 {
-	int u, u2, p, i;
+	int u, u2, p,p1, i;
 	char mastrpt_pr[MAXPLAYERS];
+
+	int had_rebellion[NPROV+1];  /* Remember if a province had a rebellion */
+	
+
+	for (p = 1; p <= npr; p++) {
+	     had_rebellion[p] = 0;
+	}
 
 	/*  Generate report  */
 
@@ -240,6 +250,12 @@ void ma_retreatout(int pt)
 				} else {
 					unit[u].loc = unit[u].dest;
 					unit[u].coast = unit[u].dcoast;
+					/* Bug 489, clear rebellions if retreating in */
+					p1 = unit[u].loc;
+				         if (has_rebellion(p1) &&
+				             pr[p1].owner != unit[u].owner) {
+					     had_rebellion[p1] = 1;
+			                }
 				}
 
 			} else if (unit[u].order == 'd') {
@@ -263,4 +279,17 @@ void ma_retreatout(int pt)
 
 		}
 	}
+
+	/* Bug 489, now print where we do have rebellions quashed */
+	 i = 0;
+	 for (p = 1; p <= npr && (processing || predict); p++) {
+	    if (had_rebellion[p]) {
+	        if (!i++)
+	           fprintf(rfp, "\n");
+	        fprintf(rfp, "Rebellion in %s liberated.\n", pr[p].name);
+		remove_rebellion(p);
+	    }
+	}
+
+	    
 }
