@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.7  2004-05-18 02:05:31  nzmb
+ * Fixed wrong e-mail title and compiler warning in send_diary() function.
+ *
  * Revision 1.6  2003/07/18 01:24:07  nzmb
  * Changed it so the "diary" command by itself defaults to "diary record"
  *
@@ -29,6 +32,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 #include "dip.h"
 #include "mail.h"
@@ -140,13 +144,35 @@ void process_diary(char *cmd)
 		delete_entry(entry);
 }
 
+int  get_lastentry(char *gamename, char pabbr)
+{
+	char command[1000];
+	char nstring[256];
+	FILE *cmdpipe;
+	int lentry = 0;
+
+	if (get_numentries(gamename, pabbr))
+	{
+		sprintf(command,"ls -t %s%s/diary-%c-* | sed '1s/.*diary-.-//;q'",
+			GAME_DIR, gamename, pabbr);
+		cmdpipe = popen(command, "r");
+		if(cmdpipe)
+		{
+			fread(nstring, 1, 255, cmdpipe);
+			pclose(cmdpipe);
+			lentry = (int)strtol(nstring, NULL, 10);
+		}
+	}
+	return lentry; 
+}
+
 void new_diary_entry(void)
 {
 	int next_entry;
 	char fname[512];
 	char pabbr = dipent.pl[dipent.players[player].power];
 
-	next_entry = get_numentries(dipent.name, pabbr);
+	next_entry = 1 + get_lastentry(dipent.name, pabbr);
 	if(next_entry < 0)
 	{
 		fprintf(rfp,"Error: could not open new diary entry.\n\n");
@@ -199,7 +225,7 @@ void delete_entry(int entry)
 	char pabbr, cmd[512];
 
 	pabbr = dipent.pl[dipent.players[player].power];
-	if(entry < 0 || entry >= get_numentries(dipent.name, pabbr))
+	if(entry < 0 || entry > get_lastentry(dipent.name, pabbr))
 	{
 		fprintf(rfp,"Cannot delete diary entry %d -- no such entry.\n\n", entry);
 		return;
@@ -252,25 +278,22 @@ void list_entries(void)
 
 int get_numentries(char *gamename, char pabbr)
 {
-	char command[1000];
-	char nstring[256];
-	FILE *cmdpipe;
-	int nentries = -1;
-
-	sprintf(command,"ls %s%s/diary-%c* | wc -w",
-		GAME_DIR, gamename, pabbr);
-	cmdpipe = popen(command, "r");
-	if(cmdpipe)
-	{
-		fread(nstring, 1, 255, cmdpipe);
-		pclose(cmdpipe);
+	struct dirent *dp;
+	DIR *dfd;
+	char searchname[10];
+	char dirname[256];
+	int nentries = 0;
 	
-		if(strstr(nstring, "No such file"))
-			nentries = 0;
-		else
-			nentries = (int)strtol(nstring, NULL, 10);
-	}
+	sprintf(dirname,"%s%s",GAME_DIR,gamename);
+	dfd = opendir(dirname);
+	sprintf(searchname,"diary-%c-", pabbr);
 
+	if (dfd != NULL)
+	{
+		while ((dp = readdir(dfd)) != NULL)
+			if (strstr(dp->d_name,searchname)) nentries++;
+		closedir(dfd);
+	}
 	return nentries;
 }
 
