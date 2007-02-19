@@ -16,19 +16,19 @@ Setup
   The game starts in spring 3001 and the powers initial starting 
   locations and owned provinces are:
 
-  1: First (Naples)  G-Bari1, A-Ancona1, F-Napoli1, Capitanata1, 
+  1: First (Naples)  G-Bari1, A-Ancona1, F-Naples1, Capitanata1, 
                      Lavoro1, Otranto1, Principato1
 
-  2: Second (Naples) G-Bari2, A-Ancona2, F-Napoli2, Capitanata2, 
+  2: Second (Naples) G-Bari2, A-Ancona2, F-Naples2, Capitanata2, 
                      Lavoro2, Otranto2, Principato2
 
-  3: Third (Naples)  G-Bari3, A-Ancona3, F-Napoli3, Capitanata3, 
+  3: Third (Naples)  G-Bari3, A-Ancona3, F-Naples3, Capitanata3, 
                      Lavoro3, Otranto3, Principato3
 
-  4: Fourth (Naples) G-Bari4, A-Ancona4, F-Napoli4, Capitanata4, 
+  4: Fourth (Naples) G-Bari4, A-Ancona4, F-Naples4, Capitanata4, 
                      Lavoro4, Otranto4, Principato4
 
-  5: Fifth (Naples)  G-Bari5, A-Ancona5, F-Napoli5, Capitanata5, 
+  5: Fifth (Naples)  G-Bari5, A-Ancona5, F-Naples5, Capitanata5, 
                      Lavoro5, Otranto5, Principato5
 
   x: Autonomous      G-Rome1, G-Perugia1, G-Rome2, G-Perugia2, 
@@ -119,3 +119,4 @@ All rights reserved.  Used with permission.
 REVISION HISTORY
 v1, August 7th 2004.  By Sergio Lidsell.
 v1b, April 17th 2005.  Setup and abbreviation info revised. By S. Lidsell.
+v1c, Jan 9th 2007.  Naples wrongly called Napoli in setup. By S. Lidsell.

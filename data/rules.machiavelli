@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                      Sep 28, 2005
-Rules.Machiavelli* version 2.8.
+Greetings from the Diplomacy* Adjudicator!!                     Jan 13, 2007
+Rules.Machiavelli* version 2.8c
 
 
 CONTENTS
@@ -371,7 +371,7 @@ Once a Home Country has lost its original controlling player it will be
 treated as a "Non Player Country" (NPC).
 
 A power (actually a player) controlling one or more NPCs can lose its 
-Original Home Country (as defined at setup) without being eliminated (see 
+Starting Home Country (as defined at setup) without being eliminated (see 
 player elimination though) as one of the NPCs will automatically be treated 
 as the new Home Country of that player.
 
@@ -400,33 +400,59 @@ be eliminated.
 
 
 VICTORY
-To win in Machiavelli, you must control a certain number of home areas as
-well as cities.  If the Master does not state otherwise in the listing, you
-must control two home areas in addition to the listed number of cities.  It
-is the responsibility of the GM to recognize when a victory has occurred.
-It is recommended that the number of cities for victory be set to at least
-23 - as that will qualify the game for the Hall of Fame - except for short
-non-rated teaching games.
+To win in Machiavelli, you must control a certain number of cities and home 
+countries.  It is the responsibility of the GM to recognize when a victory 
+has occurred.  If the GM does not state otherwise in the listing,
 
-The standard victory limits are:
-     1) Basic victory conditions is 12 cities and no additional home 
-        countries.  You must control all of your home country cities 
-        and at least six (6) other cities.
-     2) Advanced victory conditions is 15 cities and two home 
-        countries (incl. yours).
-     3) Ultimate victory conditions is 23 cities and three home 
-        countries (incl. yours).
+the standard/default* victory conditions are:
+     1) Basic game victory condition is 12 cities and control of one home 
+        country (HC).  You must control all of your HC cities and at least 
+        six (6) other cities.
+     2) Advanced game victory condition is 15** cities and two HCs (e.g. your 
+        starting HC and another player's HC).
+     3) Ultimate victory (Hall of Fame***) condition is 23 cities and three 
+        HCs (e.g. your starting HC and two other player's HC).
 
-'Tech note'.  The judge calculates required home countries thus: 
-(cities+1)/8.  This translates for advanced games in: 1-7 cities = 1 HC, 
-8-15 = 2 HCs, 16-23 = 3 HCs and 24-31 = 4 HCs.
+* As noted in the Battleline/Avalon Hill "Classic" Mach rules.
+** The original rules require 18 cities for advanced games with four (4) or 
+less players.  This is ignored by the nJudge, but a GM may of course use the 
+"set cities" setting to enforce this.
+*** The HoF is a player ranking system used on diplom.org.  To qualify the 
+game for the Hall of Fame you must set the number of cities required for 
+victory to at least 23. 
+
+Machiavelli 2 note: there is no home country control requirement!
 
 IMPORTANT: The home country control requirement in 2) and 3) above only 
 requires you to be in control of at least one city of any home country you 
 are in control of. Thus if you are in control of Milan and Austria home 
 countries you may win by controlling say MIL, TYR and 13 or 21 non-milanese 
 and non-austrian cities!  Even if enemy units control any other province of 
-said home countries and also besiege MIL and TYR!
+said home countries and also besiege MIL and TYR! (See control rules.)
+
+Technical information regarding the nJudge implementation
+a) The Judge software accepts control of any HC, so you need not 
+control your starting home country (SHC, as defined at setup) to qualify 
+for victory.  It is very uncommon though with winners that lost their SHC.
+
+b) The judge (starting from vers. 1.3.0 released Dec 31, 2002) 
+calculates the required HCs needed to win by a simple formula, 
+maxcou=(maxcen+1)/8 (maxcou=max countries required and maxcen=cities set 
+with the 'set cities' setting) rounde down to the nearest whole number 
+(a.k.a. integer). Thus giving this table:
+     0-6 cities = 0 HCs 
+     7-14 cities = 1 HC    ->( 7+1)/8 =  8/8 = 1
+     15-22 cities = 2 HCs  ->(15+1)/8 = 16/8 = 2
+     23-30 cities = 3 HCs  ->(23+1)/8 = 24/8 = 3
+     31-38 cities = 4 HCs and so on
+
+'Tech note'.  The original rules do *not* state whether you need to include 
+control of your SHC or not in the victory requirements.  In case of the 
+Basic Game nothing is said and in case of the "advanced" and "ultimate" win 
+the rules just state "at least one/two other player's home country/-ies".  
+If the GM wishes to enforce that the SHC is included I suggest that the GM 
+set a higher city limit than needed and then proceed to manually award 
+victory when the desired conditions are met.
 
 
 SPECIAL MAPBOARD FEATURES AND RULES
@@ -1062,18 +1088,22 @@ Notice that each *step* (a, b etc) is simultaneous, not the whole turn.
       f) Removal of rebellions in provinces.
          - control adjudication 3
    1.2) If there are retreats results up to this point are mailed to player.
-      h) Retreats if any.
+      g) Retreats if any.
          - control adjudication 4
-      g) Removal of rebellions in cities.
+      h) Removal of rebellions in cities.
          - control adjudication 5 (for rebellions and famines)
-      h) Removal of famine units (only after spring turn).
-      i) Any plague effects (only after spring turn).
+      i) Removal of famine units (only after spring turn).
+      j) Any plague effects (only after spring turn).
          - control adjudication 6
-      j) Any storm effects (only after fall turn).
+      k) Any storm effects (only after fall turn).
          - control adjudication 7
-      k) Any famine effects (only after fall turn).
+      l) Any famine effects (only after fall turn).
    1.3) Final results mailed to player.
    2) Submittal of builds and maintenance -- adjustment phase
+      This is done once (in "winter")
+   2.1) Income is calculated and awarded
+   2.2) Units are payed for (build, keep or disband)
+
 
 Notice that in Machiavelli2 there is only one control adjudication step after 
 the fall turn (technically the rules say before spring) corresponding to step 
@@ -1201,6 +1231,11 @@ Signoff
 
 Notice that your ordering of Bologna will be ignored if you decide not to 
 buy the unit, even if the order may continue to be shown in the replies.
+
+NOTICE that the judge will not clear any order to a bought enemy unit 
+(e.g. "Turkey: Neapolitan Fleet Bay of Tunis -> Palermo") from 
+*your* order report. If you want the judge to remove it from the order 
+report send an erroneous order (e.g. F BOT WAIVE).
 
 
 ORDER SHORTHAND
@@ -1517,10 +1552,10 @@ v2.1b 23rd Feb. 2003. Moved section on version differences here from
 v2.2 20th July 2003. Section clarifying conversions added. New rule re
     straits and support orders. New commands described. Auth. S. Lidsell.
 v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how 
-    to play in standard diplomacy style. Auth. S. Lidsell.
+    to play in standard diplomacy style. Author S. Lidsell.
 v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
     provinces. Auth. S. Lidsell.
-v2.4a 9th Dec 2003. Coastal spec for coversions.  Correction of typo re 
+v2.4a 9th Dec 2003. Coastal spec for conversions.  Correction of typo re. 
     income for besieged cities.  Author Millis Miller.
 v2.4b 22nd Jan 2004. 'Income quick ref chart' (app 5).  Minor correction 
     re coasts and disbands.  Venice 5e corrected.  Author Sergio Lidsell.
@@ -1545,7 +1580,8 @@ v2.7c 17th July 2005. Added som missing order syntax.  Author Sergio Lidsell.
 v2.7d 5th Aug 2005. Clarified victory conditions.  Author Sergio Lidsell.
 v2.8 28th Sep 2005. Clarified power elimination and Home Country control 
     rules (NPCs and Variable Income). Author Sergio Lidsell.
-
+v2.8b 6th Jan 2006. Clarified and corrected victory rules.  Auth. S. Lidsell.
+v2.8c 13th Jan 2007. Additional order example note.  Author Sergio Lidsell.
 
 This document is free to distribute for non-commercial and non-profit purposes.
 All rights reserved.
