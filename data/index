@@ -683,7 +683,7 @@ mod/bgs SET ONE CENTRE[S]|CENTER[S]                                    {0.8.9}
 
 mod/    SET ONTIMERAT level                                            {0.8.9}
         Restricts access to the game to those people with an ontime ratio
-        equal then or greater than the indicated level.  The indicated level
+        equal to or greater than the indicated level.  The indicated level
         can not be higher than the moderator's.  For information on the ontime
         ratio, get the file 'dedsystems'.
 
