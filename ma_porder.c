@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.27  2005-05-06 22:20:53  millis
+ * Bug 407, correctly show power eliminated when last home centre captured.
+ *
  * Revision 1.26  2004/10/24 09:02:31  millis
  * Small victory handling corrections
  *
@@ -226,8 +229,89 @@ static void SetNewOwners(void)
                         pr[p].cown = ncown[p];
         }
 }
+static void CheckForCountryLoss(void)
+{
+	/*
+	 * See if a country's income has been lost to someone
+	 */
+
+	int i,n,p,p1,u, owns_one;
+
+        for (i = 0; i < nv; i++) {
+                n = 0;
+                p = vincome[i].prov;
+                u = pr[p].home;
+
+		if (u && u < AUTONOMOUS) {
+		   /* Someone did own this country, check that they still own at list one of the cities */
+
+		    owns_one = 0;
+		    for (p1 = 1; p1 <= npr && !owns_one; p1++) {
+		        if (cityvalue(p1) > 0 && 
+			    pr[p1].home == u &&
+ 			    pr[p].type == pr[p1].type)
+			    if (pr[p1].cown == u)
+			       owns_one++; 
+		    }
+		    if (!owns_one) {
+                       fprintf(rfp, "\n%s has lost control of %s's original home territory.\n",
+                                powers[u], powers[pr[p].new_owner]);
+			for (p1 = 1; p1 <= npr; p1++) {
+			  if (cityvalue(p1) > 0 &&
+                            pr[p1].home == u &&
+                            pr[p].type == pr[p1].type)
+			    pr[p1].home = AUTONOMOUS;
+			}
+ 		    }
+		}
 
 
+	}
+
+}
+
+static void CheckForCountryTakeover(void)
+{
+
+        /*
+           **  Check for anyone who has taken over another player's original home.
+         */
+
+	int i,j,p;
+
+        for (i = 1; i < WILD_PLAYER; i++) {
+                if (dipent.pl[i] == 'x')
+                        continue;
+                j = 0;
+                for (p = 1; p <= npr; p++) {
+
+                        if (pr[p].type == dipent.pl[i]) {
+                                if (!j)
+                                        j = pr[p].owner;
+                                else if (j != pr[p].owner)
+                                        break;
+
+                                if (pr[p].cown != j && cityvalue(p) > 0)
+                                        break;
+
+                                if (pr[p].home == j)
+                                        break;
+                        }
+                }
+
+                if (p > npr) {
+                        fprintf(rfp, "\n%s has gained control of %s's original home territory.\n",
+                                powers[j], powers[i]);
+
+                        for (p = 1; p <= npr; p++) {
+                                if (pr[p].type == dipent.pl[i]) {
+                                        pr[p].home = j;
+                                }
+                        }
+                }
+        }
+
+}
 static void newowner(void)
 {
 
@@ -235,7 +319,7 @@ static void newowner(void)
    **  Transfer ownership of provinces and cities.
  */
 
-	int i, j, u, p;
+	int i, u, p;
 
 	int p_elim [WILD_PLAYER ];
 	int someone_eliminated = 0;
@@ -270,9 +354,7 @@ static void newowner(void)
 	 */
 	SetNewOwners();
 
-	/*
-	   **  Check for any schmucks who lost all their home cities.
-	 */
+	CheckForCountryTakeover();
 
 	for (i = 1; i < WILD_PLAYER; i++) {
 		p_elim[i] = 0; /* Init array flags */
@@ -292,6 +374,7 @@ static void newowner(void)
 			    p_elim[i] = 1;
 		}
 	}
+
 	/* MachMLM 28/4/01 fix for simultaeneous eliminations */
 	for (i = 1; i < WILD_PLAYER; i++) {
 	          if (p_elim[i]) {
@@ -335,41 +418,7 @@ static void newowner(void)
 		}
 	}
 
-	/*
-	   **  Check for anyone who has taken over another player's original home.
-	 */
-
-	for (i = 1; i < WILD_PLAYER; i++) {
-		if (dipent.pl[i] == 'x')
-			continue;
-		j = 0;
-		for (p = 1; p <= npr; p++) {
-
-			if (pr[p].type == dipent.pl[i]) {
-				if (!j)
-					j = pr[p].owner;
-				else if (j != pr[p].owner)
-					break;
-
-				if (pr[p].cown != j && cityvalue(p) > 0)
-					break;
-
-				if (pr[p].home == j)
-					break;
-			}
-		}
-
-		if (p > npr) {
-			fprintf(rfp, "\n%s has gained control of %s's original home territory.\n",
-				powers[j], powers[i]);
-
-			for (p = 1; p <= npr; p++) {
-				if (pr[p].type == dipent.pl[i]) {
-					pr[p].home = j;
-				}
-			}
-		}
-	}
+	CheckForCountryLoss();
 
 	/* Redo calculations as an elimination may have changed this */
 	if (someone_eliminated) {
@@ -379,7 +428,8 @@ static void newowner(void)
 	    	ncown[p] = pr[p].cown;
 	    }
 	    CalculateNewOwners();
-	    something_changed = DisplayOwnershipChanges(1);
+	    CheckForCountryTakeover();
+	    something_changed += DisplayOwnershipChanges(1);
 	    SetNewOwners();
 	}
 
