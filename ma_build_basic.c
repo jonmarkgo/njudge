@@ -1,6 +1,9 @@
 
 /*
    ** $Log$
+   ** Revision 1.8  2003-05-12 02:44:37  millis
+   ** Removed unused variable
+   **
    ** Revision 1.7  2003/05/10 00:46:15  millis
    ** Bug 140 fix, display 'orders' when orders and 'results' when results
    **
@@ -357,7 +360,7 @@ int ma_buildin_basic(char **s, int p)
 void ma_buildout_basic(int pt)
 {
 	int i, u, p, c1;
-	char mastrpt_pr[NPOWER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
+	char mastrpt_pr[MASTER + 1];    // Used to be [MAXPLAYERS]. DAN 04/02/1999
 	int seq_val;
 
 	seq_val = atoi(dipent.seq) -1; /* = 0 at start of game */

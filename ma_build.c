@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.14  2004-05-09 19:44:17  millis
+ * Fix Bug 303 (crash in build results output)
+ *
  * Revision 1.13  2004/05/09 19:02:45  millis
  * Fixed bug 302 (prevent armies being built in Mach2 in Venice)
  *
@@ -290,7 +293,7 @@ int ma_buildin(char **s, int p)
 void ma_buildout(int pt)
 {
 	int n, u, p, i, c1;
-	char mastrpt_pr[NPOWER+1];
+	char mastrpt_pr[MASTER+1];
 
 	if (err)
 		fputc('\n', rfp);
