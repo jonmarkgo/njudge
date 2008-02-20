@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.48  2006-07-08 22:44:15  millis
+ * Fix Bug 389, show short comment in full game listing.
+ *
  * Revision 1.47  2005-11-10 12:08:05  millis
  * Bug 442, NoGracePress flag handling.
  *
@@ -818,6 +821,8 @@ void params(FILE * fp)
 	    fprintf(fp, "  Win by being first to capture opponent home centre with own unit.\n");
 	else if (IS_DUPLEX(dipent) && (dipent.x3flags & X3F_ALLIEDWIN))
 	    fprintf(fp, "  Winning Centers: %d, Allied Win: %d.\n", dipent.vp, dipent.avp);
+	else if ((dipent.flags & F_MACH) && !(dipent.xflags & XF_CITY_ONLY_VICTORY))
+	    fprintf(fp, "  Winning Centers: %d, Winning Countries: %d.\n", dipent.vp, ((dipent.vp  + 1) / 8));
 	else
             fprintf(fp, "  Winning Centers: %d.\n", dipent.vp);
 
