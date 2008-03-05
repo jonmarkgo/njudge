@@ -1,6 +1,9 @@
 
 /*
  * $Log$
+ * Revision 1.15  2007-08-21 17:42:35  millis
+ * Fix Bug 522 (mastrpt_pr too small)
+ *
  * Revision 1.14  2004-05-09 19:44:17  millis
  * Fix Bug 303 (crash in build results output)
  *
@@ -236,12 +239,6 @@ int ma_buildin(char **s, int p)
 		    unit[u].owner != p) {
 			errmsg("%s does not own a unit in %s%s to remove.\n",
 			powers[p], water(p1) ? "the " : "", pr[p1].name);
-			return E_WARN;
-		}
-		if (((is_garrison(u) && (u1 = pr[p1].unit)) ||
-		     (is_garrison(u) && (u1 = pr[p1].gunit))) &&
-		    unit[u1].status == 'b' && unit[u1].owner == p) {
-			errmsg("You cannot build and debuild in %s.\n", pr[p1].name);
 			return E_WARN;
 		}
 		if (unit[u].status == 'b') {
