@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.18  2004/10/23 22:43:29  millis
+ * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
+ *
  * Revision 1.17  2004/07/25 16:01:37  millis
  * Bug 336, allow draw/concede for Intimate games
  *
@@ -73,6 +76,22 @@
 #include "functions.h"
 #include "mail.h"
 
+
+/* Find if any of players controlled powers can vote in a draw/concession */
+int PlayerHasNoUnitsOrCentres(int r_index)
+{
+    int i;
+
+    for (i = 0; i < dipent.n; i++) 
+        if (i == r_index || (dipent.players[i].controlling_power == r_index && r_index > 0)) {
+	    if (dipent.players[i].units || (!(dipent.flags & F_MACH) && dipent.players[i].centers)) {
+		return 0;
+	    }
+	}
+
+    return 1;
+}
+
 int check_can_vote(int i, int flag)
 {
 	char *s = NULL;
@@ -110,8 +129,8 @@ int check_can_vote(int i, int flag)
                 fprintf(rfp, "This game is complete. You can't vote for a %s.\n",s);
                 return 1;
         }
- 	
-	if (!dipent.players[r_index].units && !dipent.players[r_index].centers) {
+ 
+ 	if (PlayerHasNoUnitsOrCentres(r_index) ) {
 		fprintf(rfp, "You have no units or centers and cannot vote on a %s.\n",s);
 		return 1;
 	}
@@ -240,7 +259,7 @@ int chkconc(char *to_check)
 			continue;
 		
 		if(dipent.players[j].centers <= dipent.players[i].centers &&
-		   !(dipent.flags & F_INTIMATE))
+		   !(dipent.flags & F_INTIMATE) && !(dipent.flags & F_MACH))
 		{
                         fprintf(rfp, "%s has at least as many centers as %s. You may only concede to the largest power on the board.\n",
                             powers[dipent.players[i].power],
