@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.79  2006-06-27 19:45:31  millis
+ * Bug 476, make 'Re' case-insensitive when constructing reply subject
+ *
  * Revision 1.78  2006-03-18 22:50:32  alange
  *
  * Fix bug 460.
@@ -2329,7 +2332,7 @@ int mail(void)
 				if (dipent.players[j].status & SF_DRAW) {
 					if (dipent.x2flags & X2F_NODIAS) {
 						fprintf(rfp, "%-15s: DRAW %s\n", powers[dipent.players[j].power],
-						 dipent.players[j].pref);
+						 dipent.players[j].draw);
 					} else {
 						fprintf(rfp, "%-15s: DRAW YES\n", powers[dipent.players[j].power]);
 					}
@@ -2339,7 +2342,7 @@ int mail(void)
 			if (dipent.players[player].status & SF_DRAW) {
 				if (dipent.x2flags & X2F_NODIAS) {
 					fprintf(rfp, "%s: DRAW %s\n", powers[dipent.players[player].power],
-					    dipent.players[player].pref);
+					    dipent.players[player].draw);
 				} else {
 					fprintf(rfp, "%s: DRAW YES\n", powers[dipent.players[player].power]);
 				}
