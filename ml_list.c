@@ -1,5 +1,8 @@
 /*
    ** $Log$
+   ** Revision 1.14  2004-07-12 00:41:12  millis
+   ** Fix bug 335 (don't special list Any-Site games)
+   **
    ** Revision 1.13  2004/07/07 23:20:45  millis
    ** Bug 332: Do not reveal player move status in a secret game
    **
@@ -233,50 +236,35 @@ void mail_listit(void)
 
 			sprintf(line, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);
 
-/*			fprintf(rfp, "   %-*.*s %-7.7s", GetMaxCountryStrlen(), GetMaxCountryStrlen(), powers[dipent.players[i].power], s);*/
 			if (ok_for_blind && 
 			     (dipent.players[i].units || dipent.players[i].centers)) {
 				ccount = dipent.players[i].centers-dipent.players[i].centres_blockaded;
-				sprintf(line, "%s%2d/%d%s",
-					line,
+				sprintf(line + strlen(line), "%2d/%d%s",
 					dipent.players[i].units, 
 					ccount,
 					dipent.players[i].centers < 10 ? " " : "");
 
-/*
- *				fprintf(rfp, "%2d/%d%s",
- *					dipent.players[i].units, 
- *					ccount,
- *					dipent.players[i].centers < 10 ? " " : "");
- */
 			} else
 				strcat(line, "     ");
-/*				fputs("     ", rfp); */
 
 			/* Now display late count if either master or not quiet/late_count */
 		        if ((dipent.xflags & XF_LATECOUNT) ) {	
 				if ((dipent.players[i].power >= 0 && dipent.players[i].power < WILD_PLAYER) &&
 				    ((signedon && (dipent.players[player].power == MASTER || player == i)) || (!(dipent.flags & F_QUIET)))) 
-					sprintf(line, "%s %2d ", line, dipent.players[i].late_count);
-/*					fprintf(rfp, " %2d ", dipent.players[i].late_count);  */
+					sprintf(line + strlen(line), " %2d ", dipent.players[i].late_count);
 				else
 					strcat(line, "   ");
-/*					fprintf(rfp, "   "); */
 			}
 			else
 				strcat(line, "   ");
-/*				fprintf(rfp, "   "); */
 			
 			if (signedon && (dipent.players[player].power == MASTER || player == i)) {
 				if (dipent.players[i].status & SF_PRESS)
 					strcat(line, "*");
-/*					fprintf(rfp,"*"); */
 				else
 					strcat(line, " ");
-/*					fprintf(rfp, " "); */
 			} else {
 				strcat(line, " ");
-/*				fprintf(rfp, " "); */
 			}
 
 	
@@ -285,11 +273,9 @@ void mail_listit(void)
 			    && dipent.players[i].userid <= nded)
 /*			    && ded[dipent.players[i].userid].r */
 			    && (0 != strcmp(dipent.players[i].password,GONE_PWD)))
-				sprintf(line, "%s%4d", line, ded[dipent.players[i].userid].r);
-/*				fprintf(rfp, "%4d", ded[dipent.players[i].userid].r); */
+				sprintf(line + strlen(line), "%4d", ded[dipent.players[i].userid].r);
 			else
 				strcat(line, "    ");
-/*				fputs("    ", rfp); */
 
 			if (dipent.flags & F_GUNBOAT
 			    && dipent.players[i].power != MASTER
@@ -297,23 +283,21 @@ void mail_listit(void)
 			    && ((signedon && player != i)
 			|| strcasecmp(raddr, dipent.players[i].address)))
 				if (dipent.flags & F_INTIMATE && dipent.players[i].controlling_power !=0 && !(dipent.x2flags & X2F_SECRET)) {
-				 sprintf(line, "%s\n", line);
+				 strcat(line, "\n");
 				} else if (IS_DUPLEX(dipent) && !(dipent.x2flags & X2F_SECRET)) {
 				    /* TODO, work out how to show player's numeral index */
-				    sprintf(line, "%s %s\n", line, someone);
+				    sprintf(line + strlen(line), " %s\n", someone);
 				} else
-				sprintf(line, "%s %s\n", line, someone);
-/*				fprintf(rfp, " %s\n", someone); */
+					sprintf(line + strlen(line), " %s\n", someone);
 			else
-				sprintf(line, "%s %s\n", line, dipent.players[i].address);
-/*				fprintf(rfp, " %s\n", dipent.players[i].address); */
+				sprintf(line + strlen(line), " %s\n", dipent.players[i].address);
 
 			if (!(dipent.x2flags & X2F_SECRET) ||
 			  (dipent.seq[0] != 'x') ||
 			  (signedon && dipent.players[player].power == MASTER) ||
 			  (dipent.players[i].power == MASTER) ||
 			  !(strcasecmp(raddr, dipent.players[i].address)))
-				fprintf(rfp, line);
+				fprintf(rfp, "%s", line);
 
 		}
 
