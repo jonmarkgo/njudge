@@ -63,8 +63,9 @@ own Judge installation.  The best way to verify what settings are in effect in
 a particular game is to use the "LIST" command.
 
 
-adm/    ADJUST userid increment
-        The increment is added to the player's dedication rating.
+adm/    ADJUST userid increment SPECIAL_PW
+        The increment is added to the player's dedication rating. SPECIAL_PW
+        is defined in dip.conf.
 
 ply/bgs BECOME MASTER
         Allows the sole player signed onto a particular game to become the
