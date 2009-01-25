@@ -1,5 +1,10 @@
 /*
  * $Log$
+ * Revision 1.73  2006-08-17 02:22:46  alange
+ *
+ * Bug 486. Grace calculation in SET DEADLINE now consistent with
+ *   calculation in lib.c
+ *
  * Revision 1.72  2006-06-30 12:16:14  millis
  * Bug 432, allow 'set preferences' as well as 'set preference'
  *
@@ -1361,87 +1366,102 @@ void mail_setp(char *s)
 			break;
 
 		case SET_DEADLINE:
-			if (mail_date(&s, &dates, 0, rfp, 0))
+			if (mail_date(&s, &dates, 0, rfp, 0)) {
 				fprintf(rfp, "%sInvalid deadline date specified.\n\n", t);
-			else {
-				sequence *seq;
-				dipent.deadline = dates;
-				sprintf(subjectline, "%s:%s - %s Deadline Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
-				fprintf(rfp, "Deadline set to %s.\n", ptime(&dates));
-				/* WAS mfprintf  1/95 BLR */
-				fprintf(bfp, "%s as %s set the deadline\n", xaddr, PRINT_POWER);
-				fprintf(mbfp, "%s as %s set the deadline\n", raddr, PRINT_POWER);
-				mfprintf(bfp, "for game '%s' to %s.\n", dipent.name, ptime(&dates));
-				broadcast = 1;
-				seq = dipent.phase[5] == 'M' ? &dipent.movement :
-				    dipent.phase[5] == 'R' ? &dipent.retreat :
-				    dipent.phase[5] == 'B' ? &dipent.builds :
-				    &dipent.movement;
-				if (dipent.grace < dipent.deadline + (seq->grace * HRS2SECS)) {
-					dipent.grace = dipent.deadline + (seq->grace * HRS2SECS);
-					if (dipent.flags & F_GRACEDAYS) {
-						for (k = 0; k < 8; k++) {
-							tm = localtime(&dipent.grace);
-							if (seq->days[tm->tm_wday] == '-')
-							{
-								tm->tm_mday++;
-								tm->tm_isdst = -1;
-								dipent.grace = mktime(tm);
-								if (dipent.grace < 0)
-								{
-									tm->tm_isdst = 0;
-									dipent.grace = mktime(tm);
-								}
-							}
-							else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
-							{
-								tm->tm_hour = 12;
-								tm->tm_min = 0;
-								tm->tm_sec = 0;
-								tm->tm_isdst = -1;
-								dipent.grace = mktime(tm);
-								if (dipent.grace < 0)
-								{
-									tm->tm_isdst = 0;
-									dipent.grace = mktime(tm);
-								}
-							}
-							else
-								break;
-						}
-					}
-					fprintf(rfp, "Grace period deadline advanced to %s.\n",
-						ptime(&dipent.grace));
-					mfprintf(bfp, "Grace period deadline advanced to %s.\n",
-						 ptime(&dipent.grace));
-				}
-				if (dipent.start > dipent.deadline) {
-					dipent.start = dipent.deadline;
-				}
-				fprintf(rfp, "\n");
-				mfprintf(bfp, "\n");
-				/* Reset the SF_REMINDER flags for all players */
-				for ( i = 0; i < dipent.n; i++)
-				    dipent.players[i].status &= ~SF_REMIND;	
+				s = "";
+				break;
 			}
+			if (*s) {
+				fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", s);
+				s = "";
+				break;
+			}
+			sequence *seq;
+			dipent.deadline = dates;
+			sprintf(subjectline, "%s:%s - %s Deadline Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
+			fprintf(rfp, "Deadline set to %s.\n", ptime(&dates));
+			/* WAS mfprintf  1/95 BLR */
+			fprintf(bfp, "%s as %s set the deadline\n", xaddr, PRINT_POWER);
+			fprintf(mbfp, "%s as %s set the deadline\n", raddr, PRINT_POWER);
+			mfprintf(bfp, "for game '%s' to %s.\n", dipent.name, ptime(&dates));
+			broadcast = 1;
+			seq = dipent.phase[5] == 'M' ? &dipent.movement :
+			    dipent.phase[5] == 'R' ? &dipent.retreat :
+			    dipent.phase[5] == 'B' ? &dipent.builds :
+			    &dipent.movement;
+			if (dipent.grace < dipent.deadline + (seq->grace * HRS2SECS)) {
+				dipent.grace = dipent.deadline + (seq->grace * HRS2SECS);
+				if (dipent.flags & F_GRACEDAYS) {
+					for (k = 0; k < 8; k++) {
+						tm = localtime(&dipent.grace);
+						if (seq->days[tm->tm_wday] == '-')
+						{
+							tm->tm_mday++;
+							tm->tm_isdst = -1;
+							dipent.grace = mktime(tm);
+							if (dipent.grace < 0)
+							{
+								tm->tm_isdst = 0;
+								dipent.grace = mktime(tm);
+							}
+						}
+						else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
+						{
+							tm->tm_hour = 12;
+							tm->tm_min = 0;
+							tm->tm_sec = 0;
+							tm->tm_isdst = -1;
+							dipent.grace = mktime(tm);
+							if (dipent.grace < 0)
+							{
+								tm->tm_isdst = 0;
+								dipent.grace = mktime(tm);
+							}
+						}
+						else
+							break;
+					}
+				}
+				fprintf(rfp, "Grace period deadline advanced to %s.\n",
+					ptime(&dipent.grace));
+				mfprintf(bfp, "Grace period deadline advanced to %s.\n",
+					 ptime(&dipent.grace));
+			}
+			if (dipent.start > dipent.deadline) {
+				dipent.start = dipent.deadline;
+			}
+			fprintf(rfp, "\n");
+			mfprintf(bfp, "\n");
+			/* Reset the SF_REMINDER flags for all players */
+			for ( i = 0; i < dipent.n; i++)
+				dipent.players[i].status &= ~SF_REMIND;	
 			s = "";
 			break;
 
 		case SET_GRACE:
-			if (mail_date(&s, &dates, 0, rfp, 0))
+			if (mail_date(&s, &dates, 0, rfp, 0)) {
 				fprintf(rfp, "%sInvalid grace date specified.\n\n", t);
-			else if (dates < dipent.deadline) {
-				fprintf(rfp, "%sGrace date cannot be earlier than deadline.\n\n", t);
-			} else {
-				dipent.grace = dates;
-				sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
-				fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
-				/* WAS mfprintf  1/95 BLR */
-				fprintf(bfp, "%s as %s set the grace period\n", xaddr, PRINT_POWER);
-				fprintf(mbfp, "%s as %s set the grace period\n", raddr, PRINT_POWER);
-				mfprintf(bfp, "for game '%s' to %s.\n\n", dipent.name, ptime(&dates));
-				broadcast = 1;
+				s = "";
+				break;
 			}
+			if (*s) {
+				fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", s);
+				s = "";
+				break;
+			}
+			if (dates < dipent.deadline) {
+				fprintf(rfp, "%sGrace date cannot be earlier than deadline.\n\n", t);
+				s = "";
+				break;
+			}
+			dipent.grace = dates;
+			sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
+			fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
+			/* WAS mfprintf  1/95 BLR */
+			fprintf(bfp, "%s as %s set the grace period\n", xaddr, PRINT_POWER);
+			fprintf(mbfp, "%s as %s set the grace period\n", raddr, PRINT_POWER);
+			mfprintf(bfp, "for game '%s' to %s.\n\n", dipent.name, ptime(&dates));
+			broadcast = 1;
 			s = "";
 			break;
 
