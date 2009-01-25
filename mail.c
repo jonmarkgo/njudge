@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.80  2008-12-02 22:53:48  millis
+ * Fix bug 550, NoDIAS draw list incorrectly shown.
+ *
  * Revision 1.79  2006-06-27 19:45:31  millis
  * Bug 476, make 'Re' case-insensitive when constructing reply subject
  *
@@ -1278,18 +1281,22 @@ int mail(void)
 				case ADJUST:
 					command++;
 					msg_header(rfp);
-					if (sscanf(s, "%d %d", &i, &n) != 2) {
+					if (sscanf(s, "%d %d %30s", &i, &n, x) != 3) {
 						fprintf(rfp, "Invalid adjustment: adjust %s", s);
+						break;
+					} 
+					if (strcmp(x,SPECIAL_PW) != 0) {
+						fprintf(rfp, "The record command may only be used by an administrator.\n");
+						break;
+					}
+					if (i < 0 || i > nded) {
+						fprintf(rfp, "Invalid user id %d for adjustment: adjust %s", i, s);
 					} else {
-						if (i < 0 || i > nded) {
-							fprintf(rfp, "Invalid user id %d for adjustment: adjust %s", i, s);
-						} else {
-							fprintf(xfp, "%s adjusted %d from %d ", raddr, i, ded[i].r);
-							fprintf(rfp, "%s adjusted %d from %d ", raddr, i, ded[i].r);
-							ded[i].r += n;
-							fprintf(xfp, "to %d.\n", ded[i].r);
-							fprintf(rfp, "to %d.\n", ded[i].r);
-						}
+						fprintf(xfp, "%s adjusted %d from %d ", raddr, i, ded[i].r);
+						fprintf(rfp, "%s adjusted %d from %d ", raddr, i, ded[i].r);
+						ded[i].r += n;
+						fprintf(xfp, "to %d.\n", ded[i].r);
+						fprintf(rfp, "to %d.\n", ded[i].r);
 					}
 					break;
 
