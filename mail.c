@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.81  2009-01-25 05:10:03  alange
+ *
+ * Fix Bug 518: ADJUST command now requires SPECIAL_PW.
+ *
  * Revision 1.80  2008-12-02 22:53:48  millis
  * Fix bug 550, NoDIAS draw list incorrectly shown.
  *
@@ -2215,9 +2219,11 @@ int mail(void)
 					}
 
 					dipent.n = j;
-					dipent.deadline = 0;
-					dipent.start = 0;
-					dipent.grace = 0;
+/* Removed: Bug 553. There should be no need to do this.
+/*					dipent.deadline = 0;
+/*					dipent.start = 0;
+/*					dipent.grace = 0;
+*/
 
 					sprintf(dipent.seq, "x%i", k);
 					dipent.xflags |= XF_MANUALSTART;
