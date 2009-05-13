@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.28  2007-08-21 17:46:30  millis
+ * Fix Bug 523 (allow simulatenous loss of home and gaining another)
+ *
  * Revision 1.27  2005-05-06 22:20:53  millis
  * Bug 407, correctly show power eliminated when last home centre captured.
  *
@@ -247,17 +250,17 @@ static void CheckForCountryLoss(void)
 
 		    owns_one = 0;
 		    for (p1 = 1; p1 <= npr && !owns_one; p1++) {
-		        if (cityvalue(p1) > 0 && 
+		        if (/*cityvalue(p1) > 0 &&*/ 
 			    pr[p1].home == u &&
  			    pr[p].type == pr[p1].type)
-			    if (pr[p1].cown == u)
+			    if (pr[p1].cown == u || pr[p1].owner == u)
 			       owns_one++; 
 		    }
 		    if (!owns_one) {
                        fprintf(rfp, "\n%s has lost control of %s's original home territory.\n",
                                 powers[u], powers[pr[p].new_owner]);
 			for (p1 = 1; p1 <= npr; p1++) {
-			  if (cityvalue(p1) > 0 &&
+			  if (/*cityvalue(p1) > 0 &&*/
                             pr[p1].home == u &&
                             pr[p].type == pr[p1].type)
 			    pr[p1].home = AUTONOMOUS;
