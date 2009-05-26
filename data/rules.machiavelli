@@ -1,5 +1,5 @@
-Greetings from the Diplomacy* Adjudicator!!                     Jan 13, 2007
-Rules.Machiavelli* version 2.8c
+Greetings from the Diplomacy* Adjudicator!!                    Nov 8, 2007
+Rules.Machiavelli* version 3.0
 
 
 CONTENTS
@@ -174,9 +174,12 @@ province.
 
 
 CONVOYS
-Fleets may convoy even if they are in coastal provinces.  On the nJudge 
-this feature is controlled by the 'set coastalconvoys' flag (q.v.).  Armies 
-must start and finish in coastal provinces.  Convoys cannot jump coasts.
+Only army units can be convoyed.  No more than one army can be convoyed by 
+any fleet in the convoy.  The army must start and finish in a coastal 
+province and cannot make an overland move before or after having been 
+convoyed.  Fleets may convoy even if they are in coastal provinces.  On the 
+nJudge this feature is controlled by the 'set coastalconvoys' flag (q.v.).  
+Convoys cannot jump coasts.
 
 
 ADDITIONAL UNITS
@@ -362,23 +365,43 @@ of the following adjustment phase that player would count the income for
 all four provinces if no one else has moved into them.
 
 
-CONTROL OF ANOTHER PLAYER'S HOME COUNTRY
-Home countries are gained/lost in a block as they were defined at setup.
-To gain control of another power's Home Country, you must gain control of
-*all* its original provinces and cities.
-
+CONTROL AND CONQUEST OF HOME COUNTRIES
+Home countries are gained/lost in a block as they were defined at setup. 
 Once a Home Country has lost its original controlling player it will be 
-treated as a "Non Player Country" (NPC).
+treated as a "Non Player Country" (NPC) for the rest of the game.
 
-A power (actually a player) controlling one or more NPCs can lose its 
-Starting Home Country (as defined at setup) without being eliminated (see 
-player elimination though) as one of the NPCs will automatically be treated 
-as the new Home Country of that player.
+No player can use NPC cities and province for builds, nor gain its
+variable income unless they conquer the NPC.
 
-A power (actually a player) controlling one or more NPCs will gain the 
-Variable Income of each of those. The Variable Income can only be lost if 
-another power gains control of any of the NPCs according to the rules in 
-paragraphs one and two above. (See "Income Phase" below for more info.)
+a) Conquest -- how to gain control of a non-player contry
+To conquer an NPC another player must gain control of *all* its original 
+provinces and cities for at least one full season (campaign).  The country 
+is then a Conquered Home Country (CHC).
+
+Example: If a player controls all of Milans province and cities except Como 
+at the beginning of S1463, and manages to gain control of Como during 
+S1463 moves. Said player will gain Milan *after* S1463 retreats if no 
+other player has entered any Milanese province or city by then.
+
+A power (actually a player) controlling one or more CHCs will gain the 
+variable income of each and the ability to use its cities and
+provinces for builds.
+
+b) Loss of a conquered home country
+An CHC is lost when control of *all* its provinces and cities is lost.  
+The CHC will the revert to NPC status (see above).  
+
+N.B. the NPC may immediately pass to another player as per the conquest 
+rules.
+
+TECH NOTE 1: Due to a bug introduced somewhere between nJudge version 1.1.0 
+(april 19th, 2002) and version 1.7.6 (july 17th 2006) the nJudge does not 
+handle the loss of a CHC correctly. Currently CHC loss is handled as per 
+the player elimination rules city requirements. While this is seldom a 
+problem it can be.
+
+TECH NOTE 2: these rules were rewritten november 8th to clarify country 
+control and point out the problem mentioned in the above tech note.
 
 
 PLAYER ELIMINATION
@@ -387,16 +410,26 @@ campaign is eliminated from the game and all of his units are immediately
 removed from the mapboard and all of his provinces and cities revert to 
 unowned status.
 
-If the player also controls several NPCs (see Control of another...) the 
-rule above will only apply if all (remaining) cities of all his NPCs are 
-lost simultaneously. In all other cases NPC elimination/control follow the 
-"Control of another player's Home Country" rules.
+A power (actually a player) controlling one or more CHCs can lose its 
+Starting Home Country (as defined at setup) without being eliminated as 
+one of the CHCs will automatically be treated as the new Home Country of 
+that player.
+
+A player with several CHCs can only be eliminated if the cities of *all* 
+his CHCs and original HC (if still controlled) are lost simultaneously.
 
 Do note that autonomous garrisons affect control, but that rebellions do not.
 
 WARNING: If Power A takes control of Power B's home area in the same season
 that Power A loses control of all of its current home areas, Power A will
 be eliminated.
+
+TECH NOTE 1: As everything is simultaneous in Machiavelli the power should 
+survive. But the nJudge does currently not work that way.
+
+TECH NOTE 2: If a power controlling several CHCs loses his HC the question of 
+which CHC to treat as the new HC arises.  But as all CHCs confer the same 
+benefits it is irrelevant which one is chosen.
 
 
 VICTORY
@@ -1023,9 +1056,10 @@ EFFECTS OF ASSASSINATION
    may still be supported by other players' units.  The hold orders cannot
    be used to put down rebellions and all sieges that the player is
    attempting are broken.
-2) Expenses are wasted if the bank assassinates you, but go through if you
+2) The player will still be able to retreat.
+3) Expenses are wasted if the bank assassinates you, but go through if you
    are assassinated by another player.
-3) Any of the victim's garrisons that are *already under siege* (because
+4) Any of the victim's garrisons that are *already under siege* (because
    the enemy began besiegeing in the previous campaign) are immediately 
    eliminated. (To clarify: the G is *not* eliminated if the enemy ordered 
    to begin to besiege in the same campaign as the assassination occurs).  
@@ -1036,14 +1070,14 @@ EFFECTS OF ASSASSINATION
    such an order is given and an assassination fails to happen, the result
    is a wasted season for the unit attempting the siege. The siege remains
    half-way complete.)
-4) Some provinces controlled by the victim will rebel.  See under
+5) Some provinces controlled by the victim will rebel.  See under
    rebellions for effects.  Based on a 1d6 die roll:
       Type of province               Die to rebel
       A home province with a unit         1
       Home province with no unit         1-2
       Conquered province with unit       1-3
       Conquered province, no unit        1-5
-5) The assassinated player is *not* eliminated from the game.  He
+6) The assassinated player is *not* eliminated from the game.  He
 continues, representing his own successor as ruler of the major power.  The
 effects of assassination merely show the often chaotic effects of a sudden
 shift in power at the top.
@@ -1352,7 +1386,24 @@ convoys are by default enabled for the standard Machiavelli variant.
 
 set [no]disband
 To disable/enable the Mach1 disband rule. That allows you to disband
-units anytime.  E.g. a sav disband.  Always enabled for Mach1.
+units as a movement order.  E.g. a sav disband.  Always enabled for Mach1.  
+A unit disbanded in this way will not bounce a unit moving into the same 
+province/sea area.
+
+'Tech note 1':  The original rules do actually describe this as a form 
+of conversion "into nothing".  And the order is then written, a sav c 0, 
+but for practical reasons the nJudge implementation uses the above notation.
+
+'Tech note 2': Units can be disbanded in three ways in Classic Mach.  By
+setting the disband flag (see above), by not maintaining the unit, and by 
+using a bribe.
+
+'Tech note 3':  As the AH/Battleline rules do not give any indication on 
+how this will affect other units moving into the area, it was decided to 
+treat this disband as a bribe disband for nJudge purposes.  Thus the unit 
+should not affect moves into the are it occupies.  Another reason for it 
+not affecting other units is that it is leaving, dissolving.  It is not 
+prepared for combat or defense.
 
 The status of these options are listed in the "full" listing of the games
 under the heading "flags".  The default settings for the various Mach
@@ -1531,57 +1582,53 @@ RIGHTS RESERVED.
 
 
 REVISION HISTORY
-v1 11th December 1991. Author Ken Lowe??.
-v1b 25th May 2000. Minor revision. Avalon Hill changed to Hasbro Inc.
-    Correction of erroneous unit limits, besieged garrison income and 
-    of assassination handling on the nJudge.  Author Millis Miller.
-v2 30th June 2001. Major rewrite. Clarifications to most rules. Author
-    Bruce Duewer with help from Sergio Lidsell (editor), Rick Desper and 
-    Robert Rehbold.
-v2b 17th December 2001. Minor additions re. Basic and Adv. rules and some 
-    clarifications. Author Sergio Lidsell.
-v2c 24th July 2002. Additions to Introduction and clarification of loan 
-    repayment procedure in the borrowing phase. Author Sergio Lidsell.
-v2c2 26th Oct 2002. Correction of G elim. at assass. Auth. S. Lidsell.
-v2.1 27th Jan 2003. Summary sequence of play added. Retreat into rebelling
-    cities and assassination rule 3 clarified. Builds and divided control 
-    of provinces clarified.  Authors S. Lidsell & B. Duewer.
-v2.1b 23rd Feb. 2003. Moved section on version differences here from
-    rules.machiavelli2. Section on variant specific commands reviewed and 
-    updated. Author Sergio Lidsell.
-v2.2 20th July 2003. Section clarifying conversions added. New rule re
-    straits and support orders. New commands described. Auth. S. Lidsell.
-v2.3 27th Sept 2003. Added [no]garrisons flag and appendix 3 describing how 
-    to play in standard diplomacy style. Author S. Lidsell.
-v2.4 16th Nov 2003. Added appendix 4 describing how to treat multi-coastal
-    provinces. Auth. S. Lidsell.
-v2.4a 9th Dec 2003. Coastal spec for conversions.  Correction of typo re. 
-    income for besieged cities.  Author Millis Miller.
-v2.4b 22nd Jan 2004. 'Income quick ref chart' (app 5).  Minor correction 
-    re coasts and disbands.  Venice 5e corrected.  Author Sergio Lidsell.
-v2.4c 3rd March 2004. Note about support into multi-coastal provinces 
-    added.  Author Sergio Lidsell.
-v2.4d 25th Aug 2004. Appendix 6 added.  Appendix 4 corrected and 
-    clarified. Rebellion effects on support clarified (p6).  Grouped the 
-    Mach-Dip diffs in the intro into diffs under basic rules and diffs under
-    advanced rules.  Author Sergio Lidsell.
-v2.5 21st Nov 2004. Clarified that units cannot trade places (movement 
-    rules) and how elite autonomous garrisons can appear.  Author S. Lidsell.
-v2.5b 14th Jan 2005. Clarified PIO/MES rules.  Author Sergio Lidsell.
-v2.6 15th Feb 2005. Siege info reworded for clarity. PIO/MES rules rewritten
-    to handle paradoxes.  Author Sergio Lidsell.
-v2.7 25th Mar 2005. Straits rules rephrased and corrected. Self-bribes 
-    explained. Example of ally/unally command added. Samples of bribe 
-    'shorthands' and order oddities added. Contents listing added. Minor 
-    rephrasing of siege rules. Explanation of difference between'x' and 'l' 
-    province arguments. Author Sergio Lidsell.
-v2.7b 13th May 2005. Clarified rebs and retreats.  Author Sergio Lidsell.
-v2.7c 17th July 2005. Added som missing order syntax.  Author Sergio Lidsell.
-v2.7d 5th Aug 2005. Clarified victory conditions.  Author Sergio Lidsell.
-v2.8 28th Sep 2005. Clarified power elimination and Home Country control 
-    rules (NPCs and Variable Income). Author Sergio Lidsell.
-v2.8b 6th Jan 2006. Clarified and corrected victory rules.  Auth. S. Lidsell.
-v2.8c 13th Jan 2007. Additional order example note.  Author Sergio Lidsell.
+1999: version 1.  11th December 1991. Author Ken Lowe??.
+2000: version 1b.  Avalon Hill changed to Hasbro Inc.  Correction of 
+    erroneous unit limits, besieged garrison income and of assassination 
+    handling on the nJudge.  Author Millis Miller.
+2001: MAJOR REWRITE, version 2.  Clarifications to most rules text 
+    rewritten. Author Bruce Duewer with help from Sergio Lidsell (editor), 
+    Rick Desper and Robert Rehbold.
+    version v2b.  Minor additions re. Basic and Adv. rules and some 
+    clarifications.  Author Sergio Lidsell.
+2002: versions 2c and 2c2.  Additions to Introduction and clarification of 
+    loan repayment procedure in the borrowing phase and Correction of G 
+    elimination at assassination.  Author Sergio Lidsell.
+2003: versions 2.1, 2.1b, 2.2, 2.3 and 2.4.  Summary sequence of play added. 
+    Retreat into rebelling cities and assassination rule 3 clarified. 
+    Builds and divided control of provinces clarified.  Authors S. Lidsell 
+    and B. Duewer.
+    Section on version differences moved here from rules.machiavelli2. 
+    Section on variant specific commands reviewed and Updated.  Section 
+    clarifying conversions added. New rule re straits and support orders. 
+    New commands described.  Added [no]garrisons flag and appendix 3 
+    describing how to play in standard diplomacy style.  Added appendix 4 
+    describing how to treat multi-coastal provinces. Author. S. Lidsell.
+    Coastal spec for conversions.  Correction of typo re. income for 
+    besieged cities.  Author Millis Miller.
+2004: versions 2.4b, 2.4c, 2.4d and 2.5.  'Income quick ref chart' (app 5).  
+    Minor correction re coasts and disbands.  Venice 5e corrected.  Note 
+    about support into multi-coastal provinces added.  Appendix 6 added.  
+    Appendix 4 corrected and clarified. Rebellion effects on support 
+    clarified (p6).  Grouped the  Mach-Dip diffs in the intro into diffs 
+    under basic rules and diffs under advanced rules.  Clarified that units 
+    cannot trade places (movement rules) and how elite autonomous garrisons 
+    can appear.  Author S. Lidsell.
+2005: versions 2.5b, 2.6, 2.7, 2.7b. 2.7c, 2.7d and 2.8.  Clarified PIO/MES 
+    rules.  Siege info reworded for clarity. PIO/MES rules rewritten
+    to handle paradoxes.  Straits rules rephrased and corrected.  Self-bribes 
+    explained.  Example of ally/unally command added.  Samples of bribe 
+    'shorthands' and order oddities added.  Contents listing added.  Minor 
+    rephrasing of siege rules.  Explanation of difference between'x' and 'l' 
+    province arguments.  Clarified rebs and retreats.  Added som missing 
+    order syntax.  Clarified victory conditions.  Clarified power elimination 
+    and Home Country control rules (NPCs and Variable Income). Author 
+    Sergio Lidsell.
+2006: version v2.8b.  Clarified and corrected victory rules.  Auth. S. Lidsell.
+2007: versions 2.8c, 2.8d, 2.8e, 2.8f and 2.9.  Additional order example note.  
+    Assassinated powers can retreat.  Convoy rule clarified.  Elimination 
+    rules clarified in tech note.  Disband tech note. Author Sergio Lidsell.
+    3.0 Clarification of country control and elimination rules. By S. Lidsell.
 
 This document is free to distribute for non-commercial and non-profit purposes.
 All rights reserved.
