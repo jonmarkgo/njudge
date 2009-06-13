@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.75  2009-01-27 02:31:21  alange
+ *
+ * Make SET START consistent with fixes for SET DEADLINE and SET GRACE
+ *
  * Revision 1.74  2009-01-25 04:16:52  alange
  *
  * Fix Bug 494:
@@ -3406,6 +3410,11 @@ CATF_SETOFF,
 			if (!*se || mail_date(&se, &datee, 0, rfp, DT_ABS_END)) {
 				fprintf(rfp, "%sNo valid absence end date specified - assuming one day only.\n\n", t);
 				datee = dates + (24l * 60l *60l );
+			}
+			if (*se) {
+				fprintf(rfp, "Extra date characters '%s': command rejected.\n\n", se);
+				s = "";
+				break;
 			}
 
 			if (datee <= dates ) {
