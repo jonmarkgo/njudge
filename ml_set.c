@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.76  2009-06-13 01:23:55  alange
+ *
+ * Fix Bug 557: Date parsing error in SET ABSENCE.
+ *
  * Revision 1.75  2009-01-27 02:31:21  alange
  *
  * Make SET START consistent with fixes for SET DEADLINE and SET GRACE
@@ -4047,6 +4051,7 @@ int SetApprovalState(int type, char *part_list, int part_list_count)
     fprintf(fptr, "%s as Master has now %s your making moves.\n", raddr, text);
     fprintf(fptr, explain);
     fclose(fptr);
+    msg_header_done = 0;
 
     for (i = 0; i < dipent.n; i++) {
         for (j = 0; j < part_list_count; j++) {

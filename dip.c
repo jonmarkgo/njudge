@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.69  2006-05-03 03:09:08  alange
+ *
+ * Bug 467. Spurious absence activation notices quashed.
+ *
  * Revision 1.68  2005/06/16 01:44:52  alange
  * Bug 257: Notify masters on bailout recovery and time-warp.
  *
@@ -1246,6 +1250,7 @@ int process(void)
 			if (!Dflg) {
 				fclose(lfp);
 				fclose(mlfp);
+				msg_header_done = 0;
 			}
 
 			for (i = 0; i < dipent.n; i++) {
@@ -1651,6 +1656,7 @@ int process(void)
 			   it has a Miller Number.  Check to see if it is an EP
 			   game.  Alert Custodians to victory */
 			fclose(ofp);
+			msg_header_done = 0;
 			fclose(dfp);
 			fclose(gfp);
 

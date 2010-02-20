@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.82  2009-01-28 02:58:50  alange
+ *
+ * Fix Bug 553. UNSTART no longer resets DEADLINE, GRACE and START.
+ *
  * Revision 1.81  2009-01-25 05:10:03  alange
  *
  * Fix Bug 518: ADJUST command now requires SPECIAL_PW.
@@ -1686,6 +1690,7 @@ int mail(void)
 
 					if ( dipent.seq[0] != 'x') {
 					fclose(qfp);
+					msg_header_done = 0;
 
 					/* Open draw file (for summary) */
 					sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);

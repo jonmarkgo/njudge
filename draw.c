@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.19  2008-11-20 23:33:49  millis
+ * Fix Bug 549 to allow duplex & Mach concessions
+ *
  * Revision 1.18  2004/10/23 22:43:29  millis
  * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
  *
@@ -454,6 +457,7 @@ int process_draw(void)
 	 */
 
 	fclose(ofp);
+	msg_header_done = 0;
 
 	{
 		sprintf(line, "%s '%s: %s in game %s'", "%s",
@@ -613,6 +617,7 @@ int process_conc(void)
                 }
         }
 	fclose(ofp);
+	msg_header_done = 0;
 
 	/* Now we must notify the various custodians of the concession. */
 	InformCustodians(dipent.name,

@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.48  2006-06-07 10:31:58  millis
+ * Fix Bug 473, specify dedsystems file.
+ *
  * Revision 1.47  2005/06/09 09:45:16  alange
  * Fix bug 406. Masters and observers no longer set to wait on takeover.
  *
@@ -1542,6 +1545,7 @@ void mail_igame(void)
 		fprintf(ofp, "The deadline for the first orders is %s.\n",
 			ptime(&dipent.deadline));
 		fclose(ofp);
+		msg_header_done = 0;
 		fclose(tfp);
 
 		if (i != dipent.n) {
@@ -1674,6 +1678,7 @@ void mail_igame(void)
 		fclose(fp);
 	}
 	fclose(ofp);
+	msg_header_done = 0;
 
 	InformCustodians(dipent.name,
 	                 "%s '%s: Game %s starting'",
