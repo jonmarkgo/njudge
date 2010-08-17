@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.83  2010-02-20 21:06:33  alange
+ *
+ * Bug 282. Fixes based on David Norman's notes.
+ *
  * Revision 1.82  2009-01-28 02:58:50  alange
  *
  * Fix Bug 553. UNSTART no longer resets DEADLINE, GRACE and START.
@@ -2549,14 +2553,14 @@ void mail_reply(int err)
 
 		fflush(ifp);
 		rewind(ifp);
-		fprintf(rfp, "\n---- Original message follows:\n");
-		while (fgets(line, sizeof(line), ifp))
+		fprintf(rfp, "\nYour request could not be completed. Please contact the judge keeper.\n");
+/*		while (fgets(line, sizeof(line), ifp))
 		{
 			if(!strcmp(line, "\n") || !strcmp(line, "\r\n"))
 				hdr_end = 1;
 			if(hdr_end)
 				fputs(line, rfp);
-		}
+		}  */
 	} else if (err != 0 && !junkmail && spammail) {
 		fprintf(rfp, "\nYour original message is not being echoed because you are not registered on this judge.\n");
 	}
