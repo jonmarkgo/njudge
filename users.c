@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.16  2003-12-02 18:46:34  millis
+ * Reconsidered change, restoring old version
+ *
  * Revision 1.15  2003/12/02 18:43:06  millis
  * Improved checking for Bug 250, namely not allowing blank addresses
  *
@@ -676,6 +679,8 @@ void whois(char *t)
 		}
 		fclose(fp);
 	}
+
+	if (n>1) { n=0; }
 
 	if (!n) {
 		fprintf(rfp, "No matching Email addresses found.\n\n");
