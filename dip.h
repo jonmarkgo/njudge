@@ -1,5 +1,8 @@
 /*
  * $Log$
+ * Revision 1.57  2005-11-10 12:08:06  millis
+ * Bug 442, NoGracePress flag handling.
+ *
  * Revision 1.56  2004/10/23 22:43:28  millis
  * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
  *
@@ -429,6 +432,12 @@ typedef struct Sequence {
 #define SF_SIGNED  0x10000	/* Player has signed onto judge this turn */
 #define SF_BROAD_SENT 0x20000   /* Player has sent one broadcast message this turn */
 
+/*Password characteristics - Change these to improve security or to use alternative authentication sources.*/
+#define AUTH_MAX_LEN 20     /*Max password length - Most players use 6 to 10 characters. Check the format string in dipent.c if you use a value > 40.*/
+#define AUTH_MIN_LEN  1     /*Minimum password length- 6 would be a good value here.*/
+#define AUTH_MIX_CASE 0 /*Change to 1 to enable case sensitive passwords.*/
+#define AUTH_STR_CHECK 0    /*Not yet implemented - Password strength checks.*/
+#define AUTH_WEAK 1      /*Force alphanumerics in passwords and game names. Set 0 to allow punctuation and non-local characters (untested).*/
 
 /* This will clear out non-essential status for a new player */
 #define NewPlayerSF(i) dipent.players[i].status &= ~(SF_RESIGN | SF_CD | SF_ABAND | SF_REMIND | SF_LATE | SF_DRAW);
@@ -455,7 +464,7 @@ typedef struct PLAYER {
 	long absence_start[MAX_ABSENCES]; /* Start of each absence period     */
  	long absence_end[MAX_ABSENCES];  /* End of each absence period        */
 	long absence_total;	/* Total absence time requested in game       */
-	char password[30];	/* Player's password                          */
+	char password[AUTH_MAX_LEN];	/* Player's password                          */
 	char address[100];	/* Player's electronic mail address           */
 	char pref[MAXPLAYERS];	/* Player's power preference list             */
 	char draw[MAXPLAYERS];  /* Player's draw preference list              */
@@ -464,7 +473,7 @@ typedef struct PLAYER {
 struct dipent {
 	int valid;		/* =0 if dipent itself is empty 		*/
 	int pr_valid;		/* =0 if pr array is non_valid			*/
-	char name[9];		/* Game name                                    */
+	char name[20];		/* Game name                                    */
 	char seq[11];		/* Game sequence number                         */
 	char phase[10];		/* Game phase of the form F1901M                */
 	char comment[70];	/* Comment associated with game                 */
