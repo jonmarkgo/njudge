@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.28  2006-05-03 01:19:02  alange
+ *
+ * Prevent CLOCK setting from being exactly 1440. Part of Bug 369.
+ *
  * Revision 1.27  2005/06/16 01:44:52  alange
  * Bug 257: Notify masters on bailout recovery and time-warp.
  *
@@ -443,7 +447,7 @@ void putdipent(FILE * fp, int dopw)
 	int i;
 	char line[1000];
 
-	fprintf(fp, "%-8.8s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d %x %d\n", 
+	fprintf(fp, "%-20.20s  %-8.8s  %-8.8s  %d %d %d %d %x %d %d %x %d %x %d %x %d\n", 
 		dipent.name, dipent.seq,
 		dipent.phase, dipent.access, dipent.variant,
 		dipent.level, dipent.dedicate, dipent.flags, dipent.vp,
@@ -809,7 +813,7 @@ void putplay(FILE * fp, Player * p, int dopw)
 		    
 		if (isupper(c = dipent.pl[p->power]))
 			c = tolower(c);
-		fprintf(fp, "%c%-8s %4x %2d %2d %3d %5d %-12s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld %d\n",
+		fprintf(fp, "%c%-8s %4x %2d %2d %5d %5d %-42s %s %4d %2d %d %ld %ld %ld %ld %ld %ld %ld %d\n",
 			c, &out_power[1],
 		   p->status, p->units, p->centers, p->userid, p->siteid,
 			dopw ? p->password : "xxx", p->address,p->late_count, p->centres_blockaded,
