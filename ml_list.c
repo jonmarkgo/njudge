@@ -1,5 +1,10 @@
 /*
    ** $Log$
+   ** Revision 1.15  2009-01-25 02:44:46  alange
+   **
+   ** Bug 552. sprintf reading and writing from same buffer is undefined.
+   **     Deleted old commented out code.
+   **
    ** Revision 1.14  2004-07-12 00:41:12  millis
    ** Fix bug 335 (don't special list Any-Site games)
    **
@@ -345,10 +350,10 @@ void mail_listbrief(void)
 
 
 	if (!count++) {
-		fprintf(rfp, "Name      Phase    Variant/Options\n");
-		fprintf(rfp, "-------   ------   ---------------\n");
+		fprintf(rfp, "Name              Phase    Variant/Options\n");
+		fprintf(rfp, "---------------   ------   ---------------\n");
 	}
-	fprintf(rfp, "%-10.10s%-9.9s", dipent.name, dipent.phase);
+	fprintf(rfp, "%-18.18s%-9.9s", dipent.name, dipent.phase);
 
 	fprintf(rfp, "%c%s",
 	toupper(*variants[dipent.variant]), variants[dipent.variant] + 1);
