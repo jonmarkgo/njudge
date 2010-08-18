@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.49  2010-02-20 21:06:34  alange
+ *
+ * Bug 282. Fixes based on David Norman's notes.
+ *
  * Revision 1.48  2006-06-07 10:31:58  millis
  * Fix Bug 473, specify dedsystems file.
  *
@@ -350,7 +354,7 @@ FILE *OpenDataFile(char *line, char *type)
 int mail_signon(char *s)
 {
 
-	char password[20];
+	char password[AUTH_MAX_LEN];
 	int i, j, n, found;
 	int jj, one_done = 0;
 	int lmaster = 0; // Whether the players has been auto-promoted to master
@@ -372,11 +376,15 @@ int mail_signon(char *s)
 	while (isspace(*s))
 		s++;		/* skip whitespace before the pname */
 	for (t = name; *s && !isspace(*s); s++) {
-		if (!isalnum(*s) && t > name) {
-			fprintf(rfp, "Game names must only contain alphanumeric characters.\n");
-			fprintf(rfp, "A '%c' was found.\n", *s);
-			return E_WARN;
-		}
+		if (AUTH_WEAK) {
+			if (ispunct(*s) && t > name) {
+
+				fprintf(rfp, "Game names must contain only letters and numbers.\n");
+				fprintf(rfp, "A '%c' was found.\n", *s);
+				return E_WARN;
+			}
+		}	
+
 		if (t < name + sizeof(dipent.name))
 			*t++ = tolower(*s);
 	}
@@ -388,11 +396,15 @@ int mail_signon(char *s)
 	while (isspace(*s))
 		s++;
 	while (*s && !isspace(*s) && t < password + sizeof(password) - 1) {
-		if (!isalnum(*s) && t > name) {
-			fprintf(rfp, "Passwords must only contain alphanumeric characters.  Found a '%c'\n", *s);
-			return E_WARN;
+		if (AUTH_WEAK) {
+			if (!isalnum(*s) && t > name) {
+				fprintf(rfp, "Passwords on this judge must only contain letters and numbers.\n");
+				fprintf(rfp, "A '%c' was found.\n", *s);
+				return E_WARN;
+			}
 		}
-		*t++ = tolower(*s++);
+		*t++ = *s++;
+		
 	}
 
 	/* Check password specified */
