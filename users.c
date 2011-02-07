@@ -1,5 +1,9 @@
 /*
  * $Log$
+ * Revision 1.17  2010-08-18 00:25:07  chrisb
+ * Anti-phishing patch.
+ * Retrieve a registration for whois only if just one user matches.
+ *
  * Revision 1.16  2003-12-02 18:46:34  millis
  * Reconsidered change, restoring old version
  *
@@ -603,6 +607,7 @@ int getuser(char *addr, int *userid, int *siteid, int *level)
 void whogame(int f)
 {
 	int x;
+        char *addresses, *address;
 
 	if ((dipent.flags & F_GUNBOAT)
 	    && (!signedon || dipent.players[player].power != MASTER)
@@ -625,9 +630,17 @@ void whogame(int f)
 				if (!strcmp(dipent.players[x].address, "*"))
 					fprintf(rfp, "%s is abandoned.  Address unknown.\n\n",
 					powers[dipent.players[x].power]);
-				else
-					whois(dipent.players[x].address);
+				else {
+                                        addresses = strdup(dipent.players[x].address);
+                                        address = strtok(addresses,", ");
+                                        whois(address);       
+                                        while ( (address = strtok(NULL,", ")) )
+                                                whois(address);
+
+                                        free(addresses);
+                                        //whois(dipent.players[x].address);
 			}
+               }
 	putc('\n', rfp);
 	return;
 }
