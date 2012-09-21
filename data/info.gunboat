@@ -1,0 +1,33 @@
+Greetings from the Diplomacy* Adjudicator!!                 March 23, 1991.
+Info.gunboat
+
+In gunboat Diplomacy no one knows who the other players are.  All
+communication with the other players must be done via the adjudicator
+with broadcast/press messages.
+
+To sign onto a gunboat game, the gunboat keyword must be specified
+as part of the variant identification:
+
+    signon ?name password gunboat
+
+Gunboat is not really a variant in itself, any variant game can be
+of the gunboat type.  For example:
+
+    signon ?name password youngstown gunboat
+
+would be the method to sign on to a Youngstown variant game that was
+also a gunboat game.  The keywords for the variant and variant options
+can be specified in any order.
+
+It is possible to change a non-gunboat game to a gunboat game with the
+
+    set variant gunboat
+
+command, but this needs to be done before anyone has signed onto the
+game.  It is better to specify the gunboat keyword on the initial signon
+that creates the game.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

@@ -1,0 +1,21 @@
+UNIX style SYSLOG can be enabled via the flag SYSLOG_FLAG. This will send 
+logging information to a SYSLOG specified destination. By setting this flag
+to a non-zero value, SYSLOG information will be automatically generated.
+
+The defines for this are stored in the file diplog.h, currently only the
+log level of LOG_USER is hard-coded.
+
+All syslog levels can be used, and are available via variable-argument
+functions, namely:
+
+void DIPERROR(char *fmt, ...);
+void DIPWARN(char *fmt, ...);
+void DIPNOTICE(char *fmt, ...);
+void DIPINFO(char *fmt, ...);
+void DIPDEBUG(char *fmt, ...);
+
+in decreasing order of severity. Only a few calls are made at present to 
+these functions, these should be expanded in the future.
+
+-Millis Miller 6th Oct 2000
+

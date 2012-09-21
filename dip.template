@@ -1,0 +1,8 @@
+control   001       S1801MX   1 1 1 0 2
+-
+alpha     x0x       S1901M    2 1 1 0 0
+Process   Sat Jan 28 00:38:06 1989
+Moves     clock 1410 min 48.00 next  48.00 grace 168.00 delay 0.50 days --TW---
+Retreat   clock   -1 min  0.00 next  24.00 grace  48.00 delay 0.50 days -mTWTF-
+Builds    clock   -1 min  0.00 next  24.00 grace  48.00 delay 0.50 days -mTWTF-
+-

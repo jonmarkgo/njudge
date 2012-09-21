@@ -1,0 +1,54 @@
+
+Starting position for Spring of 1901.
+
+Austria: Army  Vienna1.
+Austria: Army  Budapest1.
+Austria: Fleet Trieste1.
+Austria: Army  Vienna2.
+Austria: Army  Budapest2.
+Austria: Fleet Trieste2.
+
+England: Fleet London1.
+England: Fleet Edinburgh1.
+England: Army  Liverpool1.
+England: Fleet London2.
+England: Fleet Edinburgh2.
+England: Army  Liverpool2.
+
+France:  Army  Paris1.
+France:  Army  Marseilles1.
+France:  Fleet Brest1.
+France:  Army  Paris2.
+France:  Army  Marseilles2.
+France:  Fleet Brest2.
+
+Germany: Army  Berlin1.
+Germany: Army  Munich1.
+Germany: Fleet Kiel1.
+Germany: Army  Berlin2.
+Germany: Army  Munich2.
+Germany: Fleet Kiel2.
+
+Italy:   Army  Rome1.
+Italy:   Army  Venice1.
+Italy:   Fleet Naples1.
+Italy:   Army  Rome2.
+Italy:   Army  Venice2.
+Italy:   Fleet Naples2.
+
+Russia:  Army  Moscow1.
+Russia:  Army  Warsaw1.
+Russia:  Fleet St Petersburg1 (south coast).
+Russia:  Fleet Sevastopol1.
+Russia:  Army  Moscow2.
+Russia:  Army  Warsaw2.
+Russia:  Fleet St Petersburg2 (south coast).
+Russia:  Fleet Sevastopol2.
+
+Turkey:  Army  Constantinople1.
+Turkey:  Army  Smyrna1.
+Turkey:  Fleet Ankara1.
+Turkey:  Army  Constantinople2.
+Turkey:  Army  Smyrna2.
+Turkey:  Fleet Ankara2.
+

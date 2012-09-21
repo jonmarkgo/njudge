@@ -1,0 +1,10 @@
+#! /bin/sh
+# This script is either invoked by cron or by atd depending on whether you
+# create a cron job or let the atrun script schedule it using at.
+
+cd @DIR@
+find . -name "[MTP]*" -atime +90 -exec rm {} \;
+./flock dip.log
+./newlogs
+./flock
+

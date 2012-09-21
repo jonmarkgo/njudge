@@ -1,0 +1,118 @@
+Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+history.
+
+
+The "HISTORY" command can be used to retrieve all messages that an observer
+would have seen had he been signed on to a particular game for a particular
+time period.  The adjudicator stores turn results, broadcast press, and
+informational notices (deadline adjustments, late notices, etc.), but NOT any
+partial press.  (Note:  the history is not available in unfinished Blind
+games, except to the game moderator.)
+
+This command has two forms:
+
+(1)  HISTORY [name] [FROM date] [TO date] [LINES n]
+
+     This form retrieves the history information for the specified game
+     ("name") for the specified time period (in real time rather than game
+     time).  The default period is 1 week ago to the present.  If the HISTORY
+     command follows a valid SIGNON command, then it is not necessary to
+     specify "name", as the signed on game is assumed.
+
+     Dates can be specified in the following forms (only spaces should be
+     used to separate parts of a date, except a comma is optionally allowed
+     after the day of the month):
+
+          a)  Day of week (three-letter abbreviation)
+          b)  Day and month (three-letter abbreviation), or month and day
+          c)  Day, month, and year, or month, day, and year, where year
+              can be specified either as 80-99 (= 1980-1999) or four digits.
+
+     Also, a time in hours and minutes (i.e., 'hh:mm' form, using a 24-hour
+     clock) can be added after any of the above if desired; otherwise, the
+     time defaults to midnight (00:00) of the specified day.
+
+     To get the earliest part of the history (or the whole history), use
+     a date that is known to be earlier than the game start date; 1 Jan
+     1990 (or Jan 1, 1990) is usually sufficient for this purpose.
+
+     The LINES specifier can be used to limit (or increase) the number of
+     lines that will be returned by the adjudicator.  The default is 1000.
+
+     Examples:
+
+          history foo from Jan 1, 2003
+
+               will return history of game "foo" starting at midnight on Jan
+               1, 2003, up to the end of the records (the present date) or
+               1000 lines, whichever comes first.
+
+          history foo from Jan 1, 1990 to Dec 31, 2002 23:59 lines 5000
+
+               will return history of game "foo" from the start of the game
+               up to a minute before midnight on Dec 31, 2002, or 5000 lines,
+               whichever comes first.
+
+          history foo to Dec 31, 2002 23:59
+
+               will not perform as expected - if the start date is not
+               specified, it defaults to the current system time minus seven
+               days.  Since the end date is before the start date, it will be
+               ignored.  Therefore, this command will produce the same
+               results as "HISTORY FOO" with no arguments.
+
+ (2)  HISTORY [name] EXCLSTART turnId [EXCLEND turnId] [BROAD]
+
+     Retrieves the history information for the specified game excluding
+     phases starting from EXCLSTART turnId [to EXCLEND turnId].
+
+     Note: EXCLSTART is not optional.
+
+     In the case where [EXCLEND turnId] is not specified, the returned
+     history contains turns from start of game to (but not including)
+     EXCLSTART turn.
+
+     The format for 'turnId' is: SYYYYT
+     where:  S - the season (ex: 'S' for Spring, or 'F' for Fall)
+             Y - each digit in the year. (ex: 1901, 1425, 1999)
+             T - Turn (ex: 'M' for Movement Phase, 'B' for builds, 'R' for
+                 Retreats)
+
+     Some examples of valid turnIDs:
+             S1902M (Spring 1902 Movement Phase)
+             F1999B (Fall 1999 Adjustment(Builds) Phase)
+
+     No checking is done to determine whether the TurnIds given are
+     actually found in the game.  The default action for erroneous turnIds
+     is to return a history for the entire game.  If the EXCLSTART turnID is
+     invalid, the EXCLEND turnID will be ignored.
+
+     Examples (assuming that "foo" is a Standard game):
+
+          history foo exclstart S2999M
+
+               Return the complete history.
+
+          history foo exclstart S1903M
+
+               Return the history for game-years 1901 and 1902 only.
+
+          history foo exclstart S1899M exclend F1905B
+
+               Return the history from game-year 1906 to the end of the
+               records.
+
+     By default 'Diplomacy notices' are not included. However, if a draw
+     notice is found outside the excluded set of phases the draw notice
+     will be included.
+
+     The optional "BROAD" specifier will cause notices included in the
+     history.  In the worst case, with the BROAD command, the returned
+     message can be anywhere from 200 Kb to as much as 1 Mb.
+     (BEWARE! using this flag.)
+
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

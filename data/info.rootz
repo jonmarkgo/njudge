@@ -1,0 +1,238 @@
+Greetings from the Diplomacy* Adjudicator!!                       July 6, 1993.
+Info.rootz
+
+The following excerpt from EP Chapter Two gives the rules and other basic 
+information about this interesting variant. Following the exerpt will be
+a few bits of judge-specific information.
+
+>From EP Chapter Two, Issue 305, June 17, 1993.
+
+2.1  Variant Corner
+Greg Tanner - gregt@u.washington.edu
+
+Over the past few months, numerous variants have been posted to r.g.d.  One of
+these, the Root Z Variant, created a great deal of interest and discussion
+over the Net.
+
+In essence, the Root Z variant allows seven players to control a power on each
+of two identical Diplomacy boards, with access between the two boards by
+moving across any border of the border line running from Mar-Pie in the north
+to Mao-Naf in the south.
+
+The effect is quite different from simply imposing one board on top of
+another, as in "parallel dimensions" where say, Bur1 accesses Bur2 and Bud1
+accesses Bud2.  A better analogy might be an interlocking spiral (joined at
+the ends).  As the designers say below, the talk of "two boards" is confusing:
+this is really *one* board!
+
+Another way for the non-mathematicians (like myself) to view it is as follows:
+Picture a stick with one end placed at Switzerland and running to the Mao-Naf
+border.  Now, holding the Switzerland end at Switzerland, swing the other end
+toward Italy, and around the board to France.
+
+When reaching the Mao-Naf border again, the stick now transports to the same
+place on Map 2.  Again, move the stick around the board, and when reaching the
+Mao-Naf border a second time, the stick returns to the starting place on Map
+1.  As described before, the effect is that of a spiral joined at the ends,
+creating a single board!
+
+2.2  Root Z Diplomacy
+Phil Creed, Tom Hyer, and Mark Nelson
+
+((These rules are based upon an original design by Phil Creed and Mark Nelson
+which were posted to rec.games.diplomacy in April (or was it May?) 1993. This
+new set of rules is based upon the extensive discussion about the rules and
+has been written by Phil Creed, Tom Hyer and Mark Nelson. We would like to
+thank everyone who took part in the discussion, in particular: Rick Desper,
+Gary Duke, Lars Henrik Mathiesen, Robert Rehbold, Joel Evan Rosenberg and
+Frederick Scott. This revised set of rules is dated 7th June 1993.))
+
+   ROOT Z DIPLOMACY   ROOT Z DIPLOMACY   ROOT Z DIPLOMACY   ROOT Z DIPLOMACY
+                   BY PHIL CREED, TOM HYER and MARK NELSON.
+
+(1.0) Introduction
+
+   The idea for this variant comes from the mathematical concept of a cut in
+the complex plane.  When applied to two diplomacy boards this creates a link
+between the two boards.  Locally the cut appears to have no effect because a
+unit "views" exactly the same provinces across the cut line as in standard
+diplomacy, however a unit trying to move across the cut line moves from one
+board to the other board.
+
+   Natural extensions of the idea introduced in this variant would be to have
+one, or more, cuts on two, or more, boards.
+
+(2.0) THE RULES
+
+(1.0) The 1971 rules of diplomacy apply except where modified below.
+
+(2.0) There are two boards, denoted by "1" or "2" appended to country or
+province names.  There are seven players, each of whom controls two powers;
+see rule (3).
+
+(2.1) In adjudications units are labeled in the format iJK where i (i=1 or 2)
+is the board on which the unit was built, J (J =A, E, F, G, I, R or T)  is the
+country which built the unit and K (K =A or F) is the unit type. eg if France
+on board one builds A(Par) this is denoted 1FA(Par), if Germany builds F(Kie)
+on board two this is 2GF(Kie).
+
+(3.0) The map described above contains two disconnected "mega-zones" of sea
+provinces (for example, no fleet can move from Bar1 to Eas1). Each player must
+control one power adjacent to each "mega-zone".  When signing onto the waiting
+list, a player shall enter two preference lists, one corresponding to each
+"mega-zone".  Such a list might look like:  E1,G1,F1,T2,A2,R1,I2;
+T1,A1,G2,F2,E2,I2,R2.  (This particular list is strongly anti-R1, as the top
+choices on each list are adjacent to R1.)
+
+(3.1) For purposes of allocation of countries, R1 shall be considered to
+adjoin the mega-zone containing Bar1, not that containing Bla1.
+
+(3.2) No player may control A/R or R/T.  (Mark:  alternatively, we could count
+R1 in the mega-zone adjoining Bla1 and Bar2, and forbid E/R and G/R; the
+effect is similar.)
+
+(4.0) There is a cut along the two boards as follows (the cut is identical on
+both boards): Along the Mar-Pie border, the Mar-GoL border, the Spa-GoL
+border, the Spa-Wes border, the MAO-Wes border, and the MAO-NAf border where
+the cuts hits the edge of the board.
+
+(4.1) Each province is labeled according to the number of the board it is on;
+e.g., Bur1 is not to be confused with Bur2.
+
+(4.2) The cut has no effect *except* that a unit moving across the cut moves
+to the corresponding province on the other board; e.g, Mar1 is adjacent to
+Bur1, GAS1, Spa1, GoL2, Pie2.
+
+  Locally, the adjudication of orders proceeds as if the pieces involved were
+  on a single board (since the placement of the cut is purely conventional,
+  we can imagine performing the adjudication on a board where the cut is far
+  from the area involved).  Thus A Mar1 S F GoL2-Pie2 has the same effect as
+  A Mar S F GoL-Pie would be expected to have.
+
+(4.3) Provinces on different board should be treated as distinct with respect
+to movement.  Specifically, A Mar1-Pie2 does not stand out F Pie1-Mar2, as the
+two actions take place in different sectors of the board.
+
+(4.4) Convoys: Convoys across the cut are allowed; e.g., F Wes2 C A Spa1-Tun2.
+
+(4.5) Supports across the cut are valid; see (4.2).
+
+(5.0) A centre captured on board 1(2) by a unit built on board 2(1) is owned
+by nation on board 2(1).
+
+(5.1) Although there are 7 players there are 14 distinct powers in this game.
+France1 can attack France2, France1 can dislodge France2 units and France1 can
+capture France2 centres.  If your powers are Austria1 and England2 then
+Austria1 can attack England2, can dislodge England2 units and capture England2
+centres.
+
+(6.0) The victory condition is 28 centres, owned by a combination of a
+player's two powers.  If two players reach this target simultaneously the
+player with the most centres wins.  If they have the same number of centres
+then they share a two-way draw.
+
+(7.0) OPTIONAL RULE: This variant could be played as a 14-player game rather
+than a 7-player game.  In this case the victory criterion should be reduced to
+18 centres.  The designers believe that the 7-player game is better.
+
+   APPENDIX ONE   APPENDIX ONE   APPENDIX ONE   APPENDIX ONE   APPENDIX ONE
+
+The following table shows which combinations of powers are not allowed by
+rules (3.1)-(3.4)
+
+               Board One      Board Two
+            A E F G I R T  A E F G I R T
+Board One A X - - - X X X  - X X X - X -
+          E - X X X - X -  X - - - X - X
+          F - X X X - X -  X - - - X - X
+          G - X X X - X -  X - - - X - X
+          I X - - - X - X  - X X X - X -
+          R X X X X - X X  X - - - X - X
+          T X - - - X X X  - X X X - X -
+
+   APPENDIX TWO   APPENDIX TWO   APPENDIX TWO   APPENDIX TWO   APPENDIX TWO
+
+   This is an attempt to show the relationships between the powers in this
+game.
+
+   In regular diplomacy the relationship between the powers can be represented
+by:
+
+   E___________R
+   |\         /|
+   | \       / |
+   |  \     /  |
+   |   \  /   /|
+   F_____G   / |
+   |     |  /  |
+   |   O | /   |      O = pole at Switzerland
+   |  ___A/___ |
+   | /        \|
+   I___________T
+
+   In this variant the effect of the cut is to link the two boards together as
+outlined below:
+
+      /R1_                  Here we have cut map one open, then
+     / |\ \T1               compressed it to cover 180 degrees
+  E1/  | \ | \              around Switzerland, instead of 360.
+  | \  |  \|  I1            Map two is formed in identical manner,
+  |  \ | /-A1/ |            then glued to map one along the cut.
+  |  /-G1  |   |
+  F1-  | O |   F2
+   |   |  _G2-/ |
+   |  A2-/ | \  |
+   I2/ |\  |  \ |
+     \ | \ |   E2
+      T2_ \|  /
+         \_R2/
+
+   This map shows that our earlier talk of "two boards" was slightly
+misleading.  What we really have is one topologically confusing, yet sill
+planar, map!  The above map readily shows that a 14-player version would work.
+We dislike it because there wouldn't be very much contact between the players.
+
+<- End Excerpt
+
+Rule (2.1) has been changed for this judge. The unit and country abreviations
+are as follows:
+
+Board One:
+A- Austria
+E- England
+F- France
+G- Germany
+I- Italy
+R- Russia
+T- Turkey
+Board Two:
+1- Austria
+2- England
+3- France
+4- Germany
+5- Italy
+6- Russia
+7- Turkey
+
+Units are then labeled A or F, and will show up in the listings as 2Turkish
+or 1Russian, etc. Spaces are labeled similarly. Galicia on Board One is
+gal1. Bohemia on Board Two is boh2.
+
+Note that in the listings, countries have the number BEFORE the name, whereas
+spaces have the numbers AFTER the name. This should not cause any confusion.
+
+To see the specific abreviations allowed, see the map.rootz file on this
+judge.
+
+Game signup will be handled the same way as Duplex Youngstown. The judge
+thinks it's a 14 player game (and can be...). When 7 players signon, the
+judge administrator will have to edit the game's file manually, adding
+the players to the second set of countries. A bit round-a-bout, but the
+only way to do it that I can see. So, to make things easy, turn in one
+preference list when you signon (instead of two as suggested above)
+listing the 14 countries in the order you want to play them. The above rules
+limiting country pairs will apply.
+
+If you have further questions, mail ewagoner@nmt.edu
+
+

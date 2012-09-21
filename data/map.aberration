@@ -1,0 +1,394 @@
+#Fixed bug 53 MLM 17/Dec/2002
+Adriatic Sea,          w adr adriatic
+Aegean Sea,            w aeg aegean
+Aitolia,               l ait
+Alamein,               l ala
+Albania,               l alb
+Alcluyd,               E alc
+Algeria,               l alg
+Anatolia,              x ana ank ankara
+Anglican Sea,          w ang anglian
+Apulia,                l apu
+Arabia,                l ara arab sau saudi
+Arctic Ocean,          w arc arctic artic
+Armenia,               x arm
+Athens,                Z ath greece
+Austria,               x aus vie vienna wien
+Azerbaijan,            l aze
+Baltic Sea,            w bal baltic
+Barents Sea,           w bar barents barent
+Bavaria,               x bav
+Bay of Biscay,         w bay bob biscay
+Bohemia,               x boh
+Bornholm Sea,          w bor bornholm
+Brittany,              x bri bre brest
+Brussels,              B bru bel belgium
+Budapest,              H bud
+Bulgaria,              x bul
+Carian Sea,            w car carian
+Cairo,                 I cai
+Catalonia,             l cat
+Cilicia,               l cil
+Circassia,             l cir
+Clyde,                 l cly
+Constantinople,        Z con
+Cornwall,              l cor
+Croatia,               l cro
+Cymru,                 l cym wal wales
+Cyrenaica,             x cyr
+Damascus,              I dam
+Delta Sea,             w del delta
+Denmark,               x den
+Dijon,                 B dij
+Don,                   l don
+Dublin,                E dub
+East Black Sea,        w ebs east eab ebla easbla eastbla easblack eastblack ebl
+Eastern Mediterranean, w ems eas eastern eme emed eastmed eam
+Edinburgh,             E edi
+Egypt,                 l egy
+English Channel,       w eng english
+Estremadura,           l est
+Fezzan,                l fez
+Finland,               l fin
+France,                l fra par paris
+Galicia,               l gal
+Gascony,               l gas
+Gdansk,                P gda dan danzig
+Georgia,               x geo
+Gibraltar,             l gib
+Gulf of Bothnia,       w gob bot both gulfofb bothnia
+Gulf of Lyon,          w gol lyo gulfofl lyon
+Hague,                 B hag the thehague
+Helgoland Bight,       w hel helgoland bight
+Hesse,                 x hes
+Holstein,              l hol
+Ifni Sea,              w ifn ifni
+Indian Ocean,          w ind indian
+Ionian Sea,            w ion ionian
+Iran,                  l ira
+Irish Sea,             w iri irish
+Jerusalem,             I jer
+Karelia,               l kar
+Kazakhstan,            l kaz
+Kiev,                  U kie
+Kuban,                 l kub
+Languedoc,             x lan
+Lapland,               l lap
+Latvian Sea,           w lat latvia latvian
+Lemburg,               l lem
+Libyan Sea,            w lib libya libyan
+Ligurian Sea,          w lig ligurian
+Livonia,               l liv lvn livo lvo
+Lorraine,              l lor
+Macedonia,             l mac fyrom
+Malta Sea,             w mal malta
+Mark,                  l mar
+Masuria,               l mas
+Mesopotamia,           l mes iraq
+Mid-Atlantic Ocean,    w mid mao mat midatlantic
+Minch,                 w min
+Morroco,               x mor
+Muscovy,               x mus mos moscow
+Naples,                C nap
+Norromark,             l nmk norr nmark norro
+North Atlantic Ocean,  w nao nat natlantic
+North Sea,             w nth norsea nts nsea nos
+Norway,                x nor nwy nway norw
+Norwegian Sea,         w nwg norws norwegian nrg
+Novgorod,              x nov
+Odessa,                U ode
+Palermo,               C pal prm
+Palma Sea,             w plm palma pas
+Persian Gulf,          w per persian
+Picardy,               l pic
+Piedmont,              x pie
+Pisidia,               l pis
+Podolia,               l pod
+Portugal,              x por
+Pylos Sea,             w pyl pylos
+Red Sea,               w red
+Riga,                  P rig
+Rome,                  C rom
+Ruhr,                  l ruh
+Rumania,               x rum romania
+Sahara,                l sah
+Santander,             S san
+Sardinia,              l sar
+Saxony,                x sax
+Schwyz,                l sch swi swiss
+Serbia,                l ser
+Siberia,               l sib
+Silesia,               l sil
+Sinai,                 l sin
+Skagerrak,             w ska skag
+Smyrna,                Z smy
+South Atlantic Ocean,  w sou sao southatlantic south
+Swabia,                l swa
+Sweden,                x swe
+Syria,                 l syr
+Szeged,                H sze
+Taurida,               l tau tad
+Thrace,                l thr
+Tobruk Sea,            w tob tobruk
+Toledo,                S tol
+Transylvania,          l tra tran trans
+Tripolitania,          l tri
+Tunisia,               x tun tunis
+Turkestan,             x tur turk
+Tuscany,               l tus
+Tyrol,                 l tyr trl tyl tyrolia
+Tyrrhenian Sea,        w tys tyrr tyrrhenian tyn tyh
+Ulster,                l uls belfast
+Umbria,                l umb
+Utica Sea,             w uti utica
+Valencia,              S val
+Venezia,               x ven venice
+Volga,                 l vol
+Warsaw,                P war
+Wessex,                x wes wesex
+West Black Sea,        w wbs west web wbla wesbla westbla wesblack westblack wbl
+Western Mediterranean, w wms western wme wmed westmed wem
+Yalta,                 U yal
+Yorkshire,             l yor york yorks
+Zara,                  H zar
+-1
+adr-xc: alb ion apu umb ven cro zar
+aeg-xc: ait smy car lib pyl ath thr con
+ait-mv: con smy
+ait-xc: con smy aeg
+ala-mv: cai egy cyr
+ala-xc: cai cyr lib
+alb-mv: zar ser mac ath
+alb-xc: zar adr ion ath
+alc-mv: cly edi yor cym
+alc-xc: cly cym iri min
+alg-mv: tun sah mor
+alg-xc: tun mor wms uti
+ana-mv: arm cil pis con
+ana-xc: arm ebs wbs con
+ang-xc: nth hel eng hag bru wes yor
+apu-mv: nap rom umb
+apu-xc: nap mal ion adr umb
+ara-mv: mes syr dam jer sin
+ara-xc: mes sin per ind red
+arc-xc: bar nwg nao
+arm-mv: geo ira mes syr cil ana
+arm-xc: geo ana ebs
+ath-mv: thr alb mac bul
+ath-xc: thr aeg pyl ion alb
+aus-mv: bud cro tyr boh gal
+aze-mv: ira geo cir
+bal-xc: lat rig mas gda bor swe
+bar-xc: sib kar lap nwg arc
+bav-mv: boh tyr swa ruh hes sax
+bay-xc: bri gas san mid
+boh-mv: gal aus tyr bav sax sil
+bor-xc: bal gda mar hol den swe
+bri-mv: pic fra gas
+bri-xc: pic gas bay mid eng
+bru-mv: hag ruh lor pic
+bru-xc: hag pic eng ang
+bud-mv: lem tra sze cro aus gal
+bul-mv: con thr mac ser rum ath
+bul-xc: con rum wbs
+car-xc: ems del lib aeg smy pis
+cai-mv: sin ala egy
+cai-xc: sin red lib del ala egy
+cat-mv: lan gas val est tol san
+cat-xc: lan gol plm val
+cil-mv: pis ana arm syr
+cil-xc: syr ems pis
+cir-mv: aze geo kub don vol
+cir-xc: geo ebs kub
+cly-mv: edi alc
+cly-xc: edi alc min nwg
+con-mv: ana pis smy ait thr bul
+con-xc: ana ait thr bul wbs aeg
+cor-mv: cym wes
+cor-xc: cym wes eng iri
+cro-mv: ven tyr aus bud sze ser zar
+cro-xc: zar ven adr
+cym-mv: alc yor wes cor
+cym-xc: alc iri cor
+cyr-mv: ala egy fez tri
+cyr-xc: ala tri tob pyl lib
+dam-mv: syr ara jer
+dam-xc: syr jer ems del
+del-xc: ems dam jer sin cai lib car
+den-mv: swe hol
+den-xc: swe bor hol hel nth ska
+dij-mv: sch lan gas fra lor
+don-mv: kub tau ode kie mus vol cir
+dub-mv: uls
+dub-xc: iri nao uls
+ebs-xc: geo arm ana wbs yal tau kub cir
+ems-xc: pis cil syr dam del car
+edi-mv: cly alc yor
+edi-xc: nth yor cly nwg
+egy-mv: cai ala cyr
+egy-xc: red cai
+eng-xc: bru pic bri mid iri cor wes ang
+est-mv: tol cat val gib por san
+fez-mv: cyr tri sah
+fin-mv: kar nov lap nmk
+fin-xc: nov lat gob nmk
+fra-mv: pic lor dij gas bri
+gal-mv: lem bud aus boh sil war pod
+gas-mv: bri fra dij lan cat san
+gas-xc: bri san bay
+gda-mv: mas war sil sax mar
+gda-xc: mas mar bor bal
+geo-mv: cir aze ira arm
+geo-xc: cir arm ebs
+gib-mv: por est val
+gib-xc: por sou wms val
+gob-xc: fin lat swe nmk
+gol-xc: lig tys sar uti plm cat lan
+hag-mv: hes ruh bru
+hag-xc: hes bru ang hel
+hel-xc: den hol hes hag ang nth
+hes-mv: mar sax bav ruh hag hol
+hes-xc: hol hag hel
+hol-mv: mar hes den
+hol-xc: bor mar hel hes den
+ifn-xc: sou mor
+ind-xc: ira per ara red
+ion-xc: ath pyl mal apu adr alb
+ira-mv: tur mes arm geo aze
+ira-xc: ind per mes
+iri-xc: alc cym cor eng mid nao dub uls min
+jer-mv: dam ara sin
+jer-xc: dam sin del
+kar-mv: sib vol mus nov fin lap
+kar-xc: sib lap bar
+kaz-mv: sib tur vol
+kie-mv: don ode pod mus
+kub-mv: cir tau don
+kub-xc: cir tau ebs
+lan-mv: pie sch dij gas cat
+lan-xc: lig gol cat pie
+lap-mv: kar fin nor nmk
+lap-xc: kar bar nwg nor
+lat-xc: nov rig bal swe gob fin
+lem-mv: pod rum tra bud gal
+lib-xc: del cai ala cyr pyl aeg car
+lig-xc: tus rom tys gol lan pie
+liv-mv: mus war mas rig nov
+lor-mv: swa sch dij fra pic bru ruh
+mac-mv: ath alb ser bul
+mal-xc: ion pyl tob tri tun pal tys nap apu
+mar-mv: gda sax hes hol
+mar-xc: bor hol gda
+mas-mv: rig liv war gda
+mas-xc: rig gda bal
+mes-mv: ira arm syr ara
+mes-xc: per ara ira
+mid-xc: nao iri eng bri bay san sou
+min-xc: nwg cly alc iri uls nao
+mor-mv: alg sah
+mor-xc: wms alg ifn sou
+mus-mv: vol don kie pod war liv kar nov
+nap-mv: apu rom
+nap-xc: apu mal tys rom
+nmk-mv: fin swe nor lap
+nmk-xc: fin gob swe
+nao-xc: arc nwg min uls dub iri mid
+nth-xc: nor ska den hel ang yor edi nwg
+nor-mv: lap nmk swe
+nor-xc: lap nwg nth ska swe
+nwg-xc: bar nor lap edi cly nth min nao arc
+nov-mv: fin kar mus rig liv
+nov-xc: fin lat rig
+ode-mv: don kie pod rum tau
+ode-xc: tau wbs rum
+pal-xc: tys mal
+plm-xc: gol wms val cat uti
+per-xc: ira mes ara ind
+pic-mv: bru lor fra bri
+pic-xc: bru bri eng
+pie-mv: ven tus lan sch tyr
+pie-xc: tus lig lan
+pis-mv: cil ana con smy
+pis-xc: ems car smy cil
+pod-mv: kie ode rum lem gal war mus
+por-mv: san est gib
+por-xc: san gib sou
+pyl-xc: aeg lib cyr tob mal ion ath
+red-xc: ind ara sin cai egy
+rig-mv: nov liv mas
+rig-xc: nov lat bal mas
+rom-mv: tus umb apu nap
+rom-xc: tus nap lig tys
+ruh-mv: hes bav swa lor bru hag
+rum-mv: ode pod lem tra ser bul
+rum-xc: ode bul wbs
+sah-mv: fez tri tun alg mor
+san-mv: gas cat tol est por
+san-xc: gas por sou mid bay
+sar-xc: tys uti gol
+sax-mv: sil boh bav hes mar gda
+sch-mv: tyr pie lan dij lor swa
+ser-mv: rum bul mac alb zar cro sze tra
+sib-mv: kaz vol kar
+sib-xc: kar bar
+sil-mv: war gal boh sax gda
+sin-mv: jer ara cai
+sin-xc: jer cai red ara del
+ska-xc: swe nth den nor
+smy-mv: ait con pis
+smy-xc: ait pis aeg car
+sou-xc: mid san por gib mor ifn wms
+swa-mv: bav tyr lor ruh sch
+swe-mv: nmk nor den
+swe-xc: nmk gob lat bal bor den ska nor
+syr-mv: mes ara dam cil arm
+syr-xc: cil ems dam
+sze-mv: tra ser cro bud
+tau-mv: ode don kub yal
+tau-xc: ode kub yal ebs wbs
+thr-mv: con bul ath
+thr-xc: con aeg ath
+tob-xc: cyr pyl mal tri
+tol-mv: cat est san
+tra-mv: rum ser sze bud lem
+tri-mv: cyr fez sah tun
+tri-xc: cyr tob mal tun
+tun-mv: alg tri sah
+tun-xc: tri alg uti tys mal
+tur-mv: ira kaz
+tus-mv: pie ven umb rom
+tus-xc: rom pie lig
+tyr-mv: aus cro ven pie sch swa bav boh
+tys-xc: nap pal mal tun uti sar gol lig rom
+uls-mv: dub 
+uls-xc: min iri nao dub
+umb-mv: ven tus rom apu
+umb-xc: ven apu adr
+uti-xc: wms plm gol sar tys tun alg
+val-mv: cat est gib
+val-xc: cat gib plm wms
+ven-mv: cro tyr pie tus umb
+ven-xc: umb cro adr
+vol-mv: kaz cir don mus kar sib
+war-mv: mus pod gal sil gda mas liv
+wes-mv: cor cym yor
+wes-xc: ang eng cor yor
+wbs-xc: ebs yal tau ode rum bul con ana
+wms-xc: uti alg mor gib val plm sou
+yal-mv: tau
+yal-xc: tau ebs wbs
+yor-mv: wes cym alc edi
+yor-xc: edi wes ang nth
+zar-mv: cro ser alb
+zar-xc: cro alb adr
+-1
+Center order for summary report:
+   mor por san tol val bri lan dij bru hag hes bav wes alc dub edi nor
+   den swe pie ven rom nap pal tun zar sze bud aus boh sax gda war rig
+   nov mus kie yal ode rum bul ath con smy cyr cai jer dam ana arm geo
+   tur
+#End of center ordering
+-1
+
+
+

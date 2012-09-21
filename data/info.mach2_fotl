@@ -1,0 +1,121 @@
+Greetings from the Diplomacy* Adjudicator!!                Jul. 27, 2004.
+Info.mach2fotl*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+For rule differences between Machiavelli and Machiavelli2 see the file 
+"rules.machiavelli2".
+
+
+Machiavelli 2 The Fall of the Lombards (725-800) (Scenario V)
+
+Although the Byzantine Empire under the generalship of Narses expelled
+the last of the Ostrogoth invaders from Italy 554, external pressures on
+the Roman world -- both from the east and from the west -- proved too much
+for the Empire to maintain its traditional borders. With the death of Narses,
+new Germanic tribesmen, the Lombards, pushed through the Alps onto
+the northern Italian plains. By 600, the Lombards controlled most of Italy,
+including the Po River Valley, Tuscany, and a large area south of Rome.
+The Byzantines kept only toeholds in Sicily, around their capital in Ravenna
+and in southern Italy. The Papal See, however, retained considerable military
+power around Rome and its precincts.
+
+The Popes viewed the Lombards as both potential allies and future enemies.
+At first, the Papacy courted the Lombards' military strength in the hope of
+gaining control of Byzantium's holdings in central Italy. In collusion with
+Papal authorities, the Lombards at first successfully challenged the Empire.
+In 751, they succeeded in capturing Ravenna and in driving the Byzantines
+permanently from the area. Fearing now that they had created in the Lombards
+an enemy more dangerous than the Byzantines, the Papacy turned to France to
+thwart their power. Under Pepin in the 750's and then under Charlemagne in
+the 770's, the Frankish Empire, at the urging of the Papacy, invaded Italy,
+destroyed the Lombard hegemony in northern Italy, and turned over the former
+Byzantine area in central Italy to Rome. After their defeat, the Lombards
+held tenuously only to a group of declining possessions in southern Italy.
+
+
+Start Date: Spring 725
+
+
+Setup
+
+B: (Byzantine Empire)  Palermo, A-Messina, Otranto, F-Durazzo, F-Albania,
+   Byzantium           F-Ragusa, F-Dalmatia, A-Friuli, A-Treviso, A-Padua,
+                       A-Ferrara
+                       Initial income: 4 ducats.
+
+F: (Frankish Empire)   A-Avignon, F-Marseille, A-Swiss, F-Savoy, A-Saluzzo
+   France              Provence
+                       Initial income: 2 ducats.
+
+L: (Lombard Kingdom)   A-Turin, A-Pavia, A-Modena, A-Mantua, A-Cremona, A-Naples
+   Lombardy            A-Bari, Aquila
+                       Initial income: 6 ducats.
+
+P: Papacy              A-Rome, Patrimony, F-Ancona, A-Perugia, A-Arezzo, Urbino
+                       Initial income: 6 ducats.
+
+x: Autonomous          G-Tunis, G-Siena, G-Piombino, G-Pisa, G-Florence, 
+                       G-Bologna, G-Lucca, G-Genoa, G-Montferrat, G-Milan, 
+                       G-Venice
+
+The country letters are used for signing on and for sending individual 
+press messages.
+
+
+Variable Income:
+
+  All powers receive 1d6.
+
+  There is *no* Genoa city variable income nor VI from any other 
+  autonomous city.
+
+
+Special Rules:
+
+  These provinces are impassable: Tyrolea, Austria, and Hungary.
+  
+  Lombardy may *never build fleets* nor *convert military units to fleets*.  
+  But they may use bribes to buy fleets!!  Their army units can of course 
+  be convoyed by other powers.  
+  Tech note:  the original scenario rules say nothing about bribes.
+
+  Florence is *not* major city at this time. Venice and Pisa are both 
+  two-ducat cities.
+  Tech note: This is a tweak to make the scenario a tad more historically 
+  accurate as Florence was a backwater at the times and Venice had still a 
+  bit to go. In the original scenario rules the cities are not changed.
+
+  Fortresses are not used (in case you play by the Classic Mach rules).
+
+
+Special Units:
+
+  *Unit restrictions only apply to play under the Mach2 rules.*
+
+  Citizen Militia units are not available.
+
+  Elite Mercenary units are available to all powers.
+
+  Elite Professional units are available to the Byzantines only.  All 
+  other powers cannot build these but may bribe them.
+
+  Tech note: the original scenario rules say nothing about these.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1, Jul 27th 2004.  Initial release version.

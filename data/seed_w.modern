@@ -1,0 +1,41 @@
+S1995M
+B: F Liverpool
+B: F Edinburgh
+B: W London
+B: F Gibraltar
+E: A Aswan
+E: F Cairo
+E: F Alexandria
+F: A Marseilles
+F: A Paris
+F: W Bordeaux
+F: A Lyon
+G: F Berlin
+G: A Munich
+G: F Hamburg
+G: A Frankfurt
+I: A Rome
+I: A Milan
+I: F Naples
+I: F Venice
+P: F Gdansk
+P: A Warsaw
+P: A Krakow
+R: A Moscow
+R: W Gorky
+R: F Rostov
+R: F St-Petersburg
+R: A Murmansk
+S: F Barcelona
+S: A Madrid
+S: A Seville
+T: A Istanbul
+T: F Izmir
+T: F Ankara
+T: A Adana
+U: A Kiev
+U: A Kharkov
+U: A Odessa
+U: F Sevastopol
+-1 Null ownership/contested record will initialize from the map data.
+-1

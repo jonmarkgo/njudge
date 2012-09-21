@@ -1,0 +1,15 @@
+Magic file readme
+
+To make the executables installation independent, the "DIE_MAGIC" 
+setting is no longer compiled into the executable, but created at
+run-time in the file .magic.dat.
+
+If the program is compiled on an old installation (where .magic.h
+already exists) this will be placed into the .magic.dat file in 
+the installation directory.
+
+(Note: if the executable files are installed into a DIFFERENT 
+       place than where actually run, a .magic.dat file will
+       be create where the judge runs.)
+
+-Millis Miller 12th November 2000

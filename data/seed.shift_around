@@ -1,0 +1,26 @@
+S1901M
+A: A Marseilles
+A: A Paris
+A: F Brest
+E: A Moscow
+E: A Warsaw
+E: F Sevastopol
+E: F St Petersburg/sc
+F: A Budapest
+F: A Vienna
+F: F Trieste
+G: A Constantinople
+G: A Smyrna
+G: F Ankara
+I: A Liverpool
+I: F Edinburgh
+I: F London
+R: A Rome
+R: A Venice
+R: F Naples
+T: A Berlin
+T: A Munich
+T: F Kiel
+-1
+....G.....T..AF...G..I...........TI.IA.ETR.....A....R...E..G.E..F.....RF.E..
+-1

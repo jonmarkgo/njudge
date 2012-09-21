@@ -1,0 +1,130 @@
+This document is aimed at people who want to hack on the judge source code.
+
+GNU Autotools
+=============
+
+The judge uses the GNU Autotools (automake, autoconf) as its build system.  
+automake and autoconf are pretty much standard on Unixlike systems these 
+days but if your vendor does not provide them, you can download them from 
+ftp://ftp.gnu.org/pub/gnu/ You will need at least version 2.57 of 
+autoconf and 1.7 of automake (available on devel.diplom.org if you have 
+an account there; don't forget to commit configure, aclocal.m4 and Makefile.am 
+into the CVS if you modify Makefile.am).
+
+The "Goat Book" is a good reference for understanding how they work.  See 
+http://sources.redhat.com/autobook/ for the online version and ordering 
+information for a printed copy.
+
+Adding files to the judge distribution
+======================================
+
+  1. Adding a program
+  -------------------
+  
+  To add a program to the judge distribution, edit Makefile.am and add a new 
+  macro called <program_name>_SOURCES with all the .c files it uses.  Add 
+  any .h files it uses to the noinst_HEADERS macro.  My style is to have 
+  each file on a seperate line ending with the line continuation character '/'
+  but it isn't compulsory.  Then add the program to the bin_PROGRAMS macro.
+
+  E.g. to add a a program called qdip with two .c files qdip.c and qdip2.c
+  and one header qdip.h you would add this to Makefile.am:
+
+  qdip_SOURCES= qdip.c \
+                qdip2.c
+
+  noinst_HEADERS= [...] qdip.h
+
+  bin_PROGRAMS= [...] qdip
+
+  2. Adding a script
+  ------------------
+
+  To add a script to the judge distribution, add it to the BIN_scripts macro.
+
+  3. Adding a document
+  --------------------
+
+  To add a document to the judge distribution, add it to the dist_doc_DATA
+  macro.  The document should be located in the docs directory.
+
+  4. After adding a program/script/document
+  -----------------------------------------
+
+  After editting Makefile,am you have to regenerate the Makefile.  Enter 
+  the following commands:
+
+  $ automake; aclocal; autoconf
+
+Making public distributions
+===========================
+
+  1.  Changing the version number
+  -------------------------------
+
+  Everytime you make a change to the judge source, you should increment 
+  the version number.  Edit configure.ac and change the second value in 
+  the AC_INIT macro.  Then rerun autoconf and configure.
+
+  2.  Making distributions.
+  -------------------------
+
+  After running configure without options and make to build the judge, run 
+  the following command:
+
+  $ make dist
+
+  This will create a file called njudge-<version>.tar.gz in the current
+  directory.  It will also create the archives mentioned in 3, and 4 below.
+
+  3.  Making a compressed tarball.
+  --------------------------------
+
+  After running configure without options and make to build the judge, run 
+  the following command:
+
+  $ make dist-tarZ
+
+  This will create a file called njudge-<version>.tar.Z in the current 
+  directory.
+
+  4.  Making a zip archive.
+  -------------------------
+
+  After running configure without options and make to build the judge, run 
+  the following command:
+
+  $ make dist-zip
+
+  This will create a file called njudge-<version>.zip in the current directory.
+
+  5.  Making a .deb archive for Debian GNU/Linux.
+  -----------------------------------------------
+
+  Make sure the version number in debian/changelog matches the one in 
+  configure.ac.  Install the build-essential, fakeroot and debhelper packages 
+  and run the following command:
+
+  $  fakeroot ./debian/rules binary
+
+  This will create a file called  njudge_<ver>_<arch>.deb in the 
+  parent directory.  Run the following command afterwards:
+
+  $  fakeroot ./debian/rules clean
+
+Debugging
+=========
+
+  1.  Preparing the code for debugging (with gdb, ddd etc.)
+  ---------------------------------------------------------
+
+  Normally, the code is compiled with the flags '-O2', which makes it optimised.
+  This is no good when trying to debug it, as you won't be able to single-step.
+  Instead, it needs to be recompiled for debugging, with '-ggdb'.
+ 
+  Use the following commands to do this:
+
+  $  make clean; make CFLAGS="-ggdb"; make upgrade
+
+
+Jaldhar H. Vyas <jaldhar@braincells.com> Sun, 22 Dec 2002 19:51:50 -0500

@@ -1,0 +1,305 @@
+#Fixed bug 53 MLM 17/Dec/2002
+Aegean Sea,                              w aeg aegean
+Alexandria,                              E ale alex
+Antigonid Sea,                           w ans antigonid
+Antioch,                                 S ant
+Arabia,                                  l ara arab
+Armenia,                                 l arm
+Athens,                                  x ath
+Atropatena,                              l atr atro
+Baleares,                                w bal
+Barcid Sea,                              w bas bar barcid
+Bay of Apollo,                           w boa apollo
+Bay of Pelusium,                         w bop pelusium
+Bithynia,                                l bit bith
+Brundisium,                              R bru brindisi heel
+Capua,                                   R cap cum cumae toe
+Carthago,                                C car carthage
+Cassandreia,                             A cas
+Celtiberia,                              l cel celtics
+Charax,                                  l cha
+Chersonesus,                             x che cherson
+Cilicia,                                 l cil
+Cisalpina,                               x cis
+Coele-Syria,                             l coe coele syria
+Corinth,                                 x cor
+Cretan Sea,                              w crs cre cretan
+Cydonia,                                 x cyd
+Cyprus,                                  l cyp
+Cyrene,                                  x cyr
+Dalmatia,                                l dal dalm
+Damascus,                                S dam
+Delphi,                                  x del
+Desert of Palms,                         l dop palms
+East Sahara,                             l esa eas esahara
+Emporiae,                                l emp
+Epirus,                                  l epi
+Etruria,                                 l etr tuscany
+Euboea,                                  w eub
+Galatia,                                 l gal
+Gaul,                                    l gau france trans transalpina
+Halycus,                                 l hal haly agr agri
+Helvetia,                                l hel swiss switz
+Illyria,                                 l ill
+Insubria,                                l ins
+Istros,                                  l ist
+Ithican Sea,                             w its ithican
+Jerusalem,                               x jer jeru
+Kallatis,                                A kal
+Knossos,                                 x kno
+Kos,                                     w kos
+Kyrnos,                                  l kyr corsica
+Leptis Magna,                            C lep leptis
+Lesbos,                                  w les
+Libya,                                   l lib lybia
+Liparae,                                 w lip
+Lycian Sea,                              w lys lyc lycian
+Maeotis Palus,                           w mpa mae maeotis palus
+Magna Grecian Sea,                       w mgs grecian
+Mare Adriaticum,                         w mad adriatic adriaticum
+Mare Internum,                           w min internum
+Mare Ionium,                             w mio ionium ionian
+Mare Tyrrhenum,                          w mty tys tyrrhenum
+Massilia,                                x mas marseilles
+Mauretania,                              l mau
+Media,                                   l med
+Melita,                                  w mel
+Memphis,                                 E mem nashville
+Mesopotamia,                             l mes meso
+Messenian Gulf,                          w meg messenian
+Minoan Sea,                              w mis minoan
+Myrtoan Sea,                             w myr myrtoan
+Nabatea,                                 l nab
+Naxos,                                   x nax
+Nubian Desert,                           l nub nubian
+Numidia,                                 l num
+Paeonia,                                 l pae
+Panormus,                                C pan palermo
+Pella,                                   A pel
+Pergamum,                                x per perg
+Petra,                                   x pet
+Phrygia,                                 l phr frig
+Pillars of Hercules,                     w poh
+Pisidia,                                 l pis
+Pontus Euxeinos,                         w pon pontus eux euxeinos
+Propontis,                               w pro prop
+Ptolemaic Sea,                           w pts pto ptolemaic
+Raphia,                                  l rap
+Rhodes,                                  x rho rhodos rhoda
+Roma,                                    R rom rome
+Saguntum,                                x sag
+Samnium,                                 l sam
+Sardo,                                   x sar sardinia sard
+Sarmatia,                                l srm sarm
+Saronic Gulf,                            w sgu saronic
+Scythia,                                 l scy
+Sea of Alexander,                        w soa alexander
+Sea of Colchis,                          w soc colchis
+Sea of Reeds,                            w sor reeds
+Seleucid Sea,                            w ses seleucid
+Sinai,                                   l sin
+Sinus Ligusticum,                        w sli
+Sinus Tarentinus,                        w sta tarentinus
+Sparta,                                  x spa
+Syene,                                   l sye
+Syracuse,                                x syr
+Syrtis Major,                            w sma major
+Syrtis Minor,                            w smi minor
+Tanais,                                  l tan
+Thasos,                                  w tha
+The Fetters,                             l fet fetters thessaly
+The Mamertines,                          l mam mamertimes
+Thebes,                                  E the
+Thrace,                                  l thr
+Trapezus,                                x tra trap
+Tritonis,                                l tri trit triton sabratha sab
+Troy,                                    x tro
+Tyre,                                    S tyr
+West Sahara,                             l wsa wes wsahara
+-1
+aeg-xc: eub les per rho kos crs nax myr sgu ath
+ale-mv: mem the lib
+ale-xc: soa mem lib pts the
+ans-xc: pon thr kal ist
+ant-mv: phr gal dam tyr cil
+ant-xc: tyr lys cil
+ara-mv: dop mes pet
+ara-xc: sor pet
+arm-mv: tan atr med dam gal tra srm
+arm-xc: tan tra soc
+ath-mv: fet spa cor del
+ath-xc: fet eub aeg sgu myr spa cor mio del
+atr-mv: srm med arm
+bal-xc: bas min sag emp
+bas-xc: sli sar min bal emp
+bit-mv: tra gal phr tro thr
+bit-xc: tra tro pro pon thr
+boa-xc: mis sma mgs
+bop-xc: ses jer rap sin mem soa
+bru-mv: sam cap rom epi
+bru-xc: sam mad mio sta cap epi
+cap-mv: etr rom bru mam
+cap-xc: etr bru sta mio lip mty mam
+car-mv: lep tri num
+car-xc: min mgs smi sma lep num
+cas-mv: pae pel
+cas-xc: pae tha eub pel
+cel-mv: emp sag gau
+cel-xc: poh sag
+cha-mv: cyr esa lep
+cha-xc: sma cyr lep
+che-mv: scy tan
+che-xc: mpa pon scy tan
+cil-mv: ant pis phr
+cil-xc: ant lys pis
+cis-mv: ill dal sam etr ins hel
+cis-xc: dal mad sam
+coe-mv: tyr dam dop jer
+coe-xc: tyr jer ses
+cor-mv: spa ath del
+cor-xc: spa its mio ath del
+crs-xc: nax aeg kos lys rho soa pts kno cyd mgs myr meg
+cyd-mv: kno
+cyd-xc: kno mis mgs crs
+cyp-xc: ses soa lys
+cyr-mv: lib esa cha
+cyr-xc: pts lib cha sma mis
+dal-mv: ill epi cis pel
+dal-xc: epi mad cis
+dam-mv: arm mes dop coe tyr ant gal med
+del-mv: epi fet ath cor
+del-xc: epi ath mio mad cor
+dop-mv: dam mes ara nab jer coe pet
+emp-mv: gau mas sag cel
+emp-xc: mas bas bal sag sli
+epi-mv: pel fet del dal bru
+epi-xc: del mad dal bru
+esa-mv: lep cha cyr lib the wsa sye
+etr-mv: cis sam rom cap ins
+etr-xc: cap mty sli ins
+eub-xc: pel cas tha les aeg ath fet
+fet-mv: pel ath del epi
+fet-xc: pel eub ath
+gal-mv: tra arm dam ant phr bit
+gau-mv: ins mas emp cel hel
+hal-mv: syr pan mam
+hal-xc: syr mgs pan min mam mel
+hel-mv: ill cis ins gau
+ill-mv: scy ist pel dal cis hel srm
+ins-mv: hel cis etr mas gau
+ins-xc: etr sli mas
+ist-mv: scy kal pae pel ill
+ist-xc: scy pon ans kal
+its-xc: cor spa meg mgs mio
+jer-mv: coe dop nab pet sin rap
+jer-xc: ses coe rap bop
+kal-mv: thr pae ist
+kal-xc: ans thr ist
+kno-mv: cyd
+kno-xc: crs pts mis cyd
+kos-xc: rho lys crs aeg
+kyr-mv: sar
+kyr-xc: mty sar sli
+lep-mv: car cha esa wsa tri
+lep-xc: car sma cha
+les-xc: thr pro tro per aeg eub tha
+lib-mv: ale the esa cyr
+lib-xc: pts ale cyr
+lip-xc: cap mio mam min sar mty
+lys-xc: pis cil ant tyr ses cyp soa crs kos rho
+mad-xc: cis dal epi del mio bru sam
+mam-mv: syr hal cap
+mam-xc: mio syr hal min lip cap
+mas-mv: ins emp gau
+mas-xc: ins sli emp
+mau-mv: num tri wsa sag
+mau-xc: poh min num sag
+med-mv: mes arm atr dam
+meg-xc: spa myr mgs its crs
+mel-xc: mgs syr mio hal
+mem-mv: sin the ale
+mem-xc: bop sin ale soa the
+mes-mv: med ara dop dam
+mgs-xc: pan hal mel mio its meg crs cyd mis boa sma smi car min
+min-xc: sag bal bas sar lip mam hal pan mgs car num mau poh
+mio-xc: cap sta bru mad del ath cor its mgs mel syr mam lip
+mis-xc: cyd kno pts cyr sma boa mgs
+mpa-xc: scy tan soc pon che
+mty-xc: etr cap lip sar kyr sli
+myr-xc: ath sgu aeg nax crs meg spa
+nab-mv: dop pet jer
+nax-xc: crs myr aeg
+nub-mv: the sye
+nub-xc: the sor
+num-mv: car tri mau
+num-xc: min car mau
+pae-mv: kal thr cas pel ist
+pae-xc: thr tha cas
+pan-mv: hal
+pan-xc: hal mgs min
+pel-mv: ist pae cas fet epi ill dal
+pel-xc: cas eub fet
+per-mv: tro phr rho
+per-xc: tro rho aeg les
+pet-mv: jer nab ara sin dop
+pet-xc: ara sor sin
+phr-mv: bit gal ant cil pis rho per tro
+pis-mv: cil rho phr
+pis-xc: cil lys rho
+poh-xc: min mau sag cel
+pon-xc: ist scy che mpa soc tra bit pro thr ans
+pro-xc: pon bit tro les thr
+pts-xc: kno crs soa ale lib cyr mis
+rap-mv: jer sin
+rap-xc: jer sin bop
+rho-mv: phr pis per
+rho-xc: pis lys kos aeg per crs soa
+rom-mv: sam bru cap etr
+sag-mv: emp mau cel
+sag-xc: emp bal min poh mau cel
+sam-mv: bru rom etr cis
+sam-xc: mad bru cis
+sar-mv: kyr
+sar-xc: sli kyr mty lip min bas
+scy-mv: tan che ist ill srm
+scy-xc: tan mpa che pon ist
+ses-xc: tyr coe jer bop soa cyp lys
+sgu-xc: aeg myr ath
+sin-mv: rap jer pet the mem
+sin-xc: rap pet sor the mem bop
+sli-xc: ins etr mty kyr sar bas mas emp
+sma-xc: smi mgs boa mis cyr cha lep car
+smi-xc: mgs sma car
+soa-xc: rho lys cyp ses bop mem ale pts crs
+soc-xc: tan arm tra pon mpa
+sor-xc: pet ara the nub sin
+spa-mv: ath cor
+spa-xc: ath myr meg its cor
+srm-mv: tan scy ill atr arm
+sta-xc: bru mio cap
+sye-mv: esa the nub
+sye-xc: the
+syr-mv: mam hal
+syr-xc: mam mio mel hal
+tan-mv: srm arm scy che
+tan-xc: arm soc mpa scy che
+tha-xc: thr les eub cas pae
+the-mv: ale mem sin nub esa lib sye
+the-xc: sin sor nub ale mem sye
+thr-mv: pae kal tro bit
+thr-xc: ans pon pro les tha pae kal tro bit
+tra-mv: arm gal bit
+tra-xc: pon soc arm bit
+tri-mv: num car lep wsa mau
+tro-mv: bit phr per thr
+tro-xc: bit per les pro thr
+tyr-mv: ant dam coe
+tyr-xc: ant coe ses lys
+wsa-mv: tri lep esa mau
+-1
+Center order for summary report:
+   sag sar mas cis rom bru cap syr pan car lep cyr cyd kno ale
+   the mem pet jer tyr dam ant tra rho per tro che kal pel cas
+   ath del cor spa nax
+#End of center ordering
+-1

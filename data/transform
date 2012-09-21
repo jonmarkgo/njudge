@@ -1,0 +1,117 @@
+Greetings from the Diplomacy* Adjudicator!!                  3 February, 2003
+transform
+
+Several options are provided allowing players to transform units under
+restricted circumstances, allowing an ill-chosen fleet to be replaced by
+an army, etc. These options must be activated before the game starts by
+means of the SET TRANSFORM command.  They cannot be changed after the start.
+In a moderated game, this command is only available to the Moderator.
+
+The syntax for this command is as follows:
+
+SET TRANSFORM NONE
+
+    Disable all transform orders (equivalent to SET NOTRANSFORM).
+
+SET TRANSFORM <when>:<where> [<when>:<where>]
+
+    <when> is either MOVE or BUILD
+
+    <where> is one of:
+        HOME[CENTRE]
+        ONE[CENTRE]
+        ANY[CENTRE]
+        ANYWHERE
+        NONE
+
+"CENTRE" and "CENTER" are interchangeable (and optional).  Note that "ANY" is
+assumed to be an abbreviation for "ANYCENTRE", so "ANYWHERE" must be spelled
+out in full if used.
+
+Warnings:
+
+   If you omit the "when" specification, it defaults to BUILD.  So,
+   "SET TRANSFORM :ANYCENTRE" is the same as "SET TRANSFORM BUILD:ANYCENTRE".
+
+   If you omit the "where" specification, it defaults to HOME CENTRE.  So,
+   "SET TRANSFORM MOVE" is equivalent to "SET TRANSFORM MOVE:HOMECENTRE".
+
+   SET TRANSFORM <where> without a ":" will return an error message.
+
+   SET TRANSFORM NONE and SET NOTRANSFORM do not work correctly in njudge
+   versions 1.3.1 and earlier.  Once transform options are turned on in these
+   versions, there is no way to turn them off (except by manual editing of
+   the game file by the Judgekeeper)!
+
+If activated, the transform options operate as follows:
+
+"When" options
+--------------
+
+MOVE:  Allows transformations in a move phase where permitted by the "where"
+       specification.
+
+Any unit ordered to transform that is dislodged has the transformation
+automatically cancelled. As a transform move works like a hold move, it can
+however be given support and, if not dislodged, will work. You do not support
+a transformation, merely support said unit to hold.  If a unit is attacked
+but not dislodged, the result depends on the status of the AttackTransform
+flag, which is set (before the game begins) as follows:
+
+    SET ATTACKTRANSFORM
+        A unit that is attacked, but not dislodged, while ordered to
+        transform will succeed.  (Default.)
+
+    SET NOATTACKTRANSFORM
+        A unit that is attacked, but not dislodged, while ordered to
+        transform will fail.
+
+BUILD:  Allows transformations in a build phase where permitted by the
+        "where" specification.
+
+As any player can transform a unit in a build phase, unless no buildable
+centres are occupied by a unit of theirs, an automatic 'wait' is placed on
+the build phase.
+
+"Where" options:
+----------------
+
+HOME CENTRE:  Transformations are allowed during the specified phase only for
+              units on a player's home centres.
+
+ONE CENTRE:   Transformations are allowed during the specified phase in any
+              centre as long as the player owns at least one home centre.
+
+ANY CENTRE:   Transformations are allowed during the specified phase in any
+              centre.
+
+ANYWHERE:     Transformations are allowed during the specified phase in any
+              land province (units can never transform at sea).  However,
+              wings that are blockading may not transform during a build
+              phase.
+
+NONE:         No transformations are allowed during the specified phase.
+
+
+Once activated, players can order transforms using the following syntax:
+
+for moves:
+[<type>] <location> TRANSFORMS TO <type> [<coast>]
+
+for build phases:
+TRANSFORM <type> <location> [<coast>]
+
+The abbreviation 'TRAFO' can be used for both of these forms, but otherwise
+cannot be further shortened (to avoid confusion with the 'transport'
+abbreviations already in existence).  The type of unit to be transformed into
+must be specified (because this option can be used in games with Wings and
+other non-standard unit types).  In a build phase, the order must specify the
+*new* unit type that is desired.  For example, to transform a fleet in Greece
+into an army, the correct order would be "Transform Army Greece". 
+
+
+-----
+
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
+

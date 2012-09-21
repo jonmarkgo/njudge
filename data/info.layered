@@ -1,0 +1,37 @@
+Greetings from the Diplomacy* Adjudicator!!             June 10, 1997
+Info.Layered
+
+The only difference between Standard and Layered Diplomacy is the
+gameboard.
+
+Layered Diplomacy is played on two standard Diplomacy maps stacked in
+two layers, one on top of the other.  So, in addition to the normal two
+dimensional movement, there is a third dimension.  The two layers are
+labeled "1" and "2" for simplicity and all territories are refered to in
+the same way with the addition of a "1" or "2" to the end of the name. 
+Thus, there exists a "mun1" and a "mun2."
+
+In order to provide smooth game play, there are a few unique aspects to
+Layered Diplomacy:
+
+1)  All boundaries remain the same for each territory, except there is
+exactly ONE more adjacent area either above or below.   Support is given
+in the same way and you can support a unit from one board to the other
+using the same algorithm as in normal Diplomacy.  You may also convoy
+between boards.  The key thing to remember is that each territory has
+only one adjacent territory on the other board and the territory only
+differs by the number found at the end of it.
+
+2)  Each player plays the same power on each board.
+
+3)  Units may be built on either board with no consideration given to
+which board the SCs where captured on, but can still only be built in an
+unoccupied home center.
+
+4)  Victory conditions are 35 SCs.
+
+Progammed for the Judge by Ralan Hill with considerable help from Dave
+Norman.  (Actually, all I did was type about 300 "1"s and "2"s.)
+--
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.

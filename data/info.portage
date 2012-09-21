@@ -1,0 +1,26 @@
+Greetings from the Diplomacy* Adjudicator!!              7th September, 2004
+Info.portage
+
+
+This document details the 'portage' flag, whereby fleets can be convoyed
+by armies.
+
+The idea is that, via 'porters', an army could move a fleet from one
+coastal province to another.
+
+It works just as a normal convoy, in that one or more armies can 
+participate to set up a convoy chain, and the convoy will fail if not
+all armies in the chain are sucessfully ordered.
+
+Note that, because we are talking about fleets, the destination province
+will need a coast specified if it has one. 
+
+
+Rule taken from DPJudge and implemented by Millis Miller.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+

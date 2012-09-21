@@ -1,0 +1,18 @@
+Greetings from the Diplomacy* Adjudicator!!                   March 11, 1993
+convoys
+
+There are several vaariations on convoys that can be changed from their
+non-strict default settings.
+
+These allow players to be restricted to specifying only valid convoy orders
+(thus removing, at least partially, the ability to communicate via invalid
+orders in no-press games) and to switch to the original board-game definition
+of the convoy order.
+
+The provided commands that effect this are:
+
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

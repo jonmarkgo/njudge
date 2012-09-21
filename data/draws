@@ -1,0 +1,82 @@
+Greetings from the Diplomacy* Adjudicator!!                     11 March, 2003
+Draws.
+
+Automated drawing is facilitated with two commands: SET [NO] DIAS and 
+SET [NO] DRAW.
+
+The term "DIAS" means "Draws Include All Survivors". In a game designated as
+DIAS, a surviving player cannot be excluded from a draw. In a NoDIAS game, a
+surviving player may give up his right to be included in a draw.  In either
+case, unanimous approval of surviving players is required for a draw to be
+passed.
+
+By default, all games are DIAS. The moderator can change this with the SET
+NODIAS or SET DIAS commands.
+
+In a DIAS game, a player may cast his vote for a draw by issuing the command
+SET DRAW. He may withdraw earlier approval by issuing the command SET NO DRAW.
+If at any time all surviving players accede to a DIAS draw, the game will be
+immediately terminated, and all participants in the game will be informed of
+the result.
+
+The situation for NoDIAS games is a bit more complex. To vote for a NoDIAS
+draw, a player issues the command SET DRAW [drawlist], where [drawlist] is a
+list of the identifiers for the powers he wishes included in the draw. When a
+player gives approval to [drawlist] and [drawlist] includes his own power, he
+is also implicitly approving any subset of [drawlist] that also includes his
+power. On the other hand, when a player gives approval to [drawlist] and
+[drawlist] does *not* include his own power, he is implicitly approving any
+subset of [drawlist], *and* any subset of [drawlist] including his own power.
+
+For example, if Austria issued the command SET DRAW AEG, he is approving the
+draws AEG, AG, AE, or A. Note that by including himself in his draw list, he
+is assuring that he cannot be excluded from a draw. If Austria issued the
+command SET DRAW FT, he is approving FT, F, T, AFT, AF, AT, or A.
+
+If, under these rules, more than one draw is approved by all players, the draw
+including the most players passes.
+
+In a NoDIAS game, SET NO DRAW is equivalent to the command SET DRAW x, where x
+is the power issuing the command. This means that the player will only accept
+a concession to himself.
+
+Here are a few examples of the NoDIAS draw mechanism in action. The players
+listed are assumed to be the only survivors.
+
+    France: SET DRAW AEF
+    England: SET DRAW AEF
+    Austria: SET DRAW AEF
+    Results in a three-way draw between Austria, England, and France.
+
+    France: SET DRAW AE
+    England: SET DRAW AEF
+    Austria: SET DRAW AEF
+    Results in a three-way draw between Austria, England, and France.
+
+    France: SET DRAW AE
+    England: SET DRAW AEF
+    Austria: SET DRAW AE
+    Results in a two-way draw between Austria and England.  Although England
+    was willing to include France in the draw, France accepted a draw that did
+    not include him.
+
+    France: SET DRAW AEF
+    England: SET DRAW AE
+    Austria: SET DRAW AE
+    This game does not end in a draw.  Austria and England are unwilling to
+    accept a draw that includes France, and France is unwilling to exclude
+    himself from any draw.
+
+    France: SET DRAW A
+    England: SET DRAW A
+    Austria: SET NO DRAW
+    Results in a concession to Austria.
+
+Any draw vote, DIAS or NoDIAS, is good for one phase only. All draw votes are
+cleared at the end of a phase. 
+
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

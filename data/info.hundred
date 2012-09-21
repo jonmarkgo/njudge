@@ -1,0 +1,126 @@
+Info.hundred
+
+The Hundred Years' War Diplomacy variant of diplomacy follows the most of
+the rules as standard diplomacy with a modified map.  The game was designed
+to allow a balanced three player variant for quick games when 7 players
+aren't available.
+
+The variant was designed by Andy Schwarz with help from Eric Coffey.  Larry
+Richardson was the JK who dealt with us to get it coded up.  Dave Kleiman
+was kind enough to deal with this variant during some trying times as we
+ported over to USIN, and Nick Fitzpatrick played a major role in revising
+the initial set-up.
+
+----------------------------------------------------------------------
+          Hundred Years War Diplomacy, by Andy Schwarz
+
+ 1) The rules of "standard" Diplomacy are valid, unless specifically
+    replaced or amended by these rules
+
+ 2) The standard map is replaced by the "Hundred" variant map.
+    Northumbria has 2 coasts, West and East.  Aragon has 2 coasts,
+    North and South.  Castile is not divided into coasts, so fleets
+    entering Castile from Biscay can then proceed to the Mediterranean
+    and vice versa.
+
+ 3) All references in the "standard" rules to specific powers,
+    provinces, locations, and seasons do not apply to "Hundred".
+
+ 4) The game begins in 1425. Each turn represents 5 "real time" years,
+    and has a movement phase followed by a retreat phase.  Alternating
+    turns will have an adjustment phase (after retreats if required),
+    the first being in 1430.  The Judge program does not follow this
+    convention, so on the Judge Fall 1425 follows Spring 1425, etc.
+
+ 5) There are 17 supply centers on the board.  The winner is the power
+    which holds 9 or more supply centers during an adjustment phase.
+
+ 6)  There are 3 great powers.  The starting units are as follows:
+
+     B-BURGUNDY          E-ENGLAND                   F-FRANCE
+     A Dijon             A Calais                    A Dauphine
+     A Luxembourg        A Guyenne                   A Orleanais
+     A Flanders          A Normandy                  A Paris
+     F Holland           F Devon                     A Provence
+                         F London                    A Toulouse
+
+ 7) A power may build in any vacant supply center it owns during an
+    adjustment phase: there are no permanent "home centers".  For
+    example, France may build in London if it is vacant, and France
+    owns it and is eligible for a build.
+
+ 8) Units may move or give support from London to Calais or vice
+    versa regardless of the presence of a fleet in the Strait of
+    Dover.  Examples:
+    E: LON-CAL. B: FLA-CAL.  Result: all bounce.
+    E: LON-CAL, DOV s LON-CAL.  B: FLA-CAL.  Result: LON-CAL succeeds.
+    E: LON s CAL, CAL H. F: PAR-CAL, DOV s PAR-CAL.  Result: CAL holds
+
+ 9) The full names and standard abbreviations for all locations
+    (supply centers marked with *) are:
+
+
+        Anglia          ang             Limousin        lim
+        Aragon          ara             London *        lon
+        Biscay          bis             Lorraine        lor
+        Bristol Channel bch             Luxembourg *    lux
+        Brittany *      brt             Mediterranean   med
+        Calais *        cal             Minch           min
+        Cantons *       can             Normandy *      nmd
+        Castile         cas             North Sea       nth
+        Devon *         dev             Northumbria     num
+        Dauphine *      dau             Orleanais *     orl
+        Dijon *         dij             Paris *         par
+        Strait of Dover dov             Poitou          poi
+        English Channel ech             Provence *      pro
+        Flanders *      fla             Savoy           sav
+        Friesland       fri             Scotland *      sco
+        Guyenne *       guy             The Wash        was
+        Holland   *     hol             Toulouse *      tou
+        Irish Sea       iri             Wales           wal
+
+
+Note that all of these use the first three letters of a province with the
+exception of:
+
+bch   Bristol Channel
+brt   Brittany
+ech   English Channel
+nmd   Normandy
+num   Northumbria
+nth   North Sea
+dov   Strait of Dover
+was   The Wash
+
+Unlike Standard Diplomacy, Hundred does not distinguish between home
+supply centers and initially neutral supply centers.  All but 4 supply
+centers (and all non-SCs) are named for regions  rather than cities.
+This is to represent the importance of the duchies and counties for
+which the participants in the Hundred Years' War fought.  In addition,
+the designation between home and neutral SCs is of less importance since
+all owned/unoccupied centers can build units.  The four exceptions are
+the 3 capital cities of London, Paris and Dijon, and the city of Calais.
+Calais kept a city name because of the unique importance of the port of
+Calais within Artois, but Artois and art are also valid names.
+
+Some provinces which are now named for regions were originally named for
+cities when hundred was first tested.  These names and abbreviations
+have been left coded into the judge for old-timers to use.  Thus Holland
+can also be referred to as Amsterdam(ams), Flanders as Antwerp (ant),
+Orleanais as Orleans, and Devon as Plymouth (ply).
+
+The name of Aquitaine was changed to Guyenne to represent the
+nomenclature in the 15th century, but Aquitaine (aqu) is still a valid
+name for judge purposes. In addition, some non-SC centers can also be
+referred to by old-style names: Lorraine was Swabia (swa), Aragon was
+Catalonia (cat), Castile was Iberia (ibe), and Northumbria was
+Northumberland (the latter is really a much smaller subset of the
+former).
+
+You'll be able to tell an early Hundred player if he suggests A Aqu-Cat
+instead of A Guy-Ara.
+
+Have Fun!  The game is pretty quick.
+----------------------------------------------------------------------
+
+

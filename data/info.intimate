@@ -1,0 +1,74 @@
+Greetings from the Diplomacy* Adjudicator!!                9th May, 2004
+Info.intimate
+
+
+This document details the judge implementation of the Intimate Diplomacy
+variant, as described in rules.intimate.
+
+At game start, normal preference list control is used, not as specified
+in the rules.
+
+In Intimate Diplomacy, there is added an additional bid phase, 
+coming directly before the year's Spring Movement phase. It is signalled
+by the letter 'A', as in S1901A.
+
+In this phase, all (live) players can place their bids for controlling
+the non-playing powers. Players are not forced to make any bids at all,
+but to verify that a player has had sufficient opportunity to do so,
+they must send a valid signon message to the judge to clear their
+'move expected' flag, and avoid being marked as late. They will also
+have a wait flag set automatically for them, that can be cleared if 
+they are prepared to see the turn process early.
+
+Bids are entered in the following format:
+
+<power> <money> where:
+
+	<power> is the power name or power letter of the country being
+	        bid for
+
+	<money> is the non-negative bid for that power. It overrides 
+		previous bids, and a bid of '0' cancels a bid.
+
+When the bid phase ends, bids will be evaluated according to the
+rules, and players with sucessful bids for countries will control those
+countries for the rest of the game year, up to and including any build
+phase. (Warning: the judge will not enforce any upper limit on bid 
+amounts, so players can bid more than they have on one country and 
+go overbid, loosing all their money.)
+
+The player must submit valid moves for all countries controlled. In the 
+build phase, players cannot waive usable builds for controlled countries
+(effectively removing the burden from the judge of automatically making 
+these builds).
+
+Treasury contents are added to the game listing, and treasury changes 
+due to supply ownership counts are also reported at the end of the phase
+involved when ownership is recalculated.
+
+
+Winning conditions are not exactly as per the written rules file: the
+judge will determine them as follows:
+
+ - If all other powers that are played by players are eliminated, the
+   one left is the winner.
+ - If one home centre is occupied by another player's power, that player
+   wins.
+ - If more than one player enters anothers in the same turn, the one with
+   the most home centres of the other wins (only counting first 3 home 
+   centres). If still a tie, won by the player with largest credit balance.
+   If still a tie, game is not yet won.
+ - If a stalemate position is reached, the players must draw/concede the 
+   game as they see fit: the judge will not force a conclusion under 
+   these conditions.
+
+
+
+This variant was implemented by Millis Miller.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+

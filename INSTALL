@@ -1,0 +1,82 @@
+   There are two ways to install and set up the judge software: 
+
+   1. with a binary package
+   2. by compiling it from source.
+
+   If you are using a binary package, installation will be done for you, so
+   only installation from source will be described in this document.
+
+SOURCE INSTALL
+==============
+
+   The system the judge is to be run on needs to have the following software
+   installed:  C Shell, Perl 5.005 or higher, and Sendmail or an MTA with a
+   compatible interface to Sendmail such as Exim or Postfix.
+
+   The judge uses GNU autotools in order to configure itself appropriately on 
+   your system.
+
+  1. Create a system user account (i.e. 'judge') and its home directory 
+     (i.e. /home/judge)  It is recommended to lock the password for this 
+     account as you should never need to login as this user.
+
+  2. `cd' to the directory containing the package's source code and type
+     `./configure' to configure the package for your system.  If you're
+     using `csh' on an old version of System V, you might need to type
+     `sh ./configure' instead to prevent `csh' from trying to execute
+     `configure' itself.
+
+     By default it will set up the judge in /home/judge as user judge with 
+     an email address of judge@localhost and sendmail in /usr/sbin.
+     If you chose a different user and directory in step 1, or if judge 
+     email should come from a different domain, you can give the configure 
+     script flags to override the defaults.  The flags are:
+
+     --with-dir=DIR
+     --with-user=NAME
+     --with-domain=DOMAIN
+     --with-sendmail=SENDMAIL
+
+     for example to set up the judge in /home/jaldhar/dip as user 
+     jaldhar and email judge@braincells.com and sendmail in /usr/ucb, you 
+     would do:
+
+     ./configure --with-dir=/home/jaldhar/dip --with-user=jaldhar --with-domain=braincells.com --with-sendmail=/usr/ucb
+
+     There are many other flags you can give (type './configure --help' 
+     for a full list) but these are the main ones you're likely to use.
+
+     Running `configure' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.
+
+  3. Type `make' to compile the package.
+
+  4. If this is a new install:
+
+       Type `make install' to install the programs, any data files and 
+       documentation.  You will have to edit a few configuration files
+       before the judge will become operation.  
+     
+     If this is an upgrade from an older version;
+
+       Type 'make upgrade' to install the new programs only.  
+
+     *Note* compiled programs will not be stripped of debug and other extra 
+     information.  If you want to make compiled programs a little smaller, 
+     you can type 'make install-strip' or 'make upgrade-strip' instead.  This 
+     may give a few harmless errors (when it tries to strip scripts) but you 
+     can ignore them.
+
+     If you just want to rebuild the map files (because e.g. you added a new 
+     variant,) type 'make remap'.
+
+
+  5. You can remove the program binaries and object files from the
+     source code directory by typing `make clean'.  To also remove the
+     files that `configure' created (so you can compile the package for
+     a different kind of computer), type `make distclean'.
+
+If you need to tweek the source itself before installing it, see 
+docs/README.hackers.
+
+Jaldhar H. Vyas <judgekeeper@braincells.com> Fri, 09 May 2003 14:19:00 -0400

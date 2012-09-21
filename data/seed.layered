@@ -1,0 +1,47 @@
+S1901M
+A: A Budapest1
+A: A Vienna1
+A: F Trieste1
+A: A Budapest2
+A: A Vienna2
+A: F Trieste2
+E: A Liverpool1
+E: F Edinburgh1
+E: F London1
+E: A Liverpool2
+E: F Edinburgh2
+E: F London2
+F: A Marseilles1
+F: A Paris1
+F: F Brest1
+F: A Marseilles2
+F: A Paris2
+F: F Brest2
+G: A Berlin1
+G: A Munich1
+G: F Kiel1
+G: A Berlin2
+G: A Munich2
+G: F Kiel2
+I: A Rome1
+I: A Venice1
+I: F Naples1
+I: A Rome2
+I: A Venice2
+I: F Naples2
+R: A Moscow1
+R: A Warsaw1
+R: F Sevastopol1
+R: F St Petersburg1/sc
+R: A Moscow2
+R: A Warsaw2
+R: F Sevastopol2
+R: F St Petersburg2/sc
+T: A Constantinople1
+T: A Smyrna1
+T: F Ankara1
+T: A Constantinople2
+T: A Smyrna2
+T: F Ankara2
+-1 Null ownership/contested record will initialize from the map data.
+-1

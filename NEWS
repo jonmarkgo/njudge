@@ -1,0 +1,24 @@
+This is a bug-fix release.
+
+The following bugs were fixed in 1.7.6
+
+(ordered by Severity)
+
+ID  Opened  Changed  Sev  Assignee  Status  Resolution  Summary  
+441  2005-10-13  2005-10-15  maj  MachFix@yahoogroups.com  RESO  FIXE  Lazarus attack - Bribe accepted from eliminated power  
+438  2005-09-29  2005-09-29  nor  judge-maint@diplom.org  RESO  FIXE  Diary entries are labeled NZMB when released at the end o...  
+458  2006-02-20  2006-02-20  nor  judge-maint@diplom.org  RESO  FIXE  Mach documentation description of winning is confusing  
+461  2006-03-16  2006-03-18  nor  alan@usal.info  RESO  FIXE  Judge does not allow canceling absence in past.  
+456  2006-02-14  2006-02-19  min  judge-maint@diplom.org  RESO  FIXE  History command fails if the game name contains "broad"  
+460  2006-03-15  2006-03-18  min  judge-maint@diplom.org  RESO  FIXE  Terminate notice has no subjectline  
+466  2006-04-06  2006-05-03  min  judge-maint@diplom.org  RESO  FIXE  Don't remove absences until entire absence has passed  
+467  2006-04-13  2006-05-03  min  judge-maint@diplom.org  RESO  FIXE  Absence Notice appears in results when no absence existed.  
+473  2006-06-07  2006-06-07  min  judge-maint@diplom.org  RESO  FIXE  Dedication too low message points to missing file  
+476  2006-06-27  2006-06-27  min  judge-maint@diplom.org  RESO  FIXE  No proper stripping of "RE: " for email clients that insi...  
+426  2005-05-10  2006-07-08  min  MachFix@yahoogroups.com  RESO  FIXE  Confusing rebellion removal information  
+369  2004-10-13  2006-05-03  min  alan@usal.info  RESO  FIXE  Deadline not set to "clock" time after change to DST  
+390  2004-12-06  2006-07-08  min  MachFix@yahoogroups.com  RESO  FIXE  Self-bounce gives message (*siege required*)  
+442  2005-10-13  2005-11-10  enh  judge-maint@diplom.org  RESO  FIXE  implement NOGRACEPRESS flag  
+453  2006-01-04  2006-01-04  enh  judge-maint@diplom.org  RESO  FIXE  document the Keeper addresses  
+432  2005-07-01  2006-06-30  enh  judge-maint@diplom.org  RESO  FIXE  Allow 'set preferences'  
+16 bugs found. 

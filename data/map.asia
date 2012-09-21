@@ -1,0 +1,212 @@
+Afghanistan,           l afg 
+Arabia,                P ara arab
+Arabian Sea,           w ars arabian
+Arctic Sea,            w arc art arctic artic
+Australia,             x aus oz
+Black Sea,             w bla bls black
+Balkans,               x bal balkan
+Barents Sea,           w bar bas barent barents
+Bangladesh,            x ban
+Bay of Bengal,         w bob bay bengal
+Beijing,               C bjg bei pek peking biejing
+Bering Strait,         w ber bes bering
+Bombay,                N bom
+Borneo,                I bor kal kalimantan
+Burma,                 l bur
+Calcutta,              N cal
+Cambodia,              l cam
+Caspian Sea,           w cas caspian
+Caucasus,              l cau cauc
+Celebes Sea,           w cel ces celebes
+Central Indian Ocean,  w cio cen central indian centralindian
+Chongqing,             l chq cho ckg chon chong
+Chucki Sea,            w chu chs chukchi chucki chuckisea
+Delhi,                 N del
+East Africa,           l eaf eafrica africa
+Eastern African Sea,   w eas eae african eastafrican
+East China Sea,        w ecs eac ech eastchina
+East Siberia,          l esb esib esiberia
+Eastern Indian Ocean,  w eio eind
+Eastern Mediterranean, w eme emed ems eme easternmediterranean
+Egypt,                 x egy
+Ekaterinburg,          l eka
+Hokkaido,              J hok 
+Hong Kong,             l hkg hong kong hk
+Honshu,                J hon 
+Irkutsk,               S irk 
+Iran,                  P irn teh tehran         
+Iraq,                  P irq bag baghdad
+Java,                  I jav
+Jawan Sea,             w jvs jws jawasea jawansea
+Kamchatka,             S kam 
+Kazakhstan,            l kaz kas kazakstan
+Korea,                 l kor cor corea
+Kunlun,                l kun 
+Laos,                  x lao
+Livonia,               l liv lvn livo lvo lva
+Madagascar,            x mad
+Manchuria,             J man
+Mongolia,              l mon mongol
+Moscow,                R mos mus
+New Guinea,            x new newguinea guinea iri irian irianjaya
+Novosibirsk,           x nov
+Oman,                  x oma
+Pakistan,              x pak
+Persian Gulf,          w per persian
+Philippines,           J phi phil philippines philipines phillippines
+Red Sea,               w red redsea
+Sea of Okhotsk,        w okh sea soo okhotsk seaofokutsk seaofokhutsk oku okutsk
+Sevastopol,            R sev sevastapol
+South China Sea,       w scs sch southchina
+Seychelles,            w sey 
+Shanghai,              C sha
+South Indian Ocean,    w sio southindian 
+Sri Lanka,             x sri lanka cey ceylon
+St Petersburg,         R stp sai saint st
+Sumatra,               I sum sumatera
+Syria,                 l syr
+Thai Sea,              w ths thai
+Thailand,              x tha sia siam
+Tien Shan,             x tia tie tya tienshan tian tien tyen tienshan
+Tibet,                 C tib
+Turkey,                x tur turk
+Urals,                 x ura ural
+Ukraine,               l ukr
+Uzbekistan,            x uzb
+Vietnam,               x vie viet
+Vladivostok,           l vla 
+Warsaw,                l war
+West Siberia,          S wsb wes wsib wsiberia
+Yakutsk,               x yak
+Yellow Sea,            w yel yellow
+Yemen,                 l yem
+-1
+afg-mv: irn pak tia uzb
+ara-mv: irq oma syr yem
+ara-ec: per irq oma
+ara-wc: red syr yem
+arc-xc: esb kam stp ura wsb bar chu
+ars-xc: bom eaf oma pak sri yem bob cio eas per red sey irn/sc
+aus-xc: eio jvs sio
+bal-mv: sev tur ukr war
+bal-ec: bla tur sev/wc
+bal-sc: eme tur
+ban-mv: bur cal
+ban-xc: bur cal bob
+bar-xc: stp arc
+ber-xc: hok kam chu ecs okh
+bjg-mv: man mon sha tib
+bjg-xc: man sha yel
+bla-xc: cau tur bal/ec sev/wc
+bob-xc: ban bom bur cal sri sum ars cio ths tha
+bom-mv: cal del pak
+bom-xc: cal pak ars bob
+bor-xc: cel jvs scs ths
+bur-mv: ban chq lao tha
+bur-xc: ban tha bob
+cal-mv: ban bom del
+cal-xc: ban bom bob
+cam-mv: lao tha vie
+cam-xc: tha vie ths
+cas-xc: cau kaz mos uzb irn/nc sev/ec
+cau-mv: irn irq tur sev
+cau-xc: tur bla cas sev/ec sev/wc irn/nc
+cel-xc: bor new phi ecs jvs scs
+chu-xc: kam arc ber
+chq-mv: bur hkg lao sha tib
+cio-xc: sri sum ars bob eio sey sio
+del-mv: bom cal pak tia
+eaf-mv: egy
+eaf-xc: egy ars eas red
+eas-xc: eaf mad ars sey
+ecs-xc: hok hon phi sha ber cel okh scs yel
+egy-mv: eaf syr
+egy-xc: eaf syr eme red 
+eio-xc: aus jav sum cio jvs sio
+eka-mv: kaz nov ura wsb
+eme-xc: egy syr tur bal/sc
+esb-mv: irk kam wsb yak
+esb-xc: arc wsb kam
+hkg-mv: chq lao sha vie
+hkg-xc: sha vie scs
+hok-xc: ber ecs okh
+hon-xc: ecs okh yel
+irk-mv: esb man nov vla wsb yak  
+irn-mv: afg cau irq pak uzb
+irn-nc: cau uzb cas 
+irn-sc: irq pak ars per
+irq-mv: ara cau irn syr tur
+irq-xc: per ara/ec irn/sc
+jav-xc: eio jvs
+jvs-xc: aus bor jav new sum cel eio ths
+kam-mv: esb yak
+kam-xc: esb yak arc ber chu okh
+kaz-mv: eka mon mos nov tia ura uzb
+kaz-xc: mos uzb cas
+kor-mv: man vla
+kor-xc: man vla okh yel
+kun-mv: mon tia tib
+lao-mv: bur cam chq hkg tha vie
+liv-mv: mos stp war
+mad-xc: eas sey
+man-mv: bjg irk kor mon nov vla
+man-xc: bjg kor yel
+mon-mv: bjg kaz kun man nov tia tib
+mos-mv: kaz liv sev stp ukr ura war
+mos-xc: kaz cas sev/ec
+new-xc: cel jvs
+nov-mv: eka irk kaz man mon wsb
+okh-xc: kam kor hok hon vla yak ber ecs yel
+oma-mv: ara yem
+oma-xc: yem ars per ara/ec
+pak-mv: afg bom del irn tia
+pak-xc: bom ars irn/sc
+per-xc: irq oma ars ara/ec irn/sc
+phi-xc: cel ecs scs
+red-xc: eaf egy yem ars ara/wc
+scs-xc: bor hkg phi sha vie  ecs cel ths
+sev-mv: bal cau mos ukr
+sev-ec: cau mos cas
+sev-wc: cau bla bal/ec
+sey-xc: mad ars cio eas sio
+sha-mv: bjg chq hkg tib
+sha-xc: bjg hkg ecs scs yel
+sio-xc: aus cio eio sey
+sri-xc: ars bob cio
+stp-mv: liv mos ura
+stp-xc: ura arc bar
+sum-xc: bob cio eio jvs ths
+syr-mv: ara egy irq tur
+syr-xc: egy tur eme ara/wc
+tia-mv: afg del kaz kun mon pak uzb
+tha-mv: bur cam lao
+tha-xc: bur cam bob ths
+ths-xc: bor cam sum tha vie bob scs jvs
+tib-mv: bjg chq kun mon sha
+tur-mv: bal cau irq syr
+tur-xc: cau syr bla eme bal/ec bal/sc
+ukr-mv: bal mos sev war
+ura-mv: eka kaz mos stp wsb
+ura-xc: stp wsb arc
+uzb-mv: afg irn kaz tia
+uzb-xc: kaz cas irn/nc
+vie-mv: cam hkg lao
+vie-xc: cam hkg scs ths
+vla-mv: irk kor man yak
+vla-xc: kor yak okh
+war-mv: bal liv mos ukr
+wsb-mv: eka esb irk nov ura 
+wsb-xc: esb ura arc
+yak-mv: esb irk kam vla
+yak-xc: kam vla okh
+yel-xc: hon kor man bjg sha ecs okh
+yem-mv: ara oma
+yem-xc: oma ars red ara/wc
+-1
+Center order for summary report:
+   stp mos sev bal tur egy ara irq irn mad oma uzb pak tia bom del cal 
+   sri ban lao tha vie sum bor jav aus new phi hon hok man bjg sha tib 
+   nov ura wsb irk kam yak
+#End of center ordering
+-1
+

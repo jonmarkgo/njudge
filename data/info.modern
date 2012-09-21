@@ -1,0 +1,146 @@
+Greetings from the Diplomacy* Adjudicator!!              July 28th, 2003
+Info.Modern
+
+  Modern Diplomacy is intended to be diplomacy with an updated map,
+circa 1994, taking place in Europe, the Middle East and North Africa.
+Any country with more than 30 million inhabitants was made a power.
+Those with more than 60 million inhabitants were given 4 home centers,
+while Russia (with 200 million plus) was given 5. Iran would have
+qualified as a 4 supply center power, but this would have made it
+necessary to extend the map into Asia, so it was not done.
+
+  Historically, we have to consider that the European Community and
+all international alliances and organizations such as NATO and the
+UN were broken down. Perhaps the United States suffered a major
+cataclysm, or simply decided to ignore the outside world - but in
+any case, it will not intervene in Europe.
+
+  Other than this, borders and neutral supply centers were distributed
+to even out the game. Monaco was made a neutral SC (it has lots 
+of money) even though its size does not warrant it, and Gibraltar was
+made a British home SC (both to give Britain a port in the Mediterranean,
+and to give Spain more than one neighbour). 
+
+  There is also another type of unit optionally available, the wing. This
+will be active if the game is set up with wings variant modifier.
+Wings can go over water and land but can not capture a
+supply center: blockading it instead. Therefore, if France manages to move 
+a wing over London, England would still own it, but would neither be able 
+to build there nor count London for build purposes.
+Only the three 'nuclear' powers have wings available at the start
+(Britain, France and Russia) though any power can build them.
+See the file 'info.wings' for more information.
+
+  Powers:
+
+  3 center powers: Egypt (E), Poland (P), Spain (S)
+  4 center powers: Britain (B), France (F), Germany (G), Italy (I),
+                   Turkey (T), Ukraine (U)
+  5 center powers: Russia (R)
+
+  Starting positions (Spring 1994): (Games with wings play the 'W' units)
+
+  Britain (B) : F EDI, F GIB, F LIV, F/W LON 
+  Egypt (E) : F ALE, A ASW, F CAI
+  France (F) : F/W BOR, A LYO, A MAR, A PAR
+  Germany (G) : F BER, A FRA, F HAM, A MUN
+  Italy (I) : A MIL, F NAP, A ROM, F VEN
+  Poland (P) : F GDA, A KRA, A WAR
+  Russia (R) : A/W GOR, A MOS, A MUR, F ROS, F STP
+  Spain (S) : F BAR, A MAD, A SEV
+  Turkey (T) : A ADA, F ANK, A IST, F IZM
+  Ukraine (U) : A KHA, A KIE, A ODE, F SEV  
+
+  Winning Conditions:
+
+  38 home centers + 26 neutral = 64 total centers
+  33 needed to win
+
+  
+
+  Notes on Geography:
+
+  Cairo, Hamburg and Istanbul behave as Kiel and Constantinople did in the
+original game: they have no coasts but fleets can pass through them to
+bodies of water of both sides.
+
+  There is another canal linking Rostov and Volga, thus permitting
+access to the Caspian Sea to ships. Rostov is situated along the
+Don River which empties into the Black Sea, while the Volga empties
+into the Caspian Sea. In the real world there is a canal at Volgograd
+linking the two rivers, somewhere in the southern Volga region on
+the map. This is the only way to get ships into and out of the
+Caspian Sea.
+
+  Iran is the only territory with multiple coasts in the game - the south 
+coast touches the Arabian Sea and the Persian Gulf, while the north coast
+touches the Caspian Sea.
+
+  Where possible, the full name of a territory was put on the map. The
+following were only abbreviated by the first three letters:
+
+  adr sea : adriatic sea
+  ana : anatolia
+  apu : apulia
+  auv : auvergne
+  bar : barcelona
+  bel : belgium
+  bos : bosnia
+  bri : brittany
+  cly : clyde
+  cze : czech republic
+  edi : edinburgh
+  fra : frankfurt
+  gib : gibraltar
+  ham : hamburg
+  hel : heligoland bight
+  hol : holland
+  isr : israel
+  liv : liverpool
+  lon : london
+  mac : macedonia
+  mar : marseilles
+  mil : milan
+  mol : moldavia
+  mon : monaco
+  mun : munich
+  nap : naples
+  pic : picardy
+  pie : piedmont
+  por : portugal
+  pru : prussia
+  rom : rome
+  sax : saxony
+  ska : skagerrak
+  tus : tuscany
+  ven : venice
+  wal : wales
+  yor : yorkshire
+
+Abbreviations:
+
+  Abbreviations for territories are the first 3 letters of the territory,
+except for:
+
+  barents sea: bare, bars  (conflict with barcelona)
+  bornholm sea: born, bors  (conflict with bordeaux)
+  eastern black sea: ebs
+  eastern mediterranean: emed
+  eastern sahara: esah
+  gulf of bothnia
+  gulf of lyon: gol
+  libyan sea: lbn
+  north atlantic ocean: nao
+  north sea: nth
+  norwegian sea: nwg
+  seville: sve		(conflict with sevastopol)
+  western black sea: wbs
+  western mediterranean: wmed
+  western sahara: wsah
+  
+  Alternatives are also available for many spaces, especially water
+spaces. See the map file for these alternative abbreviations.
+
+------------------
+Programmed for the judge by Vincent Mous & Nicholas Fitzpatrick
+Wings added by Millis Miller

@@ -1,0 +1,227 @@
+Greetings from the Diplomacy* Adjudicator!!                Feb. 20, 2002.
+Info.machiavelli*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+
+AGE OF COMMUNES, version 2
+
+This Machiavelli scenario is played on the standard Machiavelli map.  It
+starts in 1335.  The powers and their initial starting locations and owned
+is described in this document.
+
+The scenario was created by Sergio Lidsell, Stockholm, Sweden.
+
+
+Setup
+
+Time frame 1335-1402.  Game begins in Spring 1335.
+
+Notice that Milan, Genoa and Florence start with only two cities in their 
+home countries !  And that all powers start with rather small home countries.
+
+A: (della Scala state) Scaligeri Ver (A), Pad (A), Vic (A), Tre, Bre
+
+S: (Republic of) Pisa            Pio (F), Pisa (G), Luc (A)
+
+G: (Republic of) Genoa           Gen (F), Cor (F), Pon (A)
+
+I: (Duchy of) Milan              Mil (A), Cre (A), Com (A), Pia
+
+L: (Republic of) Florence        Flo (A), Flo (G), Are (A), Pis
+
+N: (Angevine Kingdom of) Naples  Bar (F), Nap (F), Mar (G), Aqu, Pro, Sal
+
+P: Papacy                        Rome (A), Avi (A), Per (G), Pat
+
+T: (Kingdom of) Trinacria        Mes (F), Pal (F), Tun (A)
+
+V: (Republic of) Venice          Lag (F), Dal (A), Rag (F), Ven
+
+R: (County of) Provence          Begins as neapolitan conquered home country.
+
+&: Autonomous garrisons in:      Anc, Bol, Fer, Man, Mod, Mon, Pav, Sal,
+                                 Sav, Sie, Trt, Tur, Tyr
+
+The country letters are used for signing on and for sending individual 
+press messages.
+
+
+Special rules
+
+1. Fortresses are not used. *If* you use fortresses you will find an
+   autonomous garrison in all (except Pat, Aqu, Pia, Sal, Ver - see below).
+
+2. Provence and Marseille are treated as a neapolitan *conquered home 
+   country*.
+
+3. Albania, Austria, Bosnia, Durazzo, Herzegovina, Hungary, Slavonia and 
+   Swiss are impassable.
+
+4. Corsica is a fortified port city -- not an unfortified port.
+5. Naples is a fortified port city giving 1 ducat income -- not a major city.
+
+6. Palermo is a major port city giving 2d income -- not a fortified port city.
+
+7. Salerno is a fortified port city giving 1 ducat income -- not a fortress.
+
+8. Tunis is an unfortified port giving 1 ducat inome -- not a major port city.
+
+9. Verona is a major city giving 2 ducats income -- not a fortified city.
+
+10.Plague only from U1348 and on (as it did not reach Europe until 1347).
+
+11.Storms and Disband rules used.
+
+
+Variable income:  City         dice   1  2  3  4  5  6
+        Scaligeri Verona        2     1  2  3  3  4  4
+                  Florence      1     2  2  3  3  4  5
+                  Genoa         2     2  2  2  3  3  4
+                  Milan         2     2  3  3  4  4  5
+                  Naples        1     1  2  2  3  3  4
+           Papacy Rome          1     2  3  3  4  5  6
+                  Pisa          1     2  2  3  4  4  5
+        Trinacria Palermo       1     1  1  2  3  4  5
+                  Venice        2     1  2  2  3  4  4
+         Provence Marseille     1     0  0  0  1  0  0
+
+
+Disasters
+
+See the judge map file. The tables are different from standard.
+
+
+Default victory conditions:
+
+The first player to control at least 15 cities and have control of at
+least two power's original home countries (eg: his own and one other
+player's) is declared the winner.
+
+
+Background notes
+
+Europe has begun cooling and is moving towards the "little ice age". Climate 
+is getting erratical, with rainspells or dryspells at unexpected times of the 
+year. As agricultural practices are not adapted to this new climate regime 
+and the population is very high, the spectre of famine has begun showing its 
+ugly head. But another threat looms far off in Asia -- the black plague. At 
+the end of 1347 it strikes in Sicily and then moves quickly inland... You 
+begin the game a couple of years earlier.
+
+AD 1335. Charles I of Anjous plans for an empire stretching from France to 
+Jerusalem are all but dust. Scores of members of the Anjou family sitting on 
+weak thrones around Europe are embroiled in internal wars for the control of 
+the Regno (the Kingdom of Naples--also called Kingdom of Sicily to confuse the
+issue). The most notable and successful exception is the angevine Louis the 
+Great of Hungary who controls an empire stretching from Dalmatia to the Black
+Sea and from about 1370 including Poland.
+
+The Regno is run by the angevine Robert the Wise of Napels who's losing power
+to the local barons and exerts almost no control over the Principality of
+Taranto (roughly from the "spur" to the tip of the heel plus the middle 3rd of 
+"Otranto" up towards Salerno). Calabria (the toe) is mostly in the hands of 
+monastic orders and the church. About 1345 the Regno is invaded by various 
+branches of the Anjou family (the Hungarian branch and the Durazzo branch) and 
+a free for all ensues between them and Queen Joanna and the Prince of Taranto. 
+By 1350 the Regno is split between Durazzo ("Aquila"), Hungary ("Capua", 
+"Naples"), Taranto and Joanna ("Naples", "Salerno" and Calabria).
+
+After various coups and counter-coups Joanna is back in charge (at least 
+nominally) of the Regno around 1362. By 1382 she controls not much more than the 
+city of Naples when she is murdered and the Regno is invaded by the french 
+angevines and more years of chaos follow. By 1390 the Regno is effectively 
+divided in roughly two halves: one ruled by Ladislas of Hungary of the Durazzo 
+angevines and one by Louis of Anjou of the french angevines. A situation that 
+furthers the local aristocracy's ambition to carve out small statelets for 
+themselves.
+
+In the Kingdom of Trinacria (that is the island of Sicily) the situation is
+also chaotic. As king Frederick III of Sicily dies in 1337 the local aristocracy
+take the occasion to grab what's grabbable and Sicily effectively winds up being
+divided in four small statelets, bringing about the invasion by aragonese forces
+in 1392 to regain control of the island.
+
+In the north Genoa kick out the angevine overlord just to find themselves soon 
+under milanese rule as the Visconti family are fast extending Milans influence in 
+northern Italy. Power which will peak around 1390 under the rule of Gian Galeazzo 
+Visconti (who's risen to power by assassinating all his brothers -- a typical 
+ruling family of the times). Genoa was rich but weak mainly because its style of 
+government more resembled Chicago in the twenties than a centralized well run state.
+
+The north is also the home of the powerful state of the della Scala (Scaligeri) 
+family -- probably the richest or 2nd richest of Europe at the time. Under the 
+rule of Mastino I and II (mastiff, the dog type) and Can Grande I ('big dog', yes 
+I am serious), they had gained control of a good chunk of north-eastern Italy by 
+1335. (BTW Fratricide was a pastime of this family too.) But they had also enraged 
+most of their neighbours. In 1337 Milan, Venice, Florence, d'Este (Modena and other
+cities), Gonzaga (Montferrat) allied to crush the state.
+
+The Papacy was weak at the time and controlled just the territory close by Rome and 
+Avignon. The 13th century was also the century that saw *three* simultaneous popes 
+and the Papacy going practically bankrupt.
+
+
+Game notes
+
+The game is fairly historical in its setup, with some changes for playability. 
+Angevine control over Naples was divided between brothers and robber barons, that's 
+why Naples does not control all neapolitan (btw this is the 'correct' spelling
+although the inhabitants of the Kingdom, the Regno, were called "regnicoli" at the 
+time) provinces. Notice also the construction with Provence. That is partly because 
+the angevines got that lands by marriage and partly because they were constantly 
+warring between brothers, sisters and cousins about who would rule what (another 
+typical ruling family of the times). The angevines also controlled a slew of small 
+towns (of no consequence) mainly in Piedmont in northern Italy that on a lot of maps
+are bunched together to look like a sizeable province. As that is not the case
+those towns have been ignored.
+
+The Balcans are also mostly impassable as these lands were ruled by various
+warlords and for some decades by three successive Tsars Stefan of Serbia.
+
+As the Hungarian Angevines were mostly concerned with consolidation of their power 
+and expansion eastwards, their territories are impassable except for Croatia. The 
+cities of the Dalmatian coast passed between Venice and nominal Hungarian
+control several times during this epoch, but for practical game reasons Dalmatia
+and Ragusa are considered to be venetian as Venice controlled the
+Adriatic Sea. Venice may seem boxed in in its"mare nostrum". This is intentional
+as Venice lost a lot of its possessions along the Adriatic Coast in the 14th
+century.
+
+In version one Austria was given the role of major threat over Venice, but as that 
+was not really historical the della Scala state has replaced Austria in this version 
+(v2). Also Tyrol and Trent was a free state at this time.
+
+Tunis symbolizes the Kingdom of Aragon in Spain in this scenario. Even if it did not 
+control Trinacria per se it was always ready to interfere. The island of Sardinia 
+is controlled by the Kingdom of Aragon (actually by the Kingdom of
+Majorca) but treated as neutral for game purposes.
+
+Della Scala also controlled Parma and Lucca, but for game reasons this is ignored 
+and Lucca is awarded to Pisa.
+
+
+Opinions about the Regno (Kingdom of Naples) from contemporaries:
+
+"Men completely inimical to any kind of civilization.",
+Niccolo Machiavelli in "Discorsi".
+
+"Nothing by a school of ambition, avarice and tyranny.",
+Pandolfo Collenuccio of Pesaro.
+
+"Could not be called lands, but... rather thieves' den's, full of bloody 
+entrails and other crude parts.", Niccolo Acciaiuoli, Grand Seneschal 
+of the Kingdom
+
+"Malicious, evil, endowed with little talent and traitorous to the bone."
+"Arlotto"
+
+"A paradise peopled by devils." Popular saying (related by Benedetto Croce in 
+"History of the Kingdom of Naples").
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.

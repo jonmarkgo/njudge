@@ -1,0 +1,243 @@
+Greetings from the Diplomacy* Adjudicator!!                     28th July, 2003
+Press.
+
+The Judge software includes a mechanism for sending press messages to other
+players in a game of Diplomacy.  The types of press allowed depend on the game
+settings. Press messages can be sent to one or more individual players, or can
+be broadcast to all players and observers.  White press refers to messages sent
+to other players which indicates who it is from.  Grey press is sent out
+anonymously; the sender may sign his own, or someone else's, name to it, but
+the Judge will not verify the source of the message.  In addition, the game
+settings can allow press sent to individual people to be faked to appear as a
+broadcast message to all people or to an alternate set of people.  Finally,
+Postal Press is delayed until after the results of the current phase have been
+processed (while all other press is sent immediately).
+
+The types of press allowed in a particular game are shown by the LIST
+command.  The keywords are:
+
+   None:
+        No press at all is allowed, except press to and from the Master.
+
+   White:  
+        Only white press is allowed in this game.
+
+   Grey:   
+        Only grey press is allowed in this game (however, press to the
+        Master will always be sent as white press).
+
+   White/Grey: 
+        Both white and grey press are allowed.  By default press will be 
+        white (press to the Master will always be sent as white press).
+
+   Grey/White: 
+        Both white and grey press are allowed. By default press will be 
+        grey (however, press to the Master will always be sent as white).
+
+   -------
+
+   Observer any:
+        Observers can post press with the same restrictions as regular
+        players.  This is the default and does not show up on list output.
+
+   Observer partial:
+        Observers can post both broadcast and partial press.
+
+   Observer white:
+        Observers cannot post grey press.  In a game that only allows grey
+        press from players, press from observers will show up as white press.
+
+   Observer none:
+        Observers cannot post press at all, except to the Master.
+
+   -------
+ 
+   Partial Allowed:
+        Players may send messages to any one or more other players.
+
+   No Partial: 
+        Only broadcast messages to all players can be sent. Press to
+        individual players is disallowed, except press to the Master only.
+        This option is only useful in Gunboat variants where the identities
+        of the other players are unknown.
+
+   No Fake:
+        Messages sent to individuals cannot appear as broadcast messages
+        or vice versa, nor can messages sent to one group of individuals
+        appear as though it was sent to an alternate group.
+
+   Partial may be Faked
+        Messages sent to individuals can appear as broadcast messages or
+        can appear as though they were sent to an alternate group.
+
+   Partial Fakes Broadcast by default
+        Messages sent to individuals will appear as broadcast messages to
+        all players unless otherwise specified.
+
+   Partial Fakes Broadcast
+        All messages, whether broadcast or to individuals, will appear as
+        though they were a broadcast message to all players.
+
+   Note:  If fake press is allowed in a game, press to the Master will NOT be
+   faked, and you will get scolded if you try.
+
+   -------
+
+   PostalPress:
+        Players may send delayed (broadcast-only) messages that will not
+        be distributed until after the current phase is processed.  This may
+        be enabled in addition to, or in lieu of, other forms of press.
+
+
+The "SET" command can be used to change which of these options is allowed.  In
+moderated games only a Master can use the SET press commands.  By default,
+games are "White, Partial Allowed, No Fake, No PostalPress".  For example:
+
+   SET GREY, PARTIAL FAKES BROADCAST
+
+would mean that all press (except to or from the Master) would appear to be a
+grey broadcast message, even if it is actually sent to only one player.
+
+To send messages to other players you can use the "BROADCAST" or "PRESS"
+commands which are almost synonymous:
+
+   BROADCAST [options]          -or-            PRESS options
+
+By default, the BROADCAST command without options is equivalent to "PRESS TO
+ALL"; that is, the message will be sent to all players.   However, using the
+PRESS command without any options will result in no message being sent. 
+This is to prevent accidental broadcasts, which can result in your secret
+attack plans being sent to the entire game.  Finally, if BROADCAST *is*
+followed by options, it is treated exactly the same as a PRESS command (so
+if, for some odd reason, you wrote "BROADCAST TO G", the message would go
+only to Germany and not to the entire game).
+
+The message can be terminated in one of four ways: the commands "SIGNOFF",
+"ENDPRESS", or "ENDBROADCAST" appearing alone on a line, or by the end of
+the mail input.  Note that "ENDPRESS" and "ENDBROADCAST" are interchange-
+able (that is, a "PRESS" command can be terminated by "ENDBROADCAST" and
+vice versa); also that no space can appear after "end" in either case.
+If "SIGNOFF", "ENDPRESS", or "ENDBROADCAST" appear at the beginning of a
+line with other text, they are *not* considered to be commands, and the
+message is *not* terminated.
+
+If the message is terminated by "SIGNOFF", then all other text in the mail
+input is ignored.  If the message is terminated by "ENDPRESS" or 
+"ENDBROADCAST", then the next line is treated as a normal command line, thus
+allowing normal commands to be mixed with press messages in any order, as
+well as allowing for multiple press messages in a single mail input.
+
+The "POSTALPRESS" command is used to send Postal Press.  Currently, no
+options are available for this command.  All Postal Press is sent to all
+players, and the identity of the sender is always revealed.
+
+The options available when sending non-Postal press are:
+
+   WHITE | UNANONYMOUS | UNANONYMOUSLY
+        The message is sent out with your power and return address
+        specified.  This is only necessary if white and grey press
+        are both allowed and grey is the default.
+
+   GREY | ANONYMOUS | ANONYMOUSLY
+        The message is sent out with no indication as to the originator.
+        This is only necessary if white and grey press are both allowed
+        and white is the default.
+
+   TO list | +list
+        The message will be sent just to the list of powers specified.
+        The list consists of the single character identifier for the
+        powers concatenated as a single word.  Thus "PRESS TO frg"
+        would send the message to France, Russia and Germany in a
+        standard variant game.  In most variants the first letter of
+        the power is usually the character (cf: India in the Youngstown
+        variant is N rather than I since the latter is used to represent 
+        Italy).  The special characters OM are interpreted Observer and
+        Master respectively in all variants.
+
+        BE CAREFUL - only use initials in the list; you may be dismayed if
+        you type "PRESS TO Turkey", because the Judge will try to interpret
+        "Turkey" as a list of initials.  In a standard game, this will result
+        in an error message, because U, K, and Y are not valid power
+        initials; in some variants, however, you might end up sending a
+        message to six players!
+
+   TO ALL BUT list | -list
+        As above except the message is sent to the complement of the
+        list specified.  Note that since all press that can be read by
+        Observers is archived in the game's history file, a message sent
+        'PRESS TO ALL BUT r' (for example) will be available to Russia by
+        means of the History command.  Use 'PRESS TO ALL BUT ro' to be
+        sure that the message isn't archived.
+
+   [NO]FAKE [BROADCAST]
+        The message is faked (or not) as a broadcast message to all
+        players.
+
+   FAKE [PARTIAL] TO [ALL BUT] list | FAKE +list | FAKE -list
+        The message is faked as going to the set of people specified
+        even though it may be a broadcast message or be a message sent
+        to an alternate set of people.
+
+For fake press, you must first specify the real recipients of the press (if
+not specified, a broadcast is assumed), then put the word "FAKE" followed by
+the addressees to be named in the message header (again, if not specified, it
+is assumed that a fake broadcast is intended).  For example, "PRESS FAKE TO
+FRG" will be interpreted as a broadcast message to everyone that is faked as
+going to France, Russia and Germany rather than a message going to France,
+Russia and Germany that is faked as a broadcast.  If the latter was intended
+the keyword "FAKE" can be placed at the end as in "PRESS TO FRG FAKE" or the
+keyword "BROADCAST" must be specified as in "PRESS FAKE BROADCAST TO FRG".
+
+As an example in a grey press game allowing fake broadcasts, Italy might
+start off the game by posting the following press message:
+
+   PRESS TO ALL BUT G FAKE BROADCAST
+   This is Germany and I think you all are wimps.  I bet I can win even
+   if you all gang up against me.
+
+   -Kaiser Bill
+   ENDPRESS
+
+Everyone but Germany would get a Diplomacy Notice message with a header
+that read "Broadcast message in game xxxx:".  [Remember, however, that if
+Germany thinks to issue a "HISTORY" command, he can see this in the history
+archive.  If this is undesirable, the command here should read 'PRESS TO
+ALL BUT go FAKE BROADCAST'.]  Then in the same (or a separate) message to
+the adjudicator (since there can be more than one press message per mail
+message) Italy could issue:
+
+   PRESS TO R
+   This is Austria, boy that Germany sure is obnoxious.  Let's go all out
+   against him!
+
+   -Ferdinand
+   SIGNOFF
+
+Russia would get the message with a header of "Message to Russia in gamename:".
+Of course this trick wouldn't work if the game was White press since Italy's 
+name would be in the header.  If it was White/Grey Italy would have to throw in
+ the "GREY" keyword to get the effect, but even then (or if the game was 
+Grey/White) it wouldn't quite be the same since if Germany really meant to be
+ so obnoxious why wouldn't he just send the messages out as white press?
+
+Press to the Master only is always allowed, no matter what the press settings
+are, so that requests for deadline extensions, or any other message needing
+the Master's attention, can be sent without having to resort to direct email
+outside of the game.  This can be very useful if a player and the Game Master
+are on nodes that cannot communicate directly, although both can communicate
+with the Judge.  Likewise, a Master can always issue press commands, to
+facilitate communicating with the players (to announce that he's going to be
+unavailable for a while, to respond to a player's message to him, or to ask
+a player a question).
+
+There are some commands that cause Diplomacy Notices to be sent out to
+all the players (e.g., changing your return address in a non-gunboat game).
+If one of these commands has been processed and a partial, faked partial
+or grey press message is attempted, the adjudicator will send out the
+notice(s) as separate messages, to all players, and the partial, faked,
+or grey press will be sent as designated.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

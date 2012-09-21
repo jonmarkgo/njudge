@@ -1,0 +1,149 @@
+Alabaster,              L ala alab
+Aquatic Sea,            w aqu aqua aquatic
+Azure,                  l azu azur
+Sea of Butter,          w but butter sob
+Bronze,                 x bro bron bronz
+Carnation Sea,          w car carn carnat carnation
+Cerulean,               l cer cerul cerrulean cerrullean cerullean
+Chalk,                  l cha chal
+Sea of Cherries,        w che cherries cherry soh
+Coal,                   l coa
+Cobalt,                 B cob cobal cobolt cobol co
+Cold,                   l col
+Crimson,                R cri crim
+Crystal,                x cry xta xtal
+Sea of Cyan,            w cya cyan cyanide cyanic
+Ebony,                  D ebo ebon
+Bay of Emeralds,        w eme emer emerald emeralds boe bayofe
+Fire Engine,            l fir eng fire engine fireengine
+Forest Sea,             w for fore forest
+Garnet,                 x gar garn
+Ghost,                  L gho ghostbusters
+Gold,                   Y gol au
+Gulf of Hazel,          w haz hazel hazelnuts goh gulfofh
+Hot,                    l hot
+Sea of Ice,             w ice iceland iceberg soi h2o
+Indigo Sea,             w ind indigo
+Ink,                    l ink inkwell inkjet
+Ivory,                  L ivo ivor
+Jet,                    D jet 747 jumbojet
+Sea of Lava,            w lav lava sol
+Sea of Lead,            w lea lead sop pb
+Lemon,                  l lem lemo
+Magenta,                x mag mage
+Malachite,              x mal malac malach
+Maroon,                 l mar
+Gulf of Mauve,          w mau mauve gom
+Sea of Mercury,         w mer merc mercury mercedes som hg
+Sea of Night,           w nig night knight son
+Obsidian,               D obs obsid
+Paper,                  l pap
+Gulf of Platinum,       w pla plat platinum gop gulfofp pl
+Raven,                  l rav rave crow
+Bay of Roses,           w ros rose roses bor bayofr
+Royal,                  B roy ryl
+Ruby,                   R rub
+Saffron,                l saf saff
+Sapphire,               B sap sapp saph saphire
+Sepiatic Sea,           w sep sepia
+Silver,                 x sil sliver ag
+Snow,                   l sno
+Sulphur,                l sul sulfur
+Sunshine,               Y sun sunday
+Topaz,                  Y top
+Sea of Umber,           w umb umber sou cucumber umberhulk
+Vermillion,             R ver verm vermin
+Violet Sea,             w vio violet
+-1
+cry-mv: saf ink pap hot col
+for-xc: aqu cer cob eme cya mal
+lem-mv: sun top gol
+lem-xc: sun sep but top
+but-xc: mal cya top lem sep bro
+eme-xc: saf sul cya for cob
+top-mv: gol lem
+top-xc: gol cya but lem
+saf-mv: sul sun ink cry col cob
+saf-xc: eme sul cob
+gol-mv: sul top sun lem
+gol-xc: sul cya top
+mal-xc: aqu cya but for
+sul-mv: gol saf sun
+sul-xc: gol cya eme saf
+cya-xc: eme sul gol top but mal for
+sun-mv: sul gol saf lem ink
+sun-xc: lem sep haz ink
+sep-xc: but lem sun haz umb bro
+coa-mv: obs jet ebo
+coa-xc: jet mer nig obs
+nig-xc: bro umb obs coa mer sil
+haz-xc: ink rav umb sep sun
+obs-mv: ebo coa
+obs-xc: ebo umb nig coa
+ink-mv: rav jet pap cry saf sun
+ink-xc: haz rav sun
+ebo-mv: rav obs jet coa
+ebo-xc: rav umb obs
+bro-xc: umb nig sep but
+rav-mv: ebo ink jet
+rav-xc: ebo umb haz ink
+umb-xc: haz rav ebo obs nig bro sep
+jet-mv: rav ebo ink coa pap
+jet-xc: coa mer pla pap
+mer-xc: nig coa jet pla lea sil
+sno-mv: gho ala ivo
+sno-xc: ala che ice gho
+ice-xc: sil lea ala sno che gar
+pla-xc: pap cha lea mer jet
+ala-mv: ivo sno
+ala-xc: ivo lea ice sno
+pap-mv: cha gho hot cry ink jet
+pap-xc: pla cha jet
+ivo-mv: cha ala gho sno
+ivo-xc: cha lea ala
+sil-xc: lea ice mer nig
+cha-mv: ivo pap gho
+cha-xc: ivo lea pla pap
+lea-xc: pla cha ivo ala ice sil mer
+gho-mv: cha ivo pap sno hot
+gho-xc: sno che ros hot
+che-xc: ice sno gho ros car gar
+mar-mv: rub ver cri
+mar-xc: rub vio lav ver
+lav-xc: gar car ver mar vio mag
+ros-xc: hot fir car che gho
+ver-mv: cri mar
+ver-xc: cri car lav mar
+hot-mv: fir rub col cry pap gho
+hot-xc: ros fir gho
+cri-mv: fir ver rub mar
+cri-xc: fir car ver
+gar-xc: car lav che ice
+fir-mv: cri hot rub
+fir-xc: cri car ros hot
+car-xc: ros fir cri ver lav gar che
+rub-mv: fir cri hot mar col
+rub-xc: mar vio mau col
+vio-xc: lav mar rub mau ind mag
+cer-mv: cob sap roy
+cer-xc: cob for aqu sap
+aqu-xc: mag ind sap cer for mal
+mau-xc: col azu ind vio rub
+sap-mv: roy cer
+sap-xc: roy ind aqu cer
+col-mv: azu cob saf cry hot rub
+col-xc: mau azu rub
+roy-mv: azu sap cob cer
+roy-xc: azu ind sap
+mag-xc: ind aqu vio lav
+azu-mv: roy col cob
+azu-xc: roy ind mau col
+ind-xc: mau azu roy sap aqu mag vio
+cob-mv: azu roy col cer saf
+cob-xc: cer for eme saf
+-1
+Center order for summary report:
+   mal top gol sun bro jet ebo obs sil ala ivo gho gar ver cri rub
+   mag sap roy cob cry
+#End of center ordering
+-1

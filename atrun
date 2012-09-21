@@ -1,0 +1,48 @@
+#! /bin/csh
+#
+#  This script is invoked by dip to schedule the next time diprun will be 
+#  executed. This is how the Judge automatically sends e-mails to all players
+#  when a deadline falls.
+#
+#  Invoked as: atrun norm time month day year
+#          or: atrun dorm time month day year
+#
+#  The first form is used when dip is invoked with the -A switch and the 
+#  second is used when invoked without it.
+#
+
+if ("$1" == "dorm") then
+	
+	# Delete all jobs from the at queue.
+	# WARNING!
+	# If you schedule any jobs as the judge user using at, they will
+	# be deleted the next time that the Judge receives an e-mail.
+	
+	# Solaris?:
+	#atrm `atq | awk '$NF == "diprun" {print $7}'` >& /dev/null
+	
+	# MIPS:
+	#at -r `at -l |& grep -v 1400` >& /dev/null
+
+	# Linux: Use one of the two following lines depending on which column 
+	#       the result of atq prints the job id.
+	
+	#atrm `atq | awk '{print $5}'` >& /dev/null
+	atrm `atq | awk '{print $1}'` >& /dev/null
+
+	# Schedule a cleanup early Sunday morning. If you change this to
+	# another day of the week then you will need to modify the dipclean
+	# script otherwise the Judge will never send birthday greetings to 
+	# players.
+	# A better way to schedule this is to use cron by typing crontab -e
+	# and entering 
+	#    00 2 * * 0      /home/judge/dip/dipclean
+	
+	#at 2am Sunday -f dipclean
+endif
+
+# Schedule an execution of the Judge on the next deadline and let dip know 
+# that the script executed successfully.
+
+at $2 $3 $4 $5 -f diprun
+rm -f dip.xfail

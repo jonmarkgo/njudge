@@ -1,0 +1,32 @@
+S1870M
+B: A Madras
+B: A Delhi
+B: F Bombay
+B: F Hong Kong
+B: F Singapore
+B: F Aden
+C: A Peking
+C: A Canton
+C: A Sinkiang
+C: A Shanghai
+C: A Manchuria
+F: A Tongking
+F: F Annam
+F: A Cochin
+H: F Java
+H: A Borneo
+H: F Sumatra
+J: A Kyoto
+J: F Kyushu
+J: F Otaru
+J: F Tokyo
+R: A Moscow
+R: A Vladivostok
+R: A Omsk
+R: F Odessa
+R: F Port Arthur
+T: A Angora
+T: F Baghdad
+T: F Constantinople
+-1 Null ownership/contested record will initialize from the map data.
+-1

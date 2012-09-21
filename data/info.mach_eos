@@ -1,0 +1,84 @@
+Greetings from the Diplomacy* Adjudicator!!              Feb. 22, 2003.
+Info.macheos*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+
+Machiavelli Classic Setup
+
+The Expansion of States Machiavelli scenario starts in 1385 with four 
+powers.  After that the italian cities (city-states) have removed 
+themselves from the control of the Holy Roman Empire four major powers 
+dominate the peninsula.  The Papacy is not part of the game because of 
+the "Great Schism".
+
+(Notes: Naples was in reality on the verge of collapsing and beset by 
+the Crown of Aragon -- which controlled Sicily and parts of Sardinia 
+-- and the french Angevines.  Aragon gained control of the mainland 
+by 1442, even if the french would continue campaigning until the 
+beginning of the 16th century.  Also Milan is still not at its apex, 
+but the game designers choose to make it *very* strong. And it is very 
+easy for Milan to win !!)
+
+
+The powers and their initial starting locations and owned provinces are:
+
+L: Florence     A-Florence, F-Pisa, A-Pistoia
+
+I: Milan        A-Bologna, Como, A-Cremona, F-Genoa, A-Milan, A-Pavia
+
+N: Naples       A-Aquila, A-Bari, Capua, F-Naples, Otranto, F-Salerno      
+
+V: Venice       F-Dalmatia, G-Venice, F-Ragusa
+
+x: Autonomous   Garrisoned fortified cities:
+                G-Ancona, G-Arezzo, G-Durazzo, G-Ferrara, G-Lucca, 
+                G-Mantua, G-Modena, G-Messina, G-Montferrat, G-Padua, 
+                G-Palermo, G-Perugia, G-Piombino, G-Rome, G-Saluzzo,
+                G-Savoy, G-Siena, G-Trent, G-Treviso, G-Tunis, G-Turin
+
+                Garrisoned fortresses:
+                G-Bergamo, G-Brescia, G-Fornova, G-Parma, G-Patrimony, 
+                G-Piancenza, G-Romagna, G-Spoleto, G-Tivoli, G-Urbino, 
+                G-Verona, G-Vicenza
+
+
+Note that the single letter abbreviations for the powers Milan, I, and 
+Florence, L, are the second letter of the name rather than the first to 
+avoid conflicts with the Master and France.  These letters are used for 
+signing on and for sending individual press messages.
+
+
+Special rules:
+
+  The fortresses are by default used in this scenario.
+
+  These provinces are impassable: Avignon, Marseille, Provence, Swiss, 
+  Austria, Carinthia, Hungary and Tyrolea.
+
+  All powers have each one die roll for variable income.
+
+  The player who controls Rome also gets one die roll for var. income.
+
+  Notice that there are no Turkish or Papal home countries available 
+  for conquest.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1b, Feb 22nd 2003.  Final release version.  By Sergio Lidsell.
+
+

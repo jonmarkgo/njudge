@@ -1,0 +1,162 @@
+Morpheus' Palace,                        x mor
+Alcmene's Village,                       l alc
+Hercules' Respite,                       N her
+Mount Olympus,                           l oly
+Village of Aeolus,                       N aeo
+Chiron's Cave,                           l chi
+Centaur Forest,                          E cen
+Echo's Glade,                            l ech
+Amazon Village,                          E ama
+Salmonius' Scheme,                       l sal
+Realm of King Midas,                     l mid
+Prometheus' Cliff,                       x pro
+Sea of Dreams,                           w sod
+Gulf of Chains,                          w goc
+Western Ocean,                           w wes
+Sea of Arrows,                           w soa
+Glittering Gulf,                         w gli
+Narcissus' Reflection,                   w nar
+Sea of Waves,                            w sow
+Isle of Lesbos,                          W les
+Shrine to Hestia,                        l hes
+Convent of the Vestal Virgins,           W ves
+Sea of Fire,                             w fir
+Lesbian Sea,                             w lbs
+Ocean of Peace,                          w pea
+Charon's Crossing,                       l cha
+Tartarus,                                x tar
+Persephone's Garden,                     l per
+Depths of Hades,                         S had
+Gabrielle's Village,                     l gab
+Xena's Rest,                             S xen
+Argo's Pasture,                          l arg
+Sea of Tears,                            w sot
+Poseidon's Curse,                        w pos
+Cecrops' Channel,                        w cec
+South Sea,                               w sou
+Eastern Ocean,                           w eas
+Strife's Cave,                           x str
+Palace of Ares,                          x are
+Serina's Village,                        l ser
+Forest of the Golden Hind,               l hin
+Nestor's Kingdom,                        x nes
+Minotaur's Labyrinth,                    l min
+Scholars Channel,                        w sch
+Lover's Lane,                            w lov
+Cupid's Cloud,                           x cup
+Village of Psyche,                       l psy
+Aphrodite's Beach,                       x aph
+Sisyphus' Hill,                          l sis
+Temple of Zeus,                          l zeu
+Tantalus' Pool,                          l tan
+Jason's Kingdom,                         l jas
+Field of the Golden Fleece,              l fie
+Elysian Fields,                          l ely
+Realm of the 3 Furies,                   l fur
+Callisto's Stronghold,                   l cal
+Autolycus' Hideout,                      l aut
+Joxter's Retreat,                        l jox
+Deianeira's Grave,                       l dei
+Hippolyta's Girdle,                      l hip
+-1
+mor-mv: alc jas
+mor-xc: alc sod wes jas
+alc-mv: her mor jas fie
+alc-xc: her goc sod mor
+her-mv: dei oly sal alc fie
+her-xc: sal goc alc
+oly-mv: zeu aeo mid sal her dei
+aeo-mv: zeu tan chi mid oly
+aeo-xc: chi nar gli mid
+chi-mv: tan sis cen aeo
+chi-xc: cen nar aeo
+cen-mv: sis min ech chi
+cen-xc: ech nar chi
+ech-mv: cen min hip ama
+ech-xc: cen ama sow nar
+ama-mv: ech hip
+ama-xc: ech hip eas sch sow
+sal-mv: oly mid pro her
+sal-xc: pro goc her
+mid-mv: aeo pro sal oly
+mid-xc: aeo gli pro
+pro-mv: mid sal
+pro-xc: mid gli sow soa goc sal
+sod-xc: alc goc soa wes mor
+goc-xc: her sal pro soa sod alc
+wes-xc: mor sod soa les lbs jas
+soa-xc: sod goc pro sow aph psy/wc cup lov ves hes/nc les wes
+gli-xc: aeo nar sow pro mid
+nar-xc: aeo chi cen ech sow gli
+sow-xc: nar ech ama sch aph soa pro gli
+les-mv: hes
+les-xc: soa hes/nc hes/sc fir lbs wes
+hes-mv: ves les
+hes-nc: les soa ves
+hes-sc: ves fir les
+ves-mv: hes
+ves-xc: soa lov fir hes/sc hes/nc
+fir-xc: les hes/sc ves lov sot per tar pea lbs
+lbs-xc: les fir pea wes
+pea-xc: fir tar cha ely lbs
+cha-mv: tar ely
+cha-xc: tar ely pea
+tar-mv: per fur ely cha
+tar-xc: pea fir per cha
+per-mv: had cal fur tar
+per-xc: sot had tar fir
+had-mv: gab cal per
+had-xc: gab per sot
+gab-mv: xen aut cal had
+gab-xc: sot pos xen had
+xen-mv: arg jox aut gab
+xen-xc: cec arg gab pos
+arg-mv: jox xen
+arg-xc: cec sou jox xen
+sot-xc: lov pos gab had per fir
+pos-xc: nes hin cec xen gab sot lov
+cec-xc: pos hin str eas sou arg xen
+sou-xc: cec eas jox arg
+eas-xc: ama hip min sou cec str ser sch
+str-mv: are ser hin
+str-xc: ser eas cec hin
+are-mv: ser str hin nes
+ser-mv: str are nes
+ser-xc: sch eas str nes
+hin-mv: nes are str
+hin-xc: nes str cec pos
+nes-mv: ser are hin
+nes-xc: sch ser hin pos lov
+min-mv: cen sis hip ech
+min-xc: eas hip
+sch-xc: aph sow ama eas ser nes lov cup psy/ec
+lov-xc: cup sch nes pos sot fir ves soa
+cup-mv: psy
+cup-xc: psy/wc psy/ec sch lov soa
+psy-mv: cup aph
+psy-ec: aph sch cup
+psy-wc: cup soa aph
+aph-mv: psy
+aph-xc: sch psy/ec psy/wc soa sow
+sis-mv: min cen chi tan
+zeu-mv: aeo oly dei tan
+tan-mv: sis chi aeo zeu
+jas-mv: alc mor fie
+jas-xc: mor wes
+fie-mv: her alc jas dei
+ely-mv: cha tar fur
+ely-xc: cha pea
+fur-mv: per cal ely tar
+cal-mv: per had gab aut fur
+aut-mv: xen jox cal gab
+jox-mv: xen arg aut
+jox-xc: arg sou
+dei-mv: oly her fie zeu
+hip-mv: min ama ech
+hip-xc: min eas ama
+-1
+Center order for summary report:
+   les ves cup pro mor aph cen ama her aeo tar str had xen are
+   nes
+#End of center ordering
+-1

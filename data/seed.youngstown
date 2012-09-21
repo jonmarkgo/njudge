@@ -1,0 +1,42 @@
+S1901M
+A: A Budapest
+A: A Vienna
+A: F Trieste
+A: A Klug
+C: F Canton
+C: A Hankow
+C: A Peking
+E: F Liverpool
+E: F Edinburgh
+E: F London
+E: F Joharra
+F: A Marseilles
+F: A Paris
+F: F Brest
+F: F Saigon
+G: A Berlin
+G: A Munich
+G: F Kiel
+G: A Posen
+N: A Delhi
+N: F Madras
+N: A Calcutta
+I: A Rome
+I: A Venice
+I: F Naples
+I: F Magudisco
+J: F Kyoto
+J: F Osaka
+J: F Tokyo
+R: A Moscow
+R: A Warsaw
+R: F Sevastopol
+R: F St Petersburg/sc
+R: F Vladivostok
+R: A Omsk
+T: A Constantinople
+T: A Smyrna
+T: F Ankara
+T: A Baghdad
+-1 Null ownership/contested record will initialize from the map data.
+-1
