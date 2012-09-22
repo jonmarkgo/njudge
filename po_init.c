@@ -415,7 +415,7 @@ int gamein(void)
 
 	/* Read in current position */
 
-	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(line, "%s%s/G%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((ifp = fopen(line, "r")) == NULL) {
 		fprintf(rfp, "Error opening game position data file %s.\n", line);
 		return E_FATAL;
@@ -843,7 +843,7 @@ int gameout(void)
 	char out_power[MAX_OUTPOWER];
 
 	sprintf(dipent.seq, "%3.3d", atoi(dipent.seq) + 1);
-	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(line, "%s%s/G%s", conf_get("game_dir"), dipent.name, dipent.seq);
 
 	if ((ifp = fopen(line, "w")) == NULL) {
 		fprintf(rfp, "Error opening game position output data file %s.\n", line);
@@ -1103,9 +1103,9 @@ int gameout(void)
 
 	/* TODO allow for placement into a games subdir */
 	/*   done - greg   :-)   */
-	sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
 	remove(line);
-	sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 	remove(line);
 	return 0;
 }

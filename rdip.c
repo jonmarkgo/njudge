@@ -198,7 +198,7 @@ int main(int argc, char **argv)
       conf_init();  /* to get path for dip exe */
       conf_read_file(CONFIG_DIR, CONFIG_FILE);
 
-        sprintf(temp_text,"%s-%s", JUDGE_CODE, "rdip");
+        sprintf(temp_text,"%s-%s", conf_get("judge_code"), "rdip");
         OPENDIPLOG(temp_text);
         DIPINFO("Started rdip");
 

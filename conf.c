@@ -51,12 +51,15 @@ static cfgval_t def_vals[] = {
 		{"mail_spooler"			, "mail_spooler"},
 		{"master_db"			, "dip.master"},
 		{"master_db_tmp"		, "dip.tmast"},
+		{"max_games"			, "-1"},
 		{"min_control"			, "43200"},
 		{"nobody"				, "nobody@localhost"},
+		{"plan"					, ""},
 		{"points_abandon"		, "-49"},
 		{"points_cd"			, "-100"},
 		{"points_late"			, "-1"},
 		{"points_ontime"		, "3"},
+		{"time_tolerance"		, "0"},
 		{"username"				, "judge"},
 		{"warp_file"			, "./njudgex.warp"}, // temporary warp-message file
 		{"xforward"				, ""},
@@ -80,8 +83,8 @@ static cfgval_t def_vals[] = {
 		 * Neither of these should be altered, except on test judges.  These
 		 * addresses may change from time to time.  Please revise if necessary.
 		 */
-		{"BN_CUSTODIAN"			, "nobody"},
-		{"MN_CUSTODIAN"			, "nobody"},
+		{"bn_custodian"			, "nobody"},
+		{"mn_custodian"			, "nobody"},
 		{"EP_CUSTODIAN"			, "nobody"},
 		// Default custodians for sailho (other variants will default to nothing
 		{"CUSTODIAN_sailho"		, "tarzan_monkeyman@bigfoot.com"},

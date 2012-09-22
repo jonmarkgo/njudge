@@ -203,17 +203,17 @@ void phase_pending(void)
 #define WAIT   2
 #define NOWAIT 3
 
-	sprintf(Tfile, "%s%s/P%3.3d", GAME_DIR, dipent.name, atoi(dipent.seq) - 1);
+	sprintf(Tfile, "%s%s/P%3.3d", conf_get("game_dir"), dipent.name, atoi(dipent.seq) - 1);
 	if (!(ifp = fopen(Tfile, "r")))
 		return;
 
-	sprintf(Tfile, "%s%s/P%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if (!(ofp = fopen(Tfile, "w"))) {
 		perror(Tfile);
 		bailout(1);
 	}
-	sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
-	sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 
 	found = 1;
 	for (p = 1; p < WILD_PLAYER; p++) {
@@ -299,7 +299,7 @@ void phase_pending(void)
 
 				rename(Tfile, Mfile);
 				sprintf(lline, "dip.reply '%s:%s - %s Pending Orders'",
-					JUDGE_CODE, dipent.name, dipent.phase);
+						conf_get("judge_code"), dipent.name, dipent.phase);
 				fclose(rfp);
 				MailOut(lline, dipent.players[n].address);
 				if (*dipent.players[n].address == '*')

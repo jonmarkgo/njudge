@@ -960,12 +960,12 @@ int setsite(char *s)
 	 *  Then fix up the master file.
 	 */
 
-	if (!(fp1 = fopen(MASTER_FILE, "r"))) {
-		perror(MASTER_FILE);
+	if (!(fp1 = fopen(conf_get("master_db"), "r"))) {
+		perror(conf_get("master_db"));
 		bailout(1);
 	}
-	if (!(fp2 = fopen(TMASTER_FILE, "w"))) {
-		perror(TMASTER_FILE);
+	if (!(fp2 = fopen(conf_get("master_db_tmp"), "w"))) {
+		perror(conf_get("master_db_tmp"));
 		bailout(1);
 	}
 	while (getdipent(fp1)) {
@@ -1001,7 +1001,7 @@ int setsite(char *s)
 	ferrck(fp2, 4006);
 	fclose(fp2);
 	fclose(fp3);
-	rename(TMASTER_FILE, MASTER_FILE);
+	rename(conf_get("master_db_tmp"), conf_get("master_db"));
 
 	/* TODO check this return value.  there was no return at all originally,
 	 * but there is a return of zero above on what appears to be an error
@@ -1046,14 +1046,14 @@ int is_allowed(int type_flag)
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/players", GAME_DIR, dipent.name);
+                sprintf(fname, "%s%s/players", conf_get("game_dir"), dipent.name);
                 break;
         case GAME_MASTER:
                  if (strlen(dipent.name) == 0) {
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/masters", GAME_DIR, dipent.name);
+                sprintf(fname, "%s%s/masters", conf_get("game_dir"), dipent.name);
                 break;
         case GLOBAL_PLAYER:
         default:
@@ -1113,14 +1113,14 @@ int is_disallowed(int type_flag)
 			perror("nogame");
 			return 0;
 		}
-		sprintf(fname, "%s%s/players", GAME_DIR, dipent.name);
+		sprintf(fname, "%s%s/players", conf_get("game_dir"), dipent.name);
 		break;
 	case GAME_MASTER:
 		 if (strlen(dipent.name) == 0) {
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/masters", GAME_DIR, dipent.name);
+                sprintf(fname, "%s%s/masters", conf_get("game_dir"), dipent.name);
                 break;
 	case GLOBAL_PLAYER:
 	default:

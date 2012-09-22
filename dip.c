@@ -324,7 +324,7 @@ int main(int argc, char** argv) {
 
 	init(argc, argv);
 
- 	syslog_alias = g_strdup_printf("%s-%s", JUDGE_CODE, "dip");
+ 	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
 
 	OPENDIPLOG(syslog_alias);
 	DIPINFO("Started dip");
@@ -378,7 +378,7 @@ int main(int argc, char** argv) {
 	close_plyrdata();
 
 	// If block file exists, remove it
-	tcptr = BLOCK_FILE;
+	tcptr = conf_get("block_file");
 	if (*tcptr) {
 	    remove(tcptr);
 	}
@@ -428,7 +428,7 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
 
 	if (!(dipent.players[player_index].status & SF_RESIGN)) {
 		sprintf(line, "%s '%s:%s - %s Blind Results'",
-			out_file, JUDGE_CODE, dipent.name, turn_text);
+			out_file, conf_get("judge_code"), dipent.name, turn_text);
 		if (*(dipent.players[player_index].address) != '*' && !options.debug) {
 			MailOut(line, dipent.players[player_index].address);
 		}
@@ -458,8 +458,8 @@ void savemail(void) {
 	char line[1024];
 	time_t now;
 
-	if (!(fp = fopen(SAVE_FILE, "a"))) {
-		perror(SAVE_FILE);
+	if (!(fp = fopen(conf_get("mail_spooler"), "a"))) {
+		perror(conf_get("mail_spooler"));
 		exit(E_FATAL);
 	}
 	if (lockfd(fileno(fp), 0)) {
@@ -471,7 +471,7 @@ void savemail(void) {
 	}
 
 	time(&now);
-	fprintf(log_fp, "%24.24s: Message saved on %s.\n", ctime(&now), SAVE_FILE);
+	fprintf(log_fp, "%24.24s: Message saved on %s.\n", ctime(&now), conf_get("mail_spooler"));
 
 	return;
 
@@ -531,7 +531,7 @@ static gint init(int argc, char** argv) {
 	}
 
 	// Change the judge timezone, if set
-	tcptr = JUDGE_TZ;
+	tcptr = conf_get("judge_tz");
 	if (*tcptr) {
 		g_strdup_printf("TZ=%s", tcptr);
 	    putenv(tcptr);
@@ -553,21 +553,21 @@ static gint init(int argc, char** argv) {
 	subjectline[0] = '\0';
 
 	/* Interlock the log file to ensure single threading  */
-	if ((fd = open(LOG_FILE, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
-		perror(LOG_FILE);
+	if ((fd = open(conf_get("log_file"), O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
+		perror(conf_get("log_file"));
 		exit(E_FATAL);
 	}
 	if (!(log_fp = fdopen(fd, "a"))) {
 		perror("fdopen");
 		exit(E_FATAL);
 	}
-	if (!stat(KEEPOUT, &sbuf)) {
+	if (!stat(conf_get("bail_forward"), &sbuf)) {
 		savemail();
 		exit(0);
 	}
 	/* TODO change to POSIX sigaction */
 	signal(SIGALRM, gotalarm);
-	alarm(LOCK_TIMEOUT);
+	alarm(conf_get_int("lock_timeout"));
 
 	if (lockfd(fd, 0)) {
 		perror("FLOCKF");
@@ -576,7 +576,7 @@ static gint init(int argc, char** argv) {
 	alarm(0);
 
 	/* OK, now see if we're supposed to use block file */
-	t = BLOCK_FILE;
+	t = conf_get("block_file");
 	if (t[0]) {
 	    if (!stat(t, &sbuf)) {
 		fprintf(stderr, 
@@ -639,12 +639,12 @@ void master(void) {
 
 #define TWO_HOURS 2*60*60
 
-	if ((ifp = fopen(MASTER_FILE, "r")) == NULL) {
-		perror(MASTER_FILE);
-		printf("Unable to open master file %s.\n", MASTER_FILE);
+	if ((ifp = fopen(conf_get("master_db"), "r")) == NULL) {
+		perror(conf_get("master_db"));
+		printf("Unable to open master file %s.\n", conf_get("master_db"));
 		exit(E_FATAL);
 	}
-	if ((ofp = fopen(TMASTER_FILE, "w")) == NULL) {
+	if ((ofp = fopen(conf_get("master_db_tmp"), "w")) == NULL) {
 		printf("Unable to open new master file temp.master.\n");
 		exit(E_FATAL);
 	}
@@ -663,9 +663,9 @@ void master(void) {
 
 		if (time_warp) {
 			/* A global time-warp was detected: inform all found masters of this */
-			msg_file = fopen(WARP_FILE, "w");
+			msg_file = fopen(conf_get("warp_file"), "w");
 			if (msg_file != NULL) {
-			    fprintf(msg_file, "A time warp was detected on the %s judge. Please check that",JUDGE_CODE);
+			    fprintf(msg_file, "A time warp was detected on the %s judge. Please check that",conf_get("judge_code"));
 			    fprintf(msg_file, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
 			    fclose(msg_file);
 
@@ -675,7 +675,7 @@ void master(void) {
 						!(dipent.players[i].status & SF_RESIGN)) {
 					sprintf(line,
 							"%s '%s:%s - %s Diplomacy time-warp'",
-							 WARP_FILE, JUDGE_CODE, dipent.name,
+							conf_get("warp_file"), conf_get("judge_code"), dipent.name,
 							 dipent.phase);
 				MailOut(line, dipent.players[i].address);
 			  }
@@ -686,9 +686,9 @@ void master(void) {
 
 		if (bailout_recovery) {
 		    /* Judge is recovering from a bailout: inform all found masters of this */
-		    msg_file = fopen(WARP_FILE, "w");
+		    msg_file = fopen(conf_get("warp_file"), "w");
 		    if (msg_file != NULL) {
-				fprintf(msg_file, "The %s judge is recovering from a bailout. Please check that", JUDGE_CODE);
+				fprintf(msg_file, "The %s judge is recovering from a bailout. Please check that", conf_get("judge_code"));
 				fprintf(msg_file, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
 				fclose(msg_file);
 
@@ -697,7 +697,7 @@ void master(void) {
 					if (dipent.players[i].power == MASTER &&
 							!(dipent.players[i].status & SF_RESIGN)) {
 						sprintf(line, "%s '%s:%s - %s Bailout recovery'",
-								WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
+								conf_get("warp_file"), conf_get("judge_code"), dipent.name, dipent.phase);
 						MailOut(line, dipent.players[i].address);
 				}
 			}
@@ -712,7 +712,7 @@ void master(void) {
 					continue;
 				}
 			} else if (GAME_PAUSED && (dipent.wait < now)) {
-			    msg_file = fopen(WARP_FILE, "w");
+			    msg_file = fopen(conf_get("warp_file"), "w");
                             if (msg_file != NULL) {
                                 fprintf(msg_file, 
 				"Game is paused - master must send the 'resume' command to resume it or 'terminate' to finish.\n\n");
@@ -725,7 +725,7 @@ void master(void) {
                                 if (!(dipent.players[i].status & SF_RESIGN)) {
                                     sprintf(line,
                                         "%s 'Game pause reminder: %s'",
-                                         WARP_FILE, dipent.name);
+                                        conf_get("warp_file"), dipent.name);
 				    MailOut(line, dipent.players[i].address);
 				}
                               }
@@ -745,9 +745,9 @@ void master(void) {
 	fclose(ifp);
 	ferrck(ofp, 1001);
 	fclose(ofp);
-	if (rename(TMASTER_FILE, MASTER_FILE)) {
-		fprintf(log_fp, "Error renaming %s to %s.\n", TMASTER_FILE,MASTER_FILE);
-		fprintf(stderr, "Error renaming %s to %s.\n", TMASTER_FILE,MASTER_FILE);
+	if (rename(conf_get("master_db_tmp"), conf_get("master_db"))) {
+		fprintf(log_fp, "Error renaming %s to %s.\n", conf_get("master_db_tmp"),conf_get("master_db"));
+		fprintf(stderr, "Error renaming %s to %s.\n", conf_get("master_db_tmp"),conf_get("master_db"));
 		bailout(E_FATAL);
 	}
 	/*
@@ -788,7 +788,7 @@ void master(void) {
                         }
                 }
                 remove("dip.control");
-                ded[0].md = now + MIN_CONTROL;
+                ded[0].md = now + conf_get_int("min_control");
         }
         fclose(xfp);
         stat("dip.xcontrol", &sbuf);
@@ -847,11 +847,11 @@ void CheckRemindPlayer(int player, long one_quarter) {
  *	no intervening signons
  */
 
-	sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((ofp = fopen(Tfile, "w")) == NULL) {
 		fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 	}
-	sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((tfp = fopen(Mfile, "r")) != NULL) {
 		while (fgets(line, sizeof(line), tfp)) {
 			if (!strcmp(line, "X-marker\n"))
@@ -895,7 +895,7 @@ void CheckRemindPlayer(int player, long one_quarter) {
 	msg_header_done = 0;  /* Bug 282, header will need to be redone */
 
 	sprintf(line, "%s '%s:%s - %s Reminder'",
-	  temp_file, JUDGE_CODE, dipent.name, dipent.phase);
+	  temp_file, conf_get("judge_code"), dipent.name, dipent.phase);
 
 	dipent.players[player].status |= SF_REMIND;
 
@@ -1094,9 +1094,9 @@ int process(void) {
 							just_now_abandoned++;
 							if (!(dipent.flags & F_NORATE) &&
 							    dipent.players[i].controlling_power == 0) {
-								ded[dipent.players[i].userid].r += D_ABANDON;
+								ded[dipent.players[i].userid].r += conf_get_int("points_abandon");
 								put_data(dipent.players[i].userid,resigned);
-								fprintf(log_fp, dedfmt, D_ABANDON, dipent.players[i].userid,
+								fprintf(log_fp, dedfmt, conf_get_int("points_abandon"), dipent.players[i].userid,
 									ded[dipent.players[i].userid].r);
 							}
 						}
@@ -1138,12 +1138,12 @@ int process(void) {
 						{
 							if(w)
 							{
-								d = D_LATE;
+								d = conf_get_int("points_late");
 								put_data(dipent.players[i].userid,total);
 							}
 							else
 							{
-								d = D_ONTIME;
+								d = conf_get_int("points_ontime");
 								put_data(dipent.players[i].userid,ontime);
 								put_data(dipent.players[i].userid,total);
 							}
@@ -1159,11 +1159,11 @@ int process(void) {
 					    !(dipent.players[i].status & SF_RESIGN)) {
 						if (dipent.players[i].power == MASTER) {
 							sprintf(line, "dip.mlate '%s:%s - %s Late Notice: %s'",
-								JUDGE_CODE, dipent.name, dipent.phase, late);
+									conf_get("judge_code"), dipent.name, dipent.phase, late);
 							MailOut(line, dipent.players[i].address);
 						} else {
 							sprintf(line, "dip.late '%s%s:%s - %s Late Notice: %s'",
-								 w ? "[You are late!] " : "", JUDGE_CODE, dipent.name, dipent.phase,
+								 w ? "[You are late!] " : "", conf_get("judge_code"), dipent.name, dipent.phase,
 									(dipent.x2flags & X2F_SECRET) ? "?" : late);
 							MailOut(line, dipent.players[i].address);
 						}
@@ -1171,7 +1171,7 @@ int process(void) {
 				}
 			}
 			if (n) {
-				sprintf(line, "%s:%s - %s Late Notice: %s", JUDGE_CODE, dipent.name, dipent.phase, (dipent.x2flags & X2F_SECRET) ? "?" : late);
+				sprintf(line, "%s:%s - %s Late Notice: %s", conf_get("judge_code"), dipent.name, dipent.phase, (dipent.x2flags & X2F_SECRET) ? "?" : late);
 				archive("dip.late", line);
 			}
 			if (n == -1) {
@@ -1193,17 +1193,17 @@ int process(void) {
 		}
 		i = dipent.powers + '0' - dipent.seq[1];
 		if (dipent.xflags & XF_MANUALSTART && i <= 0) {
-			sprintf(subjectline, "%s:%s - Waiting for Master to Start", JUDGE_CODE, dipent.name);
+			sprintf(subjectline, "%s:%s - Waiting for Master to Start", conf_get("judge_code"), dipent.name);
 			fprintf(rfp, "Diplomacy game '%s' is still waiting for master to start it.\n", dipent.name );
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for master to start it.\n", NowString(), dipent.name);
 			sprintf(title_text, "Diplomacy game %s startup waiting", dipent.name);
 		} else {
-			sprintf(subjectline, "%s:%s - Waiting for More Players", JUDGE_CODE, dipent.name);
+			sprintf(subjectline, "%s:%s - Waiting for More Players", conf_get("judge_code"), dipent.name);
 			if (dipent.x2flags & X2F_SECRET) {
-			    sprintf(subjectline, "%s:%s - Waiting for More Player(s)", JUDGE_CODE, dipent.name);
+			    sprintf(subjectline, "%s:%s - Waiting for More Player(s)", conf_get("judge_code"), dipent.name);
 			    fprintf(rfp, "Diplomacy game '%s' is still waiting for some player(s) to sign on.\n", dipent.name);
 			} else {	
-			    sprintf(subjectline, "%s:%s - Waiting for %d More Player%s", JUDGE_CODE, dipent.name, i, i == 1 ? "" : "s");
+			    sprintf(subjectline, "%s:%s - Waiting for %d More Player%s", conf_get("judge_code"), dipent.name, i, i == 1 ? "" : "s");
 			    fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
 			}
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
@@ -1260,8 +1260,8 @@ int process(void) {
 					if (!(dipent.flags & F_NORATE) &&
 					    RealPlayerIndex(i) == i) {
 						put_data(dipent.players[i].userid,resigned);
-						ded[dipent.players[i].userid].r += D_CD;
-						fprintf(log_fp, dedfmt, D_CD, dipent.players[i].userid,
+						ded[dipent.players[i].userid].r += conf_get_int("points_cd");
+						fprintf(log_fp, dedfmt, conf_get_int("points_cd"), dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
 					}
 					if (!(dipent.flags & F_NONMR)) {
@@ -1284,8 +1284,8 @@ int process(void) {
 				    RealPlayerIndex(i) == i) {
 					put_data(dipent.players[i].userid,ontime);
 					put_data(dipent.players[i].userid,total);
-					ded[dipent.players[i].userid].r += D_ONTIME;
-					fprintf(log_fp, dedfmt, D_ONTIME, dipent.players[i].userid,
+					ded[dipent.players[i].userid].r += conf_get_int("points_ontime");
+					fprintf(log_fp, dedfmt, conf_get_int("points_ontime"), dipent.players[i].userid,
 					ded[dipent.players[i].userid].r);
 				}
 			}
@@ -1360,7 +1360,7 @@ int process(void) {
 					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
 					    RealPlayerIndex(i) == i) {
 						sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
-							JUDGE_CODE, dipent.name, dipent.phase,
+								conf_get("judge_code"), dipent.name, dipent.phase,
 							(dipent.flags & F_NOLIST) ? "NoList" : "",
 							(dipent.x2flags & X2F_SECRET) ? "?" : late);
 						MailOut(line, dipent.players[i].address);
@@ -1386,7 +1386,7 @@ int process(void) {
 					if (dipent.players[i].power < 0)
 						continue;
 					sprintf(line, "dip.result '%s:%s - %s Turn Waiting'",
-					  JUDGE_CODE, dipent.name, dipent.phase);
+							conf_get("judge_code"), dipent.name, dipent.phase);
 
 					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' &&
 					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
@@ -1423,11 +1423,11 @@ int process(void) {
 		   **  Remove any draw/win information (for summary) if it exists
 		 */
 
-		sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
+		sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 		remove(line);
 
 		if (dipent.phase[6] == 'X') {
-			sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
+			sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 			if ((dfp = fopen(line, "w")) == NULL) {
 				fprintf(log_fp, "dip: Error opening draw file.\n");
 				bailout(E_FATAL);
@@ -1495,7 +1495,7 @@ int process(void) {
 				if (*(dipent.players[i].address) != '*' && !options.debug &&
 				    RealPlayerIndex(i) == i ) {
 					sprintf(line, "dip.victory '%s:%s - %s Victory: %s'",
-					  JUDGE_CODE, dipent.name, phase, vic_string);
+							conf_get("judge_code"), dipent.name, phase, vic_string);
 					MailOut(line, dipent.players[i].address);
 				}
 			}
@@ -1517,7 +1517,7 @@ int process(void) {
 			 */
 
 			if (dipent.flags & F_GUNBOAT) {
-				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			/*  This code, ripped from mail.c, around line 1000, should force
@@ -1536,7 +1536,7 @@ int process(void) {
 			/*  Mail summary to HALL_KEEPER */
 
 			sprintf(line, "%s%s/summary 'HoF: Victory in %s'",
-				GAME_DIR, dipent.name, dipent.name);
+					conf_get("game_dir"), dipent.name, dipent.name);
 			MailOut(line, conf_get("hall_keeper"));
 
 		} else {
@@ -1605,16 +1605,16 @@ int process(void) {
 			if (!(dipent.flags & F_BLIND) || (dipent.players[i].power == MASTER)) 
 			{
 				sprintf(line, "dip.result '%s:%s - %s Results'",
-				  JUDGE_CODE, dipent.name, phase);
+						conf_get("judge_code"), dipent.name, phase);
 			}
 
 		        /* let's do postal press */
 			/* TODO: tidy this code up */ 
-			sprintf(pppath, "%s%s/ppress-%s", GAME_DIR, dipent.name, phase);
+			sprintf(pppath, "%s%s/ppress-%s", conf_get("game_dir"), dipent.name, phase);
 		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
 	    		    sprintf(ppline, "%s%s/ppress-%s '%s:%s - %s game press'",
-	        		GAME_DIR, dipent.name, phase,
-				JUDGE_CODE, dipent.name, phase);
+	    		    		conf_get("game_dir"), dipent.name, phase,
+	        		conf_get("judge_code"), dipent.name, phase);
 
 			if (*(dipent.players[i].address) != '*' && !options.debug &&
 					    !(dipent.players[i].status & SF_RESIGN) &&
@@ -1638,7 +1638,7 @@ int process(void) {
 				dipent.name, phase);
 			MailOut(line, conf_get("games_opener"));
 		}
-		sprintf(line, "%s:%s - %s Results", JUDGE_CODE, dipent.name, phase);
+		sprintf(line, "%s:%s - %s Results", conf_get("judge_code"), dipent.name, phase);
 		archive("dip.result", line);
 
 		phase_pending();

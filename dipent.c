@@ -389,8 +389,8 @@ int getdipent(FILE * fp)
 			}
 			
 		/* MLM 26/5/2001 only notify warp on shift more than TIME_TOLERANCE */
-		if (dipent.process && (dipent.start > (now +TIME_TOLERANCE) || 
-		    now > (TIME_TOLERANCE + dipent.process))) {
+		if (dipent.process && (dipent.start > (now +conf_get_int("time_tolerance")) ||
+		    now > (conf_get_int("time_tolerance") + dipent.process))) {
 			fprintf(stderr, "Current date %24.24s should be between...\n", ctime(&now));
 			if (!dip_time) {
 			    fprintf(stderr, "Control dates %24.24s ", ctime(&dipent.start));
@@ -519,7 +519,7 @@ void newdipent(char *name, int variant)
 
 	char dir[50];
 
-	sprintf(dir, "%s%s", GAME_DIR, name);
+	sprintf(dir, "%s%s", conf_get("game_dir"), name);
 	mkdir(dir, 0777);
 	strncpy(dipent.name, name, sizeof(dipent.name));
 	strcpy(dipent.seq, "x0");
@@ -842,8 +842,8 @@ int countgames(void)
 	int gamecount = 0;
 	int len;
 
-	if (!(mf = fopen(MASTER_FILE, "r"))) {
-		perror(MASTER_FILE);
+	if (!(mf = fopen(conf_get("master_db"), "r"))) {
+		perror(conf_get("master_db"));
 	}
 	do {
 		fgets(line, sizeof(line), mf);

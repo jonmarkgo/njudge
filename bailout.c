@@ -68,19 +68,19 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 
 
 	if (!options.debug) {
-		if (!stat(BAILOUT_PLAN, &sbuf))
-			rename(BAILOUT_PLAN, PLAN);
+		if (!stat(conf_get("bailout_plan"), &sbuf))
+			rename(onf_get("bailout_plan"), conf_get("plan"));
 		inform_rgd();
 	/* If KEEPOUT already exists, we've already crashed. No need to do again. */
-		if (stat(KEEPOUT, &sbuf))
+		if (stat(conf_get("bail_forward"), &sbuf))
 		{
-			rename(FORWARD, KEEPOUT);
-			rename(YFORWARD, FORWARD);
+			rename(conf_get("forward"), conf_get("bail_forward"));
+			rename(get_conf("forward_onbail"), conf_get("forward"));
 		}
 		if(dolog)
 		{
-			fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", FORWARD,
-				KEEPOUT);
+			fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", conf_get("forward"),
+					conf_get("bail_forward"));
 		}
 		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
 			conf_get("cmd_smail"), sourcename, linenum, conf_get("judge_keeper"));
@@ -113,14 +113,14 @@ void inform_rgd(void)
 		return;
 	}
 	time(&now);
-	sprintf(info_line, "%s JUDGE: Bailout at %12.12s\n\n", JUDGE_CODE,
+	sprintf(info_line, "%s JUDGE: Bailout at %12.12s\n\n", conf_get("judge_code"),
 		ctime(&now) + 4);
 
 	/* Append the contents of the bailout.msg file (if any). */
-	if (!stat(BAILOUT_MSG, &sbuf)) {
-		if (!(ifp = fopen(BAILOUT_MSG, "r"))) {
-			perror(BAILOUT_MSG);
-			fprintf(log_fp, "Unable to open %s.\n", BAILOUT_MSG);
+	if (!stat(conf_get("bailout_msg"), &sbuf)) {
+		if (!(ifp = fopen(conf_get("bailout_msg"), "r"))) {
+			perror(conf_get("bailout_msg"));
+			fprintf(log_fp, "Unable to open %s.\n", conf_get("bailout_msg"));
 			return;
 		}
 		while (fgets(line, (int) sizeof(line), ifp))
@@ -130,6 +130,6 @@ void inform_rgd(void)
 	}
 	fclose(ofp);
 
-	sprintf(line, "%s dip.temp '%s' '%s'", conf_get("cmd_smail"), info_line, RGD_GATEWAY);
+	sprintf(line, "%s dip.temp '%s' '%s'", conf_get("cmd_smail"), info_line, conf_get("rgd_gateway"));
 	system(line);
 }

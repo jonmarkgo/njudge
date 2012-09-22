@@ -79,8 +79,8 @@ int main(int argc, char **argv)
 /* Interlock the log file to ensure single threading  */
 
 	if (lflg) {
-		if ((fd = open(LOG_FILE, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
-			perror(LOG_FILE);
+		if ((fd = open(conf_get("log_file"), O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
+			perror(conf_get("log_file"));
 			exit(E_FATAL);
 		}
 		if (lockfd(fd, 0)) {

@@ -220,7 +220,7 @@ int mail_getaddr(char *s, char *addr)
 	    !strncasecmp(t, "tnc_mailer", 10) ||
 	    !strncasecmp(t, "udb@cs.utex", 11) ||
 	    !strncasecmp(t, "-MaiSer-", 8) ||
-	    !strncasecmp(t, OURSELVES, strlen(OURSELVES))) {
+	    !strncasecmp(t, conf_get("username"), strlen(conf_get("username")))) {
 
 		*addr = '*';	/* Ensure that we don't reply */
 
@@ -256,8 +256,8 @@ int mail_getaddr(char *s, char *addr)
 	 * throws on to the end of addresses.
 	 */
 
-	if (percent && at && (!strcmp(at, BITNET_GATEWAY1) ||
-			      !strcmp(at, BITNET_GATEWAY2) ||
+	if (percent && at && (!strcmp(at, conf_get("bitnet_gateway1")) ||
+			      !strcmp(at, conf_get("bitnet_gateway2")) ||
 			      !strncasecmp(at - 7, ".bitnet", 7))) {
 		*percent = '@';
 		if (!period)

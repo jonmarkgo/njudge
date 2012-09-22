@@ -170,7 +170,7 @@ void archive(char *file, char *subject)
 	char name[60];
 	FILE *ofp, *ifp;
 
-	sprintf(name, "%s%s/archive", GAME_DIR, dipent.name);
+	sprintf(name, "%s%s/archive", conf_get("game_dir"), dipent.name);
 	if (!(ofp = fopen(name, "a"))) {
 		perror(name);
 		fprintf(log_fp, "Unable to append to archive file for '%s'.\n", dipent.name);
@@ -1319,10 +1319,10 @@ void InformCustodians( char *game_name, char *text, int variant, int is_gunboat)
 
     if (variant != V_STANDARD || is_gunboat) {
            sprintf(line, text, "dip.temp", "MNC", game_name);
-	   out_addr = MN_CUSTODIAN;
+	   out_addr = conf_get("mn_custodian");
     } else {
            sprintf(line, text, "dip.temp", "BNC", game_name);                   
-	   out_addr = BN_CUSTODIAN;
+	   out_addr = conf_get("bn_custonian");
    }
    MailOut(line, out_addr);
    sprintf(guardian_string, "CUSTODIAN_%s", variants[variant]);
@@ -1592,7 +1592,7 @@ void MailOut(char *out_line, char *address)
    static char lline[256];
 
    while ( (ptr = GetAddressPart(count++, address))) {
-        if (*ptr != '*' && 0 != strcmp(NOBODY, ptr)) {
+        if (*ptr != '*' && 0 != strcmp(conf_get("nobody"), ptr)) {
            sprintf(lline, "%s %s '%s'", conf_get("cmd_smail"), out_line, ptr);
            execute(lline);
 	}
@@ -1669,7 +1669,7 @@ char *SomeoneText( int index)
     if (!(dipent.x2flags & X2F_SECRET)) {
 	if (dipent.xflags & F_INTIMATE) {
 	    if (dipent.players[index].controlling_power != 0) {
-		return NOBODY;
+		return conf_get("nobody");
 	    } else {
 		sprintf(rets, "someone%d@somewhere", PlayerNumber(index));
 		return rets;

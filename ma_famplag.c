@@ -116,9 +116,9 @@ void fam_plag(int t)
 	    (t == STORM && !NO_STORMS)) {
 
 		if (t == STORM)
-			die_rolls(DIE_STORMS);
+			die_rolls(conf_get_int("die_storms"));
 		else
-			die_rolls(DIE_FAMPLAG);
+			die_rolls(conf_get_int("die_famplag"));
 
 		if (dipent.xflags & XF_MACH2) {
 		    d = die(1,6);

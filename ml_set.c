@@ -452,7 +452,7 @@ void CheckForGameStart()
 	    fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
             mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
 
-	    sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
+	    sprintf(subjectline, "%s:%s - %s Ready to Start", conf_get("judge_code"), dipent.name, dipent.phase);
         }
      broadcast = 1;
      }
@@ -1307,7 +1307,7 @@ void mail_setp(char *s)
 	chk24nmr = 0;
 	while (*s) {
 		if (subjectline[0] == '\0')
-			sprintf(subjectline, "%s:%s - %s Parameter Change", JUDGE_CODE, dipent.name, dipent.phase);
+			sprintf(subjectline, "%s:%s - %s Parameter Change", conf_get("judge_code"), dipent.name, dipent.phase);
 
 		s = lookfor(t = s, keys, nentry(keys), &i);
 		sprintf(stat_text, "%3.3d %s", action[i], dipent.name);
@@ -1345,7 +1345,7 @@ void mail_setp(char *s)
 			    dipent.players[player].power == MASTER) {
 				sprintf(subjectline, 
 					"%s:%s - %s Player Address Change: ", 
-					JUDGE_CODE, 
+					conf_get("judge_code"),
 					dipent.name, 
 					dipent.phase);
 				t = subjectline + strlen(subjectline);
@@ -1397,7 +1397,7 @@ void mail_setp(char *s)
 				break;
 			}
 			dipent.deadline = dates;
-			sprintf(subjectline, "%s:%s - %s Deadline Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
+			sprintf(subjectline, "%s:%s - %s Deadline Adjustment to: %s", conf_get("judge_code"), dipent.name, dipent.phase, ptime(&dates));
 			fprintf(rfp, "Deadline set to %s.\n", ptime(&dates));
 			/* WAS mfprintf  1/95 BLR */
 			fprintf(bfp, "%s as %s set the deadline\n", xaddr, PRINT_POWER);
@@ -1474,7 +1474,7 @@ void mail_setp(char *s)
 				break;
 			}
 			dipent.grace = dates;
-			sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", JUDGE_CODE, dipent.name, dipent.phase, ptime(&dates));
+			sprintf(subjectline, "%s:%s - %s Grace Adjustment to: %s", conf_get("judge_code"), dipent.name, dipent.phase, ptime(&dates));
 			fprintf(rfp, "Grace period set to %s.\n\n", ptime(&dates));
 			/* WAS mfprintf  1/95 BLR */
 			fprintf(bfp, "%s as %s set the grace period\n", xaddr, PRINT_POWER);
@@ -1553,7 +1553,7 @@ void mail_setp(char *s)
 					"begins.\n");
 			} else {
 				if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL)) {
-					sprintf(subjectline, "%s:%s - %s Preference Change", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Preference Change", conf_get("judge_code"), dipent.name, dipent.phase);
 				}
 
 				for (t = s; *s && !isspace(*s) && *s != ','; s++);
@@ -2516,9 +2516,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			break;
@@ -2562,9 +2562,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			break;
@@ -2586,7 +2586,7 @@ void mail_setp(char *s)
 				int n, skipping;
 				char line[150];
 
-				sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
 				if (!(tfp = fopen(line, "w"))) {
 					perror(line);
 					fprintf(log_fp, "Can't open info file: %s", line);
@@ -2616,9 +2616,9 @@ void mail_setp(char *s)
 				   **  Force the summaries to get the new comment.
 				 */
 
-				sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 
 			}
@@ -2648,7 +2648,7 @@ void mail_setp(char *s)
 				            xaddr, PRINT_POWER, dipent.name, dipent.avp);	
 				broadcast = 1;
 				sprintf(subjectline, "%s:%s - %s Winning Centers Changed to %d",
-					JUDGE_CODE, dipent.name, dipent.phase, dipent.vp);
+						conf_get("judge_code"), dipent.name, dipent.phase, dipent.vp);
 			}
 			break;
 
@@ -3439,7 +3439,7 @@ CATF_SETOFF,
 			}
 			if (!i_am_really_master && dipent.players[player].power != MASTER &&
 			absence_delay(dipent.max_absence_delay, datee-dates) == TOO_BIG) {
-				sprintf(subjectline, "%s:%s - %s Oversized Absence Request", JUDGE_CODE, 
+				sprintf(subjectline, "%s:%s - %s Oversized Absence Request", conf_get("judge_code"),
 					dipent.name, dipent.phase);
 
 				fprintf(rfp, "Requested absence delay is too large. \nRequest forwarded to master to approve.\n\n");
@@ -3486,7 +3486,7 @@ CATF_SETOFF,
 				fprintf(rfp,"%s.\n\n", ptime(&datee));
 
 				if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL))
-					sprintf(subjectline, "%s:%s - %s Absence Notice", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Absence Notice", conf_get("judge_code"), dipent.name, dipent.phase);
 
 				fprintf(mbfp, "%s as %s set absence from %s to\n",
 				raddr, PRINT_POWER, ptime(&dates));
@@ -3545,7 +3545,7 @@ CATF_SETOFF,
 						ptime(&dipent.players[RealPlayerIndex(player)].absence_end[i]));
 
 					if ((strstr(subjectline, "New Player Signon") == NULL) && (strstr(subjectline, "Ready to Start") == NULL))
-						sprintf(subjectline, "%s:%s - %s Absence Cancellation", JUDGE_CODE, dipent.name, dipent.phase);
+						sprintf(subjectline, "%s:%s - %s Absence Cancellation", conf_get("judge_code"), dipent.name, dipent.phase);
 
 					fprintf(mbfp, "%s as %s cancelled absence from \n%s",
 						raddr, PRINT_POWER,
@@ -3806,7 +3806,7 @@ void process_allowdeny(char **info, char *basename)
 	if (!strcmp(dipent.name, "control"))
 		strcpy(line, basename);
 	else
-		sprintf(line, "%s%s/%s", GAME_DIR, dipent.name, basename);
+		sprintf(line, "%s%s/%s", conf_get("game_dir"), dipent.name, basename);
 	add_player(player_name, line, addflag);
 
 	*info = s;
@@ -4078,7 +4078,7 @@ int SetApprovalState(int type, char *part_list, int part_list_count)
                 if (changed) {
 
                     sprintf(tline, "%s %s '%s:%s - %s Player moves %s' '%s'",
-                    		conf_get("cmd_smail"), filename, JUDGE_CODE, dipent.name,
+                    		conf_get("cmd_smail"), filename, conf_get("judge_code"), dipent.name,
                             dipent.phase, text, dipent.players[i].address);
 
                     if (execute(tline)) {

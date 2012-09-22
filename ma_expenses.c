@@ -963,7 +963,7 @@ void expout(int pt)
 						}
 						*bp =  (unsigned char) WILD_PLAYER;
 						if (processing || predict /*MLMMach removed master test || pt == MASTER*/) {
-							die_rolls(DIE_EXPENSE + (p * 10) + j);
+							die_rolls(conf_get_int("die_expense") + (p * 10) + j);
 							if (i < (k = die(1, 6))) {
 								fprintf(rfp, "  ** Die is %d, needed <%d, failed\n", k, i + 1);
 								result[p][j] = 1;
@@ -1103,7 +1103,7 @@ void expout(int pt)
 				}
 			}
 
-			die_rolls(DIE_ASSASSIN + p);
+			die_rolls(conf_get_int("die_assassin") + p);
 			fprintf(rfp, "Checking for rebellions...\n");
 			fprintf(rfp, "   Die  Status     Province\n");
 			for (p1 = 1; p1 <= npr; p1++) {

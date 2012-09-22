@@ -483,13 +483,13 @@ int mail_signon(char *s)
 	if (!found) {
 		if (name[0] == '?') {
 			struct stat sbuf;
-			gdirname = malloc(strlen(GAME_DIR) + strlen(name) + 1);
+			gdirname = malloc(strlen(conf_get("game_dir")) + strlen(name) + 1);
 			if(!gdirname)
 			{
 				fprintf(stderr, "Memory allocation error.\n");
 				bailout(E_FATAL);
 			}
-			sprintf(gdirname, "%s%s", GAME_DIR, &name[1]);
+			sprintf(gdirname, "%s%s", conf_get("game_dir"), &name[1]);
 
 			if (strcmp(raddr, conf_get("judge_keeper")) != 0 && stat("NOCREATE", &sbuf) == 0) {
 				if (!msg_header_done)
@@ -607,7 +607,7 @@ int mail_signon(char *s)
 		for (i = 0; i < dipent.n; i++) {
 			if (name[0] == ADMINISTRATOR && 
 				(!strcasecmp(raddr, conf_get("judge_keeper")) ||
-				!strcmp(SPECIAL_PW, password))) {
+				!strcmp(conf_get("special_pw"), password))) {
 				n = MASTER;
 				i = dipent.n;
 				dipent.players[i].power = n;
@@ -665,7 +665,7 @@ int mail_signon(char *s)
 				{
 					broad_signon = 1;
 					sprintf(subjectline, "%s:%s - %s %s is no longer in CD",
-						JUDGE_CODE, dipent.name, dipent.phase, powers[dipent.players[i].power]);
+							conf_get("judge_code"), dipent.name, dipent.phase, powers[dipent.players[i].power]);
 					fprintf(bfp, "%s has returned as %s in %s. %s is no longer in CD.",
 						xaddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
 					fprintf(mbfp, "%s has returned as %s in %s. %s is no longer in CD.",
@@ -718,7 +718,7 @@ int mail_signon(char *s)
 					    if (dipent.x2flags & X2F_SECRET) {
 						if (!one_done) {
 					            sprintf(subjectline, "%s:%s - %s Returning Player Signon",
-					                JUDGE_CODE, dipent.name, dipent.phase);
+					            		conf_get("judge_code"), dipent.name, dipent.phase);
 						    fprintf(bfp, "%s has returned in game '%s'.\n",
 						            xaddr, dipent.name);
 						    fprintf(mbfp, "%s has returned in game '%s'.\n",
@@ -729,7 +729,7 @@ int mail_signon(char *s)
 					    } else {
                                                 if (!one_done) 
 					            sprintf(subjectline, "%s:%s - %s Returning Player Signon: %c", 
-					                    JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+					            		conf_get("judge_code"), dipent.name, dipent.phase, dipent.pl[n]);
 					        else {
 						    sprintf(tmp1, "%c", dipent.pl[n]);
 						    strcat(subjectline, tmp1);
@@ -786,7 +786,7 @@ int mail_signon(char *s)
 				        if (!(dipent.flags & F_QUIET)) {
 				           if (dipent.x2flags & X2F_SECRET) {
 					      if (!one_done) {
-					          sprintf(subjectline, "%s:%s - %s New Player Signon", JUDGE_CODE, dipent.name, dipent.phase);
+					          sprintf(subjectline, "%s:%s - %s New Player Signon", conf_get("judge_code"), dipent.name, dipent.phase);
 					          fprintf(bfp, "%s has taken over abandoned power(s)\n in game '%s'.\n",
 					                  xaddr, dipent.name);
 					          fprintf(mbfp, "%s has taken over abandoned power(s)\n in game '%s'.\n",
@@ -796,7 +796,7 @@ int mail_signon(char *s)
 					       }
 				           } else {
 					       if (!one_done)
-				                   sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+				                   sprintf(subjectline, "%s:%s - %s New Player Signon: %c", conf_get("judge_code"), dipent.name, dipent.phase, dipent.pl[n]);
 					       else {
 						   sprintf(tmp1, "%c", dipent.pl[n]);
 					           strcat(subjectline, tmp1);
@@ -899,7 +899,7 @@ int mail_signon(char *s)
 						msg_header(rfp);
 					fprintf(rfp, "You are now an %s in game '%s'.\n", powers[n], dipent.name);
 					/* WAS mfprintf  1/94 BLR */
-					sprintf(subjectline, "%s:%s - %s New Player Signon: %c", JUDGE_CODE, dipent.name, dipent.phase, dipent.pl[n]);
+					sprintf(subjectline, "%s:%s - %s New Player Signon: %c", conf_get("judge_code"), dipent.name, dipent.phase, dipent.pl[n]);
 
 					fprintf(bfp, "%s has signed on as an %s in game '%s'.\n",
 					  xaddr, powers[n], dipent.name);
@@ -951,21 +951,21 @@ int mail_signon(char *s)
 			fprintf(rfp, "Game '%s' has been terminated.\n", dipent.name);
 			fprintf(rfp, "Use the 'resume' command to start it back up.\n\n");
 		}
-		sprintf(Tfile, "%s%s/P%s", GAME_DIR, dipent.name, dipent.seq);
+		sprintf(Tfile, "%s%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((pfp = fopen(Tfile, "a+")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Error opening %s to write future orders.\n", Tfile);
 			return E_FATAL;
 		}
-		sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
+		sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((ofp = fopen(Tfile, "w")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 			return E_FATAL;
 		}
-		sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
+		sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((tfp = fopen(Mfile, "r")) != NULL) {
 			while (fgets(line, sizeof(line), tfp)) {
 				if (!strcmp(line, "X-marker\n"))
@@ -1397,7 +1397,7 @@ void mail_igame(void)
 			if (j < WILD_PLAYER) {
 				if (dipent.flags & F_INTIMATE) {                                                                   /* in intimate, other powers are autonomous */
 				    dipent.players[dipent.n].controlling_power = AUTONOMOUS;
-				    strcpy(dipent.players[dipent.n].address, NULL_EMAIL);
+				    strcpy(dipent.players[dipent.n].address, conf_get("nobody"));
 				    strcpy(dipent.players[dipent.n].password, "-none-");
 				} else {
 				    memcpy(&dipent.players[dipent.n], &dipent.players[i], sizeof(Player));
@@ -1473,9 +1473,9 @@ void mail_igame(void)
 	 * Create a game file.
 	 */
 
-	sprintf(line, "%s%s", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s", conf_get("game_dir"), dipent.name);
 	mkdir(line, 0777);
-	sprintf(line, "%s%s/G%s", GAME_DIR, dipent.name, dipent.seq);
+	sprintf(line, "%s%s/G%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((ofp = fopen(line, "w")) == NULL) {
 		fprintf(stderr, "igame: Error opening game file %s.\n", line);
 		bailout(E_FATAL);
@@ -1573,7 +1573,7 @@ void mail_igame(void)
 
 		if (i != dipent.n) {
 			sprintf(line, "%s dip.temp '%s:%s - %s Game Starting' '%s'",
-					conf_get("cmd_smail"), JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+					conf_get("cmd_smail"), conf_get("judge_code"), dipent.name, dipent.phase, dipent.players[i].address);
 
 			if (execute(line)) {
 				fprintf(stderr, "igame: Error sending mail to %s.\n",
@@ -1588,7 +1588,7 @@ void mail_igame(void)
 				: dipent.players[i].address);
 		}
 	}
-	sprintf(line, "%s:%s - %s Game Starting", JUDGE_CODE, dipent.name, dipent.phase);
+	sprintf(line, "%s:%s - %s Game Starting", conf_get("judge_code"), dipent.name, dipent.phase);
 	archive("dip.temp", line);
 
 
@@ -1596,7 +1596,7 @@ void mail_igame(void)
  * Record start date for the summary
  */
 
-	sprintf(line, "%s%s/start", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/start", conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		fprintf(log_fp, "igame: Error opening start file.\n");
 		bailout(E_FATAL);
@@ -1693,7 +1693,7 @@ void mail_igame(void)
 			: dipent.players[i].address);
 	}
 
-	sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
 	if ((fp = fopen(line, "r"))) {
 		fputc('\n', ofp);
 		while (fgets(line, sizeof(line), fp))
@@ -1909,7 +1909,7 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 			fprintf(rfp,"Game '%s' is now ready for Master to start the game.\n", dipent.name);
 			mfprintf(bfp, "Game '%s' is now ready for Master to start the game.\n", dipent.name);
 
-			sprintf(subjectline, "%s:%s - %s Ready to Start", JUDGE_CODE, dipent.name, dipent.phase);
+			sprintf(subjectline, "%s:%s - %s Ready to Start", conf_get("judge_code"), dipent.name, dipent.phase);
 
 			broad_signon = 1;
 		        if (dipent.n != 1) {
@@ -1935,7 +1935,7 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 			}
 			if ( !lmaster )
 			{
-				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", JUDGE_CODE, dipent.name, dipent.phase, n);
+				sprintf(subjectline, "%s:%s - %s New Player Signon: #%d", conf_get("judge_code"), dipent.name, dipent.phase, n);
 
 				fprintf(bfp, "%s has signed up to play %s in game '%s'.\n", xaddr,
 					powers[power(name[0])], dipent.name);

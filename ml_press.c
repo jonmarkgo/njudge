@@ -235,7 +235,7 @@ void mail_press(char *s, int need_opts)
  */
 
 /*  Parse the command line options, if any, setting local flags only.  */
-	sprintf(subjectline, "%s:%s - %s Diplomacy Notice ml_press", JUDGE_CODE, dipent.name, dipent.phase);
+	sprintf(subjectline, "%s:%s - %s Diplomacy Notice ml_press", conf_get("judge_code"), dipent.name, dipent.phase);
 
 	master_press = 0;
 	master_only_press = 0; 
@@ -595,7 +595,7 @@ void mail_press(char *s, int need_opts)
 
 		if ((partial && (fake != FAKEB)) || (fake == FAKEP) || (fake == FAKEA)) {
 			if (color == GREY) {
-				sprintf(subjectline, "%s:%s - %s Press to ", JUDGE_CODE, dipent.name, dipent.phase);
+				sprintf(subjectline, "%s:%s - %s Press to ", conf_get("judge_code"), dipent.name, dipent.phase);
 
 				strcpy(line, "Message to ");
 				sprintf(mline, "Message [from %s as %s] to ",
@@ -610,7 +610,7 @@ void mail_press(char *s, int need_opts)
 				if (!(dipent.flags & F_GUNBOAT) ||
 				    (dipent.players[player].power == MASTER)) {
 					lpower = dipent.pl[dipent.players[player].power];
-					sprintf(subjectline, "%s:%s - %s Press from %c to ", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+					sprintf(subjectline, "%s:%s - %s Press from %c to ", conf_get("judge_code"), dipent.name, dipent.phase, lpower);
 
 					sprintf(line, "Message from %s as %s to ", raddr,
 						powers[dipent.players[player].power]);
@@ -623,7 +623,7 @@ void mail_press(char *s, int need_opts)
 
 				} else {
 					lpower = dipent.pl[dipent.players[player].power];
-					sprintf(subjectline, "%s:%s - %s Press from %c to ", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+					sprintf(subjectline, "%s:%s - %s Press from %c to ", conf_get("judge_code"), dipent.name, dipent.phase, lpower);
 
 					sprintf(line, "Message from %s to ",
 						powers[dipent.players[player].power]);
@@ -661,7 +661,7 @@ void mail_press(char *s, int need_opts)
 
 		} else {
 			if (color == GREY) {
-				sprintf(subjectline, "%s:%s - %s Broadcast", JUDGE_CODE, dipent.name, dipent.phase);
+				sprintf(subjectline, "%s:%s - %s Broadcast", conf_get("judge_code"), dipent.name, dipent.phase);
 
 				strcpy(line, "Broadcast message");
 				sprintf(mline, "Broadcast message [from %s as %s]",
@@ -676,7 +676,7 @@ void mail_press(char *s, int need_opts)
 				if (!(dipent.flags & F_GUNBOAT) ||
 				    (dipent.players[player].power == MASTER)) {
 					lpower = dipent.pl[dipent.players[player].power];
-					sprintf(subjectline, "%s:%s - %s Broadcast from %c", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+					sprintf(subjectline, "%s:%s - %s Broadcast from %c", conf_get("judge_code"), dipent.name, dipent.phase, lpower);
 
 					sprintf(line, "Broadcast message from %s as %s", raddr,
 						powers[dipent.players[player].power]);
@@ -689,7 +689,7 @@ void mail_press(char *s, int need_opts)
 
 				} else {
 					lpower = dipent.pl[dipent.players[player].power];
-					sprintf(subjectline, "%s:%s - %s Broadcast from %c", JUDGE_CODE, dipent.name, dipent.phase, lpower);
+					sprintf(subjectline, "%s:%s - %s Broadcast from %c", conf_get("judge_code"), dipent.name, dipent.phase, lpower);
 
 					sprintf(line, "Broadcast message from %s",
 						powers[dipent.players[player].power]);
@@ -936,9 +936,9 @@ static void print_line(FILE * outf, char *line)
    from cutoff point, search backward for last space, and change it to a new-
    line.  */
 
-	for (head = line, tail = line + CUTOFF_LENGTH;
-	     strlen(head) > CUTOFF_LENGTH;
-	     head = tail + 1, tail = head + CUTOFF_LENGTH) {
+	for (head = line, tail = line + conf_get_int("line_wrap");
+	     strlen(head) > conf_get_int("line_wrap");
+	     head = tail + 1, tail = head + conf_get_int("line_wrap")) {
 		while (!isspace(*tail))
 			--tail;
 		*tail = '\n';

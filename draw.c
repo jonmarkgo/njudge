@@ -388,7 +388,7 @@ int process_draw(void)
 	        concession = 0;
 	}
 	    
-	sprintf(line, "%s%s/draw",GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/draw",conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		fprintf(log_fp, "draw: Error opening draw file.\n");
 		bailout(E_FATAL);
@@ -420,7 +420,7 @@ int process_draw(void)
 		}
 	}
 
-	sprintf(subjectline, "%s:%s - %s %s: %s", JUDGE_CODE, dipent.name, dipent.phase, 
+	sprintf(subjectline, "%s:%s - %s %s: %s", conf_get("judge_code"), dipent.name, dipent.phase,
 		concession ? "Game Conceded to" : "Draw Declared", participants);
 
 	dipent.phase[6] = 'X';
@@ -480,7 +480,7 @@ int process_draw(void)
 	 */
 
 	if (dipent.flags & F_GUNBOAT) {
-		sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);
+		sprintf(line, "%s%s/msummary",conf_get("game_dir"), dipent.name);
 		remove(line);
 	}
 	/* 
@@ -500,7 +500,7 @@ int process_draw(void)
 	/*  Mail summary to HALL_KEEPER */
 
 	sprintf(line, "%s%s/summary 'HoF: %s in %s'",
-		GAME_DIR, dipent.name, concession ? "Consession" : "Draw", dipent.name);
+			conf_get("game_dir"), dipent.name, concession ? "Consession" : "Draw", dipent.name);
 	MailOut(line, conf_get("hall_keeper"));
 
 	/* send eog diaries */
@@ -569,7 +569,7 @@ int process_conc(void)
 	/* OK, if we're this far, we have a concession. This next set of 
 	   code is ripped, with some modifications, from process_draw */
 
-	sprintf(line, "%s%s/conc",GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/conc",conf_get("game_dir"), dipent.name);
         if ((dfp = fopen(line, "w")) == NULL) {
                 fprintf(log_fp, "conc: Error opening concession file.\n");
                 bailout(E_FATAL);
@@ -587,7 +587,7 @@ int process_conc(void)
 
 	sprintf(line,"Game %s conceded to %s.\n",dipent.name,powers[dipent.players[largest].power]);
 
-	sprintf(subjectline,"%s:%s - %s. Game conceded to %s",JUDGE_CODE,dipent.name,dipent.phase,
+	sprintf(subjectline,"%s:%s - %s. Game conceded to %s",conf_get("judge_code"),dipent.name,dipent.phase,
 		powers[dipent.players[largest].power]);
 
 	dipent.phase[6] = 'X';
@@ -633,7 +633,7 @@ int process_conc(void)
 	
 	/* Regenerate the summary */
 	if (dipent.flags & F_GUNBOAT) {
-                sprintf(line, "%s%s/msummary",GAME_DIR, dipent.name);
+                sprintf(line, "%s%s/msummary",conf_get("game_dir"), dipent.name);
                 remove(line);
         }
 	{  
@@ -647,7 +647,7 @@ int process_conc(void)
 	}
 	/* Now mail the summary to the hall keeper. */
 	sprintf(line, "%s%s/summary 'HoF: Concession to %s in %s'",
-                GAME_DIR, dipent.name,powers[dipent.players[largest].power],
+			conf_get("game_dir"), dipent.name,powers[dipent.players[largest].power],
 		dipent.name);
 	MailOut(line, conf_get("hall_keeper"));
 

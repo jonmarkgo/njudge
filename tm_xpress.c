@@ -63,7 +63,7 @@ int process_ppress(void)
 	}
 
 	/* this is cool -- open up the press file */
-	sprintf(pfilename,"%s%s/ppress-%s", GAME_DIR, dipent.name, dipent.phase);
+	sprintf(pfilename,"%s%s/ppress-%s", conf_get("game_dir"), dipent.name, dipent.phase);
 	if((ppfp = fopen(pfilename, "a")) == NULL)
 	{
 		fprintf(log_fp, "Error opening ppress file %s.\n", pfilename);
@@ -77,7 +77,7 @@ int process_ppress(void)
 		b, dipent.name);
 	fprintf(ppfp,"\nPress from %c:\n", b);
 	fprintf(rfp, "\nAppending to press file:\n");
-	sprintf(subjectline, "%s:%s - %s postal press recorded", JUDGE_CODE,
+	sprintf(subjectline, "%s:%s - %s postal press recorded", conf_get("judge_code"),
 		dipent.name, dipent.phase);
 	return 0;
 }
@@ -109,7 +109,7 @@ void process_diary(char *cmd)
 		new_diary_entry();
 		broadcast_master_only = 1;
 		sprintf(subjectline, "%s:%s - %s New diary entry from %c",
-			JUDGE_CODE, dipent.name, dipent.phase,
+				conf_get("judge_code"), dipent.name, dipent.phase,
 			dipent.pl[dipent.players[player].power]);
 		return;
 	}
@@ -159,7 +159,7 @@ int  get_lastentry(char *gamename, char pabbr)
 	if (get_numentries(gamename, pabbr))
 	{
 		sprintf(command,"ls -t %s%s/diary-%c-* | sed '1s/.*diary-.-//;q'",
-			GAME_DIR, gamename, pabbr);
+				conf_get("game_dir"), gamename, pabbr);
 		cmdpipe = popen(command, "r");
 		if(cmdpipe)
 		{
@@ -186,7 +186,7 @@ void new_diary_entry(void)
 	}
 
 	/* determine the new entry file & open it */
-	sprintf(fname,"%s%s/diary-%c-%d", GAME_DIR, dipent.name,
+	sprintf(fname,"%s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		pabbr, next_entry);
 	diaryfp = fopen(fname, "w");
 	if(!diaryfp)
@@ -209,7 +209,7 @@ void read_entry(int entry)
 	char line[1000];
 	FILE *diary_read;
 
-	sprintf(entryfname,"%s%s/diary-%c-%d", GAME_DIR, dipent.name,
+	sprintf(entryfname,"%s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		dipent.pl[dipent.players[player].power], entry);
 	diary_read = fopen(entryfname, "r");
 	if(!diary_read)
@@ -236,7 +236,7 @@ void delete_entry(int entry)
 		return;
 	}
 
-	sprintf(cmd,"rm -f %s%s/diary-%c-%d", GAME_DIR, dipent.name,
+	sprintf(cmd,"rm -f %s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		pabbr, entry);
 	system(cmd);
 	fprintf(rfp, "Diary entry %d removed.\n\n", entry);
@@ -262,7 +262,7 @@ void list_entries(void)
 		fprintf(rfp,"\nExisting diary entries:\n\n");
 		for(i = 0; i < nentries; i++)
 		{
-			sprintf(fname,"%s%s/diary-%c-%d", GAME_DIR,
+			sprintf(fname,"%s%s/diary-%c-%d", conf_get("game_dir"),
 				dipent.name, pabbr, i);
 			if(stat(fname, &statbuf) != -1)
 			{
@@ -289,7 +289,7 @@ int get_numentries(char *gamename, char pabbr)
 	char dirname[256];
 	int nentries = 0;
 	
-	sprintf(dirname,"%s%s",GAME_DIR,gamename);
+	sprintf(dirname,"%s%s",conf_get("game_dir"),gamename);
 	dfd = opendir(dirname);
 	sprintf(searchname,"diary-%c-", pabbr);
 
@@ -332,8 +332,8 @@ void send_diary(void)
 		{
 			/* send all diaries */
 			sprintf(subjectln, "%s:%s diary #%d from %c",
-				JUDGE_CODE, dipent.name, j, pabbr);
-			sprintf(diary_fl, "%s%s/diary-%c-%d", GAME_DIR,
+					conf_get("judge_code"), dipent.name, j, pabbr);
+			sprintf(diary_fl, "%s%s/diary-%c-%d", conf_get("game_dir"),
 				dipent.name, pabbr, j);
 			if(stat(diary_fl, &sbuf) == -1)
 			{

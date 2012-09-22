@@ -544,7 +544,7 @@ void ResignPlayer( int resign_index)
     broad_signon = 1;
     sprintf(subjectline,
             "%s:%s - %s Resignation: %s",
-            JUDGE_CODE,
+            conf_get("judge_code"),
             dipent.name,
             dipent.phase,
             dipent.x2flags & X2F_SECRET ? "power(s)" : powers[dipent.players[resign_index].power]);
@@ -946,13 +946,13 @@ int mail(void)
 					 *  Open the master file and a new copy.
 					 */
 
-					if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
-						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
+					if ((mfp = fopen(conf_get("master_db"), "r")) == NULL) {
+						fprintf(rfp, "Error opening master file %s.\n", conf_get("master_db"));
 						return E_FATAL;
 					}
-					if ((nfp = fopen(TMASTER_FILE, "w")) == NULL) {
+					if ((nfp = fopen(conf_get("master_db_tmp"), "w")) == NULL) {
 						fprintf(rfp, "Error opening %s master file.\n",
-							TMASTER_FILE);
+								conf_get("master_db_tmp"));
 						return E_FATAL;
 					}
 					if ((i = mail_signon(s))) {
@@ -1054,9 +1054,9 @@ int mail(void)
 						*name = '\0';
 					if (!*name)  msg_header(rfp);
 
-					if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
+					if ((mfp = fopen(conf_get("master_db"), "r")) == NULL) {
 						msg_header(rfp);
-						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
+						fprintf(rfp, "Error opening master file %s.\n", conf_get("master_db"));
 						return E_FATAL;
 					}
 					/*  Search for this entry in the master file. */
@@ -1111,9 +1111,9 @@ int mail(void)
 						fprintf(rfp, "Name of game for summary must be specified.\n");
 						break;
 					}
-					sprintf(line, "%s%s/summary", GAME_DIR, name);
+					sprintf(line, "%s%s/summary", conf_get("game_dir"), name);
 					if (!(tfp = fopen(line, "r"))) {
-						sprintf(line, "%s%s/G001", GAME_DIR, name);
+						sprintf(line, "%s%s/G001", conf_get("game_dir"), name);
 						if (!(tfp = fopen(line, "r"))) {
 							msg_header(rfp);
 							fprintf(rfp, "There is no summary record for game '%s'.\n", name);
@@ -1126,9 +1126,9 @@ int mail(void)
 						 * to figure whether or not it is a gunboat game.
 						 */
 
-						if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
+						if ((mfp = fopen(conf_get("master_db"), "r")) == NULL) {
 							msg_header(rfp);
-							fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
+							fprintf(rfp, "Error opening master file %s.\n", conf_get("master_db"));
 							return E_FATAL;
 						}
 						while ((not_eof = getdipent(mfp))) {
@@ -1150,7 +1150,7 @@ int mail(void)
 							fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n", name);
 							break;
 						}
-						sprintf(line, "%s%s/summary", GAME_DIR, name);
+						sprintf(line, "%s%s/summary", conf_get("game_dir"), name);
 						if (!(tfp = fopen(line, "r"))) {
 							msg_header(rfp);
 							fprintf(rfp, "Sorry, unable to generate summary for '%s'.\n", name);
@@ -1197,8 +1197,8 @@ int mail(void)
 						*t++ = tolower(*s++);
 					*t = '\0';
 
-					if (!(mfp = fopen(MASTER_FILE, "r"))) {
-						fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
+					if (!(mfp = fopen(conf_get("master_db"), "r"))) {
+						fprintf(rfp, "Error opening master file %s.\n", conf_get("master_db"));
 						return E_FATAL;
 					}
 					if (!strcasecmp("full", name))
@@ -1302,7 +1302,7 @@ int mail(void)
 						fprintf(rfp, "Invalid adjustment: adjust %s", s);
 						break;
 					} 
-					if (strcmp(x,SPECIAL_PW) != 0) {
+					if (strcmp(x,conf_get("special_pw")) != 0) {
 						fprintf(rfp, "The record command may only be used by an administrator.\n");
 						break;
 					}
@@ -1326,7 +1326,7 @@ int mail(void)
 					}
 					else
 					{
-						if(strcmp(x,SPECIAL_PW) != 0)
+						if(strcmp(x,conf_get("special_pw")) != 0)
 						{
 							fprintf(rfp, "The record command may only be used by an administrator.\n");
 						}
@@ -1573,7 +1573,7 @@ int mail(void)
 						if (dipent.players[player].power != power(*line))
 							fputs(line, tfp);
 					fclose(pfp);
-					sprintf(line, "%s%s/P%s", GAME_DIR, dipent.name, dipent.seq);
+					sprintf(line, "%s%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
 					ferrck(tfp, 2001);
 					rename("dip.temp", line);
 					pfp = tfp;
@@ -1603,7 +1603,7 @@ int mail(void)
                                         fprintf(mbfp, "%s as %s has paused game '%s'.\n",
                                                 raddr, powers[dipent.players[player].power], dipent.name);
 
-                                        sprintf(subjectline, "%s:%s - %s Game Paused", JUDGE_CODE, dipent.name, dipent.phase);
+                                        sprintf(subjectline, "%s:%s - %s Game Paused", conf_get("judge_code"), dipent.name, dipent.phase);
 
                                     break;
 /** Setup not yet working, disabled 
@@ -1647,7 +1647,7 @@ int mail(void)
 						break;;
 					}
 					fprintf(rfp, "You have terminated game '%s'.  ", dipent.name);
-					sprintf(subjectline, "%s:%s - %s Game Terminated", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Game Terminated", conf_get("judge_code"), dipent.name, dipent.phase);
 
 					if (dipent.seq[0] == 'x') {
 					      fprintf(rfp,"The game will self destruct in one week.\n");
@@ -1702,7 +1702,7 @@ int mail(void)
 					msg_header_done = 0;
 
 					/* Open draw file (for summary) */
-					sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
+					sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 					if (!(termfp = fopen(line, "r"))) {
 						if ((dfp = fopen(line, "w")) == NULL) {
 							fprintf(log_fp, "mail: Error opening draw file.\n");
@@ -1726,12 +1726,12 @@ int mail(void)
 							sprintf(line,
 								"dip.temp 'MNC: Termination in %s' ",
 								dipent.name);
-							MailOut(line, MN_CUSTODIAN);
+							MailOut(line, conf_get("mn_custodian"));
 						} else {
 							sprintf(line,
 								"dip.temp 'BNC: Termination in %s'",
 								dipent.name);
-							MailOut(line, BN_CUSTODIAN);
+							MailOut(line, conf_get("bn_custodian"));
 						}
 					}
 
@@ -1741,7 +1741,7 @@ int mail(void)
 					 */
 
 					if (dipent.flags & F_GUNBOAT) {
-						sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+						sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 						remove(line);
 					}
 					/*
@@ -1765,7 +1765,7 @@ int mail(void)
 					/*  Mail summary to HALL_KEEPER */
 
 					sprintf(line, "%s%s/summary 'HoF: Termination in %s'",
-						GAME_DIR, dipent.name, dipent.name);
+							conf_get("game_dir"), dipent.name, dipent.name);
 					MailOut(line, conf_get("hall_keeper"));
 					}
 					broadcast = 1;
@@ -1812,7 +1812,7 @@ int mail(void)
 					mfprintf(bfp, "The deadline for orders will be %s.\n",
 						 ptime(&dipent.deadline));
 
-					sprintf(subjectline, "%s:%s - %s Game Resumed", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Game Resumed", conf_get("judge_code"), dipent.name, dipent.phase);
 
 					/*
 					 * Force regeneration of the summary file if it's a
@@ -1820,9 +1820,9 @@ int mail(void)
 					 */
 
 					if (dipent.flags & F_GUNBOAT) {
-						sprintf(line, "%s%s/summary", GAME_DIR, dipent.name);
+						sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
 						remove(line);
-						sprintf(line, "%s%s/msummary", GAME_DIR, dipent.name);
+						sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
 						remove(line);
 					}
 					for (i = 0; i < dipent.n; i++)
@@ -1877,7 +1877,7 @@ int mail(void)
 					}
 					dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
 
-					sprintf(subjectline, "%s:%s - %s Promotion of %s", JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+					sprintf(subjectline, "%s:%s - %s Promotion of %s", conf_get("judge_code"), dipent.name, dipent.phase, dipent.players[i].address);
 
 					fprintf(rfp, "%s is now also a Master for game '%s'.\n",
                                                       dipent.players[i].address, dipent.name);
@@ -1994,7 +1994,7 @@ int mail(void)
 					}
 					if (!(i = atoi(s)))
 						i = atoi(dipent.seq) - 1;
-					sprintf(temp, "%s%s/G%3.3d", GAME_DIR, dipent.name, i);
+					sprintf(temp, "%s%s/G%3.3d", conf_get("game_dir"), dipent.name, i);
 					
 					if (i == 1) {
                                             /* First phase, so check if it was an adjustment */
@@ -2021,7 +2021,7 @@ int mail(void)
 					if GAME_SETUP
                                            dipent.phase[6] = ' ';
 
-					sprintf(subjectline, "%s:%s - %s Rollback to ", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Rollback to ", conf_get("judge_code"), dipent.name, dipent.phase);
 
 					line[strlen(line) - 1] = '\0';
 					if ((dipent.flags & F_INTIMATE) && i == 1)
@@ -2057,12 +2057,12 @@ int mail(void)
 					fclose(tfp);
 
 					fclose(ofp);
-					sprintf(Tfile, "%s%s/T%s", GAME_DIR, dipent.name, dipent.seq);
+					sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
 					if ((ofp = fopen(Tfile, "w")) == NULL) {
 						fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 						return E_FATAL;
 					}
-					sprintf(Mfile, "%s%s/M%s", GAME_DIR, dipent.name, dipent.seq);
+					sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 					if ((tfp = fopen(Mfile, "r")) != NULL) {
 						while (fgets(line, sizeof(line), tfp)) {
 							if (!strcmp(line, "X-marker\n"))
@@ -2085,7 +2085,7 @@ int mail(void)
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
 
-						sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg);
+						sprintf(line, "%s%s/%ssummary", conf_get("game_dir"), dipent.name, mflg);
 						if (!(tfp = fopen(line, "r"))) {
 							sprintf(line, "%s -C %s -%s%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
 								dipent.flags & F_QUIET ? "q" : "",
@@ -2097,7 +2097,7 @@ int mail(void)
 									dipent.name);
 								break;
 							}
-							sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg);
+							sprintf(line, "%s%s/%ssummary", conf_get("game_dir"), dipent.name, mflg);
 							if (!(tfp = fopen(line, "r"))) {
 								fprintf(rfp, "Sorry, unable to generate summary for '%s'.\n",
 									dipent.name);
@@ -2199,7 +2199,7 @@ int mail(void)
 						break;
 					}
 
-					sprintf(subjectline, "%s:%s - %s Unstart", JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(subjectline, "%s:%s - %s Unstart", conf_get("judge_code"), dipent.name, dipent.phase);
 
 					fprintf(rfp, "Game '%s' unstarted.\n\n", dipent.name);
 					fprintf(rfp, "Note: ManualStart flag has also been: a Master must send the command\n");
@@ -2243,13 +2243,13 @@ int mail(void)
 					dipent.xflags |= XF_MANUALSTART;
 					signedon = -1;
 
-					sprintf(x, "%s%s/G001", GAME_DIR, dipent.name);
+					sprintf(x, "%s%s/G001", conf_get("game_dir"), dipent.name);
 					remove(x);
-					sprintf(x, "%s%s/M001", GAME_DIR, dipent.name);
+					sprintf(x, "%s%s/M001", conf_get("game_dir"), dipent.name);
 					remove(x);
-					sprintf(x, "%s%s/P001", GAME_DIR, dipent.name);
+					sprintf(x, "%s%s/P001", conf_get("game_dir"), dipent.name);
 					remove(x);
-					sprintf(x, "%s%s/T001", GAME_DIR, dipent.name);
+					sprintf(x, "%s%s/T001", conf_get("game_dir"), dipent.name);
 					remove(x);
 
 					break;
@@ -2277,7 +2277,7 @@ int mail(void)
                                                 break;
                                         }
 					if (InsertDummyPlayers()) {
-                                            sprintf(subjectline, "%s:%s - %s Forced Begin",JUDGE_CODE, dipent.name, dipent.phase);
+                                            sprintf(subjectline, "%s:%s - %s Forced Begin",conf_get("judge_code"), dipent.name, dipent.phase);
 
                                             fprintf(rfp, "Game '%s' has been forced to start.\n\n", dipent.name);
                                             mfprintf(bfp, "Game '%s' has been forced to start by %s.\n\n", dipent.name, raddr);
@@ -2500,7 +2500,7 @@ int mail(void)
 		fclose(mfp);
 		ferrck(nfp, 2003);
 		fclose(nfp);
-		rename(TMASTER_FILE, MASTER_FILE);
+		rename(conf_get("master_db_tmp"), conf_get("master_db"));
 	}
 
 	/* TODO not sure what to return here, i'll return a one in hopes that that
@@ -2603,8 +2603,8 @@ void mail_reply(int err)
 		if (!strncmp(subject, "[You are late!] ", 16))
 			shiftleft(16);
 
-		if (!strncmp(subject, JUDGE_CODE, strlen(JUDGE_CODE))) {
-			shiftleft(strlen(JUDGE_CODE));
+		if (!strncmp(subject, conf_get("judge_code"), strlen(conf_get("judge_code")))) {
+			shiftleft(strlen(conf_get("judge_code")));
 
 			if (signedon) {
 				if (!strncmp(subject, ":", 1)) {
@@ -2642,7 +2642,7 @@ void mail_reply(int err)
 	if (signedon) 
 	{
 		s = dipent.players[player].address;
-		sprintf(jline, "%s:%s - %s", JUDGE_CODE, dipent.name, dipent.phase);
+		sprintf(jline, "%s:%s - %s", conf_get("judge_code"), dipent.name, dipent.phase);
 
 		if (errorflag && (dipent.players[player].status & SF_MOVE)) {
 			dipent.players[player].status &= ~SF_MOVED; /* Make an error */
@@ -2652,7 +2652,7 @@ void mail_reply(int err)
 	else 
 	{
 		s = raddr;
-		sprintf(jline, "%s", JUDGE_CODE);
+		sprintf(jline, "%s", conf_get("judge_code"));
 	}
 
 	if (*s && *s != '*' && !options.debug) {
@@ -2999,7 +2999,7 @@ static int InsertDummyPlayers()
         while (players != dipent.no_of_players && i < MAXPLAYERS ) {
             dipent.players[i].power = WILD_PLAYER;
             dipent.players[i].userid = 0;
-            strcpy(dipent.players[i].address,NULL_EMAIL);
+            strcpy(dipent.players[i].address,conf_get("nobody"));
 	    strcpy(dipent.players[i].password, "-none-");
             dipent.players[i].status = SF_ABAND;
             players++;

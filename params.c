@@ -957,9 +957,9 @@ void print_params(FILE * outf, char *line)
    from cutoff point, search backward for last space, print up to that point,
    and insert a newline and the necessary indentation for the next line.  */
 
-	for (head = line, tail = line + CUTOFF_LENGTH;
-	     strlen(head) > CUTOFF_LENGTH;
-	     head = tail + 1, tail = head + CUTOFF_LENGTH) {
+	for (head = line, tail = line + conf_get_int("line_wrap");
+	     strlen(head) > conf_get_int("line_wrap");
+	     head = tail + 1, tail = head + conf_get_int("line_wrap")) {
 		while (!isspace(*tail))
 			--tail;
 		*tail = '\0';

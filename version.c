@@ -17,7 +17,7 @@ void version(FILE * rfp)
 	int ngames, mgames, muser;
 	ngames  = countgames();
 	muser = MAXUSER;
-	mgames = MAXGAMES;
+	mgames = conf_get_int("max_games");
 
 	fprintf(rfp, "Current version is %s %s\n\n", PACKAGE, VERSION);
 	fprintf(rfp, "%d users registered, maximum is %d\n", nded, muser);

@@ -247,14 +247,14 @@ int main(int argc, char **argv)
         //conf_cmdline(argc, argv);
 
         if (lflg) {
-	    if (!(log_fp = fopen(LOG_FILE, "a"))) {
+	    if (!(log_fp = fopen(conf_get("log_file"), "a"))) {
                     fprintf(stderr, "sum: Unable to open log file.\n");
                     exit(1);
 	    }
         }
 
-        mfp = fopen(MASTER_FILE, "r");
-        sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
+        mfp = fopen(conf_get("master_db"), "r");
+        sprintf(exe_name,"%s-%s", conf_get("judge_code"), "dip");
 
         OPENDIPLOG(exe_name);
         DIPINFO("Started summary");
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 		/* TODO: 0 flag for printf(3) is not POSIX, once someone confirms that
 		 * '0' is the default pad for integers, the 0 should be gotten rid of
 		 */
-		sprintf(line, "%s%s/G%03d", GAME_DIR, name, turn);
+		sprintf(line, "%s%s/G%03d", conf_get("game_dir"), name, turn);
 		if (!(ifp = fopen(line, "r")))
 			break;
 		fclose(ifp);
@@ -311,7 +311,7 @@ int main(int argc, char **argv)
 	}
 	/* TODO: 0 flag for printf(3) is not POSIX, once someone confirms that
 	 * '0' is the default pad for integers, the 0 should be gotten rid of */
-	sprintf(line, "%s%s/G%03d", GAME_DIR, name, turn - 1);
+	sprintf(line, "%s%s/G%03d", conf_get("game_dir"), name, turn - 1);
 	if ((ifp = fopen(line, "r"))) {
 		/*
 		 *  Skip to dipent
@@ -442,7 +442,7 @@ int main(int argc, char **argv)
 
 	if ((i = fread(&nprov, sizeof(nprov), 1, ifp)) != 1 || nprov == 0) {
 		fclose(ifp);
-		sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg ? "m" : "");
+		sprintf(line, "%s%s/%ssummary", conf_get("game_dir"), dipent.name, mflg ? "m" : "");
 		if (!(ifp = fopen(line, "w"))) {
 			perror(line);
 			exit(1);
@@ -500,7 +500,7 @@ int main(int argc, char **argv)
 
 	for (turn = 1; turn < MAXTURN; turn++) {
 		/* TODO remove non-posix 0 flag */
-		sprintf(line, "%s%s/G%03d", GAME_DIR, dipent.name, turn);
+		sprintf(line, "%s%s/G%03d", conf_get("game_dir"), dipent.name, turn);
 		if (!(ifp = fopen(line, "r")))
 			break;
 
@@ -677,7 +677,7 @@ int main(int argc, char **argv)
 	 *  Oh boy, now we write out the report.  First the player list.
 	 */
 
-	sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg ? "m" : "");
+	sprintf(line, "%s%s/%ssummary", conf_get("game_dir"), dipent.name, mflg ? "m" : "");
 	if (!(ifp = fopen(line, "w"))) {
 		perror(line);
 		exit(1);
@@ -738,13 +738,13 @@ int main(int argc, char **argv)
 		fprintf(ifp, "\n\nGame parameters are/were as follows:\n");
 		params(ifp);
 	}
-	fprintf(ifp, "  Judge: %s.\n", JUDGE_CODE);
+	fprintf(ifp, "  Judge: %s.\n", conf_get("judge_code"));
 
 	/*
 	 *  Game start date
 	 */
 
-	sprintf(line, "%s%s/start", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/start", conf_get("game_dir"), dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		fputs("\n", ifp);
 		while (fgets(line, sizeof(line), tfp))
@@ -755,7 +755,7 @@ int main(int argc, char **argv)
 	 *  Draw if there is one, is next
 	 */
 
-	sprintf(line, "%s%s/draw", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		while (fgets(line, sizeof(line), tfp))
 			fputs(line, ifp);
@@ -767,7 +767,7 @@ int main(int argc, char **argv)
  
      */
  
-     sprintf(line, "%s%s/conc", GAME_DIR, dipent.name);
+     sprintf(line, "%s%s/conc", conf_get("game_dir"), dipent.name);
  
      if((tfp = fopen(line, "r"))) {
  
@@ -782,7 +782,7 @@ int main(int argc, char **argv)
 	 *  Comments if any are next.
 	 */
 
-	sprintf(line, "%s%s/info", GAME_DIR, dipent.name);
+	sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
 	if ((tfp = fopen(line, "r"))) {
 		fputs("\n", ifp);
 		while (fgets(line, sizeof(line), tfp))

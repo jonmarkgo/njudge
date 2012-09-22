@@ -349,10 +349,10 @@ int history(char *line, int power_type)
 	 */
 
 	if (!signedon) {
-		if ((mfp = fopen(MASTER_FILE, "r")) == NULL) {
+		if ((mfp = fopen(conf_get("master_db"), "r")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
-			fprintf(rfp, "Error opening master file %s.\n", MASTER_FILE);
+			fprintf(rfp, "Error opening master file %s.\n", conf_get("master_db"));
 			return 1;
 		}
 		while ((not_eof = getdipent(mfp))) {
@@ -363,7 +363,7 @@ int history(char *line, int power_type)
 		fclose(mfp);
 	}
 
-	sprintf(file, "%s%s/archive", GAME_DIR, name);
+	sprintf(file, "%s%s/archive", conf_get("game_dir"), name);
 	if (stat(file, &sbuf)) {
 		if ((!msg_header_done) && (!signedon))
 			msg_header(rfp);
