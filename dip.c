@@ -478,7 +478,6 @@ void savemail(void) {
 }
 static gint init(int argc, char** argv) {
 
-	gint       idx;
 	gint       err;
 	gint       rtn = 1;			// Return value
 	gchar*     tcptr;			// Temporary char pointer
@@ -1649,9 +1648,9 @@ int process(void) {
 }
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 
-	gint  result = 1;
-	gchar c;
-	gchar opt;
+	gint   result = 1;
+	gchar* tcptr;
+	gchar  opt;
 
 	while ((opt = getopt(argc, argv, "AaC:c:Dd:i:qs:T:t:vx")) > -1) {
 
@@ -1669,8 +1668,8 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 				 * TODO: Remove ASAP...
 				 */
 				CONFIG_DIR = g_strdup(optarg);
-				CONFIG_DIR[(c = strrchr(CONFIG_DIR, PATH_SEP))] = 0;
-				CONFIG_FILE = ++c;
+				*(tcptr = strrchr(CONFIG_DIR, PATH_SEP)) = 0;
+				CONFIG_FILE = ++tcptr;
 				break;
 			case 'c':
 				/*

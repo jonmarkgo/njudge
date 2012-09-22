@@ -137,7 +137,7 @@ char *notifies = "*";
 // int aflg = 0;		Replaced with options.dont_touch_q
 // int Aflg = 0;		Replaced with options.dont_rm_q
 // char *dflg;			Replaced with options.cwd
-// int Dflg = 0;			Replaced with options.debug
+// int Dflg = 0;		Replaced with options.debug
 // char *nflg;			Not longer used
 // int qflg = 0;		Replaced with options.quick
 // int tflg = 0;		Replaced with options.variant
