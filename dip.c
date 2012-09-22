@@ -303,7 +303,7 @@
    at the deadline rather than 24 hours later. */
 /*#define NORMDED */
 
-void init(int, char **);
+static void init(int, char **);
 void phase_pending(void);	/* defined in phase.c */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 void CheckRemindPlayer( int player, long one_quarter);
@@ -473,7 +473,7 @@ void savemail(void) {
 	return;
 
 }
-void init(int argc, char** argv) {
+static void init(int argc, char** argv) {
 
 	gchar*	tcptr;		// Temporary char pointer
 	int i, fd;
@@ -785,7 +785,9 @@ void master(void) {
 
 	char *s, line[150];
 	time_t now, next_time;
-	FILE *ifp, *ofp, *ibmfp;
+	FILE* ifp;
+	FILE* ofp;
+	FILE* msg_file;
 	struct stat sbuf;
         int one_quarter = 8 * 60 * 60; /* Set to 8 hours */
 	int i;
@@ -816,16 +818,16 @@ void master(void) {
 
 		if (time_warp) {
 			/* A global time-warp was detected: inform all found masters of this */
-			ibmfp = fopen(WARP_FILE, "w");
-			if (ibmfp != NULL) {
-			    fprintf(ibmfp, "A time warp was detected on the %s judge. Please check that",JUDGE_CODE);
-			    fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
-			    fclose(ibmfp);
+			msg_file = fopen(WARP_FILE, "w");
+			if (msg_file != NULL) {
+			    fprintf(msg_file, "A time warp was detected on the %s judge. Please check that",JUDGE_CODE);
+			    fprintf(msg_file, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
+			    fclose(msg_file);
 
 			for (i = 0; i < dipent.n; i++) {
 				if (dipent.players[i].power < 0) continue;
 				if (dipent.players[i].power == MASTER &&
-				!(dipent.players[i].status & SF_RESIGN)) {
+						!(dipent.players[i].status & SF_RESIGN)) {
 					sprintf(line,
 							"%s '%s:%s - %s Diplomacy time-warp'",
 							 WARP_FILE, JUDGE_CODE, dipent.name,
@@ -839,22 +841,20 @@ void master(void) {
 
 		if (bailout_recovery) {
 		    /* Judge is recovering from a bailout: inform all found masters of this */
-		    ibmfp = fopen(WARP_FILE, "w");
-		    if (ibmfp != NULL) 
-		    {
-			fprintf(ibmfp, "The %s judge is recovering from a bailout. Please check that", JUDGE_CODE);
-			fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
-			fclose(ibmfp);
+		    msg_file = fopen(WARP_FILE, "w");
+		    if (msg_file != NULL) {
+				fprintf(msg_file, "The %s judge is recovering from a bailout. Please check that", JUDGE_CODE);
+				fprintf(msg_file, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
+				fclose(msg_file);
 
-			for (i = 0; i < dipent.n; i++)  {
-				if (dipent.players[i].power < 0) continue;
-			    if (dipent.players[i].power == MASTER && 
-				!(dipent.players[i].status & SF_RESIGN)) {
-			    	sprintf(line, "%s '%s:%s - %s Bailout recovery'",
-			    			WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
-			    	MailOut(line, dipent.players[i].address);
-			    }
-  
+				for (i = 0; i < dipent.n; i++)  {
+					if (dipent.players[i].power < 0) continue;
+					if (dipent.players[i].power == MASTER &&
+							!(dipent.players[i].status & SF_RESIGN)) {
+						sprintf(line, "%s '%s:%s - %s Bailout recovery'",
+								WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
+						MailOut(line, dipent.players[i].address);
+				}
 			}
 		 }
 	}
@@ -867,11 +867,11 @@ void master(void) {
 					continue;
 				}
 			} else if (GAME_PAUSED && (dipent.wait < now)) {
-			    ibmfp = fopen(WARP_FILE, "w");
-                            if (ibmfp != NULL) {
-                                fprintf(ibmfp, 
+			    msg_file = fopen(WARP_FILE, "w");
+                            if (msg_file != NULL) {
+                                fprintf(msg_file, 
 				"Game is paused - master must send the 'resume' command to resume it or 'terminate' to finish.\n\n");
-                                fclose(ibmfp);
+                                fclose(msg_file);
 
                                for (i = 0; i < dipent.n; i++) {
                                 if (dipent.players[i].power < 0)
