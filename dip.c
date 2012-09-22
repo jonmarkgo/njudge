@@ -286,6 +286,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <glib.h>
 
 #include "config.h"
 #include "dip.h"
@@ -304,7 +305,7 @@
 
 void init(int, char **);
 void phase_pending(void);	/* defined in phase.c */
-void  inform_party_of_blind_turn(int player_index, char *turn_text, char*);
+void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 void CheckRemindPlayer( int player, long one_quarter);
 void CheckSizes(void);   /* Check that no sizes have changed */
 
@@ -312,15 +313,14 @@ extern int time_warp;  /* Set to 1 if a time-warp was detected */
 
 /****************************************************************************/
 
-int main(int argc, char *argv[])
-{
-	char exe_name[100];
+int main(int argc, char** argv) {
+
+	char* log_prgname;
 	char tz_name[50];
 	char *t;	
-        struct stat buf;
+    struct stat buf;
 
 	init(argc, argv);
-	
 
 	/* 
 	 * Change the judge timezone, if set
@@ -334,9 +334,9 @@ int main(int argc, char *argv[])
 	    tzset();
 	}
 
- 	sprintf(exe_name,"%s-%s", JUDGE_CODE, "dip");
+ 	log_prgname = g_strdup_printf("%s-%s", JUDGE_CODE, "dip");
 
-	OPENDIPLOG(exe_name);
+	OPENDIPLOG(log_prgname);
 	DIPINFO("Started dip");
 
 	/* Check if xforward file exists, indicating a bailout-recovery situation */
@@ -347,8 +347,7 @@ int main(int argc, char *argv[])
 
         CheckSizes();
 
-	if(open_plyrdata() != 0)
-	{
+	if(open_plyrdata() != 0) {
 		fprintf(log_fp,"Unable to open plyrdata file.\n");
 	}
 	put_data(0,total);
@@ -357,6 +356,7 @@ int main(int argc, char *argv[])
 
 	dipent.pr_valid = 0; /* not yet loaded pr */
 	dipent.valid = 0;   /* nor dipent itself */
+
 	if (!tflg) {
 		if (!xflg) {
 			DIPDEBUG("Processing mail");
@@ -373,8 +373,9 @@ int main(int argc, char *argv[])
 		process();
 	}
 
-	if (control > 1000)
+	if (control > 1000) {
 		control = 0;
+	}
 
 	ded[0].d0 = control;
 
@@ -390,16 +391,17 @@ int main(int argc, char *argv[])
 	/* If block file exists, remove it */
 
 	t = BLOCK_FILE;
-	if (t[0])
+	if (t[0]) {
 	    remove(t);
+	}
 
-        DIPINFO("Ended dip");	
+	DIPINFO("Ended dip");
+
 	exit(0);
 
 }
 
-void CheckSizes(void)
-{
+void CheckSizes(void) {
     FILE *fptr;
     int ss, si, sl;
 
@@ -418,51 +420,45 @@ void CheckSizes(void)
  * The text will be varied depending on who is being told
  */
 
-void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_file)
-{
-        char line[150];
+void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_file) {
+
+	char line[150];
 
 /* ito be made configureable */
-        char *out_file = "dip.rreply";
+    char *out_file = "dip.rreply";
 
-        sprintf(line,
-                "%s %s %s %s -i=%s -o=%s",
-                "./zpblind",
-                powers[dipent.players[player_index].power],
-                owners[dipent.players[player_index].power],
-		dipent.x2flags & X2F_BLIND_CENTRES ? "" : "-v=HideAll",
-                in_file,
-                out_file);
+    sprintf(line, "%s %s %s %s -i=%s -o=%s", "./zpblind",
+			powers[dipent.players[player_index].power],
+			owners[dipent.players[player_index].power],
+			dipent.x2flags & X2F_BLIND_CENTRES ? "" : "-v=HideAll",
+            in_file,
+            out_file);
 
-        system(line);
+	system(line);
 
-       if (!(dipent.players[player_index].status & SF_RESIGN)) {
-           sprintf(line, "%s '%s:%s - %s Blind Results'",
-                out_file, JUDGE_CODE, dipent.name, turn_text);
-
-           if (*(dipent.players[player_index].address) != '*' && !Dflg) {
-                MailOut(line, dipent.players[player_index].address);
-           }
+	if (!(dipent.players[player_index].status & SF_RESIGN)) {
+		sprintf(line, "%s '%s:%s - %s Blind Results'",
+			out_file, JUDGE_CODE, dipent.name, turn_text);
+		if (*(dipent.players[player_index].address) != '*' && !Dflg) {
+			MailOut(line, dipent.players[player_index].address);
+		}
 	}
+
 }
+void gotalarm(int unused) {
 
-
-/****************************************************************************/
-
-void gotalarm(int unused)
-{
 	time_t now;
 
 	time(&now);
+
 	fprintf(log_fp, "%24.24s: Log file lock timed-out.\n", ctime(&now));
+
 	savemail();
+
 	bailout(0);
+
 }
-
-/*************************************************************************/
-
-void savemail(void)
-{
+void savemail(void) {
 
 	/*
 	 *  We've run into a problem.  Save our mail input.
@@ -474,7 +470,6 @@ void savemail(void)
 
 	if (!(fp = fopen(SAVE_FILE, "a"))) {
 		perror(SAVE_FILE);
-		
 		exit(E_FATAL);
 	}
 	if (lockfd(fileno(fp), 0)) {
@@ -491,11 +486,7 @@ void savemail(void)
 	return;
 
 }
-
-/***************************************************************************/
-
-void init(int argc, char **argv)
-{
+void init(int argc, char** argv) {
 
 	int i, fd;
 	unsigned char *s;
@@ -504,6 +495,8 @@ void init(int argc, char **argv)
 	FILE *fptr;
 	char *t;
 	char *datetime;
+
+	g_set_prgname(g_basename(argv[0]));
 
 	inp = stdin; /* default */
 
@@ -553,16 +546,16 @@ void init(int argc, char **argv)
 				/* Will be handled later in conf treatment */
 				break; 
 			case 'C':
-                                if (*++s)
-                                        CONFIG_DIR = s;
-                                else if (i < argc+1)
-                                        CONFIG_DIR = argv[i+1];
-                                else {
-                                        fprintf(stderr, "Directory must follow C option.\n");
-                                        goto usage;
-                                }
-                                i++;
-                                s = " ";
+				if (*++s)
+						CONFIG_DIR = s;
+				else if (i < argc+1)
+						CONFIG_DIR = argv[i+1];
+				else {
+						fprintf(stderr, "Directory must follow C option.\n");
+						goto usage;
+				}
+				i++;
+				s = " ";
 				break;
 
 			case 'D':
@@ -585,12 +578,12 @@ void init(int argc, char **argv)
 			case 'i':
 				if (*++s) {
 				    inname = s;
-				} else if (++i < argc)
-                                        inname = argv[i];
-				else {
-                                        fprintf(stderr, "File name must follow i option.\n");
-                                        goto usage;
-                                }
+				} else if (++i < argc) {
+					inname = argv[i];
+				} else {
+					fprintf(stderr, "File name must follow i option.\n");
+					goto usage;
+				}
 				s = " ";
 				break;
 
@@ -629,18 +622,19 @@ void init(int argc, char **argv)
 			case 'T':
 			        if (*++s) {
 			            datetime = s;
-			        } else if (++i < argc)
+			        } else if (++i < argc) {
 			            datetime = argv[i];
+			        }
 				else {
 				    fprintf(stderr, "Date-time must follow T option.\n");
 				    goto usage;
-			        }
+				}
 				if (mail_date(&datetime, &dip_time, 1, stderr, 0)) {
-				    fprintf(stderr, "Invalid date-time %s specified.\n", datetime);
-				    goto usage;
+						fprintf(stderr, "Invalid date-time %s specified.\n", datetime);
+						goto usage;
 			        }
-			        s = " ";
-			        break;
+				s = " ";
+				break;
 					
 			case 't':
 				tflg = 0;
@@ -698,8 +692,7 @@ void init(int argc, char **argv)
 	srand(now);
 
 
-	if (CONFIG_FILE == NULL)
-	{
+	if (CONFIG_FILE == NULL) {
 		fprintf(stderr, "Must specifiy a configuration file with -C option.\n");
 		exit(E_FATAL);	
 	}
@@ -787,13 +780,9 @@ void init(int argc, char **argv)
 		perror("dip.control");
 		exit(E_FATAL);
 	}
+
 }
-
-
-/****************************************************************************/
-
-void master(void)
-{
+void master(void) {
 
 /*  Process the master file.  Perform any duties and set next time to look. */
 
@@ -836,23 +825,22 @@ void master(void)
 			    fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
 			    fclose(ibmfp);
 
-                           for (i = 0; i < dipent.n; i++) {
-                            if (dipent.players[i].power < 0)
-                                continue;
-			    if (dipent.players[i].power == MASTER && 
+			for (i = 0; i < dipent.n; i++) {
+				if (dipent.players[i].power < 0) continue;
+				if (dipent.players[i].power == MASTER &&
 				!(dipent.players[i].status & SF_RESIGN)) {
-                                sprintf(line,
-                                        "%s '%s:%s - %s Diplomacy time-warp'",
-                                         WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
+					sprintf(line,
+							"%s '%s:%s - %s Diplomacy time-warp'",
+							 WARP_FILE, JUDGE_CODE, dipent.name,
+							 dipent.phase);
 				MailOut(line, dipent.players[i].address);
-			      }
+			  }
   
 			    }
 			}
 		}
 
-		if (bailout_recovery)
-		{
+		if (bailout_recovery) {
 		    /* Judge is recovering from a bailout: inform all found masters of this */
 		    ibmfp = fopen(WARP_FILE, "w");
 		    if (ibmfp != NULL) 
@@ -861,21 +849,18 @@ void master(void)
 			fprintf(ibmfp, " the deadline for %s is correct, and inform players accordingly.\n",dipent.name);
 			fclose(ibmfp);
 
-                        for (i = 0; i < dipent.n; i++) 
-			{
-                            if (dipent.players[i].power < 0)
-                                continue;
+			for (i = 0; i < dipent.n; i++)  {
+				if (dipent.players[i].power < 0) continue;
 			    if (dipent.players[i].power == MASTER && 
-				!(dipent.players[i].status & SF_RESIGN)) 
-			    {
-				sprintf(line, "%s '%s:%s - %s Bailout recovery'",
-		  			WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
-				MailOut(line, dipent.players[i].address);
+				!(dipent.players[i].status & SF_RESIGN)) {
+			    	sprintf(line, "%s '%s:%s - %s Bailout recovery'",
+			    			WARP_FILE, JUDGE_CODE, dipent.name, dipent.phase);
+			    	MailOut(line, dipent.players[i].address);
 			    }
   
 			}
-		     }
-		}
+		 }
+	}
 
 		if (dipent.process <= now) {
 			if (dipent.phase[6] == 'X' || dipent.n <= 0) {
@@ -986,8 +971,7 @@ void master(void)
 
 /* See if the passed player need to make a move, 
    and send reminder message if not yet made */
-void CheckRemindPlayer(int player, long one_quarter)
-{
+void CheckRemindPlayer(int player, long one_quarter) {
     int num_hours;
     char *temp_file = "dip.temp";
     char line[150];
@@ -1080,10 +1064,8 @@ void CheckRemindPlayer(int player, long one_quarter)
 		DIPINFO(line);
 	}
 }
+int process(void) {
 
-/***********************************************************************/
-int process(void)
-{
 	int i, n;
 /*	int latecnt = 0;*/
 	int dedtest; /* Buffer variable for dipent.dedapplied. */
@@ -1772,7 +1754,7 @@ int process(void)
 
 /*
  * This looks as good a place as any to clear draw flags...
- *    (Pãositron, 11 Mar 1993)
+ *    (Pï¿½ositron, 11 Mar 1993)
  * And concession flags (Tim Miller 12 Aug 2001)
  */
 			dipent.players[i].status &= ~SF_CONC;
@@ -1823,4 +1805,3 @@ int process(void)
 	
 	return 0;		/* reached ? */
 }
-/***********************************************************************/
