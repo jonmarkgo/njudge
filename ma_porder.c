@@ -546,7 +546,7 @@ void income(int mindie)
 
 
 	if (dipent.xflags & XF_NOMONEY) return; /* No money, no income! */
-	die_rolls(gonf_get_int("die_income"));
+	die_rolls(conf_get_int("die_income"));
 
 	/*
 	 *  Assign the assassination chits if this is the first season.

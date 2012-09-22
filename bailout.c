@@ -69,13 +69,13 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 
 	if (!options.debug) {
 		if (!stat(conf_get("bailout_plan"), &sbuf))
-			rename(onf_get("bailout_plan"), conf_get("plan"));
+			rename(conf_get("bailout_plan"), conf_get("plan"));
 		inform_rgd();
 	/* If KEEPOUT already exists, we've already crashed. No need to do again. */
 		if (stat(conf_get("bail_forward"), &sbuf))
 		{
 			rename(conf_get("forward"), conf_get("bail_forward"));
-			rename(get_conf("forward_onbail"), conf_get("forward"));
+			rename(conf_get("forward_onbail"), conf_get("forward"));
 		}
 		if(dolog)
 		{
