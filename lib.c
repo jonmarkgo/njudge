@@ -1593,7 +1593,7 @@ void MailOut(char *out_line, char *address)
 
    while ( (ptr = GetAddressPart(count++, address))) {
         if (*ptr != '*' && 0 != strcmp(NOBODY, ptr)) {
-           sprintf(lline, "%s %s '%s'", SMAIL_CMD, out_line, ptr);
+           sprintf(lline, "%s %s '%s'", conf_get("cmd_smail"), out_line, ptr);
            execute(lline);
 	}
    }

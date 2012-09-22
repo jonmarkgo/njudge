@@ -286,7 +286,7 @@ void phase_pending(void)
 			if (porder('T', n, 0) == E_FATAL) {
 				sprintf(lline, "dip.reply 'Pending orders error'");
 				fclose(rfp);
-				MailOut(lline, GAMES_MASTER);
+				MailOut(lline, conf_get("judge_keeper"));
 			} else {
 
 				dipent.players[n].status |= SF_PART;

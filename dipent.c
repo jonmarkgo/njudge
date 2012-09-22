@@ -384,7 +384,7 @@ int getdipent(FILE * fp)
 			/* If recovering from bailout, notify the GAMES_MASTER */
            		if (bailout_recovery && !recover_print) {
                     	    sprintf(line, "/dev/null 'Bailout recovery initiated'");
-			    MailOut(line, GAMES_MASTER);
+			    MailOut(line, conf_get("judge_keeper"));
                             recover_print = 1;
 			}
 			
@@ -398,7 +398,7 @@ int getdipent(FILE * fp)
 			}
 			fprintf(stderr, "Time warp indicated.  GM notified.\n");
 			sprintf(line, "/dev/null 'Diplomacy time warp'");
-			MailOut(line, GAMES_MASTER);
+			MailOut(line, conf_get("judge_keeper"));
 			/* bailout(E_FATAL); */
 			/* Try to fix time warp by advancing deadline */
 			deadline(NULL, 1);
@@ -503,7 +503,7 @@ void putdipent(FILE * fp, int dopw)
 	if (fprintf(fp, "-\n") == 0) {
 		fprintf(stderr, "Error writing to dip.master. Disk error suspected. Bailing out\n");
 		sprintf(line, "/dev/null 'File error writing dip.master'");
-		MailOut(line, GAMES_MASTER);
+		MailOut(line, conf_get("judge_keeper"));
 		bailout(E_FATAL);
 	}
 }
@@ -601,7 +601,7 @@ void testdipent(int seq, int variant)
 	}
 	dipent.players[0].power = power('o');
 	strcpy(dipent.players[0].password, "spud");
-	strcpy(dipent.players[0].address, GAMES_MASTER);
+	strcpy(dipent.players[0].address, conf_get("judge_keeper"));
 }
 
 /***********************************************************************/

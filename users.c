@@ -292,7 +292,7 @@ int newuser(char *addr, FILE * fp)
 	if (!siteid) {
 		fprintf(rfp, "Your Site ID resolved to a 0.  Please verify your phone ");
 		fprintf(rfp, "number and your country.\nIf you think there is a problem ");
-		fprintf(rfp, "on the judge's end, please contact the JK (%s).\n", GAMES_MASTER);
+		fprintf(rfp, "on the judge's end, please contact the JK (%s).\n", conf_get("judge_keeper"));
 		return E_WARN;
 	}
 	if (userid >= MAXUSER) {
@@ -495,7 +495,7 @@ void send_package(char *addr)
 			if (stat(line, &sbuf)) {
 				fprintf(rfp, "Package file %s is not available.\n", line);
 			} else {
-				sprintf(cmd, "%s %s 'Diplomacy file %s' '%s'", SMAIL_CMD,line, line, addr);
+				sprintf(cmd, "%s %s 'Diplomacy file %s' '%s'", conf_get("cmd_smail"),line, line, addr);
 				execute(cmd);
 				fprintf(rfp, "Package file %s sent.\n", line);
 			}

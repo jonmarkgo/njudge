@@ -492,7 +492,7 @@ int process_draw(void)
 		gflg = (dipent.flags & F_GUNBOAT &&
 			(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
 		mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
-		sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
+		sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
 			dipent.flags & F_QUIET ? "q" : "", dipent.variant, dipent.name);
 		system(line);
 	}
@@ -501,7 +501,7 @@ int process_draw(void)
 
 	sprintf(line, "%s%s/summary 'HoF: %s in %s'",
 		GAME_DIR, dipent.name, concession ? "Consession" : "Draw", dipent.name);
-	MailOut(line, HALL_KEEPER);
+	MailOut(line, conf_get("hall_keeper"));
 
 	/* send eog diaries */
 	send_diary();
@@ -641,7 +641,7 @@ int process_conc(void)
                 gflg = (dipent.flags & F_GUNBOAT &&
                         (dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)) ? "g" : "";
                 mflg = (*gflg && dipent.players[player].power == MASTER) ? "m" : "";
-                sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg,gflg,
+                sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg,gflg,
                         dipent.flags & F_QUIET ? "q" : "", dipent.variant,dipent.name);
                 system(line);
 	}
@@ -649,7 +649,7 @@ int process_conc(void)
 	sprintf(line, "%s%s/summary 'HoF: Concession to %s in %s'",
                 GAME_DIR, dipent.name,powers[dipent.players[largest].power],
 		dipent.name);
-	MailOut(line, HALL_KEEPER);
+	MailOut(line, conf_get("hall_keeper"));
 
 	/* send diaries */
 	send_diary();

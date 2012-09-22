@@ -346,7 +346,7 @@ void send_diary(void)
 				/* to everyone */
 				if(dipent.players[k].power < 0)
 					continue;
-				sprintf(line, "%s %s \"%s\" %s", SMAIL_CMD,
+				sprintf(line, "%s %s \"%s\" %s", conf_get("cmd_smail"),
 					diary_fl, subjectln, dipent.players[k].address);
 				execute(line);
 			}

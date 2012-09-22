@@ -496,8 +496,8 @@ static gint init(int argc, char** argv) {
 	CONFIG_FILE = CONFIG_DIR + 2;
 
 	// Set options defaults
-	options.cwd		= g_path_get_dirname(argv[0]);
-	options.input   = stdin;
+	options.cwd	  = g_path_get_dirname(argv[0]);
+	options.input = stdin;
 
 	/* Reset the random seed */
 	time(&now);
@@ -761,7 +761,7 @@ void master(void) {
 	s = ctime(&next_time);
 	if (!strncmp(s + 11, "14:00", 5))
 		s[15] = '1';	/* Prevent 2pm schedules */
-	sprintf(line, "%s %s %2.2s%2.2s %6.6s %4.4s", ATRUN_CMD,
+	sprintf(line, "%s %s %2.2s%2.2s %6.6s %4.4s", conf_get("cmd_atrun"),
 		options.dont_rm_q ? "norm" : "dorm", s + 11, s + 14, s + 4, s + 20);
 	if (!options.dont_touch_q)
 		execute(line);
@@ -782,7 +782,7 @@ void master(void) {
                                         s++;
                                 sprintf(line,
                                         "%s dip.control 'Diplomacy control information' '%s'",
-                                         SMAIL_CMD, s);
+                                        conf_get("cmd_smail"), s);
                                 execute(line);
                                 while (*s++);
                         }
@@ -799,7 +799,7 @@ void master(void) {
                                 s++;
                                 sprintf(line,
                                         "%s dip.xcontrol 'Diplomacy xcontrol information' '%s'",
-                                        SMAIL_CMD, s);
+                                        conf_get("cmd_smail"), s);
                                 execute(line);
                         }
                         if (control >= 1000)
@@ -1413,7 +1413,7 @@ int process(void) {
         			msg_header_done = 0;  /* Bug 282, header will need to be redone */
 			}
 			sprintf(line, "dip.result 'Diplomacy error'");
-			MailOut(line, GAMES_MASTER);
+			MailOut(line, conf_get("judge_keeper"));
 			bailout(1);
 		}
 
@@ -1528,7 +1528,7 @@ int process(void) {
 				  dipent.flags & F_NOREVEAL)) ? "g" : "";
 				mflg = (*gflg && dipent.players[player].power == MASTER)
 				    ? "m" : "";
-				sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
+				sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
 					dipent.flags & F_QUIET ? "q" : "", dipent.variant, dipent.name);
 				system(line);
 			}
@@ -1537,7 +1537,7 @@ int process(void) {
 
 			sprintf(line, "%s%s/summary 'HoF: Victory in %s'",
 				GAME_DIR, dipent.name, dipent.name);
-			MailOut(line, HALL_KEEPER);
+			MailOut(line, conf_get("hall_keeper"));
 
 		} else {
 			deadline((sequence *) NULL, 1);
@@ -1636,7 +1636,7 @@ int process(void) {
 		if (!strcmp(dipent.seq, "002") && !(dipent.flags & F_BLIND)) {
 			sprintf(line, "dip.result 'Diplomacy results %s %s'",
 				dipent.name, phase);
-			MailOut(line, GAMES_OPENER);
+			MailOut(line, conf_get("games_opener"));
 		}
 		sprintf(line, "%s:%s - %s Results", JUDGE_CODE, dipent.name, phase);
 		archive("dip.result", line);

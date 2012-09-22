@@ -1138,7 +1138,7 @@ int mail(void)
 						}
 						fclose(mfp);
 
-						sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, not_eof &&
+						sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, not_eof &&
 							(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)
 							&& dipent.flags & F_GUNBOAT ? "g" : "", 
 							dipent.flags & F_BLIND ? "b" : "",
@@ -1756,7 +1756,7 @@ int mail(void)
 										     || dipent.flags & F_NOREVEAL)) ? "g" : "";
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
-						sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
+						sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
 							dipent.flags & F_QUIET ? "q" : "", dipent.variant,
 							dipent.name);
 						system(line);
@@ -1766,7 +1766,7 @@ int mail(void)
 
 					sprintf(line, "%s%s/summary 'HoF: Termination in %s'",
 						GAME_DIR, dipent.name, dipent.name);
-					MailOut(line, HALL_KEEPER);
+					MailOut(line, conf_get("hall_keeper"));
 					}
 					broadcast = 1;
 					break;
@@ -2087,7 +2087,7 @@ int mail(void)
 
 						sprintf(line, "%s%s/%ssummary", GAME_DIR, dipent.name, mflg);
 						if (!(tfp = fopen(line, "r"))) {
-							sprintf(line, "%s -C %s -%s%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
+							sprintf(line, "%s -C %s -%s%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
 								dipent.flags & F_QUIET ? "q" : "",
 								dipent.flags & F_BLIND ? "b" : "",
 								dipent.variant, dipent.name);
@@ -2588,7 +2588,7 @@ void mail_reply(int err)
 
 	if (err == E_FATAL) {
 		sprintf(line, "%s 'Diplomacy Error'", rfile);
-		MailOut(line, GAMES_MASTER);
+		MailOut(line, conf_get("judge_keeper"));
 		bailout(E_FATAL);
 	}
 	if (junkmail)
@@ -2657,7 +2657,7 @@ void mail_reply(int err)
 
 	if (*s && *s != '*' && !options.debug) {
 		/* call lenlimit to make sure lines <=1024 long */
-		sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, rfile, rfile);
+		sprintf(line, "%s %s > %s.tmp", conf_get("cmd_lenlimit"), rfile, rfile);
                 system(line);
                 sprintf(line, "mv %s.tmp %s", rfile, rfile);
                 system(line);
@@ -2841,7 +2841,7 @@ void send_press(void)
 					broadcast_master_only = 0; /* We're sending to master anyway */
 
 					if(!lmdone) {
-						sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, mbfile, mbfile);
+						sprintf(line, "%s %s > %s.tmp", conf_get("cmd_lenlimit"), mbfile, mbfile);
 						system(line);
 						sprintf(line, "mv %s.tmp %s", mbfile, mbfile);
 						system(line);
@@ -2858,7 +2858,7 @@ void send_press(void)
 					sprintf(line, "%s '%s'", bfile, subjectline);
 				
 					if(!lbdone) {
-						sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, bfile, bfile);
+						sprintf(line, "%s %s > %s.tmp", conf_get("cmd_lenlimit"), bfile, bfile);
 						system(line);
 						sprintf(line, "mv %s.tmp %s", bfile, bfile);
 						system(line);

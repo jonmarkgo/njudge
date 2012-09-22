@@ -83,7 +83,7 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 				KEEPOUT);
 		}
 		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
-			SMAIL_CMD, sourcename, linenum, GAMES_MASTER);
+			conf_get("cmd_smail"), sourcename, linenum, conf_get("judge_keeper"));
 		system(myline);
 		DIPERROR(myline);
 	}
@@ -130,6 +130,6 @@ void inform_rgd(void)
 	}
 	fclose(ofp);
 
-	sprintf(line, "%s dip.temp '%s' '%s'", SMAIL_CMD, info_line, RGD_GATEWAY);
+	sprintf(line, "%s dip.temp '%s' '%s'", conf_get("cmd_smail"), info_line, RGD_GATEWAY);
 	system(line);
 }

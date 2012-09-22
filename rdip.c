@@ -306,7 +306,7 @@ int main(int argc, char **argv)
 	}
 	pfp = NULL;
 
-	sprintf(line1,"%s -C %s -q", DIP_CMD, CONFIG_DIR);
+	sprintf(line1,"%s -C %s -q", conf_get("cmd_dip"), CONFIG_DIR);
 	while (fgets(line, sizeof(line), fp)) {
 		if (!strncmp(line, "From ", 5)) {
 			if (pfp) {
@@ -374,7 +374,7 @@ int main(int argc, char **argv)
 	time(&now);
 	printf("%12.12s: Processing master file.\n", ctime(&now) + 4);
 
-	sprintf(line, "%s -C %s -%sx ", DIP_CMD, CONFIG_DIR, Aflg ? "A" : "");
+	sprintf(line, "%s -C %s -%sx ", conf_get("cmd_dip"), CONFIG_DIR, Aflg ? "A" : "");
 	if (!(pfp = popen(line, "r"))) {
 		perror("popen");
 		exit(1);

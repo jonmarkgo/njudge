@@ -491,7 +491,7 @@ int mail_signon(char *s)
 			}
 			sprintf(gdirname, "%s%s", GAME_DIR, &name[1]);
 
-			if (strcmp(raddr, GAMES_MASTER) != 0 && stat("NOCREATE", &sbuf) == 0) {
+			if (strcmp(raddr, conf_get("judge_keeper")) != 0 && stat("NOCREATE", &sbuf) == 0) {
 				if (!msg_header_done)
 					msg_header(rfp);
 				fprintf(rfp, "Sorry, the create command has been disabled.  No new\n");
@@ -532,7 +532,7 @@ int mail_signon(char *s)
 			*/
  
                         // Automatically upgrade creator to master
-                        if (conf_get_bool("auto_master") && strcmp(raddr,GAMES_MASTER) )
+                        if (conf_get_bool("auto_master") && strcmp(raddr,conf_get("judge_keeper")) )
 			{
                                 lmaster++;
                                 pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);
@@ -606,13 +606,13 @@ int mail_signon(char *s)
 		n = power(name[0]);
 		for (i = 0; i < dipent.n; i++) {
 			if (name[0] == ADMINISTRATOR && 
-				(!strcasecmp(raddr, GAMES_MASTER) ||
+				(!strcasecmp(raddr, conf_get("judge_keeper")) ||
 				!strcmp(SPECIAL_PW, password))) {
 				n = MASTER;
 				i = dipent.n;
 				dipent.players[i].power = n;
 				strcpy(dipent.players[i].password, password);
-				strcpy(dipent.players[i].address, GAMES_MASTER);
+				strcpy(dipent.players[i].address, conf_get("judge_keeper"));
 				dipent.players[i].userid = 0;
 				i_am_really_jk = 1;
 			} else {
@@ -1573,7 +1573,7 @@ void mail_igame(void)
 
 		if (i != dipent.n) {
 			sprintf(line, "%s dip.temp '%s:%s - %s Game Starting' '%s'",
-				SMAIL_CMD, JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
+					conf_get("cmd_smail"), JUDGE_CODE, dipent.name, dipent.phase, dipent.players[i].address);
 
 			if (execute(line)) {
 				fprintf(stderr, "igame: Error sending mail to %s.\n",

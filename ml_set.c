@@ -4078,7 +4078,7 @@ int SetApprovalState(int type, char *part_list, int part_list_count)
                 if (changed) {
 
                     sprintf(tline, "%s %s '%s:%s - %s Player moves %s' '%s'",
-                            SMAIL_CMD, filename, JUDGE_CODE, dipent.name,
+                    		conf_get("cmd_smail"), filename, JUDGE_CODE, dipent.name,
                             dipent.phase, text, dipent.players[i].address);
 
                     if (execute(tline)) {
