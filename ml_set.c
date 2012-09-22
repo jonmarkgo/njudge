@@ -323,7 +323,7 @@
  *  17 Nov 1999 M. Miller    Added CheckForGameStart() to start if
  *                           we have a quorum if variant changed
                              Also disallow set password!=alphanum
- *  25 Nov 1999 M. Miller    Added SET [nø]LATECOUNT parameter 
+ *  25 Nov 1999 M. Miller    Added SET [nï¿½]LATECOUNT parameter 
  *  26 May 2001 M. Becroft   Added ontimerat & resrat commands
  *		T. Miller
  */
@@ -343,6 +343,7 @@
 #include <time.h>
 #include <ctype.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "mail.h"
@@ -2592,7 +2593,7 @@ void mail_setp(char *s)
 					bailout(1);
 				}
 				fprintf(rfp, "----- Full comment set:\n");
-				for (n = skipping = 0; fgets(line, sizeof(line), inp); n++) {
+				for (n = skipping = 0; fgets(line, sizeof(line), options.input); n++) {
 					fputs(line, log_fp);
 					for (t = line; isspace(*t); t++);
 					if (!strncasecmp(t, "signoff", 7)) {

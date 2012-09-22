@@ -77,7 +77,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "functions.h"

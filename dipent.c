@@ -133,7 +133,9 @@
 #include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "defaults.h"
@@ -374,7 +376,7 @@ int getdipent(FILE * fp)
 			getplay(line, &dipent.players[dipent.n++]);
 		}
 	}
-	if (Dflg > 1)
+	if (options.debug)
 		fprintf(log_fp, "Getdipent returns: '%s'.\n", dipent.name);
 
 	if (!strcmp(dipent.name, "control")) {

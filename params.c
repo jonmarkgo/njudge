@@ -204,6 +204,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+
+#include "conf.h"
 #include "dip.h"
 #include "functions.h"
 #include "mail.h"

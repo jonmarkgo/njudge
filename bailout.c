@@ -36,11 +36,14 @@
  *  Lowe.
  */
 
+#include <glib.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <time.h>
+
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
-#include <sys/stat.h>
 #include "diplog.h"
 
 extern char line[1024];
@@ -64,7 +67,7 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 	struct stat sbuf;
 
 
-	if (!Dflg) {
+	if (!options.debug) {
 		if (!stat(BAILOUT_PLAN, &sbuf))
 			rename(BAILOUT_PLAN, PLAN);
 		inform_rgd();

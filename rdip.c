@@ -44,6 +44,7 @@
 #include <errno.h>
 #include <signal.h>
 
+#include "conf.h"
 #include "config.h"
 #include "functions.h"
 #include "diplog.h"
@@ -87,7 +88,9 @@ static struct stat sbuf;
 static short badmail = 0;
 
 int Aflg, xflg, bflg;
-int Dflg;
+//int Dflg;
+
+struct opts_s options = {0};
 
 /*
  * If we receive a SIGPIPE it means that the Judge couldn't handle the mail
@@ -193,14 +196,14 @@ int main(int argc, char **argv)
 	}
 
       conf_init();  /* to get path for dip exe */
-      conf_readfile(CONFIG_DIR, CONFIG_FILE);
+      conf_read_file(CONFIG_DIR, CONFIG_FILE);
 
         sprintf(temp_text,"%s-%s", JUDGE_CODE, "rdip");
         OPENDIPLOG(temp_text);
         DIPINFO("Started rdip");
 
 
-	Dflg = 0;
+        options.debug = 0;
 
 	/*
 	 *  1) Obtain a lock on the "dip.lock1" file.

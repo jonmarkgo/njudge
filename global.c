@@ -134,19 +134,19 @@ int more_orders;		/* Nonzero if not all units ordered           */
 /* this may need to be included in the other programs as well */
 char *notifies = "*";
 
-int aflg = 0;			/* -a: don't mess with the at queue at all      */
-int Aflg = 0;			/* -A: don't take anything off the at queue     */
-char *dflg;			/* -d home directory                            */
-int Dflg = 0;			/* -D: output goes to stdout rather than reply  */
-char *nflg;			/* Our program name                             */
-int qflg = 0;			/* -q: quick mode, just process mail, not games */
-int tflg = 0;			/* -t variant: test adjudication                */
-char *rflg = NULL;		/* -r name: randomizer for die rolls            */
-int sflg = 0;			/* -s sequence: test adjudication               */
-int vflg = 0;			/* -v: verbose, issue all error messages        */
-int xflg = 0;			/* -x: no incoming mail on stdin                */
-char *inname = NULL;
-FILE *inp;
+// int aflg = 0;		Replaced with options.dont_touch_q
+// int Aflg = 0;		Replaced with options.dont_rm_q
+// char *dflg;			Replaced with options.cwd
+// int Dflg = 0;			Replaced with options.debug
+// char *nflg;			Not longer used
+// int qflg = 0;		Replaced with options.quick
+// int tflg = 0;		Replaced with options.variant
+// char *rflg = NULL;	Replaced with options.randomizer
+// int sflg = 0;		Replaced with options.sequence
+// int vflg = 0;		Replaced with options.verbose
+// int xflg = 0;		Replaced with options.no_input
+// char *inname = NULL; Not longer used
+// FILE *inp;			Not longer used
 
 int control = 0;
 int predict = 0; 		/* =1 to predict a move for master */

@@ -81,6 +81,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "conf.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
@@ -123,7 +124,7 @@ static int IsAdjacent(int asking_power, int other_power);
  *  Static Data Object Definitions
  */
 
-static char *options[] =
+static char *opts[] =
 {"", "grey", "white", "anonymous", "unanonymous",
  "anonymously", "unanonymously", "gray",
  "-", "to all but", "+", "to",
@@ -240,7 +241,7 @@ void mail_press(char *s, int need_opts)
 	master_only_press = 0; 
 
 	while (*s != '\0') {
-		s = lookfor(s, options, nentry(options), &i);
+		s = lookfor(s, opts, nentry(opts), &i);
 		if (!i) {
 			while (isspace(*s))
 				++s;

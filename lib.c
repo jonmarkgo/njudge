@@ -142,7 +142,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "functions.h"
@@ -274,7 +276,7 @@ void die_rolls(int seed)
 	char *s;
 	extern char *rflg;
 
-	for (s = rflg ? rflg : dipent.name; *s; s++)
+	for (s = options.randomizer ? options.randomizer : dipent.name; *s; s++)
 		seed += *s;
 
 	for (s = dipent.phase; *s; s++)

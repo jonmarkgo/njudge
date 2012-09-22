@@ -45,6 +45,7 @@
  * A. Verweij, 1994.
  */
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "porder.h"

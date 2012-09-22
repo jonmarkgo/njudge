@@ -96,6 +96,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "porder.h"

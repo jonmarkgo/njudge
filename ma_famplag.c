@@ -34,7 +34,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "dip.h"
 #include "mail.h"
 #include "porder.h"

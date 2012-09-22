@@ -1,184 +1,152 @@
-# this file uses lines of the form XXXX=value, with optional whitespace
-# before and after XXXX and the equals sign.  trailing whitespace on
-# the value is retained, which should not be construed as a feature
-
-# a line with a hash mark as the first non whitespace character is ignored
-
-# where a line is commented out, it is set to the default so you can see
-# what the default is.  where a line is not commented out, it is set
-# to a reasonable value (some of the built in defaults are not "reasonable"
-# and should be set for a real judge, mostly peoples' email addresses)
-# exceptions to this standard are noted in the comment accompanying the
-# variable
-# --nw 5mar1996
-# Added configurable command name/path settings
-# --mlm 30 Dec 1999
-
-SUMMARY_CMD=./summary
-RUNLISTMAP_CMD=./runlistmap
-RUNDIPMAP=./rundipmap
-SMAIL_CMD=./smail
-DIP_CMD=./dip
-ATRUN_CMD=./atrun
-
-# This is the location of the game directories. By default, GAME_DIR=D
-# Uncomment the following if you wish to have them in the 'games'
-# subdirectory. The Makefile will not create this directory for you,
-# so, if you use it, you'll have to create the directory and create the
-# "control" directory within it. If your judge already has games running
-# on it, move them in the new directory, and remove the 'D' at the beginning
-# of each subdirectory name, or add a 'D' at the end of GAME_DIR.  Don't
-# forget the ending / at the end of the directory name.
-# 
-#GAME_DIR=./games/
-
-#this has yet to be implemented in the code
-#This is intended to say where the data files etc. are residing
-#JUDGE_PATH=./
-
-# The games master is the account that gets electronic mail when something
-# goes wrong.  DO NOT make this the address where people send orders!!
-
-GAMES_MASTER=judgekeeper@localhost
-
-# None of these should be altered, except on test judges.  These
-# addresses may change from time to time.  Please revise if necessary.
-
-# GAMES_OPENER is where opening moves are sent for statistics
-GAMES_OPENER=games_opener@diplom.org
-
-# HALL_KEEPER is where game summaries are sent for the Hall of Fame
-HALL_KEEPER=hall_keeper@diplom.org
-
-# BN_CUSTODIAN is the address of the Internet Boardman Number Custodian, 
-#              who receives game starts and ends for standard, nongunboat 
-#              games
-BN_CUSTODIAN=bn_custodian@diplom.org
-
-# MN_CUSTODIAN is the address of the Internet Miller Number Custodian, 
-#              who receives the game starts and ends for other games
-MN_CUSTODIAN=mn_custodian@diplom.org
-
-#EP_CUSTODIAN is currently not used in the code
-EP_CUSTODIAN=ep_custodian@diplom.org
-
-#  The parameter OURSELVES is the start of the address where people send
-#  orders.  No reply mail will be sent to an address starting with that 
-#  string, in an effort to avoid loops.
-OURSELVES=@USER@
-
-# these are used in some of the mail code, it is probably safe to set them
-# to null
-#BITNET_GATEWAY1=@eff.org
-#BITNET_GATEWAY2=@eff.org
-
-# FORWARD is the name of your .forward file or its moral equivalent
-FORWARD=../.forward
-
-# XFORWARD/YFORWARD, the FORWARD file will be renamed to these
-# if there is some sort of trouble. [not that i have seen, if there
-# is trouble, as far as i can tell, the judge just bails and you end
-# up with a KEEPOUT file --nw 5mar1996]
-XFORWARD=../xforward
-YFORWARD=../yforward
-
-# if the KEEPOUT file exists then no execution
-KEEPOUT=../zforward
-
-# MIN_CONTROL is the minimum time in seconds between control messages
-# sent to the judge keeper, the default is 12 hours (measured in seconds)
-#MIN_CONTROL=43200
-
-# Time in seconds to bail-out if can't lock log file
-#LOCK_TIMEOUT=3600
-
-# SAVE_FILE is where held mail gets collected
-#SAVE_FILE=saved_mail
-
-# MAP_FILE is a variable that i have no idea where it is used
-#MAP_FILE=data/map
-
-# LOG_FILE is where stuff is logged
-#LOG_FILE=dip.log
-
-# PLAN is the normal .plan file
-PLAN=../.plan
-
-# BAILOUT_PLAN is the bailout .plan file
-BAILOUT_PLAN=../yplan
-
-# BAILOUT_MSG is the name of the file to send to RGD_GATEWAY if there
-# is a bailout [is this active in the code? --nw 5mar1996]
-#BAILOUT_MSG=bailout.msg
-
-# RGD_GATEWAY is an email address that is gatewayed to rec.games.diplomacy
-#RGD_GATEWAY=dipl-l@diplom.org
-
-# The following lines are to define the Judge code for the current Judge.
-# If your Judge has NOT been assigned a Judge code do NOT set a judge code
-# here (other than the XXXX default)
+# dip.conf - config file
 #
-# as of 15 oct 1997, judge codes are assigned by Nick Fitzpatrick
-# <nfitz@sentex.ca>, if you would like to be assigned a judge code,
-# contact him.
+# Boolean values: yes|no, true|false, on|off, 1|0
 
-# If the judge has been assigned a Judge code, replace the definition of
-# JUDGE_CODE with the code assigned
+# [auto_master]			boolean				no
+# Should the creator of games automatically also be set as game master?
+#auto_master = yes
 
-JUDGE_CODE=XXXX
+# [bail_forward]		string				~/bail_forward
+# What to rename the .forward file to when bailing out (former KEEPOUT)
+#bail_forward = ../zforward
 
-#This is the administrator password. You can use it to signon as a master
-#from any email account on any game. Please redefine!
-SPECIAL_PW=default
+# [bailout_msg]			string				bailout.msg
+# Filename to the message that's are sent to rdg_gateway on bail.
+#bailout_msg = bailout.msg
 
-# you can limit the number of games here.  a negative value will allow
-# an unlimited number of games
-MAXGAMES = -1
+# [bailout_plan]		string				~/bail_plan
+# Path and name to the bailout .plan-file
+#bailout_plan = ~/bail_plan 
 
-# Dedication penalty/bonus values.  May be customized by the JK or
-# left at default values.
-# The judge combines a D_LATE and a D_ABANDON
-# so, the total penalty for going abandoned
-# is D_LATE + D_ABANDON
-#D_ONTIME=3
-#D_LATE=-1
-#D_ABANDON=-49 
-#D_CD=-100
-#CREATE_DEDICATION=-10
+# [cmd_atrun]			string				./atrun
+# Path to the atrun binary (former ATRUN_CMD).
+#cmd_atrun = ./atrun
 
-# Length of longest print strings
-#CUTOFF_LENGTH=78
+# [cmd_lenlimit]		string				./lenlimit
+# Path to the lenlimit binary (former LENLIMIT_CMD)
+#cmd_lenlimit = ./lenlimit
 
-# the name of the master game record file
-# changing this is probably dangerous
-#MASTER_FILE=dip.master
+# [cmd_njudgex]			string				./njudgex
+# Path to the njudgex binary (former DIP_CMD).
+#cmd_dip = ./dip
 
-# If this file exists, creation disabled
-#NO_CREATE=dip.nocreate
+# [cmd_smail]			string				./smail
+# Smail command (former SMAIL_CMD).
+#cmd_smail = ./smail
 
-# If this is at "yes", automatically give master status to game creator
-AUTO_MASTER=yes
+# [cmd_summary]			string				./summary
+# Summary command (former SUMMARY_CMD).
+#cmd_summary = ./summary
 
-# The following manifest constants are used to seed the random number
-# generator to produce deterministic die rolls for the Machiavelli
-# variants to allow replayable seasons.  You shouldn't need to set
-# any of these in this file, as they are set to reasonable values
-# by default
+# [create_disabled]		boolean				no
+# Whether creation of games is disabled.
+#create_disabled = false
 
-#DIE_ASSASSIN=382204
-#DIE_EXPENSE=148741
-#DIE_FAMPLAG=995816
-#DIE_INCOME=66144
+# [enable_syslog]		boolean				false
+# Should we log to the syslog (former SYSLOG_FLAG)?
+#enable_syslog = yes
 
-#The following flag enables or disables SYSLOG calls
-#Set to an integer non-zero value to enable, 0 to disable
-#See README.syslog for more info
-#SYSLOG_FLAG=1
+# [forward]				string				~/.forward
+# Path to your .forward file (or equivalent)
+#forward = ../.forward
 
-#The fllowing flag forces judge to work in a certain timezone
-#value is as per TZ environment variable (see "man tzset")
-#Note: for some reason, the sign of the offset needs to be inverted
-#       i.e. for a negative offset, you make the difference positive
-#See README.timezone for more details
-#TZ=GMT0BST
+# [forward_onbail]		string				~/forward_onbail
+# Path to forward file which will replace .forward on bail (former YFORWARD).
+#forward_replace = ../yforward
 
+# [game_dir]			string				./games
+# Path to your games directory (former 'D').
+#game_dir = ./games
+
+# [games_opener]		string				NULL
+# E-mail address to the opening statistics.
+#games_opener = games_opener@diplom.org
+
+# [hall_keeper]			string				NULL
+# E-mail address to where game summaries are sent for the Hall of Fame.
+#hall_keeper = hall_keeper@diplom.org
+
+# [judge_code]			string				XXXX
+# If the judge has been assigned a judge code.
+#judge_code = XXXX
+
+# [judge_keeper]		string				judgekeeper@localhost
+# E-mail address to the responsible person for the judge (former GAME_MASTER).
+#judge_keeper = judgekeeper@localhost
+
+# [judge_path]			string				./
+# Path to where the judge data files resides. (!Not yet implemented!)
+#judge_path = ./
+
+# [judge_tz]			string				NULL
+# The timezone the judge is in
+#judge_tz = GMT
+ 
+# [line_wrap]			integer				78
+# At which width to wrap lines in e-mail messages (former CUTOFF_LENGTH).
+#line_wrap = 78
+
+# [lock_timeout]		integer				3600
+# Time in seconds to bail-out if can't lock log file.
+#lock_timeout = 3600
+
+# [log_file]			string				njudgex.log
+# Name of log file.
+#log_file = dip.log
+
+# [mail_spooler]		string				./mail_spooler
+# Path to file where mail get stored when needed (former SAVE_FILE).
+#mail_spooler = ./saved_mail
+
+# [master_db]			string				dip.master
+# Name of the master database file (former MASTER_FILE)
+#master_db = dip.master
+
+# [min_control]			integer				43200
+# Minimum time in seconds for control messages to judge keeper.
+#min_control = 43200
+
+# [nobody]				string				nobody@localhost
+# E-mail address used internally and doesn't produce response e-mail.
+#nobody = nobody@localhost
+
+# [points_abandon]		integer				-49
+# Dedication points received on abandon (former D_ABANDON).
+#points_abandon = -49
+
+# [points_cd]			integer				-100
+# Dedication points recieved on CD (former D_CD).
+#points_cd = -100
+
+# [points_late]			integer				-1
+# Dedication points recieved when late (former D_LATE).
+#points_late = -1
+
+# [points_ontime]		integer				3
+# Dedication points recieved when ontime (former D_ONTIME).
+#points_ontime = 3
+
+# [rgd_gateway]			string				NULL
+# E-mail address to a rec.games.diplomacy gateway.
+#rgd_gateway = dipl-l@diplom.org
+
+# [special_pw]			string				NULL
+# Superuser password. !Disabled by default!
+#special_pw = default
+
+# [time_tolerance]		integer				60
+# Tolerance before triggering time warp.
+#time_tolerance = 60
+
+# [username]			string				judge
+# The username under which the njudgex software is executed (former OURSELVES).
+#username = judge
+
+# -----------------------------------------------------------------------------
+# Obsolete config values
+#
+# [bitnet_gateway1]		string	(references will be removed in code)
+#bitnet_gateway1 =
+#
+# [bitnet_gateway2]		string	(references will be removed in code)
+#bitnet_gateway2 =

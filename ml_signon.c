@@ -215,6 +215,7 @@
 #include <sys/types.h>
 #include <time.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "mail.h"
@@ -531,7 +532,7 @@ int mail_signon(char *s)
 			*/
  
                         // Automatically upgrade creator to master
-                        if ( !strcmp(AUTO_MASTER,"yes") && strcmp(raddr,GAMES_MASTER) ) 
+                        if (conf_get_bool("auto_master") && strcmp(raddr,GAMES_MASTER) )
 			{
                                 lmaster++;
                                 pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);

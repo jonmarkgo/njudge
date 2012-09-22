@@ -50,13 +50,13 @@ void errmsg(char *fmt,...)
  */
 	va_list args;
 
-	if (vflg || (marker && !processing)) {
+	if (options.verbose || (marker && !processing)) {
 		if (!pline++)
 			fputs(line, rfp);
 		va_start(args, fmt);
 		vfprintf(rfp, fmt, args);
 		va_end(args);
-		if (!vflg)
+		if (!options.verbose) // TODO: wtf ?!? - cjw
 			err++;
 	}
 }

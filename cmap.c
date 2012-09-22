@@ -80,6 +80,8 @@
 #include "porder.h"
 #include "mach.h"
 
+struct opts_s options = {0};
+
 int main(int argc, char *argv[])
 {
 

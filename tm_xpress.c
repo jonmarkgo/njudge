@@ -38,6 +38,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 
+#include "conf.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"

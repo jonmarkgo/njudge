@@ -41,28 +41,35 @@
  * Morrolan v9.0
  */
 
+#ifndef CONF_H
+#define CONF_H
+
+#include <glib.h>
+
+#define config(var)		conf_get(var)
+
 #define JUDGE_PATH      config("JUDGE_PATH")
-#define SMAIL_CMD	config("SMAIL_CMD")
-#define ATRUN_CMD	config("ATRUN_CMD")
-#define SUMMARY_CMD	config("SUMMARY_CMD")
-#define RUNLISTMAP_CMD	config("RUNLISTMAP_CMD")
-#define	RUNDIPMAP_CMD 	config("RUNDIPMAP_CMD")
-#define DIP_CMD		config("DIP_CMD")
-#define LENLIMIT_CMD	config("LENLIMIT_CMD")
-#define GAMES_MASTER    config("GAMES_MASTER")
+#define SMAIL_CMD	config("cmd_smail")
+#define ATRUN_CMD	config("cmd_atrun")
+#define SUMMARY_CMD	config("cmd_summary")
+// No references in code #define RUNLISTMAP_CMD	config("RUNLISTMAP_CMD")
+// No references in code #define	RUNDIPMAP_CMD 	config("RUNDIPMAP_CMD")
+#define DIP_CMD		config("cmd_dip")
+#define LENLIMIT_CMD	config("cmd_lenlimit")
+#define GAMES_MASTER    config("judge_keeper")
 #define GAMES_OPENER	config("GAMES_OPENER")
 #define HALL_KEEPER     config("HALL_KEEPER")
 #define BN_CUSTODIAN    config("BN_CUSTODIAN")
 #define MN_CUSTODIAN    config("MN_CUSTODIAN")
 #define EP_CUSTODIAN    config("EP_CUSTODIAN")
-#define OURSELVES       config("OURSELVES")
+#define OURSELVES       config("username")
 #define BITNET_GATEWAY1 config("BITNET_GATEWAY1")
 #define BITNET_GATEWAY2 config("BITNET_GATEWAY2")
 #define FORWARD         config("FORWARD")
 #define XFORWARD        config("XFORWARD")
-#define YFORWARD        config("YFORWARD")
-#define KEEPOUT         config("KEEPOUT")
-#define SAVE_FILE       config("SAVE_FILE")
+#define YFORWARD        config("forward_onbail")
+#define KEEPOUT         config("bail_forward")
+#define SAVE_FILE       config("mail_spooler")
 #define PLAN		    config("PLAN")
 #define BAILOUT_PLAN    config("BAILOUT_PLAN")
 #define BAILOUT_MSG     config("BAILOUT_MSG")
@@ -71,32 +78,32 @@
 #define LOCK_TIMEOUT    atoi(config("LOCK_TIMEOUT"))
 #define JUDGE_CODE      config("JUDGE_CODE")
 #define SPECIAL_PW	config("SPECIAL_PW")
-#define D_ONTIME        atoi(config("D_ONTIME"))
-#define D_LATE          atoi(config("D_LATE"))
-#define D_ABANDON       atoi(config("D_ABANDON"))
-#define D_CD            atoi(config("D_CD"))
+#define D_ONTIME        atoi(config("points_ontime"))
+#define D_LATE          atoi(config("points_late"))
+#define D_ABANDON       atoi(config("points_abandon"))
+#define D_CD            atoi(config("points_cd"))
 #define MAP_FILE        config("MAP_FILE")
-#define MASTER_FILE     config("MASTER_FILE")
-#define TMASTER_FILE	config("TMASTER_FILE")
-#define NO_CREATE       config("NO_CREATE")
-#define AUTO_MASTER     config("AUTO_MASTER")
+#define MASTER_FILE     config("master_db")
+#define TMASTER_FILE	config("master_db_tmp")
+// Replaced (no longer used) #define NO_CREATE       config("NO_CREATE")
+// Replaced (no longer used) #define AUTO_MASTER     config("AUTO_MASTER")
 #define LOG_FILE        config("LOG_FILE")
-#define CUTOFF_LENGTH   atoi(config("CUTOFF_LENGTH"))
+#define CUTOFF_LENGTH   atoi(config("line_wrap"))
 #define DIE_ASSASSIN    atoi(config("DIE_ASSASSIN"))
 #define DIE_EXPENSE     atoi(config("DIE_EXPENSE"))
 #define DIE_FAMPLAG     atoi(config("DIE_FAMPLAG"))
 #define DIE_STORMS	atoi(config("DIE_STORMS"))
 #define DIE_INCOME      atoi(config("DIE_INCOME"))
 #define MAXGAMES	atoi(config("MAXGAMES"))
-#define SYSLOG_FLAG	atoi(config("SYSLOG_FLAG"))
+// Replaced (no longer used) #define SYSLOG_FLAG	atoi(config("SYSLOG_FLAG"))
 #define TIME_TOLERANCE  atoi(config("TIME_TOLERANCE"))
 #define WARP_FILE	config("WARP_FILE")
 #define GAME_DIR	config("GAME_DIR")
 #define BLIND_CMD       config("BLIND_CMD")
 #define NOBODY		config("NOBODY")
-#define BLOCK_FILE	config("BLOCK_FILE");
-#define JUDGE_TZ	config("JUDGE_TZ");
-#define NULL_EMAIL	config("NULL_EMAIL")
+#define BLOCK_FILE	config("BLOCK_FILE")
+#define JUDGE_TZ	config("JUDGE_TZ")
+#define NULL_EMAIL	config("nobody")
 
 /* this is the location of the judge configuration file,
  * it should probably be a full path name, as i don't think
@@ -104,16 +111,21 @@
  * that uses this may be called before the working directory is
  * set to a sane value.
  */
-extern char * CONFIG_FILE;
+extern char* CONFIG_FILE;
 /* Now defined as a command line opton '-C' */
-extern char * CONFIG_DIR;
+extern char* CONFIG_DIR;
 
-void conf_usage(void);
-void conf_cmdline(int argc, char **argv);
-void conf_readfile(char *directory, char *filename);
-void conf_print(FILE * where);
-int conf_init(void);
+void   conf_destroy(void);
+gchar *conf_get(gchar *var);
+gint   conf_get_bool(gchar* key);
+gint   conf_get_int(gchar* key);
+gint   conf_init(void);
+gint   conf_read_file(gchar *dir, gchar *bname);
+gint   conf_set(gchar *var, gchar *val, gint init);
+gint   conf_textual_set(gchar* line);
 
-int conf_set(char *var, char *val);
-char *config(char *var);
-extern struct pd_ht conf_table;
+#ifdef UNITTEST
+  extern GHashTable* conf_table;
+#endif
+
+#endif /* CONF_H */

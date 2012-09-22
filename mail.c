@@ -322,7 +322,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "mail.h"
@@ -661,7 +663,7 @@ int mail(void)
 	rfile = "dip.reply";
 	r2file = "dip.gmreply";
 
-	if (Dflg)
+	if (options.debug)
 		rfp = stdout;
 	else if (!(rfp = fopen(rfile, "w"))) {
 		perror(rfile);
@@ -688,7 +690,7 @@ int mail(void)
 		bailout(1);
 	}
 	done_headers = 0;
-	while (fgets(line, sizeof(line), inp)) {
+	while (fgets(line, sizeof(line), options.input)) {
 		fputs(line, log_fp);
 		fputs(line, ifp);
 		if (skipping)
@@ -864,7 +866,7 @@ int mail(void)
 					    if (!is_disallowed(GLOBAL_PLAYER)) {
                                                 fprintf(rfp, "You are not an allowed player on this judge.\n");
                                                 fprintf(rfp, "Please contact the judge keeper to be permitted to play.\n");
-                                                while (fgets(line, sizeof(line), inp)) {
+                                                while (fgets(line, sizeof(line), options.input)) {
                                                         fputs(line, log_fp);
                                                         fputs(line, ifp);
                                                 }
@@ -875,7 +877,7 @@ int mail(void)
 					
 						fprintf(rfp, "You have been blacklisted from this judge.\n");
 						fprintf(rfp, "Please contact the judge keeper if you want to dispute this decision.\n");
-						while (fgets(line, sizeof(line), inp)) {
+						while (fgets(line, sizeof(line), options.input)) {
 							fputs(line, log_fp);
 							fputs(line, ifp);
 						}
@@ -903,7 +905,7 @@ int mail(void)
 					continue;
 				switch (pvalue[i]) {
 				case CREATE:
-					if ((check = fopen(NO_CREATE, "r"))) {
+					if (conf_get_bool("create_disabled")) {
 						fprintf(rfp, "Sorry, but game creation has been disabled");
 						if (fgets(line, sizeof(line), check)) {
 							fprintf(rfp, " for the following reason:\n");
@@ -957,7 +959,7 @@ int mail(void)
 						fclose(mfp);
 						fclose(nfp);
 						fputs("Bad signon, skipping remainder:\n", log_fp);
-						while (fgets(line, sizeof(line), inp)) {
+						while (fgets(line, sizeof(line), options.input)) {
 							fputs(line, log_fp);
 							fputs(line, ifp);
 						}
@@ -988,7 +990,7 @@ int mail(void)
 					command++;
 					rfile = "data/info";
 					fputs("Help command found, skipping remainder:\n", log_fp);
-					while (fgets(line, sizeof(line), inp)) {
+					while (fgets(line, sizeof(line), options.input)) {
 						fputs(line, log_fp);
 						fputs(line, ifp);
 					}
@@ -1165,7 +1167,7 @@ int mail(void)
 				case REGISTER:
 					command++;
 					msg_header(rfp);
-					if ((i = newuser(raddr, inp))) {
+					if ((i = newuser(raddr, options.input))) {
 						mail_reply(i);
 						return (i);
 					}
@@ -2111,7 +2113,7 @@ int mail(void)
 					break;
 
 				case REGISTER:
-					if (newuser(raddr, inp) == E_FATAL) {
+					if (newuser(raddr, options.input) == E_FATAL) {
 						mail_reply(E_FATAL);
 						return E_FATAL;
 					}
@@ -2568,7 +2570,7 @@ void mail_reply(int err)
 		fprintf(rfp, "\nYour original message is not being echoed because you are not registered on this judge.\n");
 	}
 
-	if (!Dflg)
+	if (!options.debug)
 	{
 		if(signedon && (dipent.phase[6] != 'X'))
 		{
@@ -2653,7 +2655,7 @@ void mail_reply(int err)
 		sprintf(jline, "%s", JUDGE_CODE);
 	}
 
-	if (*s && *s != '*' && !Dflg) {
+	if (*s && *s != '*' && !options.debug) {
 		/* call lenlimit to make sure lines <=1024 long */
 		sprintf(line, "%s %s > %s.tmp", LENLIMIT_CMD, rfile, rfile);
                 system(line);
@@ -2672,7 +2674,7 @@ void mail_reply(int err)
 
 	}
 
-	if (*raddr != '*' && address_not_in_list(raddr,s) && !Dflg) {
+	if (*raddr != '*' && address_not_in_list(raddr,s) && !options.debug) {
                         
                 /*
                  * this code returns a reply to whoever sent the mail, if it's

@@ -46,3 +46,9 @@
   #define srandom(seed) srand48((long)seed)
 #endif
 
+#ifdef WIN32
+  #define PATH_SEP '\\'
+#else
+  #define PATH_SEP '/'
+#endif
+

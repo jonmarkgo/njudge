@@ -101,6 +101,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "conf.h"
 #include "config.h"
 #include "functions.h"
 #include "dip.h"

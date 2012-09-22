@@ -173,7 +173,7 @@ ascii_to_ded_OBJECTS = $(am_ascii_to_ded_OBJECTS)
 ascii_to_ded_LDADD = $(LDADD)
 am_cmap_OBJECTS = cmap.$(OBJEXT) diptime.$(OBJEXT) jm.$(OBJEXT) \
 	lib.$(OBJEXT) bailout.$(OBJEXT) conf.$(OBJEXT) \
-	strdup.$(OBJEXT) variant.$(OBJEXT) hashtable.$(OBJEXT) \
+	strdup.$(OBJEXT) variant.$(OBJEXT) \
 	global.$(OBJEXT) diplog.$(OBJEXT)
 cmap_OBJECTS = $(am_cmap_OBJECTS)
 cmap_LDADD = $(LDADD)
@@ -181,7 +181,7 @@ am_ded_to_ascii_OBJECTS = ded_to_ascii.$(OBJEXT)
 ded_to_ascii_OBJECTS = $(am_ded_to_ascii_OBJECTS)
 ded_to_ascii_LDADD = $(LDADD)
 am_deddump_OBJECTS = deddump.$(OBJEXT) conf.$(OBJEXT) strdup.$(OBJEXT) \
-	hashtable.$(OBJEXT) global.$(OBJEXT)
+	global.$(OBJEXT)
 deddump_OBJECTS = $(am_deddump_OBJECTS)
 deddump_LDADD = $(LDADD)
 am_delgame_OBJECTS = delgame.$(OBJEXT)
@@ -190,7 +190,7 @@ delgame_LDADD = $(LDADD)
 am_dip_OBJECTS = assign.$(OBJEXT) bailout.$(OBJEXT) common.$(OBJEXT) \
 	conf.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) diplog.$(OBJEXT) \
 	diptime.$(OBJEXT) draw.$(OBJEXT) global.$(OBJEXT) \
-	hashtable.$(OBJEXT) history.$(OBJEXT) jm.$(OBJEXT) \
+	history.$(OBJEXT) jm.$(OBJEXT) \
 	lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
 	ma_expenses.$(OBJEXT) ma_famplag.$(OBJEXT) \
 	ma_movement.$(OBJEXT) ma_porder.$(OBJEXT) ma_retreat.$(OBJEXT) \
@@ -218,7 +218,7 @@ lenlimit_OBJECTS = $(am_lenlimit_OBJECTS)
 lenlimit_LDADD = $(LDADD)
 am_rdip_OBJECTS = rdip.$(OBJEXT) diplog.$(OBJEXT) diptime.$(OBJEXT) \
 	bailout.$(OBJEXT) conf.$(OBJEXT) strdup.$(OBJEXT) \
-	hashtable.$(OBJEXT) global.$(OBJEXT)
+	global.$(OBJEXT)
 rdip_OBJECTS = $(am_rdip_OBJECTS)
 rdip_LDADD = $(LDADD)
 am_recdump_OBJECTS = recdump.$(OBJEXT) plyrdata.$(OBJEXT)
@@ -230,7 +230,7 @@ size_check_LDADD = $(LDADD)
 am_summary_OBJECTS = summary.$(OBJEXT) dipent.$(OBJEXT) \
 	diplog.$(OBJEXT) diptime.$(OBJEXT) jm.$(OBJEXT) lib.$(OBJEXT) \
 	params.$(OBJEXT) po_get.$(OBJEXT) bailout.$(OBJEXT) \
-	conf.$(OBJEXT) variant.$(OBJEXT) hashtable.$(OBJEXT) \
+	conf.$(OBJEXT) variant.$(OBJEXT) \
 	global.$(OBJEXT) strdup.$(OBJEXT)
 summary_OBJECTS = $(am_summary_OBJECTS)
 summary_LDADD = $(LDADD)
@@ -402,7 +402,6 @@ noinst_HEADERS = acconfig.h \
 		diplog.h   \
 		diptime.h  \
 		functions.h \
-		hashtable.h \
 		mach.h \
 		mail.h \
 		ml_signon.h  \
@@ -423,7 +422,6 @@ dip_SOURCES = assign.c \
 		diptime.c \
 		draw.c \
 		global.c \
-		hashtable.c \
 		history.c \
 		jm.c \
 		lib.c \
@@ -481,7 +479,6 @@ cmap_SOURCES = cmap.c \
 		conf.c \
 		strdup.c \
 		variant.c \
-		hashtable.c \
 		global.c \
 		diplog.c 
 
@@ -490,7 +487,6 @@ ded_to_ascii_SOURCES = ded_to_ascii.c
 deddump_SOURCES = deddump.c \
 		conf.c \
 		strdup.c \
-		hashtable.c \
 		global.c
 
 delgame_SOURCES = delgame.c
@@ -502,7 +498,6 @@ rdip_SOURCES = rdip.c \
 		bailout.c \
 		conf.c \
 		strdup.c \
-		hashtable.c \
 		global.c
 
 recdump_SOURCES = recdump.c \
@@ -520,7 +515,6 @@ summary_SOURCES = summary.c \
 		bailout.c \
 		conf.c	\
 		variant.c \
-		hashtable.c \
 		global.c \
 		strdup.c
 
@@ -731,7 +725,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/flock.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fmtwho.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/global.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hashtable.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jm.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lenlimit.Po@am__quote@

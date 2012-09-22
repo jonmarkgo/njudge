@@ -46,7 +46,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "dip.h"
 #include "porder.h"
 #include "mach.h"

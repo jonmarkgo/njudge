@@ -67,7 +67,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <time.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "functions.h"
@@ -422,16 +424,16 @@ int history(char *line, int power_type)
 		 */
 
 		while (s_date < from && from < e_date && e_pos - s_pos > 2048) {
-			if (Dflg)
+			if (options.debug)
 				printf("s = %24.24s / %ld.\n", ctime(&s_date), s_pos);
-			if (Dflg)
+			if (options.debug)
 				printf("e = %24.24s / %ld.\n", ctime(&e_date), e_pos);
 			pos = s_pos + (long) (((float) (e_pos - s_pos) *
 					       (float) (from - s_date)) /
 					      (float) (e_date - s_date));
 			fseek(fp, pos, 0);
 			hist_date(&n_date, &n_pos, 0);
-			if (Dflg)
+			if (options.debug)
 				printf("n = %24.24s / %ld from %ld.\n", ctime(&n_date), n_pos, pos);
 			if (n_date >= from) {
 				e_date = n_date;
@@ -453,13 +455,13 @@ int history(char *line, int power_type)
 			fseek(fp, s_pos, 0);
 			do {
 				hist_date(&s_date, &s_pos, 0);
-				if (Dflg)
+				if (options.debug)
 					printf("Skipped to %24.24s at %ld.\n", ctime(&s_date), s_pos);
 			} while (s_date < from);
 
 			do {
 				hist_date(&s_date, &s_pos, 1);
-				if (Dflg)
+				if (options.debug)
 					printf("Printed to %24.24s at %ld.\n", ctime(&s_date), s_pos);
 			} while (s_date < to && lcnt > 0);
 

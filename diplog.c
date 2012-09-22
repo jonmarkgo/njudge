@@ -1,14 +1,16 @@
 /* This file defines the diplogging functions */
 
-#include "diplog.h"
 #include <stdlib.h>
-#include "functions.h"
-#include "conf.h"
 #include <stdarg.h>
+#include <glib.h>
+
+#include "conf.h"
+#include "diplog.h"
+#include "functions.h"
 
 void opendiplog( char *x, int level, int priv) 
 {
-    if (!SYSLOG_FLAG) return;
+    if (!conf_get_bool("enable_syslog")) return;
 
     openlog( x, level, priv);
 #ifdef HAS_ON_EXIT
@@ -34,7 +36,7 @@ void dipexit(int exit_code, void *ignore_me)
 #else
 void dipexit()
 {
-    if (!SYSLOG_FLAG) return;
+    if (!conf_get_bool("enable_syslog")) return;
 
         DIPINFO("Exit");
     CLOSEDIPLOG();
@@ -44,7 +46,7 @@ void dipexit()
 static void diplog(int level, char *fmt, ...)
 {
     va_list args;    
-    if (!SYSLOG_FLAG) return;
+    if (!conf_get_bool("enable_syslog")) return;
     
     va_start(args, fmt);
     syslog(level, fmt, args);

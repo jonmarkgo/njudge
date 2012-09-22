@@ -87,6 +87,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "mail.h"

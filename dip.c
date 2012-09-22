@@ -286,7 +286,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <getopt.h>
 #include <glib.h>
+#include <glib/gprintf.h>
 
 #include "config.h"
 #include "dip.h"
@@ -303,15 +305,16 @@
    at the deadline rather than 24 hours later. */
 /*#define NORMDED */
 
-static void init(int, char **);
-void phase_pending(void);	/* defined in phase.c */
-void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 void CheckRemindPlayer( int player, long one_quarter);
 void CheckSizes(void);   /* Check that no sizes have changed */
+void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
+static gint init(int, char **);
+gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg);
+void phase_pending(void);	/* defined in phase.c */
+void print_usage(void);
 
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
-
-/****************************************************************************/
+struct opts_s options = {0};
 
 int main(int argc, char** argv) {
 
@@ -343,19 +346,19 @@ int main(int argc, char** argv) {
 	dipent.pr_valid = 0; /* not yet loaded pr */
 	dipent.valid = 0;   /* nor dipent itself */
 
-	if (!tflg) {
-		if (!xflg) {
+	if (!options.variant) {
+		if (!options.no_input) {
 			DIPDEBUG("Processing mail");
 			mail();	/* Process mail message on stdin  */
 		}
-		if (!qflg) {
+		if (!options.quick) {
 			DIPDEBUG("Looking for events");
 			master();	/* Process any events pending     */
 		}
 	} else {
 		rfp = stdout;
-		Dflg++;
-		testdipent(sflg, tflg);
+		options.debug++;
+		testdipent(options.sequence, options.variant);
 		process();
 	}
 
@@ -426,7 +429,7 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
 	if (!(dipent.players[player_index].status & SF_RESIGN)) {
 		sprintf(line, "%s '%s:%s - %s Blind Results'",
 			out_file, JUDGE_CODE, dipent.name, turn_text);
-		if (*(dipent.players[player_index].address) != '*' && !Dflg) {
+		if (*(dipent.players[player_index].address) != '*' && !options.debug) {
 			MailOut(line, dipent.players[player_index].address);
 		}
 	}
@@ -463,7 +466,7 @@ void savemail(void) {
 		perror("FLOCKF1");
 		exit(E_FATAL);
 	}
-	while (fgets(line, (int) sizeof(line), inp)) {
+	while (fgets(line, (int) sizeof(line), options.input)) {
 		fputs(line, fp);
 	}
 
@@ -473,18 +476,59 @@ void savemail(void) {
 	return;
 
 }
-static void init(int argc, char** argv) {
+static gint init(int argc, char** argv) {
 
-	gchar*	tcptr;		// Temporary char pointer
-	int i, fd;
-	unsigned char *s;
+	gint       idx;
+	gint       err;
+	gint       rtn = 1;			// Return value
+	gchar*     tcptr;			// Temporary char pointer
+	GPtrArray* cl_cfg = NULL;
+	int fd;
 	time_t now;
 	struct stat sbuf;
 	FILE *fptr;
 	char *t;
-	char *datetime;
 
 	g_set_prgname(g_basename(argv[0]));
+
+	// Set default config file
+	CONFIG_DIR  = g_memdup(".\0dip.conf", 11);
+	CONFIG_FILE = CONFIG_DIR + 2;
+
+	// Set options defaults
+	options.cwd		= g_path_get_dirname(argv[0]);
+	options.input   = stdin;
+
+	/* Reset the random seed */
+	time(&now);
+	srand(now);
+
+	conf_init();
+
+	if (!parse_cmdline(argc, argv, &cl_cfg)) {
+		print_usage();
+		return 0;
+	}
+
+	// Read the config file
+	conf_read_file(CONFIG_DIR, CONFIG_FILE);
+
+	// Parse config values stashed away while reading command line
+	if (cl_cfg) {
+		while (tcptr = g_ptr_array_remove_index(cl_cfg, 0)) {
+			if ((err = conf_textual_set(tcptr)) < 1) {
+				if (err == -2) {
+					g_fprintf(stderr, "e> unknown config variable - %s\n", tcptr);
+				} else {
+					g_fprintf(stderr, "e> error parsing config argument - %s\n", tcptr);
+				}
+				rtn = 0;
+				goto exit_init;
+			}
+		}
+		g_ptr_array_unref(cl_cfg);
+		if (!rtn) goto exit_init;
+	}
 
 	// Change the judge timezone, if set
 	tcptr = JUDGE_TZ;
@@ -495,214 +539,20 @@ static void init(int argc, char** argv) {
 	    g_free(tcptr);
 	}
 
-	inp = stdin; /* default */
-
 	/*
 	 * read in the configuration, first from config file,
 	 * then from environment, finally from the command line
 	 * TODO: fold in command line processing for configuration
 	 * variables with regular argument processing.
 	 */
-	conf_init();
 /*
 	conf_readfile(CONFIG_FILE);
 	conf_cmdline(argc, argv);
  */
-	/*
-	 *  Process command line arguments
-	 *
-	 *  The initial value of dflg is the directory from which we were loaded.
-	 *  We'll cd to that directory to find our datafiles.
-	 */
 
 	subjectline[0] = '\0';
 
-	dflg = argv[0];
-	if ((nflg = strrchr(argv[0], '/'))) {
-		dflg = argv[0];
-		*nflg++ = '\0';
-	} else {
-		dflg = "";
-		nflg = argv[0];
-	}
-
-	for (i = 1; i < argc; i++) {
-		if (*argv[i] == '-')
-		for (s = argv[i] + 1; *s; s++) {
-			switch (*s) {
-
-			case 'a':
-				aflg++;
-				break;
-
-			case 'A':
-				Aflg++;
-				break;
-
-			case 'c':
-				/* Will be handled later in conf treatment */
-				break; 
-			case 'C':
-				if (*++s)
-						CONFIG_DIR = s;
-				else if (i < argc+1)
-						CONFIG_DIR = argv[i+1];
-				else {
-						fprintf(stderr, "Directory must follow C option.\n");
-						goto usage;
-				}
-				i++;
-				s = " ";
-				break;
-
-			case 'D':
-				Dflg++;
-				break;
-
-			case 'd':
-				if (*++s) 
-					dflg = s;
-				else if (++i < argc)
-					dflg = argv[i];
-				else {
-					fprintf(stderr, "Directory must follow d option.\n");
-					goto usage;
-				}
-				i++;
-				s = " ";
-				break;
-
-			case 'i':
-				if (*++s) {
-				    inname = s;
-				} else if (++i < argc) {
-					inname = argv[i];
-				} else {
-					fprintf(stderr, "File name must follow i option.\n");
-					goto usage;
-				}
-				s = " ";
-				break;
-
-
-			case 'q':
-				qflg++;
-				break;
-
-			case 'r':
-				if (*++s)
-					rflg = s;
-				else if (++i < argc)
-					rflg = argv[i];
-				else {
-					fprintf(stderr, "Game name must follow r option.\n");
-					goto usage;
-				}
-				i++;
-				s = " ";
-				break;
-
-			case 's':
-				if (isdigit(*(s + 1)))
-					sflg = atoi(++s);
-				else if (i + 1 < argc && (sflg = atoi(argv[i + 1])))
-					i++;
-				else
-					sflg = 1;
-				if (!tflg)
-					tflg = V_STANDARD;
-				i++;
-				s = " ";
-				break;
-
-
-			case 'T':
-			        if (*++s) {
-			            datetime = s;
-			        } else if (++i < argc) {
-			            datetime = argv[i];
-			        }
-				else {
-				    fprintf(stderr, "Date-time must follow T option.\n");
-				    goto usage;
-				}
-				if (mail_date(&datetime, &dip_time, 1, stderr, 0)) {
-						fprintf(stderr, "Invalid date-time %s specified.\n", datetime);
-						goto usage;
-			        }
-				s = " ";
-				break;
-					
-			case 't':
-				tflg = 0;
-				if (isdigit(*(s + 1)))
-					tflg = atoi(++s);
-				else if (i + 1 < argc && (tflg = atoi(argv[i + 1])))
-					i++;
-				else
-					tflg = V_STANDARD;
-				if (!sflg)
-					sflg = 1;
-				i++;
-				s = " ";
-				break;
-
-			case 'v':
-				vflg++;
-				break;
-
-			case 'x':
-				xflg++;
-				break;
-
-			case ' ':
-				break; /* Ignore spaces */
-
-			default:
-				goto usage;
-		    }
-		} else {
-		      usage:
-			fprintf(stderr, "Usage: [/directory/]%s [-C <directory>] [-c<CONFIG>=<value>] [-d<date>] [-aADqvx] [-sseq] [-tvar] [-d directory] [-i<filename>] [-r name]\n", nflg);
-			fprintf(stderr, "  The directory specifies where we'll find our data.\n");
-			fprintf(stderr, "  -a Don't mess with the at queue.\n");
-			fprintf(stderr, "  -A Don't remove anything from the at queue.\n");
-			fprintf(stderr, "  -C <sudirectory> Directory where dip.conf is.\n");
-			fprintf(stderr, "  -c<CONFIG>=<value> Set <CONFIG> variable to <value>.\n");
-			fprintf(stderr, "  -D increments the debugging flag.\n");
-			fprintf(stderr, "  -d change current directory.\n");
-			fprintf(stderr, "  -i Use <filename> for input.\n");
-			fprintf(stderr, "  -q quick mode, just process mail.\n");
-			fprintf(stderr, "  -T Used <date-time> string as current date & time.\n");
-			fprintf(stderr, "  -t force variant var.\n");
-			fprintf(stderr, "  -v Verbose, issue all error messages.\n");
-			fprintf(stderr, "  -x no input, don't read stdin for mail.\n");
-			fprintf(stderr, "  -r Original name for randomizer (Machiavelli).\n");
-			fprintf(stderr, "  -s specifies test mode and sequence.\n");
-			fprintf(stderr, "  -t specifies test mode and variant.\n");
-			exit(E_FATAL);
-		}
-	}
-
-	/* Reset the random seed */
-	time(&now);
-	srand(now);
-
-
-	if (CONFIG_FILE == NULL) {
-		fprintf(stderr, "Must specifiy a configuration file with -C option.\n");
-		exit(E_FATAL);	
-	}
-	/* Read in the config file */
-        conf_readfile(CONFIG_DIR, CONFIG_FILE);
-        conf_cmdline(argc, argv);
-
-	if (*dflg && chdir(dflg)) {
-		perror(dflg);
-		exit(E_FATAL);
-	}
 	/* Interlock the log file to ensure single threading  */
-
 	if ((fd = open(LOG_FILE, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
 		perror(LOG_FILE);
 		exit(E_FATAL);
@@ -711,14 +561,6 @@ static void init(int argc, char** argv) {
 		perror("fdopen");
 		exit(E_FATAL);
 	}
-	if (inname != NULL) {
-	    if (!(inp = fopen(inname, "r"))) {
-                perror(inname);
-                exit(E_FATAL);
-            }
-	}
-
-	
 	if (!stat(KEEPOUT, &sbuf)) {
 		savemail();
 		exit(0);
@@ -734,7 +576,6 @@ static void init(int argc, char** argv) {
 	alarm(0);
 
 	/* OK, now see if we're supposed to use block file */
-
 	t = BLOCK_FILE;
 	if (t[0]) {
 	    if (!stat(t, &sbuf)) {
@@ -752,7 +593,7 @@ static void init(int argc, char** argv) {
 
 	time(&now);
 	fprintf(log_fp, "%15.15s: dip -%s%s%s\n", ctime(&now) + 4,
-		Aflg ? "A" : "", qflg ? "q" : "", xflg ? "x" : "");
+		options.dont_rm_q ? "A" : "", options.quick ? "q" : "", options.no_input ? "x" : "");
 
 	if ((fd = open("dip.ded", O_RDONLY)) < 0)
 		if ((fd = open("dip.dedicate", O_RDONLY)) < 0)
@@ -777,6 +618,10 @@ static void init(int argc, char** argv) {
 		perror("dip.control");
 		exit(E_FATAL);
 	}
+
+exit_init:
+
+	return rtn;
 
 }
 void master(void) {
@@ -917,8 +762,8 @@ void master(void) {
 	if (!strncmp(s + 11, "14:00", 5))
 		s[15] = '1';	/* Prevent 2pm schedules */
 	sprintf(line, "%s %s %2.2s%2.2s %6.6s %4.4s", ATRUN_CMD,
-		Aflg ? "norm" : "dorm", s + 11, s + 14, s + 4, s + 20);
-	if (!aflg)
+		options.dont_rm_q ? "norm" : "dorm", s + 11, s + 14, s + 4, s + 20);
+	if (!options.dont_touch_q)
 		execute(line);
 
 	/*
@@ -1123,7 +968,7 @@ int process(void) {
 					dipent.players[RealPlayerIndex(i)].status |= SF_MOVED;
 				} else {
 					if (!n++) {
-						if (Dflg) {
+						if (options.debug) {
 							lfp = stdout;
 							mlfp = stdout;
 						}
@@ -1230,7 +1075,7 @@ int process(void) {
 			}
 
 
-			if (!Dflg) {
+			if (!options.debug) {
 				fclose(lfp);
 				fclose(mlfp);
 				msg_header_done = 0;
@@ -1338,7 +1183,7 @@ int process(void) {
 		}
 	}
 	if (dipent.seq[0] == 'x') {
-		if (Dflg)
+		if (options.debug)
 			rfp = stdout;
 		else if (!(rfp = fopen("dip.result", "w"))) {
 			perror("dip_process: dip.result");
@@ -1364,7 +1209,7 @@ int process(void) {
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
 			sprintf(title_text, "Diplomacy game %s signup waiting", dipent.name);
 		}
-		if (!Dflg)
+		if (!options.debug)
 		{
 			now=time(NULL);   
 			if(dipent.phase[6] != 'X')
@@ -1393,7 +1238,7 @@ int process(void) {
 
 	} else if (now > dipent.process) {
 
-		if (Dflg)
+		if (options.debug)
 			rfp = stdout;
 		else if (!(rfp = fopen("dip.result", "w"))) {
 			perror("dip_process: dip.result");
@@ -1493,7 +1338,7 @@ int process(void) {
 
 				dipent.wait = dipent.process;
 
-				if (!Dflg)
+				if (!options.debug)
 				{
 					if(signedon && (dipent.phase[6] != 'X'))
 					{
@@ -1511,7 +1356,7 @@ int process(void) {
 					if (dipent.players[i].power < 0)
 						continue;
 
-					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' && !Dflg &&
+					if (*(dipent.players[RealPlayerIndex(i)].address) != '*' && !options.debug &&
 					    !(dipent.players[RealPlayerIndex(i)].status & SF_RESIGN) &&
 					    RealPlayerIndex(i) == i) {
 						sprintf(line, "dip.result '%s:%s - %s %s Waiting for Replacements: %s'",
@@ -1532,7 +1377,7 @@ int process(void) {
 		if (dipent.xflags & XF_MANUALPROC) {
 			if (!(dipent.players[0].status & SF_PROCESS)) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
-				if (!Dflg) {
+				if (!options.debug) {
 				    fclose (rfp);
 			            msg_header_done = 0;  /* Bug 282, header will need to be redone */
 				}
@@ -1563,7 +1408,7 @@ int process(void) {
 		if ((i = porder('M', -1, 0))) {
 			fprintf(rfp, "Error %d processing orders.\n", i);
 			fprintf(stderr, "Error %d processing orders.\n", i);
-			if (!Dflg) {
+			if (!options.debug) {
 				fclose(rfp);
         			msg_header_done = 0;  /* Bug 282, header will need to be redone */
 			}
@@ -1647,7 +1492,7 @@ int process(void) {
 				if (dipent.players[i].power < 0)
 					continue;
 
-				if (*(dipent.players[i].address) != '*' && !Dflg && 
+				if (*(dipent.players[i].address) != '*' && !options.debug &&
 				    RealPlayerIndex(i) == i ) {
 					sprintf(line, "dip.victory '%s:%s - %s Victory: %s'",
 					  JUDGE_CODE, dipent.name, phase, vic_string);
@@ -1731,7 +1576,7 @@ int process(void) {
 			}
 		}
 
-		if (!Dflg)
+		if (!options.debug)
 		{
 			if(signedon && (dipent.phase[6] != 'X'))
 			{
@@ -1771,7 +1616,7 @@ int process(void) {
 	        		GAME_DIR, dipent.name, phase,
 				JUDGE_CODE, dipent.name, phase);
 
-			if (*(dipent.players[i].address) != '*' && !Dflg &&
+			if (*(dipent.players[i].address) != '*' && !options.debug &&
 					    !(dipent.players[i].status & SF_RESIGN) &&
 					    RealPlayerIndex(i) == i) 
 			{
@@ -1801,4 +1646,130 @@ int process(void) {
 	}
 	
 	return 0;		/* reached ? */
+}
+gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
+
+	gint  result = 1;
+	gchar c;
+	gchar opt;
+
+	while ((opt = getopt(argc, argv, "AaC:c:Dd:i:qs:T:t:vx")) > -1) {
+
+		switch(opt) {
+			case 'A':
+				options.dont_rm_q = 1;
+				break;
+			case 'a':
+				options.dont_touch_q = 1;
+				break;
+			case 'C':
+				options.cfg_file = optarg;
+				/*
+				 * Code below are for compatibility reasons only.
+				 * TODO: Remove ASAP...
+				 */
+				CONFIG_DIR = g_strdup(optarg);
+				CONFIG_DIR[(c = strrchr(CONFIG_DIR, PATH_SEP))] = 0;
+				CONFIG_FILE = ++c;
+				break;
+			case 'c':
+				/*
+				 * We stash these values for later processing, since we'll need
+				 * to read the config file first; complying to overriding rules
+				 */
+				if (!*cl_cfg) *cl_cfg = g_ptr_array_new();
+				g_ptr_array_add(*cl_cfg, optarg);
+				break;
+			case 'D':
+				options.debug = 1;
+				break;
+			case 'd':
+				if (chdir(optarg) < 0) {
+					g_fprintf(stderr, "e> couldn't change directory - %s: %s\n",
+							optarg, g_strerror(errno));
+					result = 0;
+					goto exit_parse_cmdline;
+				}
+				break;
+			case 'i':
+				options.input = fopen(optarg, "r");
+				if (NULL == options.input) {
+					g_fprintf(stderr, "e> couldn't open input stream - %s: %s\n",
+							optarg, g_strerror(errno));
+					result = 0;
+					goto exit_parse_cmdline;
+				}
+				break;
+			case 'q':
+				options.quick = 1;
+				break;
+			case 'r':
+				options.randomizer = optarg;
+				break;
+			case 's':
+				if (!sscanf(optarg, "%u", &options.sequence)) {
+					g_fprintf(stderr, "e> option s requires an integer argument\n");
+					result = 0;
+					goto exit_parse_cmdline;
+				}
+				if (!options.variant) {
+					options.variant = V_STANDARD;
+				}
+				break;
+			case 'T':
+				options.datetime = optarg;
+				if (mail_date(&options.datetime, &dip_time, 1, stderr, 0)) {
+				    g_fprintf(stderr, "Invalid date-time %s specified.\n", options.datetime);
+				    result = 0;
+				    goto exit_parse_cmdline;
+				}
+				break;
+			case 't':
+				if (!sscanf(optarg, "%u", &options.variant)) {
+					g_fprintf(stderr, "e> option t requires an integer argument\n");
+					result = 0;
+					goto exit_parse_cmdline;
+				}
+				if (!options.sequence) {
+					options.sequence = 1;
+				}
+				break;
+			case 'v':
+				options.verbose ++;
+				break;
+			case 'x':
+				options.no_input = 1;
+				break;
+			default:
+				break;
+		}
+
+	}
+
+exit_parse_cmdline:
+
+	return result;
+
+}
+void print_usage(void) {
+
+	fprintf(stderr, "Usage: [/directory/]%s [-C <directory>] [-c<CONFIG>=<value>] [-d<date>] "
+			"[-aADqvx] [-sseq] [-tvar] [-d directory] [-i<filename>] [-r name]\n", g_get_prgname());
+	fprintf(stderr, "  The directory specifies where we'll find our data.\n");
+	fprintf(stderr, "  -a Don't mess with the at queue.\n");
+	fprintf(stderr, "  -A Don't remove anything from the at queue.\n");
+	fprintf(stderr, "  -C <sudirectory> Directory where dip.conf is.\n");
+	fprintf(stderr, "  -c<CONFIG>=<value> Set <CONFIG> variable to <value>.\n");
+	fprintf(stderr, "  -D increments the debugging flag.\n");
+	fprintf(stderr, "  -d change current directory.\n");
+	fprintf(stderr, "  -i Use <filename> for input.\n");
+	fprintf(stderr, "  -q quick mode, just process mail.\n");
+	fprintf(stderr, "  -r Original name for randomizer (Machiavelli).\n");
+	fprintf(stderr, "  -T Used <date-time> string as current date & time.\n");
+	fprintf(stderr, "  -t force variant var.\n");
+	fprintf(stderr, "  -v Verbose, issue all error messages.\n");
+	fprintf(stderr, "  -x no input, don't read stdin for mail.\n");
+	fprintf(stderr, "  -s specifies test mode and sequence.\n");
+	fprintf(stderr, "  -t specifies test mode and variant.\n");
+
 }

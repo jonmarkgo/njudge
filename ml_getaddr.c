@@ -31,12 +31,14 @@
    **
  */
 
+#include <string.h>
+#include <glib.h>
+
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
-
-#include <string.h>
 
 /****
  * See if passed email is valid
@@ -225,7 +227,7 @@ int mail_getaddr(char *s, char *addr)
 		fprintf(log_fp, "Ignoring mail from funny address %s.\n", t);
 
 		bang = 0;
-		while (fgets(line, sizeof(line), inp)) {
+		while (fgets(line, sizeof(line), options.input)) {
 			fputs(line, log_fp);
 			fputs(line, ifp);
 			if (!strcmp(line, "Subject: Returned mail: Return receipt\n"))

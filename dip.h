@@ -243,9 +243,11 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <glib.h>
+
 #include "diptime.h"
 
-#include "conf.h"
+// #include "conf.h"
 
 #define min(a,b)      ((a) < (b) ? (a) : (b))
 #define max(a,b)      ((a) > (b) ? (a) : (b))
@@ -454,6 +456,24 @@ typedef struct Sequence {
 /* Check the sscanf/fprintf in dipent if you do! */
 #define MAX_ABSENCES (3)  
 
+struct opts_s {
+
+	gboolean	dont_rm_q;			// Don't remove anything from queue -A
+	gboolean	dont_touch_q;		// Don't touch the queue -a
+	gchar*		cfg_file;			// Config file to use -C path
+	gchar*		cfg_val;			// Set config value -c key=val
+	gboolean	debug;				// Debugging mode, write reply to stdout -D
+	gchar*		cwd;				// Change current working directory -d dir
+	FILE*		input;				// Input file -i file
+	gboolean	quick;				// Quick-mode, just process mail -q
+	gchar*		randomizer;			// Original name for randomizer (Machiavelli) -r
+	guint		sequence;			// Test sequence -s
+	gchar*		datetime;			// Use this as current time & date -T date
+	guint		variant;			// Force variant -t var
+	gboolean	verbose;			// Issue all error messages -v
+	gboolean	no_input;			// No input, don't read stdin for mail -x
+
+};
 typedef struct PLAYER {
 	int power;		/* Power ordinal                              */
 	int status;		/* Status flags                               */
@@ -547,6 +567,7 @@ extern struct extra_centre extra_centres[MAXPLAYERS];
 		dipent.players[player].power < WILD_PLAYER) ? somepower :\
 				   powers[dipent.players[player].power])
 
+extern struct opts_s options;
 extern struct dipent dipent;
 extern FILE *log_fp;		/* General log/interlock file */
 extern FILE *rfp;		/* Reply file pointer */
@@ -559,18 +580,7 @@ extern struct dedication ded[MAXUSER];
 extern char subjectline[80];
 
 extern char *notifies;
-extern int aflg;		/* -a: don't mess with the at queue at all      */
-extern int Aflg;		/* -A: don't take anything off the at queue     */
-extern char *dflg;		/* -d home directory                            */
-extern int Dflg;		/* -D: output goes to stdout rather than reply  */
-extern char *nflg;		/* Our program name                             */
-extern int qflg;		/* -q: quick mode, just process mail, not games */
-extern int tflg;		/* -t variant: test adjudication                */
-extern char *rflg;		/* -r name: randomizer for die rolls            */
-extern int sflg;		/* -s sequence: test adjudication               */
-extern int vflg;		/* -v: verbose, issue all error messages        */
 extern int xflg;		/* -x: no incoming mail on stdin                */
-extern char *inname;		/* Filename to use for input			*/
 extern int control;
 extern int predict;		/* =1 when predicting a turn			*/
 

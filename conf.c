@@ -1,282 +1,268 @@
 /*
- * $Log: conf.c,v $
- * Revision 1.15  2004-05-22 09:02:50  millis
- * Bug 297: Add Intimate Diplomacy
+ * conf.c
  *
- * Revision 1.14  2003/02/17 21:24:12  millis
- * Add missing quote
+ *  Created on: 2 sep 2012
  *
- * Revision 1.13  2003/02/17 12:41:41  millis
- * Fixed Bug 108, make lines >=1024 terminate in '\n'
- *
- * Revision 1.12  2003/02/05 23:53:43  millis
- * Removed dipstats files.
- * Also added in new JUDGE_TZ variable, to specify timezone
- *
- * Revision 1.11  2003/01/16 22:51:47  millis
- * Removed STAT stuff
- *
- * Revision 1.10  2003/01/13 22:38:51  millis
- * merged in from ustv
- *
- * Revision 1.9  2002/12/22 02:00:34  millis
- * Added DIE_STORMS setting for new random seed for storms
- *
- * Revision 1.8  2002/08/27 22:27:45  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.7  2002/04/15 12:55:41  miller
- * Multiple changes for blind & Colonial & setup from USTV
- *
- * Revision 1.6  2001/07/17 15:16:48  greg
- * added GAME_DIR
- *
- * Revision 1.5  2001/07/08 22:56:29  miller
- * Add TIME_TOLERANCE and WARP_FILE
- *
- * Revision 1.4  2001/07/01 23:19:29  miller
- * New variant guardians
- *
- * Revision 1.3  2001/01/06 18:48:07  davidn
- * Changes to allow game creator be automatically made master
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Added new dip.conf variables
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
+ *      Author: cjw
  */
 
-#include <ctype.h>
+#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "config.h"
 #include "conf.h"
-#include "hashtable.h"
 
-/* this file contains global variables and functions to set them
- * to customize judge behavior at runtime.
- * These are added to a global hash table, and macros are provided
- * in conf.h to pull them out with the appropriate type, they are
- * stored as strings internally
- * this file is public domain by nathan wagner
- */
+typedef struct {
 
-struct pd_ht conf_table;
+	gchar* key;
+	gchar* val;
 
-static int conf_doline(char *line);
+} cfgval_t;
 
-int conf_set(char *var, char *val)
-{
-	/* if it's the judge code put it into the environment so
-	 * smail can pick it up.
-	 */
-	if (!strcmp("JUDGE_CODE", var)) {
-		char myline[1024];
-		sprintf(myline, "%s=%s", var, val);
-		putenv(myline);
-	}
-	return pd_ht_stash(&conf_table, var, strdup(val), free);
-}
+#ifndef UNITTEST
+  static
+#endif
+GHashTable* conf_table = NULL;
 
-char *config(char *var)
-{
-	return (char *) pd_ht_fetch(&conf_table, var);
-}
+static cfgval_t def_vals[] = {
 
-/*
- * BN_CUSTODIAN is the Boardman Custodian, who receives game starts
- *              and ends for standard, nongunboat games
- * MN_CUSTODIAN is the Miller Number Custodian, who receives the game
- *              starts and ends for other games
- * Neither of these should be altered, except on test judges.  These
- * addresses may change from time to time.  Please revise if necessary.
- */
-
-int conf_init(void)
-{
-
-	pd_ht_init(&conf_table, 0, NULL);
-
-	/* defaults follow */
-
-	/* Path for judge to reside in */
-	conf_set("JUDGE_PATH", "/.");
-
-	/* and add default commands */
-	conf_set("SUMMARY_CMD", "./summary");
-	conf_set("SMAIL_CMD", "./smail");
-	conf_set("RUNLISTMAP_CMD", "./runlistmap");
-	conf_set("RUNDIPMAP_CMD", "./rundipmap");
-	conf_set("DIP_CMD","./dip");
-	conf_set("ATRUN_CMD","./atrun");
-	conf_set("LENLIMIT_CMD","./lenlimit");
-	conf_set("GAME_DIR","D");
-
-	conf_set("GAMES_MASTER", "judge_request");
-	/* games_opener is place to send opening moves for statistics */
-	conf_set("GAMES_OPENER", "nobody");
-
-	/* hall_keeper is person who receives summaries for the Hall of Fame */
-	conf_set("HALL_KEEPER", "nobody");
-	conf_set("BN_CUSTODIAN", "nobody");
-	conf_set("MN_CUSTODIAN", "nobody");
-	conf_set("EP_CUSTODIAN","nobody");
-	conf_set("OURSELVES", "judge");
-	conf_set("BITNET_GATEWAY1", "");
-	conf_set("BITNET_GATEWAY2", "");
-	conf_set("FORWARD", "");
-	conf_set("XFORWARD", "");
-	conf_set("YFORWARD", "");
-	conf_set("KEEPOUT", "");
-	conf_set("SAVE_FILE", "saved_mail");
-	conf_set("PLAN", "");
-	conf_set("BAILOUT_PLAN", "");
-	conf_set("BAILOUT_MSG", "bailout.msg");
-	conf_set("RGD_GATEWAY", "nobody");
-	conf_set("MIN_CONTROL", "43200");
-	conf_set("JUDGE_CODE", "XXXX");
-	conf_set("LOCK_TIMEOUT", "3600");
-	conf_set("D_ONTIME", "3");
-	conf_set("D_LATE", "-1");
-	conf_set("D_ABANDON", "-49");
-	conf_set("D_CD", "-100");
-	conf_set("MAP_FILE", "data/map");
-	conf_set("MASTER_FILE", "dip.master");
-	conf_set("TMASTER_FILE", "dip.tmast");
-	conf_set("NO_CREATE", "dip.nocreate");
-	conf_set("LOG_FILE", "dip.log");
-	conf_set("CUTOFF_LENGTH", "78");	/* Length of longest print strings */
-	conf_set("DIE_ASSASSIN", "382204");
-	conf_set("DIE_EXPENSE", "148741");
-	conf_set("DIE_FAMPLAG", "995816");
-	conf_set("DIE_STORMS",  "341291");
-	conf_set("DIE_INCOME", "66144");
-	conf_set("CREATE_DEDICATION", "-10");
-	conf_set("SPECIAL_PW", "default");
-	conf_set("SYSLOG_FLAG", "0");
-	conf_set("AUTO_MASTER","no");
-	conf_set("TIME_TOLERANCE", "60");  /* Time drift before detecting warp */
-	conf_set("WARP_FILE", "./dip.warp");
-
-/* Default custodians for sailho (other variants will default to nothing */
-	conf_set("CUSTODIAN_sailho", "tarzan_monkeyman@bigfoot.com");
-	conf_set("CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"); 
-
-	conf_set("CUSTODIAN_1900_1", "VonPowell@aol.com");
-	conf_set("CUSTODIAN_1900_2", "VonPowell@aol.com");
-	conf_set("CUSTODIAN_1900_3", "VonPowell@aol.com");
-
-	conf_set("BLIND", "./zpblind");
-
-	conf_set("NOBODY", "nobody@localhost");
-
-	conf_set("BLOCK_FILE", ""); /* File to block dip running */
-
-	conf_set("JUDGE_TZ", "");	/* Judge timezone, if different from localtime */
-
-	conf_set("NULL_EMAIL", "nobody@localhost");  /* email to no-one */
-
-	return 1;
-}
-
-void conf_cmdline(int argc, char **argv)
-{
-	int c;
-
-	for (c = 1; c < argc; c++) {
-		if ((argv[c][0] == '-') && (argv[c][1] == 'c')) {
-			conf_doline(&argv[c][2]);
-		}
-	}
-}
-
-void conf_usage(void)
-{
-	fprintf(stderr, "There is an error in your command line configuration arguments.\n");
-	exit(-2);
-}
-
-void conf_readfile(char *directory, char *fname)
-{
-	char myline[255];
-	char filename[255];
-	FILE *conffile;
-	char *tmp;
-
-	fflush(stdout);
-	fflush(stderr);
-
-	sprintf(filename, "%s/%s", directory, fname);
-
-	conffile = fopen(filename, "r");
-	if (conffile == NULL) {
-		perror("unable to open config file");
-		perror(filename);
-		exit(-2);
-	}
-	while (fgets(myline, 255, conffile) != NULL) {
-		/* set the last newline to a null */
-		if ((tmp = strrchr(myline, '\n'))) {
-			*tmp = '\0';
-		}
-		/* skip leading whitespace */
-		tmp = myline;
-		while (isspace((unsigned char) *tmp)) {
-			tmp++;
-		}
-
-		/* blank line ? */
-		if ((*tmp == 0) || (*tmp == '#')) {
-			continue;
-		}
-		/* TODO: clean up memory when we are done.  i am ignoring
-		 * it for now, as the OS should reclaim the memory when we exit.
+		{"auto_master"			, "no"},
+		{"bail_forward"			, "~/bail_forward"},
+		{"bailout_msg"			, "bailout.msg"},
+		{"bailout_plan"			, "~/bail_plan"},
+		{"bitnet_gateway1"		, ""},
+		{"bitnet_gateway2"		, ""},
+		{"block_file"			, ""},			// Use block file? Put path here
+		{"create_disabled"		, "no"},
+		{"enable_syslog"		, "no"},
+		{"forward"				, "~/.forward"},
+		{"forward_onbail"		, "~/forward_onbail"},
+		{"game_dir"				, "./games"},
+		{"games_opener"			, ""},
+		{"hall_keeper"			, ""},
+		{"judge_code"			, "XXXX"},
+		{"judge_keeper"			, "judgekeeper@localhost"},
+		{"judge_path"			, "./"},
+		{"judge_tz"				, ""},
+		{"line_wrap"			, "78"},
+		{"lock_timeout"			, "3600"},
+		{"log_file"				, "njudgex.log"},
+		{"mail_spooler"			, "mail_spooler"},
+		{"master_db"			, "dip.master"},
+		{"master_db_tmp"		, "dip.tmast"},
+		{"min_control"			, "43200"},
+		{"nobody"				, "nobody@localhost"},
+		{"points_abandon"		, "-49"},
+		{"points_cd"			, "-100"},
+		{"points_late"			, "-1"},
+		{"points_ontime"		, "3"},
+		{"username"				, "judge"},
+		{"warp_file"			, "./njudgex.warp"}, // temporary warp-message file
+		{"xforward"				, ""},
+		// Default commands
+		{"cmd_lenlimit"			, "./lenlimit"},
+		{"cmd_atrun"			, "./atrun"},
+		{"cmd_dip"				, "./njudgex"},
+		{"cmd_smail"			, "./smail"},
+		{"cmd_summary"			, "./summary"},
+		// Variant specific variables?
+		{"DIE_ASSASSIN"			, "382204"},
+		{"DIE_EXPENSE"			, "148741"},
+		{"DIE_FAMPLAG"			, "995816"},
+		{"DIE_STORMS"			, "341291"},
+		{"DIE_INCOME"			, "66144"},
+		/*
+		 * BN_CUSTODIAN is the Boardman Custodian, who receives game starts
+		 *              and ends for standard, nongunboat games
+		 * MN_CUSTODIAN is the Miller Number Custodian, who receives the game
+		 *              starts and ends for other games
+		 * Neither of these should be altered, except on test judges.  These
+		 * addresses may change from time to time.  Please revise if necessary.
 		 */
+		{"BN_CUSTODIAN"			, "nobody"},
+		{"MN_CUSTODIAN"			, "nobody"},
+		{"EP_CUSTODIAN"			, "nobody"},
+		// Default custodians for sailho (other variants will default to nothing
+		{"CUSTODIAN_sailho"		, "tarzan_monkeyman@bigfoot.com"},
+		{"CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"},
+		// Default custodians for 1900?
+		{"CUSTODIAN_1900_1"		, "VonPowell@aol.com"},
+		{"CUSTODIAN_1900_2"		, "VonPowell@aol.com"},
+		{"CUSTODIAN_1900_3"		, "VonPowell@aol.com"},
+		{NULL					, NULL}
 
-		conf_doline(tmp);
-	}
+};
+void conf_destroy(void) {
 
-	fclose(conffile);
+	g_assert(conf_table != NULL);
 
-	return;
+	g_hash_table_unref(conf_table);
+
 }
+gchar* conf_get(gchar *var) {
 
-void conf_print(FILE * where)
-{
-	struct pd_ht_search s;
-	struct pd_ht_entry *e;
-	for (e = pd_ht_firstentry(&conf_table, &s); e; e = pd_ht_nextentry(&s)) {
+	g_assert((var != NULL) && (*var != 0));
 
-		fprintf(where, "%s = %s\n", (char *) e->key, (char *) e->data);
-	}
-	return;
+	gchar* res;
+	gchar* lower;
+
+	lower = g_ascii_strdown(var, -1);
+
+	res = g_hash_table_lookup(conf_table, lower);
+
+	g_free(lower);
+
+	return res;
+
 }
+gint conf_get_bool(gchar* key) {
 
-static int conf_doline(char *tmp)
-{
-	char conf_var[1024];
-	char *varloc;
-	size_t namlen;
+	gint   rtn = 0;
+	gchar* val;
 
-	namlen = strcspn(tmp, " \t=");
-	strncpy(conf_var, tmp, namlen);
-	/* wierd, strncpy doesn't null terminate the string */
-	*(conf_var + namlen) = '\0';
-
-	varloc = strchr(tmp, '=') + 1;
-	/* skip over whitespace at the start of the value */
-	while (isspace((unsigned char) *varloc)) {
-		varloc++;
+	if (NULL == (val = conf_get(key))) {
+		return 0;
 	}
 
-	/* put it into the config table */
-	conf_set(conf_var, varloc);
+	if (!sscanf(val, "%d", &rtn)) {
+		if (!g_ascii_strcasecmp(val, "true") ||
+				!g_ascii_strcasecmp(val, "on") ||
+				!g_ascii_strcasecmp(val, "yes")) {
+			rtn = 1;
+		}
+	}
+
+	return rtn;
+
+}
+gint conf_get_int(gchar* key) {
+
+	gint   rtn;
+	gchar* val;
+
+	if (NULL == (val = conf_get(key))) {
+		return 0;
+	}
+
+	if (!sscanf(val, "%d", &rtn)) {
+		rtn = 0;
+	}
+
+	return rtn;
+
+}
+gint conf_init(void) {
+
+	gint itr;
+
+	conf_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+
+	// Set default (and allowed) values
+	for (itr = 0; def_vals[itr].key; itr ++) {
+		conf_set(def_vals[itr].key, def_vals[itr].val, 1);
+	}
 
 	return 1;
+
+}
+gint conf_read_file(gchar *dir, gchar *bname) {
+
+	g_assert(((dir != NULL) && (*dir != 0)) && ((bname != NULL) && (*bname != 0)));
+
+	gint    e;
+	guint   lc = 1;
+	gchar*  fn;
+	gchar   line[256];
+	FILE*   fp;
+	GError* err	= NULL;
+
+	fn = g_strdup_printf("%s/%s", dir, bname);
+
+	if (NULL == (fp = fopen(fn, "r"))) {
+		fprintf(stderr, "e> config file error - %s: %s", err->message);
+		goto exit_conf_readfile;
+	}
+
+	while ((NULL != fgets(line, 256, fp))) {
+		if ((e = conf_textual_set(line)) < 1) {
+			if (e == -1) {
+				fprintf(stderr, "e> config error, error parsing @ line %u\n", lc);
+			} else if (e == -2) {
+				fprintf(stderr, "e> config error, unknown config variable @ line %u\n", lc);
+			}
+		}
+		lc ++;
+	}
+
+	fclose(fp);
+
+exit_conf_readfile:
+
+	g_free(fn);
+	if (err) g_error_free(err);
+
+	return (err == NULL);
+
+}
+gint conf_set(gchar *var, gchar *val, gint init) {
+
+	g_assert((var != NULL) && (val != NULL));
+
+	if (!init && !g_hash_table_lookup(conf_table, var)) {
+		return 0;
+	}
+
+	g_hash_table_insert(conf_table, g_ascii_strdown(var, -1), g_strdup(val));
+
+	return 1;
+
+}
+gint conf_textual_set(gchar* line) {
+
+	gint		rtn = 1;
+	gchar*		tmpl;
+	gchar*		key			= NULL;
+	gchar*		val			= NULL;
+	GRegex*     rex			= NULL;
+	GMatchInfo* rex_match	= NULL;
+
+	tmpl = g_strstrip(g_strdup(line));
+
+	if (!(*tmpl) || strchr("#;", *tmpl)) {
+		rtn = 0;
+		goto exit_conf_textual_set;
+	}
+
+	rex = g_regex_new("^\\s*(\\w+)\\s*=\\s*(.*?)\\s*$", 0, 0, NULL);
+
+	if (!g_regex_match(rex, line, 0, &rex_match)) {
+		rtn = -1;
+		goto exit_conf_textual_set;
+	}
+
+	key = g_match_info_fetch(rex_match, 1);
+	val = g_match_info_fetch(rex_match, 2);
+
+	/*if (!g_hash_table_lookup(conf_table, key)) {
+		rtn = -2;
+		goto exit_conf_textual_set;
+	}*/
+
+	if (!conf_set(key, val, 0)) {
+		rtn = -2;
+	}
+
+exit_conf_textual_set:
+
+	g_free(tmpl);
+
+	if (rtn) {
+		g_free(key); g_free(val);
+		if (rex) g_regex_unref(rex);
+		if (rex_match) g_match_info_free(rex_match);
+	}
+
+	return rtn;
+
 }

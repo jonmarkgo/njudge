@@ -101,6 +101,7 @@
 #include "diplog.h"
 
 static int variant = 0;		/* The currently loaded variant */
+struct opts_s options = {0};
 
 #define MAXADDR 100
 #define MAXNAME 80
@@ -139,6 +140,8 @@ FILE *mfp;			/* Master File pointer */
 int gflg = 0;			/* Nonzero indicates gunboat mode */
 int mflg = 0;			/* Nonzero indicates master mode */
 int bflg = 0;			/* Nonzero indicates blind mode  */
+int qflg = 0;
+
 int main(int argc, char **argv)
 {
 
@@ -239,8 +242,9 @@ int main(int argc, char **argv)
          * variables with regular argument processing.
          */
         conf_init();
-        conf_readfile(CONFIG_DIR, CONFIG_FILE);
-        conf_cmdline(argc, argv);
+        conf_read_file(CONFIG_DIR, CONFIG_FILE);
+        // TODO: enable cmdline scan
+        //conf_cmdline(argc, argv);
 
         if (lflg) {
 	    if (!(log_fp = fopen(LOG_FILE, "a"))) {

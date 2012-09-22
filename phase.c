@@ -81,6 +81,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "conf.h"
 #include "config.h"
 #include "dip.h"
 #include "porder.h"

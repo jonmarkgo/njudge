@@ -31,7 +31,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <glib.h>
 
+#include "conf.h"
 #include "dip.h"
 #include "mail.h"
 #include "functions.h"
