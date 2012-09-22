@@ -315,37 +315,23 @@ extern int time_warp;  /* Set to 1 if a time-warp was detected */
 
 int main(int argc, char** argv) {
 
-	char* log_prgname;
-	char tz_name[50];
-	char *t;	
+	gchar* tcptr;			// Temporary char pointer
+	gchar* syslog_alias;
     struct stat buf;
 
 	init(argc, argv);
 
-	/* 
-	 * Change the judge timezone, if set
-	 */
+ 	syslog_alias = g_strdup_printf("%s-%s", JUDGE_CODE, "dip");
 
-	t = JUDGE_TZ;
-
-	if (*t) {
-	    sprintf(tz_name,"TZ=%s", t);
-	    putenv(tz_name);
-	    tzset();
-	}
-
- 	log_prgname = g_strdup_printf("%s-%s", JUDGE_CODE, "dip");
-
-	OPENDIPLOG(log_prgname);
+	OPENDIPLOG(syslog_alias);
 	DIPINFO("Started dip");
 
-	/* Check if xforward file exists, indicating a bailout-recovery situation */
-
+	// Check if xforward file exists, indicating a bailout-recovery situation
 	if (!stat(XFORWARD, &buf)) {
 	    bailout_recovery = 1;
 	}
 
-        CheckSizes();
+	CheckSizes();
 
 	if(open_plyrdata() != 0) {
 		fprintf(log_fp,"Unable to open plyrdata file.\n");
@@ -388,14 +374,15 @@ int main(int argc, char** argv) {
 	}
 	close_plyrdata();
 
-	/* If block file exists, remove it */
-
-	t = BLOCK_FILE;
-	if (t[0]) {
-	    remove(t);
+	// If block file exists, remove it
+	tcptr = BLOCK_FILE;
+	if (*tcptr) {
+	    remove(tcptr);
 	}
 
 	DIPINFO("Ended dip");
+
+	g_free(syslog_alias);
 
 	exit(0);
 
@@ -488,6 +475,7 @@ void savemail(void) {
 }
 void init(int argc, char** argv) {
 
+	gchar*	tcptr;		// Temporary char pointer
 	int i, fd;
 	unsigned char *s;
 	time_t now;
@@ -497,6 +485,15 @@ void init(int argc, char** argv) {
 	char *datetime;
 
 	g_set_prgname(g_basename(argv[0]));
+
+	// Change the judge timezone, if set
+	tcptr = JUDGE_TZ;
+	if (*tcptr) {
+		g_strdup_printf("TZ=%s", tcptr);
+	    putenv(tcptr);
+	    tzset();
+	    g_free(tcptr);
+	}
 
 	inp = stdin; /* default */
 
