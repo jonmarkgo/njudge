@@ -308,7 +308,7 @@
 void CheckRemindPlayer( int player, long one_quarter);
 void CheckSizes(void);   /* Check that no sizes have changed */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
-static gint init(int, char **);
+static gint init(int, char **, GError** err);
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg);
 void phase_pending(void);	/* defined in phase.c */
 void print_usage(void);
@@ -318,11 +318,12 @@ struct opts_s options = {0};
 
 int main(int argc, char** argv) {
 
-	gchar* tcptr;			// Temporary char pointer
-	gchar* syslog_alias = NULL;
-    struct stat buf;
+	gchar*  tcptr;					// Temporary char pointer
+	gchar*  syslog_alias = NULL;
+    struct  stat buf;
+    GError* err = NULL;
 
-	if (!init(argc, argv)) goto exit_main;
+	if (!init(argc, argv, &err)) goto exit_main;
 
  	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
 
@@ -394,16 +395,22 @@ exit_main:
 }
 
 void CheckSizes(void) {
+
+    int   ss;
+    int   si;
+    int   sl;
     FILE *fptr;
-    int ss, si, sl;
 
     fptr = fopen(".size.dat","r");
+
     if (!fptr) return;  /* Assume it is ok if no file found */
+
     fscanf(fptr, "%d %d %d", &ss, &si, &sl);
     fclose(fptr);
 
     if (ss != sizeof(short) || si != sizeof(int) || sl != sizeof(long))
         bailout(E_FATAL);   /* Don't run if sizes bad */
+
 }
 
 
@@ -478,12 +485,14 @@ void savemail(void) {
 	return;
 
 }
-static gint init(int argc, char** argv) {
+static gint init(int argc, char** argv, GError** err) {
 
-	gint       err;
+	g_assert(err != NULL && *err == NULL);
+
 	gint       rtn = 1;			// Return value
 	gchar*     tcptr;			// Temporary char pointer
 	GPtrArray* cl_cfg = NULL;
+
 	int fd;
 	time_t now;
 	struct stat sbuf;
@@ -512,18 +521,18 @@ static gint init(int argc, char** argv) {
 	}
 
 	// Read the config file
-	conf_read_file(CONFIG_DIR, CONFIG_FILE);
+	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err)) {
+		rtn = 0;
+		goto exit_init;
+	}
 
 	// Parse config values stashed away while reading command line
 	if (cl_cfg) {
 		while (cl_cfg->len) {
 			tcptr = g_ptr_array_remove_index(cl_cfg, 0);
-			if ((err = conf_textual_set(tcptr)) < 1) {
-				if (err == -2) {
-					g_fprintf(stderr, "e> unknown config variable - %s\n", tcptr);
-				} else {
-					g_fprintf(stderr, "e> error parsing config argument - %s\n", tcptr);
-				}
+			if (!conf_textual_set(tcptr, err)) {
+				if (!err) continue;
+				g_prefix_error(err, "config option failed, ");
 				rtn = 0;
 				goto exit_init;
 			}
@@ -1375,7 +1384,7 @@ int process(void) {
 		}
 		/*
 		 * See if manual processing is enabled, and block if so
-                 */
+         */
 		if (dipent.xflags & XF_MANUALPROC) {
 			if (!(dipent.players[0].status & SF_PROCESS)) {
 				fprintf(rfp, "Game '%s' is waiting for master to process turn.\n", dipent.name);
@@ -1655,7 +1664,7 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 	gchar* tcptr;
 	gchar  opt;
 
-	while ((opt = getopt(argc, argv, "AaC:c:Dd:i:qs:T:t:vx")) > -1) {
+	while ((opt = getopt(argc, argv, "AaC:c:Dd:hi:qs:T:t:vx")) > -1) {
 
 		switch(opt) {
 			case 'A':
@@ -1701,6 +1710,9 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 					result = 0;
 					goto exit_parse_cmdline;
 				}
+				break;
+			case 'h':
+				return 0;
 				break;
 			case 'q':
 				options.quick = 1;

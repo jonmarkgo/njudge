@@ -74,12 +74,20 @@ gchar *conf_get(gchar *var);
 gint   conf_get_bool(gchar* key);
 gint   conf_get_int(gchar* key);
 gint   conf_init(void);
-gint   conf_read_file(gchar *dir, gchar *bname);
-gint   conf_set(gchar *var, gchar *val, gint init);
-gint   conf_textual_set(gchar* line);
+gint   conf_read_file(gchar *dir, gchar *bname, GError** err);
+gint   conf_set(gchar *var, gchar *val, gint init, GError** err);
+gint   conf_textual_set(gchar* line, GError** err);
 
 #ifdef UNITTEST
   extern GHashTable* conf_table;
 #endif
+
+typedef enum {
+
+  	DIP_CONF_ERROR_FILE,
+  	DIP_CONF_ERROR_VOID_VALUE,
+  	DIP_CONF_ERROR_PARSE
+
+} DipConfError;
 
 #endif /* CONF_H */

@@ -7,11 +7,14 @@
  */
 
 #include <glib.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #include "conf.h"
+
+#define DIP_CONF_ERROR		dip_conf_error_quark()
 
 typedef struct {
 
@@ -96,6 +99,12 @@ static cfgval_t def_vals[] = {
 		{NULL					, NULL}
 
 };
+
+static GQuark dip_conf_error_quark(void) {
+
+	return g_quark_from_static_string("dip-conf-error-quark");
+
+}
 void conf_destroy(void) {
 
 	g_assert(conf_table != NULL);
@@ -163,56 +172,56 @@ gint conf_init(void) {
 
 	// Set default (and allowed) values
 	for (itr = 0; def_vals[itr].key; itr ++) {
-		conf_set(def_vals[itr].key, def_vals[itr].val, 1);
+		conf_set(def_vals[itr].key, def_vals[itr].val, 1, NULL);
 	}
 
 	return 1;
 
 }
-gint conf_read_file(gchar *dir, gchar *bname) {
+gint conf_read_file(gchar *dir, gchar *bname, GError** err) {
 
+	g_assert(err == NULL || *err == NULL);
 	g_assert(((dir != NULL) && (*dir != 0)) && ((bname != NULL) && (*bname != 0)));
 
-	gint    e;
+	gint    rtn = 1;
 	guint   lc = 1;
 	gchar*  fn;
 	gchar   line[256];
-	FILE*   fp;
-	GError* err	= NULL;
+	FILE*   fp = NULL;
 
 	fn = g_strdup_printf("%s/%s", dir, bname);
 
 	if (NULL == (fp = fopen(fn, "r"))) {
-		fprintf(stderr, "e> config file error - %s: %s", err->message);
-		goto exit_conf_readfile;
+		g_set_error(err, DIP_CONF_ERROR, DIP_CONF_ERROR_FILE,
+				"failed to open config file - %s: %s", bname, g_strerror(errno));
+		rtn = 0;
+		goto exit_conf_read_file;
 	}
 
 	while ((NULL != fgets(line, 256, fp))) {
-		if ((e = conf_textual_set(line)) < 1) {
-			if (e == -1) {
-				fprintf(stderr, "e> config error, error parsing @ line %u\n", lc);
-			} else if (e == -2) {
-				fprintf(stderr, "e> config error, unknown config variable @ line %u\n", lc);
-			}
+		if (!conf_textual_set(line, err)) {
+			if (!*err) continue;
+			g_prefix_error(err, "error at line %u: ", lc);
+			rtn = 0;
+			goto exit_conf_read_file;
 		}
 		lc ++;
 	}
 
-	fclose(fp);
+exit_conf_read_file:
 
-exit_conf_readfile:
-
+	if (fp) fclose(fp);
 	g_free(fn);
-	if (err) g_error_free(err);
 
-	return (err == NULL);
+	return rtn;
 
 }
-gint conf_set(gchar *var, gchar *val, gint init) {
+gint conf_set(gchar *var, gchar *val, gint init, GError** err) {
 
 	g_assert((var != NULL) && (val != NULL));
 
 	if (!init && !g_hash_table_lookup(conf_table, var)) {
+		g_set_error(err, DIP_CONF_ERROR, DIP_CONF_ERROR_VOID_VALUE, "void value - %s", var);
 		return 0;
 	}
 
@@ -221,14 +230,14 @@ gint conf_set(gchar *var, gchar *val, gint init) {
 	return 1;
 
 }
-gint conf_textual_set(gchar* line) {
+gint conf_textual_set(gchar* line, GError** err) {
 
 	gint		rtn = 1;
 	gchar*		tmpl;
-	gchar*		key			= NULL;
-	gchar*		val			= NULL;
-	GRegex*     rex			= NULL;
-	GMatchInfo* rex_match	= NULL;
+	gchar*		key       = NULL;
+	gchar*		val       = NULL;
+	GRegex*     rex       = NULL;
+	GMatchInfo* rex_match = NULL;
 
 	tmpl = g_strstrip(g_strdup(line));
 
@@ -240,26 +249,28 @@ gint conf_textual_set(gchar* line) {
 	rex = g_regex_new("^\\s*(\\w+)\\s*=\\s*(.*?)\\s*$", 0, 0, NULL);
 
 	if (!g_regex_match(rex, line, 0, &rex_match)) {
-		rtn = -1;
+		g_set_error(err, DIP_CONF_ERROR, DIP_CONF_ERROR_PARSE, "parse error - %s", line);
+		rtn = 0;
 		goto exit_conf_textual_set;
 	}
 
 	key = g_match_info_fetch(rex_match, 1);
 	val = g_match_info_fetch(rex_match, 2);
 
-	if (!conf_set(key, val, 0)) {
-		rtn = -2;
+	if (!conf_set(key, val, 0, err)) {
+		rtn = 0;
 	}
 
 exit_conf_textual_set:
 
 	g_free(tmpl);
 
-	if (rtn) {
-		g_free(key); g_free(val);
-		if (rex) g_regex_unref(rex);
-		if (rex_match) g_match_info_free(rex_match);
+	if (key) {
+		g_free(key);
+		g_free(val);
 	}
+	if (rex) g_regex_unref(rex);
+	if (rex_match) g_match_info_free(rex_match);
 
 	return rtn;
 

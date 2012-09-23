@@ -242,7 +242,7 @@ int main(int argc, char **argv)
          * variables with regular argument processing.
          */
         conf_init();
-        conf_read_file(CONFIG_DIR, CONFIG_FILE);
+        conf_read_file(CONFIG_DIR, CONFIG_FILE, NULL);
         // TODO: enable cmdline scan
         //conf_cmdline(argc, argv);
 

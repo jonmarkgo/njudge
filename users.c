@@ -588,7 +588,7 @@ int getuser(char *addr, int *userid, int *siteid, int *level)
 	FILE *fp;
 
 	if (!(fp = fopen("dip.addr", "r"))) {
-		perror("address");
+		perror("users.c-getuser");
 		bailout(1);
 	}
 	while (fgets(line, sizeof(line), fp)) {

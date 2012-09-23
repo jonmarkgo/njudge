@@ -36,10 +36,10 @@
  *  Lowe.
  */
 
-#include <glib.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <time.h>
+#include <glib.h>
 
 #include "conf.h"
 #include "config.h"
@@ -71,7 +71,7 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 		if (!stat(conf_get("bailout_plan"), &sbuf))
 			rename(conf_get("bailout_plan"), conf_get("plan"));
 		inform_rgd();
-	/* If KEEPOUT already exists, we've already crashed. No need to do again. */
+	/* If bail_forward already exists, we've already crashed. No need to do again. */
 		if (stat(conf_get("bail_forward"), &sbuf))
 		{
 			rename(conf_get("forward"), conf_get("bail_forward"));
