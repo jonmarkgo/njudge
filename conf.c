@@ -247,11 +247,6 @@ gint conf_textual_set(gchar* line) {
 	key = g_match_info_fetch(rex_match, 1);
 	val = g_match_info_fetch(rex_match, 2);
 
-	/*if (!g_hash_table_lookup(conf_table, key)) {
-		rtn = -2;
-		goto exit_conf_textual_set;
-	}*/
-
 	if (!conf_set(key, val, 0)) {
 		rtn = -2;
 	}

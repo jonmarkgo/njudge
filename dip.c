@@ -319,10 +319,10 @@ struct opts_s options = {0};
 int main(int argc, char** argv) {
 
 	gchar* tcptr;			// Temporary char pointer
-	gchar* syslog_alias;
+	gchar* syslog_alias = NULL;
     struct stat buf;
 
-	init(argc, argv);
+	if (!init(argc, argv)) goto exit_main;
 
  	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
 
@@ -385,7 +385,9 @@ int main(int argc, char** argv) {
 
 	DIPINFO("Ended dip");
 
-	g_free(syslog_alias);
+exit_main:
+
+	if (syslog_alias) g_free(syslog_alias);
 
 	exit(0);
 
@@ -514,7 +516,8 @@ static gint init(int argc, char** argv) {
 
 	// Parse config values stashed away while reading command line
 	if (cl_cfg) {
-		while (tcptr = g_ptr_array_remove_index(cl_cfg, 0)) {
+		while (cl_cfg->len) {
+			tcptr = g_ptr_array_remove_index(cl_cfg, 0);
 			if ((err = conf_textual_set(tcptr)) < 1) {
 				if (err == -2) {
 					g_fprintf(stderr, "e> unknown config variable - %s\n", tcptr);
