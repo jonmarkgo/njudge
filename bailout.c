@@ -85,7 +85,7 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
 			conf_get("cmd_smail"), sourcename, linenum, conf_get("judge_keeper"));
 		system(myline);
-		DIPERROR(myline);
+		diplog_syslog_entry(LOG_ERR, myline);
 	}
 	exit(level);
 }

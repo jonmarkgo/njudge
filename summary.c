@@ -256,8 +256,8 @@ int main(int argc, char **argv)
         mfp = fopen(conf_get("master_db"), "r");
         sprintf(exe_name,"%s-%s", conf_get("judge_code"), "dip");
 
-        OPENDIPLOG(exe_name);
-        DIPINFO("Started summary");
+        diplog_syslog_open(exe_name);
+        diplog_syslog_entry(LOG_INFO, "Started summary");
 
 
 	/*

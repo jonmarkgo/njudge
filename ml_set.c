@@ -1311,7 +1311,7 @@ void mail_setp(char *s)
 
 		s = lookfor(t = s, keys, nentry(keys), &i);
 		sprintf(stat_text, "%3.3d %s", action[i], dipent.name);
-		DIPDEBUG(stat_text);
+		diplog_syslog_entry(LOG_DEBUG, stat_text);
 
 		if (privs[i] == 'm' && !PRIVOK) {
 			fprintf(rfp, "> set %s\n", t);

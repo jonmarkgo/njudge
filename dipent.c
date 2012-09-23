@@ -403,7 +403,7 @@ int getdipent(FILE * fp)
 			/* Try to fix time warp by advancing deadline */
 			deadline(NULL, 1);
 			time_warp = 1;
-			DIPNOTICE("TimeWarp detected.");
+			diplog_syslog_entry(LOG_NOTICE, "TimeWarp detected.");
 
 		} else {
 		    time_warp = 0;

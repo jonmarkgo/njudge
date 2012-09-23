@@ -1,267 +1,3 @@
-/*
- * $Log: dip.c,v $
- * Revision 1.70  2010-02-20 21:06:33  alange
- *
- * Bug 282. Fixes based on David Norman's notes.
- *
- * Revision 1.69  2006-05-03 03:09:08  alange
- *
- * Bug 467. Spurious absence activation notices quashed.
- *
- * Revision 1.68  2005/06/16 01:44:52  alange
- * Bug 257: Notify masters on bailout recovery and time-warp.
- *
- * Revision 1.67  2004/10/24 09:02:31  millis
- * Small victory handling corrections
- *
- * Revision 1.66  2004/10/23 22:43:28  millis
- * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
- *
- * Revision 1.65  2004/10/13 00:23:45  alange
- * Added newline to end of Congrats line so dip.footer would start on a new line.
- *
- * Revision 1.64  2004/09/06 22:08:16  millis
- * Bug363 Allow more than one victor
- *
- * Revision 1.63  2004/08/17 09:49:01  millis
- * Bug 355: missed incrementing just_now_abandoned flag.
- *
- * Revision 1.62  2004/08/16 21:51:34  millis
- * Refix bug 347 (games can go NoNMR) and also Bug 355 (no abandoned player(s)
- * messages.
- *
- * Revision 1.60  2004/08/03 21:57:04  millis
- * Fix Bug 347 (games incorrectly process when NoNMR and abandoned playerss)
- * Fix Bug 350 (too many powers shown as abandoned in Intimate)
- *
- * Revision 1.59  2004/07/27 23:07:17  millis
- * Bug 343 (say how many missing players) and Bug 247 (extra dots in secret
- * game late warning)
- *
- * Revision 1.57  2004/07/25 16:13:42  millis
- * Bug fixes for Bug 91 (Duplex powers), Bug 233 (Abandoned power cannot
- * return in duplex) and Bug 206 (allow takeover of unknown abandoned
- * countries)
- *
- * Revision 1.56  2004/07/12 09:46:14  millis
- * Bug 226: ON reflection, 3 day reminders for paused games seems right
- * (as if less, players would get most annoyed!).
- *
- * Revision 1.55  2004/07/12 00:21:59  millis
- * Fix Bug 226: remind every move frequency for paused games.
- * Also a fix for Bug 91 / Bug 297, to only mail real players on a game pause.
- *
- * Revision 1.54  2004/07/07 22:50:39  millis
- * Bug91: further fixes for Duplex code
- * (these mainly to get absences and late handling working)
- *
- * Revision 1.53  2004/07/04 03:28:12  millis
- * Bug 97: don't make each power have to move if duplex and supress
- * extra 'reminder' messages.
- *
- * Revision 1.52  2004/06/27 01:50:21  millis
- * Futher Intimate fixes (Bug 297) specifically to allow phased orders
- * and correct turns not processing, plus more information printed.
- *
- * Revision 1.51  2004/05/23 15:53:40  millis
- * Restored inadvertently deleted 1.49 and 1.48 changes.
- *
- * Revision 1.50  2004/05/22 08:53:14  millis
- * Bug 297: Add Intimate Diplomacy
- *
- * Revision 1.49  2004/04/04 15:58:37  millis
- * Fixed bug 285 (inform extra custodians of game start)
- *
- * Revision 1.48  2004/03/28 09:52:12  millis
- * Fix bug 282 (reset msg_header_done on closing rfp file)
- *
- * Revision 1.47  2004/02/14 23:32:11  millis
- * Allow use of fixed time via parameter (for debugging)
- *
- * Revision 1.46  2004/01/21 00:55:57  millis
- * Allow passing of forced date/time (for testing)
- *
- * Revision 1.45  2003/12/28 00:13:38  millis
- * Fix bug 229 (display on email title if game with abandoned players is NoList)
- *
- * Revision 1.44  2003/09/09 19:57:08  nzmb
- * Fixed Bug 31 -- the time to deadline/grace expiration messages are no
- * longer printed for terminated games, and neither are the "orders not
- * received ... you will be considered late/abandoned" message. The list of
- * entered orders is still displayed, though.
- *
- * Revision 1.43  2003/08/25 14:39:35  millis
- * Fixed bug 220
- *
- * Revision 1.42  2003/08/14 22:56:32  millis
- * Fix bug 158
- *
- * Revision 1.41  2003/07/17 22:59:29  millis
- * Bug 185
- *
- * Revision 1.40  2003/06/29 21:37:40  nzmb
- * Made EOG draw entries broadcasted at the end of the game.
- *
- * Revision 1.39  2003/05/13 00:07:25  millis
- * Bug 110, move on process deadline by 24 hours on bailout recovery
- *
- * Revision 1.38  2003/05/12 23:23:45  millis
- * Fix bug 133, allow turn to process when set to manualprocess and process command sent.
- *
- * Revision 1.37  2003/05/12 02:37:17  millis
- * Removed superfluos SF_WAIT for transform games
- * Also deleted incorrect use of uninitilized variable
- *
- * Revision 1.36  2003/05/03 23:08:41  millis
- * Fixed bug 99 (resigned players still receiving messages)
- * Now resigned players will only receive the termination messages.
- *
- * Revision 1.35  2003/02/17 16:39:27  millis
- * Fix bug 81, to call at for year too
- *
- * Revision 1.34  2003/02/17 09:29:28  millis
- * Changed setenv() to putenv() to work on Sun platforms
- *
- * Revision 1.33  2003/02/05 23:53:44  millis
- * Removed dipstats files.
- * Also added in new JUDGE_TZ variable, to specify timezone
- *
- * Revision 1.32  2003/01/13 22:38:51  millis
- * merged in from ustv
- *
- * Revision 1.31  2003/01/12 00:14:37  nzmb
- * Fixed it so that postal press reports are not sent when no press is submitted.
- *
- * Revision 1.30  2002/12/28 00:52:18  millis
- * Proper fix to CR 17
- *
- * Revision 1.29  2002/11/13 22:26:58  millis
- * Bug 23, don't show missing players in a secret game
- *
- * Revision 1.28  2002/10/19 22:44:17  millis
- * Removed a simple warning
- *
- * Revision 1.27  2002/08/27 23:56:09  millis
- * Added better victory display (fixing Mach victory bug)
- *
- * Revision 1.26  2002/08/27 22:27:49  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.25  2002/07/16 18:14:20  nzmb
- * Many changes dealing with the addition of szine style postal press. Also fixed apparent bug in signons for games which have not started.
- *
- * Revision 1.24  2002/05/16 13:05:33  miller
- * Added used of X2F_MORE:HOMES flags
- * Don't send blind games to openings list
- * Allow blind games to not show centres
- *
- * Revision 1.23  2002/05/11 09:15:30  greg
- * Minor bug fixes
- * - fixed subjectline for absence requests
- * - fixed phase length, so it's no longer hard coded for responses
- * - partial fix for unusable builds, players with only unusable builds
- *    will no longer be flagged as having orders due, however players
- *    with some usable builds will need to waive any unusable builds,
- *    also, if one or more players have unusable builds, but no
- *    player has usable builds, the build phase will process after
- *    a short delay
- *
- * Revision 1.22  2002/05/04 02:06:16  nzmb
- * Added code to display the time left until the deadline and grace at the
- * bottom of their reply whenever a player signs on.
- *
- * Revision 1.21  2002/04/18 04:44:30  greg
- * Added the following commands:
- * - unstart
- * - set secret
- * - set [prflist|prfrand|prfboth]
- *
- * Fixed Set Absence so that "to" is not case sensitive
- *
- * Fixed Quiet games so that new players are announced
- * before the game starts
- *
- * Fixed ascii_to_ded.c so thatit no longer generates an
- * error when compiled
- *
- * Revision 1.20  2002/04/15 12:55:41  miller
- * Multiple changes for blind & Colonial & setup from USTV
- *
- * Revision 1.19  2002/04/09 10:54:38  miller
- * Add check before resending abandoned messages
- *
- * Revision 1.18  2002/04/06 14:40:27  miller
- * Fixed a bad '=' that casued all builds to not set SF_MOVE flag (DAMN!)
- *
- * Revision 1.17  2002/03/10 12:32:52  miller
- * Added automatic wait for all players in BUILD_TRANSFORM games
- *
- * Revision 1.16  2001/11/20 07:43:45  greg
- * Fixed last (hopefully) problem with "Waiting for Master to Start" subjectline:
- *
- * Revision 1.15  2001/11/11 21:16:19  greg
- * Subjectline Fixes
- *  - New player signons will no longer show "Preference Change"
- *  - Manual start games will no longer say "Waiting for More Players" after the game is full
- *  - reply lines no longer assume JUDGE_CODE is four characters
- *
- * Revision 1.14  2001/08/18 06:09:15  nzmb
- * Added code to reset concession flags when turn processes, and not to warn
- * people in terminated games.
- *
- * Revision 1.13  2001/07/15 09:13:52  greg
- * added support for game directories in a sub directory
- *
- * Revision 1.12  2001/07/14 07:05:17  greg
- * a few bug fixes & show who's late to GM in quiet games
- *
- * Revision 1.11  2001/07/10 04:31:24  nzmb
- * Fixed bug in last upgrade that caused dedpoints to not always be applied.
- *
- * Revision 1.10  2001/07/08 22:53:25  miller
- * Use define for warp file
- *
- * Revision 1.9  2001/06/24 05:19:25  nzmb
- * Added inteface to player data database so player records are recorded,
- * and also provided option of have D_LATE applied at the deadline or
- * (default) 24 hours later.
- *
- * Revision 1.8  2001/05/12 07:57:56  greg
- * added Mario Becroft's dedication problem fix
- *
- * Revision 1.7  2001/05/12 06:57:39  greg
- * added subjectlines
- *
- * Revision 1.6  2001/04/17 21:30:31  miller
- * Refixed problem with CONFIG_DIR parsing
- *
- * Revision 1.5  2001/04/15 21:21:22  miller
- * Correctly show pending orders when late warning is sent
- *
- * Revision 1.4  2001/02/22 23:25:17  miller
- * Fixed bug
- *
- * Revision 1.3  2001/02/03 10:36:16  miller
- * fixed blind crashing bug
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Many changes, including -
- *   Reminding players to make moves when close to deadline
- *   Special handling for blind games
- *   Passing of '-C' option for specifying dip.conf path
- *   Informing all masters when a time-warp was detected
- *   Handling of NOLATEPRESS and MANUALSTART flags
- *   Adding automatic wati for all players in a build phase of a transform game
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.2  1997/03/16 06:52:13  rpaar
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
- */
-
 /*  dip.c
  *  Copyright 1987, Lowe.
  *
@@ -305,7 +41,7 @@
    at the deadline rather than 24 hours later. */
 /*#define NORMDED */
 
-void CheckRemindPlayer( int player, long one_quarter);
+void CheckRemindPlayer(int player, long one_quarter);
 void CheckSizes(void);   /* Check that no sizes have changed */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 static gint init(int, char **, GError** err);
@@ -327,8 +63,8 @@ int main(int argc, char** argv) {
 
  	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
 
-	OPENDIPLOG(syslog_alias);
-	DIPINFO("Started dip");
+	diplog_syslog_open(syslog_alias);
+	diplog_syslog_entry(LOG_INFO, "Started dip");
 
 	// Check if xforward file exists, indicating a bailout-recovery situation
 	if (!stat(XFORWARD, &buf)) {
@@ -349,11 +85,11 @@ int main(int argc, char** argv) {
 
 	if (!options.variant) {
 		if (!options.no_input) {
-			DIPDEBUG("Processing mail");
+			diplog_syslog_entry(LOG_DEBUG, "Processing mail");
 			mail();	/* Process mail message on stdin  */
 		}
 		if (!options.quick) {
-			DIPDEBUG("Looking for events");
+			diplog_syslog_entry(LOG_DEBUG, "Looking for events");
 			master();	/* Process any events pending     */
 		}
 	} else {
@@ -384,7 +120,7 @@ int main(int argc, char** argv) {
 	    remove(tcptr);
 	}
 
-	DIPINFO("Ended dip");
+	diplog_syslog_entry(LOG_INFO, "Ended dip");
 
 exit_main:
 
@@ -393,7 +129,6 @@ exit_main:
 	exit(0);
 
 }
-
 void CheckSizes(void) {
 
     int   ss;
@@ -412,14 +147,12 @@ void CheckSizes(void) {
         bailout(E_FATAL);   /* Don't run if sizes bad */
 
 }
-
-
-/* 
- * This function will tell all players that a blind turn has happened
- * The text will be varied depending on who is being told
- */
-
 void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_file) {
+
+	/*
+	 * This function will tell all players that a blind turn has happened
+	 * The text will be varied depending on who is being told
+	 */
 
 	char line[150];
 
@@ -914,7 +647,7 @@ void CheckRemindPlayer(int player, long one_quarter) {
 	    !(dipent.players[player].status & SF_RESIGN)) {
 		MailOut(line, dipent.players[player].address);
 		sprintf(line,"Move reminder sent to %s in game %s", dipent.players[player].address, dipent.name);
-		DIPINFO(line);
+		diplog_syslog_entry(LOG_INFO, line);
 	}
 }
 int process(void) {

@@ -542,7 +542,7 @@ int mail(void)
                                                 return E_WARN;
 
 				case FROM:	/*  From: */
-				       DIPINFO(s);
+					diplog_syslog_entry(LOG_INFO, s);
 					if (got_reply)
 						break;
 				case REPLY:	/*  Reply-To: */

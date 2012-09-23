@@ -199,8 +199,8 @@ int main(int argc, char **argv)
       conf_read_file(CONFIG_DIR, CONFIG_FILE, NULL);
 
         sprintf(temp_text,"%s-%s", conf_get("judge_code"), "rdip");
-        OPENDIPLOG(temp_text);
-        DIPINFO("Started rdip");
+        diplog_syslog_open(temp_text);
+        diplog_syslog_entry(LOG_INFO, "Started rdip");
 
 
         options.debug = 0;

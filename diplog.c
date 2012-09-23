@@ -1,99 +1,45 @@
-/* This file defines the diplogging functions */
 
+#include <glib.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <glib.h>
+#include <syslog.h>
 
 #include "conf.h"
 #include "diplog.h"
-#include "functions.h"
 
-void opendiplog( char *x, int level, int priv) 
-{
-    if (!conf_get_bool("enable_syslog")) return;
+static gboolean enable_syslog = 0;
 
-    openlog( x, level, priv);
-#ifdef HAS_ON_EXIT
-    on_exit(dipexit, 0L);
-#else
-    atexit(dipexit);
-#endif
+void diplog_syslog_close(void) {
+
+	if (!enable_syslog) return;
+
+	diplog_syslog_entry(LOG_INFO, "Exit");
+
+	closelog();
+
 }
+void diplog_syslog_open(gchar* log_alias) {
 
-#ifdef HAS_ON_EXIT
-void dipexit(int exit_code, void *ignore_me)
-{
-    if (!SYSLOG_FLAG) return;
+	if (!conf_get_bool("enable_syslog")) return;
 
-    if (exit_code == 0) {
-	DIPINFO("Exit with error code 0");
-    } else { 
-	DIPNOTICE("Exit with error code != 0"); 
-    }
+	enable_syslog = 1;
 
-    CLOSEDIPLOG();
+	openlog(log_alias, 0, LOG_USER);
+
+	// TODO: work to remove this solution, close syslog at main
+	atexit(diplog_syslog_close);
+
 }
-#else
-void dipexit()
-{
-    if (!conf_get_bool("enable_syslog")) return;
+void diplog_syslog_entry(int level, char *fmt, ...) {
 
-        DIPINFO("Exit");
-    CLOSEDIPLOG();
-}
-#endif
+	va_list args;
 
-static void diplog(int level, char *fmt, ...)
-{
-    va_list args;    
-    if (!conf_get_bool("enable_syslog")) return;
+	if (!conf_get_bool("enable_syslog")) return;
     
     va_start(args, fmt);
+
     syslog(level, fmt, args);
-    va_end(args);
-}
 
-void  DIPERROR(char *fmt, ...)
-{
-
-    va_list args;
-    va_start(args, fmt);
-    diplog(LOG_ERR, fmt, args);
-    va_end(args);
-}
-
-void DIPWARN(char *fmt, ...)
-{
-    va_list args;    
-    va_start(args, fmt);
-    diplog(LOG_WARNING, fmt, args);
     va_end(args);
 
 }
-
-void DIPNOTICE(char *fmt, ...)
-{
-    va_list args;    
-    va_start(args, fmt);
-    diplog(LOG_NOTICE, fmt, args);
-    va_end(args);
-
-}
-
-void DIPINFO(char *fmt, ...)
-{
-    va_list args;    
-    va_start(args, fmt);
-    diplog(LOG_INFO, fmt, args);
-    va_end(args);
-
-}
-
-void DIPDEBUG(char *fmt, ...)
-{
-    va_list args;    
-    va_start(args, fmt);
-    diplog(LOG_DEBUG, fmt, args);
-    va_end(args);
-}
-
