@@ -22,6 +22,7 @@ gint   conf_get_int(gchar* key);
 gint   conf_init(void);
 gint   conf_read_file(gchar *dir, gchar *bname, GError** err);
 gint   conf_set(gchar *var, gchar *val, gint init, GError** err);
+gint   conf_vset(GPtrArray* arr, GError** err);
 gint   conf_textual_set(gchar* line, GError** err);
 
 #ifdef UNITTEST

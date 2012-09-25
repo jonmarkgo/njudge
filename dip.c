@@ -42,7 +42,7 @@
 /*#define NORMDED */
 
 void CheckRemindPlayer(int player, long one_quarter);
-void CheckSizes(void);   /* Check that no sizes have changed */
+void check_sizes(void);   /* Check that no sizes have changed */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 static gint init(int, char **, GError** err);
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg);
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 	    bailout_recovery = 1;
 	}
 
-	CheckSizes();
+	check_sizes();
 
 	if(open_plyrdata() != 0) {
 		fprintf(log_fp,"Unable to open plyrdata file.\n");
@@ -129,7 +129,7 @@ exit_main:
 	exit(0);
 
 }
-void CheckSizes(void) {
+void check_sizes(void) {
 
     int   ss;
     int   si;
@@ -222,8 +222,8 @@ static gint init(int argc, char** argv, GError** err) {
 
 	g_assert(err != NULL && *err == NULL);
 
-	gint       rtn = 1;			// Return value
-	gchar*     tcptr;			// Temporary char pointer
+	gint       rtn = 1;
+	gchar*     tcptr;
 	GPtrArray* cl_cfg = NULL;
 
 	int fd;
@@ -234,11 +234,11 @@ static gint init(int argc, char** argv, GError** err) {
 
 	g_set_prgname(g_basename(argv[0]));
 
-	// Set default config file
+	/* Set default config file */
 	CONFIG_DIR  = g_memdup(".\0dip.conf", 11);
 	CONFIG_FILE = CONFIG_DIR + 2;
 
-	// Set options defaults
+	/* Set options defaults */
 	options.cwd	  = g_path_get_dirname(argv[0]);
 	options.input = stdin;
 
@@ -253,28 +253,20 @@ static gint init(int argc, char** argv, GError** err) {
 		return 0;
 	}
 
-	// Read the config file
+	/* Read the config file */
 	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err)) {
 		rtn = 0;
 		goto exit_init;
 	}
 
-	// Parse config values stashed away while reading command line
+	/* Parse config values stashed away while reading command line */
 	if (cl_cfg) {
-		while (cl_cfg->len) {
-			tcptr = g_ptr_array_remove_index(cl_cfg, 0);
-			if (!conf_textual_set(tcptr, err)) {
-				if (!err) continue;
-				g_prefix_error(err, "config option failed, ");
-				rtn = 0;
-				goto exit_init;
-			}
-		}
+		rtn = conf_vset(cl_cfg);
 		g_ptr_array_unref(cl_cfg);
 		if (!rtn) goto exit_init;
 	}
 
-	// Change the judge timezone, if set
+	/* Change the judge timezone, if set */
 	tcptr = conf_get("judge_tz");
 	if (*tcptr) {
 		g_strdup_printf("TZ=%s", tcptr);
@@ -1421,7 +1413,7 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 				 * We stash these values for later processing, since we'll need
 				 * to read the config file first; complying to overriding rules
 				 */
-				if (!*cl_cfg) *cl_cfg = g_ptr_array_new();
+				if (!*cl_cfg) *cl_cfg = g_ptr_array_new_with_free_func(g_free);
 				g_ptr_array_add(*cl_cfg, optarg);
 				break;
 			case 'D':

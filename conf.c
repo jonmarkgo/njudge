@@ -39,7 +39,7 @@ cfgval_t def_vals[] = {
 		{"bailout_plan"			, "~/bail_plan"},
 		{"bitnet_gateway1"		, ""},
 		{"bitnet_gateway2"		, ""},
-		{"block_file"			, ""},			// Use block file? Put path here
+		{"block_file"			, ""},			/* Use block file? Put path here */
 		{"create_disabled"		, "no"},
 		{"enable_syslog"		, "no"},
 		{"forward"				, "~/.forward"},
@@ -67,15 +67,15 @@ cfgval_t def_vals[] = {
 		{"points_ontime"		, "3"},
 		{"time_tolerance"		, "0"},
 		{"username"				, "judge"},
-		{"warp_file"			, "./njudgex.warp"}, // temporary warp-message file
+		{"warp_file"			, "./njudgex.warp"}, /* temporary warp-message file */
 		{"xforward"				, ""},
-		// Default commands
+		/* Default commands */
 		{"cmd_lenlimit"			, "./lenlimit"},
 		{"cmd_atrun"			, "./atrun"},
 		{"cmd_dip"				, "./dip"},
 		{"cmd_smail"			, "./smail"},
 		{"cmd_summary"			, "./summary"},
-		// Variant specific variables?
+		/* Variant specific variables? */
 		{"DIE_ASSASSIN"			, "382204"},
 		{"DIE_EXPENSE"			, "148741"},
 		{"DIE_FAMPLAG"			, "995816"},
@@ -92,10 +92,10 @@ cfgval_t def_vals[] = {
 		{"bn_custodian"			, "nobody"},
 		{"mn_custodian"			, "nobody"},
 		{"EP_CUSTODIAN"			, "nobody"},
-		// Default custodians for sailho (other variants will default to nothing
+		/* Default custodians for sailho (other variants will default to nothing */
 		{"CUSTODIAN_sailho"		, "tarzan_monkeyman@bigfoot.com"},
 		{"CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"},
-		// Default custodians for 1900?
+		/* Default custodians for 1900? */
 		{"CUSTODIAN_1900_1"		, "VonPowell@aol.com"},
 		{"CUSTODIAN_1900_2"		, "VonPowell@aol.com"},
 		{"CUSTODIAN_1900_3"		, "VonPowell@aol.com"},
@@ -117,10 +117,10 @@ void conf_destroy(void) {
 }
 gchar* conf_get(gchar *var) {
 
-	g_assert((var != NULL) && (*var != 0));
-
 	gchar* res;
 	gchar* lower;
+
+	g_assert((var != NULL) && (*var != 0));
 
 	lower = g_ascii_strdown(var, -1);
 
@@ -173,7 +173,7 @@ gint conf_init(void) {
 
 	conf_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
-	// Set default (and allowed) values
+	/* Set default (and allowed) values */
 	for (itr = 0; def_vals[itr].key; itr ++) {
 		conf_set(def_vals[itr].key, def_vals[itr].val, 1, NULL);
 	}
@@ -183,14 +183,14 @@ gint conf_init(void) {
 }
 gint conf_read_file(gchar *dir, gchar *bname, GError** err) {
 
-	g_assert(err == NULL || *err == NULL);
-	g_assert(((dir != NULL) && (*dir != 0)) && ((bname != NULL) && (*bname != 0)));
-
 	gint    rtn = 1;
 	guint   lc = 0;
 	gchar*  fn;
 	gchar   line[256];
 	FILE*   fp = NULL;
+
+	g_assert(err == NULL || *err == NULL);
+	g_assert(((dir != NULL) && (*dir != 0)) && ((bname != NULL) && (*bname != 0)));
 
 	fn = g_strdup_printf("%s/%s", dir, bname);
 
@@ -232,6 +232,27 @@ gint conf_set(gchar *var, gchar *val, gint init, GError** err) {
 	g_hash_table_insert(conf_table, g_ascii_strdown(var, -1), g_strdup(val));
 
 	return 1;
+
+}
+gint conf_vset(GPtrArray* arr, GError** err) {
+
+	gint   idx;
+	gint   rtn = 1;
+	gchar* tcptr;
+
+	g_assert(arr != NULL && (err == NULL || *err == NULL));
+
+	for (idx = 0; idx < arr->len; idx ++) {
+		tcptr = g_ptr_array_index(arr, idx);
+		if (!conf_textual_set(tcptr, err)) {
+			if (!err) continue;
+			g_prefix_error(err, "config option error, ");
+			rtn = 0;
+			break;
+		}
+	}
+
+	return rtn;
 
 }
 gint conf_textual_set(gchar* line, GError** err) {

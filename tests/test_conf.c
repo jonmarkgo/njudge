@@ -50,7 +50,7 @@ void test_conf_get(void) {
 
 	g_hash_table_insert(conf_table, "test_key", "test_value");
 
-	// Should ignore case of keyname
+	/* Should ignore case of keyname */
 	g_assert_cmpstr(conf_get("TEST_KEY"), ==, "test_value");
 	g_assert(conf_get("NOT_FOUND") == NULL);
 
@@ -66,7 +66,7 @@ void test_conf_read_file(void) {
 
 	conf_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
 
-	// Create variables so they are known when reading file.
+	/* Create variables so they are known when reading file. */
 	g_hash_table_insert(conf_table, g_strdup("judge_code"), g_strdup(""));
 	g_hash_table_insert(conf_table, g_strdup("judge_tz"), g_strdup(""));
 
@@ -93,7 +93,6 @@ void test_conf_init(void) {
 	conf_init();
 
 	for (idx = 0; def_vals[idx].key; idx ++) {
-		//printf("%s\n", cfg_vals[idx].key);
 		g_assert_cmpstr(conf_get(def_vals[idx].key), ==, def_vals[idx].val);
 	}
 
@@ -136,6 +135,42 @@ void test_conf_get_bool(void) {
 	g_hash_table_unref(conf_table);
 
 }
+void test_conf_vset(void) {
+
+	GError*    err = NULL;
+	GPtrArray* arr;
+
+	conf_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+
+	arr = g_ptr_array_new();
+	g_ptr_array_add(arr, "test1fail");
+	g_ptr_array_add(arr, "test1=val1");
+	g_ptr_array_add(arr, "test2=val2");
+	g_ptr_array_add(arr, "test3=val3");
+
+	g_assert(!conf_vset(arr, &err));
+	g_assert(g_error_matches(err, DIP_CONF_ERROR, DIP_CONF_ERROR_PARSE));
+	g_clear_error(&err);
+
+	g_ptr_array_remove_index(arr, 0);
+	g_hash_table_insert(conf_table, g_strdup("test2"), g_strdup(""));
+	g_hash_table_insert(conf_table, g_strdup("test3"), g_strdup(""));
+
+	g_assert(!conf_vset(arr, &err));
+	g_assert(g_error_matches(err, DIP_CONF_ERROR, DIP_CONF_ERROR_VOID_VALUE));
+	g_clear_error(&err);
+
+
+	g_hash_table_insert(conf_table, g_strdup("test1"), g_strdup(""));
+
+	g_assert(conf_vset(arr, &err));
+	g_assert_cmpstr(g_hash_table_lookup(conf_table, "test1"), ==, "val1");
+	g_assert_cmpstr(g_hash_table_lookup(conf_table, "test2"), ==, "val2");
+	g_assert_cmpstr(g_hash_table_lookup(conf_table, "test3"), ==, "val3");
+
+	g_hash_table_unref(conf_table);
+
+}
 
 tests_t tests_conf[] = {
 		{"/conf/conf_set",		test_conf_set},
@@ -144,5 +179,6 @@ tests_t tests_conf[] = {
 		{"/conf/conf_init",		test_conf_init},
 		{"/conf/conf_get_int",	test_conf_get_int},
 		{"/conf/conf_get_bool",	test_conf_get_bool},
+		{"/conf/conf_vset",		test_conf_vset},
 		{NULL}
 };
