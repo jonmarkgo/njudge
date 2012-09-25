@@ -28,7 +28,10 @@ typedef struct {
 #endif
 GHashTable* conf_table = NULL;
 
-static cfgval_t def_vals[] = {
+#ifndef UNITTEST
+  static
+#endif
+cfgval_t def_vals[] = {
 
 		{"auto_master"			, "no"},
 		{"bail_forward"			, "~/bail_forward"},
@@ -184,7 +187,7 @@ gint conf_read_file(gchar *dir, gchar *bname, GError** err) {
 	g_assert(((dir != NULL) && (*dir != 0)) && ((bname != NULL) && (*bname != 0)));
 
 	gint    rtn = 1;
-	guint   lc = 1;
+	guint   lc = 0;
 	gchar*  fn;
 	gchar   line[256];
 	FILE*   fp = NULL;
@@ -199,13 +202,13 @@ gint conf_read_file(gchar *dir, gchar *bname, GError** err) {
 	}
 
 	while ((NULL != fgets(line, 256, fp))) {
+		lc ++;
 		if (!conf_textual_set(line, err)) {
 			if (!*err) continue;
 			g_prefix_error(err, "error at line %u: ", lc);
 			rtn = 0;
 			goto exit_conf_read_file;
 		}
-		lc ++;
 	}
 
 exit_conf_read_file:
@@ -218,6 +221,7 @@ exit_conf_read_file:
 }
 gint conf_set(gchar *var, gchar *val, gint init, GError** err) {
 
+	g_assert(err == NULL || *err == NULL);
 	g_assert((var != NULL) && (val != NULL));
 
 	if (!init && !g_hash_table_lookup(conf_table, var)) {
