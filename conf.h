@@ -31,7 +31,7 @@ gint   conf_textual_set(gchar* line, GError** err);
 
 typedef enum {
 
-  	DIP_CONF_ERROR_FILE,
+  	DIP_CONF_ERROR_FILE = 1,
   	DIP_CONF_ERROR_VOID_VALUE,
   	DIP_CONF_ERROR_PARSE
 

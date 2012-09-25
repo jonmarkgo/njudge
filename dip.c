@@ -46,8 +46,8 @@
 void CheckRemindPlayer(int player, long one_quarter);
 void check_sizes(void);   /* Check that no sizes have changed */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
-static gint init(int, char **, GError** err);
-gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg);
+static gint init(int argc, char** argv, GError** err);
+gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err);
 void phase_pending(void);	/* defined in phase.c */
 void print_usage(void);
 
@@ -62,12 +62,20 @@ static GQuark dip_init_error_quark(void) {
 
 int main(int argc, char** argv) {
 
+	gint    exit_s = 0;
 	gchar*  tcptr;					// Temporary char pointer
 	gchar*  syslog_alias = NULL;
     struct  stat buf;
     GError* err = NULL;
 
-	if (!init(argc, argv, &err)) goto exit_main;
+	if (!init(argc, argv, &err)) {
+		if (err->code == DIP_INIT_ERROR_HAS_CRASHED) {
+			bailout(err->code);
+		}
+
+		goto exit_main;
+
+	}
 
  	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
 
@@ -134,7 +142,13 @@ exit_main:
 
 	if (syslog_alias) g_free(syslog_alias);
 
-	exit(0);
+	if (err) {
+		fprintf(stderr, "e> %s\n", err->message);
+		exit_s = err->code;
+		g_error_free(err);
+	}
+
+	return exit_s;
 
 }
 void check_sizes(void) {
@@ -228,17 +242,17 @@ void savemail(void) {
 }
 static gint init(int argc, char** argv, GError** err) {
 
-	g_assert(err != NULL && *err == NULL);
-
-	gint       rtn = 1;
+	gint       fd;
+	gint       idx;
+	gint       rtn = 0;
+	gint*      dedic;
 	gchar*     tcptr;
+	FILE*      block_fp;
+	time_t     now;
 	GPtrArray* cl_cfg = NULL;
-
-	int fd;
-	time_t now;
 	struct stat sbuf;
-	FILE *fptr;
-	char *t;
+
+	g_assert(err != NULL && *err == NULL);
 
 	g_set_prgname(g_basename(argv[0]));
 
@@ -255,28 +269,21 @@ static gint init(int argc, char** argv, GError** err) {
 
 	if (!conf_init()) goto exit_init;
 
-	if (!parse_cmdline(argc, argv, &cl_cfg)) {
-		print_usage();
-		return 0;
-	}
+	if (!parse_cmdline(argc, argv, &cl_cfg, err)) goto exit_init;
 
-	/* Read the config file */
-	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err)) {
-		rtn = 0;
-		goto exit_init;
-	}
+	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err)) goto exit_init;
 
 	/* Parse config values stashed away while reading command line */
 	if (cl_cfg) {
-		rtn = conf_vset(cl_cfg, err);
+		idx = conf_vset(cl_cfg, err);
 		g_ptr_array_unref(cl_cfg);
-		if (!rtn) goto exit_init;
+		if (!idx) goto exit_init;
 	}
 
+	/* change cwd to judge_path */
 	if (chdir(conf_get("judge_path")) < 0) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_VOID_DIR,
 				"judge_dir error - %s: %s", conf_get("judge_dir"), g_strerror(errno));
-		rtn = 0;
 		goto exit_init;
 	}
 
@@ -292,42 +299,53 @@ static gint init(int argc, char** argv, GError** err) {
 	subjectline[0] = '\0';
 
 	/* Interlock the log file to ensure single threading  */
-	if ((fd = open(conf_get("log_file"), O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
-		perror(conf_get("log_file"));
-		exit(E_FATAL);
+	tcptr = conf_get("log_file");
+	if ((fd = open(tcptr, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_OPEN,
+				"error opening log file - %s: %s", tcptr, g_strerror(errno));
+		goto exit_init;
 	}
 	if (!(log_fp = fdopen(fd, "a"))) {
-		perror("fdopen");
-		exit(E_FATAL);
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_FDOPEN,
+				"error fdopen on log file - %s: %s", tcptr, g_strerror(errno));
+		close(fd);
+		goto exit_init;
 	}
+
 	if (!stat(conf_get("bail_forward"), &sbuf)) {
 		savemail();
-		exit(0);
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_HAS_BAILED,
+				"has bailed error, saved mail");
+		goto exit_init;
 	}
+
 	/* TODO change to POSIX sigaction */
 	signal(SIGALRM, gotalarm);
 	alarm(conf_get_int("lock_timeout"));
 
 	if (lockfd(fd, 0)) {
-		perror("FLOCKF");
-		exit(E_FATAL);
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_LOCK,
+				"unable to lock log file - %s: %s", conf_get("log_file"), g_strerror(errno));
+		goto exit_init;
 	}
+
 	alarm(0);
 
 	/* OK, now see if we're supposed to use block file */
-	t = conf_get("block_file");
-	if (t[0]) {
-	    if (!stat(t, &sbuf)) {
-		fprintf(stderr, 
-			"Block File %s exists - previous dip crashed.\n",
-			t);
-		bailout(E_FATAL);
+	if (*(tcptr = conf_get("block_file"))) {
+	    if (!stat(tcptr, &sbuf)) {
+	    	g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_HAS_CRASHED,
+	    			"block file exists - %s: previous dip has crashed", tcptr);
+	    	goto exit_init;
 	    }
-
-	    fptr = fopen(t,"w");
+	    if ((block_fp = fopen(tcptr,"w")) == NULL) {
+	    	g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_BLOCK,
+	    			"unable to create block file - %s: %s", tcptr, g_strerror(errno));
+	    	goto exit_init;
+	    }
 	    time(&now);
-	    fprintf(fptr, ctime(&now));
-	    fclose(fptr);
+	    fprintf(block_fp, ctime(&now));
+	    fclose(block_fp);
 	}
 
 	time(&now);
@@ -338,10 +356,10 @@ static gint init(int argc, char** argv, GError** err) {
 		if ((fd = open("dip.dedicate", O_RDONLY)) < 0)
 			nded = 0;
 		else {
-			int i, dedicate[MAXUSER];
-			nded = read(fd, dedicate, MAXUSER * sizeof(int)) / sizeof(int);
-			for (i = 0; i <= nded; i++) {
-				ded[i].r = dedicate[i];
+			dedic = g_alloca(MAXUSER);
+			nded = read(fd, dedic, MAXUSER * sizeof(int)) / sizeof(int);
+			for (idx = 0; idx <= nded; idx ++) {
+				ded[idx].r = dedic[idx];
 			}
 			close(fd);
 	} else {
@@ -350,13 +368,17 @@ static gint init(int argc, char** argv, GError** err) {
 	}
 
 	if (!(cfp = fopen("dip.control", "a"))) {
-		perror("dip.control");
-		exit(E_FATAL);
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_CONTROL_FILE,
+				"unable to open dip.control: %s", g_strerror(errno));
+		goto exit_init;
 	}
 	if (!(xfp = fopen("dip.xcontrol", "a"))) {
-		perror("dip.control");
-		exit(E_FATAL);
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_XCONTROL_FILE,
+				"unable to open dip.xcontrol: %s", g_strerror(errno));
+		goto exit_init;
 	}
+
+	rtn = 1;
 
 exit_init:
 
@@ -1386,13 +1408,17 @@ int process(void) {
 	
 	return 0;		/* reached ? */
 }
-gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
+gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err) {
 
-	gint   result = 1;
+	/* TODO: error reporting */
+
+	gint   rtn = 0;
 	gchar* tcptr;
 	gchar  opt;
 
-	while ((opt = getopt(argc, argv, "AaC:c:Dd:hi:qs:T:t:vx")) > -1) {
+	opterr = 0; /* mute getopt */
+
+	while ((opt = getopt(argc, argv, ":AaC:c:Dd:hi:qs:T:t:vx")) > -1) {
 
 		switch(opt) {
 			case 'A':
@@ -1416,27 +1442,25 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 				 * We stash these values for later processing, since we'll need
 				 * to read the config file first; complying to overriding rules
 				 */
-				if (!*cl_cfg) *cl_cfg = g_ptr_array_new_with_free_func(g_free);
+				if (!*cl_cfg) *cl_cfg = g_ptr_array_new_with_free_func(NULL);
 				g_ptr_array_add(*cl_cfg, optarg);
 				break;
 			case 'D':
-				conf_set("judge_path", optarg, 0, NULL);
+				options.debug = 1;
 				break;
 			case 'd':
-				g_free(options.cwd);
-				options.cwd = g_strdup(optarg);
+				conf_set("judge_path", optarg, 0, NULL);
 				break;
 			case 'i':
 				options.input = fopen(optarg, "r");
 				if (NULL == options.input) {
-					g_fprintf(stderr, "e> couldn't open input stream - %s: %s\n",
-							optarg, g_strerror(errno));
-					result = 0;
+					g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_OPEN_STREAM,
+							"e> couldn't open input stream - %s: %s", optarg, g_strerror(errno));
 					goto exit_parse_cmdline;
 				}
 				break;
 			case 'h':
-				return 0;
+				goto exit_parse_cmdline;
 				break;
 			case 'q':
 				options.quick = 1;
@@ -1446,8 +1470,8 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 				break;
 			case 's':
 				if (!sscanf(optarg, "%u", &options.sequence)) {
-					g_fprintf(stderr, "e> option s requires an integer argument\n");
-					result = 0;
+					g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_ARG_TYPE,
+							"option -%c requires an integer argument", opt);
 					goto exit_parse_cmdline;
 				}
 				if (!options.variant) {
@@ -1457,15 +1481,15 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 			case 'T':
 				options.datetime = optarg;
 				if (mail_date(&options.datetime, &dip_time, 1, stderr, 0)) {
-				    g_fprintf(stderr, "Invalid date-time %s specified.\n", options.datetime);
-				    result = 0;
+					g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_ARG_TYPE,
+							"invalid date-time specified - %s", optarg);
 				    goto exit_parse_cmdline;
 				}
 				break;
 			case 't':
 				if (!sscanf(optarg, "%u", &options.variant)) {
-					g_fprintf(stderr, "e> option t requires an integer argument\n");
-					result = 0;
+					g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_ARG_TYPE,
+							"option -%c requires an integer argument", opt);
 					goto exit_parse_cmdline;
 				}
 				if (!options.sequence) {
@@ -1478,15 +1502,25 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 			case 'x':
 				options.no_input = 1;
 				break;
+			case ':':
+				g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_MISSING_ARG,
+						"option requires an argument: -%c", optopt);
+				goto exit_parse_cmdline;
+			case '?':
+				g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_VOID_OPTION,
+						"unknown option: -%c", optopt);
+				goto exit_parse_cmdline;
 			default:
-				break;
+				goto exit_parse_cmdline;
 		}
 
 	}
 
+	rtn = 1;
+
 exit_parse_cmdline:
 
-	return result;
+	return rtn;
 
 }
 void print_usage(void) {
