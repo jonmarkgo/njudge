@@ -53,7 +53,7 @@ cfgval_t def_vals[] = {
 		{"judge_tz"				, ""},
 		{"line_wrap"			, "78"},
 		{"lock_timeout"			, "3600"},
-		{"log_file"				, "njudgex.log"},
+		{"log_file"				, "dip.log"},
 		{"mail_spooler"			, "mail_spooler"},
 		{"master_db"			, "dip.master"},
 		{"master_db_tmp"		, "dip.tmast"},

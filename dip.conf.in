@@ -90,7 +90,7 @@
 # Time in seconds to bail-out if can't lock log file.
 #lock_timeout = 3600
 
-# [log_file]			string				njudgex.log
+# [log_file]			string				dip.log
 # Name of log file.
 #log_file = dip.log
 

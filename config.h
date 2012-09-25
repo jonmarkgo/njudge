@@ -1,49 +1,56 @@
-/* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define to 1 if you have the `flock' function. */
-#define HAVE_FLOCK 1
+#undef HAVE_FLOCK
 
 /* Define to 1 if you have the `mrand48' function. */
-#define HAVE_MRAND48 1
+#undef HAVE_MRAND48
 
 /* Define to 1 if you have the `strdup' function. */
-#define HAVE_STRDUP 1
+#undef HAVE_STRDUP
 
 /* Name of package */
-#define PACKAGE "njudge"
+#undef PACKAGE
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT ""
+#undef PACKAGE_BUGREPORT
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME ""njudge""
+#undef PACKAGE_NAME
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING ""njudge" 1.7.6.020110208"
+#undef PACKAGE_STRING
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "-njudge-"
+#undef PACKAGE_TARNAME
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL ""
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.7.6.020110208"
+#undef PACKAGE_VERSION
 
 /* Version number of package */
-#define VERSION "1.7.6.020110208"
+#undef VERSION
 
 #ifdef HAVE_FLOCK
   #include <sys/file.h>
-  #define lockfd(f,nb) flock(f, LOCK_EX | (nb ? LOCK_NB : 0))
+  #define lockfd(f, nb)   flock(f, LOCK_EX | (nb ? LOCK_NB : 0))
+  #define unlockfd(f, nb) flock(f, 0)
 #else
   #include <unistd.h>
-  #define lockfd(f,nb)  lockf(f, (nb ? F_TLOCK : F_LOCK), 0)
+  #define lockfd(f, nb)   lockf(f, (nb ? F_TLOCK : F_LOCK), 0)
+  #define unlockfd(f, nb) lockf(f, 0, 0)
 #endif
 
 #ifdef HAVE_MRAND48
   #define random() mrand48()
   #define srandom(seed) srand48((long)seed)
+#endif
+
+#ifdef WIN32
+  #define PATH_SEP '\\'
+#else
+  #define PATH_SEP '/'
 #endif
 
