@@ -63,7 +63,7 @@ static GQuark dip_init_error_quark(void) {
 int main(int argc, char** argv) {
 
 	gint    exit_s = 0;
-	gchar*  tcptr;					// Temporary char pointer
+	gchar*  tcptr;
 	gchar*  syslog_alias = NULL;
     struct  stat buf;
     GError* err = NULL;
@@ -72,9 +72,7 @@ int main(int argc, char** argv) {
 		if (err->code == DIP_INIT_ERROR_HAS_CRASHED) {
 			bailout(err->code);
 		}
-
 		goto exit_main;
-
 	}
 
  	syslog_alias = g_strdup_printf("%s-%s", conf_get("judge_code"), "dip");
@@ -82,7 +80,7 @@ int main(int argc, char** argv) {
 	diplog_syslog_open(syslog_alias);
 	diplog_syslog_entry(LOG_INFO, "Started dip");
 
-	// Check if xforward file exists, indicating a bailout-recovery situation
+	/* Check if xforward file exists, indicating a bailout-recovery situation */
 	if (!stat(XFORWARD, &buf)) {
 	    bailout_recovery = 1;
 	}
@@ -130,7 +128,7 @@ int main(int argc, char** argv) {
 	}
 	close_plyrdata();
 
-	// If block file exists, remove it
+	/* If block file exists, remove it */
 	tcptr = conf_get("block_file");
 	if (*tcptr) {
 	    remove(tcptr);
@@ -708,7 +706,7 @@ int process(void) {
 		for (n = 0, i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;
-			if (dipent.flags & F_INTIMATE && dipent.players[i].controlling_power != 0)
+			if ((dipent.flags & F_INTIMATE) && dipent.players[i].controlling_power != 0)
 				continue;  /* Don't warn about non players in intimate */
 
 			if (now < dipent.deadline && (dipent.players[RealPlayerIndex(i)].status & SF_WAIT)) {
@@ -724,7 +722,7 @@ int process(void) {
 				while ((then = dipent.process - 24 * 60 * 60) > now)
 					dipent.process = then;
 
-				if (dipent.players[RealPlayerIndex(i)].status & SF_PART &&
+				if ((dipent.players[RealPlayerIndex(i)].status & SF_PART) &&
 				  now >= dipent.grace - (dipent.flags & F_NONMR ? 0 : 24 * 60 * 60)) {
 					dipent.players[RealPlayerIndex(i)].status |= SF_MOVED;
 				} else {
@@ -953,7 +951,7 @@ int process(void) {
 			msg_header(rfp);
 		}
 		i = dipent.powers + '0' - dipent.seq[1];
-		if (dipent.xflags & XF_MANUALSTART && i <= 0) {
+		if ((dipent.xflags & XF_MANUALSTART) && i <= 0) {
 			sprintf(subjectline, "%s:%s - Waiting for Master to Start", conf_get("judge_code"), dipent.name);
 			fprintf(rfp, "Diplomacy game '%s' is still waiting for master to start it.\n", dipent.name );
 			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for master to start it.\n", NowString(), dipent.name);
@@ -1073,8 +1071,8 @@ int process(void) {
 						dipent.players[i].centers, dipent.phase);
 
 					if (!(dipent.x2flags & X2F_SECRET) || n == 0) {
-
-					    late[n] = (dipent.flags & F_QUIET || dipent.x2flags & X2F_SECRET ? '?' : dipent.pl[dipent.players[i].power]);
+					    late[n] = ((dipent.flags & F_QUIET) ||
+					    		(dipent.x2flags & X2F_SECRET) ? '?' : dipent.pl[dipent.players[i].power]);
 					    n++;
 					}
 				    }
@@ -1285,8 +1283,8 @@ int process(void) {
 			   a new summary to be created nicely */
 			{
 				char *mflg, *gflg;
-				gflg = (dipent.flags & F_GUNBOAT && (dipent.phase[6] != 'X' ||
-				  dipent.flags & F_NOREVEAL)) ? "g" : "";
+				gflg = ((dipent.flags & F_GUNBOAT) && (dipent.phase[6] != 'X' ||
+				  (dipent.flags & F_NOREVEAL))) ? "g" : "";
 				mflg = (*gflg && dipent.players[player].power == MASTER)
 				    ? "m" : "";
 				sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
@@ -1409,8 +1407,6 @@ int process(void) {
 	return 0;		/* reached ? */
 }
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err) {
-
-	/* TODO: error reporting */
 
 	gint   rtn = 0;
 	gchar* tcptr;

@@ -247,8 +247,6 @@
 
 #include "diptime.h"
 
-// #include "conf.h"
-
 #define min(a,b)      ((a) < (b) ? (a) : (b))
 #define max(a,b)      ((a) > (b) ? (a) : (b))
 
@@ -458,19 +456,19 @@ typedef struct Sequence {
 
 struct opts_s {
 
-	gboolean	dont_rm_q;			// Don't remove anything from queue -A
-	gboolean	dont_touch_q;		// Don't touch the queue -a
-	gchar*		cfg_file;			// Config file to use -C path
-	gchar*		cfg_val;			// Set config value -c key=val
-	gboolean	debug;				// Debugging mode, write reply to stdout -D
-	FILE*		input;				// Input file -i file
-	gboolean	quick;				// Quick-mode, just process mail -q
-	gchar*		randomizer;			// Original name for randomizer (Machiavelli) -r
-	guint		sequence;			// Test sequence -s
-	gchar*		datetime;			// Use this as current time & date -T date
-	guint		variant;			// Force variant -t var
-	gboolean	verbose;			// Issue all error messages -v
-	gboolean	no_input;			// No input, don't read stdin for mail -x
+	gboolean	dont_rm_q;			/* Don't remove anything from queue -A           */
+	gboolean	dont_touch_q;		/* Don't touch the queue -a                      */
+	gchar*		cfg_file;			/* Config file to use -C path                    */
+	gchar*		cfg_val;			/* Set config value -c key=val                   */
+	gboolean	debug;				/* Debugging mode, write reply to stdout -D      */
+	FILE*		input;				/* Input file -i file                            */
+	gboolean	quick;				/* Quick-mode, just process mail -q              */
+	gchar*		randomizer;			/* Original name for randomizer (Machiavelli) -r */
+	guint		sequence;			/* Test sequence -s                              */
+	gchar*		datetime;			/* Use this as current time & date -T date       */
+	guint		variant;			/* Force variant -t var                          */
+	gboolean	verbose;			/* Issue all error messages -v                   */
+	gboolean	no_input;			/* No input, don't read stdin for mail -x        */
 
 };
 typedef struct PLAYER {
