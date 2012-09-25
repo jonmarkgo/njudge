@@ -72,7 +72,7 @@ cfgval_t def_vals[] = {
 		// Default commands
 		{"cmd_lenlimit"			, "./lenlimit"},
 		{"cmd_atrun"			, "./atrun"},
-		{"cmd_dip"				, "./njudgex"},
+		{"cmd_dip"				, "./dip"},
 		{"cmd_smail"			, "./smail"},
 		{"cmd_summary"			, "./summary"},
 		// Variant specific variables?
