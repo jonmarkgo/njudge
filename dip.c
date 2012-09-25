@@ -34,6 +34,8 @@
 #include "diplog.h"
 #include "plyrdata.h"
 
+#define		DIP_INIT_ERROR		dip_init_error_quark()
+
 #define pcontrol if (!(dipent.flags & (F_NOLIST|F_QUIET))) control
 #define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
 
@@ -51,6 +53,12 @@ void print_usage(void);
 
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
 struct opts_s options = {0};
+
+static GQuark dip_init_error_quark(void) {
+
+	return g_quark_from_static_string("dip-init-error-quark");
+
+}
 
 int main(int argc, char** argv) {
 
@@ -239,14 +247,13 @@ static gint init(int argc, char** argv, GError** err) {
 	CONFIG_FILE = CONFIG_DIR + 2;
 
 	/* Set options defaults */
-	options.cwd	  = g_path_get_dirname(argv[0]);
 	options.input = stdin;
 
 	/* Reset the random seed */
 	time(&now);
 	srand(now);
 
-	conf_init();
+	if (!conf_init()) goto exit_init;
 
 	if (!parse_cmdline(argc, argv, &cl_cfg)) {
 		print_usage();
@@ -261,9 +268,16 @@ static gint init(int argc, char** argv, GError** err) {
 
 	/* Parse config values stashed away while reading command line */
 	if (cl_cfg) {
-		rtn = conf_vset(cl_cfg);
+		rtn = conf_vset(cl_cfg, err);
 		g_ptr_array_unref(cl_cfg);
 		if (!rtn) goto exit_init;
+	}
+
+	if (chdir(conf_get("judge_path")) < 0) {
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_VOID_DIR,
+				"judge_dir error - %s: %s", conf_get("judge_dir"), g_strerror(errno));
+		rtn = 0;
+		goto exit_init;
 	}
 
 	/* Change the judge timezone, if set */
@@ -274,17 +288,6 @@ static gint init(int argc, char** argv, GError** err) {
 	    tzset();
 	    g_free(tcptr);
 	}
-
-	/*
-	 * read in the configuration, first from config file,
-	 * then from environment, finally from the command line
-	 * TODO: fold in command line processing for configuration
-	 * variables with regular argument processing.
-	 */
-/*
-	conf_readfile(CONFIG_FILE);
-	conf_cmdline(argc, argv);
- */
 
 	subjectline[0] = '\0';
 
@@ -1417,15 +1420,11 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg) {
 				g_ptr_array_add(*cl_cfg, optarg);
 				break;
 			case 'D':
-				options.debug = 1;
+				conf_set("judge_path", optarg, 0, NULL);
 				break;
 			case 'd':
-				if (chdir(optarg) < 0) {
-					g_fprintf(stderr, "e> couldn't change directory - %s: %s\n",
-							optarg, g_strerror(errno));
-					result = 0;
-					goto exit_parse_cmdline;
-				}
+				g_free(options.cwd);
+				options.cwd = g_strdup(optarg);
 				break;
 			case 'i':
 				options.input = fopen(optarg, "r");

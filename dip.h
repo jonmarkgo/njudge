@@ -463,7 +463,6 @@ struct opts_s {
 	gchar*		cfg_file;			// Config file to use -C path
 	gchar*		cfg_val;			// Set config value -c key=val
 	gboolean	debug;				// Debugging mode, write reply to stdout -D
-	gchar*		cwd;				// Change current working directory -d dir
 	FILE*		input;				// Input file -i file
 	gboolean	quick;				// Quick-mode, just process mail -q
 	gchar*		randomizer;			// Original name for randomizer (Machiavelli) -r
@@ -566,6 +565,12 @@ extern struct extra_centre extra_centres[MAXPLAYERS];
    ((((dipent.flags & (F_GUNBOAT | F_NOSHOW)) == (F_GUNBOAT | F_NOSHOW)) && \
 		dipent.players[player].power < WILD_PLAYER) ? somepower :\
 				   powers[dipent.players[player].power])
+
+typedef enum {
+
+	DIP_INIT_ERROR_VOID_DIR
+
+} DipInitError;
 
 extern struct opts_s options;
 extern struct dipent dipent;
