@@ -90,6 +90,7 @@
 #include "conf.h"
 #include "config.h"
 #include "dip.h"
+#include <diplog.h>
 #include "mail.h"
 #include "functions.h"
 #include "plyrdata.h"
@@ -157,7 +158,7 @@ int newuser(char *addr, FILE * fp)
 	/* static int pval[] = {DFT_SEND, SEND, SEND, NO_SEND, NO_SEND, NO_SEND}; */
 	n = got = level = 0;
 	while ((not_eof = fgets(line, sizeof(line), fp))) {
-		fputs(line, log_fp);
+		diplog_entry(line);
 		fputs(line, ifp);
 		if (!strchr(line, ':')) {
 			not_eof = NULL;
@@ -360,7 +361,7 @@ int newuser(char *addr, FILE * fp)
 	}
 
 	while ((not_eof = fgets(line, sizeof(line), fp))) {
-		fputs(line, log_fp);
+		diplog_entry(line);
 		fputs(line, ifp);
 		if (!strchr(line, ':'))
 			break;

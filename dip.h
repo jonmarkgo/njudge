@@ -585,7 +585,6 @@ typedef enum {
 
 extern struct opts_s options;
 extern struct dipent dipent;
-extern FILE *log_fp;		/* General log/interlock file */
 extern FILE *rfp;		/* Reply file pointer */
 extern FILE *cfp;		/* Control file pointer */
 extern FILE *xfp;		/* Control file pointer */

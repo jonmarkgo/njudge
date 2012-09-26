@@ -832,10 +832,10 @@ int process_output(int pt, char phase)
 		retreatout(pt);
 		if (processing)
 		{
-			fprintf(log_fp,"Processing retreat.\n");
-			fprintf(log_fp,"before victor: %d\n", victor);
+			diplog_entry("processing retreat.");
+			diplog_entry("before victor: %d", victor);
 			next_phase();
-			fprintf(log_fp,"After next phase, victor %d.\n",victor);
+			diplog_entry("after next phase, victor %d.",victor);
 		}
 		break;
 

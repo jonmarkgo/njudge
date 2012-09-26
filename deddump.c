@@ -1,23 +1,3 @@
-/*
- * $Log: deddump.c,v $
- * Revision 1.5  2003-09-14 22:08:16  jaldhar
- * Included fcntl.h for symbols not defined in unistd.h
- *
- * Revision 1.4  2002/08/27 22:27:48  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.3  2001/05/12 08:05:28  greg
- * added Mario Becroft's dedication bug fix
- *
- * Revision 1.2  2001/05/07 04:30:49  greg
- * minor bug fix
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
- */
 
 /*  deddump.c
  *  Copyright 1987, Lowe.
@@ -47,7 +27,8 @@
  *  Dump/load the binary dedication file to/from a text file.
  */
 
-static int lflg = 0;
+static int   lflg = 0;
+static FILE* log_fp;
 
 static char *addr[MAXUSER];
 
@@ -76,8 +57,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-/* Interlock the log file to ensure single threading  */
-
+	/* Interlock the log file to ensure single threading  */
 	if (lflg) {
 		if ((fd = open(conf_get("log_file"), O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
 			perror(conf_get("log_file"));

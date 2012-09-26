@@ -88,7 +88,7 @@ int main(int argc, char** argv) {
 	check_sizes();
 
 	if(open_plyrdata() != 0) {
-		fprintf(log_fp,"Unable to open plyrdata file.\n");
+		diplog_entry("unable to open plyrdata file.");
 	}
 	put_data(0,total);
 	
@@ -203,7 +203,7 @@ void gotalarm(int unused) {
 
 	time(&now);
 
-	fprintf(log_fp, "%24.24s: Log file lock timed-out.\n", ctime(&now));
+	diplog_entry("log file lock timed-out.");
 
 	savemail();
 
@@ -233,7 +233,8 @@ void savemail(void) {
 	}
 
 	time(&now);
-	fprintf(log_fp, "%24.24s: Message saved on %s.\n", ctime(&now), conf_get("mail_spooler"));
+
+	diplog_entry("message saved on %s.", conf_get("mail_spooler"));
 
 	return;
 
@@ -297,18 +298,18 @@ static gint init(int argc, char** argv, GError** err) {
 	subjectline[0] = '\0';
 
 	/* Interlock the log file to ensure single threading  */
-	tcptr = conf_get("log_file");
+	/*tcptr = conf_get("log_file");
 	if ((fd = open(tcptr, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_OPEN,
 				"error opening log file - %s: %s", tcptr, g_strerror(errno));
 		goto exit_init;
 	}
-	if (!(log_fp = fdopen(fd, "a"))) {
+	if (!diplog_open("dip", err)) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_FDOPEN,
 				"error fdopen on log file - %s: %s", tcptr, g_strerror(errno));
 		close(fd);
 		goto exit_init;
-	}
+	}*/
 
 	if (!stat(conf_get("bail_forward"), &sbuf)) {
 		savemail();
@@ -321,11 +322,12 @@ static gint init(int argc, char** argv, GError** err) {
 	signal(SIGALRM, gotalarm);
 	alarm(conf_get_int("lock_timeout"));
 
-	if (lockfd(fd, 0)) {
+	diplog_open("dip", err);
+	/*if (lockfd(fd, 0)) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_LOCK,
 				"unable to lock log file - %s: %s", conf_get("log_file"), g_strerror(errno));
 		goto exit_init;
-	}
+	}*/
 
 	alarm(0);
 
@@ -347,8 +349,8 @@ static gint init(int argc, char** argv, GError** err) {
 	}
 
 	time(&now);
-	fprintf(log_fp, "%15.15s: dip -%s%s%s\n", ctime(&now) + 4,
-		options.dont_rm_q ? "A" : "", options.quick ? "q" : "", options.no_input ? "x" : "");
+	diplog_entry("options: %c%c%c.", options.dont_rm_q ? 'A' : ' ',
+			options.quick ? 'q' : ' ', options.no_input ? 'x' : ' ');
 
 	if ((fd = open("dip.ded", O_RDONLY)) < 0)
 		if ((fd = open("dip.dedicate", O_RDONLY)) < 0)
@@ -505,7 +507,7 @@ void master(void) {
 	ferrck(ofp, 1001);
 	fclose(ofp);
 	if (rename(conf_get("master_db_tmp"), conf_get("master_db"))) {
-		fprintf(log_fp, "Error renaming %s to %s.\n", conf_get("master_db_tmp"),conf_get("master_db"));
+		diplog_entry("Error renaming %s to %s.\n", conf_get("master_db_tmp"), conf_get("master_db"));
 		fprintf(stderr, "Error renaming %s to %s.\n", conf_get("master_db_tmp"),conf_get("master_db"));
 		bailout(E_FATAL);
 	}
@@ -689,7 +691,7 @@ int process(void) {
 
 	if (GAME_PAUSED) return 0;  /* game is paused, do not process! */
 
-	fprintf(log_fp, "Processing game '%s'.\n", dipent.name);
+	diplog_entry("processing game '%s'.", dipent.name);
 	rfp = NULL;
 	lfp = NULL;
 	mlfp = NULL;
@@ -855,8 +857,8 @@ int process(void) {
 							    dipent.players[i].controlling_power == 0) {
 								ded[dipent.players[i].userid].r += conf_get_int("points_abandon");
 								put_data(dipent.players[i].userid,resigned);
-								fprintf(log_fp, dedfmt, conf_get_int("points_abandon"), dipent.players[i].userid,
-									ded[dipent.players[i].userid].r);
+								diplog_entry(dedfmt, conf_get_int("points_abandon"), dipent.players[i].userid,
+										ded[dipent.players[i].userid].r);
 							}
 						}
 						pprintf(cfp, "%s%s in game '%s' is now considered abandoned ",
@@ -909,7 +911,7 @@ int process(void) {
 							dedtest = 1;
 						}
 						ded[dipent.players[i].userid].r += d;
-						fprintf(log_fp,dedfmt,d,dipent.players[i].userid,
+						diplog_entry(dedfmt, d,dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
 					    }
 					}
@@ -1020,7 +1022,7 @@ int process(void) {
 					    RealPlayerIndex(i) == i) {
 						put_data(dipent.players[i].userid,resigned);
 						ded[dipent.players[i].userid].r += conf_get_int("points_cd");
-						fprintf(log_fp, dedfmt, conf_get_int("points_cd"), dipent.players[i].userid,
+						diplog_entry(dedfmt, conf_get_int("points_cd"), dipent.players[i].userid,
 							ded[dipent.players[i].userid].r);
 					}
 					if (!(dipent.flags & F_NONMR)) {
@@ -1044,8 +1046,8 @@ int process(void) {
 					put_data(dipent.players[i].userid,ontime);
 					put_data(dipent.players[i].userid,total);
 					ded[dipent.players[i].userid].r += conf_get_int("points_ontime");
-					fprintf(log_fp, dedfmt, conf_get_int("points_ontime"), dipent.players[i].userid,
-					ded[dipent.players[i].userid].r);
+					diplog_entry(dedfmt, conf_get_int("points_ontime"), dipent.players[i].userid,
+							ded[dipent.players[i].userid].r);
 				}
 			}
 		}
@@ -1188,15 +1190,15 @@ int process(void) {
 		if (dipent.phase[6] == 'X') {
 			sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 			if ((dfp = fopen(line, "w")) == NULL) {
-				fprintf(log_fp, "dip: Error opening draw file.\n");
+				diplog_entry("error opening draw file.");
 				bailout(E_FATAL);
 			}
 			if ((ofp = fopen("dip.temp", "w")) == NULL) {
-				fprintf(log_fp, "process: Error opening second temporary file.\n");
+				diplog_entry("error opening second temporary file.");
 				bailout(E_FATAL);
 			}
 			if ((gfp = fopen("dip.victory", "w")) == NULL) {
-				fprintf(log_fp, "dip: Error opening victory file.\n");
+				diplog_entry("error opening victory file.");
 				bailout(E_FATAL);
 			}
 

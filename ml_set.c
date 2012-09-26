@@ -2589,12 +2589,12 @@ void mail_setp(char *s)
 				sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
 				if (!(tfp = fopen(line, "w"))) {
 					perror(line);
-					fprintf(log_fp, "Can't open info file: %s", line);
+					diplog_entry("Can't open info file: %s", line);
 					bailout(1);
 				}
 				fprintf(rfp, "----- Full comment set:\n");
 				for (n = skipping = 0; fgets(line, sizeof(line), options.input); n++) {
-					fputs(line, log_fp);
+					diplog_entry(line);
 					for (t = line; isspace(*t); t++);
 					if (!strncasecmp(t, "signoff", 7)) {
 						skipping++;

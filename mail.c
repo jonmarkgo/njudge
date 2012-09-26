@@ -376,7 +376,7 @@ int mail(void)
 /*  Scan the mail file for something recognizable  */
 
 	got_reply = got_resent = ppress_done = 0;
-	fprintf(log_fp, "===== Received mail:\n");
+	diplog_entry("received mail:");
 
 	if (!(ifp = fopen("dip.incoming", "w+"))) {
 		perror("dip.incoming");
@@ -384,7 +384,7 @@ int mail(void)
 	}
 	done_headers = 0;
 	while (fgets(line, sizeof(line), options.input)) {
-		fputs(line, log_fp);
+		diplog_entry(line);
 		fputs(line, ifp);
 		if (skipping)
 			continue;
@@ -560,8 +560,8 @@ int mail(void)
                                                 fprintf(rfp, "You are not an allowed player on this judge.\n");
                                                 fprintf(rfp, "Please contact the judge keeper to be permitted to play.\n");
                                                 while (fgets(line, sizeof(line), options.input)) {
-                                                        fputs(line, log_fp);
-                                                        fputs(line, ifp);
+                                                	diplog_entry(line);
+													fputs(line, ifp);
                                                 }
                                                 mail_reply(E_WARN);
                                                 return E_WARN;
@@ -571,7 +571,7 @@ int mail(void)
 						fprintf(rfp, "You have been blacklisted from this judge.\n");
 						fprintf(rfp, "Please contact the judge keeper if you want to dispute this decision.\n");
 						while (fgets(line, sizeof(line), options.input)) {
-							fputs(line, log_fp);
+							diplog_entry(line);
 							fputs(line, ifp);
 						}
 						mail_reply(E_WARN);
@@ -651,9 +651,9 @@ int mail(void)
 					if ((i = mail_signon(s))) {
 						fclose(mfp);
 						fclose(nfp);
-						fputs("Bad signon, skipping remainder:\n", log_fp);
+						diplog_entry("Bad signon, skipping remainder:");
 						while (fgets(line, sizeof(line), options.input)) {
-							fputs(line, log_fp);
+							diplog_entry(line);
 							fputs(line, ifp);
 						}
 						mail_reply(i);
@@ -682,9 +682,9 @@ int mail(void)
 				case HELP:
 					command++;
 					rfile = "data/info";
-					fputs("Help command found, skipping remainder:\n", log_fp);
+					diplog_entry("help command found, skipping remainder:");
 					while (fgets(line, sizeof(line), options.input)) {
-						fputs(line, log_fp);
+						diplog_entry(line);
 						fputs(line, ifp);
 					}
 					mail_reply(0);
@@ -837,7 +837,7 @@ int mail(void)
 							dipent.flags & F_BLIND ? "b" : "",
 							dipent.flags & F_QUIET ? "q" : "",
 							not_eof ? dipent.variant : V_STANDARD, name);
-						fflush(log_fp);
+						fflush(NULL);
 						if (system(line)) {
 							msg_header(rfp);
 							fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n", name);
@@ -1375,8 +1375,7 @@ int mail(void)
 					/* Only inform people if game had already started! */
 					/* Open file for sending to custodians */
 					if ((qfp = fopen("dip.temp", "w")) == NULL) {
-						fprintf(log_fp,
-							"open_press: Error opening second temporary file.\n");
+						diplog_entry("open_press: Error opening second temporary file.");
 						bailout(E_FATAL);
 					}
 					msg_header(qfp);
@@ -1398,7 +1397,7 @@ int mail(void)
 					sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
 					if (!(termfp = fopen(line, "r"))) {
 						if ((dfp = fopen(line, "w")) == NULL) {
-							fprintf(log_fp, "mail: Error opening draw file.\n");
+							diplog_entry("mail: error opening draw file.");
 							bailout(E_FATAL);
 						}
 						time(&now);
@@ -1784,7 +1783,7 @@ int mail(void)
 								dipent.flags & F_QUIET ? "q" : "",
 								dipent.flags & F_BLIND ? "b" : "",
 								dipent.variant, dipent.name);
-							fflush(log_fp);
+							fflush(NULL);
 							if (system(line)) {
 								fprintf(rfp, "Problem generating summary for game '%s' - has first turn processed yet?\n",
 									dipent.name);
@@ -2018,7 +2017,7 @@ int mail(void)
 			}
 		}
 	}
-	fprintf(log_fp, "===== End of received mail\n");
+	diplog_entry("end of received mail.");
 
 	if (broad_read || broad_skip)
 		fprintf(rfp, "\nEnd of message.\n\n");

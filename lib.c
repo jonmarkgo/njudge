@@ -147,6 +147,7 @@
 #include "conf.h"
 #include "config.h"
 #include "dip.h"
+#include "diplog.h"
 #include "functions.h"
 #include "porder.h"
 /* .magic.h no longer used */
@@ -173,12 +174,12 @@ void archive(char *file, char *subject)
 	sprintf(name, "%s%s/archive", conf_get("game_dir"), dipent.name);
 	if (!(ofp = fopen(name, "a"))) {
 		perror(name);
-		fprintf(log_fp, "Unable to append to archive file for '%s'.\n", dipent.name);
+		diplog_entry("unable to append to archive file for '%s'.", dipent.name);
 		bailout(1);
 	}
 	if (!(ifp = fopen(file, "r"))) {
 		perror(file);
-		fprintf(log_fp, "Unable to archive %s to %s.\n", file, name);
+		diplog_entry("Unable to archive %s to %s.\n", file, name);
 		bailout(1);
 	}
 	time(&now);
@@ -248,8 +249,8 @@ long get_die_magic(void)
 	    fclose(rand_ptr);
 	}
 	if (!rand_ptr || n != 7) {
-		fprintf(log_fp, "Unable to write magic data to ./.magic.dat.\n");
-                bailout(1);
+		diplog_entry("unable to write magic data to ./.magic.dat.");
+		bailout(1);
 	}
     }
   }
@@ -304,19 +305,19 @@ int execute(char *command)
 
 	for (i = 0;; i++) {
 		time(&now);
-		fprintf(log_fp, "%12.12s: Xcute: %s\n", ctime(&now) + 4, command);
+		diplog_entry("xcute: %s.", command);
 
 		if (!(fp = fopen("dip.xfail", "w"))) {
-			fprintf(log_fp, "Unable to create dip.xfail.\n");
+			diplog_entry("unable to create dip.xfail.");
 			perror("dip.xfail");
 			bailout(E_FATAL);
 		}
 		fclose(fp);
 
 		if ((status = system(command))) {
-			fprintf(log_fp, "System error %x executing: %s\n", status, command);
+			diplog_entry("system error %x executing: %s\n", status, command);
 			if (i < 3) {
-				fprintf(log_fp, "Will try again...\n");
+				diplog_entry("Will try again...");
 				sleep(30);
 				continue;
 			} else {
@@ -327,7 +328,7 @@ int execute(char *command)
 	}
 
 	if ((fp = fopen("dip.xfail", "r"))) {
-		fprintf(log_fp, "dip.xfail not deleted properly.\n");
+		diplog_entry("dip.xfail not deleted properly.");
 		bailout(E_FATAL);
 	}
 	return 0;
@@ -350,7 +351,7 @@ void ferrck(FILE * fp, int n)
 	fmt = "Disk full error number %d.  Bailing out!\n";
 
 	if (ferror(fp)) {
-		fprintf(log_fp, fmt, n);
+		diplog_entry(fmt, n);
 		fprintf(stderr, fmt, n);
 		bailout(E_FATAL);
 	}
@@ -975,8 +976,8 @@ int deadline(sequence *seq, int new)
 		      dipent.phase[5] == 'A' && (dipent.flags & F_INTIMATE) ? &dipent.builds : NULL)) {
                         fprintf(stderr, "Invalid phase [%s] in deadline for '%s'.\n",
                                 dipent.phase, dipent.name);
-                        fprintf(log_fp, "Invalid phase [%s] in deadline for '%s'.\n",
-                                dipent.phase, dipent.name);
+                        diplog_entry("Invalid phase [%s] in deadline for '%s'.",
+                        		dipent.phase, dipent.name);
                         return E_FATAL;
                 }
         }

@@ -377,7 +377,7 @@ int getdipent(FILE * fp)
 		}
 	}
 	if (options.debug)
-		fprintf(log_fp, "Getdipent returns: '%s'.\n", dipent.name);
+		diplog_entry("getdipent returns: '%s'.", dipent.name);
 
 	if (!strcmp(dipent.name, "control")) {
 		time(&now);

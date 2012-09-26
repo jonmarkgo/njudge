@@ -1,81 +1,3 @@
-/*
- * $Log: summary.c,v $
- * Revision 1.18  2004-02-18 00:04:39  millis
- * Fix bug 274, add in missing extra_centres structure read.
- *
- * Revision 1.17  2003/07/15 22:47:07  millis
- * Fix Bug 185 (call smail for each email individually)
- *
- * Revision 1.16  2003/02/12 07:46:07  nzmb
- * Fixed several bugs in the concession handling code, including a severe one
- *
- * that could, in rare circumstances, lead to an undeserved concession being
- * granted
- *
- * Revision 1.15  2003/01/18 23:57:43  millis
- * Updated from USTV
- *
- * Revision 1.14  2002/08/27 22:27:58  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.13  2002/06/12 21:08:30  millis
- * second value in player record is hex, thus us %x and not %d
- *
- * Revision 1.12  2002/04/23 11:08:35  miller
- * Spelling change "Svmebody" -> "Somebody"
- *
- * Revision 1.11  2002/04/18 04:44:34  greg
- * Added the following commands:
- * - unstart
- * - set secret
- * - set [prflist|prfrand|prfboth]
- *
- * Fixed Set Absence so that "to" is not case sensitive
- *
- * Fixed Quiet games so that new players are announced
- * before the game starts
- *
- * Fixed ascii_to_ded.c so thatit no longer generates an
- * error when compiled
- *
- * Revision 1.10  2002/03/05 23:38:50  miller
- * Replaced lost changes revison 1.8
- *
- * Revision 1.9  2002/03/05 23:05:47  miller
- * Fixed Machiavelli summary problem
- *
- * Revision 1.8  2002/02/03 03:45:43  nzmb
- * Fixed bug in plyrdata.c and readded some concession
- *  handler code to summary.c
- *
- * Revision 1.7  2001/10/20 12:11:16  miller
- * Merged in changes from DEMA and USTV CVS
- *
- * Revision 1.6.2.1  2001/10/15 22:30:45  ustv
- * Added display of duality stuff
- *
- * Revision 1.6  2001/08/18 07:11:36  nzmb
- * Show concessions if applicable
- * 
- * Revision 1.5  2001/07/15 09:20:27  greg
- * added support for game directories in a sub directory
- *
- * Revision 1.4  2001/07/01 23:19:29  miller
- * Add storm table
- *
- * Revision 1.3  2001/03/16 00:06:17  miller
- * Fix 'C' parameter so that next one is not squashed
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Accept -C option to specify config_dir
- * Handle blind summaries differently (if not master)
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
- */
 
 /*  summary.c -- Generate a game summary file
  *  Copyright 1987, Lowe.
@@ -159,7 +81,7 @@ int main(int argc, char **argv)
 
 	variant = 1;
 	name = NULL;
-	log_fp = stderr;
+	/* log_fp = stderr; */
 	gotent = 0;
 
 	for (i = 1; i < argc; i++) {
@@ -195,7 +117,8 @@ int main(int argc, char **argv)
                                         CONFIG_DIR = argv[i+1];
                                   else {
                                         fprintf(stderr, "Directory must follow C option.\n");
-                                        goto usage;
+                                        /* goto usage; */
+                                        exit(1);
                                   }
                                   i++;
                                   s = " ";
@@ -217,20 +140,23 @@ int main(int argc, char **argv)
 						if (++i < argc) {
 							variant = atoi(argv[i]);
 						} else {
-							fprintf(log_fp, "sum: Missing variant number.\n");
-							goto usage;
+							diplog_entry("sum: missing variant number.");
+							/* goto usage; */
+							exit(1);
 						}
 					}
 					break;
 
 				default:
-					fprintf(log_fp, "sum: Unknown option '%c'.\n", *s);
-					goto usage;
+					diplog_entry("sum: unknown option '%c'.", *s);
+					/* goto usage; */
+					exit(1);
 				}
 			}
 		} else {
 			if (name)
-				goto usage;
+				/* goto usage; */
+				exit(1);
 			name = argv[i];
 		}
 	}
@@ -247,7 +173,7 @@ int main(int argc, char **argv)
         //conf_cmdline(argc, argv);
 
         if (lflg) {
-	    if (!(log_fp = fopen(conf_get("log_file"), "a"))) {
+	    if (!(diplog_open("sum", NULL))) {
                     fprintf(stderr, "sum: Unable to open log file.\n");
                     exit(1);
 	    }
@@ -275,10 +201,12 @@ int main(int argc, char **argv)
 	}
 
 	if (!variant) {
-		fprintf(log_fp, "sum: Invalid numeric variant specified.\n");
-		goto usage;
+		diplog_entry("sum: invalid numeric variant specified.");
+		/* goto usage; */
+		exit(1);
 	}
-	if (!name) {
+	/* FIXME: Do it! */
+	/*if (!name) {
 	      usage:
 		fprintf(log_fp, "sum: Usage: %s [-c<CONFIG>=<value>] [-C<directory>] [-mbglv#] game\n", argv[0]);
 		fprintf(log_fp, "    -c<CONFIG>=<value>: Set <CONFIG> setting to <value>.\n");
@@ -289,7 +217,7 @@ int main(int argc, char **argv)
 		fprintf(log_fp, "    l: Send errors to log file.\n");
 		fprintf(log_fp, "    v: Specify alternate variant.\n");
 		exit(1);
-	}
+	}*/
 
 
 	/*
@@ -306,7 +234,7 @@ int main(int argc, char **argv)
 		fclose(ifp);
 	}
 	if (turn <= 2) {
-		fprintf(log_fp, "sum: Attempt to obtain summary before 1st turn: %s\n", name);
+		diplog_entry("sum: attempt to obtain summary before 1st turn: %s", name);
 		exit(1);
 	}
 	/* TODO: 0 flag for printf(3) is not POSIX, once someone confirms that
@@ -331,24 +259,24 @@ int main(int argc, char **argv)
 
 	sprintf(line, "map.%d", variant);
 	if ((ifp = fopen(line, "r")) == NULL) {
-		fprintf(log_fp, "sum: Error opening map data file %s.\n", line);
+		diplog_entry("sum: error opening map data file %s.", line);
 		exit(1);
 	}
 	if (fread(&npr, sizeof(npr), 1, ifp) != 1 ||
 	    fread(&hp, sizeof(hp), 1, ifp) != 1 ||
 	    fread(&nv, sizeof(nv), 1, ifp) != 1) {
-		fprintf(log_fp, "sum: Error reading map file npr/hp/nv, %s.\n", line);
+		diplog_entry("sum: error reading map file npr/hp/nv, %s.", line);
 		return E_FATAL;
 	}
 	maxheap = hp + 2048;
 	if (!(heap = (unsigned char *) malloc(maxheap + 10))) {
-		fprintf(log_fp, "sum: Unable to allocate heap.\n");
+		diplog_entry("sum: unable to allocate heap.");
 		return E_FATAL;
 	}
 
 	for (i = 1; i <= npr; i++) {
 		if (fread(cmap, sizeof(cmap[0]), CMAP_SIZE, ifp) != CMAP_SIZE) {
-			fprintf(log_fp, "sum: cmap read error city = %d, %s.\n", i, line);
+			diplog_entry("sum: cmap read error city = %d, %s.\n", i, line);
 			return E_FATAL;
 		}
 		pr[i].name = (char *) &heap[cmap[CMAP_NAME]];
@@ -365,7 +293,7 @@ int main(int argc, char **argv)
 	}
 
 	if ((i = fread(heap, sizeof(unsigned char), hp, ifp)) != hp) {
-		fprintf(log_fp, "sum: cmap heap read error, %d of %d, %s.\n", i, hp, line);
+		diplog_entry("sum: cmap heap read error, %d of %d, %s.\n", i, hp, line);
 		return E_FATAL;
 	}
 
@@ -375,24 +303,24 @@ int main(int argc, char **argv)
         }
 
 	if (nv > MAXVINC) {
-		fprintf(log_fp, "sum: Maximum variable income exceeded.\n");
+		diplog_entry("sum: maximum variable income exceeded.");
 		return E_FATAL;
 	}
 	if (nv > 0) {
 		if ((i = fread(vincome, sizeof(vincome[0]), nv, ifp)) != nv) {
-			fprintf(log_fp, "sum: cmap income read error, %d of %d, %s.\n", i, nv, line);
+			diplog_entry("sum: cmap income read error, %d of %d, %s.\n", i, nv, line);
 			return E_FATAL;
 		}
 		if ((i = fread(ftab, sizeof(ftab), 1, ifp)) != 1) {
-			fprintf(log_fp, "sum: cmap ftab read error, %d. %s\n", i, line);
+			diplog_entry("sum: cmap ftab read error, %d. %s\n", i, line);
 			return E_FATAL;
 		}
 		if ((i = fread(ptab, sizeof(ptab), 1, ifp)) != 1) {
-			fprintf(log_fp, "sum: cmap ptab read error, %d. %s\n", i, line);
+			diplog_entry("sum: cmap ptab read error, %d. %s\n", i, line);
 			return E_FATAL;
 		}
 		if ((i = fread(stab, sizeof(stab), 1, ifp)) != 1) {
-                        fprintf(log_fp, "sum: cmap stab read error, %d. %s\n", i, line);
+			diplog_entry("sum: cmap stab read error, %d. %s\n", i, line);
                         return E_FATAL;
                 }
 		if ((i = fread(permitted_units, sizeof(permitted_units), 1, ifp)) != 1) {
@@ -453,11 +381,11 @@ int main(int argc, char **argv)
 	}
 
 	if (nprov > NPROV) {
-		fprintf(log_fp, "sum: Too many prov records: %d of %d.\n", nprov, NPROV);
+		diplog_entry("sum: too many prov records: %d of %d.\n", nprov, NPROV);
 		exit(1);
 	}
 	if ((i = fread(prov, sizeof(prov[0]), nprov, ifp)) != nprov) {
-		fprintf(log_fp, "sum: prov read error, %d of %d.\n", i, nprov);
+		diplog_entry("sum: prov read error, %d of %d.\n", i, nprov);
 		exit(1);
 	}
 	/*
@@ -468,11 +396,11 @@ int main(int argc, char **argv)
 		ncity = 0;
 	}
 	if (ncity > NPROV) {
-		fprintf(log_fp, "sum: Too many city records: %d of %d.\n", ncity, NPROV);
+		diplog_entry("sum: too many city records: %d of %d.\n", ncity, NPROV);
 		exit(1);
 	}
 	if ((i = fread(city, sizeof(city[0]), ncity, ifp)) != ncity) {
-		fprintf(log_fp, "sum: city read error, %d of %d.\n", i, ncity);
+		diplog_entry("sum: city read error, %d of %d.\n", i, ncity);
 		exit(1);
 	}
 	fclose(ifp);
@@ -594,7 +522,7 @@ int main(int argc, char **argv)
 						   &units[turn][p], &centers[turn][p], &player[turn][p], &i, &i, addr);
 
 					if (j != 8) {
-						fprintf(log_fp, "sum: Bad G%3.3d line, %d: %s", turn - 1, j, line);
+						diplog_entry("sum: bad G%3.3d line, %d: %s", turn - 1, j, line);
 					}
 					if ((i = player[turn][p]) < MAXUSER) {
 						if (*addr != '*')

@@ -637,8 +637,7 @@ int gamein(void)
 						}
 						if (j == MAX_CHIT) {
 							fprintf(rfp, "Too many %d assassinates (%s): %s", j, dipent.name, line);
-							fprintf(log_fp, "Too many %d assassinates (%s): %s", j, dipent.name,
-								line);
+							diplog_entry("too many %d assassinates (%s): %s", j, dipent.name, line);
 							err++;
 						}
 					}
@@ -756,7 +755,7 @@ int gamein(void)
 
 				default:
 					fprintf(rfp, "Unknown owner code for '%s'.\n%s", dipent.name, line);
-					fprintf(log_fp, "Unknown owner code for '%s'.\n%s", dipent.name, line);
+					diplog_entry("unknown owner code for '%s'. %s", dipent.name, line);
 					err++;
 					break;
 				}
@@ -847,12 +846,12 @@ int gameout(void)
 
 	if ((ifp = fopen(line, "w")) == NULL) {
 		fprintf(rfp, "Error opening game position output data file %s.\n", line);
-		fprintf(log_fp, "Error opening game position output data file %s.\n", line);
+		diplog_entry("error opening game position output data file %s.", line);
 		perror(line);
 		return E_FATAL;
 	}
 	fprintf(ifp, "%s\n", dipent.phase);
-	fprintf(log_fp, "Writing %s for %s.\n", line, dipent.phase);
+	diplog_entry("writing %s for %s.", line, dipent.phase);
 
 	UpdateBlockades();
 

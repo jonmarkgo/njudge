@@ -12,9 +12,10 @@
 #include "config.h"
 #include "diplog.h"
 
-static FILE* diplog_fp = NULL;
-static gint  diplog_fd = -1;
+static FILE*    diplog_fp = NULL;
+static gint     diplog_fd = -1;
 static gboolean enable_syslog = 0;
+static gchar    logger[9];
 
 gint dip_log_error_quark(void) {
 
@@ -42,7 +43,7 @@ void diplog_entry(gchar* fmt, ...) {
 
 	now = time(NULL);
 	strftime(date_str, 20, "%F %T", localtime(&now));
-	fmt_str = g_strdup_printf("%s: %s\n", date_str, fmt);
+	fmt_str = g_strdup_printf("%s %s: %s\n", logger, date_str, fmt);
 
 	va_start(args, fmt);
 
@@ -51,15 +52,16 @@ void diplog_entry(gchar* fmt, ...) {
 	va_end(args);
 
 	g_free(fmt_str);
-	g_free(date_str);
 
 }
-gint diplog_open(GError** err) {
+gint diplog_open(gchar* logr, GError** err) {
 
 	gint rtn = 0;
 	gchar* fn = conf_get("log_file");
 
 	g_assert(diplog_fd == -1 && diplog_fp == NULL);
+
+	snprintf(logger, 8, "%-8s ", logr);
 
 	if ((diplog_fd = open(fn, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
 		g_set_error(err, DIP_LOG_ERROR, DIP_LOG_ERROR_FILE,

@@ -851,7 +851,7 @@ void expout(int pt)
 
 					default:
 						fprintf(rfp, "Unknown expense %c", expense[p][j].type);
-						fprintf(log_fp, "Unknown expense %c", expense[p][j].type);
+						diplog_entry("unknown expense %c", expense[p][j].type);
 						minval = 1000;
 					}
 

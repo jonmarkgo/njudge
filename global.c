@@ -57,7 +57,6 @@ char *CONFIG_FILE ="dip.conf";
 char *CONFIG_DIR = ".";
 
 struct dipent dipent;
-FILE *log_fp;			/* General log/interlock file                   */
 FILE *rfp;			/* Reply file pointer                           */
 FILE *cfp;			/* Control file pointer                         */
 FILE *xfp;			/* Control file pointer                         */

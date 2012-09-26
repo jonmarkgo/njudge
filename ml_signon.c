@@ -1598,7 +1598,7 @@ void mail_igame(void)
 
 	sprintf(line, "%s%s/start", conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
-		fprintf(log_fp, "igame: Error opening start file.\n");
+		diplog_entry("igame: error opening start file.");
 		bailout(E_FATAL);
 	}
 	time(&now);

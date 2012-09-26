@@ -390,11 +390,11 @@ int process_draw(void)
 	    
 	sprintf(line, "%s%s/draw",conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
-		fprintf(log_fp, "draw: Error opening draw file.\n");
+		diplog_entry("error opening draw file.");
 		bailout(E_FATAL);
 	}
 	if ((ofp = fopen("dip.temp", "w")) == NULL) {
-		fprintf(log_fp, "draw: Error opening second temporary file.\n");
+		diplog_entry("draw - error opening second temporary file.\n");
 		bailout(E_FATAL);
 	}
 	msg_header(ofp);
@@ -571,12 +571,12 @@ int process_conc(void)
 
 	sprintf(line, "%s%s/conc",conf_get("game_dir"), dipent.name);
         if ((dfp = fopen(line, "w")) == NULL) {
-                fprintf(log_fp, "conc: Error opening concession file.\n");
-                bailout(E_FATAL);
+        	diplog_entry("conc: error opening concession file.");
+            bailout(E_FATAL);
         }
         if ((ofp = fopen("dip.temp", "w")) == NULL) {
-                fprintf(log_fp, "draw: Error opening second temporary file.\n");
-                bailout(E_FATAL);  
+            diplog_entry("draw: error opening second temporary file.");
+			bailout(E_FATAL);
         }
         msg_header(ofp);   
                         

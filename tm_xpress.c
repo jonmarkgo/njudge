@@ -66,7 +66,7 @@ int process_ppress(void)
 	sprintf(pfilename,"%s%s/ppress-%s", conf_get("game_dir"), dipent.name, dipent.phase);
 	if((ppfp = fopen(pfilename, "a")) == NULL)
 	{
-		fprintf(log_fp, "Error opening ppress file %s.\n", pfilename);
+		diplog_entry("error opening ppress file %s.", pfilename);
 		bailout(E_FATAL);
 	}
 
@@ -191,8 +191,8 @@ void new_diary_entry(void)
 	diaryfp = fopen(fname, "w");
 	if(!diaryfp)
 	{
-		fprintf(log_fp, "Could not open diary file %s!\n", fname);
-		fflush(log_fp);
+		diplog_entry("could not open diary file %s!", fname);
+		fflush(NULL);
 		bailout(E_FATAL);
 	}
 

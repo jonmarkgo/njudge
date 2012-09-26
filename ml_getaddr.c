@@ -224,11 +224,11 @@ int mail_getaddr(char *s, char *addr)
 
 		*addr = '*';	/* Ensure that we don't reply */
 
-		fprintf(log_fp, "Ignoring mail from funny address %s.\n", t);
+		diplog_entry("Ignoring mail from funny address %s.", t);
 
 		bang = 0;
 		while (fgets(line, sizeof(line), options.input)) {
-			fputs(line, log_fp);
+			diplog_entry(line);
 			fputs(line, ifp);
 			if (!strcmp(line, "Subject: Returned mail: Return receipt\n"))
 				bang++;
@@ -243,7 +243,7 @@ int mail_getaddr(char *s, char *addr)
 				fputs("\n", tfp);
 			} else {
 				perror("dip.ignore");
-				fprintf(log_fp, "Unable to open ignore file.\n");
+				diplog_entry("Unable to open ignore file.");
 				bailout(1);
 			}
 		}

@@ -72,15 +72,12 @@ void real_bailout(int level, char *sourcename, int linenum, int dolog)
 			rename(conf_get("bailout_plan"), conf_get("plan"));
 		inform_rgd();
 	/* If bail_forward already exists, we've already crashed. No need to do again. */
-		if (stat(conf_get("bail_forward"), &sbuf))
-		{
+		if (stat(conf_get("bail_forward"), &sbuf)) {
 			rename(conf_get("forward"), conf_get("bail_forward"));
 			rename(conf_get("forward_onbail"), conf_get("forward"));
 		}
-		if(dolog)
-		{
-			fprintf(log_fp, "Bailout complete, %s renamed to %s.\n", conf_get("forward"),
-					conf_get("bail_forward"));
+		if(dolog) {
+			diplog_entry("Bailout complete.");
 		}
 		sprintf(myline, "%s /dev/null 'Bailout executed in %s at %d.' '%s'",
 			conf_get("cmd_smail"), sourcename, linenum, conf_get("judge_keeper"));
@@ -109,7 +106,7 @@ void inform_rgd(void)
 	/* Open the temporary file. */
 	if (!(ofp = fopen("dip.temp", "w"))) {
 		perror("dip.temp");
-		fprintf(log_fp, "Unable to open temporary file.\n");
+		diplog_entry("unable to open temporary file.");
 		return;
 	}
 	time(&now);
@@ -120,7 +117,7 @@ void inform_rgd(void)
 	if (!stat(conf_get("bailout_msg"), &sbuf)) {
 		if (!(ifp = fopen(conf_get("bailout_msg"), "r"))) {
 			perror(conf_get("bailout_msg"));
-			fprintf(log_fp, "Unable to open %s.\n", conf_get("bailout_msg"));
+			diplog_entry("unable to open %s.", conf_get("bailout_msg"));
 			return;
 		}
 		while (fgets(line, (int) sizeof(line), ifp))

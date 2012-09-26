@@ -619,7 +619,7 @@ int movein(char **s, int p)
 			if (u2 > nunit) {
 				if (nunit > MAXUNIT - 2) {
 					fprintf(rfp, "Too many units in %s.\n", dipent.name);
-					fprintf(log_fp, "Too many units in %s.\n", dipent.name);
+					diplog_entry("too many units in %s.", dipent.name);
 					bailout(1);
 				}
 				++nunit;
