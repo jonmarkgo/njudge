@@ -303,14 +303,14 @@
 #define F_GRACEDAYS 0x10000000	/* Grace period expire on processing days   */
 #define F_SPARE2    0x20000000	/* Unused (was F_STRWAIT)                   */
 #define F_SHORTHAND 0x40000000  /* Set if variant of type Shorthand Press   */
-#define F_WINGS     0x80000000  /* Wings variant (for modern)		    */
+#define F_WINGS     0x80000000  /* Wings variant (for modern)		    	*/
 
 #define HasPress(x)  ( (x.flags & F_GREY) | !(x.flags & F_NOWHITE) | !(x.flags & F_NOPARTIAL) | (x.flags & F_OBWHITE) | !(x.flags & F_OBNONE))
 #define DIPENT_NO_PRESS ((dipent.flags & F_NOWHITE) && !(dipent.flags & F_GREY))
 
-#define XF_MANUALPROC	0x1	/* Set if master needs to process turns     */
-#define XF_MANUALSTART	0x2	/* Set if master needs to start game        */
-#define XF_NOLATEPRESS  0x4	/* Set if country cannot press when late    */
+#define XF_MANUALPROC	0x1		/* Set if master needs to process turns     */
+#define XF_MANUALSTART	0x2		/* Set if master needs to start game        */
+#define XF_NOLATEPRESS  0x4		/* Set if country cannot press when late    */
 #define XF_TRANS_MOVE   0x8
 #define XF_STRCONVOY	0x10	/* Set when strict convoys only are allowed */
 #define XF_AHCONVOY	0x20	/* Set when AH style convoy syntax is used  */
@@ -543,11 +543,14 @@ struct dipent {
 #define MAXUSER 8000
 
 struct dedication {
-	short r;		/* Actual rating */
-	short i1, i2;		/* Accumulators for expanded formula */
+
+	short  r;		/* Actual rating */
+	short  i1;
+	short  i2;		/* Accumulators for expanded formula */
 	time_t ls;		/* Last signon time */
 	time_t md;		/* Last motd time */
-	long d0;		/* Date for expanded formula */
+	long   d0;		/* Date for expanded formula */
+
 };
 
 struct extra_centre {
