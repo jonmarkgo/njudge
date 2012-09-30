@@ -10,8 +10,6 @@
 #include "config.h"
 #include "dip.h"
 
-struct dedication ded[MAXUSER];
-
 int main(int argc, char** argv) {
 
 	gint  idx;
