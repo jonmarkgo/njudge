@@ -113,16 +113,20 @@ void diplog_syslog_open(gchar* log_alias) {
 	atexit(diplog_syslog_close);
 
 }
-void diplog_syslog_entry(int level, char *fmt, ...) {
+gint diplog_syslog_entry(int level, char *fmt, ...) {
+
+	/* Returns true if syslog is enabled, false if not */
 
 	va_list args;
 
-	if (!conf_get_bool("enable_syslog")) return;
+	if (!conf_get_bool("enable_syslog")) return 0;
     
     va_start(args, fmt);
 
     syslog(level, fmt, args);
 
     va_end(args);
+
+    return 1;
 
 }

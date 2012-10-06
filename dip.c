@@ -134,17 +134,20 @@ int main(int argc, char** argv) {
 	    remove(tcptr);
 	}
 
-	diplog_syslog_entry(LOG_INFO, "Ended dip");
-
 exit_main:
 
-	if (syslog_alias) g_free(syslog_alias);
-
 	if (err) {
-		fprintf(stderr, "e> %s\n", err->message);
-		exit_s = err->code;
+		if (!diplog_syslog_entry(LOG_ERROR, "%s", err->message)) {
+			fprintf(stderr, "e> %s\n", err->message);
+			exit_s = err->code;
+		}
 		g_error_free(err);
 	}
+
+	diplog_syslog_entry(LOG_INFO, "Ended dip");
+	diplog_syslog_close();
+
+	if (syslog_alias) g_free(syslog_alias);
 
 	return exit_s;
 

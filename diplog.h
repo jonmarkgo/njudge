@@ -20,6 +20,6 @@ void diplog_entry(gchar* fmt, ...);
 gint diplog_open(gchar* logr, GError** err);
 void diplog_syslog_close(void);
 void diplog_syslog_open(gchar* log_alias);
-void diplog_syslog_entry(int level, char *fmt, ...);
+gint diplog_syslog_entry(int level, char *fmt, ...);
 
 #endif /* DIPLOG_H */

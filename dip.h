@@ -412,9 +412,9 @@ typedef struct Sequence {
 	int clock;		/* Time of day for orders to be due             */
 	float mint;		/* Minimum time before orders will be processed */
 	float next;		/* Maximum time before orders will be processed */
-	float grace;		/* Grace period for the tardy people            */
-	float delay;		/* Minimum delay after last orders received     */
-	char days[8];		/* List of acceptable days, eg: xMTWTFx         */
+	float grace;	/* Grace period for the tardy people            */
+	float delay;	/* Minimum delay after last orders received     */
+	char days[8];	/* List of acceptable days, eg: xMTWTFx         */
 } sequence;
 
 #define SF_MOVE    0x1		/* Expecting move from this player              */
