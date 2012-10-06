@@ -137,7 +137,7 @@ int main(int argc, char** argv) {
 exit_main:
 
 	if (err) {
-		if (!diplog_syslog_entry(LOG_ERROR, "%s", err->message)) {
+		if (!diplog_syslog_entry(LOG_ERR, "%s", err->message)) {
 			fprintf(stderr, "e> %s\n", err->message);
 			exit_s = err->code;
 		}

@@ -110,7 +110,7 @@ void diplog_syslog_open(gchar* log_alias) {
 	openlog(log_alias, 0, LOG_USER);
 
 	// TODO: work to remove this solution, close syslog at main
-	atexit(diplog_syslog_close);
+	//atexit(diplog_syslog_close);
 
 }
 gint diplog_syslog_entry(int level, char *fmt, ...) {
