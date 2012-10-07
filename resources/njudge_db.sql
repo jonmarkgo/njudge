@@ -24,13 +24,13 @@ DROP TABLE IF EXISTS `player_stats`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `player_stats` (
   `player_id` int(11) NOT NULL AUTO_INCREMENT,
-  `total` int(11) DEFAULT '0',
-  `ontime` int(11) DEFAULT '0',
-  `started` int(11) DEFAULT '0',
-  `resigned` int(11) DEFAULT '0',
-  `tookover` int(11) DEFAULT '0',
+  `total` int(11) DEFAULT '0' COMMENT "times player has accessed this judge",
+  `ontime` int(11) DEFAULT '0' COMMENT "how many times the player has been on time",
+  `started` int(11) DEFAULT '0' COMMENT "how many games the player has started in",
+  `resigned` int(11) DEFAULT '0' COMMENT "how many games the player has resigned in",
+  `tookover` int(11) DEFAULT '0' COMMENT "how many games the player has been a takeover in",
   PRIMARY KEY (`player_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `player_stats` (
 
 LOCK TABLES `player_stats` WRITE;
 /*!40000 ALTER TABLE `player_stats` DISABLE KEYS */;
+INSERT INTO `player_stats` VALUES (1,0,0,0,0,0);
 /*!40000 ALTER TABLE `player_stats` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-07 11:42:41
+-- Dump completed on 2012-10-07 12:38:02
