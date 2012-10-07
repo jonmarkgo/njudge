@@ -91,9 +91,6 @@ int main(int argc, char** argv) {
 	
 	control = ded[0].d0;
 
-	dipent.pr_valid = 0; /* not yet loaded pr */
-	dipent.valid = 0;   /* nor dipent itself */
-
 	if (!options.variant) {
 		if (!options.no_input) {
 			diplog_syslog_entry(LOG_DEBUG, "Processing mail");
@@ -236,6 +233,9 @@ static gint init(int argc, char** argv, GError** err) {
 	g_assert(err != NULL && *err == NULL);
 
 	g_set_prgname(g_basename(argv[0]));
+
+	/* Reset dipent */
+	memset(&dipent, 0, sizeof dipent);
 
 	/* Set default config file */
 	CONFIG_DIR  = g_memdup(".\0dip.conf", 11);
