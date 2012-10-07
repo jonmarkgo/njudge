@@ -44,7 +44,6 @@
 /*#define NORMDED */
 
 void CheckRemindPlayer(int player, long one_quarter);
-void check_sizes(void);   /* Check that no sizes have changed */
 void inform_party_of_blind_turn(int player_index, char *turn_text, char*);
 static gint init(int argc, char** argv, GError** err);
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err);
@@ -84,8 +83,6 @@ int main(int argc, char** argv) {
 	if (!stat(XFORWARD, &buf)) {
 	    bailout_recovery = 1;
 	}
-
-	check_sizes();
 
 	if(open_plyrdata() != 0) {
 		diplog_entry("unable to open plyrdata file.");
@@ -150,24 +147,6 @@ exit_main:
 	if (syslog_alias) g_free(syslog_alias);
 
 	return exit_s;
-
-}
-void check_sizes(void) {
-
-    int   ss;
-    int   si;
-    int   sl;
-    FILE *fptr;
-
-    fptr = fopen(".size.dat","r");
-
-    if (!fptr) return;  /* Assume it is ok if no file found */
-
-    fscanf(fptr, "%d %d %d", &ss, &si, &sl);
-    fclose(fptr);
-
-    if (ss != sizeof(short) || si != sizeof(int) || sl != sizeof(long))
-        bailout(E_FATAL);   /* Don't run if sizes bad */
 
 }
 void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_file) {

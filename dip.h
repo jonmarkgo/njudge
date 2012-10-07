@@ -492,26 +492,26 @@ typedef struct PLAYER {
 } Player;
 
 struct dipent {
-	int valid;		/* =0 if dipent itself is empty 		*/
-	int pr_valid;		/* =0 if pr array is non_valid			*/
+	int valid;			/* =0 if dipent itself is empty 				*/
+	int pr_valid;		/* =0 if pr array is non_valid					*/
 	char name[20];		/* Game name                                    */
 	char seq[11];		/* Game sequence number                         */
 	char phase[10];		/* Game phase of the form F1901M                */
 	char comment[70];	/* Comment associated with game                 */
 	char epnum[20];		/* Electronic Protocol number                   */
 	char bn_mnnum[20];	/* Boardman/Miller number                       */
-	int access;		/* Access:  A_ANY, A_DIFF or A_SAME (site)      */
+	int access;			/* Access:  A_ANY, A_DIFF or A_SAME (site)      */
 	int variant;		/* Variant: V_STANDARD                          */
-	int level;		/* Level:   L_ANY, L_NOVICE, L_EXPERIENCED      */
-	int flags;		/* Flags:   F_NONMR                             */
-	int xflags;		/* Extra flags: XF_*				*/
+	int level;			/* Level:   L_ANY, L_NOVICE, L_EXPERIENCED      */
+	int flags;			/* Flags:   F_NONMR                             */
+	int xflags;			/* Extra flags: XF_*							*/
 	int x2flags;		/* More extra flags                             */
-	int x3flags;		/* Yet more flags 				*/
+	int x3flags;		/* Yet more flags 								*/
 
 	int dedicate;		/* Minimum dedication requirement               */
-	float orded;	        /* Minimum ontime ratio requirement             */
-	float rrded;            /* Maximum resignation ratio requirement        */
-	int dedapplied;         /* Have we applied dedication / taken stats yet?*/		
+	float orded;	    /* Minimum ontime ratio requirement             */
+	float rrded;        /* Maximum resignation ratio requirement        */
+	int dedapplied;     /* Have we applied dedication / taken stats yet?*/
 	time_t process;		/* Time to process this entry                   */
 	time_t start;		/* Minimum time before processing this entry    */
 	time_t deadline;	/* Current deadline to process this entry       */
@@ -521,18 +521,18 @@ struct dipent {
 	sequence movement;	/* Parameters for movement order deadlines      */
 	sequence retreat;	/* Parameters for retreat order deadlines       */
 	sequence builds;	/* Parameters for build order deadlines         */
-	int n;			/* Number of players/observers in the game      */
-	int np;			/* Number of powers for this variant            */
-	int powers;		/* Number of active powers for this variant     */
-	int vp;			/* Number of victory points required            */
-	int avp;		/* Number of victory points for an allied win   */
-	char *pl;		/* Power significant letter                     */
+	int n;				/* Number of players/observers in the game      */
+	int np;				/* Number of powers for this variant            */
+	int powers;			/* Number of active powers for this variant     */
+	int vp;				/* Number of victory points required            */
+	int avp;			/* Number of victory points for an allied win   */
+	char *pl;			/* Power significant letter                     */
 	Player players[MAXPLAYERS];	/* The players involved in the game     */
 	int no_of_players;	/* The number of players in the game            */
-	int max_absence_delay;  /* the maximum number of turns for absences     */
-        int num_homes;		/* Maximum number of configurable homes		*/
+	int max_absence_delay;  /* the maximum number of turns for absences */
+    int num_homes;		/* Maximum number of configurable homes			*/
 	int has_natives;	/* index of native power, 0 if no natives       */
-	int has_multi_unit_provs; /* !0 if has multi-unit provinces, else 0     */
+	int has_multi_unit_provs; /* !0 if has multi-unit provinces, else 0 */
 	int extra_centres;	/* !0 if X2F_INITIAL_CENTRES set */
 };
 
