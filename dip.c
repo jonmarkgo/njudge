@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
 	if(open_plyrdata() != 0) {
 		diplog_entry("unable to open plyrdata file.");
 	}
-	put_data(0,total);
+	put_data(0, total);
 	
 	control = ded[0].d0;
 

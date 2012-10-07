@@ -41,6 +41,11 @@ cfgval_t def_vals[] = {
 		{"bitnet_gateway2"		, ""},
 		{"block_file"			, ""},			/* Use block file? Put path here */
 		{"create_disabled"		, "no"},
+		{"db_name"				, ""},
+		{"db_pass"				, ""},
+		{"db_server"			, "localhost"},
+		{"db_server_port"		, "0"},
+		{"db_user"				, ""},
 		{"enable_syslog"		, "no"},
 		{"forward"				, "~/.forward"},
 		{"forward_onbail"		, "~/forward_onbail"},

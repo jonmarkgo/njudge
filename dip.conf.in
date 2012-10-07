@@ -42,6 +42,26 @@
 # Whether creation of games is disabled.
 #create_disabled = false
 
+# [db_name]				string				NULL (= Default judge_[judge_code])
+# Which database to connect to
+# db_name = judge_other
+
+# [db_pass]				string				NULL
+# The user password to connect to the database.
+#db_pass = secret
+
+# [db_server]			string				localhost
+# URL or IP to the database server.
+#db_server = localhost
+
+# [db_server_port]		integer				0 (= Default port 3306)
+# Port on server on which to connect
+#db_server_port = 0
+
+# [db_user]				string				NULL (= Use current user)
+# Which user to connect to the database as.
+#db_user = someone
+
 # [enable_syslog]		boolean				false
 # Should we log to the syslog (former SYSLOG_FLAG)?
 #enable_syslog = yes

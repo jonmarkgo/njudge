@@ -18,10 +18,9 @@ typedef struct
 	uint32 record_size;
 } PLYRDATA_HEADER;
 
-typedef struct
-{
-	uint32 ontime;
+typedef struct {
 	uint32 total;
+	uint32 ontime;
 	uint32 started;
 	uint32 resigned;
 	uint32 tookover;
@@ -29,8 +28,8 @@ typedef struct
 } PLYRDATA_RECORD;
 
 typedef enum{
-	ontime = 0,
-	total,
+	total = 0,
+	ontime,
 	started,
 	resigned,
 	tookover

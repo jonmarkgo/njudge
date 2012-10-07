@@ -30,25 +30,25 @@ void set_byte_orders(uint32 magic);
 
 int errno;
 PLYRDATA_HEADER header;
-static FILE *fp;
+static FILE* plyrdb;
 static short hostbo;
 static short filebo;
 
 FILE *create_plyrdata(void);
 
 int open_plyrdata(void) {
-    /* Open the PlyrData file. */
+
+	/* Open the PlyrData file. */
         
-    if (fp)
-    {
+    if (plyrdb) {
         fprintf(stderr, "Opening already open plyrdata file.\n");
     }
 
-    fp = fopen(PLYRDATA_FILENAME, "r+");
+    plyrdb = fopen(PLYRDATA_FILENAME, "r+");
 
-    if (!fp) {
+    if (!plyrdb) {
         if (errno == EACCES || errno == ENOENT) {
-            if (!(fp = create_plyrdata())) {
+            if (!(plyrdb = create_plyrdata())) {
                 fprintf(stderr, "Error %d creating plyrdata.\n", errno);
                 /*bailout(E_FATAL);*/
                 return 1;
@@ -61,7 +61,7 @@ int open_plyrdata(void) {
         }
     }
 
-    if (fread(&header, sizeof(PLYRDATA_HEADER), 1, fp ) < 1)  
+    if (fread(&header, sizeof(PLYRDATA_HEADER), 1, plyrdb ) < 1)  
     {
         fprintf(stderr, "plyrdata header too short.\n");
         /*bailout(E_FATAL);*/
@@ -170,30 +170,32 @@ int get_plyrdata_record( int recno, PLYRDATA_RECORD *record)
     long pos;
 
     /* Check that record is within the file */
-    fseek(fp, 0, SEEK_END);
-    end = ftell(fp);
+    fseek(plyrdb, 0, SEEK_END);
+    end = ftell(plyrdb);
     pos = get_long(header.header_size) + get_long(header.record_size) * recno;
     if (pos + get_long(header.record_size) > end)
         return 0;
-    if (fseek(fp, pos, SEEK_SET)) {
+    if (fseek(plyrdb, pos, SEEK_SET)) {
         return 0;
     }
     record_size = sizeof(PLYRDATA_RECORD) < get_long(header.record_size) ?
                   sizeof(PLYRDATA_RECORD) : get_long(header.record_size);
-    return fread(record, record_size, 1, fp);
+    return fread(record, record_size, 1, plyrdb);
 }
 /*******************************************************************/
-int put_plyrdata_record(int recno, PLYRDATA_RECORD *record)
-{
+int put_plyrdata_record(int recno, PLYRDATA_RECORD *record) {
+
     size_t record_size;
-    if (fseek(fp,
-            get_long(header.header_size) + get_long(header.record_size) * recno,
-            SEEK_SET)) {
+
+    if (fseek(plyrdb,
+			get_long(header.header_size) + get_long(header.record_size) * recno,
+			SEEK_SET)) {
         return 0;
     }
-    record_size = sizeof(PLYRDATA_RECORD) < get_long(header.record_size) ?
+
+    record_size = (sizeof(PLYRDATA_RECORD) < get_long(header.record_size)) ?
                   sizeof(PLYRDATA_RECORD) : get_long(header.record_size);
-    return fwrite(record, record_size, 1, fp);
+    return fwrite(record, record_size, 1, plyrdb);
 }
 /********************************************************************/
 uint32 get_data(int recno, PLYRDATA_TYPE type)
@@ -246,8 +248,7 @@ uint32 get_data(int recno, PLYRDATA_TYPE type)
     return -1;
 }
 /********************************************************************/
-int put_data(int recno, PLYRDATA_TYPE type)
-{
+int put_data(int recno, PLYRDATA_TYPE type) {
 
     /* First we have to find the appropriate record to put information
      ** into. If the record does not exist, we'll return a -1. 
@@ -257,10 +258,9 @@ int put_data(int recno, PLYRDATA_TYPE type)
     PLYRDATA_RECORD rec;
     uint32 temp;
 
-    if (get_plyrdata_record(recno, &rec) < 1)
-    {
+    if (get_plyrdata_record(recno, &rec) < 1) {
         /* OK, this record doesn't exist, better try to create it */
-        memset(&rec, 0, sizeof(PLYRDATA_RECORD));
+        memset(&rec, 0, sizeof rec);
     }
 
     /* See what sort of of info we want to put in to the record and
@@ -315,7 +315,7 @@ int put_data(int recno, PLYRDATA_TYPE type)
 /******************************************************************/
 void close_plyrdata( void )
 {
-   if (fclose(fp))
+   if (fclose(plyrdb))
    {
         fprintf(stderr, "Error closing plyrdata file");
         /*bailout(E_FATAL);*/
