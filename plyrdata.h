@@ -19,8 +19,8 @@ typedef struct
 } PLYRDATA_HEADER;
 
 typedef struct {
-	uint32 total;
 	uint32 ontime;
+	uint32 total;
 	uint32 started;
 	uint32 resigned;
 	uint32 tookover;
