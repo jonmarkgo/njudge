@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include <netinet/in.h>
 
 #define PLYRDATA_MAGIC          0x504C5952
 #define PLYRDATA_VERSION        2
@@ -27,9 +26,6 @@ typedef struct {
     uint32_t reserved;
 
 } plyrrec_t;
-
-char sql_str[] = "INSERT INTO player_stats (total, ontime, started, "
-                 "resigned, tookover) values (%u, %u, %u, %u, %u);";
 
 int main(int argc, char** argv) {
 
