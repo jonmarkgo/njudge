@@ -26,7 +26,7 @@
 # Path to the lenlimit binary (former LENLIMIT_CMD)
 #cmd_lenlimit = ./lenlimit
 
-# [cmd_njudgex]			string				./njudgex
+# [cmd_dip]				string				./dip
 # Path to the njudgex binary (former DIP_CMD).
 #cmd_dip = ./dip
 
