@@ -407,6 +407,7 @@ int newuser(char *addr, FILE * fp)
 		return E_FATAL;
 	}
 	while (fgets(line, sizeof(line), fp1)) {
+		/* Loop and put lines to new file until we hit current player */
 		if (atoi(line + 1) == userid) {
 			if (*line != '+')
 				continue;

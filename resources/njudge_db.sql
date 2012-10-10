@@ -16,31 +16,86 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `player_stats`
+-- Table structure for table `addresses`
 --
 
-DROP TABLE IF EXISTS `player_stats`;
+DROP TABLE IF EXISTS `addresses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `player_stats` (
-  `player_id` int(11) NOT NULL AUTO_INCREMENT,
-  `total` int(11) DEFAULT '0' COMMENT 'times player has accessed this judge',
-  `ontime` int(11) DEFAULT '0' COMMENT 'how many times the player has been on time',
-  `started` int(11) DEFAULT '0' COMMENT 'how many games the player has started in',
-  `resigned` int(11) DEFAULT '0' COMMENT 'how many games the player has resigned in',
-  `tookover` int(11) DEFAULT '0' COMMENT 'how many games the player has been a takeover in',
-  PRIMARY KEY (`player_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+CREATE TABLE `addresses` (
+  `user_id` int(11) DEFAULT NULL,
+  `address` varchar(64) DEFAULT NULL COMMENT 'e-mail address',
+  `is_default` tinyint(4) DEFAULT NULL COMMENT 'is this the defult address'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `player_stats`
+-- Dumping data for table `addresses`
 --
 
-LOCK TABLES `player_stats` WRITE;
-/*!40000 ALTER TABLE `player_stats` DISABLE KEYS */;
-INSERT INTO `player_stats` VALUES (1,0,0,0,0,0);
-/*!40000 ALTER TABLE `player_stats` ENABLE KEYS */;
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_stats`
+--
+
+DROP TABLE IF EXISTS `user_stats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_stats` (
+  `user_id` int(11) NOT NULL,
+  `total` int(11) DEFAULT '0' COMMENT 'times player has accessed this judge',
+  `ontime` int(11) DEFAULT '0' COMMENT 'times orders has been in on time',
+  `started` int(11) DEFAULT '0' COMMENT 'how many started games',
+  `resigned` int(11) DEFAULT '0' COMMENT 'how many resigns',
+  `tookover` int(11) DEFAULT '0' COMMENT 'how many takeovers',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_stats`
+--
+
+LOCK TABLES `user_stats` WRITE;
+/*!40000 ALTER TABLE `user_stats` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_stats` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) DEFAULT NULL COMMENT 'real name',
+  `birthdate` varchar(32) DEFAULT NULL,
+  `sex` int(11) DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `phone` varchar(32) DEFAULT NULL COMMENT 'telephone number',
+  `address` varchar(128) DEFAULT NULL COMMENT 'real address',
+  `country` varchar(32) DEFAULT NULL,
+  `site_id` int(11) DEFAULT NULL,
+  `site` varchar(32) DEFAULT NULL COMMENT 'literal site',
+  `timezone` varchar(32) DEFAULT NULL COMMENT 'literal timezone',
+  `tz` int(11) DEFAULT NULL COMMENT 'reserved',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +107,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-07 12:48:40
+-- Dump completed on 2012-10-10  6:30:06
