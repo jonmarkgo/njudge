@@ -67,12 +67,12 @@ cfgval_t def_vals[] = {
 		{"nobody"				, "nobody@localhost"},
 		{"plan"					, ""},
 		{"points_abandon"		, "-49"},
-		{"points_cd"			, "-100"},
+		{"points_cd"			, "-50"},
 		{"points_late"			, "-1"},
 		{"points_ontime"		, "3"},
 		{"time_tolerance"		, "0"},
 		{"username"				, "judge"},
-		{"warp_file"			, "./njudgex.warp"}, /* temporary warp-message file */
+		{"warp_file"			, "./dip.warp"}, /* temporary warp-message file */
 		{"xforward"				, ""},
 		/* Default commands */
 		{"cmd_lenlimit"			, "./lenlimit"},
@@ -209,7 +209,7 @@ gint conf_read_file(gchar *dir, gchar *bname, GError** err) {
 	while ((NULL != fgets(line, 256, fp))) {
 		lc ++;
 		if (!conf_textual_set(line, err)) {
-			if (!*err) continue;
+			if (err == NULL || *err == NULL) continue;
 			g_prefix_error(err, "error at line %u: ", lc);
 			rtn = 0;
 			goto exit_conf_read_file;

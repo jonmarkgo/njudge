@@ -134,7 +134,7 @@
 # Dedication points received on abandon (former D_ABANDON).
 #points_abandon = -49
 
-# [points_cd]			integer				-100
+# [points_cd]			integer				-50
 # Dedication points recieved on CD (former D_CD).
 #points_cd = -100
 
