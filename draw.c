@@ -388,7 +388,7 @@ int process_draw(void)
 	        concession = 0;
 	}
 	    
-	sprintf(line, "%s%s/draw",conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s/draw",conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		diplog_entry("error opening draw file.");
 		bailout(E_FATAL);
@@ -480,7 +480,7 @@ int process_draw(void)
 	 */
 
 	if (dipent.flags & F_GUNBOAT) {
-		sprintf(line, "%s%s/msummary",conf_get("game_dir"), dipent.name);
+		sprintf(line, "%s/%s/msummary",conf_get("game_dir"), dipent.name);
 		remove(line);
 	}
 	/* 
@@ -499,7 +499,7 @@ int process_draw(void)
 
 	/*  Mail summary to HALL_KEEPER */
 
-	sprintf(line, "%s%s/summary 'HoF: %s in %s'",
+	sprintf(line, "%s/%s/summary 'HoF: %s in %s'",
 			conf_get("game_dir"), dipent.name, concession ? "Consession" : "Draw", dipent.name);
 	MailOut(line, conf_get("hall_keeper"));
 
@@ -569,7 +569,7 @@ int process_conc(void)
 	/* OK, if we're this far, we have a concession. This next set of 
 	   code is ripped, with some modifications, from process_draw */
 
-	sprintf(line, "%s%s/conc",conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s/conc",conf_get("game_dir"), dipent.name);
         if ((dfp = fopen(line, "w")) == NULL) {
         	diplog_entry("conc: error opening concession file.");
             bailout(E_FATAL);
@@ -633,7 +633,7 @@ int process_conc(void)
 	
 	/* Regenerate the summary */
 	if (dipent.flags & F_GUNBOAT) {
-                sprintf(line, "%s%s/msummary",conf_get("game_dir"), dipent.name);
+                sprintf(line, "%s/%s/msummary",conf_get("game_dir"), dipent.name);
                 remove(line);
         }
 	{  
@@ -646,7 +646,7 @@ int process_conc(void)
                 system(line);
 	}
 	/* Now mail the summary to the hall keeper. */
-	sprintf(line, "%s%s/summary 'HoF: Concession to %s in %s'",
+	sprintf(line, "%s/%s/summary 'HoF: Concession to %s in %s'",
 			conf_get("game_dir"), dipent.name,powers[dipent.players[largest].power],
 		dipent.name);
 	MailOut(line, conf_get("hall_keeper"));

@@ -67,7 +67,7 @@ int porder(char c, int player, int listflg)
 
 	if (power < NPOWER + 1 || power == MASTER) {
 
-		sprintf(line, "%s%s/%c%s", conf_get("game_dir"), dipent.name, c, dipent.seq);
+		sprintf(line, "%s/%s/%c%s", conf_get("game_dir"), dipent.name, c, dipent.seq);
 		if (!(ifp = fopen(line, "r")))
 			ifp = fopen("/dev/null", "r");
 

@@ -489,7 +489,7 @@ int mail_signon(char *s)
 				fprintf(stderr, "Memory allocation error.\n");
 				bailout(E_FATAL);
 			}
-			sprintf(gdirname, "%s%s", conf_get("game_dir"), &name[1]);
+			sprintf(gdirname, "%s/%s", conf_get("game_dir"), &name[1]);
 
 			if (strcmp(raddr, conf_get("judge_keeper")) != 0 && stat("NOCREATE", &sbuf) == 0) {
 				if (!msg_header_done)
@@ -951,21 +951,21 @@ int mail_signon(char *s)
 			fprintf(rfp, "Game '%s' has been terminated.\n", dipent.name);
 			fprintf(rfp, "Use the 'resume' command to start it back up.\n\n");
 		}
-		sprintf(Tfile, "%s%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
+		sprintf(Tfile, "%s/%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((pfp = fopen(Tfile, "a+")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Error opening %s to write future orders.\n", Tfile);
 			return E_FATAL;
 		}
-		sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
+		sprintf(Tfile, "%s/%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((ofp = fopen(Tfile, "w")) == NULL) {
 			if (!msg_header_done)
 				msg_header(rfp);
 			fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 			return E_FATAL;
 		}
-		sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
+		sprintf(Mfile, "%s/%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 		if ((tfp = fopen(Mfile, "r")) != NULL) {
 			while (fgets(line, sizeof(line), tfp)) {
 				if (!strcmp(line, "X-marker\n"))
@@ -1473,9 +1473,9 @@ void mail_igame(void)
 	 * Create a game file.
 	 */
 
-	sprintf(line, "%s%s", conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s", conf_get("game_dir"), dipent.name);
 	mkdir(line, 0777);
-	sprintf(line, "%s%s/G%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(line, "%s/%s/G%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((ofp = fopen(line, "w")) == NULL) {
 		fprintf(stderr, "igame: Error opening game file %s.\n", line);
 		bailout(E_FATAL);
@@ -1596,7 +1596,7 @@ void mail_igame(void)
  * Record start date for the summary
  */
 
-	sprintf(line, "%s%s/start", conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s/start", conf_get("game_dir"), dipent.name);
 	if ((dfp = fopen(line, "w")) == NULL) {
 		diplog_entry("igame: error opening start file.");
 		bailout(E_FATAL);
@@ -1693,7 +1693,7 @@ void mail_igame(void)
 			: dipent.players[i].address);
 	}
 
-	sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s/info", conf_get("game_dir"), dipent.name);
 	if ((fp = fopen(line, "r"))) {
 		fputc('\n', ofp);
 		while (fgets(line, sizeof(line), fp))

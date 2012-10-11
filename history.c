@@ -363,7 +363,7 @@ int history(char *line, int power_type)
 		fclose(mfp);
 	}
 
-	sprintf(file, "%s%s/archive", conf_get("game_dir"), name);
+	sprintf(file, "%s/%s/archive", conf_get("game_dir"), name);
 	if (stat(file, &sbuf)) {
 		if ((!msg_header_done) && (!signedon))
 			msg_header(rfp);

@@ -590,11 +590,11 @@ void CheckRemindPlayer(int player, long one_quarter) {
  *	no intervening signons
  */
 
-	sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Tfile, "%s/%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((ofp = fopen(Tfile, "w")) == NULL) {
 		fprintf(rfp, "Error opening %s to write orders.\n", Tfile);
 	}
-	sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Mfile, "%s/%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if ((tfp = fopen(Mfile, "r")) != NULL) {
 		while (fgets(line, sizeof(line), tfp)) {
 			if (!strcmp(line, "X-marker\n"))
@@ -1166,11 +1166,11 @@ int process(void) {
 		   **  Remove any draw/win information (for summary) if it exists
 		 */
 
-		sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
+		sprintf(line, "%s/%s/draw", conf_get("game_dir"), dipent.name);
 		remove(line);
 
 		if (dipent.phase[6] == 'X') {
-			sprintf(line, "%s%s/draw", conf_get("game_dir"), dipent.name);
+			sprintf(line, "%s/%s/draw", conf_get("game_dir"), dipent.name);
 			if ((dfp = fopen(line, "w")) == NULL) {
 				diplog_entry("error opening draw file.");
 				bailout(E_FATAL);
@@ -1260,7 +1260,7 @@ int process(void) {
 			 */
 
 			if (dipent.flags & F_GUNBOAT) {
-				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			/*  This code, ripped from mail.c, around line 1000, should force
@@ -1278,7 +1278,7 @@ int process(void) {
 
 			/*  Mail summary to HALL_KEEPER */
 
-			sprintf(line, "%s%s/summary 'HoF: Victory in %s'",
+			sprintf(line, "%s/%s/summary 'HoF: Victory in %s'",
 					conf_get("game_dir"), dipent.name, dipent.name);
 			MailOut(line, conf_get("hall_keeper"));
 
@@ -1353,9 +1353,9 @@ int process(void) {
 
 		        /* let's do postal press */
 			/* TODO: tidy this code up */ 
-			sprintf(pppath, "%s%s/ppress-%s", conf_get("game_dir"), dipent.name, phase);
+			sprintf(pppath, "%s/%s/ppress-%s", conf_get("game_dir"), dipent.name, phase);
 		        if((dipent.x2flags & X2F_POSTALPRESS) && (stat(pppath, &ppinfo) != -1))
-	    		    sprintf(ppline, "%s%s/ppress-%s '%s:%s - %s game press'",
+	    		    sprintf(ppline, "%s/%s/ppress-%s '%s:%s - %s game press'",
 	    		    		conf_get("game_dir"), dipent.name, phase,
 	        		conf_get("judge_code"), dipent.name, phase);
 

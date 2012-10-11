@@ -1048,14 +1048,14 @@ int is_allowed(int type_flag)
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/players", conf_get("game_dir"), dipent.name);
+                sprintf(fname, "%s/%s/players", conf_get("game_dir"), dipent.name);
                 break;
         case GAME_MASTER:
                  if (strlen(dipent.name) == 0) {
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/masters", conf_get("game_dir"), dipent.name);
+                sprintf(fname, "%s/%s/masters", conf_get("game_dir"), dipent.name);
                 break;
         case GLOBAL_PLAYER:
         default:
@@ -1115,14 +1115,14 @@ int is_disallowed(int type_flag)
 			perror("nogame");
 			return 0;
 		}
-		sprintf(fname, "%s%s/players", conf_get("game_dir"), dipent.name);
+		sprintf(fname, "%s/%s/players", conf_get("game_dir"), dipent.name);
 		break;
 	case GAME_MASTER:
 		 if (strlen(dipent.name) == 0) {
                         perror("nogame");
                         return 0;
                 }
-                sprintf(fname, "%s%s/masters", conf_get("game_dir"), dipent.name);
+                sprintf(fname, "%s/%s/masters", conf_get("game_dir"), dipent.name);
                 break;
 	case GLOBAL_PLAYER:
 	default:

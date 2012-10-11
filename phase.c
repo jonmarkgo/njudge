@@ -203,17 +203,17 @@ void phase_pending(void)
 #define WAIT   2
 #define NOWAIT 3
 
-	sprintf(Tfile, "%s%s/P%3.3d", conf_get("game_dir"), dipent.name, atoi(dipent.seq) - 1);
+	sprintf(Tfile, "%s/%s/P%3.3d", conf_get("game_dir"), dipent.name, atoi(dipent.seq) - 1);
 	if (!(ifp = fopen(Tfile, "r")))
 		return;
 
-	sprintf(Tfile, "%s%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Tfile, "%s/%s/P%s", conf_get("game_dir"), dipent.name, dipent.seq);
 	if (!(ofp = fopen(Tfile, "w"))) {
 		perror(Tfile);
 		bailout(1);
 	}
-	sprintf(Tfile, "%s%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
-	sprintf(Mfile, "%s%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Tfile, "%s/%s/T%s", conf_get("game_dir"), dipent.name, dipent.seq);
+	sprintf(Mfile, "%s/%s/M%s", conf_get("game_dir"), dipent.name, dipent.seq);
 
 	found = 1;
 	for (p = 1; p < WILD_PLAYER; p++) {

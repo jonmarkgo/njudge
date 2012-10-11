@@ -2516,9 +2516,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			break;
@@ -2562,9 +2562,9 @@ void mail_setp(char *s)
 			 */
 			{
 				char line[150];
-				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 			}
 			break;
@@ -2586,7 +2586,7 @@ void mail_setp(char *s)
 				int n, skipping;
 				char line[150];
 
-				sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/info", conf_get("game_dir"), dipent.name);
 				if (!(tfp = fopen(line, "w"))) {
 					perror(line);
 					diplog_entry("Can't open info file: %s", line);
@@ -2616,9 +2616,9 @@ void mail_setp(char *s)
 				   **  Force the summaries to get the new comment.
 				 */
 
-				sprintf(line, "%s%s/summary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/summary", conf_get("game_dir"), dipent.name);
 				remove(line);
-				sprintf(line, "%s%s/msummary", conf_get("game_dir"), dipent.name);
+				sprintf(line, "%s/%s/msummary", conf_get("game_dir"), dipent.name);
 				remove(line);
 
 			}
@@ -3806,7 +3806,7 @@ void process_allowdeny(char **info, char *basename)
 	if (!strcmp(dipent.name, "control"))
 		strcpy(line, basename);
 	else
-		sprintf(line, "%s%s/%s", conf_get("game_dir"), dipent.name, basename);
+		sprintf(line, "%s/%s/%s", conf_get("game_dir"), dipent.name, basename);
 	add_player(player_name, line, addflag);
 
 	*info = s;

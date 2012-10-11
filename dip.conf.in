@@ -75,7 +75,7 @@
 #forward_replace = ../yforward
 
 # [game_dir]			string				./games
-# Path to your games directory (former 'D').
+# Path to your games directory (former 'D'). Without a trailing slash
 #game_dir = ./games
 
 # [games_opener]		string				NULL

@@ -197,7 +197,7 @@ void mail_listit(void)
 	fprintf(rfp, "\nThe parameters for '%s' are as follows:\n", dipent.name);
 	params(rfp);
 
-	sprintf(line, "%s%s/info", conf_get("game_dir"), dipent.name);
+	sprintf(line, "%s/%s/info", conf_get("game_dir"), dipent.name);
 	if ((fp = fopen(line, "r"))) {
 		fputc('\n', rfp);
 		while (fgets(line, sizeof(line), fp))

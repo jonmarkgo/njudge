@@ -171,7 +171,7 @@ void archive(char *file, char *subject)
 	char name[60];
 	FILE *ofp, *ifp;
 
-	sprintf(name, "%s%s/archive", conf_get("game_dir"), dipent.name);
+	sprintf(name, "%s/%s/archive", conf_get("game_dir"), dipent.name);
 	if (!(ofp = fopen(name, "a"))) {
 		perror(name);
 		diplog_entry("unable to append to archive file for '%s'.", dipent.name);

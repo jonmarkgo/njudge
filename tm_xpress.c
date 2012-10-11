@@ -63,7 +63,7 @@ int process_ppress(void)
 	}
 
 	/* this is cool -- open up the press file */
-	sprintf(pfilename,"%s%s/ppress-%s", conf_get("game_dir"), dipent.name, dipent.phase);
+	sprintf(pfilename,"%s/%s/ppress-%s", conf_get("game_dir"), dipent.name, dipent.phase);
 	if((ppfp = fopen(pfilename, "a")) == NULL)
 	{
 		diplog_entry("error opening ppress file %s.", pfilename);
@@ -158,7 +158,7 @@ int  get_lastentry(char *gamename, char pabbr)
 
 	if (get_numentries(gamename, pabbr))
 	{
-		sprintf(command,"ls -t %s%s/diary-%c-* | sed '1s/.*diary-.-//;q'",
+		sprintf(command,"ls -t %s/%s/diary-%c-* | sed '1s/.*diary-.-//;q'",
 				conf_get("game_dir"), gamename, pabbr);
 		cmdpipe = popen(command, "r");
 		if(cmdpipe)
@@ -186,7 +186,7 @@ void new_diary_entry(void)
 	}
 
 	/* determine the new entry file & open it */
-	sprintf(fname,"%s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
+	sprintf(fname,"%s/%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		pabbr, next_entry);
 	diaryfp = fopen(fname, "w");
 	if(!diaryfp)
@@ -209,7 +209,7 @@ void read_entry(int entry)
 	char line[1000];
 	FILE *diary_read;
 
-	sprintf(entryfname,"%s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
+	sprintf(entryfname,"%s/%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		dipent.pl[dipent.players[player].power], entry);
 	diary_read = fopen(entryfname, "r");
 	if(!diary_read)
@@ -236,7 +236,7 @@ void delete_entry(int entry)
 		return;
 	}
 
-	sprintf(cmd,"rm -f %s%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
+	sprintf(cmd,"rm -f %s/%s/diary-%c-%d", conf_get("game_dir"), dipent.name,
 		pabbr, entry);
 	system(cmd);
 	fprintf(rfp, "Diary entry %d removed.\n\n", entry);
@@ -262,7 +262,7 @@ void list_entries(void)
 		fprintf(rfp,"\nExisting diary entries:\n\n");
 		for(i = 0; i < nentries; i++)
 		{
-			sprintf(fname,"%s%s/diary-%c-%d", conf_get("game_dir"),
+			sprintf(fname,"%s/%s/diary-%c-%d", conf_get("game_dir"),
 				dipent.name, pabbr, i);
 			if(stat(fname, &statbuf) != -1)
 			{
@@ -289,7 +289,7 @@ int get_numentries(char *gamename, char pabbr)
 	char dirname[256];
 	int nentries = 0;
 	
-	sprintf(dirname,"%s%s",conf_get("game_dir"),gamename);
+	sprintf(dirname,"%s/%s",conf_get("game_dir"),gamename);
 	dfd = opendir(dirname);
 	sprintf(searchname,"diary-%c-", pabbr);
 
@@ -333,7 +333,7 @@ void send_diary(void)
 			/* send all diaries */
 			sprintf(subjectln, "%s:%s diary #%d from %c",
 					conf_get("judge_code"), dipent.name, j, pabbr);
-			sprintf(diary_fl, "%s%s/diary-%c-%d", conf_get("game_dir"),
+			sprintf(diary_fl, "%s/%s/diary-%c-%d", conf_get("game_dir"),
 				dipent.name, pabbr, j);
 			if(stat(diary_fl, &sbuf) == -1)
 			{

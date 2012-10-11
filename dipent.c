@@ -519,7 +519,7 @@ void newdipent(char *name, int variant)
 
 	char dir[50];
 
-	sprintf(dir, "%s%s", conf_get("game_dir"), name);
+	sprintf(dir, "%s/%s", conf_get("game_dir"), name);
 	mkdir(dir, 0777);
 	strncpy(dipent.name, name, sizeof(dipent.name));
 	strcpy(dipent.seq, "x0");
