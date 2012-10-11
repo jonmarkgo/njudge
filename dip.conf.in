@@ -38,6 +38,10 @@
 # Summary command (former SUMMARY_CMD).
 #cmd_summary = ./summary
 
+# [create_dedication]	integer				-10
+# Minimum dedication points for creating games
+#create_dedication = 100
+
 # [create_disabled]		boolean				no
 # Whether creation of games is disabled.
 #create_disabled = false

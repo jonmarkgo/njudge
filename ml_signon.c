@@ -519,7 +519,7 @@ int mail_signon(char *s)
 			name[0] = '?';
 			free(gdirname);
 
-			if (ded[luserid].r < atoi(config("CREATE_DEDICATION"))) {
+			if (ded[luserid].r < conf_get_int("create_dedication")) {
 				fprintf(rfp, "You must have a minimum dedication of %i to create games\non this judge.\n", atoi(config("CREATE_DEDICATION")));
 				return E_WARN;
 			}
