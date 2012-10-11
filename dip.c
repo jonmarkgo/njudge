@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
     GError* err = NULL;
 
 	if (!init(argc, argv, &err)) {
-		if (err->code == DIP_INIT_ERROR_HAS_CRASHED) {
+		if (err && err->code == DIP_INIT_ERROR_HAS_CRASHED) {
 			bailout(err->code);
 		}
 		goto exit_main;
@@ -1440,6 +1440,7 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err) {
 				}
 				break;
 			case 'h':
+				print_usage();
 				goto exit_parse_cmdline;
 				break;
 			case 'q':
