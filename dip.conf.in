@@ -122,6 +122,10 @@
 # Name of the master database file (former MASTER_FILE)
 #master_db = dip.master
 
+# [max_games]			integer				-1
+# Maximum number of games this judge can host (-1 = unlimited)
+# max_games = 50
+
 # [min_control]			integer				43200
 # Minimum time in seconds for control messages to judge keeper.
 #min_control = 43200

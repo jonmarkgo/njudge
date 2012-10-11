@@ -616,10 +616,10 @@ int mail(void)
 						mail_reply(E_WARN);
 						return E_WARN;
 						break;
-					} else if (atoi(config("MAXGAMES")) >= 0 && countgames() >= atoi(config("MAXGAMES"))) {
+					} else if (conf_get_int("max_games") >= 0 && countgames() >= conf_get_int("max_games")) {
 						/* max games check 13 oct 1997 -- nw */
 						fprintf(rfp, "%s currently has a limit of %d games.\n",
-							config("JUDGE_CODE"), atoi(config("MAXGAMES")));
+							conf_get("judge_code"), conf_get_int("max_games"));
 						fprintf(rfp, "There are currently %d games listed.\n", countgames());
 						fprintf(rfp, "Creating another game would exceed that limit.\n");
 						break;
