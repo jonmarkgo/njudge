@@ -134,6 +134,7 @@ int main(int argc, char **argv)
 
 	int i, n;
 	char *s;
+	gchar opt_cfgdir = NULL;
 	int fd1, fd2;
 	FILE *fp, *pfp;
 	long now;
@@ -172,7 +173,11 @@ int main(int argc, char **argv)
 							perror(argv[i]);
 							exit(1);
 						}
-						CONFIG_DIR = argv[i];
+						/*
+						 * stash away into opt_cfgdir to override after config init
+						 * FIXME: this is ugly
+						 */
+						opt_cfgdir = argv[i];
 					} else {
 						fprintf(stderr, "-d option must specify directory.\n");
 						exit(1);
@@ -197,6 +202,7 @@ int main(int argc, char **argv)
 
       conf_init();  /* to get path for dip exe */
       conf_read_file(CONFIG_DIR, CONFIG_FILE, NULL);
+      if (opt_cfgdir) CONFIG_DIR = opt_cfgdir;
 
         sprintf(temp_text,"%s-%s", conf_get("judge_code"), "rdip");
         diplog_syslog_open(temp_text);
