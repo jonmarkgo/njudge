@@ -1414,8 +1414,10 @@ gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err) {
 				 * TODO: Remove ASAP...
 				 */
 				CONFIG_DIR = g_strdup(optarg);
-				*(tcptr = strrchr(CONFIG_DIR, PATH_SEP)) = 0;
-				CONFIG_FILE = ++tcptr;
+				/* Disabled since rdip uses this to forward config dir and no file name is given
+				 * *(tcptr = strrchr(CONFIG_DIR, PATH_SEP)) = 0;
+				 * CONFIG_FILE = ++tcptr;
+				 */
 				break;
 			case 'c':
 				/*

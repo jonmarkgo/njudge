@@ -27,7 +27,7 @@
 #cmd_lenlimit = ./lenlimit
 
 # [cmd_dip]				string				./dip
-# Path to the njudgex binary (former DIP_CMD).
+# Path to the dip binary (former DIP_CMD).
 #cmd_dip = ./dip
 
 # [cmd_smail]			string				./smail
