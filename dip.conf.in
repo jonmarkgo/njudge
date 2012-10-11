@@ -72,7 +72,7 @@
 
 # [forward_onbail]		string				~/forward_onbail
 # Path to forward file which will replace .forward on bail (former YFORWARD).
-#forward_replace = ../yforward
+#forward_onbail = ../yforward
 
 # [game_dir]			string				./games
 # Path to your games directory (former 'D'). Without a trailing slash
