@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 
 	int i, n;
 	char *s;
-	gchar opt_cfgdir = NULL;
+	gchar* opt_cfgdir = NULL;
 	int fd1, fd2;
 	FILE *fp, *pfp;
 	long now;
