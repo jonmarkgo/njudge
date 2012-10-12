@@ -100,12 +100,12 @@ cfgval_t def_vals[] = {
 		{"mn_custodian"			, "nobody"},
 		{"EP_CUSTODIAN"			, "nobody"},
 		/* Default custodians for sailho (other variants will default to nothing */
-		{"CUSTODIAN_sailho"		, "tarzan_monkeyman@bigfoot.com"},
-		{"CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"},
+		/* {"CUSTODIAN_sailho"		, "tarzan_monkeyman@bigfoot.com"},
+		{"CUSTODIAN_sailho_crowded", "tarzan_monkeyman@bigfoot.com"}, */
 		/* Default custodians for 1900? */
-		{"CUSTODIAN_1900_1"		, "VonPowell@aol.com"},
+		/* {"CUSTODIAN_1900_1"		, "VonPowell@aol.com"},
 		{"CUSTODIAN_1900_2"		, "VonPowell@aol.com"},
-		{"CUSTODIAN_1900_3"		, "VonPowell@aol.com"},
+		{"CUSTODIAN_1900_3"		, "VonPowell@aol.com"}, */
 		{NULL					, NULL}
 
 };
