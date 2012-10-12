@@ -78,9 +78,6 @@ int main(int argc, char** argv) {
 
 	diplog_syslog_open(syslog_alias);
 	diplog_syslog_entry(LOG_INFO, "Started dip");
-	if (!diplog_open("dip", &err)) {
-		goto exit_main;
-	}
 
 	/* Check if xforward file exists, indicating a bailout-recovery situation */
 	if (!stat(XFORWARD, &buf)) {
@@ -307,7 +304,9 @@ static gint init(int argc, char** argv, GError** err) {
 	signal(SIGALRM, gotalarm);
 	alarm(conf_get_int("lock_timeout"));
 
-	diplog_open("dip", err);
+	if (!diplog_open("dip", err)) {
+		goto exit_init;
+	}
 	/*if (lockfd(fd, 0)) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_LOCK,
 				"unable to lock log file - %s: %s", conf_get("log_file"), g_strerror(errno));
