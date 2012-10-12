@@ -384,7 +384,7 @@ int mail(void)
 	}
 	done_headers = 0;
 	while (fgets(line, sizeof(line), options.input)) {
-		diplog_entry(line);
+		diplog_entry(g_strstrip(line));
 		fputs(line, ifp);
 		if (skipping)
 			continue;

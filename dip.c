@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
 
 	diplog_syslog_open(syslog_alias);
 	diplog_syslog_entry(LOG_INFO, "Started dip");
+	diplog_open("dip");
 
 	/* Check if xforward file exists, indicating a bailout-recovery situation */
 	if (!stat(XFORWARD, &buf)) {

@@ -15,7 +15,7 @@
 static FILE*    diplog_fp = NULL;
 static gint     diplog_fd = -1;
 static gboolean enable_syslog = 0;
-static gchar    logger[9];
+static gchar    logger[9] = {0};
 
 gint dip_log_error_quark(void) {
 
@@ -35,6 +35,8 @@ void diplog_close(void) {
 
 }
 void diplog_entry(gchar* fmt, ...) {
+
+	g_assert(*logger);
 
 	gchar date_str[20];
 	gchar* fmt_str;
