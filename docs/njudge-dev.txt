@@ -1,0 +1,348 @@
+# vim: ai et sw=4
+
+ X. U N I T S
+--------------------------------------------------------------------------------
+
+struct unit_s {
+    char        type;
+    char        strength;
+    short       movement;
+} unit_t;
+
+ X. F L A G S
+--------------------------------------------------------------------------------
+
+    Game setting flags:
+
+        ·  [NO|NOT]RAO - (NONMR | NMR)
+            recieve-all-orders
+
+            If recieve-all-orders is set, the game will not process moves
+            until all powers have their orders in; complete and error free.
+
+        · QUIET
+            quiet-takeover
+
+            Players doesn't recieve information about power abandonment and
+            such. Important in gunboat games.
+
+        · [NO|NOT]RATED - (!NORATE)
+            enable-rate
+
+        · [NO]REVEAL
+            gunboat-no-reveal
+
+        · [NO]SHOW (Remove from code)
+            show-who
+
+        · BLANKBOARD
+            blank-board
+
+            Game starts with build and no current units on the board.
+            
+        · MASTER_RESUME (NORESUME)
+            master-resume
+
+        · NO_RETREATS (AUTODISBAND)
+            no-retreats
+
+        · NOCONCESSIONS
+            concessions
+
+            Wheter players could concede to another power
+
+        · DISBAND_BUILD (ANYDISBAND)
+            disband-build-phase
+
+            Units may be disbanded in build turns
+
+        · DISBAND_MOVE (MOVEDISBBAND)
+            disband-move-phase
+
+            Units may be disbanded in move turns
+
+        · TRANS_ATTACK_success (!NOATTACK_TRANS)
+            trans-attack-success
+
+            Transformation succeeds though unit is under attack.
+
+        · COASTAL_CONVOY
+            costal_convoy
+
+            Fleets in coastal provinces may convoy.
+
+        · PROV_DUALITY (What is this... Why isn't Constatninople a PROV_DUAL?)
+            prov-duality
+
+            Provinces can be both land and wather.
+
+        · PREFRANDALLOW (Remove this one?)
+
+            Allows player to ranomize preference list.
+
+        · PREFRANDONLY
+            preference-random
+
+            Ranomize players preference lists
+
+        · SECRET
+            hide-players
+
+            Number of players is not revealed
+
+        · ALLOW_TRANSFER_HOMES (MORE_HOMES)
+            allow_transfer_homes
+
+        · ONE_YEAR_TRANSFER (HOMETRANSFER)
+            one-year-transfer
+
+        · BLIND_CENTERS
+            blind-no-show-centers
+
+            Don't show centers summary in blind games.
+
+        · MUSTORDER
+            orders-before-press
+
+            Orders must be in before press can be used.
+
+        · POSTALPRESS
+            postal-press
+
+        · RIVERS (use this?)
+
+            Duality provinces works like rivers
+
+        · CAVALRY
+            allow-cavalry (isn't this a variant flag)
+
+        · ARTILLERY
+            allow-artillery (isn't this a variant flag)
+
+        · IRREGULAR
+
+            Game settings where changed during play
+
+
+    Variant modifier flags:
+
+        · GUNBOAT
+            gunboat-mode
+
+            Anonymous game mode. Private e-mail addresses to participants are
+            not disclosed.
+
+        · BLIND
+            blind-mode
+
+            Players sees nothing but their own moves and whether they
+            succeeds.
+
+        · SHORTHAND
+            shorthand-mode
+
+            Standardised syntax for press messages
+
+        · WINGS
+            wings-mode
+            
+            Enables the wing unit.
+
+        · INTIMATE
+            intimate-mode
+
+        · AFRULES (Not supported yet)
+
+        · SUMMER
+
+
+    Press flags:
+
+        · WHITE
+            enable-white-press
+
+        · GRAY
+            enable-gray-press
+
+        · DEFGRAY - (!DEFWHITE)
+            default-gray-press
+
+        · PARTIAL - (!NOPARTIAL)
+            enable-partial-press
+
+        · NOLATEPRESS
+            no-late-press
+
+            Countries can't press when late.
+
+        · NOGRACEPRESS
+            no-late-press-all
+
+            No one can press if one player is late
+
+        · NOADJUSTPRESS (NOMINORPRESS)
+            no-adjustment-press
+
+            No press in adjustment phases.
+
+        · FAKE
+            enable-fake-press
+
+        · DEFFAKE
+            default-fake-press
+
+        · OBWHITE
+            observer-white-press
+
+        · OBGRAY
+            observer-gray-press
+        
+        · OBALLPRESS (WATCHPRESS)
+            observer-all-press
+
+        · NEIGHBOUR_PRESS (TOUCHPRESS)
+            neighbour-press-only
+
+            Only allowed to send press to neighbours.
+
+
+    Unsorted flags:
+
+        · ALLIEDWIN
+
+            if set, duplex game can end with an allied win
+
+        · PORTAGE (?)
+
+            Armies may convoy fleets
+
+        · MODERATED
+            moderated = false | true
+
+            Game is moderated by an active master.
+ 
+        · NOLIST | LIST
+            list-game = false | true
+
+            Enables/disables public listing of the game.  If a game is set
+            NoList (the default), then only people who know about it will be
+            able to see it.
+
+        · MANUALPROC
+            manual-process
+
+            Game master manually process moves.
+
+        · MANUALSTART
+            manual-start
+
+            Game master manually starts the game.
+
+        · STRCONVOY
+            strict-convoy
+
+        · TRANS_MOVE
+            transform-move
+
+            Enables transforms in movement phase.
+
+        · TRANcoloniS_BUILD
+            transform-build
+
+        · AHCONVOY
+            Not used and should be removed.
+
+        · LATECOUNT
+            late-count
+
+        coloni    Whether game should keep record of player latiness.
+
+        · BUILD_ANYCENTER
+            build-any-center
+
+        · BUILD_ONECENTER
+            build-one-center
+
+        · BLANKPRESS (Is this one useful)
+            enable-blank-press
+
+        · AIRLIFTS
+            enable-airlifts
+
+        · AUTOCREATE
+
+            When game ends, a new one is started
+
+        · CAPTUREWIN
+
+            Wins by capturing home centers
+
+        · EXTRA_HC
+
+            Game has extra home centers according to map file.
+
+        · APPROVAL (Why?)
+
+            Master has to approve players to make orders
+
+        · PROXY (?!)
+
+            Allow proxy orders
+
+        · NODIAS
+
+            Draw does NOT include all survivors
+
+        · STRWAIT
+
+            Only players with moves can place waits
+
+
+    Variant specific flags:
+
+    Machiavelli
+
+        · NODICE
+        · NOFAMINE
+        · NOPLAGUE
+        · NOLOANS
+        · NOASS
+        · NOADJ
+        · NOSPECIAL
+        · STORMS
+        · FORT
+        · FORT_GARRISON
+        · NO_GARRISON
+        · NOMONEY
+        · NO_TREASURY
+        · NOSUMMER (merge this with SUMMER in standard)
+
+    Machiavelli II:
+
+        · GCONVERT_ANYTIME
+        · NOLIFT_SIEGE
+        · LIMIT_TYPES
+        · NO_MIXED_CONTROL
+        · CITY_ONLY_VICTORY
+        · BESIGED_CAN_DISLODGE
+
+    Colonial:
+
+        · RAILWAYS
+        · HONKONG
+        · GATEWAYS
+
+    Checkup:
+
+        · TRANS_MANYC
+        · TRANS_MONEC
+        · TRANS_MANYW
+        · TRANS_BANYC
+        · TRANS_BONEC
+        · TRANS_BANYW
+
+        · BURN_BOATS
+        · AFRULES
+        · SETUP_USED (Not used)
+        · NEUTRALS
+

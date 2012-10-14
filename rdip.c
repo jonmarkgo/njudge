@@ -1,31 +1,4 @@
 /*
- * $Log: rdip.c,v $
- * Revision 1.9  2005-09-14 11:54:20  millis
- * Bug 436, fix gcc 4.0 compile errors.
- *
- * Revision 1.8  2004/06/17 06:12:58  nzmb
- * Made rdip handle an early death of the dip program much more gracefully.
- * Instead of bailing out, it assumes the judge couldn't process the message
- * and skips it.
- *
- * Revision 1.6  2003/09/14 22:08:19  jaldhar
- * Included fcntl.h for symbols not defined in unistd.h
- *
- * Revision 1.5  2003/09/09 18:51:33  jaldhar
- * Got rid of port.h and replaced with some extra configure checks.  The
- * include strings.h was not carried over because it is commented out and
- * likely wouldn't work anyway.
- *
- * Revision 1.4  2003/04/08 09:58:31  millis
- * Fix bug 131 (problems with dip.lock2 lock)
- *
- * Revision 1.3  2003/03/25 23:35:33  millis
- * Comment out "Exit" line, as meses up on exim installations
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Passing of config_dir setting to dip, use of syslogging
- *
- * Revision 1.1  1998/02/28 17:49:42  david
  * Initial revision
  *
  * Revision 1.1  1996/10/20 12:29:45  rpaar
@@ -114,15 +87,14 @@ int retry_lockfd(int n, int m)
     int ret;
     char errtext[50];
 
-    do
-    {
-	attempt++;
-        ret = lockfd(n, m);
-	if (errno == TEMPORARY_ERROR) {
-	   sprintf(errtext,"retrying %d", attempt); 
-	   perror(errtext);
-	   sleep(SLEEP_WAIT);
-	}
+    do {
+		attempt++;
+		ret = lockfd(n, m);
+		if (errno == TEMPORARY_ERROR) {
+		   sprintf(errtext,"retrying %d", attempt);
+		   perror(errtext);
+		   sleep(SLEEP_WAIT);
+		}
     }
     while (ret && errno == TEMPORARY_ERROR && attempt < MAX_RETRIES);
 
