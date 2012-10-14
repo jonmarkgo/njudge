@@ -332,9 +332,9 @@ int ResignPower(char *power_text)
  *  Mail: Process a mail file sent to the Diplomacy judge.
  */
 
-int mail(void)
-{
+int mail(void) {
 
+	gint idx;
 	int i, j, k, l, n, got_reply, got_resent, not_eof, full;
 	int ret = 0; /* return code for shorthand */
 	int done_headers;
@@ -385,24 +385,27 @@ int mail(void)
 	done_headers = 0;
 	while (fgets(line, sizeof(line), options.input)) {
 		diplog_entry(g_strstrip(line));
+		/* Shorten line (if full) with one to give place for '\n' */
+		*((gchar *) line + sizeof(line) - 1) = '\0';
+		strcat(line, "\n");
 		fputs(line, ifp);
-		if (skipping)
-			continue;
+		if (skipping) continue;
+		if (*line == '\n') done_headers = 1;
 
 		/* Force a newline if there's not one, & trim spaces off end & start of
 		   line.  */
 
-		if (!(s = strchr(line, '\n'))) {
+		/*if (!(s = strchr(line, '\n'))) {
 			s = line + strlen(line);
 			strcpy(s, "\n");
 		}
 		for (--s; isspace(*s); --s) {
 			strcpy(s, s + 1);
 		}
-		for (s = line; isspace(*s); s++);
+		for (s = line; isspace(*s); s++);*/
 
-		if (!*s)
-			done_headers = 1;
+		/*if (!*s)
+			done_headers = 1;*/
 
 		/* are we dealing with postal press here? */
 		if(ppress_read || ppress_skip)
@@ -490,7 +493,7 @@ int mail(void)
 			} else {
 				if (*line == '~')
 					fputc('~', rfp);
-				if (!master_press && !broad_skip && dipent.flags & F_SHORTHAND && !(dipent.flags & F_MACH))
+				if (!master_press && !broad_skip && (dipent.flags & F_SHORTHAND) && !(dipent.flags & F_MACH))
 				{
 				    /* OK, it is a shorthand game. Now see if shorthand press is to be used */
 				    /* If at the start, no press is allowed */
