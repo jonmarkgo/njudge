@@ -334,12 +334,11 @@ int ResignPower(char *power_text)
 
 int mail(void) {
 
-	gint idx;
 	int i, j, k, l, n, got_reply, got_resent, not_eof, full;
 	int ret = 0; /* return code for shorthand */
 	int done_headers;
 	char *s, *t;
-	FILE *check, *termfp, *dfp, *qfp;
+	FILE *termfp, *dfp, *qfp;
 	long now;
 	int resign_index;
 	char *whotext;
@@ -595,15 +594,6 @@ int mail(void) {
 				case CREATE:
 					if (conf_get_bool("create_disabled")) {
 						fprintf(rfp, "Sorry, but game creation has been disabled");
-						if (fgets(line, sizeof(line), check)) {
-							fprintf(rfp, " for the following reason:\n");
-							do {
-								fprintf(rfp, "  %s", line);
-							} while (fgets(line, sizeof(line), check));
-						} else {
-							fprintf(rfp, ".\n");
-						}
-						fclose(check);
 						break;
 					} else if (!is_allowed(GLOBAL_MASTER)) {
 						fprintf(rfp, "Sorry, but you are not currently allowed to act as Master on this Judge.\n");
@@ -827,8 +817,8 @@ int mail(void) {
 						fclose(mfp);
 
 						sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, not_eof &&
-							(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL)
-							&& dipent.flags & F_GUNBOAT ? "g" : "", 
+							(dipent.phase[6] != 'X' || (dipent.flags & F_NOREVEAL))
+							&& (dipent.flags & F_GUNBOAT) ? "g" : "",
 							dipent.flags & F_BLIND ? "b" : "",
 							dipent.flags & F_QUIET ? "q" : "",
 							not_eof ? dipent.variant : V_STANDARD, name);
@@ -1409,7 +1399,7 @@ int mail(void) {
 					 */
 
 					{
-						if (dipent.variant != V_STANDARD || dipent.flags & F_GUNBOAT) {
+						if (dipent.variant != V_STANDARD || (dipent.flags & F_GUNBOAT)) {
 							sprintf(line,
 								"dip.temp 'MNC: Termination in %s' ",
 								dipent.name);
@@ -1439,8 +1429,8 @@ int mail(void) {
 					 */
 					{
 						char *mflg, *gflg;
-						gflg = (dipent.flags & F_GUNBOAT && (dipent.phase[6] != 'X'
-										     || dipent.flags & F_NOREVEAL)) ? "g" : "";
+						gflg = ((dipent.flags & F_GUNBOAT) && (dipent.phase[6] != 'X'
+										     || (dipent.flags & F_NOREVEAL))) ? "g" : "";
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
 						sprintf(line, "%s -C %s -%s%s%slv%d %s", conf_get("cmd_summary"), CONFIG_DIR, mflg, gflg,
@@ -1766,8 +1756,8 @@ int mail(void) {
 					{
 						char *mflg, *gflg;
 
-						gflg = (dipent.flags & F_GUNBOAT &&
-							(dipent.phase[6] != 'X' || dipent.flags & F_NOREVEAL))
+						gflg = ((dipent.flags & F_GUNBOAT) &&
+							(dipent.phase[6] != 'X' || (dipent.flags & F_NOREVEAL)))
 						    ? "g" : "";
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
@@ -1920,11 +1910,6 @@ int mail(void) {
 					}
 
 					dipent.n = j;
-/* Removed: Bug 553. There should be no need to do this.
-/*					dipent.deadline = 0;
-/*					dipent.start = 0;
-/*					dipent.grace = 0;
-*/
 
 					sprintf(dipent.seq, "x%i", k);
 					dipent.xflags |= XF_MANUALSTART;
@@ -2241,7 +2226,6 @@ void mail_reply(int err)
 		send_press();
 
 	if (err != 0 && !junkmail && !spammail) {
-		int hdr_end = 0;
 
 		fflush(ifp);
 		rewind(ifp);
@@ -2486,7 +2470,7 @@ void send_press(void)
 	 */
 
 	if (broad_signon &&
-	   ((dipent.flags & F_QUIET && dipent.seq[0] != 'x') ||
+	   (((dipent.flags & F_QUIET) && dipent.seq[0] != 'x') ||
 	   (dipent.x2flags & X2F_SECRET))) {
 		broad_list[0] = dipent.pl[MASTER];
 		broad_list[1] = '\0';
@@ -2512,7 +2496,7 @@ void send_press(void)
 			    dipent.players[i].status &= ~SF_PRESS;
 
 			/* Don't broadcast to those with nobroad set */
-			if (dipent.players[i].status & SF_NOBROAD && !broad_part) continue;
+			if ((dipent.players[i].status & SF_NOBROAD) && !broad_part) continue;
 
 			if ((i != player || dipent.players[i].power == MASTER) &&
 			    *dipent.players[i].address != '*') {
