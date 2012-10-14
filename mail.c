@@ -384,13 +384,18 @@ int mail(void) {
 	}
 	done_headers = 0;
 	while (fgets(line, sizeof(line), options.input)) {
-		diplog_entry(g_strstrip(line));
-		/* Shorten line (if full) with one to give place for '\n' */
+		/* s is set for compatibility reasons since it's used below. */
+		diplog_entry((s = g_strstrip(line)));
+		/* Shorten line (if full) with one to give place for '\n' with strcat */
 		*((gchar *) line + sizeof(line) - 1) = '\0';
 		strcat(line, "\n");
 		fputs(line, ifp);
 		if (skipping) continue;
-		if (*line == '\n') done_headers = 1;
+		if (*line == '\n') {
+			done_headers = 1;
+			/* Compatibility reasons, s used below */
+			s = line + 1;
+		}
 
 		/* Force a newline if there's not one, & trim spaces off end & start of
 		   line.  */
