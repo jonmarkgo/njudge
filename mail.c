@@ -382,7 +382,9 @@ int mail(void) {
 		perror("dip.incoming");
 		bailout(1);
 	}
+
 	done_headers = 0;
+
 	while (fgets(line, sizeof(line), options.input)) {
 		/* s is set for compatibility reasons since it's used below. */
 		diplog_entry((s = g_strstrip(line)));
@@ -396,21 +398,6 @@ int mail(void) {
 			/* Compatibility reasons, s used below */
 			s = line + 1;
 		}
-
-		/* Force a newline if there's not one, & trim spaces off end & start of
-		   line.  */
-
-		/*if (!(s = strchr(line, '\n'))) {
-			s = line + strlen(line);
-			strcpy(s, "\n");
-		}
-		for (--s; isspace(*s); --s) {
-			strcpy(s, s + 1);
-		}
-		for (s = line; isspace(*s); s++);*/
-
-		/*if (!*s)
-			done_headers = 1;*/
 
 		/* are we dealing with postal press here? */
 		if(ppress_read || ppress_skip)
