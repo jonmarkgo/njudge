@@ -18,6 +18,7 @@ extern char* CONFIG_FILE;
 void   conf_destroy(void);
 gchar *conf_get(gchar *var);
 gint   conf_get_bool(gchar* key);
+gfloat conf_get_float(gchar* key);
 gint   conf_get_int(gchar* key);
 gint   conf_init(void);
 gint   conf_read_file(gchar *dir, gchar *bname, GError** err);

@@ -82,6 +82,14 @@ cfgval_t def_vals[] = {
 		{"cmd_dip"				, "./dip"},
 		{"cmd_smail"			, "./smail"},
 		{"cmd_summary"			, "./summary"},
+		/* Game defaults */
+		{"gd_access"			, "1"},
+		{"gd_level"				, "1"},
+		{"gd_flags"				, "268566531"},
+		{"gd_flags_xtra1"		, "0"},
+		{"gd_flags_xtra2"		, "0"},
+		{"gd_flags_xtra3"		, "0"},
+		{"gd_dedicate"			, "-10000"},
 		/* Variant specific variables? */
 		{"DIE_ASSASSIN"			, "382204"},
 		{"DIE_EXPENSE"			, "148741"},
@@ -154,6 +162,20 @@ gint conf_get_bool(gchar* key) {
 			rtn = 1;
 		}
 	}
+
+	return rtn;
+
+}
+gfloat conf_get_float(gchar* key) {
+
+	gfloat rtn;
+	gchar* val;
+
+	if (NULL == (val = conf_get(key))) {
+		return 0;
+	}
+
+	sscanf(val, "%f", &rtn);
 
 	return rtn;
 

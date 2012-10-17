@@ -135,6 +135,21 @@ void test_conf_get_bool(void) {
 	g_hash_table_unref(conf_table);
 
 }
+void test_conf_get_float(void) {
+
+	gfloat r;
+
+	conf_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, g_free);
+
+	g_hash_table_insert(conf_table, g_strdup("test_key"), g_strdup("0.4"));
+
+	r = conf_get_float("test_key");
+	g_assert_cmpint((int) (r * 1000), ==, 400);
+
+	g_hash_table_unref(conf_table);
+
+
+}
 void test_conf_vset(void) {
 
 	GError*    err = NULL;
@@ -173,12 +188,13 @@ void test_conf_vset(void) {
 }
 
 tests_t tests_conf[] = {
-		{"/conf/conf_set",		test_conf_set},
-		{"/conf/conf_get",		test_conf_get},
-		{"/conf/conf_readfile",	test_conf_read_file},
-		{"/conf/conf_init",		test_conf_init},
-		{"/conf/conf_get_int",	test_conf_get_int},
-		{"/conf/conf_get_bool",	test_conf_get_bool},
-		{"/conf/conf_vset",		test_conf_vset},
+		{"/conf/conf_set",			test_conf_set},
+		{"/conf/conf_get",			test_conf_get},
+		{"/conf/conf_readfile",		test_conf_read_file},
+		{"/conf/conf_init",			test_conf_init},
+		{"/conf/conf_get_int",		test_conf_get_int},
+		{"/conf/conf_get_bool",		test_conf_get_bool},
+		{"/conf/conf_get_float",	test_conf_get_float},
+		{"/conf/conf_vset",			test_conf_vset},
 		{NULL}
 };
