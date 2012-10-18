@@ -218,37 +218,37 @@
 #gd_retreat_clock = -1
 
 # [gd_retreat_mint]			float				12.0
-#gd_move_mint = 12
+#gd_retreat_mint = 12
 
 # [gd_retreat_next]			float				71.0
-#gd_move_next = 71
+#gd_retreat_next = 71
 
 # [gd_retreat_grace]		float				167.0
-#gd_move_grace = 167
+#gd_retreat_grace = 167
 
 # [gd_retreat_delay]		float				0.5
-#gd_move_delay = 0.5
+#gd_retreat_delay = 0.5
 
 # [gd_retreat_days]			string				"-mTWTF-"
-#gd_move_days = -mTWTF-
+#gd_retreat_days = -mTWTF-
 
 # [gd_build_clock]			integer				-1
-#gd_retreat_clock = -1
+#gd_build_clock = -1
 
 # [gd_build_mint]			float				12.0
-#gd_move_mint = 12
+#gd_build_mint = 12
 
 # [gd_build_next]			float				71.0
-#gd_move_next = 71
+#gd_build_next = 71
 
 # [gd_build_grace]			float				167.0
-#gd_move_grace = 167
+#gd_build_grace = 167
 
 # [gd_build_delay]			float				0.5
-#gd_move_delay = 0.5
+#gd_build_delay = 0.5
 
 # [gd_build_days]			string				"-mTWTF-"
-#gd_move_days = -mTWTF-
+#gd_build_days = -mTWTF-
 
 # [gd_max_absence_delay]	int				"15"
 #gd_max_absence_delay = 15
