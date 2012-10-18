@@ -38,7 +38,6 @@
 #define _DEFAULTS_H
 
 #include "dip.h"
-#include "defaults.inc"
 
 #ifndef D_X2FLAGS
 #define D_X2FLAGS 0

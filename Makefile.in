@@ -411,7 +411,7 @@ noinst_HEADERS = acconfig.h \
 		zmacro.h \
 		zparseb.h
 
-BUILT_SOURCES = defaults.inc
+BUILT_SOURCES =
 dip_SOURCES = assign.c \
 		bailout.c \
 		common.c \
@@ -547,11 +547,11 @@ dist_doc_DATA = docs/InstallationHOWTO.txt \
 		ChangeLog \
 		README
 
-EXTRA_DIST = config.h.in defaults.inc.in dip.template starter.flist \
+EXTRA_DIST = config.h.in dip.template starter.flist \
 	debian njudge.spec $(man_MANS) $(bin_SCRIPTS)
 
 CLEANFILES = flist.info flist
-DISTCLEANFILES = defaults.inc
+DISTCLEANFILES = 
 all: $(BUILT_SOURCES) config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -1181,14 +1181,6 @@ upgrade-data: ${dist_data_DATA} dirs
 	@for i in ${dist_data_DATA}; \
 	do ${INSTALL_DATA} $$i ${DESTDIR}$(datadir)/`basename $$i`; \
 	done;
-
-defaults.h: defaults.inc
-
-defaults.inc:
-	@echo "Generating defaults.inc file from base version."
-	@echo "You should change this if you wish a different policy for your judge."
-	@echo
-	@cp -p defaults.inc.in defaults.inc
 
 flist:
 	cp starter.flist flist.info

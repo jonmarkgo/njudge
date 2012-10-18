@@ -1,114 +1,4 @@
 /*
- * $Log: dipent.c,v $
- * Revision 1.29  2010-08-18 00:04:22  chrisb
- * Bug 283 - Allow gamenames up to 20 bytes
- * Misc. - Support passwords up to 40 bytes in dip.master
- *
- * Revision 1.28  2006-05-03 01:19:02  alange
- *
- * Prevent CLOCK setting from being exactly 1440. Part of Bug 369.
- *
- * Revision 1.27  2005/06/16 01:44:52  alange
- * Bug 257: Notify masters on bailout recovery and time-warp.
- *
- * Revision 1.26  2004/10/23 22:43:29  millis
- * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
- *
- * Revision 1.25  2004/09/13 01:48:09  nzmb
- * Removed redefinition of malloc (incorrectly, I may add) that was causing
- * compile to fail on FreeBSD.
- *
- * Revision 1.24  2004/09/03 13:30:17  millis
- * Added use of AlliedWin value.
- *
- * Revision 1.23  2004/07/25 16:07:16  millis
- * Bug 151, allow less powers than variant default.
- *
- * Revision 1.22  2004/05/22 09:01:45  millis
- * Bug 297: Add Intimate Diplomacy
- *
- * Revision 1.21  2004/02/14 23:32:11  millis
- * Allow use of fixed time via parameter (for debugging)
- *
- * Revision 1.20  2003/07/17 22:59:29  millis
- * Bug 185
- *
- * Revision 1.19  2003/07/16 14:50:56  millis
- * Used D_X2FLAGS to allow default setting for X2FLAGS for games (if desired)
- *
- * Revision 1.18  2003/06/20 00:21:02  millis
- * Tried to fix it correctly!
- *
- * Revision 1.17  2003/06/19 23:43:18  millis
- * Added a repeat test flag.
- *
- * Revision 1.16  2003/06/19 23:27:55  millis
- * Bug 181, bailout recovery only for control game, and adjust deadlines
- * for non-control games.
- *
- * Revision 1.15  2003/05/14 19:01:22  millis
- * Don't adjust mach files in 'A' season on bailout
- *
- * Revision 1.14  2003/05/13 00:07:26  millis
- * Bug 110, move on process deadline by 24 hours on bailout recovery
- *
- * Revision 1.13  2003/05/12 23:47:59  millis
- * Fix bug 110, shift process time out on a timewarp.
- *
- * Revision 1.12  2003/04/16 04:31:32  millis
- * Fixed a bug that zapped the x/x2/flags settings on getdipent calls
- *
- * Revision 1.11  2003/01/13 22:38:51  millis
- * merged in from ustv
- *
- * Revision 1.10  2002/08/27 22:27:50  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.9  2001/10/20 12:11:11  miller
- * Merged in changes from DEMA and USTV
- *
- * Revision 1.8.2.2  2001/10/19 23:29:08  dema
- * Allow powers with spaces in their names to be used
- *
- * Revision 1.8.2.1  2001/10/15 00:00:24  ustv
- * Added reading/writing of dipent.x2flags
- *
- * Revision 1.8  2001/07/15 09:14:18  greg
- * added support for game directories in a sub directory
- *
- * Revision 1.7  2001/07/08 22:54:49  miller
- * Set default correctly for rrded, and add TIME_TOLERANCE usage from dip.conf
- *
- * Revision 1.6  2001/07/01 23:19:29  miller
- * Default for XF_COASTAL
- *
- * Revision 1.5  2001/06/24 05:30:29  nzmb
- * Added read/write capability for new dipent variables (dedapplied, orded,
- * rrded) used in the plyrdata and new deadline systems.
- *
- * Revision 1.4  2001/05/26 11:20:34  miller
- * Do not notify time-warp for shifts < 1 minute
- *
- * Revision 1.3  2001/01/05 22:27:53  miller
- * Fix to test using '==' not '='
- * (made all games erroneously of Chaos variant when upgrading from older dip.master format.
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * Added handling of new XF_:FLAGS , and absence data elements in master.dip
- * Used gerenric flags to handle variants (not specificif tests)
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.2  1997/02/16 20:43:18  davidn
- * Additions to dipent structure and associated code, to allow duplex variants.
- * Command is "set players n".
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
- */
-
-/*
  * dipent.c *  Copyright 1987, Lowe. * *  Diplomacy is a trademark of the
  * Avalon Hill Game Company, Baltimore, *  Maryland, all rights reserved;
  * used with permission. * *  Redistribution and use in source and binary
@@ -524,13 +414,13 @@ void newdipent(char *name, int variant)
 	strncpy(dipent.name, name, sizeof(dipent.name));
 	strcpy(dipent.seq, "x0");
 	strcpy(dipent.phase, sphase[variant]);
-	dipent.access = D_ACCESS;
-	dipent.level = D_LEVEL;
-	dipent.flags = D_FLAGS;
-	dipent.xflags = D_XFLAGS;
-	dipent.x2flags = D_X2FLAGS;
-	dipent.x3flags = D_X3FLAGS;
-	dipent.dedicate = D_DEDICATE;
+	dipent.access = conf_get_int("gd_access");
+	dipent.level = conf_get_int("gd_level");
+	dipent.flags = conf_get_int("gd_flags");
+	dipent.xflags = conf_get_int("gd_flags_xtra1");
+	dipent.x2flags = conf_get_int("gd_flags_xtra2");
+	dipent.x3flags = conf_get_int("gd_flags_xtra3");
+	dipent.dedicate = conf_get_int("gd_dedicate");
 	dipent.variant = variant;
 	SETNP(variant);
 	dipent.process = 0;
@@ -538,32 +428,32 @@ void newdipent(char *name, int variant)
 	dipent.start = 0;
 	dipent.grace = 0;
 	dipent.wait = 0;
-	dipent.movement.clock = D_MOVE_CLOCK;
-	dipent.movement.mint = D_MOVE_MINT;
-	dipent.movement.next = D_MOVE_NEXT;
-	dipent.movement.grace = D_MOVE_GRACE;
-	dipent.movement.delay = D_MOVE_DELAY;
-	strcpy(dipent.movement.days, D_MOVE_DAYS);
-	dipent.retreat.clock = D_RETREAT_CLOCK;
-	dipent.retreat.mint = D_RETREAT_MINT;
-	dipent.retreat.next = D_RETREAT_NEXT;
-	dipent.retreat.grace = D_RETREAT_GRACE;
-	dipent.retreat.delay = D_RETREAT_DELAY;
-	strcpy(dipent.retreat.days, D_RETREAT_DAYS);
-	dipent.builds.clock = D_BUILDS_CLOCK;
-	dipent.builds.mint = D_BUILDS_MINT;
-	dipent.builds.next = D_BUILDS_NEXT;
-	dipent.builds.grace = D_BUILDS_GRACE;
-	dipent.builds.delay = D_BUILDS_DELAY;
-	strcpy(dipent.builds.days, D_BUILDS_DAYS);
+	dipent.movement.clock = conf_get_int("gd_move_clock");
+	dipent.movement.mint = conf_get_float("gd_move_mint");
+	dipent.movement.next = conf_get_float("gd_move_next");
+	dipent.movement.grace = conf_get_float("gd_move_grace");
+	dipent.movement.delay = conf_get_float("gd_move_delay");
+	strcpy(dipent.movement.days, conf_get("gd_move_days"));
+	dipent.retreat.clock = conf_get_int("gd_retreat_clock");
+	dipent.retreat.mint = conf_get_float("gd_retreat_mint");
+	dipent.retreat.next = conf_get_float("gd_retreat_next");
+	dipent.retreat.grace = conf_get_float("gd_retreat_grace");
+	dipent.retreat.delay = conf_get_float("gd_retreat_delay");
+	strcpy(dipent.retreat.days, conf_get("gd_retreat_days"));
+	dipent.builds.clock = conf_get_int("gd_build_clock");
+	dipent.builds.mint = conf_get_float("gd_build_mint");
+	dipent.builds.next = conf_get_float("gd_build_next");
+	dipent.builds.grace = conf_get_float("gd_build_grace");
+	dipent.builds.delay = conf_get_float("gd_build_delay");
+	strcpy(dipent.builds.days, conf_get("gd_build_days"));
 	dipent.n = 0;
 	dipent.orded = 0.000;
 	dipent.rrded = 1.000;
 	dipent.dedapplied = 0;
 	dipent.no_of_players = dipent.np;
 	dipent.powers = dipent.np;
-	dipent.max_absence_delay = D_MAX_ABSENCE_DELAY;
-        dipent.has_natives = GetNativeIndex();
+	dipent.max_absence_delay = conf_get("gd_max_absence_dalay");
+    dipent.has_natives = GetNativeIndex();
 }
 
 /***********************************************************************/

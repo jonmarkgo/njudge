@@ -2,173 +2,256 @@
 #
 # Boolean values: yes|no, true|false, on|off, 1|0
 
-# [auto_master]			boolean				no
+# [auto_master]				boolean				no
 # Should the creator of games automatically also be set as game master?
 #auto_master = yes
 
-# [bail_forward]		string				~/bail_forward
+# [bail_forward]			string				~/bail_forward
 # What to rename the .forward file to when bailing out (former KEEPOUT)
 #bail_forward = ../zforward
 
-# [bailout_msg]			string				bailout.msg
+# [bailout_msg]				string				bailout.msg
 # Filename to the message that's are sent to rdg_gateway on bail.
 #bailout_msg = bailout.msg
 
-# [bailout_plan]		string				~/bail_plan
+# [bailout_plan]			string				~/bail_plan
 # Path and name to the bailout .plan-file
 #bailout_plan = ~/bail_plan 
 
-# [cmd_atrun]			string				./atrun
+# [cmd_atrun]				string				./atrun
 # Path to the atrun binary (former ATRUN_CMD).
 #cmd_atrun = ./atrun
 
-# [cmd_lenlimit]		string				./lenlimit
+# [cmd_lenlimit]			string				./lenlimit
 # Path to the lenlimit binary (former LENLIMIT_CMD)
 #cmd_lenlimit = ./lenlimit
 
-# [cmd_dip]				string				./dip
+# [cmd_dip]					string				./dip
 # Path to the dip binary (former DIP_CMD).
 #cmd_dip = ./dip
 
-# [cmd_smail]			string				./smail
+# [cmd_smail]				string				./smail
 # Smail command (former SMAIL_CMD).
 #cmd_smail = ./smail
 
-# [cmd_summary]			string				./summary
+# [cmd_summary]				string				./summary
 # Summary command (former SUMMARY_CMD).
 #cmd_summary = ./summary
 
-# [create_dedication]	integer				-10
+# [create_dedication]		integer				-10
 # Minimum dedication points for creating games
 #create_dedication = 100
 
-# [create_disabled]		boolean				no
+# [create_disabled]			boolean				no
 # Whether creation of games is disabled.
 #create_disabled = false
 
-# [db_name]				string				NULL (= Default judge_[judge_code])
+# [db_name]					string				NULL (= Default judge_[judge_code])
 # Which database to connect to
 # db_name = judge_other
 
-# [db_pass]				string				NULL
+# [db_pass]					string				NULL
 # The user password to connect to the database.
 #db_pass = secret
 
-# [db_server]			string				localhost
+# [db_server]				string				localhost
 # URL or IP to the database server.
 #db_server = localhost
 
-# [db_server_port]		integer				0 (= Default port 3306)
+# [db_server_port]			integer				0 (= Default port 3306)
 # Port on server on which to connect
 #db_server_port = 0
 
-# [db_user]				string				NULL (= Use current user)
+# [db_user]					string				NULL (= Use current user)
 # Which user to connect to the database as.
 #db_user = someone
 
-# [enable_syslog]		boolean				false
+# [enable_syslog]			boolean				false
 # Should we log to the syslog (former SYSLOG_FLAG)?
 #enable_syslog = yes
 
-# [forward]				string				~/.forward
+# [forward]					string				~/.forward
 # Path to your .forward file (or equivalent)
 #forward = ../.forward
 
-# [forward_onbail]		string				~/forward_onbail
+# [forward_onbail]			string				~/forward_onbail
 # Path to forward file which will replace .forward on bail (former YFORWARD).
 #forward_onbail = ../yforward
 
-# [game_dir]			string				./games
+# [game_dir]				string				./games
 # Path to your games directory (former 'D'). Without a trailing slash
 #game_dir = ./games
 
-# [games_opener]		string				NULL
+# [games_opener]			string				NULL
 # E-mail address to the opening statistics.
 #games_opener = games_opener@diplom.org
 
-# [hall_keeper]			string				NULL
+# [hall_keeper]				string				NULL
 # E-mail address to where game summaries are sent for the Hall of Fame.
 #hall_keeper = hall_keeper@diplom.org
 
-# [judge_code]			string				XXXX
+# [judge_code]				string				XXXX
 # If the judge has been assigned a judge code.
 #judge_code = XXXX
 
-# [judge_keeper]		string				judgekeeper@localhost
+# [judge_keeper]			string				judgekeeper@localhost
 # E-mail address to the responsible person for the judge (former GAME_MASTER).
 #judge_keeper = judgekeeper@localhost
 
-# [judge_path]			string				./
+# [judge_path]				string				./
 # Path to where the judge data files resides. (!Not yet implemented!)
 #judge_path = ./
 
-# [judge_tz]			string				NULL
+# [judge_tz]				string				NULL
 # The timezone the judge is in
 #judge_tz = GMT
  
-# [line_wrap]			integer				78
+# [line_wrap]				integer				78
 # At which width to wrap lines in e-mail messages (former CUTOFF_LENGTH).
 #line_wrap = 78
 
-# [lock_timeout]		integer				3600
+# [lock_timeout]			integer				3600
 # Time in seconds to bail-out if can't lock log file.
 #lock_timeout = 3600
 
-# [log_file]			string				dip.log
+# [log_file]				string				dip.log
 # Name of log file.
 #log_file = dip.log
 
-# [mail_spooler]		string				./mail_spooler
+# [mail_spooler]			string				./mail_spooler
 # Path to file where mail get stored when needed (former SAVE_FILE).
 #mail_spooler = ./saved_mail
 
-# [master_db]			string				dip.master
+# [master_db]				string				dip.master
 # Name of the master database file (former MASTER_FILE)
 #master_db = dip.master
 
-# [max_games]			integer				-1
+# [max_games]				integer				-1
 # Maximum number of games this judge can host (-1 = unlimited)
 # max_games = 50
 
-# [min_control]			integer				43200
+# [min_control]				integer				43200
 # Minimum time in seconds for control messages to judge keeper.
 #min_control = 43200
 
-# [nobody]				string				nobody@localhost
+# [nobody]					string				nobody@localhost
 # E-mail address used internally and doesn't produce response e-mail.
 #nobody = nobody@localhost
 
-# [points_abandon]		integer				-49
+# [points_abandon]			integer				-49
 # Dedication points received on abandon (former D_ABANDON).
 #points_abandon = -49
 
-# [points_cd]			integer				-50
+# [points_cd]				integer				-50
 # Dedication points recieved on CD (former D_CD).
 #points_cd = -100
 
-# [points_late]			integer				-1
+# [points_late]				integer				-1
 # Dedication points recieved when late (former D_LATE).
 #points_late = -1
 
-# [points_ontime]		integer				3
+# [points_ontime]			integer				3
 # Dedication points recieved when ontime (former D_ONTIME).
 #points_ontime = 3
 
-# [rgd_gateway]			string				NULL
+# [rgd_gateway]				string				NULL
 # E-mail address to a rec.games.diplomacy gateway.
 #rgd_gateway = dipl-l@diplom.org
 
-# [special_pw]			string				NULL
+# [special_pw]				string				NULL
 # Superuser password. !Disabled by default!
 #special_pw = default
 
-# [time_tolerance]		integer				60
+# [time_tolerance]			integer				60
 # Tolerance before triggering time warp.
 #time_tolerance = 60
 
-# [username]			string				judge
+# [username]				string				judge
 # The username under which the njudgex software is executed (former OURSELVES).
 #username = judge
+
+# -----------------------------------------------------------------------------
+# Game default values
+#
+# [gd_access]				integer				1
+# Default access.
+# 1 = Any, 2 = Different, 3 = Same, 4 = Alternate
+#gd_access = 2
+
+# [gd_flags]				integer				268566531
+# Default flags (consult the documentation).
+# 268566531 = F_NONMR | F_NOPLAGUE | F_GRACEDAYS | F_NOLIST
+#gd_flags = 268566531
+
+# [gd_flags_xtra1]			integer				0
+#gd_xflags = 0
+
+# [gd_flags_xtra2]			integer				0
+#gd_xflags = 0
+
+# [gd_flags_xtra3]			integer				0
+#gd_xflags = 0
+
+# [gd_level]				integer				1
+# Default level.
+#gd_level = 1
+
+# [gd_move_clock]			integer				1410
+#gd_move_clock = 1410
+
+# [gd_move_mint]			float				12.0
+#gd_move_mint = 12
+
+# [gd_move_next]			float				71.0
+#gd_move_next = 71
+
+# [gd_move_grace]			float				167.0
+#gd_move_grace = 167
+
+# [gd_move_delay]			float				0.5
+#gd_move_delay = 0.5
+
+# [gd_move_days]			string				"-mTWTF-"
+#gd_move_days = -MTWTF-
+
+# [gd_retreat_clock]		integer				-1
+#gd_retreat_clock = -1
+
+# [gd_retreat_mint]			float				12.0
+#gd_move_mint = 12
+
+# [gd_retreat_next]			float				71.0
+#gd_move_next = 71
+
+# [gd_retreat_grace]		float				167.0
+#gd_move_grace = 167
+
+# [gd_retreat_delay]		float				0.5
+#gd_move_delay = 0.5
+
+# [gd_retreat_days]			string				"-mTWTF-"
+#gd_move_days = -mTWTF-
+
+# [gd_build_clock]			integer				-1
+#gd_retreat_clock = -1
+
+# [gd_build_mint]			float				12.0
+#gd_move_mint = 12
+
+# [gd_build_next]			float				71.0
+#gd_move_next = 71
+
+# [gd_build_grace]			float				167.0
+#gd_move_grace = 167
+
+# [gd_build_delay]			float				0.5
+#gd_move_delay = 0.5
+
+# [gd_build_days]			string				"-mTWTF-"
+#gd_move_days = -mTWTF-
+
+# [gd_max_absence_delay]	int				"15"
+#gd_max_absence_delay = 15
 
 # -----------------------------------------------------------------------------
 # Obsolete config values
