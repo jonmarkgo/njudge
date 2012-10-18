@@ -47,6 +47,7 @@ cfgval_t def_vals[] = {
 		{"db_server"			, "localhost"},
 		{"db_server_port"		, "0"},
 		{"db_user"				, ""},
+		{"deny_string"			, "judge@"},
 		{"enable_syslog"		, "no"},
 		{"forward"				, "~/.forward"},
 		{"forward_onbail"		, "~/forward_onbail"},
@@ -73,7 +74,6 @@ cfgval_t def_vals[] = {
 		{"points_ontime"		, "3"},
 		{"special_pw"			, ""},
 		{"time_tolerance"		, "0"},
-		{"username"				, "judge"},
 		{"warp_file"			, "./dip.warp"}, /* temporary warp-message file */
 		{"xforward"				, ""},
 		/* Default commands */

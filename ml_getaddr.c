@@ -220,7 +220,7 @@ int mail_getaddr(char *s, char *addr)
 	    !strncasecmp(t, "tnc_mailer", 10) ||
 	    !strncasecmp(t, "udb@cs.utex", 11) ||
 	    !strncasecmp(t, "-MaiSer-", 8) ||
-	    !strncasecmp(t, conf_get("username"), strlen(conf_get("username")))) {
+	    !strncasecmp(t, conf_get("deny_string"), strlen(conf_get("deny_string")))) {
 
 		*addr = '*';	/* Ensure that we don't reply */
 

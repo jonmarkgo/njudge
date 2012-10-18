@@ -66,6 +66,11 @@
 # Which user to connect to the database as.
 #db_user = someone
 
+# [deny_string]				string				judge@
+# We'll _not_ send mails to addresses that begins with this string. Used to
+# prevent mail from being sent to the judge it self.
+#deny_string = judge@
+
 # [enable_syslog]			boolean				false
 # Should we log to the syslog (former SYSLOG_FLAG)?
 #enable_syslog = yes
