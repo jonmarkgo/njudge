@@ -379,7 +379,7 @@ void master(void) {
 	FILE* ofp;
 	FILE* msg_file;
 	struct stat sbuf;
-        int one_quarter = 8 * 60 * 60; /* Set to 8 hours */
+    int one_quarter = conf_get_int("reminder_time") * 60 * 60; /* Set to 8 hours */
 	int i;
 
 #define TWO_HOURS 2*60*60

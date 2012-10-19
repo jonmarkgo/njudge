@@ -72,6 +72,7 @@ cfgval_t def_vals[] = {
 		{"points_cd"			, "-50"},
 		{"points_late"			, "-1"},
 		{"points_ontime"		, "3"},
+		{"reminder_time"		, "8"},
 		{"special_pw"			, ""},
 		{"time_tolerance"		, "0"},
 		{"warp_file"			, "./dip.warp"}, /* temporary warp-message file */

@@ -159,6 +159,10 @@
 # Dedication points recieved when ontime (former D_ONTIME).
 #points_ontime = 3
 
+# [reminder_time]			integer				8
+# Hours before the deadline to send reminder
+#reminder_time = 8
+
 # [rgd_gateway]				string				NULL
 # E-mail address to a rec.games.diplomacy gateway.
 #rgd_gateway = dipl-l@diplom.org
