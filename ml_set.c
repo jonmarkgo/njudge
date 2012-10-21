@@ -1,308 +1,3 @@
-/*
- * $Log: ml_set.c,v $
- * Revision 1.77  2010-02-20 21:06:33  alange
- *
- * Bug 282. Fixes based on David Norman's notes.
- *
- * Revision 1.76  2009-06-13 01:23:55  alange
- *
- * Fix Bug 557: Date parsing error in SET ABSENCE.
- *
- * Revision 1.75  2009-01-27 02:31:21  alange
- *
- * Make SET START consistent with fixes for SET DEADLINE and SET GRACE
- *
- * Revision 1.74  2009-01-25 04:16:52  alange
- *
- * Fix Bug 494:
- * 	Add code to reject extra characters in dates in the SET DEADLINE and
- * 	SET GRACE commands. Behaves similarly to SET ABSENCE now.
- *
- * Revision 1.73  2006-08-17 02:22:46  alange
- *
- * Bug 486. Grace calculation in SET DEADLINE now consistent with
- *   calculation in lib.c
- *
- * Revision 1.72  2006-06-30 12:16:14  millis
- * Bug 432, allow 'set preferences' as well as 'set preference'
- *
- * Revision 1.71  2006-03-18 22:22:42  alange
- *
- * Fix Bug 461 to allow cancellation of absence in the past.
- *
- * Revision 1.70  2005-12-28 14:13:02  russblau
- * Fix "SET CONCEDE" bug; Judge should now be able to distinguish between
- * SET CONCEDE and SET CONC XYZ.
- *
- * Revision 1.69  2005/11/10 12:08:05  millis
- * Bug 442, NoGracePress flag handling.
- *
- * Revision 1.68  2004/10/23 22:43:29  millis
- * Bug 363 and 368, AlliedWin and Conced/NoDias in duplex games fixes
- *
- * Revision 1.67  2004/10/23 19:17:09  millis
- * Bug 370 & 371, missing breaks added to case statement end
- *
- * Revision 1.66  2004/09/13 23:03:45  millis
- * Further changes for Bug 363
- *
- * Revision 1.65  2004/09/03 13:30:18  millis
- * Added use of AlliedWin value.
- *
- * Revision 1.64  2004/08/01 18:28:58  millis
- * Fix Bug 345 and 346
- *
- * Revision 1.63  2004/07/26 23:17:24  millis
- * Bug 340: default to 00:00 for absence start and 23:59 for absence end.
- * All other uses of date function stay unaltered.
- *
- * Revision 1.62  2004/07/25 16:07:15  millis
- * Bug 151, allow less powers than variant default.
- *
- * Revision 1.61  2004/07/13 00:14:11  millis
- * Allow Transformation to be switched off (Bug 117)
- *
- * Revision 1.60  2004/07/08 22:20:46  millis
- * Bug 91: small changes to improve status handling and show only
- * real player information to master
- *
- * Revision 1.59  2004/07/07 22:50:40  millis
- * Bug91: further fixes for Duplex code
- * (these mainly to get absences and late handling working)
- *
- * Revision 1.58  2004/07/04 03:10:02  millis
- * Bug 329, allow changes of settigns when game is running, just set the
- * 'irregular' flag
- *
- * Revision 1.57  2004/05/22 09:13:52  millis
- * Bug 297: Add Intimate Diplomacy
- *
- * Revision 1.56  2004/05/20 15:48:39  russblau
- * Fix bug 123 (SET ALLOW|DENY MASTER works when it shouldn't)
- *
- * Revision 1.55  2004/05/20 14:08:41  russblau
- * Fix Bug 310 (Wrong error message when using inverted flag logic)
- *
- * Revision 1.54  2004/05/20 02:21:31  russblau
- * Fixed Bug 308 (Error parsing powerlist in SET APPROVE command)
- *
- * Revision 1.53  2004/04/04 15:15:01  millis
- * Fix bug 193 (add approval mechanism to allow moves)
- *
- * Revision 1.52  2003/12/25 06:43:53  nzmb
- * Fixed bug #102 and another small problem in the SET START processing
- * code.
- *
- * Revision 1.51  2003/08/27 12:04:56  millis
- * Fix bug 222
- *
- * Revision 1.50  2003/08/26 23:54:32  millis
- * Fix bug 188
- *
- * Revision 1.49  2003/08/23 09:59:47  russblau
- * deleted commented-out keywords
- *
- * Revision 1.48  2003/08/10 15:27:51  millis
- * Fix bug 25 (Add TouchPress)
- *
- * Revision 1.47  2003/06/29 01:06:58  millis
- * Fix bug 176 (duplicate grace setting line to master)
- *
- * Revision 1.46  2003/05/24 23:57:15  millis
- * Bug 97, removed Generic Handling code
- *
- * Revision 1.45  2003/05/24 22:55:43  millis
- * Bug 142, allow use of AutoCreate flag
- *
- * Revision 1.44  2003/05/16 20:37:45  millis
- * Small compile error fix.
- *
- * Revision 1.43  2003/05/15 00:09:46  russblau
- * Corrected errors in keyword arrays, and commented out very many redundant entries.
- *
- * Revision 1.42  2003/05/10 00:33:37  millis
- * Fix bug 125, removing money also disables loans, assassinations and special units
- *
- * Revision 1.41  2003/05/05 11:52:49  millis
- * Slight text improvement
- *
- * Revision 1.40  2003/05/03 23:33:50  millis
- * Fix bug 150 (NO_GARRISONS flag)
- *
- * Revision 1.39  2003/05/03 14:22:51  millis
- * Really small change
- *
- * Revision 1.38  2003/05/03 14:19:33  millis
- * Merged in USTV version, with Neutrals etc.
- *
- * Revision 1.37  2003/04/16 04:34:42  millis
- * Implement Bug 65
- *
- * Revision 1.36  2003/03/07 21:24:09  russblau
- * Editorial changes.
- *
- * Revision 1.35  2003/02/28 22:27:28  russblau
- * Minor changes to documentation; "SET BROADCAST" should now work as described
- * in documentation (but kept previous form "SET NORMAL BROADCAST" for backwards
- * compatibility).
- *
- * Revision 1.34  2003/02/28 20:16:43  nzmb
- * Changed the name of resignation ratio to CD ratio, to avoid confusion with
- * Doug Massey's DRR.
- *
- * Revision 1.33  2003/02/25 11:11:24  russblau
- * Improved absence documentation and related Judge message strings.
- *
- * Revision 1.32  2003/02/17 15:39:20  millis
- * bug 10, prevent overlapping absences
- * Also improve text output for absences.
- *
- * Revision 1.31  2003/01/15 13:59:26  millis
- * Removed Dipstats
- *
- * Revision 1.30  2003/01/14 13:51:37  millis
- * Merges from USTV
- *
- * Revision 1.29  2002/12/28 01:00:57  millis
- * Small text change
- *
- * Revision 1.28  2002/12/28 00:52:19  millis
- * Proper fix to CR 17
- *
- * Revision 1.27  2002/12/28 00:42:54  millis
- * Implement bug 17, noBcentres option (to hide others centres in blind)
- *
- * Revision 1.26  2002/08/27 22:27:54  millis
- * Updated for automake/autoconf functionality
- *
- * Revision 1.25  2002/07/17 16:50:44  nzmb
- *
- * Fixed up mistake in PRV array, added more flexibility to commands.
- *
- * Revision 1.24  2002/07/16 18:14:22  nzmb
- * Many changes dealing with the addition of szine style postal press. Also 
- * fixed apparent bug in signons for games which have not started.
- *
- * Revision 1.23  2002/06/11 16:26:19  nzmb
- *
- * Added set [no]mustorder to require players to submit avalid set of orders
- * before they may send press (to be used in conjunction with set wait).
- *
- * Revision 1.22  2002/05/11 09:15:33  greg
- * Minor bug fixes
- * - fixed subjectline for absence requests
- * - fixed phase length, so it's no longer hard coded for responses
- * - partial fix for unusable builds, players with only unusable builds
- *    will no longer be flagged as having orders due, however players
- *    with some usable builds will need to waive any unusable builds,
- *    also, if one or more players have unusable builds, but no
- *    player has usable builds, the build phase will process after
- *    a short delay
- *
- * Revision 1.21  2002/04/18 04:44:32  greg
- * Added the following commands:
- * - unstart
- * - set secret
- * - set [prflist|prfrand|prfboth]
- *
- * Fixed Set Absence so that "to" is not case sensitive
- *
- * Fixed Quiet games so that new players are announced
- * before the game starts
- *
- * Fixed ascii_to_ded.c so thatit no longer generates an
- * error when compiled
- *
- * Revision 1.20  2002/04/15 12:55:44  miller
- * Multiple changes for blind & Colonial & setup from USTV
- *
- * Revision 1.19  2002/02/25 12:35:14  miller
- * mall compile error fix
- *
- * Revision 1.18  2002/02/25 11:51:52  miller
- * Various updates for Machiavelli bug fixes
- *
- * Revision 1.17  2001/11/11 21:16:21  greg
- * Subjectline Fixes
- *  - New player signons will no longer show "Preference Change"
- *  - Manual start games will no longer say "Waiting for More Players" after 
- *    the game is full
- *  - reply lines no longer assume JUDGE_CODE is four characters
- *
- * Revision 1.16  2001/10/20 12:11:13  miller
- * Merged in changes from DEMA and USTV 
- *
- * Revision 1.15.2.3  2001/10/19 23:55:13  dedo
- * Remove warning for over-large string literal
- *
- * Revision 1.15.2.2  2001/10/19 23:43:02  dema
- * Allowed seting/clearing of NoMoney flag and Basic/Advanced
- *
- * Revision 1.15.2.1  2001/10/15 22:23:18  ustv
- * Merged concessions, duality and Colonial flags
- *
- * Revision 1.15  2001/08/31 02:03:01  greg
- * added "Ready to Start" subjectline for manual start games
- *
- * Revision 1.14  2001/08/30 05:01:30  nzmb
- * Modified second argument of calls to check_can_vote.
- *
- * Revision 1.11  2001/07/22 10:03:32  greg
- * customized subjectline for player's preference change
- *
- * Revision 1.10  2001/07/15 09:17:53  greg
- * added support for game directories in a sub directory
- *
- * Revision 1.9  2001/07/08 23:00:05  miller
- * New commands XF_COSTALCONVOY, MOVEDISBAND
- *
- * Revision 1.8  2001/07/01 23:19:29  miller
- * Add costal convoys
- *
- * Revision 1.7  2001/06/24 05:49:30  nzmb
- * Added functionality to set ontime ratio, CD ratio in a game.
- *
- * Revision 1.5  2001/05/14 22:58:21  miller
- * Corrected transformation setting/display. Also disabled Mach1,2,3 flags 
- * (to be removed later for good).
- *
- * Revision 1.4  2001/05/10 08:33:25  greg
- * added subjectlines
- *
- * Revision 1.3  2001/04/15 21:21:22  miller
- * Add SET_(NO)ATTACKTRANS flag settings
- *
- * Revision 1.2  2000/11/14 14:27:37  miller
- * ENORMOUS number of changes, including:
- *  - Checks to warn if trying to set 'silly' options  (for example, Mach 
- *    options in non-Mach game, press options in nopress game etc.)
- *  - Check when a quorum exists to start the game if number of plyers is 
- *    changed
- *  - Show players' preferences to master
- *  - New general purpose function to ease flag setting/resetting
- *  - setting of absence delay checks (non-master cannot be greater than game 
- *    limit)
- *  - New commands, which are:
- *     SET_(NO)LATECOUNT, SET_(NO)STRCONVOY, SET(NO)LATEPRESS, SET(NO)MANUALPROC,
- *     SET_(NO)MANSTART, SET_(NO)TRANSFORM, SET_(ANY/ONE/HOME)CENTRES,
- *     SET_(NO)ABSENCE, SET_MAXABSENCE, SET_(NO)NORMBROAD, SET_(NO)BLANKPRESS,
- *     SET_(NO)MINORPRESS, SET_MAC(1/2/3), SET_(NO)AIRLIFT, SET_BLANKBOARD,
- *     SET_(NO)AUTODISBAND
- *    (some of which are to be implemented still)
- *   - Observers can watch press of a game (if flag enablingthis is set)
- *   - Passwords only allow alpha-numeric characters
- *
- * Revision 1.1  1998/02/28 17:49:42  david
- * Initial revision
- *
- * Revision 1.2  1997/02/16 20:43:18  davidn
- * Additions to dipent structure and associated code, to allow duplex variants.
- * Command is "set players n".
- *
- * Revision 1.1  1996/10/20 12:29:45  rpaar
- * Morrolan v9.0
- */
-
 /*  mail_set.c -- process set commands
  *  Copyright 1987, Lowe.
  *
@@ -356,8 +51,8 @@ extern int avalue[], lvalue[], naccess, nlevel;
 
 int ChangeTransform( char *s);
 void ShowTransformSettings(FILE* rfp);
-char * SetSubkey(int act, char *s);
-static int  SetApprovalState(int type, char *part_list, int part_list_count);
+char* SetSubkey(int act, char *s);
+static int SetApprovalState(int type, char *part_list, int part_list_count);
 
 #define SETFLAGS(set,mask) dipent.flags = (dipent.flags & ~(mask)) | (set)
 
@@ -603,9 +298,10 @@ void break_date_into_two(char * instring, char *s1, char *s2)
 void mail_setp(char *s)
 {
 	int i, j, k, chk24nmr;
+	int weak_pw;
 	float f, temprat; /* Used in ratio dedication systems. */
         int passOK;  /* used to see if password string is alright on setpass */
-	char c, *t, *temp,*s1, *u;
+	char *t, *temp,*s1, *u;
 	sequence seq;
 	sequence * seqp;
 	long dates, datee;
@@ -1513,9 +1209,17 @@ void mail_setp(char *s)
 			t = dipent.players[player].password;
 			s1 = s;
 			/* Copy the password from the input line */
-                        passOK = 1;
+            passOK = 1;
+            /* Are we going to use weak or strong passwords */
+            weak_pw = conf_get_bool("weak_passwords");
 			while (*s1 && !isspace(*s1) ) {
-                               if (!isalnum(*s1)) passOK =0; /*alphanum passwords only! */ 
+				if (weak_pw) { /*alphanum passwords only! */
+				    if (!isalnum(*s1)) passOK = 0;
+				    break;
+				} else { /* Any character but whitespaces */
+				    if (!isgraph(*s1)) passOK = 0;
+				    break;
+				}
 				s1++;
 			}
 
@@ -1523,16 +1227,19 @@ void mail_setp(char *s)
 			if (s1 == s ) { 
 				/* Insult player */
 				fprintf(rfp, "Try to put in a non-blank password.\n\n");
-			} else if (passOK == 0)
-                        {
-				fprintf(rfp, "Password can only be alpha-numeric characters.\n\n");
+			} else if (passOK == 0) {
+				if (weak_pw) {
+					fprintf(rfp, "Password can only be alpha-numeric characters.\n\n");
+				} else {
+					fprintf(rfp, "Unallowed characters in password.\n\n");
+				}
 				s = s1; /* to skip whole password line */
 			} else {
 				/* Terminate the player and confirm change */
 				while (*s && !isspace(*s)) {
-                                   *t++ = isupper(c = *s++) ? tolower(c) : c;
+					*t++ = weak_pw ? tolower(*s++) : *s++;
 				 }
-				*t++ = '\0';
+				*t = '\0';
 				fprintf(rfp, "Password set.\n\n");
 			}
 
@@ -2234,7 +1941,7 @@ void mail_setp(char *s)
                         } else {
                                 if (i >= NVARIANT) {
                                         dipent.flags &= ~vvalue[i];
-                                        if (dipent.flags & F_GUNBOAT &&
+                                        if ((dipent.flags & F_GUNBOAT) &&
                                      dipent.players[player].power != MASTER) {
                                         xaddr = someone;
                                     }
@@ -2249,15 +1956,15 @@ void mail_setp(char *s)
 
 		case SET_FLAG:
 			fprintf(rfp, "Flag word used2b %x.\n", dipent.flags);
-			sscanf(s, "%x", &dipent.flags);
+			sscanf(s, "%x", (unsigned int*) &dipent.flags);
 			fprintf(rfp, "Flag word set to %x.\n", dipent.flags);
 			break;
 
 		case SET_XFLAG:
-                        fprintf(rfp, "xFlag word used2b %x.\n", dipent.xflags);
-                        sscanf(s, "%x", &dipent.xflags);
-                        fprintf(rfp, "Flag word set to %x.\n", dipent.xflags);
-                        break;
+			fprintf(rfp, "xFlag word used2b %x.\n", dipent.xflags);
+			sscanf(s, "%x", (unsigned int*) &dipent.xflags);
+			fprintf(rfp, "Flag word set to %x.\n", dipent.xflags);
+			break;
 
 		case SET_WHITE:
 			SETFLAGS(0, F_GREY | F_NOWHITE | F_DEFWHITE);

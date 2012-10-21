@@ -175,9 +175,9 @@
 # Tolerance before triggering time warp.
 #time_tolerance = 60
 
-# [username]				string				judge
-# The username under which the njudgex software is executed (former OURSELVES).
-#username = judge
+# [weak_passwords]			boolean				false
+# Only allow alphanum chars in password
+#weak_passwords = false
 
 # -----------------------------------------------------------------------------
 # Game default values
