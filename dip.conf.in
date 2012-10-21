@@ -175,10 +175,6 @@
 # Tolerance before triggering time warp.
 #time_tolerance = 60
 
-# [weak_passwords]			boolean				false
-# Only allow alphanum chars in password
-#weak_passwords = false
-
 # -----------------------------------------------------------------------------
 # Game default values
 #

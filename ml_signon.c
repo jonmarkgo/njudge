@@ -491,7 +491,7 @@ int mail_signon(char *s)
 			}
 			sprintf(gdirname, "%s/%s", conf_get("game_dir"), &name[1]);
 
-			if (strcmp(raddr, conf_get("judge_keeper")) != 0 && stat("NOCREATE", &sbuf) == 0) {
+			if (strcmp(raddr, conf_get("judge_keeper")) != 0 && conf_get_bool("create_disabled") == 0) {
 				if (!msg_header_done)
 					msg_header(rfp);
 				fprintf(rfp, "Sorry, the create command has been disabled.  No new\n");
@@ -564,7 +564,7 @@ int mail_signon(char *s)
 			}
 			fprintf(rfp, " %s variant.", variants[variant]);
 
-			if (dipent.variant != V_STANDARD || dipent.flags & F_VFLAGS) {
+			if (dipent.variant != V_STANDARD || (dipent.flags & F_VFLAGS)) {
 				fprintf(rfp, "  Use:\n\n    signon %c%s password", name[0], dipent.name);
 				for (i = NVARIANT; i < NVARIANT + NVAROPTS; i++)
 					if (dipent.flags & vvalue[i])
@@ -1786,82 +1786,80 @@ int chkpref(char *s, int wp[WILD_PLAYER], int wv[WILD_PLAYER])
 
 }
 
-int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int llevel)
-{
+int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int llevel) {
 
 	int i, n;
 
+	/*
+	 * Reject signon if game is marked to be terminated.
+	 */
+	if (dipent.phase[6]=='X') {
+		fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
+		return E_WARN;
+	}
+	/*
+	 * Sign this fellow up.
+	 */
+	else if (dipent.seq[0] != 'x') {
+		if (!msg_header_done)
+			msg_header(rfp);
+		fprintf(rfp, "Game '%s' is already in progress.\n", &name[1]);
+		for (i = 0; i < dipent.n; i++) {
+			if (dipent.players[i].power < 0)
+				continue;
 
-		/*
-		 * Reject signon if game is marked to be terminated.
-		 */
-                if (dipent.phase[6]=='X') {
-		    fprintf(rfp,"Game '%s' is marked for termination: no signons allowed.\n", &name[1]);
-		    return E_WARN;
-                }
-		/*
-                 * Sign this fellow up.
-                 */
-		else if (dipent.seq[0] != 'x') {
-			if (!msg_header_done)
-				msg_header(rfp);
-			fprintf(rfp, "Game '%s' is already in progress.\n", &name[1]);
-			for (i = 0; i < dipent.n; i++) {
-				if (dipent.players[i].power < 0)
-					continue;
-
-				if ((dipent.players[i].status & (SF_ABAND | SF_CD)
-				     || *dipent.players[i].address == '*')
-				    && dipent.players[i].centers != 0) {
-					fprintf(rfp,
-						"\nor  'signon %c%s password ...' if you want to take over %s",
-						dipent.pl[dipent.players[i].power], dipent.name,
+			if (((dipent.players[i].status & (SF_ABAND | SF_CD))
+				 || *dipent.players[i].address == '*')
+				&& dipent.players[i].centers != 0) {
+				fprintf(rfp,
+					"\nor  'signon %c%s password ...' if you want to take over %s",
+					dipent.pl[dipent.players[i].power], dipent.name,
 					powers[dipent.players[i].power]);
-				}
 			}
-			fprintf(rfp, "\nor 'observe %s password' if you just want to watch.\n",
-				dipent.name);
-			return E_WARN;
 		}
-		if ((i = mail_access(-1, luserid, lsiteid, llevel, &n)) < 0) {
-			return E_WARN;
+		fprintf(rfp, "\nor 'observe %s password' if you just want to watch.\n",
+			dipent.name);
+		return E_WARN;
+	}
+	if ((i = mail_access(-1, luserid, lsiteid, llevel, &n)) < 0) {
+		return E_WARN;
+	}
+	if (i > 0) {
+		player = n;
+		signedon = -1;
+		listflg = 0;
+		if (!msg_header_done)
+			msg_header(rfp);
+		if (*dipent.players[player].pref) {
+			fprintf(rfp, "Preference list is currently set to %s.\n",
+				dipent.players[player].pref);
+		} else {
+			fprintf(rfp, "No preference list has been established.\n");
 		}
-		if (i > 0) {
-			player = n;
-			signedon = -1;
-			listflg = 0;
-			if (!msg_header_done)
-				msg_header(rfp);
-			if (*dipent.players[player].pref) {
-				fprintf(rfp, "Preference list is currently set to %s.\n",
-					dipent.players[player].pref);
-			} else {
-				fprintf(rfp, "No preference list has been established.\n");
+		return 0;
+	}
+	if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {
+				/* Game is already full, waiting manual start?, so reject signon */
+				fprintf(rfp,"Game '%s' is already full: no new players allowed.\n", &name[1]);
+				return E_WARN;
 			}
-			return 0;
-		}
-		if(dipent.no_of_players - (dipent.seq[1] - '0') <= 0 )  {
-                    /* Game is already full, waiting manual start?, so reject signon */
-                    fprintf(rfp,"Game '%s' is already full: no new players allowed.\n", &name[1]);
-                    return E_WARN;
-                }
 
-		if (!*raddr) {
+	if (!*raddr) {
+		if (!msg_header_done)
+			msg_header(rfp);
+		fprintf(rfp, "Sorry, valid return address required.\n");
+		return E_WARN;
+	}
+	if (n < 0) {
+		if (dipent.n + 1 >= MAXPLAYERS) {
 			if (!msg_header_done)
 				msg_header(rfp);
-			fprintf(rfp, "Sorry, valid return address required.\n");
-			return E_WARN;
+			fprintf(rfp, "Too many observers are signed up for game '%s'.\n",
+				dipent.name);
+			return E_FATAL;
 		}
-		if (n < 0) {
-			if (dipent.n + 1 >= MAXPLAYERS) {
-				if (!msg_header_done)
-					msg_header(rfp);
-				fprintf(rfp, "Too many observers are signed up for game '%s'.\n",
-					dipent.name);
-				return E_FATAL;
-			}
-			n = dipent.n++;
-		}
+		n = dipent.n++;
+	}
 		// Make the first player the master
 		if ( lmaster )
 		{

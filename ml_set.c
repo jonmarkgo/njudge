@@ -1213,13 +1213,7 @@ void mail_setp(char *s)
             /* Are we going to use weak or strong passwords */
             weak_pw = conf_get_bool("weak_passwords");
 			while (*s1 && !isspace(*s1) ) {
-				if (weak_pw) { /*alphanum passwords only! */
-				    if (!isalnum(*s1)) passOK = 0;
-				    break;
-				} else { /* Any character but whitespaces */
-				    if (!isgraph(*s1)) passOK = 0;
-				    break;
-				}
+                if (AUTH_WEAK && !isalnum(*s1)) passOK = 0; /*alphanum passwords only! */
 				s1++;
 			}
 
@@ -1228,7 +1222,7 @@ void mail_setp(char *s)
 				/* Insult player */
 				fprintf(rfp, "Try to put in a non-blank password.\n\n");
 			} else if (passOK == 0) {
-				if (weak_pw) {
+				if (AUTH_WEAK) {
 					fprintf(rfp, "Password can only be alpha-numeric characters.\n\n");
 				} else {
 					fprintf(rfp, "Unallowed characters in password.\n\n");
@@ -1237,7 +1231,7 @@ void mail_setp(char *s)
 			} else {
 				/* Terminate the player and confirm change */
 				while (*s && !isspace(*s)) {
-					*t++ = weak_pw ? tolower(*s++) : *s++;
+					t++ = isupper(*s) ? tolower(*s++) : *s++;
 				 }
 				*t = '\0';
 				fprintf(rfp, "Password set.\n\n");
