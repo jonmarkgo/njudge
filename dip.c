@@ -51,7 +51,7 @@ void phase_pending(void);	/* defined in phase.c */
 void print_usage(void);
 static gint terminate(void);
 
-static char* judge_tz; /* holds the TZ environment variable */
+static char* judge_tz = NULL; /* holds the TZ environment variable */
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
 struct opts_s options = {0};
 
@@ -373,9 +373,7 @@ exit_init:
 }
 gint terminate(void) {
 
-	if (judge_tz != NULL) {
-		g_free(judge_tz);
-	}
+	if (judge_tz != NULL) g_free(judge_tz);
 
 	return 1;
 
