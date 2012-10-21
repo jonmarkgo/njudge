@@ -49,7 +49,9 @@ static gint init(int argc, char** argv, GError** err);
 gint parse_cmdline(gint argc, gchar** argv, GPtrArray** cl_cfg, GError** err);
 void phase_pending(void);	/* defined in phase.c */
 void print_usage(void);
+static gint terminate(void);
 
+static char* judge_tz; /* holds the TZ environment variable */
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
 struct opts_s options = {0};
 
@@ -142,6 +144,8 @@ exit_main:
 	diplog_syslog_close();
 
 	if (syslog_alias) g_free(syslog_alias);
+
+	terminate();
 
 	return exit_s;
 
@@ -269,12 +273,10 @@ static gint init(int argc, char** argv, GError** err) {
 	}
 
 	/* Change the judge timezone, if set */
-	tcptr = conf_get("judge_tz");
-	if (*tcptr) {
-		g_strdup_printf("TZ=%s", tcptr);
-	    putenv(tcptr);
+	if (*(tcptr = conf_get("judge_tz"))) {
+		judge_tz = g_strdup_printf("TZ=%s", tcptr);
+	    putenv(judge_tz);
 	    tzset();
-	    g_free(tcptr);
 	}
 
 	subjectline[0] = '\0';
@@ -367,6 +369,15 @@ static gint init(int argc, char** argv, GError** err) {
 exit_init:
 
 	return rtn;
+
+}
+gint terminate(void) {
+
+	if (judge_tz != NULL) {
+		g_free(judge_tz);
+	}
+
+	return 1;
 
 }
 void master(void) {
