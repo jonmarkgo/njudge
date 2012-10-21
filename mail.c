@@ -1534,38 +1534,42 @@ int mail(void) {
 					}
 					GetOneWord(s);
 					i = FindByEmail(s);
-                                        switch (i) {
-                                                    case RP_BLANK:
-                                                        fprintf(rfp, "Master MUST specify who is to be promoted.\n\n");
-                                                        mail_reply(E_WARN);
-                                                        return(E_WARN);
-                                                        break;
-                                                    case RP_NOT_FOUND:
-                                                        fprintf(rfp,
-                                                                "Email '%s' not found in this game.\n\n", s);
-                                                        mail_reply(E_WARN);
-                                                        return E_WARN;
-                                                        break;
-                                                    case RP_MULTIPLE:
-                                                        fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
-                                                        mail_reply(E_WARN);
-                                                        return E_WARN;
-                                                        break;
-					}
-					dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
-
-					sprintf(subjectline, "%s:%s - %s Promotion of %s", conf_get("judge_code"), dipent.name, dipent.phase, dipent.players[i].address);
-
-					fprintf(rfp, "%s is now also a Master for game '%s'.\n",
-                                                      dipent.players[i].address, dipent.name);
-					fprintf(bfp," %s is now also a Master for game '%s'.\n",
-                                                      dipent.players[i].address, dipent.name);
-					fprintf(mbfp," %s is now also a Master for game '%s'.\n",
-                                                      dipent.players[i].address, dipent.name);
-                                        pprintf(cfp, "%s%s is now also a Master for game '%s'.\n", NowString(),
-                                                                 dipent.players[i].address, dipent.name);
-					broad_signon = 1; /* Tell the world of the happy news! */
+			switch (i) {
+				case RP_BLANK:
+					fprintf(rfp, "Master MUST specify who is to be promoted.\n\n");
+					mail_reply(E_WARN);
+					return(E_WARN);
 					break;
+				case RP_NOT_FOUND:
+					fprintf(rfp,
+							"Email '%s' not found in this game.\n\n", s);
+					mail_reply(E_WARN);
+					return E_WARN;
+					break;
+				case RP_MULTIPLE:
+					fprintf(rfp, "Multiple instances of '%s' found: be more specific.\n\n", s);
+					mail_reply(E_WARN);
+					return E_WARN;
+					break;
+			}
+			if (dipent.players[i].userid) {
+				dipent.players[i].power = MASTER;  /* Welcome to masterhood! */
+				sprintf(subjectline, "%s:%s - %s Promotion of %s",
+						conf_get("judge_code"), dipent.name, dipent.phase, dipent.players[i].address);
+				fprintf(rfp, "%s is now also a Master for game '%s'.\n",
+						dipent.players[i].address, dipent.name);
+				fprintf(bfp," %s is now also a Master for game '%s'.\n",
+						dipent.players[i].address, dipent.name);
+				fprintf(mbfp," %s is now also a Master for game '%s'.\n",
+						dipent.players[i].address, dipent.name);
+				pprintf(cfp, "%s%s is now also a Master for game '%s'.\n", NowString(),
+						dipent.players[i].address, dipent.name);
+				broad_signon = 1; /* Tell the world of the happy news! */
+			} else {
+				fprintf(rfp, "Sorry, '%s' cannot be made a Master until registered.\n\n", s);
+				mail_reply(E_WARN);
+			}
+			break;
 
 	
 				case BECOME:

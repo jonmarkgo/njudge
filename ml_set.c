@@ -1231,7 +1231,7 @@ void mail_setp(char *s)
 			} else {
 				/* Terminate the player and confirm change */
 				while (*s && !isspace(*s)) {
-					t++ = isupper(*s) ? tolower(*s++) : *s++;
+					*t++ = isupper(*s) ? tolower(*s++) : *s++;
 				 }
 				*t = '\0';
 				fprintf(rfp, "Password set.\n\n");
