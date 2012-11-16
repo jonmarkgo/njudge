@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `addresses`
+-- Table structure for table `email`
 --
 
-DROP TABLE IF EXISTS `addresses`;
+DROP TABLE IF EXISTS `email`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `addresses` (
+CREATE TABLE `email` (
   `user_id` int(11) DEFAULT NULL,
   `address` varchar(64) DEFAULT NULL COMMENT 'e-mail address',
   `is_default` tinyint(4) DEFAULT NULL COMMENT 'is this the defult address'
@@ -30,12 +30,35 @@ CREATE TABLE `addresses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `addresses`
+-- Dumping data for table `email`
 --
 
-LOCK TABLES `addresses` WRITE;
-/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+LOCK TABLES `email` WRITE;
+/*!40000 ALTER TABLE `email` DISABLE KEYS */;
+/*!40000 ALTER TABLE `email` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `extra_fields`
+--
+
+DROP TABLE IF EXISTS `extra_fields`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `extra_fields` (
+  `user_id` int(11) NOT NULL,
+  `field_name` char(20) DEFAULT NULL,
+  `field_value` tinytext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `extra_fields`
+--
+
+LOCK TABLES `extra_fields` WRITE;
+/*!40000 ALTER TABLE `extra_fields` DISABLE KEYS */;
+/*!40000 ALTER TABLE `extra_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -47,6 +70,8 @@ DROP TABLE IF EXISTS `user_stats`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_stats` (
   `user_id` int(11) NOT NULL,
+  `rating` smallint(6) DEFAULT '0',
+  `last_signon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `total` int(11) DEFAULT '0' COMMENT 'times player has accessed this judge',
   `ontime` int(11) DEFAULT '0' COMMENT 'times orders has been in on time',
   `started` int(11) DEFAULT '0' COMMENT 'how many started games',
@@ -73,7 +98,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `name` varchar(128) DEFAULT NULL COMMENT 'real name',
   `birthdate` varchar(32) DEFAULT NULL,
   `sex` int(11) DEFAULT NULL,
@@ -81,7 +106,6 @@ CREATE TABLE `users` (
   `phone` varchar(32) DEFAULT NULL COMMENT 'telephone number',
   `address` varchar(128) DEFAULT NULL COMMENT 'real address',
   `country` varchar(32) DEFAULT NULL,
-  `site_id` int(11) DEFAULT NULL,
   `site` varchar(32) DEFAULT NULL COMMENT 'literal site',
   `timezone` varchar(32) DEFAULT NULL COMMENT 'literal timezone',
   `tz` int(11) DEFAULT NULL COMMENT 'reserved',
@@ -107,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-10  6:30:06
+-- Dump completed on 2012-10-28  9:12:23

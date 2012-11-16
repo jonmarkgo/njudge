@@ -1,0 +1,20 @@
+
+X. Creating and populating the database
+
+	1. Start the MySQL client.
+	| $ mysql -u root
+	
+	2. Create the database
+	| mysql> create database judge_xxxx;
+	
+	3. Quit mysql
+	| mysql> quit
+	
+	4. Build the njudge database
+	| $ mysql -u root judge_xxxx < njudge_db.sql
+	
+	5. Change to the bin-dir of the judge and dump the data
+	| $ dump_to_sql > judge-xxxx_dump.sql
+	
+	6. Import dumped data into the database
+	| mysql -u root judge_xxxx < judge-xxxx_dump.sql
