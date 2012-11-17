@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `user_stats`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_stats` (
   `user_id` int(11) NOT NULL,
-  `rating` smallint(6) DEFAULT '0',
+  `rating` int(11) DEFAULT '0' COMMENT 'players dedication points',
   `last_signon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `total` int(11) DEFAULT '0' COMMENT 'times player has accessed this judge',
   `ontime` int(11) DEFAULT '0' COMMENT 'times orders has been in on time',
