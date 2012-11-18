@@ -449,7 +449,6 @@ int read_ded_data(ded_t** deds) {
 	close(ded_fd);
 
 	rtn = ded_stat.st_size / sizeof(ded_t);
-	//printf("total: %u, size: %u, recs: %u\n", ded_stat.st_size, sizeof(ded_t), rtn);
 
 exit_read_stat_data:
 
@@ -535,17 +534,17 @@ user_t* next_user_record(FILE* whois_fp) {
 			user_rec->extra_fields = NULL;
 			user_rec->id = atoi(val);
 		} else if (!strcasecmp(key, "name")) {
-			user_rec->name = g_strdup(val);
+			user_rec->name = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "phone")) {
-			user_rec->phone = g_strdup(val);
+			user_rec->phone = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "site")) {
-			user_rec->site = g_strdup(val);
+			user_rec->site = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "address")) {
-			user_rec->address = g_strdup(val);
+			user_rec->address = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "country")) {
-			user_rec->country = g_strdup(val);
+			user_rec->country = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "timezone")) {
-			user_rec->timezone = g_strdup(val);
+			user_rec->timezone = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "email")) {
 			user_rec->mail = g_slist_append(user_rec->mail, g_strdup(val));
 		} else if (!strcasecmp(key, "level")) {

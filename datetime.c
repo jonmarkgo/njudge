@@ -67,8 +67,8 @@ time_t datetime_epoc_utc(time_t time) {
 	struct tm utime;
 
 	if (offset == G_MAXINT) {
-		gmtime_r(&time, &utime);
-		localtime_r(&time, &ltime);
+		memcpy(&utime, gmtime(&time), sizeof(struct tm));
+		memcpy(&ltime, localtime(&time), sizeof(struct tm));
 		offset = mktime(&ltime) - mktime(&utime);
 	}
 
