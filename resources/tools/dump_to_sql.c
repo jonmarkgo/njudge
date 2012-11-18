@@ -19,6 +19,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include "../../datetime.h"
+
 #define PLYRDATA_MAGIC          0x504C5952
 #define PLYRDATA_VERSION        2
 
@@ -124,7 +126,6 @@ struct opts_s opts;
 
 int main(int argc, char** argv) {
 
-	int idx;
 	int rtn = 1; /* assume failure */
 	gint    ded_recs;
 	gint    stat_recs;
@@ -202,8 +203,8 @@ int main(int argc, char** argv) {
 		usr_rec = itr->data;
 		printf("INSERT INTO users (user_id, name, birthdate, sex, level, phone, "
 				 "address, country, site, timezone, tz)\n\t");
-		printf("VALUES (%u, \"%s\", %u, %d, %u, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", %u);\n",
-				usr_rec->id, usr_rec->name, (uint32_t) usr_rec->birthdate,
+		printf("VALUES (%u, \"%s\", %d, %d, %u, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", %u);\n",
+				usr_rec->id, usr_rec->name, (int32_t) usr_rec->birthdate,
 				usr_rec->sex, usr_rec->level, usr_rec->phone, usr_rec->address,
 				usr_rec->country, usr_rec->site, usr_rec->timezone, 0);
 		fprintf(tmp_stat, "INSERT INTO user_stats (user_id, rating, last_signon, total, "
@@ -500,7 +501,6 @@ user_t* next_user_record(FILE* whois_fp) {
 	char* tmp;
 	char  line[LINE_BUFLEN];
 	long  offset;
-	struct tm tdate = {0};
 	user_t* user_rec = NULL;
 	GRegex* rex = NULL;
 	GMatchInfo* rex_match = NULL;
@@ -559,11 +559,7 @@ user_t* next_user_record(FILE* whois_fp) {
 				user_rec->level = 6;
 			else user_rec->level = 5; /* 5 = amateur */
 		} else if (!strcasecmp(key, "birthdate")) {
-			if (strptime(val, "%b %d, %Y", &tdate) != NULL) {
-				user_rec->birthdate = mktime(&tdate);
-			} else if (strptime(val, "%b %d %Y", &tdate) != NULL) {
-				user_rec->birthdate = mktime(&tdate);
-			} else user_rec->birthdate = 0;
+			user_rec->birthdate = datetime_epoc_from_string(val);
 		} else if (!strcasecmp(key, "sex")) {
 			if (!strcasecmp(val, "male"))
 				user_rec->sex = -1;
