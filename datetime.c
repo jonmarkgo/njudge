@@ -61,16 +61,14 @@ exit_datetime_epoc_from_string:
 }
 time_t datetime_epoc_utc(time_t time) {
 
-	static gshort offset;
-	static gshort set = 0;
+	static gint offset = G_MAXINT;
 	struct tm ltime;
 	struct tm utime;
 
-	if (!set) {
+	if (offset == G_MAXINT) {
 		gmtime_r(&time, &utime);
 		localtime_r(&time, &ltime);
 		offset = mktime(&ltime) - mktime(&utime);
-		set = 1;
 	}
 
 	return time - offset;
