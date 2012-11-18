@@ -7,8 +7,8 @@ INCL = `pkg-config --cflags glib-2.0`
 SDIR = ../
 TDIR = .
 
-APPFILES = conf
-TESTFILES = test_main test_conf
+APPFILES = conf datetime
+TESTFILES = test_main test_conf test_datetime
 
 APPOBJ = $(patsubst %,$(SDIR)/%.o,$(APPFILES))
 TESTOBJ = $(patsubst %,$(TDIR)/%.o,$(TESTFILES))

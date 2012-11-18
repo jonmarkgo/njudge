@@ -10,9 +10,11 @@
 #include "test_main.h"
 
 extern tests_t tests_conf[];
+extern tests_t tests_datetime[];
 
 tests_t* all_tests[] = {
 		tests_conf,
+		tests_datetime,
 		NULL
 };
 
