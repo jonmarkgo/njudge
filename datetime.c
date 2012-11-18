@@ -23,11 +23,9 @@ time_t datetime_epoc_from_string(const char* str) {
 	gchar*    cptr = abmon;
 	struct tm date = {0};
 
-	/* copy and strip date string */
-	dt_str = g_strstrip(g_strdup(str));
-
 	parsed = sscanf(str, "%d %3s %d", date.tm_mday, str_month, date.tm_year);
-	if (parsed < 3) goto exit_str_to_epochdate;
+	if (parsed < 3)
+		goto exit_str_to_epochdate;
 
 	for (idx = 0; idx < 12; idx ++) {
 		if (!strcasecmp(abmon[idx], str_month)) {
@@ -35,7 +33,8 @@ time_t datetime_epoc_from_string(const char* str) {
 		}
 	}
 
-	if (idx == 12) goto exit_str_to_epocdate;
+	if (idx == 12)
+		goto exit_str_to_epocdate;
 
 	epoc = mktime(&date);
 
