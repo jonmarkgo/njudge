@@ -13,10 +13,10 @@ APPOBJ = $(patsubst %,$(SDIR)/%.o,$(APPFILES))
 all: dump_to_sql
 
 datetime.o: ../../datetime.c
-	$(CC) -c $(INCL) -o $@ $(CFLAGS) $<
+	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
 dump_to_sql.o: dump_to_sql.c
-	$(CC) -c $(INCL) -o $@ $(CFLAGS) $<
+	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
 dump_to_sql: datetime.o dump_to_sql.o
-	$(CC) -O2 -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -g -O2 -o $@ $^ $(CFLAGS) $(LIBS)

@@ -112,6 +112,7 @@ GQuark app_error_quark(void) {
 
 void    append_user_addresses(char* addr_data, user_t* user_rec);
 int     cmp_mail_record(void* rec_a, void* rec_b);
+int     cmp_mail_address(void* rec_a, void* rec_b);
 int     cmp_user_record(void* rec_a, void* rec_b);
 void    free_user_record(user_t* user_rec);
 GSList* get_all_user_records(GSList** addr_lst, GError** err);
@@ -119,8 +120,10 @@ GSList* get_mail_addresses(GError** err);
 int     init(int argc, char** argv);
 user_t* next_user_record(FILE* whois_fp);
 void    print_usage(void);
+int     print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stat);
 int     read_ded_data(ded_t** deds);
 int     read_plyr_data(plyrec_t** plyr_rec);
+gchar*  stpcpy(gchar* dst, gchar* src);
 
 struct opts_s opts;
 
@@ -129,19 +132,13 @@ int main(int argc, char** argv) {
 	int rtn = 1; /* assume failure */
 	gint    ded_recs;
 	gint    stat_recs;
-	char*   tmp;
-	char*   addr_data = NULL;
+	gchar*  addr_data = NULL;
+	GSList* itr = NULL;
 	GSList* usr_lst = NULL;
 	GSList* addr_lst = NULL;
-	FILE*   tmp_addr = NULL;
-	FILE*   tmp_stat = NULL;
-	FILE*   tmp_fields = NULL;
 	ded_t*  deds = NULL;
 	GError* err = NULL;
 	plyrec_t* stats = NULL;
-	user_t* usr_rec;
-	GSList* itr;
-	GSList* itr_b;
 
 	if (!init(argc, argv)) {
 		return 1;
@@ -186,76 +183,23 @@ int main(int argc, char** argv) {
 	}
 
 	/* free remaining mail address list */
-	for (itr = addr_lst; itr; itr = itr->next) g_free(itr->data);
+	for (itr = addr_lst; itr; itr = itr->next)
+		g_free(itr->data);
 	g_slist_free(addr_lst);
 
-	if (((tmp_addr = tmpfile()) == NULL) || ((tmp_stat = tmpfile()) == NULL) ||
-			((tmp_fields = tmpfile()) == NULL)) {
-		fprintf(stderr, "error opening temporary files: %s\n", strerror(errno));
+	if (!print_sql(usr_lst, deds, stats)) {
 		goto exit_main;
 	}
-	printf("-- User records --\n");
-	fprintf(tmp_stat, "-- User stats --\n");
-	fprintf(tmp_addr, "-- E-mails --\n");
-	fprintf(tmp_fields, "-- Extra fields --\n");
-
-	for (itr = usr_lst; itr; itr = itr->next) {
-		usr_rec = itr->data;
-		printf("INSERT INTO users (user_id, name, birthdate, sex, level, phone, "
-				 "address, country, site, timezone, tz)\n\t");
-		printf("VALUES (%u, \"%s\", %d, %d, %u, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", %u);\n",
-				usr_rec->id, usr_rec->name, (int32_t) usr_rec->birthdate,
-				usr_rec->sex, usr_rec->level, usr_rec->phone, usr_rec->address,
-				usr_rec->country, usr_rec->site, usr_rec->timezone, 0);
-		fprintf(tmp_stat, "INSERT INTO user_stats (user_id, rating, last_signon, total, "
-				"ontime, started, resigned, tookover)\n\t");
-		fprintf(tmp_stat, "VALUES (%u, %u, %u, %u, %u, %u, %u, %u);\n",
-				usr_rec->id, deds[usr_rec->id].rating, (guint) deds[usr_rec->id].last_signon,
-				stats[usr_rec->id].total, stats[usr_rec->id].ontime, stats[usr_rec->id].started,
-				stats[usr_rec->id].resigned, stats[usr_rec->id].tookover);
-		for (itr_b = usr_rec->mail; itr_b; itr_b = itr_b->next) {
-			fprintf(tmp_addr, "INSERT INTO email (user_id, address, is_default)\n\t");
-			fprintf(tmp_addr, "VALUES (%u, \"%s\", %u);\n", usr_rec->id,
-					((mailrec_t*) itr_b->data)->email, itr_b == usr_rec->mail);
-		}
-		for (itr_b = usr_rec->extra_fields; itr_b; itr_b = itr_b->next) {
-			fprintf(tmp_fields, "INSERT INTO extra_fields (user_id, field_name, field_value)\n\t");
-			fprintf(tmp_fields, "VALUES (%u, \"%s\", \"%s\");\n", usr_rec->id, (gchar*) itr_b->data,
-					(gchar*) itr_b->data + strlen(itr_b->data) + 1);
-		}
-		free_user_record(usr_rec);
-	}
-
-	fseek(tmp_addr, 0, SEEK_SET);
-	fseek(tmp_stat, 0, SEEK_SET);
-	fseek(tmp_fields, 0, SEEK_SET);
-
-	tmp = g_malloc(1024);
-
-	while (fgets(tmp, 1024, tmp_addr))
-		printf("%s", tmp);
-
-	while (fgets(tmp, 1024, tmp_stat))
-		printf("%s", tmp);
-
-	while (fgets(tmp, 1024, tmp_fields))
-		printf("%s", tmp);
-
-	g_free(tmp);
 
 	rtn = 0; /* success */
 
 exit_main:
 
 	if (addr_lst)  g_slist_free(addr_lst);
-
 	if (err)       g_error_free(err);
 	if (deds)      free(deds);
 	if (stats)     free(stats);
 	if (addr_data) g_free(addr_data);
-	if (tmp_addr)  fclose(tmp_addr);
-	if (tmp_stat)  fclose(tmp_stat);
-	if (tmp_fields) fclose(tmp_fields);
 
 	return rtn;
 
@@ -263,6 +207,11 @@ exit_main:
 int cmp_mail_record(void* rec_a, void* rec_b) {
 
 	return ((mailrec_t*) rec_a)->id - ((mailrec_t*) rec_b)->id;
+
+}
+int cmp_mail_address(void* rec_a, void* rec_b) {
+
+	return strcasecmp(((mailrec_t*) rec_a)->email, ((mailrec_t*) rec_b)->email);
 
 }
 int cmp_user_record(void* rec_a, void* rec_b) {
@@ -312,12 +261,12 @@ GSList* get_all_user_records(GSList** addr_lst, GError** err) {
 		search.id = usr_rec->id;
 		while ((mail_rec = g_slist_find_custom(*addr_lst, &search, (GCompareFunc) cmp_user_record))) {
 			*addr_lst = g_slist_remove_link(*addr_lst, mail_rec);
-			if (g_slist_find_custom(usr_rec->mail, ((mailrec_t*) mail_rec->data)->email,
-					(GCompareFunc) g_ascii_strcasecmp) == NULL) {
+			if (g_slist_find_custom(usr_rec->mail, mail_rec->data,
+					(GCompareFunc) cmp_mail_address) == NULL) {
 				usr_rec->mail = g_slist_concat(usr_rec->mail, mail_rec);
 			} else {
 				g_free(mail_rec->data);
-				g_slist_free1(mail_rec);
+				g_slist_free_1(mail_rec);
 			}
 		}
 	}
@@ -413,6 +362,105 @@ exit_init:
 	return rtn;
 
 }
+user_t* next_user_record(FILE* whois_fp) {
+
+	char* key = NULL;
+	char* val = NULL;
+	char* tmp;
+	char  line[LINE_BUFLEN];
+	long  offset;
+	user_t* user_rec = NULL;
+	mailrec_t* mail_rec;
+	GRegex* rex = NULL;
+	GMatchInfo* rex_match = NULL;
+
+	rex = g_regex_new("\\s*(.+?):\\s*(.+?)$", 0, 0, NULL);
+
+	while (1) {
+		offset = ftell(whois_fp); /* rewind here is second "User" is found */
+		if (!fgets(line, LINE_BUFLEN, whois_fp)) {
+			if (!feof(whois_fp)) {
+				fprintf(stderr, "read error in %s\n", opts.whois_fn);
+			}
+			if (!user_rec)
+				goto exit_read_user_record;
+			break;
+		}
+		if (!g_regex_match(rex, line, 0, &rex_match)) {
+			g_match_info_free(rex_match);
+			continue;
+		}
+		key = g_match_info_fetch(rex_match, 1);
+		val = g_match_info_fetch(rex_match, 2);
+
+		if (!strcasecmp(key, "user")) {
+			if (user_rec != NULL) {
+				fseek(whois_fp, offset, SEEK_SET);
+				g_free(key); g_free(val);
+				break;
+			}
+			user_rec = g_malloc0(sizeof(user_t));
+			user_rec->mail = NULL;
+			user_rec->extra_fields = NULL;
+			user_rec->id = atoi(val);
+		} else if (!strcasecmp(key, "name")) {
+			user_rec->name = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "phone")) {
+			user_rec->phone = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "site")) {
+			user_rec->site = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "address")) {
+			user_rec->address = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "country")) {
+			user_rec->country = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "timezone")) {
+			user_rec->timezone = g_strescape(val, NULL);
+		} else if (!strcasecmp(key, "email")) {
+			mail_rec = g_malloc0(strlen(val) + sizeof(guint) + 1);
+			strcpy(mail_rec->email, val);
+			user_rec->mail = g_slist_append(user_rec->mail, mail_rec);
+		} else if (!strcasecmp(key, "level")) {
+			if (!strcasecmp(val, "novice"))
+				user_rec->level = 2;
+			else if (!strcasecmp(val, "advanced"))
+				user_rec->level = 3;
+			else if (!strcasecmp(val, "intermediate"))
+				user_rec->level = 4;
+			else if (!strcasecmp(val, "expert"))
+				user_rec->level = 6;
+			else user_rec->level = 5; /* 5 = amateur */
+		} else if (!strcasecmp(key, "birthdate")) {
+			user_rec->birthdate = datetime_epoc_from_string(val);
+		} else if (!strcasecmp(key, "sex")) {
+			if (!strcasecmp(val, "male"))
+				user_rec->sex = -1;
+			else if (!strcasecmp(val, "female"))
+				user_rec->sex = 1;
+			else
+				user_rec->sex = 0;
+		} else {
+			if (opts.clean_recs) {
+				if (!strcasecmp(key, "package") || !strcasecmp(key, "ipaddress"))
+					goto skip_field;
+			}
+			tmp = g_malloc(strlen(key) + 1 + strlen(val) + 1);
+			strcpy(stpcpy(tmp, key) + 1, val);
+			user_rec->extra_fields = g_slist_append(user_rec->extra_fields, tmp);
+		}
+		skip_field:
+		g_free(key); key = NULL;
+		g_free(val); val = NULL;
+		g_match_info_free(rex_match); rex_match = NULL;
+	}
+
+exit_read_user_record:
+
+	if (rex) g_regex_unref(rex);
+	if (rex_match) g_match_info_free(rex_match);
+
+	return user_rec;
+
+}
 void print_usage(void) {
 
 	fprintf(stderr, "usage: dump_to_sql [options]\n\n"
@@ -424,6 +472,79 @@ void print_usage(void) {
 			"  -v\t\t\tVerbose\n"
 			"  -w filename\t\tWhois file\n"
 			"\n");
+
+}
+int print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stats) {
+
+	gint    ret = 0;
+	gchar*  line;
+	FILE*   tmp_addr = NULL;
+	FILE*   tmp_stat = NULL;
+	FILE*   tmp_flds = NULL;
+	user_t* usr_rec;
+	GSList* itr;
+	GSList* itr_b;
+
+	if (((tmp_addr = tmpfile()) == NULL) || ((tmp_stat = tmpfile()) == NULL) ||
+			((tmp_flds = tmpfile()) == NULL)) {
+		fprintf(stderr, "error opening temporary files: %s\n", strerror(errno));
+		goto exit_print_sql;
+	}
+
+	printf("--\n-- User records --\n--\n");
+	fprintf(tmp_stat, "--\n-- User stats --\n--\n");
+	fprintf(tmp_addr, "--\n-- E-mails --\n--\n");
+	fprintf(tmp_flds, "--\n-- Extra fields --\n--\n");
+
+	for (itr = usr_lst; itr; itr = itr->next) {
+		usr_rec = itr->data;
+		printf("INSERT INTO users (user_id, name, birthdate, sex, level, phone, "
+				 "address, country, site, timezone, tz)\n\t");
+		printf("VALUES (%u, \"%s\", %d, %d, %u, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", %u);\n",
+				usr_rec->id, usr_rec->name, (int32_t) usr_rec->birthdate,
+				usr_rec->sex, usr_rec->level, usr_rec->phone, usr_rec->address,
+				usr_rec->country, usr_rec->site, usr_rec->timezone, 0);
+		fprintf(tmp_stat, "INSERT INTO user_stats (user_id, rating, last_signon, total, "
+				"ontime, started, resigned, tookover)\n\t");
+		fprintf(tmp_stat, "VALUES (%u, %u, %u, %u, %u, %u, %u, %u);\n",
+				usr_rec->id, deds[usr_rec->id].rating, (guint) deds[usr_rec->id].last_signon,
+				stats[usr_rec->id].total, stats[usr_rec->id].ontime, stats[usr_rec->id].started,
+				stats[usr_rec->id].resigned, stats[usr_rec->id].tookover);
+		for (itr_b = usr_rec->mail; itr_b; itr_b = itr_b->next) {
+			fprintf(tmp_addr, "INSERT INTO email (user_id, address, is_default)\n\t");
+			fprintf(tmp_addr, "VALUES (%u, \"%s\", %u);\n", usr_rec->id,
+					((mailrec_t*) itr_b->data)->email, (itr_b == usr_rec->mail));
+		}
+		for (itr_b = usr_rec->extra_fields; itr_b; itr_b = itr_b->next) {
+			fprintf(tmp_flds, "INSERT INTO extra_fields (user_id, field_name, field_value)\n\t");
+			fprintf(tmp_flds, "VALUES (%u, \"%s\", \"%s\");\n", usr_rec->id, (gchar*) itr_b->data,
+					(gchar*) itr_b->data + strlen(itr_b->data) + 1);
+		}
+		free_user_record(usr_rec);
+	}
+
+	fseek(tmp_addr, 0, SEEK_SET);
+	fseek(tmp_stat, 0, SEEK_SET);
+	fseek(tmp_flds, 0, SEEK_SET);
+
+	line = g_malloc(1024);
+
+	while (fgets(line, 1024, tmp_addr))
+		printf("%s", line);
+
+	while (fgets(line, 1024, tmp_stat))
+		printf("%s", line);
+
+	while (fgets(line, 1024, tmp_flds))
+		printf("%s", line);
+
+	g_free(line);
+
+	ret = 1;
+
+exit_print_sql:
+
+	return ret;
 
 }
 int read_ded_data(ded_t** deds) {
@@ -493,99 +614,15 @@ exit_read_plyr_data:
 	return ret;
 
 }
-user_t* next_user_record(FILE* whois_fp) {
+gchar* stpcpy(gchar* dst, gchar* src) {
 
-	char* key = NULL;
-	char* val = NULL;
-	char* tmp;
-	char  line[LINE_BUFLEN];
-	long  offset;
-	user_t* user_rec = NULL;
-	GRegex* rex = NULL;
-	GMatchInfo* rex_match = NULL;
+	g_assert((dst != NULL) && (src != NULL));
 
-	rex = g_regex_new("\\s*(.+?):\\s*(.+?)$", 0, 0, NULL);
+	do {
+		*(dst++) = *(src++);
+	} while (*src != '\0');
 
-	while (1) {
-		offset = ftell(whois_fp); /* rewind here is second "User" is found */
-		if (!fgets(line, LINE_BUFLEN, whois_fp)) {
-			if (!feof(whois_fp)) {
-				fprintf(stderr, "read error in %s\n", opts.whois_fn);
-			}
-			if (!user_rec)
-				goto exit_read_user_record;
-			break;
-		}
-		if (!g_regex_match(rex, line, 0, &rex_match)) {
-			g_match_info_free(rex_match);
-			continue;
-		}
-		key = g_match_info_fetch(rex_match, 1);
-		val = g_match_info_fetch(rex_match, 2);
+	*dst = '\0';
 
-		if (!strcasecmp(key, "user")) {
-			if (user_rec != NULL) {
-				fseek(whois_fp, offset, SEEK_SET);
-				g_free(key); g_free(val);
-				break;
-			}
-			user_rec = g_malloc0(sizeof(user_t));
-			user_rec->mail = NULL;
-			user_rec->extra_fields = NULL;
-			user_rec->id = atoi(val);
-		} else if (!strcasecmp(key, "name")) {
-			user_rec->name = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "phone")) {
-			user_rec->phone = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "site")) {
-			user_rec->site = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "address")) {
-			user_rec->address = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "country")) {
-			user_rec->country = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "timezone")) {
-			user_rec->timezone = g_strescape(val, NULL);
-		} else if (!strcasecmp(key, "email")) {
-			user_rec->mail = g_slist_append(user_rec->mail, g_strdup(val));
-		} else if (!strcasecmp(key, "level")) {
-			if (!strcasecmp(val, "novice"))
-				user_rec->level = 2;
-			else if (!strcasecmp(val, "advanced"))
-				user_rec->level = 3;
-			else if (!strcasecmp(val, "intermediate"))
-				user_rec->level = 4;
-			else if (!strcasecmp(val, "expert"))
-				user_rec->level = 6;
-			else user_rec->level = 5; /* 5 = amateur */
-		} else if (!strcasecmp(key, "birthdate")) {
-			user_rec->birthdate = datetime_epoc_from_string(val);
-		} else if (!strcasecmp(key, "sex")) {
-			if (!strcasecmp(val, "male"))
-				user_rec->sex = -1;
-			else if (!strcasecmp(val, "female"))
-				user_rec->sex = 1;
-			else
-				user_rec->sex = 0;
-		} else {
-			if (opts.clean_recs) {
-				if (!strcasecmp(key, "package") || !strcasecmp(key, "ipaddress"))
-					goto skip_field;
-			}
-			tmp = g_malloc(strlen(key) + 1 + strlen(val) + 1);
-			strcpy(stpcpy(tmp, key) + 1, val);
-			user_rec->extra_fields = g_slist_append(user_rec->extra_fields, tmp);
-		}
-		skip_field:
-		g_free(key); key = NULL;
-		g_free(val); val = NULL;
-		g_match_info_free(rex_match); rex_match = NULL;
-	}
-
-exit_read_user_record:
-
-	if (rex) g_regex_unref(rex);
-	if (rex_match) g_match_info_free(rex_match);
-
-	return user_rec;
-
+	return dst;
 }
