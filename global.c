@@ -53,8 +53,8 @@
 #include "mach.h"
 
 /* name and place of config file */
-char *CONFIG_FILE ="dip.conf";
-char *CONFIG_DIR = ".";
+char *CONFIG_DIR;
+char *CONFIG_FILE;
 
 struct dipent dipent;
 FILE *rfp;			/* Reply file pointer                           */
@@ -132,20 +132,6 @@ int more_orders;		/* Nonzero if not all units ordered           */
 
 /* this may need to be included in the other programs as well */
 char *notifies = "*";
-
-// int aflg = 0;		Replaced with options.dont_touch_q
-// int Aflg = 0;		Replaced with options.dont_rm_q
-// char *dflg;			Replaced with options.cwd
-// int Dflg = 0;		Replaced with options.debug
-// char *nflg;			Not longer used
-// int qflg = 0;		Replaced with options.quick
-// int tflg = 0;		Replaced with options.variant
-// char *rflg = NULL;	Replaced with options.randomizer
-// int sflg = 0;		Replaced with options.sequence
-// int vflg = 0;		Replaced with options.verbose
-// int xflg = 0;		Replaced with options.no_input
-// char *inname = NULL; Not longer used
-// FILE *inp;			Not longer used
 
 int control = 0;
 int predict = 0; 		/* =1 to predict a move for master */
