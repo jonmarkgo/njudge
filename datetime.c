@@ -13,11 +13,13 @@
 
 #include "datetime.h"
 
+static time_t now = 0;
+
 time_t datetime_epoc_from_string(const gchar* str) {
 
 	time_t epoc = 0;
 	GDate* gdate;
-	struct tm cdate;
+	struct tm cdate = {0};
 
 	gdate = g_date_new();
 
@@ -27,7 +29,7 @@ time_t datetime_epoc_from_string(const gchar* str) {
 
 	g_date_to_struct_tm(gdate, &cdate);
 
-	epoc = datetime_epoc_utc(mktime(&cdate));
+	epoc = mktime(&cdate);
 
 exit_datetime_epoc_from_string:
 
