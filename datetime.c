@@ -13,49 +13,25 @@
 
 #include "datetime.h"
 
-static const char* abmon[12] = {
-		"jan", "feb", "mar", "apr", "may", "jun",
-		"jul", "aug", "sep", "oct", "nov", "dec"
-};
+time_t datetime_epoc_from_string(const gchar* str) {
 
-time_t datetime_epoc_from_string(const char* str) {
+	time_t epoc = 0;
+	GDate* gdate;
+	struct tm cdate;
 
-	time_t    epoc = 0;
-	guint     month;
-	guint     parsed;
-	gchar*    cptr;
-	gchar*    cpy_str;
-	gchar     str_month[4];
-	struct tm date = {0};
+	gdate = g_date_new();
 
-	cpy_str = g_strdup(str);
-
-	/* remove comma to make parsing a bit more simple */
-	if ((cptr = strchr(cpy_str, ',')) != NULL) *cptr = ' ';
-
-	parsed = sscanf(cpy_str, "%d %3s %d", &date.tm_mday, str_month, &date.tm_year);
-	if (parsed != 3) {
-		parsed = sscanf(cpy_str, "%3s %d %d", str_month, &date.tm_mday, &date.tm_year);
-		if (parsed != 3)
-			goto exit_datetime_epoc_from_string;
-	}
-
-	for (month = 0; month < 12; month ++) {
-		if (!strcasecmp(abmon[month], str_month)) {
-			date.tm_mon = month;
-			break;
-		}
-	}
-	if (month == 12) /* not found */
+	g_date_set_parse(gdate, str);
+	if (!g_date_valid(gdate))
 		goto exit_datetime_epoc_from_string;
 
-	date.tm_year -= 1900;
+	g_date_to_struct_tm(gdate, &cdate);
 
-	epoc = datetime_epoc_utc(mktime(&date));
+	epoc = datetime_epoc_utc(mktime(&cdate));
 
 exit_datetime_epoc_from_string:
 
-	g_free(cpy_str);
+	g_date_free(gdate);
 
 	return epoc;
 
