@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include "../../player.h"
 #include "../../datetime.h"
 
 #define PLYRDATA_MAGIC          0x504C5952
@@ -31,9 +32,16 @@
 typedef enum {
 
 	APP_ERROR_FILE_OPEN = 1,
-	APP_ERROR_MEMORY_ALLOCATION
+	APP_ERROR_MEMORY_ALLOCATION,
+	APP_ERROR_UNKNOWN_OUT_FORMAT
 
 } AppError;
+typedef enum {
+
+	OUTFORMAT_MYSQL = 0,
+	OUTFORMAT_NEWDIP
+
+} OutFormat;
 
 typedef struct plyrheader_s {
 
@@ -90,6 +98,7 @@ struct opts_s {
 	int   clean_recs;
 	int   ignore_ded_integ;
 	int   verbose;
+	int   out_format;
 	char* addr_fn;
 	char* ded_fn;
 	char* plyr_fn;
@@ -114,16 +123,18 @@ void    append_user_addresses(char* addr_data, user_t* user_rec);
 int     cmp_mail_record(void* rec_a, void* rec_b);
 int     cmp_mail_address(void* rec_a, void* rec_b);
 int     cmp_user_record(void* rec_a, void* rec_b);
+char*   escape_semicolon(char* str);
 void    free_user_record(user_t* user_rec);
 GSList* get_all_user_records(GSList** addr_lst, GError** err);
 GSList* get_mail_addresses(GError** err);
-int     init(int argc, char** argv);
+int     init(int argc, char** argv, GError** err);
 user_t* next_user_record(FILE* whois_fp);
 void    print_usage(void);
-int     print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stat);
+int     print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stat, GError** err);
 int     read_ded_data(ded_t** deds);
 int     read_plyr_data(plyrec_t** plyr_rec);
 gchar*  stpcpy(gchar* dst, gchar* src);
+int     write_newdb(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err);
 
 struct opts_s opts;
 
@@ -140,7 +151,8 @@ int main(int argc, char** argv) {
 	GError* err = NULL;
 	plyrec_t* stats = NULL;
 
-	if (!init(argc, argv)) {
+	if (!init(argc, argv, &err)) {
+		if (err) fprintf(stderr, "%s\n", err->message);
 		return 1;
 	}
 
@@ -168,12 +180,14 @@ int main(int argc, char** argv) {
 	}
 	if ((ded_recs -= ((user_t*) g_slist_last(usr_lst)->data)->id) < 0) {
 		fprintf(stderr, "%s ", opts.ignore_ded_integ ? "WARNING!" : "ERROR!");
-		fprintf(stderr, "Dedication database contains %d records against max user id\n", ded_recs);
+		fprintf(stderr, "Data inconsistency error.\n"
+				"Dedication database contains %d records against max user id.\n", ded_recs);
 		if (!opts.ignore_ded_integ) goto exit_main;
 	}
 	if ((stat_recs -= ((user_t*) g_slist_last(usr_lst)->data)->id) < 0) {
 		fprintf(stderr, "%s ", opts.ignore_ded_integ ? "WARNING!" : "ERROR!");
-		fprintf(stderr, "Plyrdata database contains %d records against max user id\n", stat_recs);
+		fprintf(stderr, "Data inconsistency error.\n"
+				"Plyrdata database contains %d records against max user id.\n", stat_recs);
 		if (!opts.ignore_ded_integ) goto exit_main;
 	}
 	if (opts.verbose) {
@@ -187,8 +201,14 @@ int main(int argc, char** argv) {
 		g_free(itr->data);
 	g_slist_free(addr_lst);
 
-	if (!print_sql(usr_lst, deds, stats)) {
-		goto exit_main;
+	if (opts.out_format == OUTFORMAT_MYSQL) {
+		if (!print_sql(usr_lst, deds, stats, &err)) {
+			goto exit_main;
+		}
+	} else if (opts.out_format == OUTFORMAT_NEWDIP) {
+		if (!write_newdb(usr_lst, deds, stats, &err)) {
+			goto exit_main;
+		}
 	}
 
 	rtn = 0; /* success */
@@ -221,6 +241,32 @@ int cmp_user_record(void* rec_a, void* rec_b) {
 	if (rec_a == NULL) ret = -1;
 	else
 		ret = ((user_t*) rec_a)->id - ((user_t*) rec_b)->id;
+
+	return ret;
+
+}
+char* escape_semicolon(char* str) {
+
+	guint  occ = 0;
+	gchar* ptr;
+	gchar* ret;
+	gchar* ret_ptr;
+
+	if (!str)
+		return g_strdup("");
+
+	for (ptr = str; (*ptr); ptr ++) {
+		if (*ptr == ';')
+			occ ++;
+	}
+
+	ret = ret_ptr = g_malloc0(strlen(str) + occ + 1);
+
+	for (ptr = str; *ptr; ptr ++, ret_ptr ++) {
+		if (*ptr == ';')
+			*(ret_ptr ++) = '\\';
+		*ret_ptr = *ptr;
+	}
 
 	return ret;
 
@@ -311,7 +357,7 @@ exit_get_mail_addresses:
 	return addr_lst;
 
 }
-int init(int argc, char** argv) {
+int init(int argc, char** argv, GError** err) {
 
 	int opt;
 	int rtn = 0;
@@ -323,7 +369,7 @@ int init(int argc, char** argv) {
 	opts.plyr_fn  = "plyrdata";
 	opts.whois_fn = "dip.whois";
 
-	while ((opt = getopt(argc, argv, "a:Cd:hip:vw:")) > -1) {
+	while ((opt = getopt(argc, argv, "a:Cd:f:hip:vw:")) > -1) {
 		switch(opt) {
 			case 'a':
 				opts.addr_fn = optarg;
@@ -333,6 +379,17 @@ int init(int argc, char** argv) {
 				break;
 			case 'd':
 				opts.ded_fn = optarg;
+				break;
+			case 'f':
+				if (!strcasecmp("mysql", optarg)) {
+					opts.out_format = OUTFORMAT_MYSQL;
+				} else if(!strcasecmp("newdip", optarg)) {
+					opts.out_format = OUTFORMAT_NEWDIP;
+				} else {
+					g_set_error(err, APP_ERROR, APP_ERROR_UNKNOWN_OUT_FORMAT,
+							"unknown output format - %s", optarg);
+					goto exit_init;
+				}
 				break;
 			case 'h':
 				print_usage();
@@ -463,18 +520,19 @@ exit_read_user_record:
 }
 void print_usage(void) {
 
-	fprintf(stderr, "usage: dump_to_sql [options]\n\n"
+	fprintf(stderr, "usage: migrate_db [options]\n\n"
 			"  -a filename\t\tAddr file\n"
 			"  -C\t\t\tDon't write empty/unused records\n"
 			"  -d filename\t\tDed file\n"
+			"  -f format\t\tOutput format (mysql, newdip)\n"
 			"  -h\t\t\tPrint this help and exit\n"
-			"  -i\t\t\tIgnore integrity errors\n"
+			"  -i\t\t\tIgnore inconsistency errors\n"
 			"  -v\t\t\tVerbose\n"
 			"  -w filename\t\tWhois file\n"
 			"\n");
 
 }
-int print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stats) {
+int print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
 
 	gint    ret = 0;
 	gchar*  line;
@@ -625,4 +683,106 @@ gchar* stpcpy(gchar* dst, gchar* src) {
 	*dst = '\0';
 
 	return dst;
+}
+int write_newdb(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
+
+	gint  ret = 0;
+	char* temp_str[6];
+	FILE* stat_file  = NULL;
+	FILE* mail_file  = NULL;
+	FILE* field_file = NULL;
+	FILE* whois_file = NULL;
+	GSList* sl_cur;
+	GSList* user_cur;
+	user_t* user_rec;
+	plrstat_t* stat_recs = NULL;
+
+	if (!(whois_file = fopen("dipwhois.tbl", "w"))) {
+		g_set_error(err, APP_ERROR, APP_ERROR_FILE_OPEN,
+				"error opening dipwhois.tbl - %s", g_strerror(errno));
+		goto exit_write_newdb;
+	}
+	if (!(stat_file = fopen("dipstats.tbl", "w"))) {
+		g_set_error(err, APP_ERROR, APP_ERROR_FILE_OPEN,
+				"error opening dipstats.tbl - %s", g_strerror(errno));
+		goto exit_write_newdb;
+	}
+	if (!(mail_file = fopen("dipmail.tbl", "w"))) {
+		g_set_error(err, APP_ERROR, APP_ERROR_FILE_OPEN,
+				"error opening dipmail.tbl - %s", g_strerror(errno));
+		goto exit_write_newdb;
+	}
+	if (!(field_file = fopen("dipfields.tbl", "w"))) {
+		g_set_error(err, APP_ERROR, APP_ERROR_FILE_OPEN,
+				"error opening dipfields.tbl - %s", g_strerror(errno));
+		goto exit_write_newdb;
+	}
+
+	user_cur = usr_lst;
+	stat_recs = g_malloc_n(g_slist_length(usr_lst), sizeof(plrstat_t));
+
+	do {
+		user_rec = user_cur->data;
+		fprintf(whois_file, "%u;%s;%u;%d;%d;%s;%s;%s;%s;%s\n",
+				user_rec->id,
+				(temp_str[0] = escape_semicolon(user_rec->name)),
+				user_rec->level,
+				(gint) user_rec->birthdate,
+				user_rec->sex,
+				(temp_str[1] = escape_semicolon(user_rec->phone)),
+				(temp_str[2] = escape_semicolon(user_rec->site)),
+				(temp_str[3] = escape_semicolon(user_rec->address)),
+				(temp_str[4] = escape_semicolon(user_rec->country)),
+				(temp_str[5] = escape_semicolon(user_rec->timezone)));
+
+		g_free(temp_str[0]);
+		g_free(temp_str[1]);
+		g_free(temp_str[2]);
+		g_free(temp_str[3]);
+		g_free(temp_str[4]);
+		g_free(temp_str[5]);
+
+		fprintf(stat_file, "%u;%d;%d;%u;%u;%u;%u;%u\n",
+				user_rec->id,
+				deds[user_rec->id].rating,
+				(gint) deds[user_rec->id].last_signon,
+				stats[user_rec->id].total,
+				stats[user_rec->id].ontime,
+				stats[user_rec->id].started,
+				stats[user_rec->id].resigned,
+				stats[user_rec->id].tookover);
+
+		for (sl_cur = ((user_t*) user_cur->data)->mail;
+				sl_cur;
+				sl_cur = g_slist_next(sl_cur)) {
+			fprintf(mail_file, "%u;%s;%d\n",
+					user_rec->id,
+					((mailrec_t*) sl_cur->data)->email,
+					(sl_cur == ((user_t*) user_cur->data)->mail));
+		}
+		for (sl_cur = ((user_t*) user_cur->data)->extra_fields;
+				sl_cur;
+				sl_cur = g_slist_next(sl_cur)) {
+			fprintf(field_file, "%u;%s;%s\n", user_rec->id,
+					(temp_str[0] = escape_semicolon((char*) sl_cur->data)),
+					(temp_str[1] = escape_semicolon(
+							(char*) sl_cur->data + strlen(sl_cur->data) + 1)));
+
+			g_free(temp_str[0]);
+			g_free(temp_str[1]);
+		}
+
+	} while ((user_cur = g_slist_next(user_cur)));
+
+	ret = 1; /* Success */
+
+exit_write_newdb:
+
+	if (whois_file)  fclose(whois_file);
+	if (stat_file)   fclose(stat_file);
+	if (mail_file)   fclose(mail_file);
+	if (field_file) fclose(field_file);
+	if (stat_recs)   g_free(stat_recs);
+
+	return ret;
 }

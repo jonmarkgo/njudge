@@ -10,13 +10,13 @@ VVAPPFILES =  datetime
 
 APPOBJ = $(patsubst %,$(SDIR)/%.o,$(APPFILES))
 
-all: dump_to_sql
+all: migrate_db
 
 datetime.o: ../../datetime.c
 	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
-dump_to_sql.o: dump_to_sql.c
+migrate_db.o: migrate_db.c
 	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
-dump_to_sql: datetime.o dump_to_sql.o
+migrate_db: datetime.o migrate_db.o
 	$(CC) -g -O2 -o $@ $^ $(CFLAGS) $(LIBS)
