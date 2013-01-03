@@ -59,6 +59,7 @@ cfgval_t def_vals[] = {
 		{"judge_path"			, "./"},
 		{"judge_tz"				, ""},
 		{"line_wrap"			, "78"},
+		{"lock_file"			, "dip.lock"},
 		{"lock_timeout"			, "3600"},
 		{"log_file"				, "dip.log"},
 		{"mail_spooler"			, "mail_spooler"},

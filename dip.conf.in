@@ -115,6 +115,10 @@
 # At which width to wrap lines in e-mail messages (former CUTOFF_LENGTH).
 #line_wrap = 78
 
+# [lock_file]				string				dip.lock
+# This file see to it that only one process at a time accesses the data files.
+#lock_file = dip.lock
+
 # [lock_timeout]			integer				3600
 # Time in seconds to bail-out if can't lock log file.
 #lock_timeout = 3600

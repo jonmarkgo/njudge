@@ -54,6 +54,7 @@ static gint terminate(void);
 static char* judge_tz = NULL; /* holds the TZ environment variable */
 extern int time_warp;  /* Set to 1 if a time-warp was detected */
 struct opts_s options = {0};
+static FILE* lock_file = NULL;
 
 static GQuark dip_init_error_quark(void) {
 
@@ -182,11 +183,7 @@ void inform_party_of_blind_turn( int player_index, char *turn_text, char *in_fil
 }
 void gotalarm(int unused) {
 
-	time_t now;
-
-	time(&now);
-
-	diplog_entry("log file lock timed-out.");
+	diplog_entry("Acquire runtime lock timed-out.");
 
 	savemail();
 
@@ -272,6 +269,11 @@ static gint init(int argc, char** argv, GError** err) {
 		goto exit_init;
 	}
 
+	/* Open log session */
+	if (!diplog_open("dip", err)) {
+		goto exit_init;
+	}
+
 	/* Change the judge timezone, if set */
 	if (*(tcptr = conf_get("judge_tz"))) {
 		judge_tz = g_strdup_printf("TZ=%s", tcptr);
@@ -281,20 +283,6 @@ static gint init(int argc, char** argv, GError** err) {
 
 	subjectline[0] = '\0';
 
-	/* Interlock the log file to ensure single threading  */
-	/*tcptr = conf_get("log_file");
-	if ((fd = open(tcptr, O_RDWR | O_APPEND | O_CREAT, 0600)) < 0) {
-		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_OPEN,
-				"error opening log file - %s: %s", tcptr, g_strerror(errno));
-		goto exit_init;
-	}
-	if (!diplog_open("dip", err)) {
-		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_FDOPEN,
-				"error fdopen on log file - %s: %s", tcptr, g_strerror(errno));
-		close(fd);
-		goto exit_init;
-	}*/
-
 	if (!stat(conf_get("bail_forward"), &sbuf)) {
 		savemail();
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_HAS_BAILED,
@@ -302,18 +290,21 @@ static gint init(int argc, char** argv, GError** err) {
 		goto exit_init;
 	}
 
-	/* TODO change to POSIX sigaction */
+	/*
+	 * Acquire file lock on lock_file to ensure single process
+	 * TODO: Change to POSIX sigaction
+	 */
+
+	if ((lock_file = fopen((tcptr = conf_get("lock_file")), "w")) == NULL) {
+		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOCK_FILE_FAIL,
+				"unable to open lock file: %s", tcptr);
+		goto exit_init;
+	}
+
 	signal(SIGALRM, gotalarm);
 	alarm(conf_get_int("lock_timeout"));
 
-	if (!diplog_open("dip", err)) {
-		goto exit_init;
-	}
-	/*if (lockfd(fd, 0)) {
-		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_LOG_LOCK,
-				"unable to lock log file - %s: %s", conf_get("log_file"), g_strerror(errno));
-		goto exit_init;
-	}*/
+	lockfd(fileno(lock_file), 0);
 
 	alarm(0);
 
@@ -374,6 +365,7 @@ exit_init:
 gint terminate(void) {
 
 	if (judge_tz != NULL) g_free(judge_tz);
+	if (lock_file != NULL) fclose(lock_file);
 
 	return 1;
 
