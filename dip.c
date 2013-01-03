@@ -225,7 +225,7 @@ static gint init(int argc, char** argv, GError** err) {
 	gint       idx;
 	gint       rtn = 0;
 	gint*      dedic;
-	gchar*     tcptr;
+	gchar*     tcptr;		// Temp char pointer
 	FILE*      block_fp;
 	time_t     now;
 	GPtrArray* cl_cfg = NULL;
@@ -249,20 +249,20 @@ static gint init(int argc, char** argv, GError** err) {
 	time(&now);
 	srand(now);
 
-	if (!conf_init()) goto exit_init;
-
-	if (!parse_cmdline(argc, argv, &cl_cfg, err)) goto exit_init;
-
-	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err)) goto exit_init;
-
-	/* Parse config values stashed away while reading command line */
-	if (cl_cfg) {
+	/* Setup config values */
+	if (!conf_init())
+		goto exit_init;
+	if (!parse_cmdline(argc, argv, &cl_cfg, err))
+		goto exit_init;
+	if (!conf_read_file(CONFIG_DIR, CONFIG_FILE, err))
+		goto exit_init;
+	if (cl_cfg) { // Parse values stashed away while reading command line
 		idx = conf_vset(cl_cfg, err);
 		g_ptr_array_unref(cl_cfg);
 		if (!idx) goto exit_init;
 	}
 
-	/* change cwd to judge_path */
+	/* Change cwd to judge_path */
 	if (chdir(conf_get("judge_path")) < 0) {
 		g_set_error(err, DIP_INIT_ERROR, DIP_INIT_ERROR_VOID_DIR,
 				"judge_dir error - %s: %s", conf_get("judge_dir"), g_strerror(errno));
