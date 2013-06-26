@@ -11,10 +11,12 @@
 
 extern tests_t tests_conf[];
 extern tests_t tests_datetime[];
+extern tests_t tests_user[];
 
 tests_t* all_tests[] = {
 		tests_conf,
 		tests_datetime,
+		tests_user,
 		NULL
 };
 
