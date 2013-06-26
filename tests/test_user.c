@@ -31,10 +31,11 @@ void test_user_add_mail(void) {
 	g_assert(gerr->domain == USER_MODULE);
 	g_assert(gerr->code   == MAIL_EMPTY);
 
-	g_free(usr->mail->next->data);
+	user_free(usr);
+	/*g_free(usr->mail->next->data);
 	g_free(usr->mail->data);
 	g_slist_free(usr->mail);
-	g_free(usr);
+	g_free(usr);*/
 
 }
 

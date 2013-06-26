@@ -47,6 +47,7 @@ typedef enum _error_e {
 #define USER_MODULE		user_quark()
 
 GQuark user_quark(void);
-int user_add_mail(user_t* usr, char* mail, GError** gerr);
+int    user_add_mail(user_t* usr, char* mail, GError** gerr);
+void   user_free(user_t* usr);
 
 #endif /* USER_H_ */

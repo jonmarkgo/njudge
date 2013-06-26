@@ -36,10 +36,26 @@ exit_user_add_mail:
 	return RESULT;
 
 }
-int user_free(user_t* usr) {
+void user_free(user_t* usr) {
 
-	int RESULT = 0;
+	GSList* ptr;
 
-	return RESULT;
+	g_assert(usr != NULL);
+
+	if (usr->mail) {
+		ptr = usr->mail;
+		do g_free(ptr->data);
+		while ((ptr = ptr->next));
+		g_slist_free(usr->mail);
+	}
+
+	if (usr->extra_fields) {
+		ptr = usr->extra_fields;
+		do g_free(ptr->data);
+		while ((ptr = ptr->next));
+		g_slist_free(usr->extra_fields);
+	}
+
+	g_free(usr);
 
 }
