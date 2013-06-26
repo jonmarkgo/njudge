@@ -7,6 +7,8 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <string.h>
+#include <strings.h>
 
 #include "user.h"
 
@@ -39,6 +41,31 @@ int user_add_mail(user_t* usr, char* mail, GError** gerr) {
 exit_user_add_mail:
 
 	return RESULT;
+
+}
+int user_remove_mail(user_t* usr, char* mail) {
+
+	size_t   len;
+	GSList** this;
+	GSList*  ptr = NULL;
+
+	g_assert((usr != NULL) && (mail != NULL));
+
+	this = &usr->mail;
+	do {
+		len = strlen((*this)->data);
+		if (!strncasecmp((*this)->data, mail, len)) {
+			ptr = *this;
+			*this = (*this)->next;
+			g_free(ptr->data);
+			g_slist_free_1(ptr);
+			break;
+		}
+		this = &(*this)->next;
+	} while (*this);
+
+	// if ptr == NULL, the mail address didn't match anyone of this user
+	return (ptr != NULL);
 
 }
 void user_free(user_t* usr) {

@@ -41,8 +41,30 @@ void test_user_add_mail(void) {
 	user_free(usr);
 
 }
+void test_user_remove_mail(void) {
+
+	user_t* usr;
+
+	usr = g_new0(user_t, 1);
+
+	user_add_mail(usr, "mail1@domain.com", NULL);
+	user_add_mail(usr, "mail2@domain.com", NULL);
+	user_add_mail(usr, "mail3@domain.com", NULL);
+
+	g_assert(!user_remove_mail(usr, "test"));
+	g_assert(3 == g_slist_length(usr->mail));
+
+	g_assert(user_remove_mail(usr, "mail2@domain.com"));
+	g_assert(2 == g_slist_length(usr->mail));
+	g_assert_cmpstr(usr->mail->data, ==, "mail1@domain.com");
+	g_assert_cmpstr(usr->mail->next->data, ==, "mail3@domain.com");
+
+	user_free(usr);
+
+}
 
 tests_t tests_user[] = {
 		{"/user/user_add_mail",			test_user_add_mail},
+		{"/user/user_remove_mail",		test_user_remove_mail},
 		{NULL}
 };

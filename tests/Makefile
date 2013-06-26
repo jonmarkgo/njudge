@@ -1,6 +1,6 @@
 
 CC = gcc
-CFLAGS = --pedantic -Wall
+CFLAGS = --pedantic -Wall -std=c99
 LIBS = `pkg-config --libs glib-2.0`
 INCL = `pkg-config --cflags glib-2.0`
 
