@@ -94,6 +94,13 @@ void user_free(user_t* usr) {
 
 	g_assert(usr != NULL);
 
+	if (usr->address)  g_free(usr->address);
+	if (usr->country)  g_free(usr->country);
+	if (usr->name)     g_free(usr->name);
+	if (usr->phone)    g_free(usr->phone);
+	if (usr->site)     g_free(usr->site);
+	if (usr->timezone) g_free(usr->timezone);
+
 	if (usr->mail) {
 		ptr = usr->mail;
 		do g_free(ptr->data);

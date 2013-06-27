@@ -23,10 +23,10 @@ typedef struct userstat_s {
 typedef struct user_s {
 
 	int    id;
-	char*  name;
 	int	   level;
 	time_t birthdate;
 	int    sex;
+	char*  name;
 	char*  phone;
 	char*  site;
 	char*  address;

@@ -29,6 +29,8 @@ void test_user_add_mail(void) {
 
 	usr = g_new0(user_t, 1);
 
+	usr->name = g_strdup("Test User");
+
 	g_assert(user_add_mail(usr, "mail1@domain.com", &gerr));
 	g_assert(gerr == NULL);
 	g_assert_cmpstr(usr->mail->data, ==, "mail1@domain.com");
