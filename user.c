@@ -6,6 +6,7 @@
  */
 
 #include <glib.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -15,6 +16,18 @@
 GQuark _user_quark(void) {
 
 	return g_quark_from_static_string(__FILE__);
+
+}
+#ifndef UNITTEST
+static
+#endif
+char* _str_to_lower(char* str) {
+
+	char* ptr;
+
+	for (ptr = str; *ptr; ptr ++) *ptr = tolower(*ptr);
+
+	return str;
 
 }
 int user_add_mail(user_t* usr, char* mail, GError** gerr) {
@@ -41,7 +54,7 @@ int user_add_mail(user_t* usr, char* mail, GError** gerr) {
 		if (!strncasecmp(ptr->data, mail, len)) break;
 	}
 
-	if (!ptr) usr->mail = g_slist_append(usr->mail, g_strdup(mail));
+	if (!ptr) usr->mail = g_slist_append(usr->mail, _str_to_lower(g_strdup(mail)));
 
 	RESULT = 1;
 

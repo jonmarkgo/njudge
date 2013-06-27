@@ -12,6 +12,16 @@
 
 #include "../user.h"
 
+char* _str_test_to_lower(char*);
+
+void test__str_to_lower(void) {
+
+	char test[] = "TeSt";
+
+	g_assert(!strcmp(_str_to_lower(test), "test"));
+
+}
+
 void test_user_add_mail(void) {
 
 	user_t* usr;
@@ -67,6 +77,7 @@ void test_user_remove_mail(void) {
 }
 
 tests_t tests_user[] = {
+		{"/user/_str_to_lower",			test__str_to_lower},
 		{"/user/user_add_mail",			test_user_add_mail},
 		{"/user/user_remove_mail",		test_user_remove_mail},
 		{NULL}
