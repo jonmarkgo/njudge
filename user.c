@@ -84,7 +84,7 @@ int user_remove_mail(user_t* usr, char* mail) {
 		this = &(*this)->next;
 	} while (*this);
 
-	// if ptr == NULL, the mail address didn't match anyone of this user
+	/* if ptr == NULL, the mail address didn't match anyone of this user */
 	return (ptr != NULL);
 
 }
