@@ -12,7 +12,7 @@
 
 #include "user.h"
 
-GQuark user_quark(void) {
+GQuark _user_quark(void) {
 
 	return g_quark_from_static_string(__FILE__);
 

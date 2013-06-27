@@ -585,7 +585,7 @@ typedef enum {
 	DIP_INIT_ERROR_XCONTROL_FILE,
 	DIP_INIT_ERROR_LOCK_FILE_FAIL
 
-} DipInitError;
+} dip_init_errors_t;
 
 extern struct opts_s options;
 extern struct dipent dipent;

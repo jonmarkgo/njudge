@@ -38,18 +38,18 @@ typedef struct user_s {
 
 } user_t;
 
-typedef enum _error_e {
+typedef enum _user_errors_e {
 
 	MAIL_EMPTY = 1,
 	MAIL_INVALID
 
 } user_errors_t;
 
-#define USER_MODULE		user_quark()
+#define USER_MODULE		_user_quark()
 
 int    user_add_mail(user_t* usr, char* mail, GError** gerr);
 void   user_free(user_t* usr);
-GQuark user_quark(void);
+GQuark _user_quark(void);
 int    user_remove_mail(user_t* usr, char* mail);
 
 #endif /* USER_H_ */

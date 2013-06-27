@@ -58,7 +58,7 @@ static FILE* lock_file = NULL;
 
 static GQuark dip_init_error_quark(void) {
 
-	return g_quark_from_static_string("dip-init-error-quark");
+	return g_quark_from_static_string(__FILE__);
 
 }
 
