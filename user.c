@@ -17,10 +17,11 @@ GQuark _user_quark(void) {
 	return g_quark_from_static_string(__FILE__);
 
 }
-
 int user_add_mail(user_t* usr, char* mail, GError** gerr) {
 
-	int RESULT = 0;
+	int     len;
+	int     RESULT = 0;
+	GSList* ptr;
 
 	g_assert((usr != NULL) && (mail != NULL));
 
@@ -34,7 +35,13 @@ int user_add_mail(user_t* usr, char* mail, GError** gerr) {
 		goto exit_user_add_mail;
 	}
 
-	usr->mail = g_slist_append(usr->mail, g_strdup(mail));
+	/* check if the mail address already exists, ignore if that's the case */
+	for (ptr = usr->mail; ptr; ptr = ptr->next) {
+		len = strlen(ptr->data);
+		if (!strncasecmp(ptr->data, mail, len)) break;
+	}
+
+	if (!ptr) usr->mail = g_slist_append(usr->mail, g_strdup(mail));
 
 	RESULT = 1;
 

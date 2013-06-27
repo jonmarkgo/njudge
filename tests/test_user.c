@@ -26,6 +26,9 @@ void test_user_add_mail(void) {
 	g_assert(gerr == NULL);
 	g_assert_cmpstr(usr->mail->next->data, ==, "mail2@domain.com");
 
+	g_assert(user_add_mail(usr, "mail2@domain.com", &gerr));
+	g_assert(2 == g_slist_length(usr->mail));
+
 	g_assert(!user_add_mail(usr, "", &gerr));
 	g_assert(gerr != NULL);
 	g_assert(gerr->domain == USER_MODULE);
