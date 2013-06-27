@@ -1,8 +1,51 @@
 /*
  * user.c
  *
- *  Created on: Feb 13, 2013
- *      Author: cjw
+ * Documentation:
+ *
+ *   A new user should be created with g_new0(user_t, 1) or similar.
+ *
+ * ---------------------------------------------------------------------------
+ *   int user_add_mail(user_t* usr, char* mail, GError** gerr)
+ *
+ *     Adds an e-mail address to the users list.
+ *
+ *     [in]      user : User
+ *     [in]      mail : Mail address to add to users list
+ *     [opt/out] gerr : An optional GError pointer that receives an eventual
+ *                      error
+ *
+ *     Returns non zero on success.
+ *
+ *     If the e-mail address already exists, the addition is ignored and
+ *     success is returned.
+ *
+ *     Errors:
+ *
+ *       - MAIL_EMPTY
+ *           The e-mail address is an empty string.
+ *       - MAIL_INVALID
+ *           The e-mail address doesn't qualify as an valid e-mail address
+ *
+ * ---------------------------------------------------------------------------
+ *   void user_remove_mail(user_t* usr, char* mail)
+ *
+ *     Removes an e-mail address from the users list.
+ *
+ *     [in]		usr	 : User
+ *     [in]		mail : Mail address to be removed
+ *
+ *     This function never fails.
+ *
+ * ---------------------------------------------------------------------------
+ *   void user_free(user_t* usr)
+ *
+ *     Frees a user object.
+ *
+ *     [in]		usr  : User object to be freed
+ *
+ *     This function never fails.
+ *
  */
 
 #include <glib.h>
