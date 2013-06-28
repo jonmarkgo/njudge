@@ -133,8 +133,6 @@ int user_remove_mail(user_t* usr, char* mail) {
 }
 void user_free(user_t* usr) {
 
-	GSList* ptr;
-
 	g_assert(usr != NULL);
 
 	if (usr->address)  g_free(usr->address);
@@ -144,19 +142,10 @@ void user_free(user_t* usr) {
 	if (usr->site)     g_free(usr->site);
 	if (usr->timezone) g_free(usr->timezone);
 
-	if (usr->mail) {
-		ptr = usr->mail;
-		do g_free(ptr->data);
-		while ((ptr = ptr->next));
-		g_slist_free(usr->mail);
-	}
-
-	if (usr->extra_fields) {
-		ptr = usr->extra_fields;
-		do g_free(ptr->data);
-		while ((ptr = ptr->next));
-		g_slist_free(usr->extra_fields);
-	}
+	if (usr->mail) g_slist_foreach(usr->mail, (GFunc) g_free, NULL);
+	g_slist_free(usr->mail);
+	if (usr->mail) g_slist_foreach(usr->extra_fields, (GFunc) g_free, NULL);
+	g_slist_free(usr->extra_fields);
 
 	g_free(usr);
 
