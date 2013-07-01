@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+#include "../../user.h"
 #include "../../player.h"
 #include "../../datetime.h"
 
@@ -61,7 +62,7 @@ typedef struct ded_s {
 	long   d0_na;
 
 } ded_t;
-typedef struct user_s {
+/*typedef struct user_s {
 
 	int    id;
 	char*  name;
@@ -76,7 +77,7 @@ typedef struct user_s {
 	GSList* mail;
 	GSList* extra_fields;
 
-} user_t;
+} user_t;*/
 typedef struct mailrec_s {
 
 	guint id;
@@ -122,7 +123,7 @@ GQuark app_error_quark(void) {
 void    append_user_addresses(char* addr_data, user_t* user_rec);
 int     cmp_mail_record(void* rec_a, void* rec_b);
 int     cmp_mail_address(void* rec_a, void* rec_b);
-int     cmp_user_record(void* rec_a, void* rec_b);
+int     sort_user_by_id(void* rec_a, void* rec_b);
 char*   escape_semicolon(char* str);
 void    free_user_record(user_t* user_rec);
 GSList* get_all_user_records(GSList** addr_lst, GError** err);
@@ -141,15 +142,15 @@ struct opts_s opts;
 int main(int argc, char** argv) {
 
 	int rtn = 1; /* assume failure */
-	gint    ded_recs;
-	gint    stat_recs;
-	gchar*  addr_data = NULL;
-	GSList* itr = NULL;
-	GSList* usr_lst = NULL;
-	GSList* addr_lst = NULL;
-	ded_t*  deds = NULL;
-	GError* err = NULL;
-	plyrec_t* stats = NULL;
+	gint      ded_recs;
+	gint      stat_recs;
+	gchar*    addr_data = NULL;
+	GSList*   itr       = NULL;
+	GSList*   usr_lst   = NULL;
+	GSList*   addr_lst  = NULL;
+	ded_t*    deds      = NULL;
+	GError*   err       = NULL;
+	plyrec_t* stats     = NULL;
 
 	if (!init(argc, argv, &err)) {
 		if (err) fprintf(stderr, "%s\n", err->message);
@@ -234,7 +235,7 @@ int cmp_mail_address(void* rec_a, void* rec_b) {
 	return strcasecmp(((mailrec_t*) rec_a)->email, ((mailrec_t*) rec_b)->email);
 
 }
-int cmp_user_record(void* rec_a, void* rec_b) {
+int sort_user_by_id(void* rec_a, void* rec_b) {
 
 	int ret;
 
@@ -303,9 +304,9 @@ GSList* get_all_user_records(GSList** addr_lst, GError** err) {
 	}
 
 	while ((usr_rec = next_user_record(whois_fp)) != NULL) {
-		usr_lst = g_slist_insert_sorted(usr_lst, usr_rec, (GCompareFunc) cmp_user_record);
+		usr_lst = g_slist_insert_sorted(usr_lst, usr_rec, (GCompareFunc) sort_user_by_id);
 		search.id = usr_rec->id;
-		while ((mail_rec = g_slist_find_custom(*addr_lst, &search, (GCompareFunc) cmp_user_record))) {
+		while ((mail_rec = g_slist_find_custom(*addr_lst, &search, (GCompareFunc) sort_user_by_id))) {
 			*addr_lst = g_slist_remove_link(*addr_lst, mail_rec);
 			if (g_slist_find_custom(usr_rec->mail, mail_rec->data,
 					(GCompareFunc) cmp_mail_address) == NULL) {
@@ -421,26 +422,26 @@ exit_init:
 }
 user_t* next_user_record(FILE* whois_fp) {
 
+	char* tmp;
 	char* key = NULL;
 	char* val = NULL;
-	char* tmp;
 	char  line[LINE_BUFLEN];
 	long  offset;
 	user_t* user_rec = NULL;
-	mailrec_t* mail_rec;
-	GRegex* rex = NULL;
+	GError*    gerr = NULL;
 	GMatchInfo* rex_match = NULL;
+	static GRegex* rex = NULL;
 
 	rex = g_regex_new("\\s*(.+?):\\s*(.+?)$", 0, 0, NULL);
 
 	while (1) {
-		offset = ftell(whois_fp); /* rewind here is second "User" is found */
+		/* rewind to offset when/if a new user record is found */
+		offset = ftell(whois_fp);
 		if (!fgets(line, LINE_BUFLEN, whois_fp)) {
 			if (!feof(whois_fp)) {
 				fprintf(stderr, "read error in %s\n", opts.whois_fn);
-			}
-			if (!user_rec)
 				goto exit_read_user_record;
+			}
 			break;
 		}
 		if (!g_regex_match(rex, line, 0, &rex_match)) {
@@ -456,9 +457,7 @@ user_t* next_user_record(FILE* whois_fp) {
 				g_free(key); g_free(val);
 				break;
 			}
-			user_rec = g_malloc0(sizeof(user_t));
-			user_rec->mail = NULL;
-			user_rec->extra_fields = NULL;
+			user_rec = g_new0(user_t, 1);
 			user_rec->id = atoi(val);
 		} else if (!strcasecmp(key, "name")) {
 			user_rec->name = g_strescape(val, NULL);
@@ -473,9 +472,11 @@ user_t* next_user_record(FILE* whois_fp) {
 		} else if (!strcasecmp(key, "timezone")) {
 			user_rec->timezone = g_strescape(val, NULL);
 		} else if (!strcasecmp(key, "email")) {
-			mail_rec = g_malloc0(strlen(val) + sizeof(guint) + 1);
-			strcpy(mail_rec->email, val);
-			user_rec->mail = g_slist_append(user_rec->mail, mail_rec);
+			if (!user_add_mail(user_rec, val, &gerr)) {
+				fprintf(stderr, "bad e-mail address for user id %u: %s\n  -> %s\n",
+						user_rec->id, gerr->message, val);
+				g_clear_error(&gerr);
+			}
 		} else if (!strcasecmp(key, "level")) {
 			if (!strcasecmp(val, "novice"))
 				user_rec->level = 2;
@@ -512,7 +513,7 @@ user_t* next_user_record(FILE* whois_fp) {
 
 exit_read_user_record:
 
-	if (rex) g_regex_unref(rex);
+	if (rex)       g_regex_unref(rex);
 	if (rex_match) g_match_info_free(rex_match);
 
 	return user_rec;
@@ -571,14 +572,14 @@ int print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
 		for (itr_b = usr_rec->mail; itr_b; itr_b = itr_b->next) {
 			fprintf(tmp_addr, "INSERT INTO email (user_id, address, is_default)\n\t");
 			fprintf(tmp_addr, "VALUES (%u, \"%s\", %u);\n", usr_rec->id,
-					((mailrec_t*) itr_b->data)->email, (itr_b == usr_rec->mail));
+					(char*) itr_b->data, (itr_b == usr_rec->mail));
 		}
 		for (itr_b = usr_rec->extra_fields; itr_b; itr_b = itr_b->next) {
 			fprintf(tmp_flds, "INSERT INTO extra_fields (user_id, field_name, field_value)\n\t");
 			fprintf(tmp_flds, "VALUES (%u, \"%s\", \"%s\");\n", usr_rec->id, (gchar*) itr_b->data,
 					(gchar*) itr_b->data + strlen(itr_b->data) + 1);
 		}
-		free_user_record(usr_rec);
+		user_free(usr_rec);
 	}
 
 	fseek(tmp_addr, 0, SEEK_SET);

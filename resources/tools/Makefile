@@ -15,8 +15,11 @@ all: migrate_db
 datetime.o: ../../datetime.c
 	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
+user.o: ../../user.c
+	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
+
 migrate_db.o: migrate_db.c
 	$(CC) -g -c $(INCL) -o $@ $(CFLAGS) $<
 
-migrate_db: datetime.o migrate_db.o
+migrate_db: datetime.o migrate_db.o user.o
 	$(CC) -g -O2 -o $@ $^ $(CFLAGS) $(LIBS)
