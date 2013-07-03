@@ -40,8 +40,8 @@ typedef struct user_s {
 
 typedef enum _user_errors_e {
 
-	MAIL_EMPTY = 1,
-	MAIL_INVALID
+	USER_MAIL_EMPTY = 1,
+	USER_MAIL_INVALID
 
 } user_errors_t;
 

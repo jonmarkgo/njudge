@@ -82,12 +82,12 @@ int user_add_mail(user_t* usr, char* mail, GError** gerr) {
 	g_assert((usr != NULL) && (mail != NULL));
 
 	if (*mail == '\0') {
-		g_set_error(gerr, USER_MODULE, MAIL_EMPTY, "mail is an empty string");
+		g_set_error(gerr, USER_MODULE, USER_MAIL_EMPTY, "mail is an empty string");
 		goto exit_user_add_mail;
 	}
 	if (!g_regex_match_simple("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$",
 			mail, G_REGEX_CASELESS, 0)) {
-		g_set_error(gerr, USER_MODULE, MAIL_INVALID, "mail address is invalid");
+		g_set_error(gerr, USER_MODULE, USER_MAIL_INVALID, "mail address is invalid");
 		goto exit_user_add_mail;
 	}
 
