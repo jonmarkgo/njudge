@@ -22,9 +22,9 @@
  *
  *     Errors:
  *
- *       - MAIL_EMPTY
+ *       - USER_MAIL_EMPTY
  *           The e-mail address is an empty string.
- *       - MAIL_INVALID
+ *       - USER_MAIL_INVALID
  *           The e-mail address doesn't qualify as an valid e-mail address
  *
  * ---------------------------------------------------------------------------
