@@ -46,6 +46,10 @@
 # Whether creation of games is disabled.
 #create_disabled = false
 
+# [db_interface]			string				mysql
+# Which database interface to use
+# db_interface = mysql
+
 # [db_name]					string				NULL (= Default judge_[judge_code])
 # Which database to connect to
 # db_name = judge_other

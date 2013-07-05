@@ -42,6 +42,7 @@ cfgval_t def_vals[] = {
 		{"block_file"			, ""},			/* Use block file? Put path here */
 		{"create_disabled"		, "no"},
 		{"create_dedication"	, "-10"},
+		{"db_interface"			, "mysql"},
 		{"db_name"				, ""},
 		{"db_pass"				, ""},
 		{"db_server"			, "localhost"},
