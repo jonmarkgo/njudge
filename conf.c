@@ -78,7 +78,6 @@ cfgval_t def_vals[] = {
 		{"special_pw"			, ""},
 		{"time_tolerance"		, "0"},
 		{"warp_file"			, "./dip.warp"}, /* temporary warp-message file */
-		{"xforward"				, ""},
 		/* Default commands */
 		{"cmd_lenlimit"			, "./lenlimit"},
 		{"cmd_atrun"			, "./atrun"},

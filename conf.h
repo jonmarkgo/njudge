@@ -8,7 +8,6 @@
 
 #define JUDGE_PATH      config("JUDGE_PATH")
 #define EP_CUSTODIAN    config("EP_CUSTODIAN")
-#define XFORWARD        config("XFORWARD")
 #define MAP_FILE        config("MAP_FILE")
 #define BLIND_CMD       config("BLIND_CMD")
 
