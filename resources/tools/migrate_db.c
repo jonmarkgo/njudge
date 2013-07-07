@@ -741,8 +741,8 @@ int write_newdb(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
 
 		fprintf(stat_file, "%u;%d;%d;%u;%u;%u;%u;%u\n",
 				user_rec->id,
-				deds[user_rec->id].rating,
-				(gint) deds[user_rec->id].last_signon,
+				(gint) deds[user_rec->id].rating,
+				(guint) deds[user_rec->id].last_signon,
 				stats[user_rec->id].total,
 				stats[user_rec->id].ontime,
 				stats[user_rec->id].started,
@@ -754,7 +754,7 @@ int write_newdb(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
 				sl_cur = g_slist_next(sl_cur)) {
 			fprintf(mail_file, "%u;%s;%d\n",
 					user_rec->id,
-					((mailrec_t*) sl_cur->data)->email,
+					(char*) sl_cur->data,
 					(sl_cur == ((user_t*) user_cur->data)->mail));
 		}
 		for (sl_cur = ((user_t*) user_cur->data)->extra_fields;
