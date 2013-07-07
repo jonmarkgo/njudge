@@ -308,13 +308,9 @@ GSList* get_all_user_records(GSList** addr_lst, GError** err) {
 		search.id = usr_rec->id;
 		while ((mail_rec = g_slist_find_custom(*addr_lst, &search, (GCompareFunc) sort_user_by_id))) {
 			*addr_lst = g_slist_remove_link(*addr_lst, mail_rec);
-			if (g_slist_find_custom(usr_rec->mail, mail_rec->data,
-					(GCompareFunc) cmp_mail_address) == NULL) {
-				usr_rec->mail = g_slist_concat(usr_rec->mail, mail_rec);
-			} else {
-				g_free(mail_rec->data);
-				g_slist_free_1(mail_rec);
-			}
+			user_add_mail(usr_rec, ((mailrec_t*) mail_rec->data)->email, err);
+			g_free(mail_rec->data);
+			g_slist_free_1(mail_rec);
 		}
 	}
 
@@ -427,10 +423,10 @@ user_t* next_user_record(FILE* whois_fp) {
 	char* val = NULL;
 	char  line[LINE_BUFLEN];
 	long  offset;
-	user_t* user_rec = NULL;
-	GError*    gerr = NULL;
+	user_t*     user_rec  = NULL;
+	GError*     gerr      = NULL;
 	GMatchInfo* rex_match = NULL;
-	static GRegex* rex = NULL;
+	GRegex*     rex       = NULL;
 
 	rex = g_regex_new("\\s*(.+?):\\s*(.+?)$", 0, 0, NULL);
 
