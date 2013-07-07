@@ -561,8 +561,8 @@ int print_sql(GSList* usr_lst, ded_t* deds, plyrec_t* stats, GError** err) {
 				usr_rec->country, usr_rec->site, usr_rec->timezone, 0);
 		fprintf(tmp_stat, "INSERT INTO user_stats (user_id, rating, last_signon, total, "
 				"ontime, started, resigned, tookover)\n\t");
-		fprintf(tmp_stat, "VALUES (%u, %u, %u, %u, %u, %u, %u, %u);\n",
-				usr_rec->id, deds[usr_rec->id].rating, (guint) deds[usr_rec->id].last_signon,
+		fprintf(tmp_stat, "VALUES (%u, %d, %u, %u, %u, %u, %u, %u);\n",
+				usr_rec->id, (int) deds[usr_rec->id].rating, (guint) deds[usr_rec->id].last_signon,
 				stats[usr_rec->id].total, stats[usr_rec->id].ontime, stats[usr_rec->id].started,
 				stats[usr_rec->id].resigned, stats[usr_rec->id].tookover);
 		for (itr_b = usr_rec->mail; itr_b; itr_b = itr_b->next) {
