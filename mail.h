@@ -145,8 +145,6 @@ char *mail_rfile;		/* Name of reply file                           */
 
 char *lookfor();
 
-#define pcontrol if (!(dipent.flags & (F_NOLIST|F_QUIET))) control
-#define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
 #define PRIVOK      (dipent.players[player].power == MASTER || \
                      !(dipent.flags & F_MODERATE))
 #define any_broadcast (broadcast || broad_signon || broad_params)

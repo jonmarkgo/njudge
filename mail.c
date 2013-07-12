@@ -222,11 +222,12 @@ void ResignPlayer( int resign_index)
 
 
             if (dipent.players[resign_index].power != OBSERVER) {
-                pprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
+            	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+            		fprintf(cfp, "%s%s has resigned in game '%s' (%s, %d of %d units).\n",
                 NowString(),
                 powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
                 dipent.players[resign_index].units, dipent.players[resign_index].centers);
-                pcontrol++;
+                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
             }
 	}
     }
@@ -1273,7 +1274,8 @@ int mail(void) {
 
                                        fprintf(rfp, "You have paused game '%s'.\n", dipent.name);
 
-                                        pprintf(cfp, "%s%s as %s has paused game '%s'.\n", NowString(),
+                                       if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                    	   fprintf(cfp, "%s%s as %s has paused game '%s'.\n", NowString(),
                                                 xaddr, powers[dipent.players[player].power], dipent.name);
 
                                         fprintf(bfp, "%s as %s has paused game '%s'.\n",
@@ -1365,12 +1367,16 @@ int mail(void) {
 					}
 					msg_header(qfp);
 
-					pprintf(cfp, "%s%s as %s has terminated\n",
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(cfp, "%s%s as %s has terminated\n",
 						NowString(), xaddr, powers[dipent.players[player].power]);
-					pprintf(cfp, "game '%s'.\n", dipent.name);
-					pprintf(qfp, "%s as %s has terminated\n",
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(cfp, "game '%s'.\n", dipent.name);
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(qfp, "%s as %s has terminated\n",
 						xaddr, powers[dipent.players[player].power]);
-					pprintf(qfp, "game '%s'.\n", dipent.name);
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(qfp, "game '%s'.\n", dipent.name);
 					}
 					dipent.phase[6] = 'X';
 
@@ -1471,7 +1477,8 @@ int mail(void) {
 					fprintf(rfp, "The deadline for orders will be %s.\n",
 						ptime(&dipent.deadline));
 
-					pprintf(cfp, "%s%s as %s has resumed game '%s'.\n", NowString(),
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(cfp, "%s%s as %s has resumed game '%s'.\n", NowString(),
 						xaddr, powers[dipent.players[player].power], dipent.name);
 
 					/* WAS mfprintf  1/95 BLR */
@@ -1562,7 +1569,8 @@ int mail(void) {
 						dipent.players[i].address, dipent.name);
 				fprintf(mbfp," %s is now also a Master for game '%s'.\n",
 						dipent.players[i].address, dipent.name);
-				pprintf(cfp, "%s%s is now also a Master for game '%s'.\n", NowString(),
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s is now also a Master for game '%s'.\n", NowString(),
 						dipent.players[i].address, dipent.name);
 				broad_signon = 1; /* Tell the world of the happy news! */
 			} else {
@@ -1592,7 +1600,8 @@ int mail(void) {
 							dipent.seq[1]--;
 							fprintf(rfp, "%s is now Master for game '%s'.\n",
 								raddr, dipent.name);
-							pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(),
+							if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+								fprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(),
 								raddr, dipent.name);
 							dipent.flags |= F_MODERATE;
 							dipent.flags &= ~F_NORATE;

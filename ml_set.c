@@ -194,7 +194,8 @@ int CheckAndToggleFlag(
             } else {
                 op_text = SET_TEXT;
             }
-            pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+            if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+            	fprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
                     xaddr, powers[dipent.players[player].power], dipent.name,
                     op_text, flag_name);
             /* WAS mfprintf  1/95 BLR */
@@ -224,7 +225,8 @@ int CheckAndToggleFlag(
             }
             *flag &= ~flag_mask;
             fprintf(rfp, warn_text);
-            pprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
+            if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+            	fprintf(cfp, "%s%s as %s in '%s' %s the %s flag.\n", NowString(),
                     xaddr, powers[dipent.players[player].power], dipent.name,
                     op_text, flag_name);
             /* WAS mfprintf  1/95 BLR */
@@ -1057,7 +1059,8 @@ void mail_setp(char *s)
 					         "The return address for %s in game '%s' has been changed\nto %s.\n",
 					         powers[dipent.players[i].power], dipent.name,
 					         dipent.players[i].address);
-				        pprintf(cfp,
+				        if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				        	fprintf(cfp,
 					        "%sThe return address for %s in game '%s' has been changed\nto %s.\n",
 					        NowString(),
 					        powers[dipent.players[i].power], dipent.name,
@@ -1066,7 +1069,7 @@ void mail_setp(char *s)
 				}
 				broadcast = 1;
 				mfprintf(bfp, "\n");
-				pprintf(cfp, "\n");
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf(cfp, "\n");
 			}
 			s = "";
 			break;
@@ -1413,7 +1416,8 @@ void mail_setp(char *s)
 				dipent.access = avalue[i];
 				fprintf(rfp, "Access for game '%s' set to %s-site.\n", dipent.name,
 					accesses[avalue[i]]);
-				pprintf(cfp, "%s%s as %s in '%s' set the\naccess mode to '%s-site'.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the\naccess mode to '%s-site'.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
 				   dipent.name, accesses[dipent.access]);
@@ -1439,7 +1443,8 @@ void mail_setp(char *s)
 				dipent.dedicate = i;
 				fprintf(rfp, "Dedication level for game '%s' set to %d.\n", dipent.name,
 					dipent.dedicate);
-				pprintf(cfp, "%s%s as %s in '%s' set the\ndedication level to %d.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the\ndedication level to %d.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
 					dipent.name, dipent.dedicate);
@@ -1473,7 +1478,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.orded = f;
 				fprintf(rfp,"Ontime ratio in game '%s' set to %.3f.\n",dipent.name,dipent.orded);
-				pprintf(cfp,"%s%s as %s in '%s' set the\nontime ratio to %.3f.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp,"%s%s as %s in '%s' set the\nontime ratio to %.3f.\n",
 					NowString(),
 					xaddr,powers[dipent.players[player].power],
 					dipent.name,dipent.orded);
@@ -1510,7 +1516,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.rrded = f;
 				fprintf(rfp,"CD ratio in game '%s' set to %.3f.\n",dipent.name,dipent.rrded);
-				pprintf(cfp,"%s%s as %s in '%s' set the\nCD ratio to %.3f.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp,"%s%s as %s in '%s' set the\nCD ratio to %.3f.\n",
 					NowString(),
 					xaddr,powers[dipent.players[player].power],
 					dipent.name,dipent.rrded);
@@ -1530,7 +1537,8 @@ void mail_setp(char *s)
 				dipent.level = lvalue[i];
 				fprintf(rfp, "Level for game '%s' set to %s.\n", dipent.name,
 				      (temp = printlevel(dipent.level)));
-				pprintf(cfp, "%s%s as %s in '%s' set the\nlevel to %s.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the\nlevel to %s.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
 					dipent.name, temp);
@@ -1548,7 +1556,8 @@ void mail_setp(char *s)
 			if (dipent.flags & F_NONMR) {
 				dipent.flags ^= F_NONMR;
 				fprintf(rfp, "Game '%s' is no longer NoNMR.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' cleared the NoNMR flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the NoNMR flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1568,7 +1577,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.flags |= F_NONMR;
 				fprintf(rfp, "Game '%s' is now NoNMR.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' set the NoNMR flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the NoNMR flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1619,7 +1629,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.flags |= F_MODERATE;
 				fprintf(rfp, "Game '%s' is now moderated.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' set the moderated flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the moderated flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1635,7 +1646,8 @@ void mail_setp(char *s)
 			if (dipent.flags & F_MODERATE) {
 				dipent.flags ^= F_MODERATE;
 				fprintf(rfp, "Game '%s' is no longer moderated.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' cleared the moderated flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the moderated flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1656,7 +1668,8 @@ void mail_setp(char *s)
 				dipent.flags |= F_NOSHOW;
 				fprintf(rfp, "Game '%s' will not reveal powers in broadcasts.\n",
 					dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' set the no show flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the no show flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1672,7 +1685,8 @@ void mail_setp(char *s)
 			if (dipent.flags & F_NOSHOW) {
 				dipent.flags ^= F_NOSHOW;
 				fprintf(rfp, "Game '%s' is no longer set no show.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' cleared the no show flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the no show flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1767,7 +1781,8 @@ void mail_setp(char *s)
 				dipent.x2flags ^= X2F_NODIAS;
 				fprintf(rfp, "Draws must now include all survivors. All draw%s",
 					" flags cleared.\n");
-				pprintf(cfp, "%s%s as %s in '%s' set the DIAS flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the DIAS flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1793,7 +1808,8 @@ void mail_setp(char *s)
 				dipent.x2flags ^= X2F_NODIAS;
 				fprintf(rfp, "Draws need not now include all survivors.\n%s",
 					"All draw flags cleared.\n");
-				pprintf(cfp, "%s%s as %s in '%s' cleared the DIAS flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the DIAS flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1821,7 +1837,8 @@ void mail_setp(char *s)
 			{
 				dipent.xflags ^= XF_NOCONCESSIONS;
 				fprintf(rfp,"Concessions are now permitted in %s.\n",dipent.name);
-				pprintf(cfp,"%s%s as %s in '%s' set the concessions flag.\nPowers may concede the game to the largest power on the board.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp,"%s%s as %s in '%s' set the concessions flag.\nPowers may concede the game to the largest power on the board.\n",
 					NowString(),xaddr,
 					powers[dipent.players[player].power],dipent.name);
 				fprintf(bfp,"%s as %s in '%s' set the concessions flag.\nPowers may now concede to the largest power on the board.\n",
@@ -1843,7 +1860,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.xflags ^= XF_NOCONCESSIONS;
 				fprintf(rfp,"Concessions are now disallowed.\n");
-				pprintf(cfp,"%s%s as %s in '%s' disallowed concessions.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp,"%s%s as %s in '%s' disallowed concessions.\n",
 					NowString(),xaddr,powers[dipent.players[player].power],dipent.name);
 				fprintf(bfp,"%s as %s in '%s' disallowed concessions.\n",
 					xaddr,PRINT_POWER,dipent.name);
@@ -1861,7 +1879,8 @@ void mail_setp(char *s)
 				dipent.flags |= F_NOREVEAL;
 				fprintf(rfp, "Game '%s' will not reveal players on termination.\n",
 					dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' set the no reveal flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the no reveal flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -1877,7 +1896,8 @@ void mail_setp(char *s)
 			if (dipent.flags & F_NOREVEAL) {
 				dipent.flags ^= F_NOREVEAL;
 				fprintf(rfp, "Game '%s' is no longer no reveal.\n", dipent.name);
-				pprintf(cfp, "%s%s as %s in '%s' cleared the no reveal flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the no reveal flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -2337,7 +2357,8 @@ void mail_setp(char *s)
 			        dipent.avp = DEFAULT_AVP(dipent);
 				fprintf(rfp, "Winning Centers for game '%s' set to %d.\n", dipent.name,
 					dipent.vp);
-				pprintf(cfp, "%s%s as %s in '%s' set the winning centers to %d.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the winning centers to %d.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
 					dipent.name, dipent.vp);
@@ -2360,7 +2381,8 @@ void mail_setp(char *s)
 				dipent.flags |= F_GRACEDAYS;
 				fprintf(rfp, "Grace periods will now only expire on normal %s",
 					"order processing days for each phase.\n");
-				pprintf(cfp, "%s%s as %s in '%s' cleared the StrictGrace flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the StrictGrace flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -2382,7 +2404,8 @@ void mail_setp(char *s)
 				fprintf(rfp, "Grace periods will now expire in an\n%s %s",
 				  "absolute time period which might NOT",
 					"end\non a normal order processing day.\n");
-				pprintf(cfp, "%s%s as %s in '%s' set the StrictGrace flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the StrictGrace flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -2427,7 +2450,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.xflags |= XF_LATECOUNT;
 				fprintf(rfp, "All players will now be shown with their Late Counter.\n");
-				pprintf(cfp, "%s%s as %s in '%s' set the LateCount flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the LateCount flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -2445,7 +2469,8 @@ void mail_setp(char *s)
 			} else {
 				dipent.xflags &= ~XF_LATECOUNT;
 				fprintf(rfp, "No player will now be shown with their Late Counter.\n");
-				pprintf(cfp, "%s%s as %s in '%s' cleared the LateCount flag.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' cleared the LateCount flag.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power], dipent.name);
 				/* WAS mfprintf  1/95 BLR */
@@ -2488,7 +2513,8 @@ void mail_setp(char *s)
 				*val =  i;
 				fprintf(rfp, "Number of P%ss for game '%s' set to %d.\n",
 				      text, dipent.name, *val);
-				pprintf(cfp, "%s%s as %s in '%s' set the number of p%ss to %d.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' set the number of p%ss to %d.\n",
 					NowString(),
 					xaddr, powers[dipent.players[player].power],
 				      dipent.name, text, *val);
@@ -2499,7 +2525,8 @@ void mail_setp(char *s)
 				    dipent.no_of_players = dipent.powers;
 				    fprintf(rfp, "Number of Players adjusted down to %d.\n",
 					    dipent.powers);
-				     pprintf(cfp, "%s%s as %s in '%s' set the number of players to %d.\n",
+				    if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				    	fprintf(cfp, "%s%s as %s in '%s' set the number of players to %d.\n",
 					     NowString(),
 					      xaddr, powers[dipent.players[player].power],
 					     dipent.name,  dipent.no_of_players);
@@ -2519,7 +2546,8 @@ void mail_setp(char *s)
                         } else {
                                 dipent.x2flags |= X2F_STRWAIT;
                                 fprintf(rfp, "Only players with moves required can set WAIT.\n");
-                                pprintf(cfp, "%s%s as %s in '%s' set the StrictWait flag.\n",
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                	fprintf(cfp, "%s%s as %s in '%s' set the StrictWait flag.\n",
                                         NowString(),
                                         xaddr, powers[dipent.players[player].power], dipent.name);
                                 /* WAS mfprintf  1/95 BLR */
@@ -2537,7 +2565,8 @@ void mail_setp(char *s)
                         } else {
                                 dipent.x2flags &= ~X2F_STRWAIT;
                                 fprintf(rfp, "Any player can set WAIT.\n");
-                                pprintf(cfp, "%s%s as %s in '%s' cleared the StrictWait flag.\n",
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                	fprintf(cfp, "%s%s as %s in '%s' cleared the StrictWait flag.\n",
                                         NowString(),
                                         xaddr, powers[dipent.players[player].power], dipent.name);
                                 /* WAS mfprintf  1/95 BLR */
@@ -3001,7 +3030,8 @@ CATF_SETOFF,
 		case SET_TRANSFORM:
 			CheckNoMach();
 			if (ChangeTransform(s)) {
-			    pprintf(cfp, "%s%s as %s in '%s' changed transform settings.\n", NowString(),
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s as %s in '%s' changed transform settings.\n", NowString(),
                                     xaddr, powers[dipent.players[player].power], dipent.name);
                             fprintf(bfp, "%s as %s in '%s' changed transform settings.\n", xaddr, PRINT_POWER, dipent.name);
 			    ShowTransformSettings(bfp);
@@ -3015,7 +3045,8 @@ CATF_SETOFF,
                 case SET_NOTRANSFORM:
                         CheckNoMach();
                         if (ChangeTransform("no")) { /* User wants no transformations */
-			    pprintf(cfp, "%s%s as %s in '%s' disabled transformations.\n", NowString(),
+                        	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                        		fprintf(cfp, "%s%s as %s in '%s' disabled transformations.\n", NowString(),
                                     xaddr, powers[dipent.players[player].power], dipent.name);
                             fprintf(bfp, "%s as %s in '%s' disabled transformations.\n", xaddr, PRINT_POWER, dipent.name);
                             ShowTransformSettings(bfp);
@@ -3285,7 +3316,8 @@ CATF_SETOFF,
                                 fprintf(rfp, "Max absence for game '%s' set to %d.\n", 
 					dipent.name,
                                         dipent.max_absence_delay);
-                                pprintf(cfp, "%s%s as %s in '%s' set the\nmax absence to %d.\n",
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                	fprintf(cfp, "%s%s as %s in '%s' set the\nmax absence to %d.\n",
                                         NowString(),
                                         xaddr, powers[dipent.players[player].power],
                                         dipent.name, dipent.max_absence_delay);
@@ -3790,7 +3822,8 @@ int SetApprovalState(int type, char *part_list, int part_list_count)
 
                     was_changed = 1;
                     op_text = "%s%s as %s in '%s' has %s %s to make moves.\n";
-                    pprintf(cfp, op_text, NowString(), xaddr,
+                    if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                    	fprintf(cfp, op_text, NowString(), xaddr,
                             powers[dipent.players[player].power], dipent.name,
                             text, powers[dipent.players[i].power]);
                     

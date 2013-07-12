@@ -48,6 +48,7 @@
  *
  */    
 
+#include <glib.h>
 #include <stdio.h>
 #include "dip.h"
 #include "mach.h"
@@ -133,7 +134,10 @@ int more_orders;		/* Nonzero if not all units ordered           */
 /* this may need to be included in the other programs as well */
 char *notifies = "*";
 
-int control = 0;
+/* gint control
+ * 		If (control && control < 1000) control information will be sent.
+ */
+gint control = 0;
 int predict = 0; 		/* =1 to predict a move for master */
 
 int canbuild = 1;		/* can the power being reminded to move build? */

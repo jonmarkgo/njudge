@@ -36,8 +36,7 @@
 
 #define		DIP_INIT_ERROR		dip_init_error_quark()
 
-#define pcontrol if (!(dipent.flags & (F_NOLIST|F_QUIET))) control
-#define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
+//#define pprintf  if (!(dipent.flags & (F_NOLIST|F_QUIET))) fprintf
 
 /* Comment the next line out if you wish the Judge to apply D_LATE right
    at the deadline rather than 24 hours later. */
@@ -841,11 +840,13 @@ int process(void) {
 										ded[dipent.players[i].userid].r);
 							}
 						}
-						pprintf(cfp, "%s%s in game '%s' is now considered abandoned ",
+						if (!(dipent.flags & (F_NOLIST|F_QUIET))) {
+							fprintf(cfp, "%s%s in game '%s' is now considered abandoned ",
 							NowString(), powers[dipent.players[i].power], dipent.name);
-						pprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
+							fprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
 							dipent.players[i].units, dipent.players[i].centers);
-						pcontrol++;
+						}
+						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
 					}
 					if (dipent.players[i].controlling_power == 0) {
 #ifdef NORMDED
@@ -916,8 +917,10 @@ int process(void) {
 				archive("dip.late", line);
 			}
 			if (n == -1) {
-				pprintf(cfp, "%sGrace period for '%s' expires %s.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) {
+					fprintf(cfp, "%sGrace period for '%s' expires %s.\n",
 					NowString(), dipent.name, ptime(&dipent.grace));
+				}
 			}
 			dipent.dedapplied = dedtest;
 			return 0;
@@ -936,7 +939,8 @@ int process(void) {
 		if ((dipent.xflags & XF_MANUALSTART) && i <= 0) {
 			sprintf(subjectline, "%s:%s - Waiting for Master to Start", conf_get("judge_code"), dipent.name);
 			fprintf(rfp, "Diplomacy game '%s' is still waiting for master to start it.\n", dipent.name );
-			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for master to start it.\n", NowString(), dipent.name);
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "%sDiplomacy game '%s' is still waiting for master to start it.\n", NowString(), dipent.name);
 			sprintf(title_text, "Diplomacy game %s startup waiting", dipent.name);
 		} else {
 			sprintf(subjectline, "%s:%s - Waiting for More Players", conf_get("judge_code"), dipent.name);
@@ -947,7 +951,8 @@ int process(void) {
 			    sprintf(subjectline, "%s:%s - Waiting for %d More Player%s", conf_get("judge_code"), dipent.name, i, i == 1 ? "" : "s");
 			    fprintf(rfp, "Diplomacy game '%s' is still waiting for %d player%s to sign on.\n", dipent.name, i, i == 1 ? "" : "s");
 			}
-			pprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "%sDiplomacy game '%s' is still waiting for %d player%s to sign on.\n", NowString(), dipent.name, i, i == 1 ? "" : "s");
 			sprintf(title_text, "Diplomacy game %s signup waiting", dipent.name);
 		}
 		if (!options.debug)
@@ -1006,11 +1011,13 @@ int process(void) {
 							ded[dipent.players[i].userid].r);
 					}
 					if (!(dipent.flags & F_NONMR)) {
-						pprintf(cfp, "%s%s in game '%s' is now considered in civil disorder ",
-							NowString(), powers[dipent.players[i].power], dipent.name);
-						pprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
-							dipent.players[i].units, dipent.players[i].centers);
-						pcontrol++;
+						if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+							fprintf(cfp, "%s%s in game '%s' is now considered in civil disorder ",
+									NowString(), powers[dipent.players[i].power], dipent.name);
+						if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+							fprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
+									dipent.players[i].units, dipent.players[i].centers);
+						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
 					}
 				}
 			}
@@ -1046,11 +1053,13 @@ int process(void) {
 						  dipent.flags & F_QUIET ? "power" :
 						  powers[dipent.players[i].power]);
 					}
-					pprintf(cfp, "%sDiplomacy game '%s' is waiting for someone ", NowString(), dipent.name);
-					pprintf(cfp, "to take over the abandoned\n");
-					pprintf(cfp, "%s with %d of %d units on the board (%s).\n",
-						powers[dipent.players[i].power], dipent.players[i].units,
-						dipent.players[i].centers, dipent.phase);
+					if (!(dipent.flags & (F_NOLIST|F_QUIET))) {
+						fprintf(cfp, "%sDiplomacy game '%s' is waiting for someone ", NowString(), dipent.name);
+						fprintf(cfp, "to take over the abandoned\n");
+						fprintf(cfp, "%s with %d of %d units on the board (%s).\n",
+								powers[dipent.players[i].power], dipent.players[i].units,
+								dipent.players[i].centers, dipent.phase);
+					}
 
 					if (!(dipent.x2flags & X2F_SECRET) || n == 0) {
 					    late[n] = ((dipent.flags & F_QUIET) ||
@@ -1158,7 +1167,10 @@ int process(void) {
 			bailout(1);
 		}
 
-		pprintf(cfp, "%sPhase %s processed for game '%s'.\n", NowString(), phase, dipent.name);
+		if (!(dipent.flags & (F_NOLIST|F_QUIET))) {
+			fprintf(cfp, "%sPhase %s processed for game '%s'.\n",
+					NowString(), phase, dipent.name);
+		}
 
 		/*
 		   **  Remove any draw/win information (for summary) if it exists
@@ -1184,7 +1196,9 @@ int process(void) {
 
 			msg_header(ofp);
 
-			pprintf(cfp, "%sGame '%s' completed.\n", NowString(), dipent.name);
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "%sGame '%s' completed.\n", NowString(), dipent.name);
+
 			fprintf(rfp, "\nThe game is over.  Thank you for playing.\n");
 			fprintf(ofp, "Game '%s' has ended in a victory for ", dipent.name);
 			time(&now);

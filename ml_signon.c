@@ -535,7 +535,8 @@ int mail_signon(char *s)
                         if (conf_get_bool("auto_master") && strcmp(raddr,conf_get("judge_keeper")) )
 			{
                                 lmaster++;
-                                pprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                	fprintf(cfp, "%s%s is now Master for game '%s'.\n", NowString(), raddr, dipent.name);
                                 dipent.flags |= F_MODERATE;
                                 dipent.flags &= ~F_NORATE;
                                 dipent.players[0].power = MASTER;
@@ -670,7 +671,8 @@ int mail_signon(char *s)
 						xaddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
 					fprintf(mbfp, "%s has returned as %s in %s. %s is no longer in CD.",
 						raddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
-					pprintf(cfp, "%s has returned as %s in %s. %s is no longer in CD.",
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(cfp, "%s has returned as %s in %s. %s is no longer in CD.",
 						xaddr, powers[dipent.players[i].power], dipent.name, powers[dipent.players[i].power]);
 				}
 				break;
@@ -701,7 +703,7 @@ int mail_signon(char *s)
 
 				if (!(dipent.flags & F_QUIET)) 
 				    broad_signon = 1;
-				pcontrol++;
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
 
 				for (jj = 0; jj < dipent.n; jj++) {
 				    /* Loop round power and all controlled powers, setting them as taken over */
@@ -723,7 +725,8 @@ int mail_signon(char *s)
 						            xaddr, dipent.name);
 						    fprintf(mbfp, "%s has returned in game '%s'.\n",
 						            raddr, dipent.name);
-					            pprintf(cfp, "%s%s has returned in game '%s'.\n", NowString(),
+						    if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						    	fprintf(cfp, "%s%s has returned in game '%s'.\n", NowString(),
 						            xaddr, dipent.name);
 																		    					}
 					    } else {
@@ -739,7 +742,8 @@ int mail_signon(char *s)
                                                         xaddr, powers[n], dipent.name);
                                                 fprintf(mbfp, "%s has returned as %s in game '%s'.\n",
                                                         raddr, powers[n], dipent.name);
-                                                pprintf(cfp, "%s%s has returned as %s in game '%s'.\n", NowString(),
+                                                if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                                                	fprintf(cfp, "%s%s has returned as %s in game '%s'.\n", NowString(),
                                                         xaddr, powers[n], dipent.name);
 					    }
 					}
@@ -791,7 +795,8 @@ int mail_signon(char *s)
 					                  xaddr, dipent.name);
 					          fprintf(mbfp, "%s has taken over abandoned power(s)\n in game '%s'.\n",
 						          raddr, dipent.name);
-                                                  pprintf(cfp, "%s%s has taken over abandoned power(s)\n in game '%s'.\n", NowString(),
+					          if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					        	  fprintf(cfp, "%s%s has taken over abandoned power(s)\n in game '%s'.\n", NowString(),
 						          xaddr, dipent.name);
 					       }
 				           } else {
@@ -806,7 +811,8 @@ int mail_signon(char *s)
 					               xaddr, powers[n], dipent.name);
 				               fprintf(mbfp, "%s has taken over the abandoned\n%s in game '%s'.\n",
 					               raddr, powers[n], dipent.name);
-			    	               pprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
+				               if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				            	   fprintf(cfp, "%s%s has taken over the abandoned\n%s in game '%s'.\n", NowString(),
 					               xaddr, powers[n], dipent.name);
 				           }
 				       }
@@ -846,7 +852,8 @@ int mail_signon(char *s)
 
 					mfprintf(bfp, ".\nThis can be removed with the 'SET NOWAIT' command.\n\n");
 
-					pprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
+					if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+						fprintf(cfp, "%sGrace period for '%s' advanced to %s.\n", NowString(),
 						dipent.name, ptime(&dipent.grace));
 
 			
@@ -1512,8 +1519,9 @@ void mail_igame(void)
 	 * Write out a report file for each player.
 	 */
 
-	pcontrol++;
-	pprintf(cfp, "%sGame '%s' now has a quorum and is starting:\n", NowString(), dipent.name);
+	if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+		fprintf(cfp, "%sGame '%s' now has a quorum and is starting:\n", NowString(), dipent.name);
 	dipent.players[dipent.n].power = OBSERVER;
 	for (i = 0; i < dipent.n + 1; i++) {
 		if (dipent.players[i].power < 0)
@@ -1580,10 +1588,12 @@ void mail_igame(void)
 					dipent.players[i].address);
 				bailout(E_FATAL);
 			}
-			pprintf(cfp, "     %s:", powers[k = dipent.players[i].power]);
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "     %s:", powers[k = dipent.players[i].power]);
 			for (k = strlen(powers[k]); k < LPOWER + 1; k++)
 				putc(' ', cfp);
-			pprintf(cfp, "%s\n", (dipent.flags & F_GUNBOAT)
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "%s\n", (dipent.flags & F_GUNBOAT)
 			   && dipent.players[i].power != MASTER ? SomeoneText(i)
 				: dipent.players[i].address);
 		}
@@ -1911,11 +1921,15 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 
 			broad_signon = 1;
 		        if (dipent.n != 1) {
-                                pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
+		        	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+		        		fprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
                                         NowString(), xaddr,
                                     powers[power(name[0])], dipent.name);
-                                pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s"); pprintf(cfp, ".\n\n");
-                                pcontrol++;
+		        	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+		        		fprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+		        	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+		        		fprintf(cfp, ".\n\n");
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
 			}
 		    }
 		} else {
@@ -1949,12 +1963,15 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 			}
 			fprintf(rfp, ".\n\n");
 			if (dipent.n != 1) {
-				pprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "%s%s has signed up to play %s in game '%s'.\n",
 					NowString(), xaddr,
 				    powers[power(name[0])], dipent.name);
-				pprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
-				pprintf(cfp, ".\n\n");
-				pcontrol++;
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
+				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+					fprintf(cfp, ".\n\n");
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
 			}
 		}
 		return 0;

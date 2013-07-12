@@ -434,7 +434,8 @@ int process_draw(void)
 			fprintf(ofp, "%s\n", t);
 			fprintf(rfp, "%s\n", t);
 			mfprintf(bfp, "%s\n", t);
-			pprintf(cfp, "%s%s\n", NowString(), t);
+			if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+				fprintf(cfp, "%s%s\n", NowString(), t);
 			t = s;
 			i = 0;
 		}
@@ -442,7 +443,8 @@ int process_draw(void)
 	fprintf(ofp, "%s\n\n", t);
 	fprintf(rfp, "%s\n\n", t);
 	mfprintf(bfp, "%s\n\n", t);
-	pprintf(cfp, "%s%s\n\n", NowString(), t);
+	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+		fprintf(cfp, "%s%s\n\n", NowString(), t);
 
 	for (t = s = line2, i = 0; *s; s++, i++) {
 		if (i > 78) {
@@ -603,7 +605,8 @@ int process_conc(void)
                         fprintf(ofp, "%s\n", t);
                         fprintf(rfp, "%s\n", t);
                         mfprintf(bfp, "%s\n", t);
-                        pprintf(cfp, "%s%s\n", NowString(), t);
+                        if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+                        	fprintf(cfp, "%s%s\n", NowString(), t);
                         t = s;
                         i = 0;
                 }
@@ -611,7 +614,8 @@ int process_conc(void)
 	fprintf(ofp, "%s\n\n", t);
         fprintf(rfp, "%s\n\n", t);  
         mfprintf(bfp, "%s\n\n", t);
-        pprintf(cfp, "%s%s\n\n", NowString(), t);
+        if (!(dipent.flags & (F_NOLIST|F_QUIET)))
+        	fprintf(cfp, "%s%s\n\n", NowString(), t);
                         
         for (t = s = line2, i = 0; *s; s++, i++) {
                 if (i > 78) { 
