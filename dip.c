@@ -516,7 +516,7 @@ void master(void) {
         if (control_info && control_info < 1000 && ded[0].md < now) {
                 stat("dip.control", &sbuf);
                 if (sbuf.st_size > 0) {
-                        s = notifies;
+                        s = notify_list;
                         while (*s && *s != '*') {
                                 if (*s == '+')
                                         s++;
@@ -533,7 +533,7 @@ void master(void) {
         fclose(xfp);
         stat("dip.xcontrol", &sbuf);
         if (sbuf.st_size > 0) {
-                s = notifies;
+                s = notify_list;
                 while (*s && *s != '*') {
                         if (*s == '+') {
                                 s++;

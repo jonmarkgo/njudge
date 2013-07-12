@@ -598,7 +598,7 @@ extern struct dedication ded[MAXUSER];
 
 extern char subjectline[80];
 
-extern char *notifies;
+extern char *notify_list;
 extern int xflg;		/* -x: no incoming mail on stdin                */
 extern int control_info;
 extern int predict;		/* =1 when predicting a turn			*/

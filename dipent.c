@@ -302,7 +302,7 @@ int getdipent(FILE * fp)
 		dipent.process = now + 168 * HRS2SECS;
 		for (j = i = 0; i < dipent.n; i++)
 			j += strlen(dipent.players[i].address) + 2;
-		if ((s = notifies = malloc(j + 1))) {
+		if ((s = notify_list = malloc(j + 1))) {
 			for (i = 0; i < dipent.n; i++) {
 				if (dipent.players[i].power == MASTER)
 					*s++ = '+';
@@ -311,7 +311,7 @@ int getdipent(FILE * fp)
 			}
 			*s = '\0';
 		} else {
-			notifies = "*";
+			notify_list = "*";
 		}
 
 	} else {

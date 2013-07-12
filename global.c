@@ -132,7 +132,7 @@ int more_orders;		/* Nonzero if not all units ordered           */
  */
 
 /* this may need to be included in the other programs as well */
-char *notifies = "*";
+char* notify_list = "*";
 
 /* If (control_info && control_info < 1000) control information will be sent. */
 gint control_info = 0;
