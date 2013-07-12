@@ -61,7 +61,7 @@
 extern int errno;
 extern int Dflg;
 extern int more_orders;
-extern int control;
+extern int control_info;
 
 int signedon;			/* Nonzero if player signed on                  
 				   +1 if game has started, -1 if not            */

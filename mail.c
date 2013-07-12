@@ -227,7 +227,7 @@ void ResignPlayer( int resign_index)
                 NowString(),
                 powers[dipent.players[resign_index].power], dipent.name, dipent.phase,
                 dipent.players[resign_index].units, dipent.players[resign_index].centers);
-                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
             }
 	}
     }
@@ -859,7 +859,7 @@ int mail(void) {
 					break;
 
 				case NOCONTROL:
-					control = 1000;
+					control_info = 1000;
 					fclose(cfp);
 					cfp = xfp;
 					fprintf(xfp, "No control information sent.\n");
@@ -2498,7 +2498,7 @@ void send_press(void)
 	 */
 
 	lmdone = lbdone = 0;
-	if (signedon && any_broadcast && control < 1000) {
+	if (signedon && any_broadcast && control_info < 1000) {
 		for (i = 0; i < dipent.n; i++) {
 			if (dipent.players[i].power < 0)
 				continue;

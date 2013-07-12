@@ -600,7 +600,7 @@ extern char subjectline[80];
 
 extern char *notifies;
 extern int xflg;		/* -x: no incoming mail on stdin                */
-extern int control;
+extern int control_info;
 extern int predict;		/* =1 when predicting a turn			*/
 
 extern int canbuild;	/* can a player build? (used when being reminded to move */

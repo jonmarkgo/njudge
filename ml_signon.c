@@ -703,7 +703,7 @@ int mail_signon(char *s)
 
 				if (!(dipent.flags & F_QUIET)) 
 				    broad_signon = 1;
-				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 
 				for (jj = 0; jj < dipent.n; jj++) {
 				    /* Loop round power and all controlled powers, setting them as taken over */
@@ -1519,7 +1519,7 @@ void mail_igame(void)
 	 * Write out a report file for each player.
 	 */
 
-	if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+	if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
 		fprintf(cfp, "%sGame '%s' now has a quorum and is starting:\n", NowString(), dipent.name);
 	dipent.players[dipent.n].power = OBSERVER;
@@ -1929,7 +1929,7 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 		        		fprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
 		        	if (!(dipent.flags & (F_NOLIST|F_QUIET)))
 		        		fprintf(cfp, ".\n\n");
-                                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+                                if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 			}
 		    }
 		} else {
@@ -1971,7 +1971,7 @@ int NewGameSignon(char *password, int lmaster, int luserid, int lsiteid, int lle
 					fprintf(cfp, "Game '%s' now has %d player%s", dipent.name, n, n == 1 ? "" : "s");
 				if (!(dipent.flags & (F_NOLIST|F_QUIET)))
 					fprintf(cfp, ".\n\n");
-				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+				if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 			}
 		}
 		return 0;

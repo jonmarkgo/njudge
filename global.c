@@ -134,10 +134,9 @@ int more_orders;		/* Nonzero if not all units ordered           */
 /* this may need to be included in the other programs as well */
 char *notifies = "*";
 
-/* gint control
- * 		If (control && control < 1000) control information will be sent.
- */
-gint control = 0;
+/* If (control_info && control_info < 1000) control information will be sent. */
+gint control_info = 0;
+
 int predict = 0; 		/* =1 to predict a move for master */
 
 int canbuild = 1;		/* can the power being reminded to move build? */

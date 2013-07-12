@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
 	}
 	put_data(0, total);
 	
-	control = ded[0].d0;
+	control_info = ded[0].d0;
 
 	if (!options.variant) {
 		if (!options.no_input) {
@@ -104,11 +104,11 @@ int main(int argc, char** argv) {
 		process();
 	}
 
-	if (control > 1000) {
-		control = 0;
+	if (control_info > 1000) {
+		control_info = 0;
 	}
 
-	ded[0].d0 = control;
+	ded[0].d0 = control_info;
 
 	if (nded > 0) {
 		int fd;
@@ -510,10 +510,10 @@ void master(void) {
 	   **  Process any info on the control file.
 	 */
 
-	if (control < 1000)
+	if (control_info < 1000)
 		fclose(cfp);
 
-        if (control && control < 1000 && ded[0].md < now) {
+        if (control_info && control_info < 1000 && ded[0].md < now) {
                 stat("dip.control", &sbuf);
                 if (sbuf.st_size > 0) {
                         s = notifies;
@@ -542,13 +542,13 @@ void master(void) {
                                         conf_get("cmd_smail"), s);
                                 execute(line);
                         }
-                        if (control >= 1000)
+                        if (control_info >= 1000)
                                 break;
                         while (*s++);
                 }
         }
         remove("dip.xcontrol");
-        control = 0;
+        control_info = 0;
 }
 
 /* See if the passed player need to make a move, 
@@ -846,7 +846,7 @@ int process(void) {
 							fprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
 							dipent.players[i].units, dipent.players[i].centers);
 						}
-						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 					}
 					if (dipent.players[i].controlling_power == 0) {
 #ifdef NORMDED
@@ -1017,7 +1017,7 @@ int process(void) {
 						if (!(dipent.flags & (F_NOLIST|F_QUIET)))
 							fprintf(cfp, "(%s, %d of %d units).\n", dipent.phase,
 									dipent.players[i].units, dipent.players[i].centers);
-						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control++;
+						if (!(dipent.flags & (F_NOLIST|F_QUIET))) control_info++;
 					}
 				}
 			}
