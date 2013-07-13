@@ -358,8 +358,9 @@ exit_init:
 }
 gint terminate(void) {
 
-	if (judge_tz != NULL) g_free(judge_tz);
-	if (lock_file != NULL) fclose(lock_file);
+	if (judge_tz != NULL)    g_free(judge_tz);
+	if (notify_list != NULL) g_slist_free(notify_list);
+	if (lock_file != NULL)   fclose(lock_file);
 
 	return 1;
 
@@ -376,6 +377,7 @@ void master(void) {
 	struct stat sbuf;
     int one_quarter = conf_get_int("reminder_time") * 60 * 60; /* Set to 8 hours */
 	int i;
+	GSList* slist_iter;
 
 #define TWO_HOURS 2*60*60
 
@@ -506,49 +508,36 @@ void master(void) {
 	if (!options.dont_touch_q)
 		execute(line);
 
-	/*
-	   **  Process any info on the control file.
-	 */
+	/* Process any info on the control file. */
+	fclose(cfp);
+	if (control_info && control_info < 1000 && ded[0].md < now) {
+		stat("dip.control", &sbuf);
+		if (sbuf.st_size > 0 && notify_list) {
+			slist_iter = notify_list;
+			do {
+				sprintf(line, "%s dip.control 'Diplomacy control information' '%s'",
+						conf_get("cmd_smail"), slist_iter->data);
+				execute(line);
+			} while (slist_iter = g_slist_next(slist_iter));
+		}
+		remove("dip.control");
+		ded[0].md = now + conf_get_int("min_control");
+	}
 
-	if (control_info < 1000)
-		fclose(cfp);
+	fclose(xfp);
+	stat("dip.xcontrol", &sbuf);
+	if (sbuf.st_size > 0 && notify_list) {
+		slist_iter = notify_list;
+		do {
+			sprintf(line, "%s dip.xcontrol 'Diplomacy xcontrol information' '%s'",
+					conf_get("cmd_smail"), s);
+			execute(line);
 
-        if (control_info && control_info < 1000 && ded[0].md < now) {
-                stat("dip.control", &sbuf);
-                if (sbuf.st_size > 0) {
-                        s = notify_list;
-                        while (*s && *s != '*') {
-                                if (*s == '+')
-                                        s++;
-                                sprintf(line,
-                                        "%s dip.control 'Diplomacy control information' '%s'",
-                                        conf_get("cmd_smail"), s);
-                                execute(line);
-                                while (*s++);
-                        }
-                }
-                remove("dip.control");
-                ded[0].md = now + conf_get_int("min_control");
-        }
-        fclose(xfp);
-        stat("dip.xcontrol", &sbuf);
-        if (sbuf.st_size > 0) {
-                s = notify_list;
-                while (*s && *s != '*') {
-                        if (*s == '+') {
-                                s++;
-                                sprintf(line,
-                                        "%s dip.xcontrol 'Diplomacy xcontrol information' '%s'",
-                                        conf_get("cmd_smail"), s);
-                                execute(line);
-                        }
-                        if (control_info >= 1000)
-                                break;
-                        while (*s++);
-                }
-        }
-        remove("dip.xcontrol");
-        control_info = 0;
+		} while (slist_iter = g_slist_next(slist_iter));
+	}
+	remove("dip.xcontrol");
+	control_info = 0;
+
 }
 
 /* See if the passed player need to make a move, 

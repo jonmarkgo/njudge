@@ -131,8 +131,8 @@ int more_orders;		/* Nonzero if not all units ordered           */
  * get multiple definitions
  */
 
-/* this may need to be included in the other programs as well */
-char* notify_list = "*";
+/* notify_list is a list of addresses to which the control info is sent to. */
+GSList* notify_list = NULL;
 
 /* If (control_info && control_info < 1000) control information will be sent. */
 gint control_info = 0;

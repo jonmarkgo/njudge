@@ -300,20 +300,9 @@ int getdipent(FILE * fp)
 		}
 		dipent.start = now - 1;
 		dipent.process = now + 168 * HRS2SECS;
-		for (j = i = 0; i < dipent.n; i++)
-			j += strlen(dipent.players[i].address) + 2;
-		if ((s = notify_list = malloc(j + 1))) {
-			for (i = 0; i < dipent.n; i++) {
-				if (dipent.players[i].power == MASTER)
-					*s++ = '+';
-				strcpy(s, dipent.players[i].address);
-				s += strlen(s) + 1;
-			}
-			*s = '\0';
-		} else {
-			notify_list = "*";
+		for (i = 0; i < dipent.n; i++) {
+			notify_list = g_slist_prepend(notify_list, dipent.players[i].address);
 		}
-
 	} else {
 	    /* Non control game, check for a time-warp or bailout recovery set */
                 if ((time_warp || bailout_recovery) && dipent.phase[5] != 'A') {
