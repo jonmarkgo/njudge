@@ -86,8 +86,6 @@ int main(int argc, char** argv) {
 	}
 	put_data(0, total);
 	
-	control_info = ded[0].d0;
-
 	if (!options.variant) {
 		if (!options.no_input) {
 			diplog_syslog_entry(LOG_DEBUG, "Processing mail");
@@ -103,12 +101,6 @@ int main(int argc, char** argv) {
 		testdipent(options.sequence, options.variant);
 		process();
 	}
-
-	if (control_info > 1000) {
-		control_info = 0;
-	}
-
-	ded[0].d0 = control_info;
 
 	if (nded > 0) {
 		int fd;
