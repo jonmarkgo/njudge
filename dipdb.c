@@ -5,3 +5,13 @@
  *      Author: cjw
  */
 
+#include <glib.h>
+#include <stdio.h>
+
+gboolean dipdb_init(GError** gerr) {
+
+	gboolean result = FALSE;
+
+	return result;
+
+}
