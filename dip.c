@@ -224,7 +224,10 @@ static gint init(int argc, char** argv, GError** err) {
 	/* Reset dipent */
 	memset(&dipent, 0, sizeof dipent);
 
-	/* Set default config file */
+	/*
+	 * Set default config file. Path and filename is stored in same string
+	 * delimited with null
+	 */
 	CONFIG_DIR  = g_memdup(".\0dip.conf", 11);
 	CONFIG_FILE = CONFIG_DIR + 2;
 
