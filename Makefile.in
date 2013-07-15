@@ -188,9 +188,9 @@ am_delgame_OBJECTS = delgame.$(OBJEXT)
 delgame_OBJECTS = $(am_delgame_OBJECTS)
 delgame_LDADD = $(LDADD)
 am_dip_OBJECTS = assign.$(OBJEXT) bailout.$(OBJEXT) common.$(OBJEXT) \
-	conf.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) diplog.$(OBJEXT) \
-	diptime.$(OBJEXT) draw.$(OBJEXT) global.$(OBJEXT) \
-	history.$(OBJEXT) jm.$(OBJEXT) \
+	conf.$(OBJEXT) datetime.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) \
+	dipdb_mysql.$(OBJEXT) diplog.$(OBJEXT) diptime.$(OBJEXT) \
+	draw.$(OBJEXT) global.$(OBJEXT) history.$(OBJEXT) jm.$(OBJEXT) \
 	lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
 	ma_expenses.$(OBJEXT) ma_famplag.$(OBJEXT) \
 	ma_movement.$(OBJEXT) ma_porder.$(OBJEXT) ma_retreat.$(OBJEXT) \
@@ -239,8 +239,8 @@ zpblind_OBJECTS = $(am_zpblind_OBJECTS)
 zpblind_LDADD = $(LDADD)
 binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 SCRIPTS = $(bin_SCRIPTS)
-DEFAULT_INCLUDES = -I. -I$(srcdir) -I. `pkg-config --cflags glib-2.0`
-AM_LDFLAGS = `pkg-config --libs glib-2.0`
+DEFAULT_INCLUDES = -I. -I$(srcdir) -I. `pkg-config --cflags glib-2.0` `mysql_config --cflags`
+AM_LDFLAGS = `pkg-config --libs glib-2.0` `mysql_config --libs`
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \

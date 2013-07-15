@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.61, for redhat-linux-gnu (i386)
+-- MySQL dump 10.13  Distrib 5.1.69, for redhat-linux-gnu (i386)
 --
--- Host: localhost    Database: judge_XXXX
+-- Host: localhost    Database: njudge
 -- ------------------------------------------------------
--- Server version	5.1.61
+-- Server version	5.1.69
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,27 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `dip`
+--
+
+DROP TABLE IF EXISTS `dip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dip` (
+  `ctrl_info_date` int(10) unsigned DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dip`
+--
+
+LOCK TABLES `dip` WRITE;
+/*!40000 ALTER TABLE `dip` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dip` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `email`
@@ -131,4 +152,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-10-28  9:12:23
+-- Dump completed on 2013-07-15 19:51:40
