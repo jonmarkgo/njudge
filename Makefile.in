@@ -189,9 +189,9 @@ delgame_OBJECTS = $(am_delgame_OBJECTS)
 delgame_LDADD = $(LDADD)
 am_dip_OBJECTS = assign.$(OBJEXT) bailout.$(OBJEXT) common.$(OBJEXT) \
 	conf.$(OBJEXT) datetime.$(OBJEXT) dip.$(OBJEXT) dipent.$(OBJEXT) \
-	dipdb_mysql.$(OBJEXT) diplog.$(OBJEXT) diptime.$(OBJEXT) \
-	draw.$(OBJEXT) global.$(OBJEXT) history.$(OBJEXT) jm.$(OBJEXT) \
-	lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
+	dipdb.$(OBJEXT) dipdb_mysql.$(OBJEXT) diplog.$(OBJEXT) \
+	diptime.$(OBJEXT) draw.$(OBJEXT) global.$(OBJEXT) history.$(OBJEXT) \
+	jm.$(OBJEXT) lib.$(OBJEXT) ma_build.$(OBJEXT) ma_build_basic.$(OBJEXT) \
 	ma_expenses.$(OBJEXT) ma_famplag.$(OBJEXT) \
 	ma_movement.$(OBJEXT) ma_porder.$(OBJEXT) ma_retreat.$(OBJEXT) \
 	ma_stats.$(OBJEXT) machlib.$(OBJEXT) mail.$(OBJEXT) \
