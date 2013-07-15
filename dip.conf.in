@@ -38,6 +38,10 @@
 # Summary command (former SUMMARY_CMD).
 #cmd_summary = ./summary
 
+# [control_interval]		integer				43200
+# Seconds between control information reports
+#control_interval = 43200
+
 # [create_dedication]		integer				-10
 # Minimum dedication points for creating games
 #create_dedication = 100
@@ -142,10 +146,6 @@
 # [max_games]				integer				-1
 # Maximum number of games this judge can host (-1 = unlimited)
 # max_games = 50
-
-# [min_control]				integer				43200
-# Minimum time in seconds for control messages to judge keeper.
-#min_control = 43200
 
 # [nobody]					string				nobody@localhost
 # E-mail address used internally and doesn't produce response e-mail.

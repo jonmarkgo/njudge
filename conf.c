@@ -42,6 +42,7 @@ cfgval_t def_vals[] = {
 		{"block_file"			, ""},			/* Use block file? Put path here */
 		{"create_disabled"		, "no"},
 		{"create_dedication"	, "-10"},
+		{"control_interval"		, "43200"},
 		{"db_interface"			, "mysql"},
 		{"db_name"				, ""},
 		{"db_pass"				, ""},
@@ -67,7 +68,6 @@ cfgval_t def_vals[] = {
 		{"master_db"			, "dip.master"},
 		{"master_db_tmp"		, "dip.tmast"},
 		{"max_games"			, "-1"},
-		{"min_control"			, "43200"},
 		{"nobody"				, "nobody@localhost"},
 		{"plan"					, ""},
 		{"points_abandon"		, "-49"},

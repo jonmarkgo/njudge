@@ -516,7 +516,7 @@ void master(void) {
 			} while (slist_iter = g_slist_next(slist_iter));
 		}
 		remove("dip.control");
-		ded[0].md = now + conf_get_int("min_control");
+		ded[0].md = now + conf_get_int("control_interval");
 	}
 
 	fclose(xfp);
