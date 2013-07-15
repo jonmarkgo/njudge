@@ -20,6 +20,7 @@ typedef enum dipdb_mysql_error_e {
 
 #define DIPDB_MYSQL		dipdb_mysql_error_quark()
 
-GQuark dipdb_mysql_error_quark(void);
+GQuark   dipdb_mysql_error_quark(void);
+gboolean dipdb_mysql_init(GError** gerr);
 
 #endif /* DIPDB_MYSQL_H_ */
