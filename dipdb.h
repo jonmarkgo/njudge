@@ -19,4 +19,6 @@ typedef enum dipdb_error_e {
 
 gboolean dipdb_interface_init(GError** gerr);
 
+gboolean (*dipdb_init)(GError** gerr);
+
 #endif /* DIPDB_H_ */

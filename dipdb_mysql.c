@@ -32,8 +32,9 @@ gboolean dipdb_mysql_init(GError** gerr) {
 		goto exit_dipdb_mysql_init;
 	}
 
-	if (mysql_real_connect(mydb, conf_get("db_server"), conf_get("db_user"),
-			conf_get("db_pass"), conf_get("db_name"), conf_get_int("db_port"), NULL,0)) {
+	if (!mysql_real_connect(mydb, conf_get("db_server"), conf_get("db_user"),
+			conf_get("db_pass"), conf_get("db_name"), conf_get_int("db_server_port"),
+			NULL,0)) {
 		g_set_error(gerr, DIPDB_MYSQL, MYSQL_CONNECT_ERROR,
 				"mysql connect error: %s", mysql_error(mydb));
 		mysql_close(mydb);
