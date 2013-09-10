@@ -144,7 +144,7 @@ void user_free(user_t* usr) {
 
 	if (usr->mail) g_slist_foreach(usr->mail, (GFunc) g_free, NULL);
 	g_slist_free(usr->mail);
-	if (usr->mail) g_slist_foreach(usr->extra_fields, (GFunc) g_free, NULL);
+	if (usr->extra_fields) g_slist_foreach(usr->extra_fields, (GFunc) g_free, NULL);
 	g_slist_free(usr->extra_fields);
 
 	g_free(usr);
