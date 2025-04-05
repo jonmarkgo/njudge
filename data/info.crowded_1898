@@ -1,0 +1,22 @@
+crowded_1898 variant info file				Nov. 10, 2001
+
+As its name suggest, the crowded_1898 variant combines an 1898 start (i.e.
+powers start only owning one of their home centers, and must capture the
+rest) with the crowded powers. It uses the same map as the regular crowded
+variant.
+
+The starting positions are as follows:
+
+Austria: A Trieste
+Balkan:  A Serbia
+England: F Edinburgh
+France:  A Brest
+Germany: A Kiel
+Italy:   A Naples
+Lowland: A Belgium
+Norway:  A Sweden
+Russia:  A Moscow
+Spain:   F Spain (south coast)
+Turkey:  A Smyrna
+
+Crowded_1898 was coded for the Ken Lowe Judges by Tim Miller.

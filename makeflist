@@ -1,0 +1,177 @@
+=pod
+
+=head1 NAME
+
+makeflist -- Create the judges available file list
+
+=head1 SYNOPSIS
+
+B<makeflist> F<dir> > F<dir/flist>
+
+=head1 DESCRIPTION
+
+This script creates the file F<flist> in the judges' data directory.  It is
+called during the installation process.  What it does is:
+
+=cut
+
+use strict;
+use POSIX qw/strftime/;
+
+my $dir = shift or die "Need a directory\n";
+
+=pod
+
+=over 2
+
+=item 1) First generate a header
+
+=cut
+my $date = scalar localtime;
+print <<"-EOT-";
+Files and sizes in bytes as of $date
+
+Name                 Size   Last Change     Description
+------------------   ------ -------------   ---------------------------------
+-EOT-
+
+=pod
+
+=item 2) Generate a list of all files in the format  "name size date +"
+
+=cut
+
+opendir(DIR, $dir) or die "$!\n";
+my %entries = map {
+  my ($size,$mtime) = (stat("$dir/$_"))[7,9];
+  $_ => sprintf "%-20.20s%7d %-13.13s  +", $_, $size, strftime "%b  %e  %Y", 
+    localtime $mtime;
+} sort grep { !/^\./ } readdir(DIR);
+closedir(DIR);
+
+=pod
+
+=item 3) merge with the file F<flist.info> which is "name %         = comment"
+
+=cut
+
+open(INFO, '<./flist.info') or die "$!\n";
+my @lines = <INFO>;
+close INFO;
+
+=pod
+
+=item 4) Edit the resulting file list to:
+
+=cut
+
+foreach (@lines)
+{
+  my ($file, $desc) = /(.+?)%(.+)/;
+  $file =~ s/\s+$//;
+
+=pod
+
+=over 4
+
+=item  a) Insert a # at the start of each comment line (those with an =).
+
+=cut
+
+  $desc=~ s/^(.+?)=/#$1/;
+
+=pod
+
+=item  b) Join the comment lines to the end of the preceeding lines.
+
+=cut
+
+  if(exists($entries{$file}))
+  {
+    $desc=~ s/#\s+/#/;
+    $entries{$file} =~ s/\+/\+$desc/;
+
+=pod
+
+=item  c) Replace the first # with a space.
+
+=cut
+
+    $entries{$file} =~ s/#/ /;
+
+=pod
+
+=item  d) Delete anything after a second # (represents comment with no file)
+
+=cut
+
+    $entries{$file} =~ s/#.+?$//;
+
+=pod
+
+=item  e) Delete the text from the + to the =.
+
+=cut
+
+    $entries{$file} =~ s/\+.+?=//;
+  }
+
+}
+
+foreach (keys %entries)
+{
+
+=pod
+
+=item  f) Delete any extra + signs (files without comments).
+
+=cut
+
+  $entries{$_} =~ s/\+//;
+
+=pod
+
+=item  g) Delete any entries with a comment of NOLIST.
+
+=back
+
+=cut
+
+  next if $entries{$_} =~ /NOLIST/;
+
+=pod
+
+=item 5) Print the resulting file list to standard output.  This should be
+redirected into the F<flist> file in its' proper location.
+
+=back
+
+=cut
+
+  print "$entries{$_}\n";
+}
+
+=pod
+
+=head1 OPTIONS
+
+F<dir> The directory containing the judges data files.
+
+=head1 FILES
+
+F<flist.info> contains the descriptions for each file.
+
+=head1 AUTHOR
+
+Jaldhar H. Vyas E<lt>judgekeeper@braincells.comE<gt>
+
+=head1 LICENSE
+
+This code is free software under the Crowley Public License ("Do what
+thou wilt shall be the whole of the license")
+
+=head1 VERSION
+
+$Revision: 1.4 $ $Date: 2003-04-02 17:40:01 $
+
+=cut

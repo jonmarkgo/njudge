@@ -1,0 +1,83 @@
+Greetings from the Diplomacy* Adjudicator!!                 December 14, 1997.
+Info.wraparound2
+
+WRAPAROUND 2 DIPLOMACY:
+=======================
+
+By David Norman, Based on the Original Wraparound by
+James (JimmY) Millington & Robert (Robs) Schone.
+
+Wraparound 2 Diplomacy differs from the original Wraparound in only
+one respect. The point where the border of the Barents and StP touches
+the edge of the original map has been moved from the Northern Edge to
+the Eastern Edge. This means that instead of Syria and StP touching,
+Barents and NAO touch instead. Other than that, all the rules of normal
+wraparound apply. These follow, with modifications where examples no
+longer apply due to the above change :
+
+Wraparound Diplomacy follows all the rules of Standard Diplomacy,
+and uses the Standard map except as noted below.
+ 
+The Map:
+--------
+ 
+Take a Standard map. Join A-a to form a Cylinder. Now join B-b to
+form a Torus (for the mathematicians) or Doughnut (for the hungry :)
+                                                    ________________
+ ___________________    ____________________       / ______a_______ \
+ |        A        |   /B       a        b/ \     / /  ____A_____  \ \
+ |                 |  |------------------|   |   | /  /          \  \ |
+ |B               b|   \________A_________\_/    | | |            | | |
+ |                 |                             | \  \__________/  / |
+ |        a        |                              \ \______|_______/ /
+ -------------------                               \______B|b_______/
+ 
+ 
+Specifics:
+----------
+ 
+There are 3 new provinces added to the map. They are Omsk, Iceland
+and Ireland.
+Omsk is the eastern half of Moscow, but is not a supply centre. Omsk
+borders upon Stp, Mos, Sev, Mao and Nao.
+Iceland is now moveable to, and borders upon Nao and Nwg.
+Ireland is now moveable to, and borders upon Nao and Iri.
+
+Ireland and North Africa are also now Supply Centres
+ 
+What this all means is that the east-coasts of Russia and Turkey now
+border upon the Atlantic, You can move from the Norwegian to Ionian Seas,
+and you can move a Fleet from St Petersburg to Barents to Syria!
+ 
+Contrary to the Physical map, North Africa does *NOT* border upon Syria.
+North Africa/Tunis is now an island, with NaF bordering upon Mao, Wms,
+Tun, Nwg and Nao.
+ 
+Coastlines:
+-----------
+ 
+Make sure you specify which coastline when moving to or from:
+ 
+Armenia (north coast)    : ank bla sev(sc)
+Armenia (east coast)     : sev(ec) mao syr
+Sevastopol (south coast) : rum bla arm(nc)
+Sevastopol (east coast)  : oms mao arm(ec)
+ 
+Please get the file "map.wraparound2" to be completely sure of the
+coastline designations and where you can go from each coast.
+ 
+Starting Positions:
+-------------------
+ 
+All countries start with the standard pieces. This means Russia now starts
+with Fleet Sevastopol (south coast).
+ 
+Victory Condition:
+------------------
+ 
+The VC has been upped by 1 to 19 SCs, with the addition of NaF and Ire to
+push the SC tally to 36.
+ 
+----
+JimmY and Robs
+ 

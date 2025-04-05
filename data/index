@@ -1,0 +1,1038 @@
+Greetings from the Diplomacy* Adjudicator!!                     10 Nov, 2005
+index.
+
+This is an alphabetical list of all the commands that the Judge will process
+with a brief description.  
+
+For information on how to enter Diplomacy orders, get the file 'syntax' (see
+"GET file", below).
+
+A number in {curly braces} near the right margin following a command indicates
+the earliest Judge version in which the command was implemented.  If no number
+is listed, then the command is believed to work on all Judge versions
+currently in use, although this has not been verified.
+
+Commands prefixed by '!' have been incompletely implemented (as explained in
+the description).
+
+Each command is preceded by a code that indicates who can execute the command
+and (where applicable) additional restrictions on when the command can be
+executed.
+
+The who options are:
+
+any:  Anyone can execute the command (no SIGNON required).  Some commands
+      have both an "any" form and a "ply" form; the "any" form is required if
+      the command appears before a SIGNON line, and the "ply" form is required
+      if it appears after a SIGNON.
+ply:  Only a signed-on player or observer can execute the command.  (Unless
+      otherwise noted, these commands can be used by a Master, too.)  Any
+      exceptions are noted in the command description.
+mod:  Only a Master in moderated games, anyone in unmoderated games.
+mas:  Only a Master can use these commands; they are not available in
+      unmoderated games.
+adm:  Only the administrator.  These commands are listed to be complete,
+      but should *NOT* be executed by nonadministrators.  If there is any
+      doubt, you are not an administrator.
+
+The when options are:
+
+pre:  Must appear before a SIGNON command.
+mac:  Can only be used in a Machiavelli variant game, and only before the
+      game starts.
+bgs:  Should only be used Before Game Starts. If used afterwards, game will
+      have an 'irregular' flag set and will not count for any rating purposes.
+
+Items in uppercase are keywords and must be entered exactly as specified
+(although the command parser actually is not case-sensitive), items in
+lowercase are parameters and should have an appropriate value substituted in.
+Items in [square brackets] are optional.  Words separated by vertical bars (|)
+indicate a choice of one of the words.  In most cases, spaces between keywords
+are optional (for example, SIGNON and SIGN ON are equally valid), but spaces
+inserted in the middle of a word will cause an error.
+
+Most command parameters are self-explanatory.  "name" means the name of a
+game, which must be no more than 8 alphanumeric characters.  "address" means a
+valid email address.  "power" means the name (not just the first letter) of
+one of the powers in the game, which depends on the variant being played.
+
+Please note: whenever any behavior is described as the "default," that means
+it is set that way in the standard Judge software package that is distributed
+from devel.diplom.org -- BUT, any Judgekeeper can modify these defaults on his
+own Judge installation.  The best way to verify what settings are in effect in
+a particular game is to use the "LIST" command.
+
+
+adm/    ADJUST userid increment
+        The increment is added to the player's dedication rating.
+
+ply/bgs BECOME MASTER
+        Allows the sole player signed onto a particular game to become the
+        master/moderator of that game.  Get file 'master'.  See also command
+        "PROMOTE".
+
+mod/    BECOME power
+        Allows the moderator for a game to assume the identity of a particular
+        power.  Get file 'master'.
+
+ply/    BROADCAST [options]
+        To send a press message; options may or not be specified, and the
+        message may be terminated by "ENDBROADCAST", "ENDPRESS", "SIGNOFF", or
+        the end of the (incoming) mail message.  The adjudicator will send as
+        press any text that it encounters until it reaches a line containing
+        only one of these three keywords.  In particular, it will ignore any
+        orders or other command keywords appearing in the text of press.  Get
+        file 'press'.
+
+ply/    CLEAR
+        To clear any pending orders entered with the PHASE command.  (Note:
+        there is no way to clear orders entered for the current phase.)
+
+any/bgs CREATE ?name password [variant] [option [option ...]]
+        To create a new game on the Judge.  This command will fail, of course,
+        if the game "name" already exists, or if the Judge is not allowing
+        creation of new games.  The game will be Standard unless a variant
+        and/or options are specified.  The "variant" and "option"
+        specifications for this command are the same as those accepted by the
+        "SET VARIANT" command, below.  Get file 'master' for more detail on
+        creating games.
+
+ply/    DIARY [option [option]]                                        {1.5.0}
+        Diaries allow a player to record his thoughts during the game for
+        broadcast at the end of the game.  If the diary command is given
+        with no options, it will default to "diary record". Options are:
+
+        RECORD: "DIARY RECORD" begins a new, numbered diary entry. The
+        Judge will read until encountering "ENDPRESS", "ENDBROADCAST",
+        or "SIGN OFF" (just like a normal press entry).
+
+        LIST: When a player issues "DIARY LIST", the Judge will return
+        a numbered list of his created entries, and the date and time they
+        were created.
+
+        READ [number]: Issuing "DIARY READ" allows a player to read an
+        entry he has already made. The number of the entry to read must
+        be specified (it can be obtained from "DIARY LIST").
+
+        DELETE [number]: Deletes the specified diary entry numbers. Note
+        that diary entries are not reused, so it's possible to have
+        "holes" in the numbering scheme if any entry but the most recent
+        one is deleted.
+
+mod/    EJECT power|email                                              {0.8.9}
+        A moderator-only command to resign a particular power.  This can be
+        done at any time by the moderator.  The moderator MUST use this form
+        to resign himself.  If an email address is specified, the command will
+        work to resign observers too.  The "EJECT power" form will not work if
+        more than one person is signed on to the specified power.
+
+ply/    ENDBROADCAST
+        ENDPRESS
+        Terminate a Press or Broadcast message.  Note that either form of this
+        command will terminate either kind of message.
+
+adm/    FIXID siteid site_name
+        Sets all players who have registered with the specified site name to
+        have a siteid as indicated.  By default all users get their area code
+        times 100 as a siteid and must be fixed to some non- even multiple of
+        100.
+
+mod/    FORCE BEGIN                                                    {1.4.0}
+        Forces a game to begin, even if not enough players are signed on. The
+        missing players will be filled in by 'dummy players' that are already
+        abandoned (to allow real people to signon).
+
+any/    GET file
+        To get a particular file.  For a complete list of files, get file
+        'flist'.  Get file 'info' for a description of the more important
+        files.
+
+any/    GET DEDICATION
+        To determine the user's current dedication rating statistics.  This
+        returns exactly the same information as "INFO PLAYER" for the user's
+        mail address.  Before version 1.0.0, it only returned the user's
+        dedication point count.
+
+any/    GET PACKAGE
+        To get the 'new user package' of files.  These files are generally
+        sent automatically to new users at the time they register with a Judge
+        (see command "REGISTER"), but they can be specifically requested with
+        this command.  These files are the ones that all new users should read
+        before attempting any Judge Diplomacy games.
+
+any/    HELP
+        The general introduction text is returned, and any other text
+        following this line in the email message is ignored.  This is
+        equivalent to "GET INFO" followed by "SIGNOFF".
+
+ply/    HELP
+        Equivalent to "GET INFO".
+
+any/    HISTORY [name] [FROM date] [TO date] [LINES n]
+        HISTORY [name] EXCLSTART turnId [EXCLEND turnId] [BROAD]
+
+        Retrieve (by email) history information for the specified game.  A
+        "name" is required unless the command is given after a valid SIGNON,
+        in which case the signed-on game is assumed.  The history information
+        is all the messages that an observer would have seen had he been
+        signed on for the time period.  This includes broadcasts, but not any
+        partial press.
+
+        The command "HISTORY [name]" without any other arguments will retrieve
+        all history for the period from one week ago (real time) to the
+        present, up to a maximum of 1000 lines.  Other command specifications
+        can be used to change the time period covered and the length of the
+        response.  Get file 'history' for syntax details.
+
+        Finally, note that much game history information can also be retrieved
+        from Alain Tésio's exceptional "Diplomacy tools" site,
+        http://www.floc.net/
+
+any/    I AM ALSO address
+        To register a new email address and link it to an existing
+        registration.  If your return address changes you can use this command
+        to tell the adjudicator that you are the same person without having to
+        resubmit a complete form.  You must send this command _from_ the new
+        address.  The address specified must be one that was registered
+        previously.
+
+any/    INFO PLAYER address                                            {1.0.0}
+        Prints out the current dedication and plyrdata info for the given
+        e-mail address.
+
+any/    LIST [FULL|name]
+        If no optional name or keyword is specified a short list of the
+        current games is generated.  If the FULL keyword is specified a
+        detailed report including the player list of each game is generated.
+        If a name is specified, the full report for that game is generated
+        along with unit positions and supply center holdings.
+
+ply/    LIST
+        The detailed report of all players and units will be generated for the
+        currently signed on game.
+
+any/    MAP name [n]
+        This command is disabled as of version 1.5.0 (but listed here to
+        inform users of earlier versions).  You can obtain maps of any game
+        on "public" Judges in multiple formats from Alain Tésio's outstanding
+        "Diplomacy tools" site, http://www.floc.net/
+
+any/    MAP * [n]
+        [Disabled: see previous entry.]
+
+adm/    NOCONTROL
+        Prevents broadcast message from actually being sent.  For debugging.
+
+any/    OBSERVE name password
+        To become an observer.  This command is equivalent to "SIGNON oname
+        password".
+
+mod/    PAUSE                                                          {1.5.0}
+        To suspend a game. Players can still send press, but moves will be
+        blocked.  No game processing or deadline expiration will occur.
+        Periodic messages will be sent to remind of the pause state. To
+        resume the game, the master should issue the “RESUME” command.
+
+ply/    PHASE season year phase
+        To specify that any following orders should be held until the
+        specified phase before processing.  Get file 'syntax'.
+
+ply/    POSTAL PRESS                                                   {1.2.0}
+        If postal press is enabled, this command will append the lines
+        following it to the postal press file, until an "END PRESS", "END
+        BROADCAST", or "SIGN OFF" is encountered.  When the orders process,
+        the postal press file is mailed to everyone signed on to the game.
+
+mod/    PREDICT                                                        {0.8.9}
+        Will send to the moderator a prediction of the current turn, using
+        partial orders already entered.
+
+ply/    PRESS options
+        To send a press message; options must be specified, and the message
+        may be terminated by "END BROADCAST", "END PRESS", "SIGN OFF", or the
+        end of the (incoming) mail message.  Get file 'press'.
+
+mod/    PROCESS [season year phase]
+        Force the judge to process orders immediately with whatever it has in
+        its list, even if some orders are missing or erroneous.  The "season
+        year phase" specification is optional but _strongly_ recommended.
+        Get file 'master'.
+
+mod/    PROMOTE address                                                {0.8.9}
+        To promote the observer with the specified email address to also be a
+        moderator.
+
+adm/    RECORD userid plyrdata_field value SPECIAL_PW                  {1.0.0}
+        Adjusts the given user's plyrdata record field given by field to a
+        new value given by value.  Fields are 1 for ontime, 2 for total, 3
+        for start, 4 for resignations, and 5 for tookovers.  The SPECIAL_PW
+        is defined in dip.conf
+
+any/    REGISTER ... END
+        To register yourself.  Get file 'form'.  Also, see command "IAMALSO".
+
+ply/    RESIGN
+        To withdraw from the game.  This must be the LAST command in the
+        message to be effective; so if you want to broadcast a farewell
+        message, do so before you enter the 'resign' command.  The moderator
+        cannot RESIGN.  See command "EJECT".
+
+ply/    RESUME
+        To restart a paused, completed or terminated game.  The
+        "SET [NO] RESUME" command (below) determines whether this command 
+        will be accepted from any player, or only from a Master.
+
+mod/    ROLLBACK turn
+        Rolls the game back to a previously processed turn.  Get file
+        'master'.
+
+any/    SEND [ME] file
+        Equivalent to "GET file".
+
+ply/    SET [NO] ABSENCE start_date [TO end_date]                      {0.8.7}
+        Cancel/request an absence period.  Does not affect the deadline for
+        the current phase, but no subsequent deadlines will be set during the
+        absence period.  Get file 'absence' for details.
+
+mod/    SET ACCESS ANY[-SITE]|SAME[-SITE]|DIFFERENT[-SITE]
+        To change what users can sign on.  "ANY" is the default.  Since the
+        "site" setting is dependent on what users put in their registration
+        forms, this command is no longer widely used.
+
+ply/    SET ADDRESS [reply_address]
+        To change where your reports go.  If you don't specify an address, the
+        address from the mail headers (specifically, the _last_ Reply-To:
+        header encountered) will be used.  If you signon and the address in
+        the mail headers does not match the reporting address you will get two
+        replies, one to each address.  This can be fixed by using "set
+        address" with no reply address specified.  You can also specify
+        multiple addresses separated by commas, but no spaces, to receive
+        reports at two (or more) addresses.
+
+mod/mac SET [NO] ADJACENT|ADJACENCY
+        Disables/enables optional rule that allows bribes from nonadjacent
+        players.
+
+mod/bgs	SET [NO] ALLIED WIN                                            {1.7.2}
+	Disables/enables victory condition of an alliance, in duplex games.
+	Get 'info.duplex'. Defaults to disabled.	
+
+mod/    SET ALL PRESS
+        To request that all partial press be sent to you as the moderator of
+        the game as well as to the intended recipients.  Use "SET NORMAL
+        PRESS" to disable this feature.  Can be used by Observers if the SET
+        WATCH ALL PRESS command has been sent by a Master.
+
+mod/    SET ALLOW PLAYER [-]address
+        Add an address to the "allow" list for the game; or, using the "-"
+        prefix, remove an address from that list.  IMPORTANT:  if the
+        moderator creates an "allow" list for a game, then *only* addresses on
+        that list will be able to sign on as a player or observer.  This can
+        be used to set up an invitation-only game.  See also command "SET DENY
+        PLAYER".
+
+adm/    SET ALLOW PLAYER|MASTER [-]address
+        Modifies the global "allow" lists for all games on the Judge.  If
+        these lists exist, only addresses on the list will be allowed to
+        signon to games (for the PLAYER list) or to CREATE games (for the
+        MASTER list).  This is only useful for a Judge limited to private
+        games.  See also command "SET DENY".
+
+mod/bgs SET ANY CENTRE[S]|CENTER[S]                                    {0.8.9}
+        Allows a power to build in any owned centre during a build phase.
+
+mod/bgs SET ANY DISBAND                                                {1.4.0}
+        Allow powers to disband any unit during a build phase (and thus
+        gain the option to rebuild on a buildable center if desired). 
+        Players must submit an adjustment order for every unit (use “maintain” 
+        for units that are to be kept).  Opposite of "SET NORMAL DISBAND", see
+        below.
+
+mod/	  SET [NO] APPROVAL                                              {1.6.0}
+        Add/remove the requirement for the master to approve new players
+        before they can submit moves. 
+
+	  Actual approval is via the 'set approve' command (see below).
+
+mod/	SET [NOT] APPROVE[D] powerlist                                   {1.6.0}
+        Disapprove/approve a player from making moves. Disapproved players
+        will have any move orders rejected by the judge. A list of power
+        letters to be processed follows.
+	
+        One use is for foreign-language press games, to allow the master to
+        check first if a new player really can speak the required language.
+ 
+mod/mac SET [NO] ASSASSINS|ASSASSINATION[S]
+        Disables/enables optional assassination rules.
+
+mod/bgs SET [NO] ATTACK TRANSFORM                                      {0.8.9}
+        Transformations on attacked but not dislodged units will fail/work.
+        Get file 'transform' for more details.
+
+mod/   !SET [NO] AUTO CREATE                                           {1.4.1}
+        Instructs the Judge (or cancel an instruction) to create a new game 
+        with identical parameters when the current one finishes (in a draw or
+        victory), except that the new game will be set to 'NoList'. Fails if a 
+        sequence number cannot be added/incremented on current game name.
+        {In reality, no functionality has yet been added for this command.}
+
+mod/bgs SET [NO] AUTO DISBAND                                          {0.8.9}
+        Disables/enables the autodisband rule.  This rule when enables means
+        that units are automatically disbanded when dislodged, i.e.  no
+        retreats are permitted.
+
+mod/    SET [NO] AUTO PROC[ESS]                                        {0.8.9}
+        Lets the judge automatically process turns when possible.  It is the
+        opposite of "SET [NO] MANUAL PROCESS", see below.  The default setting
+        is AutoProcess.
+
+mod/bgs SET [NO] AUTO START                                            {0.8.9}
+        Allows a game to automatically start when it has a quorum.  It is the
+        opposite of "SET [NO] MANUAL START", see below.  This is the default
+        setting.
+
+mod/mac SET [NO] BANK[ERS]
+        Equivalent to "SET [NO] LOANS".
+
+mod/bgs SET [NO] BCENTERS|BCENTRES
+        Enable/disable the display of ALL owned centres (not just those of
+        the power sending the command) in "Blind" variant.  Default disabled.
+
+mod/bgs SET BLANK BOARD                                                {0.8.9}
+        Set the game to start in a build phase, with no units, so that players
+        can place a different initial stating unit position.  Can only be set
+        before the game begins, and has no effect on games that already start
+        in a build phase (such as Chaos).
+
+mod/    SET [NO] BLANK PRESS                                           {0.8.9}
+        Disables/enables players to send blank press messages.  Usually not
+        very useful to enable.
+
+mod/    SET BN|BNC [NUMBER] number
+        {Note: This command is no longer of use as Boardman numbers are no
+        longer being maintained.  Retained for compatibility only.}
+        Sets the Boardman number for a game.  This command should only be
+        issued after receiving a number from the Boardman Number Custodian
+        (BNC).  Boardman numbers are only assigned to Standard games.  The BNC
+        number appears in the game's listing and summary.
+
+ply/    SET [NO] BROADCAST [PRESS]                                     {1.4.0}
+        Disables/enables receiving broadcast press messages.  Only possible
+        for observers or moderators.
+
+mod/    SET [NO] CD
+        Same as "SET [NO] NMR".
+
+mod/    SET CENTERS number
+        Set the number of centers required to win the game to "number".  This
+        will cause the game to end when the first player reaches this number
+        of winning centers.  If more than one player reaches this value, then
+        it is advanced to one more center than the top players have.  If a
+        draw is acceptable then a vote is required using the SET DRAW command.
+
+mod/bgs SET [NO] COASTAL CONVOYS                                      {0.8.11}
+        Disables/enables fleets in coastal provinces from participating in a
+        convoy.  Default enabled for Machiavelli games, disabled for all other
+        variants (including Machiavelli2).
+
+mod/    SET COMMENT text
+        Sets the comment that appears in the brief listing format.  The text
+        string should be under 60 characters in length.
+
+mod/    SET COMMENT BEGIN
+        Sets the comment that appears in the full listing format.  The full
+        comment consists of the rest of the input mail message up to (an
+        optional) SIGNOFF command.
+
+ply/    SET [NO] CONC[EDE] p                                          {0.8.10}
+        Cast a vote for or against a concession to power 'p' (who must be the
+        largest power in the game).  Even though you may only concede to the
+        largest power, the Judge requires you to specify the power to be sure
+        you really know who you are conceding to.  This command is used only
+        in a DIAS game (since, in a NoDias game, you can just set a one-way
+        draw).  "SET NO CONCEDE" cancels a previous concession.  As with
+        draws, concessions are cleared every time orders are processed, so you
+        need to re-set a concession (if you still want it) every phase.
+        {Note: must be entered as "SET [NO] CONC" in versions before 1.4.0}
+
+mod/    SET [NO] CONCESSIONS                                          {0.8.10}
+        Disables/enables the concession mechanism (see SET CONCEDE, above) in
+        DIAS games.  Enabled by default.  
+
+mod/    SET DEADLINE date
+        Changes the deadline for the current phase.  Get file 'deadlines'.
+
+mod/    SET DEDICATION level
+        Restricts access to the game to those people with a dedication rating
+        equal or greater than the indicated level.  The indicated level can
+        not be higher than the Moderator's current dedication rating.  For
+        information on dedication ratings, get the file 'dedsystems'.
+
+mod/    SET DENY PLAYER [-]address
+        Add an address to the "deny" list for the game; or, using the "-"
+        prefix, remove an address from that list.  Any address on this list
+        will be unable to sign on as a player or observer.  See also "SET
+        ALLOW PLAYER".  Note that the "deny" list is not checked if an "allow"
+        list exists.
+
+adm/    SET DENY PLAYER|MASTER [-]address
+        Modifies the global "deny" lists for all games on the Judge.  If these
+        lists exist, addresses on the list will not be able to signon to games
+        (for the PLAYER list) or to CREATE games (for the MASTER list).  See
+        also "SET ALLOW".
+
+mod/    SET [NO] DIAS
+        Disables/enables requirement that all draws must include all
+        survivors.  Default is "DIAS".  Get file 'draws'.
+
+mod/mac SET [NO] DICE
+        Disables/enables optional rules that introduce random events into the
+        game: Variable income, bank loans, assassinations, famine and plague.
+
+mod/bgs SET [NO] DISBAND                                               {0.8.9}
+        Disables/enables the use of a disband order during a normal movement
+        phase.  Default enabled for Machiavelli, disabled for Machiavelli2 and
+        all other variants.
+
+ply/    SET [NO] DRAW [powerlist]
+        Cast a vote in an automated draw.  The "powerlist" option is only
+        valid if the game is set NoDIAS.  Any draw vote, DIAS or NoDIAS, is
+        good for one phase only.  All draw votes are cleared at the end of a
+        phase.  Get file 'draws'.
+
+mod/bgs SET [NO] DUALITY                                              {0.8.11}
+        Disables/enables provinces with dual behaviour (both land and water).
+        This is disabled by default in Standard games, and is only available
+        as an option in certain variants where it is coded into the map file.
+        Get file 'duality'.
+
+mod/bgs SET EMPTY BOARD                                                {0.8.9}
+        The same as "SET BLANK BOARD", see above.
+
+mod/    SET EP number
+        {Note: This command is no longer of use as EP numbers are no
+        longer being maintained.  Retained for compatibility only.}
+        Sets the Electonic Protocol number for a game.  This command should
+        only be issued after receiving a number from the Electronic Protocol
+        Number Keeper (EPNK).  The EP number appears in the game's listing and
+        summary.
+
+mod/    SET NO FAKE [BROADCAST]
+        Get file 'press'.
+
+mod/mac SET [NO] FAMINE
+        Disables/enables optional famine rules.
+
+mod/mac SET [NO] FORT[RESS]                                            {0.8.9}
+        Disables/enables optional fortress rules.
+
+mod/mac SET [NO] GARRISON[S]                                           {1.4.0}
+        Disables/enables use of garrisons.
+
+mod/bgs SET [NO] GATEWAYS                                             {0.8.11}
+        Disables/enables gateways, in a variant that has this option coded
+        into its map file.  Get file 'info.colonial'.
+
+mod/    SET GRACE date
+        Changes the grace period for the current phase.  Get file 'deadlines'.
+
+mod/	SET [NO] GRACE PRESS					       {1.7.6}
+	Disables/enables press from any player when one or more has not
+	submitted complete moves (excluding to the moderator, who can always
+	receive press).
+	
+mod/    SET GREY [PRESS]
+        Sets press option to grey only.  Get file 'press'.
+
+mod/    SET NO GREY [PRESS]
+        Same as "SET WHITE".
+
+mod/    SET GREY/WHITE [PRESS]
+        Sets press option to grey by default with white allowed.  Get file
+        'press'.
+
+ply/    SET [NO] HOLIDAY[S]                                            {0.8.7}
+        Same as SET [NO] ABSENCE.
+
+mod/bgs SET HOME CENTRE[S]|CENTER[S]                                   {0.8.9}
+        Allow builds to be made only in the building power's home centers
+        during build phase.  (Default setting for Standard games.)
+
+mod/bgs	SET [NO] HOME TRANSFER					       {1.7.6}
+	Disallow/allow powers to make a centre their home centre, if it is 
+	occupied continuously for a full season.
+
+mod/bgs SET [NO] HONG KONG                                            {0.8.11}
+        Disables/Enables "HongKong" rule in a variant that has this option
+        coded into its map file.  Get file 'info.colonial'.
+
+mod/    SET [NO] LATE COUNT                                            {0.8.9}
+        Disables/enables late counting.  If enabled, every time a player is
+        late the late messages will include a count of the number of times
+        this player has been late in the game.  This counter will be reset
+        when a new player takes over.
+
+mod/    SET [NO] LATE PRESS                                            {0.8.9}
+        Disables/enables players who are marked as late from sending any
+        press (except to the moderator).
+
+mod/    SET LEVEL ANY|NOVICE|AMATEUR|INTERMEDIATE|ADVANCED|EXPERT
+        Restricts access to a particular class of player.  The three official
+        classes are Novice, Intermediate, and Expert.  Amateur means either
+        Novice or Intermediate, and Advanced means either Intermediate or
+        Expert.  "Any" of course means any class of player may play (and is
+        the default).  Players can change their classification (if they feel
+        their level has changed) by re-registering.  See command "REGISTER".
+
+mod/    SET [NO] LIST
+        Enables/disables public listing of the game.  If a game is set NoList
+        (the default) then only people who know about it will be able to see
+        it.  Useful for "by invitation only" games.  Get file 'master'.
+
+mod/mac SET [NO] LOANS
+        Disables/enables optional rules allowing players to borrow money from
+        the bank.
+
+mod/bgs SET [NO] MACH2                                                 {1.0.2}
+        Disables/enables Machiavelli 2nd Edition (1995) rules.
+
+mod/    SET [NO] MANUAL PROCESS                                        {0.8.9}
+        Disables/enables the requirement that the turn will only occur when
+        the moderator executes the 'PROCESS' command.  Disabled by default.
+
+mod/bgs SET [NO] MANUAL START                                          {0.8.9}
+        Disables/enables the requirement that the game will only start when
+        the moderator allows.  If game was ManualStart and ready to go, then
+        SET NO MANUAL START (or SET AUTO START) will start it.  Disabled by
+        default.
+
+mod/    SET MAX ABSENCE number                                         {0.8.7}
+        Sets the maximum absence duration that a player can set, in days.
+        Default is 15.  This does not apply to absences set by the moderator.
+        The parameter 'number' can be set no higher than 31 and no lower than
+        0.  Get file 'absence' for further details.
+
+mod/bgs SET [NO] MINOR PRESS                                           {0.8.9}
+        Disables/enables the sending of press message during minor phases
+        (retreats and builds).  FTF (and many postal) games commonly do not
+        allow minor phase negotiations, Judge games historically have.  Cannot
+        be changed once the game is in progress.
+
+mod/    SET MN|MNC [NUMBER] number
+        {Note: This command is no longer of use as Miller numbers are no
+        longer being maintained.  Retained for compatibility only.}
+        Sets the Miller number for a game.  This command should only be issued
+        after receiving a number from the Miller Number Custodian (MNC).
+        Miller numbers are only assigned to non-Standard games.  The MNC
+        number appears in the game's listing and summary.
+
+ply/    SET MODERATE[D]
+        Changes a game from unmoderated to moderated.  This is set by default
+        by the "BECOME MASTER" command.
+
+mod/mac SET [NO] MONEY                                                {0.8.11}
+        Disables/enables money in Machiavelli games.  Without money,
+        Machiavelli is similar to normal Diplomacy, where you need to own one
+        city for each unit built.
+
+mod/    SET MOVE|RETREAT|ADJUST setting value [setting value ...]
+        To change the deadline calculation.  The "setting" may be any one (or
+        more) of CLOCK, MIN, NEXT, GRACE, DELAY, or DAYS.  "Value" is a
+        decimal number, except following "DAYS".  Get file 'deadlines'.
+
+mod/    SET [NO] MUST ORDER                                            {1.2.0}
+        Sets and unsets the MustOrder flag.  If this flag is set, players
+        must have valid orders submitted before sending press.
+
+mod/    SET [NO] NMR
+        Allows/prevents processing of orders if all powers have not yet
+        submitted complete ones.  Default is "NONMR".
+
+mod/    SET NO PRESS
+        Disables all press/broadcast messages.  Get file 'press'.
+
+mod/    SET [PRESS] NONE
+        Same as "SET NO PRESS".
+
+ply/    SET [NO] NORMAL BROADCAST                                      {0.8.9}
+        Same as "SET [NO] BROADCAST [PRESS]", above.
+
+mod/bgs SET NORMAL DISBAND                                             {0.8.9}
+        Uses the standard rules for disbands on a build turn; i.e., a power
+        can only disband when it has more units than centres.  Opposite of
+        "SET ANY DISBAND" (see above).
+
+mod/    SET NORMAL PRESS
+        Disables the "SET ALL PRESS" option where all partial press is sent to
+        Masters.  May also be used by Observers if "SET WATCH ALL PRESS" has
+        been used.
+
+mod/    SET OBSERVER ANY [PRESS]
+        Permits observers to submit press with the same restrictions as regular
+        players.
+
+mod/    SET OBSERVER NO [PRESS]
+        Disallows press from observers.
+
+mod/    SET OBSERVER WHITE [PRESS]
+        Disallows observers from submitting grey press.
+
+mod/bgs SET ONE CENTRE[S]|CENTER[S]                                    {0.8.9}
+        Allow a power to build in any owned centre during a build phase, as
+        long as one home centre is still owned.
+
+mod/    SET ONTIMERAT level                                            {0.8.9}
+        Restricts access to the game to those people with an ontime ratio
+        equal then or greater than the indicated level.  The indicated level
+        can not be higher than the moderator's.  For information on the ontime
+        ratio, get the file 'dedsystems'.
+
+mod/    SET [NO] PARTIAL [PRESS]
+        Enables/disables the ability for players to send messages to
+        individual powers.  Get file 'press'.  (Partial press to and from the
+        moderator is always enabled.)
+
+mod/    SET PARTIAL [FAKES [BROADCAST]] [BY DEFAULT]
+        Get file 'press'.
+
+mod/    SET PARTIAL MAY [BE FAKED]
+        Get file 'press'.
+
+ply/    SET PASSWORD new_password
+        To change your password for the signed-on game.  Passwords must
+        contain only alphanumeric characters.
+
+mod/mac SET [NO] PLAGUE
+        Disables/enables optional plague rules.
+
+mod/bgs SET PLAYERS number
+        Sets the number of players (not powers) in the game.  When the number
+        of players is set to some number less than the number of powers, the
+        game will begin when that number of players signs on to the game,
+        assigning excess powers evenly among the players, thus enabling them
+        to play multiple powers.  Get file 'info.duplex' for more information
+        and an example.
+
+mod/bgs SET [NO]PORTAGE                                                {1.7.0}
+        Enables/disables armies to convoy fleets. See 'info.portage' for
+        more details.
+
+mod/    SET [NO] POSTAL PRESS                                          {1.2.0}
+        Turns postal press on/off.  Postal press is press published with the
+        results of the turn.  See command "POSTAL PRESS" for more details.
+
+mod/bgs SET POWERS number					       {1.7.0}
+	Sets the number of powers (not players) in the game. When the number
+	of players is greater, this will be adjusted down. Using this command
+	will result in a game playing with fewer powers than designed, so,
+	for example, 'set powers 5' in a standard game will mean that two 
+	powers will not appear: their units will be missing and their centres
+	open for capture as per a normal neutral supply centre.
+	This is more intended for variants where the number of powers can be
+	variable and does not affect game balance.
+
+ply/bgs SET PREFERENCE list
+        To establish a preference list for power assignment.  Should appear
+        immediately after an initial SIGNON entering a forming game.  Can be
+        modified up until the powers are actually assigned.
+
+        There are two formats for "list", depending on the game's preference
+        setting (see SET PRFBOTH, SET PRFLIST, SET PRFRAND below).
+        
+        If the setting is PRFLIST or PRFBOTH, the "list" may contain initials
+        of the various powers in the game, arranged with the player's most
+        preferred power listed first.  For instance, "SET PREFERENCE ATRIFEG"
+        could be used by a player who has a strong desire to play an eastern
+        power.  A player may indicate that he has an equal preference for two
+        or more powers by enclosing them in square brackets.  For example,
+        "SET PREFERENCE E[FGR][TAI]" would indicate that the player's first
+        choice is England; after that, he would prefer any of France, Germany,
+        or Russia equally; and after that would take any of the remaining
+        powers.  The Judge assigns powers by assigning each player's first
+        choice a weight of 7, the second choice a weight of 6, etc., and
+        averaging the weights for powers combined in square brackets; these
+        weights are used in an algorithm that maximizes the overall total
+        weight of the power assignments.
+
+        If the setting is PRFBOTH OR PRFRAND, then "list" may be a single
+        asterisk ("SET PREFERENCE *").  (In fact, if the game setting is
+        PRFRAND, this is the only possible preference list, so there is really
+        no point in using SET PREFERENCE.)  This signifies that the player
+        will receive a randomly selected power (and these assignments are made
+        *before* the Judge looks at other players' preference lists).
+        
+        If a player's preference list is empty, or the Judge runs out of
+        preferences because the player did not list all available powers, the
+        Judge will proceed as if all the remaining powers were listed in
+        square brackets at the end of the list.  As a practical matter, this
+        likely means that that player will receive a random assignment *after*
+        all other players' preference lists have been processed.  In other
+        words, an empty (or missing) preference list is *not* the same as "SET
+        PREFERENCE *".
+
+mod/bgs SET PRFBOTH                                                    {1.1.0}
+        To have the judge assign a random power to any player that requests it
+        (by entering "SET PREFERENCE *"), and powers according their
+        preference lists to all other players.
+
+mod/bgs SET PRFLIST                                                    {1.1.0}
+        To have the judge assign powers exclusively using the preference
+        lists entered by the players.  (This is the default.)
+
+mod/bgs SET PRFRAND                                                    {1.1.0}
+        To have the judge randomly assign powers to all players.
+
+mod/    SET PRIVATE
+        Equivalent to "SET NOLIST".
+
+mod/    SET [NO] PROXY
+        Clear/set the flag that allows one player to give control of one or
+        more of his units to another player.  Proxy ordering is disabled by
+        default.  Get file 'syntax' for proxy syntax.
+
+mod/    SET PUBLIC
+        Equivalent to "SET LIST".
+
+mod/    SET [NO] QUIET
+        Sets (or clears) the "quiet" flag.  This flag prevents announcements
+        about power abandonment, power takeovers and such from being broadcast
+        to the other players or observers.  Its purpose is to prevent
+        information from being disclosed in gunboat games, particularly
+        tournaments where multiple games may lose the same player.
+
+mod/bgs SET [NO] RAILWAYS                                             {0.8.11}
+        Disables/enables railways, in a variant that has this option coded
+        into its map file.  Get file 'info.colonial'.
+
+mod/    SET [UN]RATED
+        Changes a game to rated or unrated.  By default moderated games are
+        rated and unmoderated games are unrated.  Unrated games will not
+        affect the players' dedication rating.
+
+mod/    SET RESRAT level                                               {0.8.9}
+        Restricts access to the game to those people with a CD ratio lower
+        than or equal to the indicated level.  The indicated level can not be
+        lower than the moderator's.  For information on the CD ratio, get
+        file 'dedsystems'.
+
+mod/    SET [NO] RESUME                                                {0.8.9}
+        Enables/disables players from resuming a game.  If enabled, any player
+        can resume a terminated game.  If disabled, only the moderator can.
+        WARNING: on many Judges, the default setting allows players to resume
+        games after termination.  In moderated games, the use of "SET
+        NO RESUME" is strongly recommended.
+
+mod/    SET [NO] REVEAL
+        If a gunboat game is set "NoReveal", the player list will not be
+        revealed in summary output after the game terminates.  This flag is
+        useful for gunboat tournaments where player lists may be the same in
+        multiple games.
+
+mod/    SET [NO] SECRET                                                {1.1.0}
+        Sets/clears the "Secret" flag.  This flag prevents any information
+        about the number of players in the game from being revealed to the
+        players or observers.  It is intended for use in duplex games.
+
+mod/    SET [NO] SHOW
+        If a game is set to "NoSHow", changes to game settings will appear to
+        be made by 'someone@somewhere'.  Otherwise, the changer will have
+        their email shown.  The default is "NoShow" for Gunboat games, and
+        "Show" for all other games.
+
+mod/mac SET [NO] SPECIAL
+        Disables/enables optional rules that allow double strength units.
+
+mod/    SET START date
+        Sets the earliest date/time at which orders can be processed for the
+        current phase.  Get file 'deadlines'.
+
+mod/mac SET [NO] STORM[S]                                              {1.0.2}
+        Disables/enables storms.  Works as per plague, except causes fleets at
+        sea to be eliminated randomly (in a storm).
+
+mod/   !SET [NO] STRICT CONVOY                                         {0.8.9}
+        Allows/disallows "implausible" convoys.  Default disabled, so fleets
+        can be ordered to convoy any army to any province defined in the map
+        file.  If set, only convoys that could conceivably succeed may be
+        ordered. (As of the current version, the plausibility checking is
+        actually minimal; it only rejects convoys if either the origin or
+        destination space has no adjacent sea spaces.)
+
+mod/    SET [NO] STRICT GRACE
+        Disables/enables enforcement of grace period as an ABSOLUTE time
+        interval after the deadline.  If disabled (default), then grace
+        periods will always end on an appropriate order processing day.
+
+mod/    SET [NO] STRICT WAIT
+        Determines the ability of players who can set the WAIT flag.  If
+        STRICTWAIT is set, only players who have moves currently required will
+        be allowed to set wait.  If NOSTRICTWAIT is set (default), any
+        currently active player can set wait.
+
+mod/bgs SET [NO] SUMMER                                                {1.4.0}
+        Disables/enables a “summer” phase between Spring and Fall.  (This
+        phase is abbreviated “U” for purposes of commands such as “HISTORY”,
+        “PHASE” and “ROLLBACK”.)  Enabled by default for Machiavelli, disabled
+        by default for Standard games.
+
+mod/    SET [NO] TOUCH PRESS                                           {1.5.1}
+        Enables/Disables Touch Press. When enabled, players can only send
+        one broadcast message per turn, and can only send partial press to
+        players with whom they are touching (defined as a legal Wing move).
+        Players can always send partial press to Masters, and cannot send 
+        press to Observers.  When disabled (default), standard press settings
+        apply.
+
+mod/    SET TRANSFORM transform-option                                 {0.8.9}
+        SET TRAFO transform-option
+        Enables unit transformations, according to 'transform-option'.  Get
+        file 'transform' for details.
+
+mod/    SET NO TRANSFORM                                               {0.8.9}
+        SET NO TRAFO
+        Disables the transformation of units.  This is the default for
+        Standard games.  Warning: this command works only from njudge version
+	1.7.0 onwards!
+
+mod/    SET UNLIST
+        Equivalent to "SET NO LIST".
+
+mod/    SET UNMODERATE[D]
+        Changes a game from moderated to unmoderated.
+
+ply/    SET [NO] VACATION[S]                                           {0.8.7}
+        Same as SET [NO] ABSENCE.
+
+mod/bgs SET VARIANT variant|option
+        To change the variant of a game, or add an optional rule.  This can
+        only be done before the powers are assigned and before the requisite
+        number of players for the new variant type have signed on.  SET
+        VARIANT can only be used to set one option per command (unlike
+        CREATE).  For a complete list of valid variants and options, send the
+        command "SIGNON ?name password XXXX", or "SET VARIANT XXXX" if already
+        signed on as Master or as player in an unmoderated game (where XXXX is
+        any invalid variant name).  Note: if the game has been set as a
+        variant and it is desired to un-set this, use "SET VARIANT STANDARD".
+
+mod/bgs SET NOT VARIANT option
+        Disable the specified optional rule.  This command can only be used to
+        remove options, not to change the underlying variant type.  To change
+        the variant itself, use "SET VARIANT". 
+
+ply/    SET [NO] WAIT
+        Clears/sets the wait flag; if the moderator or any (eligible) player
+        has this flag set, orders will not be processed until the deadline.
+        See also "SET STRICT WAIT".  This flag is automatically cleared when
+        orders are actually processed (not necessarily at the deadline), and
+        must be set again for the next phase.
+
+mod/    SET [NO] WATCH ALL PRESS                                       {0.8.9}
+        Allows observers to use the "SET ALL PRESS" command to see partial
+        press between players.  Use with caution to avoid gunboat security
+        breaches.
+
+mod/    SET WHITE [PRESS]
+        Sets press option to white only.  Get file 'press'.
+
+mod/    SET NO WHITE [PRESS]
+        Same as "SET GREY".
+
+mod/    SET WHITE/GREY [PRESS]
+        Sets press option to white by default with grey allowed.  See
+        file 'press'.
+
+any/    SIGN OFF
+        To indicate the end of useful text.  The SIGN OFF command is used
+        to prevent your signature file (or taglines inserted by your e-mail
+        provider) from being interpreted as orders and/or being sent out as
+        part of a press message.
+
+any/    SIGN ON pname password
+        To sign onto an existing power that you own or to take over an
+        abandoned power.  Please note: it is only possible to have one SIGN ON
+        command (or equivalents, such as CREATE or OBSERVE) per mail message.
+        Only registered users may take over an abandoned power.  However, any
+        user may SIGN ON to an existing position if they use the correct
+        password.  This allows you to access your games from a secondary email
+        account.  If the SIGN ON command does not come from the player of
+        record, a copy of the Judge's response will be sent to that player as
+        a precaution against cheating.
+
+any/    SIGN ON ? password
+        To enter the next available game that is forming.
+
+any/bgs SIGN ON ?name password [variant] [options]
+        To enter a particular game that is forming.  The "variant" and
+        "options" specifications are required if, and only if, these options
+        were used in the CREATE or SET VARIANT command.  See "SET VARIANT".
+        Only registered users may signon to a forming game.
+
+any/    SUMMARY name
+        To get an historical summary of the specified game indicating who took
+        what power over when and which supply centers each power owned
+        throughout the game.
+
+ply/    SUMMARY
+        To get the summary report for the signed on game as above.  The
+        moderator in a gunboat game will get a slightly different summary that
+        includes the actual player names and addresses rather than the generic
+        "someone@somewhere".
+
+mod/    TERMINATE
+        To declare the game over.  If the game has not started, it will be
+        ended and no-one can ever sign onto it again.
+
+mod/    UNSTART                                                        {1.1.0}
+        To return the game to the position immediately prior to the start of
+        the game.  Powers will be unassigned and the game will be flagged
+        manualstart.  Games can only be unstarted if no turns have yet
+        processed.
+	The 'ManualStart' flag will be set by this command: the master must
+	send the 'SET AUTOSTART' command to start the game again.
+
+        This can be useful if a player is ejected or resigns; the game can be
+        unstarted, so a replacement can enter a preference list rather than
+        have to take whichever power left.
+
+any/pre VERSION [level]
+        To see the current version of the software.  The optional level
+        specification is not currently used, but in some future version may
+        generate a log of changes since the specified version.
+
+any/pre WATCH name password
+        Equivalent to "OBSERVE".
+
+any/    WHO user [user ...]
+        Equivalent to "WHOIS".
+
+any/pre WHO GAME name [FULL]
+        Retrieves WHOIS information for all players associated with game
+        "name".  If the game is gunboat this command can only be used by the
+        moderator (and only after he signs on).  The optional "FULL" argument
+        will return information for observers as well, while the default only
+        returns information for the players and Masters.  See also "WHO IS",
+        below.
+
+ply/    WHO GAME [FULL]
+        Retrieves WHOIS information for all players associated with the
+        currently signed on game.  If the game is gunboat, only a Master
+        can use this command.  The optional "FULL" argument will return
+        information for observers as well, while the default only returns 
+        information for the players and Masters.  See also "WHO IS", below.
+
+any/    WHO IS user [user ...]
+        To retrieve registration information for particular players.  All
+        registered people with mail addresses that start with a prefix that
+        matches any of the "user" words specified will be listed.  Thus the
+        command "WHO IS p" will list all users who have an email address that
+        starts with a P.  The entire database can be retrieved with the "GET
+        WHOIS" command (although this may be disabled by the Judgekeeper).
+
+ply/    WITHDRAW
+        Equivalent to "RESIGN".
+
+
+-----
+
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.

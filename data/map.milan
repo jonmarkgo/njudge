@@ -1,0 +1,219 @@
+#
+# milan variant map file
+# slightly re-arranged map to crete Milan instead of Venice and
+# avoid Venice/Trieste hotspot in standard
+#
+# $Log: map.milan,v $
+# Revision 1.2  2001-10-20 12:11:37  miller
+# Merged in changes from DEMA and USTV
+#
+# Revision 1.1.2.1  2001/10/15 23:06:10  ustv
+# Make Con and Den dual provinces
+#
+#
+#
+Switzerland,           l swi switz
+Adriatic Sea,          w adr adriatic  
+Aegean Sea,            w aeg aegean 
+Albania,               l alb
+Ankara,                T ank
+Apulia,                l apu
+Armenia,               l arm
+Baltic Sea,            w bal baltic
+Barents Sea,           w bar barents
+Belgium,               x bel
+Berlin,                G ber
+Black Sea,             w bla black
+Bohemia,               l boh
+Brest,                 F bre
+Budapest,              A bud
+Bulgaria,              x bul
+Burgundy,              l bur
+Clyde,                 l cly
+Constantinople,        Tw con
+Denmark,               xw den
+Eastern Mediterranean, w eas emed east eastern eastmed ems
+Edinburgh,             E edi
+English Channel,       w eng english channel ech
+Finland,               l fin
+Galicia,               l gal
+Gascony,               l gas
+Greece,                x gre
+Gulf of Lyon,          w lyo gol gulfofl lyon
+Gulf of Bothnia,       w bot gob both gulfofb bothnia
+Helgoland Bight,       w hel helgoland
+Holland,               x hol
+Ionian Sea,            w ion ionian
+Irish Sea,             w iri irish
+Kiel,                  G kie
+Liverpool,             E lvp livp lpl
+Livonia,               l lvn livo lvo
+London,                E lon
+Marseilles,            F mar mars
+Mid-Atlantic Ocean,    w mao midatlanticocean midatlantic mid mat
+Milan,                 I mil
+Moscow,                R mos
+Munich,                G mun
+Naples,                I nap
+North Atlantic Ocean,  w nao nat
+North Africa,          l naf nora
+North Sea,             w nth norsea nts
+Norway,                x nor nwy norw
+Norwegian Sea,         w nwg norwsea nrg norwegian
+Paris,                 F par
+Picardy,               l pic
+Portugal,              x por
+Prussia,               l pru
+Rome,                  I rom
+Ruhr,                  l ruh
+Rumania,               x rum
+Savoy,                 l sav svy
+Serbia,                x ser
+Sevastopol,            R sev sevastapol
+Silesia,               l sil
+Skagerrak,             w ska
+Smyrna,                T smy
+Spain,                 x spa
+St Petersburg,         R stp
+Sweden,                x swe
+Syria,                 l syr
+Trieste,               A tri
+Tunis,                 x tun
+Tyrolia,               l tyr tyl trl
+Tyrrhenian Sea,        w tys tyrr tyrrhenian tyn tyh
+Ukraine,               l ukr
+Venice,                l ven
+Vienna,                A vie
+Wales,                 l wal
+Warsaw,                R war
+Western Mediterranean, w wes wmed west western westmed wms
+Yorkshire,             l yor york yonkers
+-1
+swi-mv: swi
+adr-xc: alb apu ven tri ion
+aeg-xc: gre bul/sc con smy eas ion
+alb-mv: tri gre ser
+alb-xc: adr tri gre ion
+ank-mv: arm con smy
+ank-xc: bla arm con
+apu-mv: ven nap rom
+apu-xc: ven adr ion nap
+arm-mv: smy syr ank sev
+arm-xc: ank sev bla
+bal-xc: lvn pru ber kie den swe bot
+bar-xc: nwg stp/nc nor
+bel-mv: hol pic ruh bur
+bel-xc: eng nth hol pic
+ber-mv: kie pru sil mun
+ber-xc: kie bal pru
+bla-xc: rum sev arm ank con bul/ec
+boh-mv: mun sil gal vie tyr
+bot-xc: swe fin stp/sc lvn bal
+bre-mv: pic gas par
+bre-xc: mao eng pic gas
+bud-mv: vie gal rum ser tri
+bul-ec: con bla rum
+bul-mv: gre con ser rum
+bul-sc: gre aeg con
+bur-mv: mar gas par pic bel ruh mun sav
+cly-mv: edi lvp
+cly-xc: edi lvp nao nwg
+con-mv: bul ank smy
+con-xc: bul/sc bul/ec bla ank smy aeg
+den-mv: swe kie
+den-xc: hel nth swe bal kie ska
+eas-xc: syr smy aeg ion
+edi-mv: lvp yor cly
+edi-xc: nth nwg cly yor
+eng-xc: mao iri wal lon nth bel pic bre
+fin-mv: swe stp nor
+fin-xc: swe stp/sc bot
+gal-mv: war ukr rum bud vie boh sil
+gas-mv: par bur mar spa bre
+gas-xc: spa/nc mao bre
+gre-mv: bul alb ser
+gre-xc: bul/sc aeg ion alb
+hel-xc: nth den kie hol
+hol-mv: bel kie ruh
+hol-xc: bel nth hel kie
+ion-xc: tun tys nap apu adr alb gre aeg eas
+iri-xc: nao lvp wal eng mao
+kie-mv: hol den ber mun ruh
+kie-xc: hol hel den bal ber
+lon-mv: yor wal
+lon-xc: yor nth eng wal
+lvn-mv: pru stp mos war
+lvn-xc: pru bal bot stp/sc
+lvp-mv: wal edi yor cly
+lvp-xc: wal iri nao cly
+lyo-xc: spa/sc mar tys wes sav rom
+mao-xc: nao iri eng bre gas spa/nc por spa/sc naf wes
+mar-mv: spa gas bur sav
+mar-xc: spa/sc lyo sav
+mil-mv: sav tyr ven rom
+mos-mv: stp lvn war ukr sev
+mun-mv: bur ruh kie ber sil boh tyr
+naf-mv: tun
+naf-xc: mao wes tun
+nao-xc: nwg lvp iri mao cly
+nap-mv: rom apu
+nap-xc: rom tys ion apu
+nor-mv: fin stp swe
+nor-xc: ska nor nth nwg bar stp/nc swe
+nth-xc: yor edi nwg nor ska den hel hol bel eng lon
+nwg-xc: nao bar nor nth cly edi
+par-mv: bre pic bur gas
+pic-mv: bur par bre bel
+pic-xc: bre eng bel
+por-mv: spa
+por-xc: mao spa/nc spa/sc
+pru-mv: war sil
+pru-mv: ber lvn
+pru-xc: ber bal lvn
+rom-mv: nap ven apu sav mil
+rom-xc: tys nap sav lyo
+ruh-mv: bur bel hol kie mun
+rum-mv: ser bud gal ukr sev bul
+rum-xc: sev bla bul/ec
+sav-mv: mar bur mil rom
+sav-xc: mar lyo rom
+ser-mv: tri bud rum bul gre alb
+sev-mv: ukr mos rum arm
+sev-xc: rum bla arm
+sil-mv: mun ber pru war gal boh
+ska-xc: nth nor den swe
+smy-mv: syr con ank arm
+smy-xc: syr eas aeg con
+spa-mv: gas por mar
+spa-nc: gas mao por
+spa-sc: por wes lyo mar mao
+stp-mv: fin lvn nor mos
+stp-nc: bar nor
+stp-sc: fin lvn bot
+swe-mv: fin den nor
+swe-xc: fin bot bal den ska nor
+syr-mv: smy arm
+syr-xc: eas smy
+tri-mv: tyr vie bud ser alb ven
+tri-xc: alb adr ven
+tun-mv: naf
+tun-xc: naf wes tys ion
+tyr-mv: mun boh vie tri ven mil
+tys-xc: wes lyo rom nap ion tun
+ukr-mv: rum gal war mos sev
+ven-mv: tyr rom apu tri mil
+ven-xc: apu adr tri
+vie-mv: tyr boh gal bud tri
+wal-mv: lvp lon yor
+wal-xc: lvp iri eng lon
+war-mv: sil pru lvn mos ukr gal
+wes-xc: mao spa/sc lyo tys tun naf
+yor-mv: edi lon lvp wal
+yor-xc: edi nth lon
+-1
+Center order for summary report:
+   mil rom nap tun edi lon lvp bre par mar por spa bel hol mun kie ber
+   den swe nor stp war mos sev con ank smy bul rum gre ser bud vie tri
+#End of center ordering
+-1
+

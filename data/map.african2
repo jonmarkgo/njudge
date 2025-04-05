@@ -1,0 +1,201 @@
+Kisangani,                               Z kis
+Congo Basin,                             l cba
+Mitumba Mountains,                       l mmo
+Central Africa,                          l caf
+Gabon,                                   x gab
+Kinshasa,                                Z kin
+Lubumbashi,                              Z lub
+Uganda,                                  x uga
+Tanzania,                                x tan
+Sudd,                                    l sud
+Kenya,                                   l ken
+Zambia,                                  x zam
+Angola,                                  x ang
+Zimbabwe,                                x zim
+Chad,                                    x cha
+Kordofan Plateau,                        l kpl
+Namibia,                                 x nam
+Botswana,                                l bot
+Mozambique,                              l moz
+Pretoria,                                A pre
+Orange Free State,                       l ofs
+Kalahari Desert,                         l kde
+Cape Town,                               A cto
+Port Elizabeth,                          A pel
+Addis Ababa,                             E aab
+Khartoum,                                x kha
+Eritrea,                                 l eri
+Somalia,                                 E som
+Djibouti,                                E dji
+Egypt,                                   x egy eyg eygpt
+Bengasi,                                 L ben
+Eastern Sahara Desert,                   l esd
+Tripoli,                                 L tri
+Cameroon,                                l cam
+Niger,                                   l ngr
+Nigeria,                                 x nga
+Western Sahara Desert,                   l wsd
+Algeria,                                 l alg
+Tunis,                                   L tun
+Timbuktu,                                x tim
+Mauritania,                              l mau
+Morocco,                                 x mor
+Abidjan,                                 I abi
+Ghana,                                   l gha
+Mali,                                    l mal
+Ouagadougou,                             I oua ouanadougou
+Guinea,                                  l gui
+Freetown,                                I fre
+Senegal,                                 x sen
+Spain,                                   x spa
+Italy,                                   l ita
+Greece,                                  x gre
+Turkey,                                  l tur
+Mecca,                                   S mec
+Yemen,                                   l yem
+Riyadh,                                  S riy
+Oman,                                    l oma
+Iraq,                                    l irq
+Damascus,                                S dam
+Iran,                                    x irn
+Red Sea,                                 w rse
+Gulf of Aden,                            w goa
+Arabian Sea,                             w ase
+Persian Gulf,                            w pgu
+North Indian Ocean,                      w nio
+South Indian Ocean,                      w sio
+Southwestern Atlantic Ocean,             w swa
+Middle Atlantic Ocean,                   w mao
+Northern Atlantic Ocean,                 w nao
+Western Mediterranean Sea,               w wms
+Ionian Sea,                              w ise
+Eastern Mediterranean Sea,               w ems
+Gulf of Guinea,                          w gog
+Gulf of Congo,                           w goc
+Southeastern Atlantic Ocean,             w sea
+Madagascar,                              x mad
+Mozambique Channel,                      w mch
+-1
+kis-mv: sud uga mmo cba caf
+cba-mv: caf kis mmo lub kin gab
+mmo-mv: kis uga zam lub cba
+caf-mv: cha kpl sud kis cba gab cam
+gab-mv: cam caf cba kin
+gab-xc: cam kin goc gog
+kin-mv: cba lub ang gab
+kin-xc: ang goc gab
+lub-mv: cba mmo zam ang kin
+uga-mv: sud ken tan mmo kis
+tan-mv: uga ken moz zam
+tan-xc: ken nio mch moz
+sud-mv: kpl kha aab ken uga kis caf
+ken-mv: aab som tan uga sud
+ken-xc: som nio tan
+zam-mv: mmo tan moz zim bot ang lub
+ang-mv: kin lub zam bot nam
+ang-xc: kin nam sea goc
+zim-mv: moz pre bot zam
+cha-mv: wsd esd kpl caf cam nga ngr
+kpl-mv: esd egy kha sud caf cha
+kpl-xc: egy rse kha
+nam-mv: bot kde ang
+nam-xc: kde sea ang
+bot-mv: zam zim pre kde nam ang
+moz-mv: tan ofs pre zim zam
+moz-xc: tan mch ofs
+pre-mv: zim moz ofs kde bot
+ofs-mv: pre moz pel kde
+ofs-xc: moz mch sio pel
+kde-mv: nam bot pre ofs pel cto
+kde-xc: nam cto sea
+cto-mv: kde pel
+cto-xc: kde pel swa sea
+pel-mv: kde ofs cto
+pel-xc: ofs sio swa cto
+aab-mv: eri dji som ken sud kha
+kha-mv: eri aab sud kpl
+kha-xc: rse eri kpl
+eri-mv: dji aab kha
+eri-xc: rse goa dji kha
+som-mv: dji ken aab
+som-xc: dji goa nio ken
+dji-mv: som aab eri
+dji-xc: goa som eri
+egy-mv: dam mec kpl esd ben
+egy-xc: ems dam mec rse kpl ben
+ben-mv: egy esd tri
+ben-xc: ise ems egy tri
+esd-mv: tri ben egy kpl cha wsd
+tri-mv: tun ben esd wsd alg
+tri-xc: tun ise ben
+cam-mv: cha caf gab nga
+cam-xc: gab gog nga
+ngr-mv: wsd cha nga gha oua mal tim
+nga-mv: ngr cha cam gha
+nga-xc: cam gog gha
+wsd-mv: tri esd cha ngr tim mau alg
+alg-mv: tun tri wsd mau mor
+alg-xc: tun mor wms
+tun-mv: tri alg
+tun-xc: ise tri alg wms
+tim-mv: wsd ngr mal mau
+mau-mv: mor alg wsd tim mal sen
+mau-xc: mor sen nao
+mor-mv: alg mau
+mor-xc: wms alg mau nao
+abi-mv: gui mal oua gha fre
+abi-xc: gha gog mao fre
+gha-mv: oua ngr nga abi
+gha-xc: nga gog abi
+mal-mv: mau tim ngr oua abi gui sen
+oua-mv: ngr gha abi mal
+gui-mv: mal abi fre sen
+gui-xc: fre mao sen
+fre-mv: abi gui
+fre-xc: abi mao gui
+sen-mv: mau mal gui
+sen-xc: mau gui mao nao
+spa-xc: wms nao
+ita-xc: ise wms
+gre-mv: tur
+gre-xc: ems ise tur
+tur-mv: irq dam gre irn
+tur-xc: dam ems gre
+mec-mv: irq riy yem egy dam
+mec-xc: yem rse egy
+yem-mv: mec riy oma
+yem-xc: mec oma goa rse
+riy-mv: oma yem mec irq
+riy-xc: pgu oma irq
+oma-mv: yem riy
+oma-xc: pgu ase goa yem riy
+irq-mv: tur irn riy mec dam
+irq-xc: irn pgu riy
+dam-mv: tur irq mec egy
+dam-xc: tur egy ems
+irn-mv: irq tur
+irn-xc: ase pgu irq
+rse-xc: mec yem goa eri kha kpl egy
+goa-xc: eri rse yem oma ase nio som dji
+ase-xc: pgu irn nio goa oma
+pgu-xc: irn ase oma riy irq
+nio-xc: som goa ase sio mad mch tan ken
+sio-xc: pel ofs mch mad nio swa
+swa-xc: goc sea cto pel sio mao
+mao-xc: sen gui fre abi gog goc swa nao
+nao-xc: wms mor mau sen mao spa
+wms-xc: ita ise tun alg mor nao spa
+ise-xc: ita gre ems ben tri tun wms
+ems-xc: gre tur dam egy ben ise
+gog-xc: gha nga cam gab goc mao abi
+goc-xc: gog gab kin ang sea swa mao
+sea-xc: ang nam kde cto swa goc
+mad-xc: nio sio mch
+mch-xc: tan nio mad sio ofs moz
+-1
+Center order for summary report:
+   gab abi oua fre sen nga tim mor spa ben tri tun cha gre egy
+   mec riy dam irn kha aab som dji uga tan mad zam zim pre cto
+   pel nam ang kis kin lub
+#End of center ordering
+-1

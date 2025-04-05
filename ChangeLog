@@ -1,0 +1,6048 @@
+2006-07-17 12:10  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+
+2006-07-17 12:07  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+
+2006-07-17 11:40  njudge
+
+	* ChangeLog, Makefile.in, aclocal.m4, configure: Autobuild
+	  njudge_1_7_6
+
+2006-07-17 11:28  njudge
+
+	* BUGS, NEWS, configure.ac, njudge.spec: For next version, 1.7.6
+
+2006-07-11 17:10  millis
+
+	* docs/index.lyx: more updates, still incomplete.
+
+2006-07-11 16:35  millis
+
+	* docs/index.lyx: First entry, properly formmated index data file.
+
+2006-07-08 22:44  root
+
+	* params.c: Fix Bug 389, show short comment in full game listing.
+
+2006-07-08 22:32  root
+
+	* ma_movement.c: Fix Bug 390.
+
+2006-07-08 20:45  root
+
+	* ma_movement.c: Fix Bug 426, adding description of whether
+	  province or city (or both) rebellion relieved. Also removed
+	  (some) compile warnings.
+
+2006-06-30 12:16  millis
+
+	* ml_set.c: Bug 432, allow 'set preferences' as well as 'set
+	  preference'
+
+2006-06-27 19:45  millis
+
+	* mail.c: Bug 476, make 'Re' case-insensitive when constructing
+	  reply subject
+
+2006-06-07 10:31  millis
+
+	* ml_signon.c: Fix Bug 473, specify dedsystems file.
+
+2006-05-09 22:54  millis
+
+	* lib.c: More '/' fixes
+
+2006-05-09 22:51  millis
+
+	* lib.c: Removed unecessary comment '/'
+
+2006-05-03 03:09  alange
+
+	* dip.c:
+	  Bug 467. Spurious absence activation notices quashed.
+
+2006-05-03 02:38  alange
+
+	* lib.c:
+	  Bug 466.
+
+2006-05-03 01:25  alange
+
+	* lib.c:
+	  Bug 369. Use time functions to deal with deadline advances.
+	  Prevent unexpected results when Daylight Saving Time (Summer
+	  Time) begins.
+
+2006-05-03 01:19  alange
+
+	* dipent.c:
+	  Prevent CLOCK setting from being exactly 1440. Part of Bug 369.
+
+2006-04-04 02:19  alange
+
+	* ml_date.c:
+	  Fix typo.
+
+2006-03-28 07:36  njudge
+
+	* ChangeLog: Convert times to GMT
+
+2006-03-18 22:50  alange
+
+	* mail.c:
+	  Fix bug 460.
+
+2006-03-18 22:22  alange
+
+	* ml_set.c:
+	  Fix Bug 461 to allow cancellation of absence in the past.
+
+2006-03-18 22:21  alange
+
+	* ml_date.c:
+	  Make error message more clear when guessed date is not what was
+	  expected.
+
+2006-03-17 02:45  nzmb
+
+	* ascii_to_ded.c, ded_to_ascii.c: write and close are standard
+	  under POSIX. Add unistd.h and fix bogus declaration. This fixes
+	  compile problem on HP-UX 11i
+
+2006-02-19 05:59  nzmb
+
+	* history.c: Fix bug 456
+
+2006-01-05 11:56  millis
+
+	* dip.conf.in: New keeper/custodian addresses, based @ diplom.org
+
+2006-01-04 11:42  millis
+
+	* docs/README.keepers: First version, fixing bug 453
+
+2005-12-28 14:13  russblau
+
+	* ml_set.c: Fix "SET CONCEDE" bug; Judge should now be able to
+	  distinguish between SET CONCEDE and SET CONC XYZ.
+
+2005-11-12 21:53  christ
+
+	* docs/InstallationHOWTO.html: Update of Installation howto for 1.7
+
+2005-11-10 12:17  millis
+
+	* data/index: Bug 442, NoGracePress flag handling and HomeTransfer
+	  flag
+
+2005-11-10 12:08  millis
+
+	* ml_set.c, params.c, dip.h, functions.h, lib.c, ml_press.c: Bug
+	  442, NoGracePress flag handling.
+
+2005-10-15 22:50  millis
+
+	* ma_expenses.c: Bug 441, prevent dead players making expenses.
+
+2005-09-30 16:09  machmstr
+
+	* data/rules.machiavelli: v2.8 28th Sep 2005. Clarified power
+	  elimination and Home Country control rules (NPCs and Variable
+	  Income).
+
+2005-09-18 13:51  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_5
+
+2005-09-18 13:43  millis
+
+	* NEWS: Final list for njudge-1.7.5
+
+2005-09-18 13:32  millis
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure: Fix bug 428,
+	  automake problems and install dependency error
+
+2005-09-14 11:54  millis
+
+	* common.c, functions.h, phase.c, rdip.c: Bug 436, fix gcc 4.0
+	  compile errors.
+
+2005-08-05 01:13  alange
+
+	* mail.c: Bug 435 SET [NO]BROADCAST
+
+2005-07-18 16:51  machmstr
+
+	* AUTHORS: Uhm forgot these pseudonyms: Curt = Curt Marcus Eric =
+	  Eric Wagoner Sean = Sean Starkey Travis =  Travis C. Ruelle
+
+2005-07-18 16:23  machmstr
+
+	* AUTHORS: Positron = Jonathan Scott Haas coder of SET DRAW
+
+2005-07-18 16:20  machmstr
+
+	* data/map.dipmach: swapped places between ruh and kie in famine
+	  table
+
+2005-07-18 16:19  machmstr
+
+	* data/info.dipmach: Removed erroneous line stating that T could
+	  only have mercenary fleets
+
+2005-07-18 16:18  machmstr
+
+	* data/rules.machiavelli: Added missing order definitions for
+	  special units and some other cases
+
+2005-06-23 02:32  alange
+
+	* data/deadlines: Update to match date handling documentation to
+	  current code.
+
+2005-06-23 02:10  alange
+
+	* data/absence: Reverted to version 1.7, and corrected examples for
+	  current behavior.
+
+2005-06-16 01:44  alange
+
+	* dip.c, dipent.c: Bug 257: Notify masters on bailout recovery and
+	  time-warp.
+
+2005-06-09 09:45  alange
+
+	* ml_signon.c: Fix bug 406. Masters and observers no longer set to
+	  wait on takeover.
+
+2005-05-22 18:56  millis
+
+	* aclocal.m4: njudge_1_7_5 version
+
+2005-05-22 18:55  millis
+
+	* BUGS, Makefile.in, NEWS, configure, configure.ac, njudge.spec:
+	  New build for njudge_1.7.5
+
+2005-05-13 16:34  machmstr
+
+	* data/rules.machiavelli2: tech note on rebellion support
+
+2005-05-13 16:33  machmstr
+
+	* data/rules.machiavelli: clarified rebellion removal on retreats
+
+2005-05-08 16:01  machmstr
+
+	* data/seed.mach_eos: Spelling of Genoa corrected (was Genova)
+
+2005-05-06 23:18  millis
+
+	* ma_expenses.c: Bug 415, do not let power try to bribe/assassinate
+	  themselves!
+
+2005-05-06 23:05  millis
+
+	* ma_stats.c: Bug 409, show eliminated countries as unonwned but
+	  not their chits.
+
+2005-05-06 22:20  millis
+
+	* ma_porder.c: Bug 407, correctly show power eliminated when last
+	  home centre captured.
+
+2005-05-05 23:48  millis
+
+	* st_movement.c: Bug 423 fix, stopping some valid convoys from
+	  working.
+
+2005-05-05 16:36  machmstr
+
+	* data/rules.machiavelli2: v1.3b 27th March 2005. Bribe handling
+	  note added. Author Sergio Lidsell.
+
+2005-05-05 16:34  machmstr
+
+	* data/rules.machiavelli: v2.6 15th Feb 2005. Siege info reworded
+	  for clarity. PIO/MES rules rewritten	   to handle paradoxes and
+	  reflect coding.  Author Sergio Lidsell.  v2.7 25th Mar 2005.
+	  Straits rules rephrased and corrected. Self-bribes	 explained.
+	  Example of ally/unally command added. Samples of bribe
+	  'shorthands' and order oddities added. Contents listing added.
+	  Minor     rephrasing of siege rules. Explanation of difference
+	  between'x' and 'l'	 province arguments. Author Sergio Lidsell.
+
+2005-05-05 16:23  machmstr
+
+	* data/info.machfive: setup correction
+
+2005-03-06 22:20  millis
+
+	* st_movement.c: Fix Bug 408, convoy incorrectly voided in Modern
+
+2005-02-14 00:54  millis
+
+	* po_get.c: Bug 400, allow dyslexic siege spelling
+
+2005-01-14 16:50  machmstr
+
+	* data/rules.machiavelli: Some minor clarifications re straits (new
+	  g and i points) and a "notice"
+
+2005-01-06 01:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_4
+
+2005-01-06 01:10  millis
+
+	* data/: info.dipmach1, report.dipmach1, seed.dipmach1: [no log
+	  message]
+
+2005-01-06 01:07  millis
+
+	* data/map.dipmach1: [no log message]
+
+2005-01-06 01:04  millis
+
+	* configure.ac, njudge.spec, BUGS, NEWS: Updated for new version
+	  njudge_1.7.4
+
+2005-01-06 00:56  millis
+
+	* mail.c: Fix Bug 395, don't allow press to be copied inadvertently
+
+2004-12-28 10:04  millis
+
+	* ma_movement.c: Fixed Bug 393 (Mach2 siege break failed)
+
+2004-12-17 21:08  alange
+
+	* bailout.c: Bug 391: Don't rename FORWARD once KEEPOUT file
+	  exists.
+
+2004-12-06 18:15  machmstr
+
+	* data/rules.machiavelli: Notice that a garrison and an army or
+	  fleet in the *same province* cannot *trade places*. E.g. G PISA C
+	  A at the same time as F PISA C G is not allowed regardless of
+	  units strengths.
+
+	  Nor can two units *trade provinces* with each other. E.g. F PISA
+	  M PIO at the same time as A PIO M PISA is not allowed regardless
+	  of units strengths.
+
+	  Notice that special units retain their 'specialness' if you bribe
+	  them to turn autonomous. Thus you may e.g. create an elite
+	  autonomous garrison!
+
+2004-12-04 21:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_3
+
+2004-12-04 21:15  millis
+
+	* configure.ac, njudge.spec: New version njudge-1.7.3
+
+2004-12-04 21:12  millis
+
+	* BUGS, NEWS: Updated for njudge-1.7.3
+
+2004-12-04 20:59  millis
+
+	* starter.flist, data/rules.intimate: Fix bug 388
+
+2004-12-04 20:47  millis
+
+	* st_movement.c: Fixed Bug 387, support being incorrectly voided.
+
+2004-12-04 16:21  millis
+
+	* plyrdata.c: Fix Bug 386, allowing FreeBSD compiling
+
+2004-11-24 12:29  millis
+
+	* st_movement.c: Fix Bug 385 (Portage game hangs judge and coasts
+	  not working correctly)
+
+2004-11-24 12:26  millis
+
+	* data/map.dipmach: Fix Bug 386 (Naf and Alb to type 'x' not type
+	  'l')
+
+2004-10-30 22:59  millis
+
+	* data/index: Summer and Garrison flags appeared in 1.4.0, not
+	  1.5.0
+
+2004-10-24 09:47  njudge
+
+	* ChangeLog, configure, Makefile.in, aclocal.m4: Autobuild
+	  njudge_1_7_2
+
+2004-10-24 09:11  millis
+
+	* BUGS, NEWS, configure.ac, njudge.spec: Next version 1.7.2
+
+2004-10-24 09:02  millis
+
+	* st_porder.c, dip.c, ma_porder.c: Small victory handling
+	  corrections
+
+2004-10-23 22:43  millis
+
+	* dip.c, dip.h, dipent.c, draw.c, ml_set.c, st_porder.c: Bug 363
+	  and 368, AlliedWin and Conced/NoDias in duplex games fixes
+
+2004-10-23 21:27  millis
+
+	* mail.c: Bug 374, skip rest of input if 'become' command fails
+
+2004-10-23 21:08  millis
+
+	* dip.h, ma_movement.c: Fix Bug 375, Mach2 allow besieged to
+	  dislodge
+
+2004-10-23 19:17  millis
+
+	* ml_set.c: Bug 370 & 371, missing breaks added to case statement
+	  end
+
+2004-10-23 19:03  millis
+
+	* st_retreat.c: Fixed bug 376 (allow player self-dislodged units to
+	  retreat in duplex)
+
+2004-10-19 19:59  machmstr
+
+	* data/rules.machiavelli2: Clarified besieged conversion
+
+2004-10-17 22:18  alange
+
+	* lib.c: Fix Bug 369: deadline problems ater time changes.
+
+2004-10-16 21:06  machmstr
+
+	* data/rules.machiavelli2: Venice sea area effects, winning
+	  conditions, handling of home country conquest and assassination
+	  rules
+
+2004-10-13 00:23  alange
+
+	* dip.c: Added newline to end of Congrats line so dip.footer would
+	  start on a new line.
+
+2004-10-12 01:14  alange
+
+	* mail.c: Fix typo in case MAP: message
+
+2004-10-05 23:18  millis
+
+	* st_build.c: Fix Bug 366 (cannot waive in duplex games)
+
+2004-09-28 20:38  alange
+
+	* ml_signon.c: Bug 353 Faster deadline for first turn when NO_PRESS
+
+2004-09-17 19:15  nzmb
+
+	* Makefile.am, Makefile.in: Fix bug #351.
+
+2004-09-17 18:28  nzmb
+
+	* ascii2rec.c: Fixed compile warning.
+
+2004-09-17 13:33  millis
+
+	* docs/njudge-compile-farm.html: First entry
+
+2004-09-13 23:03  millis
+
+	* ml_set.c, params.c, data/index: Further changes for Bug 363
+
+2004-09-13 01:48  nzmb
+
+	* dipent.c: Removed redefinition of malloc (incorrectly, I may add)
+	  that was causing compile to fail on FreeBSD.
+
+2004-09-13 01:33  nzmb
+
+	* dip.h: Trivial typo fix
+
+2004-09-07 13:26  millis
+
+	* variant.h: update dipent.avp too on variant setup.
+
+2004-09-07 13:19  millis
+
+	* dip.h: Invert sense of ALLIEDWIN flag
+
+2004-09-07 12:45  millis
+
+	* data/info.portage: Small spelling corrections
+
+2004-09-06 22:08  millis
+
+	* dip.c, dip.h, global.c: Bug363 Allow more than one victor
+
+2004-09-03 13:30  millis
+
+	* dip.h, dipent.c, ml_set.c, params.c: Added use of AlliedWin
+	  value.
+
+2004-09-03 12:22  millis
+
+	* data/index: Small command text change (Allied Win)
+
+2004-09-02 13:33  millis
+
+	* data/: syntax, index, info.duplex: Bug 361, update information
+	  files for duplex games
+
+2004-09-02 13:01  millis
+
+	* data/info.wings: Small textual help updates
+
+2004-08-31 17:41  machmstr
+
+	* data/rules.machiavelli2: Clarification of income and control for
+	  Venice/Venice sea area
+
+2004-08-24 11:40  millis
+
+	* variant.c: Fixed compile error
+
+2004-08-23 16:42  millis
+
+	* variant.c, variant.h: Add space for Initiamte variant specifier
+
+2004-08-23 13:27  millis
+
+	* variant.c, variant.h: Removed extra Norway definition
+
+2004-08-22 18:48  machmstr
+
+	* data/map.machfive: Corrected misspelled abbreviation and wrong
+	  province designation
+
+2004-08-19 21:30  russblau
+
+	* data/: info.empire, map.empire: Fixed spelling mistake: it's
+	  "Massachusetts"!
+
+2004-08-18 21:49  jaldhar
+
+	* Makefile.in, configure: regenerated autofiles for recent
+	  Makefile.am update.
+
+2004-08-18 10:01  millis
+
+	* Makefile.in: Changed name of document to njudgeMapFileHOWTO.*
+
+2004-08-18 09:58  millis
+
+	* Makefile.am: Change name of document to njudgeMapFileHOWTO
+
+2004-08-17 19:36  machmstr
+
+	* docs/njudgeMapFileHOWTO.txt: Q'n'D text version.    Former
+	  'njudgemapdatahowto'. Changes: Added description of the seed file
+	  format and of official power names. Revision of text (clean up,
+	  clarifications and syntax).
+
+2004-08-17 19:35  machmstr
+
+	* docs/njudgeMapFileHOWTO.htm: Former 'njudgemapdatahowto'.
+	  Changes: Added description of the seed file format and of
+	  official power names. Revision of text (clean up, clarifications
+	  and syntax).
+
+2004-08-17 19:32  machmstr
+
+	* docs/: njudgemapdatahowto.htm, njudgemapdatahowto.txt: File
+	  renamed. Replaced with 'nJudgeMapFileHOWTO'
+
+2004-08-17 19:15  machmstr
+
+	* data/rules.machiavelli: Appendix 6 added. (On how to know what
+	  rule set is used.)
+
+2004-08-17 19:08  machmstr
+
+	* data/: info.dipmach, map.dipmach, report.dipmach, seed.dipmach:
+	  Official release version (=dipmach2)
+
+2004-08-17 19:05  machmstr
+
+	* data/: info.dipmach2, map.dipmach2, report.dipmach2,
+	  seed.dipmach2: replaced with xxx.dipmach file
+
+2004-08-17 14:59  jaldhar
+
+	* debian/changelog, docs/README.hackers: Updated version number in
+	  changelog.  Slightly changed the numbering scheme (this is a
+	  native package) and updated documentation accordingly.
+
+2004-08-17 14:53  jaldhar
+
+	* Makefile.am: Removed GNUism in date command for better
+	  portability.	Fixes bug 351.
+
+2004-08-17 09:49  millis
+
+	* dip.c: Bug 355: missed incrementing just_now_abandoned flag.
+
+2004-08-16 21:51  millis
+
+	* dip.c: Refix bug 347 (games can go NoNMR) and also Bug 355 (no
+	  abandoned player(s) messages.
+
+2004-08-16 17:49  machmstr
+
+	* data/: seed.mach_aoc, report.mach_aoc, map.mach_aoc,
+	  info.mach_aoc: Official release version (=mach_aoc3)
+
+2004-08-16 17:45  machmstr
+
+	* data/: info.mach_aoc3, map.mach_aoc3, report.mach_aoc3,
+	  seed.mach_aoc3: Name changed to mach_aoc without the version
+	  number
+
+2004-08-15 02:20  nzmb
+
+	* dip.c: Fixed various problems related to the addition of intimate
+	  and dipent.wait.
+
+2004-08-10 22:25  machmstr
+
+	* data/map.machfive: missing sea to coast moves added, abbreviation
+	  info revised (lower adriatic la...->las...)
+
+2004-08-10 22:24  machmstr
+
+	* data/info.machfive: abbreviation info revised (lower adriatic
+	  la...->las...)
+
+2004-08-10 22:22  machmstr
+
+	* data/map.mach2_ttr: incorrect move from carinthia to aus (aus
+	  impassable in this scenario) corrected
+
+2004-08-09 20:15  machmstr
+
+	* variant.c: While I am at it: Lowland had Lowland as adjective,
+	  corrected to 'Lowlander'.
+
+2004-08-07 17:05  machmstr
+
+	* variant.c: Correction of possessives: it is portugal portuguese
+	  and cyprus cypriotic (or cyprean).  WARNING there are two entries
+	  for Norway Norwegian !!!  (I have not touched in case there is
+	  some reason to it.)
+
+2004-08-07 16:05  machmstr
+
+	* variant.c, variant.h: All AH Mach variants added and then some
+
+2004-08-07 16:01  machmstr
+
+	* data/: info.machfive, map.machfive, seed.machfive: njudge 1.7
+	  release version
+
+2004-08-06 19:22  machmstr
+
+	* data/report.dipmach2: no message
+
+2004-08-06 09:15  machmstr
+
+	* data/seed.dipmach1: current game version running on DEMA
+
+2004-08-06 09:13  machmstr
+
+	* data/: seed.mach2_eai, seed.mach2_fotl, seed.mach2_pa,
+	  seed.mach2_pamt, seed.mach2_sfd1, seed.mach2_sfd2,
+	  seed.mach2_span, seed.mach2_ttr, seed.mach_aoc2, seed.mach_aoc3,
+	  seed.mach_eos, seed.mach_este, seed.mach_sfd1, seed.mach_sfd2,
+	  seed.mach_span, seed.machho, seed.machiavelli, seed.machiavelli2:
+	  njudge 1.7 distribution version
+
+2004-08-06 09:09  machmstr
+
+	* data/: report.mach100, report.mach2_eai, report.mach2_fotl,
+	  report.mach2_pa, report.mach2_pamt, report.mach2_sfd1,
+	  report.mach2_sfd2, report.mach2_span, report.mach2_ttr,
+	  report.mach_aoc2, report.mach_aoc3, report.mach_eos,
+	  report.mach_este, report.mach_sfd1, report.mach_sfd2,
+	  report.mach_span, report.machfive, report.machho: mach report
+	  files
+
+2004-08-06 09:08  machmstr
+
+	* data/map.mach_aoc3: njudge 1.7x distribution version new version
+	  3 of variant
+
+2004-08-06 09:07  machmstr
+
+	* data/map.mach_aoc2: current version running on DEMA
+
+2004-08-06 09:06  machmstr
+
+	* data/map.dipmach2: njudge 1.7x distribution version minor changes
+	  of income and unit availability
+
+2004-08-06 09:04  machmstr
+
+	* data/info.mach_aoc3: njudge 1.7 distribution version new version
+	  3 of variant
+
+2004-08-06 08:53  machmstr
+
+	* data/info.mach_aoc2: current version running on DEMA
+
+2004-08-06 08:52  machmstr
+
+	* data/: info.dipmach2, info.mach2_eai, info.mach_eos,
+	  info.mach_este, info.mach_sfd2, info.mach_span: nJudge 1.7x
+	  distribution version
+
+2004-08-06 08:43  machmstr
+
+	* data/: info.mach_aoc, map.mach_aoc: Invalid file
+
+2004-08-06 07:51  machmstr
+
+	* data/: seed.eai, seed.este, seed.fotl, seed.machaoc,
+	  seed.machiavelli, seed.machiavelli2, seed.pa, seed.pamt,
+	  seed.ttr: Invalid versions
+
+2004-08-05 21:41  njudge
+
+	* ChangeLog: Autobuild njudge_1_7_1
+
+2004-08-05 21:11  millis
+
+	* NEWS, BUGS, configure.ac, njudge.spec: Update for 1.7.1 release
+
+2004-08-03 21:57  millis
+
+	* dip.c: Fix Bug 347 (games incorrectly process when NoNMR and
+	  abandoned playerss) Fix Bug 350 (too many powers shown as
+	  abandoned in Intimate)
+
+2004-08-03 21:55  millis
+
+	* st_porder.c, ml_signon.c: Fix Bug 349 and 352
+
+2004-08-03 21:52  millis
+
+	* mail.c: Fix Bug 326 (allow Intimate to rollback to first turn)
+
+2004-08-03 15:26  millis
+
+	* AUTHORS: New contributors
+
+2004-08-02 15:56  russblau
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: Add new
+	  commands defined in version 1.7.0 (SET PORTAGE and SET POWERS).
+
+2004-08-01 18:31  machmstr
+
+	* data/seed.eai: This seed is not complete.  Seed file for the AH
+	  official Mach2 scenarios 6 published in The General.
+
+2004-08-01 18:30  machmstr
+
+	* data/: seed.este, seed.fotl, seed.pa, seed.pamt, seed.ttr: Seed
+	  files for the AH official Mach2 scenarios 5-8 published in The
+	  General.
+
+2004-08-01 18:29  machmstr
+
+	* data/: info.mach2_eai, info.mach2_fotl, info.mach2_pa,
+	  info.mach2_pamt, info.mach2_ttr, info.mach_este, map.mach2_eai,
+	  map.mach2_fotl, map.mach2_pa, map.mach2_pamt, map.mach2_ttr,
+	  map.mach_este: The AH official Mach2 scenario 5-8 published in
+	  The General.
+
+2004-08-01 18:28  millis
+
+	* ml_set.c: Fix Bug 345 and 346
+
+2004-07-31 23:30  njudge
+
+	* ChangeLog: Autobuild njudge_1_7_0
+
+2004-07-31 23:00  millis
+
+	* configure.ac, njudge.spec: Updated to 1.7.0
+
+2004-07-30 22:36  njudge
+
+	* ChangeLog: Autobuild njudge_1_7_0
+
+2004-07-30 22:06  millis
+
+	* BUGS, NEWS: Update for 1.7.0 release
+
+2004-07-30 22:01  millis
+
+	* variant.c, variant.h, data/info.minorpower, data/map.minorpower,
+	  data/seed.minorpower: Updated Minorpower variant to have real
+	  power names
+
+2004-07-28 17:02  millis
+
+	* st_bid.c: Fix to allow bids in first turn of game!
+
+2004-07-27 23:48  millis
+
+	* st_bid.c: Don't allow bids for powers with no centers
+
+2004-07-27 23:14  millis
+
+	* st_porder.c: Bug 341, don't show eliminated Mercenary powers in
+	  intimate
+
+2004-07-27 23:12  millis
+
+	* params.c: Bug 344, show special Intimate winning conditions
+
+2004-07-27 23:09  millis
+
+	* ml_signon.c: Signon problems fixed (Bug 91)
+
+2004-07-27 23:07  millis
+
+	* dip.c: Bug 343 (say how many missing players) and Bug 247 (extra
+	  dots in secret game late warning)
+
+2004-07-27 23:04  millis
+
+	* common.c: Fix bug 342, no bidding phase in Intimate if no
+	  mercenaries alive
+
+2004-07-26 23:18  millis
+
+	* data/absence: Updated description for Bug 340
+
+2004-07-26 23:17  millis
+
+	* dip.c, functions.h, history.c, ml_date.c, ml_set.c: Bug 340:
+	  default to 00:00 for absence start and 23:59 for absence end.
+	  All other uses of date function stay unaltered.
+
+2004-07-26 22:40  millis
+
+	* cmap.c: Fix bug 291 fix, as was failing for variants with
+	  seed.<n> files only
+
+2004-07-26 22:32  millis
+
+	* params.c: Small change to show Duplex vs number of powers
+	  actually playing
+
+2004-07-26 22:32  millis
+
+	* ml_signon.c: Bug fix for Bug 91, new signons were acting as if
+	  master!
+
+2004-07-25 16:13  millis
+
+	* dip.c, dip.h, functions.h, ml_signon.c, st_build.c, st_porder.c,
+	  st_retreat.c, st_status.c: Bug fixes for Bug 91 (Duplex powers),
+	  Bug 233 (Abandoned power cannot return in duplex) and Bug 206
+	  (allow takeover of unknown abandoned countries)
+
+2004-07-25 16:07  millis
+
+	* params.c, ml_set.c, dipent.c, data/index: Bug 151, allow less
+	  powers than variant default.
+
+2004-07-25 16:01  millis
+
+	* draw.c: Bug 336, allow draw/concede for Intimate games
+
+2004-07-13 00:29  millis
+
+	* st_build.c: Fix bug 339, allowing build transform games to permit
+	  players changing mind about builds without allowing too many.
+
+2004-07-13 00:20  millis
+
+	* data/index: Bug 117: explain set notrafo now working 1.7.0
+	  onwards
+
+2004-07-13 00:14  millis
+
+	* ml_set.c: Allow Transformation to be switched off (Bug 117)
+
+2004-07-12 09:46  millis
+
+	* dip.c: Bug 226: ON reflection, 3 day reminders for paused games
+	  seems right (as if less, players would get most annoyed!).
+
+2004-07-12 00:41  millis
+
+	* ml_list.c: Fix bug 335 (don't special list Any-Site games)
+
+2004-07-12 00:29  millis
+
+	* ml_press.c: Don't show normal press warnings if game is PAUSED.
+
+2004-07-12 00:21  millis
+
+	* dip.c: Fix Bug 226: remind every move frequency for paused games.
+	  Also a fix for Bug 91 / Bug 297, to only mail real players on a
+	  game pause.
+
+2004-07-11 23:32  millis
+
+	* st_porder.c: Bug297: Improved Intimate victory checking.
+
+2004-07-10 07:18  nzmb
+
+	* st_movement.c: Final tweaks to new convoy code. Fixes bug #290.
+
+2004-07-09 17:57  millis
+
+	* st_movement.c: Restored disabled code for multi-province units
+	  checks
+
+2004-07-09 04:07  nzmb
+
+	* st_movement.c: Major convoy changes -- the convoy field in the
+	  unit struct now is a list of provinces being convoyed through,
+	  not a list of units. This simplifies convoy processing in blind
+	  (it allows us to accept all convoys, which allows a fix to bug
+	  #290). Fair warning: this code compiles but is not tested --
+	  that's coming.
+
+2004-07-09 03:32  nzmb
+
+	* po_mastrpt.c: Missing #include of functions.h.
+
+2004-07-08 22:20  millis
+
+	* mail.c, ml_set.c, po_mastrpt.c: Bug 91: small changes to improve
+	  status handling and show only real player information to master
+
+2004-07-07 23:20  millis
+
+	* ml_list.c: Bug 332: Do not reveal player move status in a secret
+	  game
+
+2004-07-07 22:50  millis
+
+	* dip.c, lib.c, ml_set.c: Bug91: further fixes for Duplex code
+	  (these mainly to get absences and late handling working)
+
+2004-07-07 22:00  millis
+
+	* st_movement.c: Small fix as was showing 'Unit' not real type for
+	  convoyed units
+
+2004-07-05 07:17  nzmb
+
+	* st_movement.c: Partial fix to bug 290. Unfortunately, convoys in
+	  blind seem to be somewhat broken because of this fix (by my
+	  testing, long convoys don't work). I'll fix this as soon as I
+	  can.
+
+2004-07-05 06:33  nzmb
+
+	* st_movement.c: Code cleanup: fixed unnecessary tests in if
+	  clauses and fixed formatting in part of movein.
+
+2004-07-05 04:01  nzmb
+
+	* cmap.c: Fix bug #291.
+
+2004-07-04 03:53  millis
+
+	* porder.c: Fix bug 299 (do not send moves on terminated game)
+
+2004-07-04 03:49  alange
+
+	* ml_date.c: Bug 323. Rewrite date calculation logic to take
+	  advantage of mktime().  Semantics may be slightly different in
+	  evaluating ambiguous dates.
+
+2004-07-04 03:33  millis
+
+	* dip.h: Added Portage and irregular flags
+
+2004-07-04 03:28  millis
+
+	* dip.c: Bug 97: don't make each power have to move if duplex and
+	  supress extra 'reminder' messages.
+
+2004-07-04 03:25  millis
+
+	* functions.h, lib.c, po_init.c, porder.h, st_movement.c,
+	  data/index, data/info.portage: Fix bug 328, implement Portage
+	  variant
+
+2004-07-04 03:10  millis
+
+	* params.c: Display new irregular and portage flags
+
+2004-07-04 03:10  millis
+
+	* ml_set.c: Bug 329, allow changes of settigns when game is
+	  running, just set the 'irregular' flag
+
+2004-06-28 17:47  millis
+
+	* st_bid.c: Limit bids only to 9999 or less
+
+2004-06-28 17:26  russblau
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: Updated
+	  User's Manual for forthcoming version 1.7.0.
+
+	  Note the new "cover page" in the HTML version!
+
+2004-06-27 11:00  millis
+
+	* st_bid.c: Bug 297: Changed to prevent oversized bids
+
+2004-06-27 01:50  millis
+
+	* dip.c, functions.h, lib.c, phase.c, po_init.c, st_bid.c,
+	  st_build.c, st_porder.c: Futher Intimate fixes (Bug 297)
+	  specifically to allow phased orders and correct turns not
+	  processing, plus more information printed.
+
+2004-06-17 06:12  nzmb
+
+	* rdip.c: Made rdip handle an early death of the dip program much
+	  more gracefully.  Instead of bailing out, it assumes the judge
+	  couldn't process the message and skips it.
+
+2004-06-16 07:54  nzmb
+
+	* bailout.c, functions.h, rdip.c: A couple of changes to improve
+	  the interaction between rdip and bailout, and make rdip a bit
+	  more fault tolerant: (1) rdip now handles SIGPIPE and bails the
+	  judge out gracefully should it     occur (previously, things died
+	  in mysterious and unpleasant ways).  (2) Fixed segfaults that
+	  occured when rdip calls bailout.
+
+2004-06-15 23:50  millis
+
+	* st_porder.c: Bug 297: fixed problem with using dipent.np and not
+	  dipent.n
+
+2004-06-15 23:48  millis
+
+	* st_porder.c: Bug 297: fix a problem with detecting intimate
+	  victory
+
+2004-06-12 19:19  millis
+
+	* st_movement.c: Fix bug 322 (not showing proxied supported units
+	  correctly)
+
+2004-06-12 13:00  alange
+
+	* lib.c: Fixed logic error in safety code from previous commit.
+
+2004-06-11 21:01  alange
+
+	* lib.c: Bug 132: Cleaned up absence and deadline calculation. No
+	  more recursion.
+
+2004-06-11 17:27  millis
+
+	* st_bid.c: Bug 297: Minor change to not show zero bids in results
+
+2004-06-09 22:05  millis
+
+	* lib.c, ml_list.c, st_bid.c, st_retreat.c: More fixes for Bug 297,
+	  Intimate Diplomacy
+
+2004-06-08 08:02  millis
+
+	* st_porder.c: Bug 297: Fix so that only real, alive players can
+	  win
+
+2004-06-05 09:00  millis
+
+	* st_bid.c, po_init.c: Bug 297 : problems with calculating
+	  effective bids fixed
+
+2004-06-03 22:57  millis
+
+	* po_init.c: Bug 297 - fix for Intimate where not marking player as
+	  needing to make moves (status value was being lost)
+
+2004-06-01 23:16  millis
+
+	* po_init.c: Fix bug 316 (incorrect blockaded centres)
+
+2004-05-25 12:45  millis
+
+	* smail.in: Fix Bug 267, allow accented characters and don't mess
+	  up '=' sequences
+
+2004-05-23 22:48  millis
+
+	* st_build.c: Fix for Intimate, show default disbands for
+	  controlled powers
+
+2004-05-23 15:53  millis
+
+	* dip.c: Restored inadvertently deleted 1.49 and 1.48 changes.
+
+2004-05-22 10:31  millis
+
+	* functions.h: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 10:28  millis
+
+	* st_porder.c: Restored 1.22 version changes mistakenly deleted
+
+2004-05-22 10:02  millis
+
+	* porder.c: Oh dear: shouldn't check in before trying to compile!
+
+2004-05-22 10:00  millis
+
+	* porder.c: Restored version 1.4 changes mistakenly lost
+
+2004-05-22 09:39  millis
+
+	* dip.h: Repleaced inadvertently lost changes from 1.46 and 1.45
+
+2004-05-22 09:23  millis
+
+	* ml_signon.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 09:18  millis
+
+	* mail.c, lib.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 09:13  millis
+
+	* ml_set.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 09:08  millis
+
+	* draw.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 09:01  millis
+
+	* dipent.c, conf.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 08:58  millis
+
+	* global.c, ma_movement.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 08:54  millis
+
+	* dip.h, conf.h, defaults.h, params.c, phase.c, ml_list.c: Bug 297:
+	  Add Intimate Diplomacy
+
+2004-05-22 08:51  millis
+
+	* st_status.c, porder.c, st_build.c, st_movement.c, po_mastrpt.c,
+	  po_init.c, st_porder.c, common.c, dip.c: Bug 297: Add Intimate
+	  Diplomacy
+
+2004-05-22 08:47  millis
+
+	* Makefile.in, defaults.inc.in, data/info.intimate,
+	  data/rules.intimate, st_bid.c: Bug 297: Add Intimate Diplomacy
+
+2004-05-22 08:37  millis
+
+	* mach.h, porder.h, Makefile.am: Bug 297: Add Intimate Diplomacy
+
+2004-05-21 13:36  millis
+
+	* smail.in: Bug 301: Send the njudge version number as well
+
+2004-05-20 15:48  russblau
+
+	* ml_set.c: Fix bug 123 (SET ALLOW|DENY MASTER works when it
+	  shouldn't)
+
+2004-05-20 14:08  russblau
+
+	* ml_set.c: Fix Bug 310 (Wrong error message when using inverted
+	  flag logic)
+
+2004-05-20 02:21  russblau
+
+	* ml_set.c: Fixed Bug 308 (Error parsing powerlist in SET APPROVE
+	  command)
+
+2004-05-18 02:05  nzmb
+
+	* tm_xpress.c: Fixed wrong e-mail title and compiler warning in
+	  send_diary() function.
+
+2004-05-13 18:40  russblau
+
+	* data/index: Formatting.
+
+2004-05-13 13:45  machmstr
+
+	* data/info.dipmach2: Minor correction of income for Russia.
+	  Eminently playable variant. Better than standard ;-)
+
+2004-05-13 13:35  machmstr
+
+	* data/map.dipmach2: Minor correction of income for Russia.
+	  Eminently playable variant. Better than standard ;-)
+
+2004-05-13 13:33  machmstr
+
+	* data/: info.dipmach3, map.dipmach3, seed.dipmach3: no message
+
+2004-05-13 12:56  machmstr
+
+	* data/: info.dipmach3, map.dipmach3, seed.dipmach3: Some minor
+	  income changes and addition of garrisons in Sweden, Denmark,
+	  Holland, Belgium, Spain and Portugal. Very nice variant. High
+	  playbility.
+
+2004-05-13 12:50  machmstr
+
+	* data/: info.mach_aoc, map.mach_aoc, seed.machaoc: MACH AOC
+	  version 3. All countries have 3SC. Papacy removed in favour for
+	  Savoy. (Notice that AOCv2 is playable, but very difficult to play
+	  for the 2SC powers, and too crowded in central Italy.)
+
+2004-05-13 12:46  machmstr
+
+	* data/: map.machiavelli, map.mach2_sfd2, map.machiavelli2,
+	  map.mach2_span, map.mach_eos, map.mach_sfd1, map.mach_sfd2,
+	  map.mach_span, map.mach2_sfd1: Changes of some abbreviations to
+	  "dis-ambiguate" them. Carinthia car->cri  to avoid confusion with
+	  carniola (crn). Pistoia pis->pst to avoid confusion with Pisa
+	  (psa). Salerna sal->slr (in analogy with Saluzzo-slz). Treviso
+	  tre->trv to avoid confusion with trent (trt). Romagna rom->rma in
+	  analogy with Rome (rme).
+
+2004-05-13 12:42  machmstr
+
+	* data/: info.machiavelli, info.machiavelli2: CR/LF fix
+
+2004-05-13 12:41  machmstr
+
+	* data/rules.machiavelli: Note about support into multi-coastal
+	  provinces added.
+
+2004-05-13 00:17  millis
+
+	* lib.c, mail.c: Don't send emails to NOBODY (Bug 306)
+
+2004-05-12 23:56  millis
+
+	* ml_signon.c: Fix bug 298, don't advance deadline if first turn
+	  and other players still CD on takeover.
+
+2004-05-12 23:44  millis
+
+	* ml_signon.c: Fix Bug 305 so that same player can return, even if
+	  dead
+
+2004-05-12 18:09  millis
+
+	* data/index: Small updates to show incompletely implemented
+	  commands.
+
+2004-05-11 20:10  jaldhar
+
+	* Makefile.am, Makefile.in, configure: Fixed duplication of datadir
+	  in upgrade-data target of Makefile.am.  Other automake files
+	  regenerated in the process.
+
+2004-05-10 14:21  jaldhar
+
+	* Makefile.am, Makefile.in, aclocal.m4: Fixed bug 215 by ensuring
+	  that the data files were copied before we tried to run cmap.
+	  Automake files regenerated in the process.
+
+2004-05-09 19:44  millis
+
+	* ma_build.c: Fix Bug 303 (crash in build results output)
+
+2004-05-09 19:02  millis
+
+	* ma_build.c: Fixed bug 302 (prevent armies being built in Mach2 in
+	  Venice)
+
+2004-05-05 21:45  russblau
+
+	* plyrdata.c: [no log message]
+
+2004-05-05 21:43  russblau
+
+	* plyrdata.c: Fixed minor typos in strings and comments, and some
+	  funky whitespace.
+
+2004-04-15 14:29  russblau
+
+	* data/countries.x: A band-aid on a broken leg.  <g>
+
+2004-04-07 00:03  millis
+
+	* common.c: Fix Bug 287 (artillery support not working)
+
+2004-04-07 00:01  millis
+
+	* st_movement.c: fix bug 286 (allow artillery to be convoyed)
+
+2004-04-05 20:06  millis
+
+	* docs/: njudge-work-guide.html, njudge-work-guide.sxw: First
+	  proper version
+
+2004-04-04 16:37  njudge
+
+	* ChangeLog: Autobuild njudge_1_6_0
+
+2004-04-04 16:10  millis
+
+	* njudge.spec, configure.ac: Next version
+
+2004-04-04 16:09  millis
+
+	* BUGS, NEWS: New for version 1.6.0
+
+2004-04-04 15:58  millis
+
+	* dip.c, draw.c, ml_signon.c: Fixed bug 285 (inform extra
+	  custodians of game start)
+
+2004-04-04 15:19  millis
+
+	* functions.h: Added new defiens to fix bug 193
+
+2004-04-04 15:19  millis
+
+	* starter.flist: Added information about MinorPower variant
+
+2004-04-04 15:16  millis
+
+	* data/index: Fix bug 193i (added description for approval
+	  mechanism)
+
+2004-04-04 15:15  millis
+
+	* ma_porder.c, ml_set.c, ml_signon.c, params.c, po_mastrpt.c,
+	  porder.c: Fix bug 193 (add approval mechanism to allow moves)
+
+2004-04-03 16:29  millis
+
+	* cmap.c, st_porder.c: Fixed ExtraCentres problem (wasn't working!)
+
+2004-04-02 11:02  millis
+
+	* data/report.35: Removed file (not needed, uses report.minorpower)
+
+2004-03-28 16:06  millis
+
+	* dip.h: Added approval flags (for bug 193)
+
+2004-03-28 15:51  millis
+
+	* mail.c, data/index: Fix bug 271, provide more information about
+	  unstart
+
+2004-03-28 15:31  millis
+
+	* smail.in: Added X-Njudge: header to protect messages (Bug 284)
+
+2004-03-28 15:27  millis
+
+	* mail.c: Ignore any message with 'X-Njudge:' in mail header (or
+	  message)
+
+2004-03-28 10:17  millis
+
+	* mail.c, ml_press.c: Fix Bug 281: generate error if press rejected
+	  by MustOrder flag.
+
+2004-03-28 10:01  millis
+
+	* mail.c: Bug 280, add blank line before message
+
+2004-03-28 09:52  millis
+
+	* dip.c, mail.c, phase.c: Fix bug 282 (reset msg_header_done on
+	  closing rfp file)
+
+2004-03-17 10:11  millis
+
+	* po_init.c: Fix bug 279 (incorrectly marking centre as blockaded)
+	  due to not initialising variable.
+
+2004-03-16 07:52  nzmb
+
+	* data/: info.minorpower, map.minorpower, report.35,
+	  report.minorpower, seed.minorpower: Added the minorpowers
+	  variant.
+
+2004-03-16 07:52  nzmb
+
+	* variant.c, variant.h: dded the minorpowers variant.
+
+2004-03-03 14:49  millis
+
+	* docs/njudge-work-guide.html: First draft
+
+2004-02-22 23:26  millis
+
+	* dip.h: Small Bug91 change
+
+2004-02-18 00:53  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_6
+
+2004-02-18 00:21  millis
+
+	* NEWS, Makefile.in, configure, njudge.spec: Next version 1.5.6
+
+2004-02-18 00:11  millis
+
+	* ml_press.c: Fix bug 275, not checking for touch press when game
+	  terminated.
+
+2004-02-18 00:04  millis
+
+	* summary.c: Fix bug 274, add in missing extra_centres structure
+	  read.
+
+2004-02-15 21:34  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_5
+
+2004-02-15 21:04  millis
+
+	* Makefile.in, NEWS, aclocal.m4, configure, configure.ac,
+	  njudge.spec: Updates for new version njduge-1.5.5
+
+2004-02-14 23:32  millis
+
+	* dip.c, dipent.c: Allow use of fixed time via parameter (for
+	  debugging)
+
+2004-02-14 23:31  millis
+
+	* params.c: Display duplex ratio (if not secret)
+
+2004-02-14 23:19  millis
+
+	* st_movement.c: Fix so that blocked gateway movement doesn't
+	  contest movement (so that space can be considered for retreats)
+
+2004-02-14 23:15  millis
+
+	* dip.h: Fixed X2F_PRESS_OPTIONS to use '|' not '&', else shows
+	  blank x2flags setting
+
+2004-02-14 23:11  millis
+
+	* ml_signon.c: Forced ocmmit, no changes
+
+2004-01-23 18:52  machmstr
+
+	* data/rules.machiavelli: 'Income quick ref chart' (app 5).  Minor
+	  correction re coasts and disbands.  Venice 5e corrected.
+
+2004-01-21 00:55  millis
+
+	* dip.c, diptime.c: Allow passing of forced date/time (for testing)
+
+2004-01-21 00:53  millis
+
+	* mail.h: Comment added
+
+2004-01-13 18:17  millis
+
+	* po_init.c: Fix Bug 268, don't display Unknown power error on 'x'
+	  in assassinate line
+
+2004-01-11 01:02  millis
+
+	* lib.c, st_movement.c: Fix bug 265, so that convoys work in high
+	  seas.
+
+2004-01-05 13:54  millis
+
+	* dip.h: Added extra_centres definition
+
+2004-01-05 13:49  millis
+
+	* dip.h: Added missing definition for extra_centre
+
+2004-01-04 11:34  millis
+
+	* cmap.c, dip.h, functions.h, global.c, params.c, po_init.c,
+	  st_build.c, st_porder.c: Implement Bug #262 (ExtraCentres for
+	  1900 Steamroller)
+
+2004-01-02 10:03  millis
+
+	* aclocal.m4, diptime.c, diptime.h: [no log message]
+
+2004-01-02 10:01  millis
+
+	* Makefile.in: Added diptime files
+
+2004-01-02 10:00  millis
+
+	* configure, dip.h, Makefile.am: no message
+
+2004-01-02 08:43  nzmb
+
+	* st_porder.c: Fix bug #219 -- advance to the build phase when a
+	  game ends in a solo.
+
+2004-01-02 07:26  nzmb
+
+	* st_setup.c: Fix compiler warnings.
+
+2003-12-29 17:59  millis
+
+	* dip.h, params.c: Work for Bug 91 (keep duplex powers together)
+
+2003-12-28 00:13  millis
+
+	* dip.c: Fix bug 229 (display on email title if game with abandoned
+	  players is NoList)
+
+2003-12-28 00:00  millis
+
+	* cmap.c, dip.h, params.c: Fix bug 262 (add Extra Units flag for
+	  1900 SteamRoller)
+
+2003-12-25 06:43  nzmb
+
+	* ml_set.c, ml_signon.c: Fixed bug #102 and another small problem
+	  in the SET START processing code.
+
+2003-12-23 05:58  nzmb
+
+	* jm.c: Small cosmetic improvement to the timeleft function.
+
+2003-12-20 07:05  nzmb
+
+	* mail.c: Changed judge so that the original message sent to it is
+	  echoed back only when either the sender is registered with a
+	  judge or it contains a valid command such as REGISTER. This is to
+	  solve judges crashing with smail errors when smail tries to
+	  interpret binary files as part of the e-mail message.
+
+	  Also, when a message is echoed back, added code to strip off the
+	  headers.
+
+2003-12-15 17:30  russblau
+
+	* docs/: manual-a4.pdf, manual-ltr.pdf: Second Edition of Diplomacy
+	  Judge User's Manual
+
+2003-12-15 16:35  russblau
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: Second
+	  edition of Diplomacy Judge User's Manual.
+
+2003-12-12 10:16  millis
+
+	* mail.c: Fixed compile error
+
+2003-12-11 13:18  millis
+
+	* mail.c: Removed tests for msg_header_done.
+
+2003-12-11 13:11  millis
+
+	* mail.c: In msg_header(), exit if msg_header_done is set (avoid
+	  tests everywhere)
+
+2003-12-10 00:14  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_4
+
+2003-12-09 23:40  millis
+
+	* BUGS, NEWS, configure, Makefile.in, configure.ac, njudge.spec:
+	  New version for 1.5.4
+
+2003-12-09 23:32  millis
+
+	* data/rules.machiavelli: Clarify that besieged cities produce no
+	  income.
+
+2003-12-08 18:47  millis
+
+	* ascii2rec.c, recdump.c: Removed compile warning
+
+2003-12-07 23:44  millis
+
+	* data/syntax: Fix bug 183 (added better explaination for phased
+	  adjusts syntax)
+
+2003-12-07 00:52  millis
+
+	* mail.c: Fix bug 217
+
+2003-12-07 00:49  millis
+
+	* ml_getaddr.c: Fix bug 217, bad email addresses being accepted
+
+2003-12-07 00:04  millis
+
+	* ma_movement.c: Fix Bug 249, so that disbanding garrisons prevent
+	  setting siege state
+
+2003-12-06 11:32  millis
+
+	* po_init.c: Fix bug 254 (can only broadcast once per game in touch
+	  press games)
+
+2003-12-05 00:05  millis
+
+	* data/rules.machiavelli: Small coastal spec change
+
+2003-12-02 23:04  millis
+
+	* data/rules.machiavelli: Added descrition for ocnverts to fleet
+	  needing coastal specification.
+
+2003-12-02 22:44  millis
+
+	* docs/README.hackers: Explanation for debugging added
+
+2003-12-02 18:46  millis
+
+	* users.c: Reconsidered change, restoring old version
+
+2003-12-02 18:43  millis
+
+	* users.c: Improved checking for Bug 250, namely not allowing blank
+	  addresses
+
+2003-12-02 18:20  russblau
+
+	* data/index: Describe missing "SET GARRISON" and "SET SUMMER"
+	  flags, other minor clean-up.
+
+2003-11-18 14:42  millis
+
+	* Makefile.am, Makefile.in: Added manual.htm (Russell Blau's DJUM)
+
+2003-11-18 14:23  njudge
+
+	* docs/: manual-a4.pdf, manual-all.htm, manual-ltr.pdf: First
+	  version (1.4.0) from Russell Blau website
+
+2003-11-18 03:20  nzmb
+
+	* users.c: improved cmpaddr so it (should) return 0 on a blank
+	  address or one that has a non alphanumeric character as its first
+	  character -- partial fix to bug number 250.
+
+2003-11-18 00:12  millis
+
+	* data/: info.dipmach1, map.dipmach1, report.dipmach1,
+	  report.dipmach2, seed.dipmach1: Added misisng dipmach files
+
+2003-11-16 10:52  machmstr
+
+	* data/info.dipmach2: Current treatment of fleet/garrison
+	  conversions in StP.
+
+2003-11-16 10:50  machmstr
+
+	* data/rules.machiavelli: Current treatment of fleet/garrison
+	  conversions in multicoastal provinces and provsionary future
+	  rules. In Appendix 4.
+
+2003-11-09 18:59  millis
+
+	* mail.c: Fix bug 145
+
+2003-11-09 18:35  millis
+
+	* po_get.c: Fix bug 248 (allow '_' in country names)
+
+2003-11-09 18:17  millis
+
+	* po_init.c: Fix bug 246
+
+2003-10-26 19:17  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_3
+
+2003-10-26 18:46  millis
+
+	* BUGS, NEWS, configure, configure.ac, njudge.spec: New versions
+	  for 1.5.3
+
+2003-10-26 18:39  millis
+
+	* ma_build.c: Refix bug 224
+
+2003-10-12 06:16  nzmb
+
+	* users.c: Fixed bugs 240 & 241. You now cannot iamalso yourself to
+	  more than one registration. Also if you try to do iamalso
+	  address1,address2 the Judge will tell you to only iamalso
+	  yourself to one place.
+
+2003-10-12 05:02  nzmb
+
+	* ml_signon.c: Fixed bug #212 (players in NMR games get warned when
+	  another player, who had been in CD, returns to take control of
+	  his power).
+
+2003-10-09 21:54  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_2
+
+2003-10-09 20:28  jaldhar
+
+	* debian/changelog: Updates for 1.5.2 release.
+
+2003-10-08 13:45  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_2
+
+2003-10-08 13:16  millis
+
+	* BUGS, NEWS, configure, configure.ac, njudge.spec: Updates for
+	  1.5.2 release
+
+2003-10-08 12:28  millis
+
+	* ma_movement.c: Fix bug 236
+
+2003-09-27 15:14  machmstr
+
+	* data/rules.machiavelli: Added [no]garrisons flag and appendix 3
+	  describing how  to play in standard diplomacy style.
+
+2003-09-27 14:18  machmstr
+
+	* data/: info.dipmach2, map.dipmach2, seed.dipmach2: DipMach
+	  VERSION 2 files for DEMA testing (only new games)
+
+2003-09-27 14:15  machmstr
+
+	* data/map.dipmach1: changed to map.dipmach
+
+2003-09-27 14:12  machmstr
+
+	* data/map.dipmach2: no message
+
+2003-09-26 19:58  christ
+
+	* docs/mail_format.html: Finished turn results (at last!!)
+
+2003-09-25 21:24  christ
+
+	* docs/mail_format.html: Turn results hald finished
+
+2003-09-24 21:03  christ
+
+	* docs/mail_format.html: Begun the part on results of turns -
+	  bigger than expected...
+
+2003-09-24 20:14  christ
+
+	* docs/mail_format.html: Summary changed with described/will be
+	  described/wil not be described
+
+2003-09-23 20:02  christ
+
+	* docs/mail_format.html: E-mail for game beginning
+
+2003-09-22 21:11  christ
+
+	* docs/mail_format.html: Added some mail types
+
+2003-09-22 21:00  christ
+
+	* docs/mail_format.html: Subscribing players e-mails done.
+
+2003-09-14 22:08  jaldhar
+
+	* deddump.c, flock.c, fmtwho.c, rdip.c: Included fcntl.h for
+	  symbols not defined in unistd.h
+
+2003-09-14 22:07  jaldhar
+
+	* acconfig.h, aclocal.m4, config.h.in, Makefile.in, configure:
+	  Changed include of fcntl.h to unistd.h in acconfig.h so lockf get
+	  the proper prototype.  Regenerated configure etc. to pick up
+	  change.
+
+2003-09-14 20:42  christ
+
+	* docs/mail_format.html: almost nothing...
+
+2003-09-14 11:09  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt,
+	  mail_format.html: Links in Installation guide
+
+2003-09-14 10:31  christ
+
+	* docs/mail_format.html: Structure and message header description
+
+2003-09-14 08:25  millis
+
+	* functions.h, lib.c, ma_movement.c: Fix bug 225
+
+2003-09-14 08:03  millis
+
+	* po_init.c: Do not flag some errors in Mach data (just ignore
+	  them)
+
+2003-09-14 00:18  millis
+
+	* mail.c: Fix bug 223
+
+2003-09-13 22:59  millis
+
+	* ma_build.c: Fix bug 224
+
+2003-09-13 22:54  millis
+
+	* ml_press.c: fix bug 228. Also prohibit press to non-masters while
+	  game is paused.
+
+2003-09-13 19:09  christ
+
+	* docs/mail_format.html: -
+
+2003-09-13 18:33  christ
+
+	* docs/mail_format.html: first draft
+
+2003-09-13 15:15  christ
+
+	* docs/mail_format.html: Empty yet...
+
+2003-09-13 14:25  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt: Added web
+	  links in documentation ; made clear that autoconf must be 1.7
+
+2003-09-09 19:57  nzmb
+
+	* dip.c, mail.c: Fixed Bug 31 -- the time to deadline/grace
+	  expiration messages are no longer printed for terminated games,
+	  and neither are the "orders not received ... you will be
+	  considered late/abandoned" message. The list of entered orders is
+	  still displayed, though.
+
+2003-09-09 19:21  jaldhar
+
+	* acconfig.h: Whoops forgot to commit this.
+
+2003-09-09 18:51  jaldhar
+
+	* Makefile.am, Makefile.in, config.h.in, configure, configure.ac,
+	  delgame.c, dip.h, flock.c, fmtwho.c, ml_date.c, port.h, rdip.c:
+	  Got rid of port.h and replaced with some extra configure checks.
+	  The include strings.h was not carried over because it is
+	  commented out and likely wouldn't work anyway.
+
+2003-09-07 06:03  jaldhar
+
+	* docs/README.hackers: Update to mention that we use automake 1.7
+	  and autoconf 2.57 now.
+
+2003-09-07 06:00  jaldhar
+
+	* Makefile.in, aclocal.m4, configure: Update to automake 1.7 and
+	  autoconf 2.57.
+
+2003-09-03 13:12  millis
+
+	* data/index: Small updates
+
+2003-08-31 13:40  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt:  Update
+	  installation for 1.5.1 judge
+
+2003-08-27 12:04  millis
+
+	* ml_set.c, ml_signon.c: Fix bug 222
+
+2003-08-26 23:54  millis
+
+	* ml_set.c: Fix bug 188
+
+2003-08-25 14:39  millis
+
+	* dip.c, dip.h, lib.c, mail.c: Fixed bug 220
+
+2003-08-23 09:59  russblau
+
+	* ml_set.c: deleted commented-out keywords
+
+2003-08-18 23:16  millis
+
+	* dip.h, params.c: Refix bug 211
+
+2003-08-18 22:49  millis
+
+	* data/: map.colonial, map.colonial96: Allow JVS as Java Sea
+	  abbreviation
+
+2003-08-14 22:56  millis
+
+	* dip.c: Fix bug 158
+
+2003-08-14 12:46  millis
+
+	* dip.h, params.c: Fix bug 211
+
+2003-08-14 06:48  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_1
+
+2003-08-13 22:11  millis
+
+	* BUGS, NEWS, configure, configure.ac, njudge.spec: Prepared for
+	  1.5.1
+
+2003-08-13 11:09  millis
+
+	* docs/README.bailout: Updated with xforward treatment (to delay
+	  games by 24 hours)
+
+2003-08-12 23:04  millis
+
+	* ml_signon.c: Fix bug 216
+
+2003-08-10 15:31  millis
+
+	* data/index: Fix Bug 25 (add Touch Press description)
+
+2003-08-10 15:27  millis
+
+	* dip.h, ml_press.c, ml_set.c, params.c: Fix bug 25 (Add
+	  TouchPress)
+
+2003-08-10 00:57  millis
+
+	* st_retreat.c: Fix bug 214
+
+2003-08-09 23:05  millis
+
+	* ma_movement.c: Fixed bug 213
+
+2003-08-08 21:43  millis
+
+	* data/map.dipmach1: Small spelling mistake
+
+2003-08-08 21:40  millis
+
+	* data/map.dipmach1: First version
+
+2003-07-30 12:15  millis
+
+	* cmap.c: Fix bug 208
+
+2003-07-30 07:54  machmstr
+
+	* docs/njudgemapdatahowto.txt: For Christophe yet again ;-)
+
+2003-07-30 07:53  machmstr
+
+	* docs/njudgemapdatahowto.htm: Rewrote intro and added seed file
+	  info
+
+2003-07-29 14:26  machmstr
+
+	* docs/njudgemapdatahowto.txt: For Christophes eyes only ;-)
+
+2003-07-29 14:26  machmstr
+
+	* docs/njudgemapdatahowto.htm: Added Machiavelli disaster table
+	  samples.  Added ref. to Christophes variant how to.  Some content
+	  corrections and added an index.  Changed the version number to
+	  make it correspond to the nJudge version.
+
+2003-07-28 14:23  millis
+
+	* ml_list.c: Fix bug 205
+
+2003-07-28 12:07  millis
+
+	* data/info.modern: Update wings info
+
+2003-07-28 11:54  millis
+
+	* data/info.aberration: Miniscule textual corrections
+
+2003-07-28 11:44  millis
+
+	* data/package: refer to proper house.rules file
+
+2003-07-28 11:42  millis
+
+	* data/info.classical: Updated links
+
+2003-07-28 11:31  millis
+
+	* data/press: Slight formatting change
+
+2003-07-28 11:05  millis
+
+	* data/info.colonial: Clarification and credit additions
+
+2003-07-27 15:50  millis
+
+	* st_movement.c: Fix bug 204
+
+2003-07-26 18:02  christ
+
+	* docs/: VariantsHOWTO.html, VariantsHOWTO.txt: Small updates and
+	  HTML cleaning
+
+2003-07-26 13:26  njudge
+
+	* ChangeLog: Autobuild njudge_1_5_0
+
+2003-07-26 12:59  millis
+
+	* BUGS, NEWS: New information for 1.5.0
+
+2003-07-26 12:49  millis
+
+	* configure, configure.ac: Update version to 1.5.0
+
+2003-07-26 12:45  millis
+
+	* ma_porder.c, ma_stats.c: Fix Bug 203
+
+2003-07-24 23:00  millis
+
+	* st_build.c: Fix bug 202
+
+2003-07-24 03:57  jaldhar
+
+	* njudge.spec: Whoops that can't be a macro there.
+
+2003-07-24 03:55  jaldhar
+
+	* njudge.spec: Updated for upcoming version 1.5.0 release.
+
+2003-07-24 03:54  jaldhar
+
+	* debian/changelog: Update for upcoming 1.5.0 release.
+
+2003-07-23 23:13  millis
+
+	* ma_retreat.c: Fix Bug 195, do not block retreat into straights if
+	  a fleet is retreating to the controlling province.
+
+2003-07-23 22:42  millis
+
+	* ma_movement.c: Fix bug 172
+
+2003-07-23 21:47  millis
+
+	* Makefile.am, Makefile.in: Remove delete of map files from remap
+	  target.
+
+2003-07-23 13:13  millis
+
+	* docs/VariantsHOWTO.html: Spelling corrections
+
+2003-07-23 06:00  jaldhar
+
+	* Makefile.am, Makefile.in: Force calls to date in Makefile.am to
+	  use the 'C' locale.  (Fixes Bug 138) auxilliary files regenerated
+	  to match this change.
+
+2003-07-23 05:48  jaldhar
+
+	* Makefile.in, configure: Regenerate due to Makefile.am and
+	  configure.ac changes.
+
+2003-07-23 05:44  jaldhar
+
+	* njudge.spec, debian/postinst: Make sure OURSELVES=judge in
+	  dip.conf.
+
+2003-07-23 05:36  jaldhar
+
+	* Makefile.am, configure.ac, dip.conf, dip.conf.in: Autogenerate
+	  dip.conf (fixes bug 154)
+
+2003-07-23 05:12  jaldhar
+
+	* Makefile.in, aclocal.m4, configure: Regenerated after Makefile.am
+	  change.
+
+2003-07-23 05:05  jaldhar
+
+	* Makefile.am: Remake map on upgrades (Closes bug 175) and some
+	  rearrangement of targets.
+
+2003-07-23 00:11  millis
+
+	* dip.h, lib.c, ml_signon.c: Bug 192
+
+2003-07-22 23:45  millis
+
+	* ml_signon.c: Bug 135
+
+2003-07-22 23:32  millis
+
+	* st_movement.c: Fix Bug 201
+
+2003-07-22 23:10  millis
+
+	* docs/: Map-HowTo-Njudge.html, epsembed.txt,
+	  mapit-howto/Maharajah1.cmap.ps, mapit-howto/Maharajah1.info,
+	  mapit-howto/epsembed.txt, mapit-howto/gv.png,
+	  mapit-howto/index.html, mapit-howto/maha1.eps,
+	  mapit-howto/maharajah.results,
+	  mapit-howto/orig.Maharajah1.cmap.ps,
+	  mapit-howto/orig.Maharajah1.info: [no log message]
+
+2003-07-22 23:04  millis
+
+	* docs/: HowToFloc.html, Map-HowTo-Njudge.html, epsembed.txt: [no
+	  log message]
+
+2003-07-22 00:13  millis
+
+	* mail.c: Fix bug 198
+
+2003-07-21 21:51  machmstr
+
+	* data/: map.mach2_sfd1, map.mach2_sfd2, map.mach2_span,
+	  map.machiavelli2: Added comment explaining how to calculate
+	  initial income.  Corrected/recalculated some values.	Zeroed
+	  values for Genoa city, Naples city, Milan city when autonomous
+
+2003-07-21 21:37  millis
+
+	* phase.c: Fix bug 199 (phased waits not working correctly)
+
+2003-07-21 07:57  machmstr
+
+	* data/: rules.machiavelli, rules.machiavelli2: Addotional
+	  clarifications of the straits blockade rules
+
+2003-07-20 23:51  machmstr
+
+	* data/rules.machiavelli: Removed point 1d3 (conversions) and
+	  rephrased 2d.
+
+2003-07-20 23:17  machmstr
+
+	* data/map.mach2_sfd2: Entry for Milan removed as Milan state does
+	  not own Milan province, and no one else is to get variable income
+	  from it. Changed the new qualifier for Milanese variabel income
+	  form Moden to Pavia as that is a 'traditional core' milanese
+	  province (uhm I think I sound rather "high-falouting" here)
+
+2003-07-20 15:45  millis
+
+	* ma_movement.c: Bug 195 fix
+
+2003-07-20 09:41  millis
+
+	* data/map.mach2_sfd2: Added Modena to give Milan a power income
+
+2003-07-20 09:10  millis
+
+	* data/: info.mach2_sfd2.original, info.mach2_span.original,
+	  map.mach2_sfd2.original, map.mach2_span.original,
+	  map.mach_sfd2.original, map.mach_span.original: [no log message]
+
+2003-07-20 09:10  millis
+
+	* data/: map.mach2_sfd2, map.mach2_span: Update initial incomes
+
+2003-07-20 09:09  millis
+
+	* configure: Updated for removed files
+
+2003-07-20 08:47  millis
+
+	* data/map.mach2_sfd1: fixed initial income for France
+
+2003-07-20 08:43  millis
+
+	* dip.h: Missing include
+
+2003-07-20 08:38  millis
+
+	* mail.c: Removed incorrect execute(line) calls Also deleted some
+	  unused variables
+
+2003-07-20 08:37  millis
+
+	* dip.h: make ls & md members of type time_t
+
+2003-07-20 08:24  millis
+
+	* Makefile.in, aclocal.m4: Newer versions on automake1.7.5
+
+2003-07-19 15:26  christ
+
+	* docs/: VariantsHOWTO.html, VariantsHOWTO.txt: Added in
+	  VariantsHOWTO warning on change of names of seed and report
+	  files; no time to make a clean update.
+
+2003-07-19 14:04  millis
+
+	* lib.c: fixed bug in address handling
+
+2003-07-19 13:14  millis
+
+	* pdip.c: [no log message]
+
+2003-07-19 13:13  millis
+
+	* Makefile.am, Makefile.in: Bug 196, remove pdip
+
+2003-07-19 13:11  millis
+
+	* mail.c: Bug 197, remove map command
+
+2003-07-19 13:08  millis
+
+	* data/index: Add pause command specification
+
+2003-07-19 13:03  millis
+
+	* data/report.shift_left: [no log message]
+
+2003-07-18 21:03  machmstr
+
+	* data/rules.machiavelli: Section clarifying conversions added. New
+	  rule re straits and support  orders. New commands described.
+	  Auth. S. Lidsell.
+
+2003-07-18 20:59  machmstr
+
+	* data/rules.machiavelli2: Note on conversion of besieged units and
+	  straits.  Author Sergio Lidsell.
+
+2003-07-18 15:16  russblau
+
+	* data/index: Editorial changes to "DIARY" and "MAP" entries.
+
+2003-07-18 01:36  nzmb
+
+	* data/index: dded diary documentation.
+
+2003-07-18 01:24  nzmb
+
+	* tm_xpress.c: Changed it so the "diary" command by itself defaults
+	  to "diary record"
+
+2003-07-17 22:59  millis
+
+	* dip.c, dipent.c: Bug 185
+
+2003-07-17 00:04  millis
+
+	* mail.c: [no log message]
+
+2003-07-17 00:01  millis
+
+	* draw.c, lib.c, phase.c: Use MailOut to send emails
+
+2003-07-16 15:14  millis
+
+	* INSTALL: Trivial spelling correction
+
+2003-07-16 15:04  millis
+
+	* Makefile.am, Makefile.in, ign.c: Remove ign program
+
+2003-07-16 14:50  millis
+
+	* dipent.c, defaults.h, defaults.inc.in: Used D_X2FLAGS to allow
+	  default setting for X2FLAGS for games (if desired)
+
+2003-07-16 14:44  millis
+
+	* COPYING: Tried to reword copyright file to something decent
+
+2003-07-16 14:37  millis
+
+	* AUTHORS: Added Russell Blau credit
+
+2003-07-15 22:47  millis
+
+	* functions.h, lib.c, mail.c, summary.c: Fix Bug 185 (call smail
+	  for each email individually)
+
+2003-07-15 16:38  millis
+
+	* data/index: Added some future commands (not yet implemented)
+	  Also, SET BUILD DISBAND now active.
+
+2003-07-15 16:16  millis
+
+	* mail.c: Make null mail 'nobody'
+
+2003-07-15 12:11  millis
+
+	* variant.h: Make non-player ordinals relative
+
+2003-07-15 12:00  millis
+
+	* makedata, newvers, rdip.pl: Removed unused files
+
+2003-07-15 11:42  millis
+
+	* ml_signon.c: Fixed compile bug
+
+2003-07-14 23:35  millis
+
+	* ml_signon.c: Fix bug 179 - do not allow takeover of eliminated
+	  players
+
+2003-07-14 22:52  millis
+
+	* params.c: Fix bug 187
+
+2003-07-14 22:33  millis
+
+	* ma_porder.c: Fix bug 194 (not counting last province)
+
+2003-07-13 00:31  millis
+
+	* phase.c: Bug 189 fix, make line[] a static
+
+2003-07-12 17:47  nzmb
+
+	* mail.c: Fix so that lenlimit gets called on outgoing press
+	  messages, not just replies.
+
+2003-07-12 01:48  nzmb
+
+	* tm_xpress.c: Master now gets notified when a player enters a new
+	  diary entry.
+
+2003-06-29 21:37  nzmb
+
+	* dip.c, draw.c, functions.h, tm_xpress.c: Made EOG draw entries
+	  broadcasted at the end of the game.
+
+2003-06-29 01:06  millis
+
+	* ml_set.c: Fix bug 176 (duplicate grace setting line to master)
+
+2003-06-22 04:10  nzmb
+
+	* functions.h, mail.c, mail.h, tm_xpress.c: Added code to allow
+	  users to record diary entries, read them, and delete them if they
+	  make a mistake. The diaries will be broadcast when the games end
+	  (this part is not as of now, yet written).
+
+2003-06-21 00:52  njudge
+
+	* ChangeLog: Autobuild njudge_1_4_2
+
+2003-06-21 00:23  njudge
+
+	* ChangeLog: Autobuild
+
+2003-06-20 23:52  millis
+
+	* NEWS: Next version
+
+2003-06-20 23:51  millis
+
+	* configure, configure.ac, njudge.spec: Preparing for the next
+	  version
+
+2003-06-20 23:25  millis
+
+	* draw.c, ml_press.c: Fix bug 180, missing press messages (due to
+	  too much stack variables)
+
+2003-06-20 00:21  millis
+
+	* dipent.c: Tried to fix it correctly!
+
+2003-06-19 23:43  millis
+
+	* dipent.c: Added a repeat test flag.
+
+2003-06-19 23:27  millis
+
+	* dipent.c: Bug 181, bailout recovery only for control game, and
+	  adjust deadlines for non-control games.
+
+2003-06-18 19:21  nzmb
+
+	* mail.c: Fixed bug 166 so that the error flag is no longer set for
+	  players who have no moves due (they still get told their commands
+	  couldn't be processed).
+
+2003-06-17 07:35  millis
+
+	* data/syntax: Added explicatory note to say can only phase up to 5
+	  years ahead.
+
+2003-06-11 15:48  millis
+
+	* lib.c: Remove the 'unit' text
+
+2003-06-11 12:00  millis
+
+	* ma_famplag.c: Remove compile warning
+
+2003-06-10 10:33  millis
+
+	* Makefile.am, Makefile.in: Bug174 fix, delete the map files first
+
+2003-06-10 10:06  millis
+
+	* ma_famplag.c: Bug 173, missed a '=' in use of npr
+
+2003-06-06 00:18  njudge
+
+	* ChangeLog: Autobuild njudge_1_4_1
+
+2003-06-05 23:52  millis
+
+	* NEWS: Update for 1.4.1
+
+2003-06-05 23:44  millis
+
+	* configure, configure.ac, njudge.spec: Next version update
+
+2003-06-04 23:17  millis
+
+	* st_movement.c: Fix bug 165, mis-ajudication over TSR
+
+2003-06-03 22:23  millis
+
+	* zpblind.c: Fix bug 170, comment out signal handler for OS X
+	  compatibility
+
+2003-05-24 23:57  millis
+
+	* mail.c, mail.h, ml_set.c, ml_signon.c: Bug 97, removed Generic
+	  Handling code
+
+2003-05-24 23:42  millis
+
+	* ml_signon.c: Fix bug 32, do not show signon if game terminated
+
+2003-05-24 22:55  millis
+
+	* ml_set.c, params.c, data/index: Bug 142, allow use of AutoCreate
+	  flag
+
+2003-05-24 21:19  millis
+
+	* ml_signon.c: Bug fix 130, allow seed.variant and report.variant
+	  file names
+
+2003-05-19 19:45  russblau
+
+	* data/: syntax, transform: Corrections to adjust-phase syntax for
+	  Transform orders.
+
+2003-05-19 18:31  millis
+
+	* configure, configure.ac: Reverse the premature version number
+	  change to 1.4.0
+
+2003-05-18 09:22  christ
+
+	* docs/: InstallationHOWTO.txt, InstallationHOWTO.html:
+	  Documentation update on the footer and --with-sendmail
+
+2003-05-17 01:10  millis
+
+	* configure, configure.ac: Up version number to 1.4.1
+
+2003-05-17 00:33  millis
+
+	* NEWS, BUGS: New versions of files with Bugzilla edited summary
+
+2003-05-16 23:10  njudge
+
+	* ChangeLog: [no log message]
+
+2003-05-16 22:45  millis
+
+	* st_porder.c: Fix bug 156 (ownership() was having winning
+	  condition incorrectly reset)
+
+2003-05-16 21:13  millis
+
+	* ma_movement.c: Bug 155 fix, moved Bug 126 fix to end (as
+	  otherwise, does not know of where units were).
+
+2003-05-16 20:37  millis
+
+	* ml_set.c: Small compile error fix.
+
+2003-05-16 17:59  jaldhar
+
+	* ChangeLog: Updated ChangeLog.
+
+2003-05-16 14:02  jaldhar
+
+	* Makefile.in, configure, configure.ac, njudge.spec,
+	  debian/changelog: Version number updates in preperation for 1.4.0
+	  release.
+
+2003-05-15 00:09  russblau
+
+	* ml_set.c: Corrected errors in keyword arrays, and commented out
+	  very many redundant entries.
+
+2003-05-14 19:01  millis
+
+	* dipent.c: Don't adjust mach files in 'A' season on bailout
+
+2003-05-14 07:59  millis
+
+	* st_build.c: Antoher build problem resolved (all builds were
+	  rejected).
+
+2003-05-14 07:59  nzmb
+
+	* dip.h, global.c, mail.c: Fixed bug #122 -- splits dip.reply into
+	  part created before and after the GM issues a "become" command.
+
+2003-05-13 18:11  russblau
+
+	* data/info: Improved explanation of SET PREFERENCE.
+
+2003-05-13 17:32  russblau
+
+	* data/index: Improved explanation of SET PREFERENCE.
+
+2003-05-13 11:09  millis
+
+	* njudge.spec: Update version to 1.4.0.0
+
+2003-05-13 10:59  millis
+
+	* global.c: Correctly set bailout flag to initial 0 value
+
+2003-05-13 07:23  nzmb
+
+	* mail.c: Fixed bug #48 by limiting to 100 the number of infoplayer
+	  request that can be sent in one e-mail
+
+2003-05-13 00:12  millis
+
+	* configure, configure.ac: Upped to 1.4.0.0
+
+2003-05-13 00:07  millis
+
+	* dip.c, dip.h, dipent.c, global.c: Bug 110, move on process
+	  deadline by 24 hours on bailout recovery
+
+2003-05-12 23:47  millis
+
+	* dipent.c: Fix bug 110, shift process time out on a timewarp.
+
+2003-05-12 23:23  millis
+
+	* dip.c, dip.h, global.c, mail.c: Fix bug 133, allow turn to
+	  process when set to manualprocess and process command sent.
+
+2003-05-12 21:43  millis
+
+	* st_build.c: Fixed bug that didn't work out correct builds.
+
+2003-05-12 18:16  russblau
+
+	* data/: index, info: Minor edits to bring documentation up to
+	  date.
+
+2003-05-12 02:44  millis
+
+	* ma_build_basic.c: Removed unused variable
+
+2003-05-12 02:38  millis
+
+	* st_build.c: Bug 118 fix, correctly handle transforms for fleets.
+
+2003-05-12 02:37  millis
+
+	* dip.c: Removed superfluos SF_WAIT for transform games Also
+	  deleted incorrect use of uninitilized variable
+
+2003-05-12 02:05  millis
+
+	* st_movement.c: Small text correction
+
+2003-05-11 16:15  millis
+
+	* Makefile.am, Makefile.in: Fixed bug 153 (make not upgrading data
+	  files correctly)
+
+2003-05-10 00:46  millis
+
+	* ma_build.c, ma_build_basic.c, ma_retreat.c, st_build.c,
+	  st_retreat.c: Bug 140 fix, display 'orders' when orders and
+	  'results' when results
+
+2003-05-10 00:33  millis
+
+	* ml_set.c: Fix bug 125, removing money also disables loans,
+	  assassinations and special units
+
+2003-05-10 00:22  millis
+
+	* ma_movement.c: Fix bug 126, not always correctly registering
+	  province ownership changes
+
+2003-05-09 18:24  jaldhar
+
+	* INSTALL: Updated instructions for new configure parameter, added
+	  info about prerequisites, and updated my address.
+
+2003-05-09 12:43  christ
+
+	* configure: Detection of sendmail, part 2
+
+2003-05-09 12:37  christ
+
+	* configure.ac, smail.in, aclocal.m4, Makefile.in: Sendmail
+	  replaces mail as default mail software.
+
+2003-05-09 11:09  millis
+
+	* dip.h: Added display of Mach2 flag
+
+2003-05-09 09:44  millis
+
+	* params.c: Added display of Mach2 flag
+
+2003-05-08 09:16  christ
+
+	* smail.in: Added @VERSION@ in X-Mailer field in smail (why not ?)
+
+2003-05-08 09:09  christ
+
+	* smail.in: Removed quoted-printable in smail, added comments and
+	  X-Mailer line
+
+2003-05-07 22:38  millis
+
+	* lenlimit.c: Fixed bug (it didn't do anything!)
+
+2003-05-06 01:53  millis
+
+	* params.c: Bug in displaying Summer turn
+
+2003-05-06 01:51  millis
+
+	* dip.h: Maks out Mach flags in X2F display
+
+2003-05-05 23:30  millis
+
+	* ma_porder.c: One & too many!
+
+2003-05-05 23:22  nzmb
+
+	* ml_signon.c: Change so that the Judge now looks in GAME_DIR when
+	  deciding whether or not a new game is going to duplicate an
+	  already used name.
+
+2003-05-05 15:10  millis
+
+	* docs/README.master: More explanation
+
+2003-05-05 11:52  millis
+
+	* ml_set.c: Slight text improvement
+
+2003-05-04 22:39  millis
+
+	* st_build.c: Fixed build counting in ExtraCentres() game
+
+2003-05-04 05:33  jaldhar
+
+	* Makefile.am, Makefile.in, aclocal.m4, configure: Rolled back to
+	  automake 1.6/autoconf 2.50
+
+2003-05-03 23:33  millis
+
+	* ma_build.c, ma_movement.c, ml_set.c, po_init.c: Fix bug 150
+	  (NO_GARRISONS flag)
+
+2003-05-03 23:09  millis
+
+	* functions.h: added missing prototype for ExtraCentres()
+
+2003-05-03 23:08  millis
+
+	* dip.c, mail.c: Fixed bug 99 (resigned players still receiving
+	  messages) Now resigned players will only receive the termination
+	  messages.
+
+2003-05-03 22:45  millis
+
+	* st_build.c: take account of ExtraCentres() if set.
+
+2003-05-03 21:21  millis
+
+	* data/: report.colonial96, report.38, seed.38, seed.colonial96:
+	  changed colonial to .34 not .38
+
+2003-05-03 16:25  millis
+
+	* st_porder.c: Checking wrong flag for Summer setting!
+
+2003-05-03 16:16  millis
+
+	* variant.c: Missed a Neutral definition.
+
+2003-05-03 14:22  millis
+
+	* ml_set.c: Really small change
+
+2003-05-03 14:19  millis
+
+	* ml_set.c: Merged in USTV version, with Neutrals etc.
+
+2003-05-03 14:17  millis
+
+	* smail.in: Fixed some problems with unknown '-f' flag Also add a
+	  blank line so that '::' of judge is not seen as an email header
+	  and suppressed.
+
+2003-05-02 23:15  millis
+
+	* variant.c, variant.h: Added in definitions for Neutral player
+
+2003-05-02 22:52  millis
+
+	* ml_signon.c: Added support for neutrals
+
+2003-05-02 22:29  millis
+
+	* po_init.c: Added support for neutrals and artillery units
+
+2003-05-02 22:23  millis
+
+	* common.c: Added valid_artillery_move()
+
+2003-05-02 22:22  millis
+
+	* po_get.c: Added artillery/cannon strings
+
+2003-05-02 22:20  millis
+
+	* params.c: Further flags (NoSummer, CaptureHome)
+
+2003-05-02 22:16  millis
+
+	* po_mastrpt.c: Remove moves from non-players (stops Chaos games
+	  with lots of junk lines)
+
+2003-05-02 22:16  millis
+
+	* st_movement.c: Various changes (NEUTRALS, Artillery etc.)
+
+2003-05-02 21:52  millis
+
+	* st_porder.c: Better fix for the HOMETRANSFER flag
+
+2003-05-02 21:39  millis
+
+	* st_build.c: Added handling of assumed home centres
+
+2003-05-02 21:30  millis
+
+	* porder.h: Aded new stuff for AF rules
+
+2003-05-02 21:30  millis
+
+	* functions.h: Added an artilery support funciton
+
+2003-05-02 18:19  millis
+
+	* phase.c, st_porder.c: More for Bug 137, Optional summer turns
+
+2003-05-02 17:28  millis
+
+	* dip.h: Added define for CAPTUREWIN, prior to actual
+	  implementation
+
+2003-05-02 17:07  christ
+
+	* docs/README.hackers: Added info to know what to commit into the
+	  CVS when changing Makefile
+
+2003-05-02 15:48  christ
+
+	* aclocal.m4:
+	  AUpdated aclocal.m4
+
+2003-05-02 15:47  christ
+
+	* configure: updated configure
+
+2003-05-02 15:42  christ
+
+	* Makefile.in: Updated makefile.in to be able to compile from the
+	  CVS directly
+
+2003-05-02 12:13  christ
+
+	* docs/README.hackers: added comment on automake >=1.6
+
+2003-05-01 14:41  millis
+
+	* ml_signon.c: Fixed small compile bug
+
+2003-04-30 20:22  christ
+
+	* docs/: VariantsHOWTO.html, VariantsHOWTO.txt: Some work on
+	  Variants howto, still not finished
+
+2003-04-30 00:02  millis
+
+	* Makefile.am, Makefile.in, njudge.spec: Added use of dip.footer
+
+2003-04-29 23:58  millis
+
+	* smail.in: Altered to force chaarcter set and use dip.footer
+
+2003-04-28 22:35  millis
+
+	* mail.c: Fixed missing define
+
+2003-04-28 19:23  russblau
+
+	* data/index: Fix minor spacing glitch.
+
+2003-04-28 19:17  russblau
+
+	* data/index: Final (?) edits to bring up to date for version
+	  1.3.3.
+
+2003-04-27 17:23  millis
+
+	* dip.h: Bug 142, add flag for AutoCreate
+
+2003-04-27 15:48  millis
+
+	* data/index: Added description for FORCE BEGIN, bug #5
+
+2003-04-27 15:45  millis
+
+	* mail.c, ml_signon.c: Fixed Bug 5 (allowing game to be Force begun
+	  without all players)
+
+2003-04-27 14:47  millis
+
+	* mail.c: Fix bug 141 (unintentional FORCE BEGIN)
+
+2003-04-26 23:02  millis
+
+	* zmacro.h, zparseb.c, zparseb.h, zpblind.c: Fixed problem where
+	  Country adjective in retreats would mess up results
+
+2003-04-26 22:50  millis
+
+	* st_porder.c: Fixed HongKongCheck() to return int not char
+
+2003-04-23 15:47  russblau
+
+	* data/index: Added compatibility information for earlier versions.
+
+2003-04-16 04:34  millis
+
+	* ml_set.c: Implement Bug 65
+
+2003-04-16 04:33  millis
+
+	* ma_porder.c: Implement bug 65
+
+2003-04-16 04:32  millis
+
+	* params.c: Fix bug 65
+
+2003-04-16 04:31  millis
+
+	* dipent.c: Fixed a bug that zapped the x/x2/flags settings on
+	  getdipent calls
+
+2003-04-16 04:29  millis
+
+	* dip.h: Fix Bug 65
+
+2003-04-13 16:38  millis
+
+	* ma_porder.c: Perform Storms before famine (to avoid mistaken
+	  removals)
+
+2003-04-12 17:26  christ
+
+	* docs/: VariantsHOWTO.html, InstallationHOWTO.txt,
+	  VariantsHOWTO.txt, InstallationHOWTO.html: Installation and
+	  Variants guides updates
+
+2003-04-11 14:50  machmstr
+
+	* data/: info.mach2_span.original, info.mach2_sfd2.original: Avalon
+	  Hill setup (unbalanced). Currently not supported on nJudge.
+
+2003-04-11 14:49  machmstr
+
+	* data/: info.mach_span, info.mach_sfd2, info.mach2_sfd2,
+	  info.mach2_span: Clarified diff to AH setup
+
+2003-04-08 09:58  millis
+
+	* rdip.c: Fix bug 131 (problems with dip.lock2 lock)
+
+2003-04-07 14:28  machmstr
+
+	* data/map.mach_sfd2: Austrian v income dies corrected. Was 2d6
+	  should be 1d6.
+
+2003-04-06 12:43  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt:
+	  InstallationHOWTO.html now HTML4 transitional compliant, w3.org
+	  said.
+
+2003-04-02 20:11  christ
+
+	* variant.h: Typos
+
+2003-04-02 18:26  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt,
+	  VariantsHOWTO.html, VariantsHOWTO.txt: Minor change for
+	  InstallHOWTO, first draft for VariantsHOWTO
+
+2003-04-02 17:40  jaldhar
+
+	* makeflist: don't use 3-arg open for compatability with old perls.
+	  (Fixes bug #129)
+
+2003-03-31 08:19  nzmb
+
+	* mail.c: Fix to previous fix, should be two dashes, space, and
+	  newline counts as signoff.
+
+2003-03-30 11:05  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt:
+	  InstallationHOWOTO small updates and corrections
+
+2003-03-29 18:20  christ
+
+	* Makefile.am: Added VariantsHOWTO* to Makefile.am
+
+2003-03-29 18:16  christ
+
+	* docs/: InstallationHOWTO.html, InstallationHOWTO.txt,
+	  VariantsHOWTO.html, VariantsHOWTO.txt: Added VariantsHOWTO
+	  (skeleton), updated InstallationHOWTO*
+
+2003-03-29 17:55  christ
+
+	* Makefile.am, Makefile.in: Added InstallationHOWTO.* in
+	  Makefike.*.
+
+2003-03-29 17:45  christ
+
+	* docs/: InstallationHOWTO, InstallationHOWTO.html,
+	  InstallationHOWTO.txt: InstallationHOWTO is now HTML; old version
+	  removed ; added .html and .txt versions. .txt must be regenerated
+	  through lynx -dump after each modificatio of the HTML
+
+2003-03-29 11:31  nzmb
+
+	* mail.c: Made two dashes (--) followed by a newline the moral
+	  equivalent of signoff -- fixes bug #60.
+
+2003-03-28 21:30  nzmb
+
+	* mail.c: Added extra newline before grace period display --
+	  resolves bug #121
+
+2003-03-25 23:58  millis
+
+	* mach.h: Alter letter for unit bribes to 'r'
+
+2003-03-25 23:35  millis
+
+	* rdip.c: Comment out "Exit" line, as meses up on exim
+	  installations
+
+2003-03-22 09:22  millis
+
+	* Makefile.am, Makefile.in: Added plyrdata.c to ascii2rec sources
+
+2003-03-21 20:25  russblau
+
+	* mail.c: Allow space in "sign off" when used to terminate a press
+	  message (to be consistent with usage in other contexts).
+
+2003-03-21 14:07  millis
+
+	* Makefile.in: Small bug fix
+
+2003-03-21 14:02  millis
+
+	* Makefile.in: Changed spaces to tab
+
+2003-03-21 13:57  millis
+
+	* Makefile.in: Added ascii2rec target
+
+2003-03-19 22:24  millis
+
+	* lenlimit.c: Small bug fix
+
+2003-03-18 16:13  millis
+
+	* lenlimit.c: Use fputs instead of puts to avoid extra '\n'
+
+2003-03-18 13:53  millis
+
+	* lenlimit.c: Added checking for filename exists or not
+
+2003-03-17 15:57  russblau
+
+	* starter.flist: Removed file 'concessions' (content now in
+	  'index').
+
+2003-03-12 14:01  machmstr
+
+	* data/map.mach2_span: Mach2 Struggle for Dominance 2 njudge
+	  alternate setup
+
+2003-03-12 14:00  machmstr
+
+	* data/: map.mach_sfd2, map.mach_span: Classic Mach Struggle for
+	  Dominance 2 njudge alternate setup
+
+2003-03-12 13:58  machmstr
+
+	* data/map.mach_sfd1: low-xc changed to las-xc (for consistency
+	  with other mach map files)
+
+2003-03-12 13:56  machmstr
+
+	* data/: map.mach_eos, map.machiavelli, map.machiavelli2: Added IOS
+	  abbreviation to Ionian Sea
+
+2003-03-12 13:55  machmstr
+
+	* data/: map.mach2_sfd2.original, map.mach2_span.original,
+	  map.mach_sfd2.original, map.mach_span.original: Avalon Hill
+	  setups (demoted in discussions at machfix group, because being to
+	  skewed in Austrias favor)
+
+2003-03-12 13:29  machmstr
+
+	* data/: info.mach2_sfd1, info.mach2_sfd2, info.mach2_span,
+	  info.mach_eos, info.mach_sfd1, info.mach_sfd2, info.mach_span:
+	  Minor corrections
+
+2003-03-12 13:22  machmstr
+
+	* data/rules.machiavelli2: 16 Jan 2003. Note re. home country conq.
+	  Auth S Lidsell.  22 Feb 2003. Clarified rules for bribes and adj.
+	  Notes       on differences between pre-mach2 editions moved to
+	  rules.machiavelli. Author Sergio Lidsell.
+
+2003-03-12 13:18  machmstr
+
+	* data/rules.machiavelli: 27th Jan 2003. Summary sequence of play
+	  added. Retreat into rebelling     cities and assassination rule 3
+	  clarified. Builds and divided control     of provinces clarified.
+	  Authors S. Lidsell & B. Duewer.  23rd Feb. 2003. Moved section
+	  on version differences here from     rules.machiavelli2. Section
+	  on variant specific commands reviewed and	updated. Author
+	  Sergio Lidsell.
+
+2003-03-12 13:03  machmstr
+
+	* data/map.mach2_sfd1: Struggel for dominance 1 correct setup
+
+2003-03-12 13:00  machmstr
+
+	* data/map.mach2_sfd2: Struggel for dominance alternate (njudge)
+	  setup
+
+2003-03-12 07:44  nzmb
+
+	* Makefile.am: Fix to try to get ascii2rec.c to link correctly.
+
+2003-03-11 19:32  russblau
+
+	* data/: concessions, draws, index: Removed "concessions" file and
+	  incorporated content in "index".
+
+2003-03-08 23:25  russblau
+
+	* mail.c: Fixed minor spacing glitch in "set wait" notification.
+
+2003-03-07 21:24  russblau
+
+	* mail.c, ml_set.c, data/index, data/master: Editorial changes.
+
+2003-03-07 16:41  russblau
+
+	* data/house.rules: Minor editorial changes.
+
+2003-03-05 02:57  nzmb
+
+	* Makefile.am: Small error in previous commit fixed.
+
+2003-03-05 02:50  nzmb
+
+	* docs/README.plyrdata: Added mention and usage info for ascii2rec.
+
+2003-03-05 02:42  nzmb
+
+	* Makefile.am, ascii2rec.c: Added ascii2rec which will convert a
+	  text plyrdata record dump (generated by recdump) into a binary
+	  plyrdata file.
+
+2003-03-04 17:56  russblau
+
+	* data/: concessions, dedsystems, index, press: Updates and
+	  corrections to documentation.
+
+2003-03-01 12:53  russblau
+
+	* judge.6: Fixed format error in man page.
+
+2003-02-28 22:27  russblau
+
+	* judge.6, ml_set.c, data/absence, data/index, data/master: Minor
+	  changes to documentation; "SET BROADCAST" should now work as
+	  described in documentation (but kept previous form "SET NORMAL
+	  BROADCAST" for backwards compatibility).
+
+2003-02-28 20:16  nzmb
+
+	* ml_set.c, ml_signon.c, params.c, users.c: Changed the name of
+	  resignation ratio to CD ratio, to avoid confusion with Doug
+	  Massey's DRR.
+
+2003-02-26 16:57  millis
+
+	* Makefile.am, Makefile.in: Removed README.statistics and added
+	  README.timezone
+
+2003-02-25 16:15  russblau
+
+	* data/: absence, deadlines: Documented the date formats that the
+	  Judge will accept (finally!).
+
+2003-02-25 11:11  russblau
+
+	* ml_date.c, ml_set.c, data/absence: Improved absence documentation
+	  and related Judge message strings.
+
+2003-02-25 07:46  nzmb
+
+	* draw.c: Small change to make it impossible to vote for a draw or
+	  concession if the game is over.
+
+2003-02-20 18:15  russblau
+
+	* data/: index, master, press: Editorial updates.
+
+2003-02-18 14:26  millis
+
+	* params.c: Fixed small errors (missing '&')
+
+2003-02-18 14:05  millis
+
+	* lib.c: Added display of new Cavalry and Artillery units
+
+2003-02-18 14:04  millis
+
+	* st_porder.c: Display home centres if X2F_HOMETRANSFER is set
+
+2003-02-18 14:03  millis
+
+	* params.c: Added display of some new parameters
+
+2003-02-18 14:00  millis
+
+	* dip.h: Added some new type defines
+
+2003-02-17 21:24  millis
+
+	* conf.c: Add missing quote
+
+2003-02-17 16:39  millis
+
+	* atrun, dip.c: Fix bug 81, to call at for year too
+
+2003-02-17 15:39  millis
+
+	* functions.h, ml_set.c, jm.c: bug 10, prevent overlapping absences
+	  Also improve text output for absences.
+
+2003-02-17 14:33  millis
+
+	* ml_signon.c: fixed bug 6, detected returning player
+
+2003-02-17 12:41  millis
+
+	* Makefile.am, Makefile.in, conf.c, conf.h, lenlimit.c, mail.c:
+	  Fixed Bug 108, make lines >=1024 terminate in '\n'
+
+2003-02-17 09:29  millis
+
+	* dip.c: Changed setenv() to putenv() to work on Sun platforms
+
+2003-02-12 21:22  russblau
+
+	* starter.flist, data/deadlines, data/guide, data/index,
+	  data/transform: Updated starter.flist to reflect recent changes
+	  to help files.  Minor edits to other files.
+
+2003-02-12 07:46  nzmb
+
+	* draw.c, summary.c: Fixed several bugs in the concession handling
+	  code, including a severe one
+
+	  that could, in rare circumstances, lead to an undeserved
+	  concession being granted
+
+2003-02-11 21:01  russblau
+
+	* data/info.wings, data/package, data/syntax, data/transform,
+	  docs/README.denyallow, docs/README.master, docs/README.plyrdata,
+	  docs/README.resign: Minor stylistic edits.
+
+2003-02-10 21:56  russblau
+
+	* data/: denyallow, history, newdedsystems: Added new help-file for
+	  "history" command; renamed "newdedsystems" to "dedsystems" since
+	  they're not so new anymore, and to make it easier to find and
+	  remember the filename.
+
+2003-02-10 21:53  russblau
+
+	* data/dedsystems, data/guide, docs/README.denyallow: Added
+	  plain-text version of "Newbie's Guide to the Judge", and moved
+	  "denyallow" document from data/ to docs/ since it is oriented to
+	  JKs.
+
+2003-02-10 21:48  russblau
+
+	* data/absence, data/concessions, data/deadlines, data/draws,
+	  data/duality, data/index, data/info, data/master, data/press,
+	  data/rules, data/syntax, data/transform, docs/README.master,
+	  docs/README.plyrdata, docs/README.resign, docs/README.syslog:
+	  Corrected errors and updated content in documentation files.
+	  Please notify russblau@imapmail.org if any errors are found.
+
+2003-02-09 23:07  millis
+
+	* st_movement.c: Fixed blind game reports showing unrequested
+	  support of unit to itself
+
+2003-02-09 23:07  millis
+
+	* st_build.c: Corrected order of GetUnit() call Also removed
+	  superfluous blank line on order output
+
+2003-02-06 00:07  millis
+
+	* docs/README.timezone: Corrected text
+
+2003-02-05 23:54  millis
+
+	* dip.conf: One extra character in comment!
+
+2003-02-05 23:53  millis
+
+	* conf.c, conf.h, configure, dip.c, dip.conf, dipstats.c,
+	  dipstats.h: Removed dipstats files.  Also added in new JUDGE_TZ
+	  variable, to specify timezone
+
+2003-02-05 14:05  millis
+
+	* docs/: README.statistics, README.timezone: [no log message]
+
+2003-02-05 13:58  millis
+
+	* dip.conf: Added more reasonable defaults Also deleted STATS flags
+	  (as now removed from code)
+
+2003-02-05 01:10  millis
+
+	* st_build.c: Fixed small bug with pending build unit count
+
+2003-01-30 22:49  millis
+
+	* mail.c: Fixed small error (SET not SETUP)
+
+2003-01-20 23:27  millis
+
+	* starter.flist: Removed ep.houserules (no longer supported)
+
+2003-01-20 23:26  millis
+
+	* data/: ep.house.rules, house.rules: Updated for new version (no
+	  EP House Rules)
+
+2003-01-20 12:33  millis
+
+	* ma_build_basic.c: Small USTV change
+
+2003-01-18 23:57  millis
+
+	* summary.c: Updated from USTV
+
+2003-01-18 23:48  millis
+
+	* st_porder.c: Don't call temporary USTV functions
+
+2003-01-18 23:46  millis
+
+	* st_build.c: Integrated USTV changes.
+
+2003-01-18 15:17  millis
+
+	* st_build.c: first intermediate checkin, with Native and
+	  Multi-province support
+
+2003-01-18 14:36  millis
+
+	* st_movement.c: Merged in USTV changes, basically: Native Units
+	  1/2 stregnth movements Multi-unit provinces
+
+2003-01-18 14:31  millis
+
+	* st_retreat.c: Implements half-strength retreats from USTV (for
+	  1900 variant)
+
+2003-01-18 14:17  millis
+
+	* porder.h: Added isNativeUnit macro
+
+2003-01-17 23:31  millis
+
+	* st_porder.c: Merged from USTV Summary will now show only ALIVE
+	  powers
+
+2003-01-17 23:28  millis
+
+	* st_setup.c: Updated from USTV
+
+2003-01-16 22:52  millis
+
+	* ml_signon.c: Removed STAT function
+
+2003-01-16 22:51  millis
+
+	* conf.c: Removed STAT stuff
+
+2003-01-15 22:43  millis
+
+	* data/index: Russell Blau changes
+
+2003-01-15 14:14  millis
+
+	* porder.h: Added missing Native defines
+
+2003-01-15 14:12  millis
+
+	* lib.c: Merged from ustv
+
+2003-01-15 13:59  millis
+
+	* mail.c, ml_set.c, ml_signon.c: Removed Dipstats
+
+2003-01-15 13:47  millis
+
+	* params.c: Fixed compile error
+
+2003-01-15 13:43  millis
+
+	* mail.c: Fixed small compiler errors
+
+2003-01-15 13:30  millis
+
+	* Makefile.in: Restore mistakenly deleted items
+	  -------------------------------------------
+
+2003-01-14 14:05  millis
+
+	* Makefile.am, Makefile.in, aclocal.m4: Added history
+
+2003-01-14 14:03  millis
+
+	* Makefile.am, Makefile.in: Remove dipstats files (not working/not
+	  used)
+
+2003-01-14 13:56  millis
+
+	* params.c, po_get.c, po_init.c, po_mastrpt.c: Updated with ustv
+	  merged changed
+
+2003-01-14 13:51  millis
+
+	* global.c, ml_list.c, ml_set.c, ml_signon.c: Merges from USTV
+
+2003-01-13 22:38  millis
+
+	* cmap.c, common.c, conf.c, dip.c, dipent.c: merged in from ustv
+
+2003-01-13 22:29  millis
+
+	* conf.h, functions.h, porder.h: Merged from ustv
+
+2003-01-13 22:15  millis
+
+	* mail.c: ustv merge
+
+2003-01-13 18:19  millis
+
+	* ma_movement.c: Merge from ustv
+
+2003-01-13 18:16  millis
+
+	* ma_build.c: Merged from ustv
+
+2003-01-13 17:39  millis
+
+	* dip.h: Merge from ustv branch
+
+2003-01-13 15:57  millis
+
+	* version.c: Restored old version
+
+2003-01-13 15:48  millis
+
+	* version.c: ustv version
+
+2003-01-12 00:14  nzmb
+
+	* dip.c: Fixed it so that postal press reports are not sent when no
+	  press is submitted.
+
+2003-01-07 23:41  millis
+
+	* mail.c: Fix bug 93
+
+2003-01-06 05:35  jaldhar
+
+	* njudge.spec: Updated version number to match tarball.
+
+2003-01-05 23:55  jaldhar
+
+	* ChangeLog: Updated Changelog.
+
+2003-01-05 23:53  jaldhar
+
+	* Makefile.in, njudge.spec, debian/changelog: Updated version
+	  number for release.
+
+2003-01-05 12:40  millis
+
+	* configure.ac: Next temporary version number
+
+2003-01-05 12:17  njudge
+
+	* configure.ac: Up for relase
+
+2003-01-05 11:18  millis
+
+	* ma_build.c: Fixed bug 87
+
+2003-01-05 11:16  millis
+
+	* mail.c: Fixed bug 75, also make NOBROAD flag work correctly (at
+	  last!)
+
+2003-01-05 07:41  jaldhar
+
+	* debian/cron.weekly: Redirect overly verbose output of flock to
+	  /dev/null
+
+2003-01-05 07:34  jaldhar
+
+	* INSTALL, configure, configure.ac, njudge.spec, smail.in,
+	  debian/conffiles: Added new configure option --with-domain to set
+	  judges' email domain.
+
+2003-01-05 07:24  jaldhar
+
+	* njudge.spec: Added a little message after we build the rpm saying
+	  that dip.conf has to be editted before the judge is useable.
+
+2003-01-05 07:20  jaldhar
+
+	* debian/rules: Added a little message after we build the deb
+	  saying that dip.conf has to be editted before the judge is
+	  useable.
+
+2003-01-05 00:06  millis
+
+	* ma_famplag.c, ma_stats.c: Fix bug 90
+
+2003-01-02 12:04  njudge
+
+	* configure.ac: Fixed missing )
+
+2003-01-01 21:35  njudge
+
+	* configure.ac: Removed the pre (as per Jaldhar request)
+
+2002-12-31 17:06  millis
+
+	* configure.ac: Up version number
+
+2002-12-31 16:17  millis
+
+	* configure.ac: Up the version for release 1.3.0
+
+2002-12-31 15:53  millis
+
+	* docs/InstallationHOWTO: Small English corrections and restored
+	  remap makefile target
+
+2002-12-31 05:16  jaldhar
+
+	* ChangeLog: Updated ChangeLog.
+
+2002-12-31 05:14  jaldhar
+
+	* njudge.spec, debian/changelog: Updated version number for
+	  release.
+
+2002-12-31 05:10  jaldhar
+
+	* bgreet.c, docs/AUTHORS, docs/CHANGES, docs/INSTALL, docs/LICENSE,
+	  docs/README, docs/TODO, docs/archives/README.JudgeKeeper,
+	  docs/archives/README.duplex, docs/archives/README.first-install,
+	  docs/archives/README.fixids, docs/archives/README.gotchas,
+	  docs/archives/README.ignore, docs/archives/README.makefile,
+	  docs/archives/README.old, docs/archives/log: Removed obsolete
+	  files.
+
+2002-12-31 04:31  jaldhar
+
+	* ChangeLog: Updated ChangeLog.
+
+2002-12-31 03:01  jaldhar
+
+	* Makefile.am, Makefile.in: Fixed missing comment character in
+	  Makefile.
+
+2002-12-30 17:45  millis
+
+	* data/info.wings: Trivial spelling fix
+
+2002-12-30 16:39  millis
+
+	* data/map.colonial96: Allow fleets to use new land-bridges too.
+
+2002-12-30 15:33  millis
+
+	* data/info.colonial: Really trviail punctuation correction
+
+2002-12-30 15:32  millis
+
+	* data/: duality, info.colonial: Added colonial/colonial96 default
+	  as duality
+
+2002-12-30 15:27  millis
+
+	* variant.h: Add Duality flag default for colonial games (because
+	  of Cebu)
+
+2002-12-30 15:01  millis
+
+	* data/info.blind: Update for Bug17 and clarification
+
+2002-12-30 12:26  millis
+
+	* data/: map.38, map.colonial96: Corrected colonial96 land-bridges
+
+2002-12-30 06:24  jaldhar
+
+	* njudge.spec: Changed my address.
+
+2002-12-30 06:15  jaldhar
+
+	* debian/: README.debian, bug, changelog, control, rules: Debian
+	  packaging fixes.
+
+2002-12-30 05:55  jaldhar
+
+	* Makefile.am, Makefile.in: Added extra docs to tarball (and
+	  removed one.)
+
+2002-12-30 05:24  jaldhar
+
+	* dipclean: dipclean looks for the judge home directory through
+	  configure now.
+
+2002-12-30 04:59  jaldhar
+
+	* dipclean.in: dipclean looks for the judge home directory through
+	  configure now.
+
+2002-12-30 04:56  jaldhar
+
+	* Makefile.am, Makefile.in, configure, configure.ac: dipclean looks
+	  for the judge home directory through configure now.
+
+2002-12-28 21:52  millis
+
+	* zmacro.h, zparseb.h: Update to V0.7
+
+2002-12-28 21:25  millis
+
+	* ma_movement.c: Fixed typo
+
+2002-12-28 01:18  millis
+
+	* data/: info.colonial96, map.38, map.colonial96, report.38,
+	  seed.38: Bug 59, add colonial96 variant
+
+2002-12-28 01:15  millis
+
+	* starter.flist: Added new files
+
+2002-12-28 01:08  millis
+
+	* variant.c, variant.h: Bug 57, Add colonial96 variant
+
+2002-12-28 01:00  millis
+
+	* params.c, ml_set.c: Small text change
+
+2002-12-28 00:56  millis
+
+	* data/index: Added explanation for Bug17
+
+2002-12-28 00:52  millis
+
+	* dip.c, dip.h, params.c, ml_set.c: Proper fix to CR 17
+
+2002-12-28 00:42  millis
+
+	* ml_set.c, params.c: Implement bug 17, noBcentres option (to hide
+	  others centres in blind)
+
+2002-12-28 00:11  millis
+
+	* ma_movement.c: Fixed bug 2, so that disbands can happen even if
+	  under siege
+
+2002-12-28 00:09  millis
+
+	* ma_retreat.c: Fixed bug 79, not showing special type on retreats
+
+2002-12-28 00:05  millis
+
+	* zparseb.c, zpblind.c: Fixed bug 57, problems with blind output
+
+2002-12-28 00:02  millis
+
+	* functions.h, lib.c, st_porder.c: Fixed bug 77, adding wrap_char()
+	  function
+
+2002-12-23 06:33  jaldhar
+
+	* njudge.spec: Updated spec file.  It works correctly now.
+
+2002-12-23 06:17  jaldhar
+
+	* Makefile.am, Makefile.in: Added the top-level docs to
+	  dist_doc_DATA.
+
+2002-12-23 02:26  jaldhar
+
+	* docs/README.hackers: Noted correct macro for Documentation.
+
+2002-12-23 01:43  millis
+
+	* ma_porder.c, ma_movement.c: Really fixed Bug 69 (incorrect
+	  change)
+
+2002-12-22 13:36  christ
+
+	* docs/InstallationHOWTO:  Added some things on the Debian package
+
+2002-12-22 11:05  christ
+
+	* dip.conf: Modification of comments for GAME_DIR
+
+2002-12-22 10:59  christ
+
+	* docs/InstallationHOWTO: Update of the InstallationHOWTO with
+	  autoconf stuff and 1.3.0-pre judge
+
+2002-12-22 05:12  jaldhar
+
+	* Makefile.am, Makefile.in, njudge.spec: Added spec file for RPMs
+
+2002-12-22 02:13  millis
+
+	* ma_movement.c: Fixed bugs 54, 67 & 69
+
+2002-12-22 02:05  millis
+
+	* ma_porder.c: Fixed bug 56 and 70
+
+2002-12-22 02:02  millis
+
+	* ma_famplag.c: corrected bug 56 (making storms at end of Fall)
+
+2002-12-22 02:00  millis
+
+	* conf.c, conf.h: Added DIE_STORMS setting for new random seed for
+	  storms
+
+2002-12-21 21:20  jaldhar
+
+	* README: It's COPYING not LICENSE.
+
+2002-12-21 19:24  jaldhar
+
+	* debian/changelog: Updated changelog.
+
+2002-12-21 19:21  jaldhar
+
+	* debian/postinst: Make sure smail has the right FROM value.
+
+2002-12-21 19:13  jaldhar
+
+	* smail.in: FROM should be determined from autoconf.
+
+2002-12-21 18:26  jaldhar
+
+	* debian/changelog: Took my own advice and made Debian version
+	  number agree with configure.ac
+
+2002-12-21 17:14  jaldhar
+
+	* debian/: postinst, postrm: Reworked installation scrpts.  We
+	  don't try and do so much now.
+
+2002-12-21 06:34  jaldhar
+
+	* debian/postrm: Added #DEBHELPER# token.
+
+2002-12-21 06:33  jaldhar
+
+	* debian/changelog: Removed obsolete Emacs stuff.
+
+2002-12-21 06:31  jaldhar
+
+	* judge.6: Properly formatted NAME section so it will not confuse
+	  whatis.
+
+2002-12-21 06:06  jaldhar
+
+	* debian/changelog: Updated Changelog
+
+2002-12-21 06:02  jaldhar
+
+	* debian/postinst: Fixed failing adduser call by telling it not to
+	  create the home directory.
+
+2002-12-21 05:51  jaldhar
+
+	* debian/: newlogs, rules: Fixed log ownership bug in Debian
+	  package.
+
+2002-12-21 05:33  jaldhar
+
+	* INSTALL, Makefile.am, Makefile.in: Added remap target to Makefile
+	  and documented it in INSTALL.
+
+2002-12-19 21:00  christ
+
+	* docs/njudgemapdatahowto.txt: Added txt version of map data howto
+	  (I can t stand HTML doc ;-)  -- CCS
+
+2002-12-17 14:00  millis
+
+	* data/: map.aberration, map.asia, map.classical, map.empire,
+	  map.youngstown, report.asia, report.britain, report.crowded_1898,
+	  report.youngstown: Resolved bug 53 (various small map file
+	  defects)
+
+2002-12-17 13:30  millis
+
+	* cmap.c: Corrected some path settings
+
+2002-12-16 23:19  nzmb
+
+	* ma_porder.c, st_porder.c: Fixed bug that was causing the victor
+	  in games to be reported incorrectly. Also fixed a typo in
+	  ma_porder.c.
+
+2002-12-12 01:46  millis
+
+	* st_build.c: Fixed Bug 51 (Suez counting as an owned province)
+
+2002-12-11 16:13  millis
+
+	* dip.h, ma_porder.c: Added new flag to set up autonomous garrisons
+	  in every fort (for Mach)
+
+2002-12-11 14:57  millis
+
+	* cmap.c: Allow '\r' as blank line character
+
+2002-12-11 14:46  millis
+
+	* cmap.c: Restore version 1.5
+
+2002-12-11 14:09  millis
+
+	* data/: info.mach2_sfd1, info.mach2_sfd2, info.mach2_span,
+	  info.mach_eos, info.mach_sfd1, info.mach_sfd2, info.mach_span,
+	  info.machiavelli, info.machiavelli2, map.mach2_sfd1,
+	  map.mach2_span, map.mach_eos, map.mach_sfd1, map.mach_sfd2,
+	  map.mach_span, map.machiavelli, map.machiavelli2,
+	  rules.machiavelli: Updates for machiavelli files and new versions
+
+2002-12-08 00:24  nzmb
+
+	* plyrdata.c, recdump.c: Modified plyrdata.c and recdump.c to avoid
+	  problem with sizes that was occuring in njudge-1.3.0-pre.
+	  plyrdata files should now be compatible accross big and little
+	  endian architectures (in most cases).
+
+2002-12-07 03:15  jaldhar
+
+	* Makefile.am, Makefile.in, configure, configure.ac, makeflist:
+	  Added check for perl in configure.ac and changed makeflist and
+	  Makefile.am so it will work with perl < 5.60
+
+2002-12-04 23:33  millis
+
+	* ma_expenses.c, ma_movement.c, ma_porder.c: Fixed Bug 47
+	  (incorrect ownership change for proxied orders)
+
+2002-11-24 23:56  millis
+
+	* Makefile.am, Makefile.in: Fixed bug 46 (forward template file
+	  creation)
+
+2002-11-24 23:22  millis
+
+	* users.c: Removed unused function "checklist"
+
+2002-11-24 12:59  millis
+
+	* dip.conf: Re/enabled gateway addresses.
+
+2002-11-14 00:07  millis
+
+	* params.c: Trivial change to remove a space character
+
+2002-11-13 23:18  millis
+
+	* ma_porder.c: Bug 43, change ownership prior to movement in MAch
+	  games
+
+2002-11-13 22:30  millis
+
+	* ma_movement.c: Bug 30, correctly calculate support on
+	  assasination
+
+2002-11-13 22:29  millis
+
+	* params.c: Bug 42 fix, Storms setting not being shown
+
+2002-11-13 22:26  millis
+
+	* dip.c: Bug 23, don't show missing players in a secret game
+
+2002-11-13 22:26  millis
+
+	* ma_expenses.c: Bug 28, besieged garrisons must be eliminated when
+	  assassinated
+
+2002-11-09 13:27  millis
+
+	* ma_porder.c: Fixed bug 40, ownership of province incorrect in
+	  MAach2
+
+2002-11-08 22:00  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-11-08 21:59  millis
+
+	* users.c: Fixed bug 36, to check if player is really blacklisted
+	  or simply trying on a restricted judge
+
+2002-11-08 21:57  millis
+
+	* mail.c: fix bug 36, so that players not given blackist message if
+	  judge is a private one.  Also, do not delete player's email on
+	  resignation
+
+2002-11-08 21:51  millis
+
+	* functions.h: Resolve bug 36
+
+2002-11-06 03:11  jaldhar
+
+	* Makefile.am:
+	  upgrade and upgrade-strip targets build binary targets first
+	  (Closes: #26)
+
+2002-10-23 22:50  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-10-23 22:49  millis
+
+	* machlib.c: Fixed bug 22 (Venice province placed in rebellion)
+
+2002-10-23 13:09  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-10-23 13:08  millis
+
+	* docs/njudgemapdatahowto.htm: New version with more detail
+
+2002-10-23 13:07  millis
+
+	* data/: rules.machiavelli, rules.machiavelli2: Updated for
+	  clarification
+
+2002-10-19 22:44  millis
+
+	* dip.c: Removed a simple warning
+
+2002-10-19 21:39  millis
+
+	* ma_build.c, ma_build_basic.c, ma_movement.c: Fixed Bug 21: Mach2
+	  games allowing Armies in Venice
+
+2002-10-08 22:56  millis
+
+	* Makefile.am, Makefile.in: Remove compress target
+	  ----------------------------------------------------
+
+2002-10-07 03:58  nzmb
+
+	* ml_date.c: Changed ml_date.c so set deadline command defaults to
+	  phase clock parameter rather than 23:30 local time.
+
+2002-10-06 01:03  millis
+
+	* docs/InstallationHOWTO: Added TODO comment
+
+2002-10-06 00:55  millis
+
+	* docs/INSTALL: Refer to new INSTALL in main directory
+
+2002-10-06 00:51  millis
+
+	* docs/AUTHORS: Added Jaldhar Vyas
+
+2002-10-06 00:43  millis
+
+	* docs/TODO: Added Bugzilla information
+
+2002-09-28 23:11  millis
+
+	* makeout: File no longer used, removed.
+
+2002-09-26 21:58  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-09-26 21:52  millis
+
+	* data/info.machiavelli2, data/map.machiavelli2,
+	  data/report.machiavelli2, data/rules.machiavelli2,
+	  data/seed.machiavelli2, starter.flist, variant.c, variant.h:
+	  Added Machiavelli2 variant
+
+2002-08-30 14:41  jaldhar
+
+	* BUGS, atrun.linux, smail.linux, smail.pl: More build cleanup
+
+2002-08-30 04:20  jaldhar
+
+	* ChangeLog, Makefile.in, config.h, configure, configure.in, smail:
+	  More build cleanup.
+
+2002-08-30 04:18  jaldhar
+
+	* makeflist: Fixed typo in Date tag.
+
+2002-08-30 04:15  jaldhar
+
+	* makeflist: Added to distribution.
+
+2002-08-30 03:39  jaldhar
+
+	* debian/cron.weekly: Removed call to bgreet.
+
+2002-08-30 03:37  jaldhar
+
+	* ChangeLog: Merged docs/CHANGES with this file.
+
+2002-08-28 22:00  millis
+
+	* dipclean, docs/CHANGES: Removed bgreet reference
+
+2002-08-28 21:59  millis
+
+	* BUGS, Makefile.am, Makefile.in: Removed bgreet references
+
+2002-08-28 21:50  millis
+
+	* bgreet.old: No longer needed, deleted
+
+2002-08-28 21:27  millis
+
+	* xfile: [no log message]
+
+2002-08-28 21:23  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-08-28 21:12  millis
+
+	* ma_porder.c: Only notify for city onwership change if city has a
+	  value
+
+2002-08-28 00:32  millis
+
+	* st_movement.c: Removed some warnings only
+
+2002-08-27 23:56  millis
+
+	* dip.c, dip.h, global.c, ma_porder.c, st_porder.c: Added better
+	  victory display (fixing Mach victory bug)
+
+2002-08-27 23:11  millis
+
+	* defaults.inc.base: [no log message]
+
+2002-08-27 22:36  millis
+
+	* configure.ac: Update version
+
+2002-08-27 22:35  millis
+
+	* Makefile, Makefile.defines.base, Makefile.version: Not needed for
+	  automake/autoconf
+
+2002-08-27 22:33  millis
+
+	* docs/README.hackers: Automake/autoconf changes
+
+2002-08-27 22:29  millis
+
+	* debian/: README.debian, changelog, conffiles, control, copyright,
+	  cron.weekly, postinst, postrm, prerm, rules: Added for
+	  automake/autoconf compatibility
+
+2002-08-27 22:27  millis
+
+	* version.c: removed hardcoded 'njudge'.  We get package name from
+	  autoconf now.
+
+2002-08-27 22:27  millis
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile.am, Makefile.in,
+	  README, aclocal.m4, ascii_to_ded.c, bailout.c, bgreet.c, cmap.c,
+	  conf.c, config.guess, config.h, config.h.in, config.sub,
+	  configure, configure.ac, ded_to_ascii.c, deddump.c,
+	  defaults.inc.in, delgame.c, depcomp, dip.c, dipent.c, dipstats.c,
+	  draw.c, fmtwho.c, history.c, ign.c, install-sh, judge.6, lib.c,
+	  ma_porder.c, mail.c, missing, mkinstalldirs, ml_getaddr.c,
+	  ml_list.c, ml_set.c, ml_signon.c, newlogs, phase.c, po_init.c,
+	  porder.c, recdump.c, smail, smail.in, starter.flist,
+	  strcasecmp.c, strdup.c, summary.c, users.c: Updated for
+	  automake/autoconf functionality
+
+2002-08-09 22:43  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-08-09 22:42  millis
+
+	* ml_signon.c: Check if same player returning: don't bump deadline
+	  if so
+
+2002-07-23 12:51  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-07-23 12:45  millis
+
+	* docs/njudgemapdatahowto.htm: First entry
+
+2002-07-20 22:30  millis
+
+	* docs/CHANGES, Makefile.version: [no log message]
+
+2002-07-20 22:26  millis
+
+	* ma_porder.c: Fixed small bug for province ownership change when
+	  garrison is of different owner (properly this time!)
+
+2002-07-17 19:02  njudge
+
+	* Makefile.version: [no log message]
+
+2002-07-17 16:51  nzmb
+
+	* docs/CHANGES: modified for new updates
+
+2002-07-17 16:50  nzmb
+
+	* ml_set.c:
+	  Fixed up mistake in PRV array, added more flexibility to
+	  commands.
+
+2002-07-17 11:48  millis
+
+	* tm_xpress.c: Added Log to header
+
+2002-07-17 11:46  millis
+
+	* params.c: Only show postal setting if set
+
+2002-07-16 18:14  nzmb
+
+	* Makefile, dip.c, dip.h, functions.h, mail.c, mail.h, ml_set.c,
+	  ml_signon.c, params.c, tm_xpress.c, data/index: Many changes
+	  dealing with the addition of szine style postal press. Also fixed
+	  apparent bug in signons for games which have not started.
+
+2002-06-23 22:56  nzmb
+
+	* users.c: Cosmetic change to infoplayer/getdedication display.
+
+2002-06-19 16:56  millis
+
+	* Makefile.version: [no log message]
+
+2002-06-12 21:08  millis
+
+	* summary.c: second value in player record is hex, thus us %x and
+	  not %d
+
+2002-06-11 16:26  nzmb
+
+	* dip.h, ml_press.c, ml_set.c, params.c, data/index:
+	  Added set [no]mustorder to require players to submit avalid set
+	  of orders before they may send press (to be used in conjunction
+	  with set wait).
+
+2002-06-11 14:50  hauer
+
+	* mail.c: Reject conditional orders in Blind.
+
+2002-06-10 22:08  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-06-10 22:07  millis
+
+	* st_build.c: Small fix to init_build(), that was counting gateway
+	  units as units
+
+2002-06-01 01:02  millis
+
+	* variant.c: Undo last change, caused blind games to be rejected at
+	  signon stage
+
+2002-05-31 22:55  nzmb
+
+	* mail.c:
+	  Fixed bug in mail.c that was causing the judge to do a
+	  segmentation fault when trying to write to the xcontrol file.
+
+2002-05-31 12:40  millis
+
+	* docs/CHANGES: [no log message]
+
+2002-05-31 12:38  millis
+
+	* ma_build.c: Correct problem not allowing builds in Venice to
+	  change mind Also allow first turn to have an over-spend (needed
+	  for scenarios)
+
+2002-05-31 12:37  millis
+
+	* ma_porder.c: Fixed small bug allowing provinces to stay
+	  incorrectly unowned
+
+2002-05-21 21:15  christ
+
+	* docs/InstallationHOWTO: Installation howto update
+
+2002-05-21 12:05  plalande
+
+	* data/map.african2: - Corrected the mispelled Ouanadougou to
+	  Ouagadougou in map.african2
+
+2002-05-20 21:41  christ
+
+	* docs/InstallationHOWTO: Update Installation howto for 1.1.1 - not
+	  finished
+
+2002-05-20 17:43  christ
+
+	* docs/: AUTHORS, INSTALL, LICENSE, README, TODO:  Small doc fixes
+	  and updates - C.Courtois 20/05/02
+
+2002-05-17 18:56  plalande
+
+	* data/map.african2: - Added old spelling of Egypt province (eygpt)
+	  to acceptable names for the territory in african2 variant to
+	  prevent a judge crash if an african2 game was ungoing at the time
+	  of the upgrade
+
+2002-05-17 18:03  plalande
+
+	* data/map.african2: - Added previous mispelled Egypt abbreviation
+	  back to map.african2
+
+2002-05-17 18:00  plalande
+
+	* data/map.african2: - Fixed typographical error in which Egypt was
+	  spelled Eygpt and its abbreviation eyg instead of egy.
+
+2002-05-17 11:38  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-05-17 11:36  miller
+
+	* mail.c: Parameters for address_not_in_list() incorrectly
+	  reverserd
+
+2002-05-17 11:34  miller
+
+	* st_build.c: Fixed small bug for CheckOwnedOK() returning bad
+	  value
+
+2002-05-17 11:29  miller
+
+	* docs/CHANGES: Next version description
+
+2002-05-17 11:23  miller
+
+	* Makefile.version: Next one!
+
+2002-05-17 11:22  miller
+
+	* Makefile: Small correction to dist1
+
+2002-05-16 13:11  miller
+
+	* cmap.c: Removed warning and debug line
+
+2002-05-16 13:05  miller
+
+	* dip.c: Added used of X2F_MORE:HOMES flags Don't send blind games
+	  to openings list Allow blind games to not show centres
+
+2002-05-16 12:03  miller
+
+	* xfile: Restore version 1.1
+
+2002-05-16 12:02  miller
+
+	* Makefile: Attempt to have two distribution targets, dist and
+	  dist1 Also removed list and more targets (as not used)
+
+2002-05-16 09:40  miller
+
+	* variant.c: Blind game also sets quiet flag
+
+2002-05-14 23:44  miller
+
+	* ascii_to_ded.c: Added simple error checking for ded.txt on
+	  fopen()
+
+2002-05-14 23:34  miller
+
+	* dip.h: Added some more flags and globals
+
+2002-05-14 23:16  miller
+
+	* porder.h: Added 'h' province type and new_owner value for units
+
+2002-05-14 23:05  miller
+
+	* ma_movement.c: Allow signalling convoys in Mach2 games
+
+2002-05-14 09:59  njudge
+
+	* Makefile, xfile: Updated to properly exclude CVS sub-directories
+	  (specified in 'xfile')
+
+2002-05-13 12:28  greg
+
+	* Makefile: Tweaked Makefile
+
+2002-05-13 12:11  greg
+
+	* xfile: Minor changes - Tweak to Makefile - Added "xfile"
+
+2002-05-11 09:15  greg
+
+	* Makefile, dip.c, dip.h, global.c, history.c, mail.c, mail.h,
+	  ml_set.c, phase.c, st_build.c, st_porder.c: Minor bug fixes -
+	  fixed subjectline for absence requests - fixed phase length, so
+	  it's no longer hard coded for responses - partial fix for
+	  unusable builds, players with only unusable builds	will no
+	  longer be flagged as having orders due, however players    with
+	  some usable builds will need to waive any unusable builds,
+	  also, if one or more players have unusable builds, but no
+	  player has usable builds, the build phase will process after	  a
+	  short delay
+
+2002-05-07 09:48  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-05-07 09:46  miller
+
+	* data/info.colonial: Updated for Special Rules changes
+
+2002-05-04 02:06  nzmb
+
+	* dip.c, functions.h, jm.c, mail.c: Added code to display the time
+	  left until the deadline and grace at the bottom of their reply
+	  whenever a player signs on.
+
+2002-04-28 08:59  nzmb
+
+	* docs/README.plyrdata: Updated README.plyrdata to include info
+	  about the record command, which can vbe used to modify plyrdata
+	  records.
+
+2002-04-23 11:08  miller
+
+	* summary.c, docs/CHANGES: Spelling change "Svmebody" -> "Somebody"
+
+2002-04-22 21:28  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-04-22 21:27  miller
+
+	* ma_movement.c: Small bug that allowed illegal converts
+
+2002-04-19 08:26  miller
+
+	* Makefile.version: [no log message]
+
+2002-04-19 07:55  njudge
+
+	* docs/CHANGES: [no log message]
+
+2002-04-18 17:28  greg
+
+	* Makefile.version: Updated version number.
+
+2002-04-18 04:44  greg
+
+	* ascii_to_ded.c, dip.c, dip.conf, dip.h, functions.h, mail.c,
+	  ml_list.c, ml_set.c, ml_signon.c, params.c, summary.c,
+	  data/index, data/info.duplex: Added the following commands: -
+	  unstart - set secret - set [prflist|prfrand|prfboth]
+
+	  Fixed Set Absence so that "to" is not case sensitive
+
+	  Fixed Quiet games so that new players are announced before the
+	  game starts
+
+	  Fixed ascii_to_ded.c so thatit no longer generates an error when
+	  compiled
+
+2002-04-15 14:39  miller
+
+	* docs/README.size: First draft
+
+2002-04-15 14:16  miller
+
+	* data/info.blind: Updated for blind implementation
+
+2002-04-15 12:55  miller
+
+	* Makefile, cmap.c, common.c, conf.c, conf.h, dip.c, dip.h,
+	  flist.info, functions.h, lib.c, mail.c, ml_set.c, params.c,
+	  po_init.c, porder.h, st_build.c, st_movement.c, st_porder.c,
+	  st_retreat.c, st_setup.c, st_status.c, docs/CHANGES: Multiple
+	  changes for blind & Colonial & setup from USTV
+
+2002-04-15 12:43  miller
+
+	* data/map.colonial: Added TSR and Suez provinces
+
+2002-04-15 10:55  miller
+
+	* Makefile: Added size_check to dependencies
+
+2002-04-12 18:20  miller
+
+	* Makefile: Fixed small error
+
+2002-04-12 12:10  miller
+
+	* Makefile: Added blind and check executables, removed bgreet
+
+2002-04-12 01:26  miller
+
+	* Makefile: Better attempt for HOME directory
+
+2002-04-12 00:49  miller
+
+	* Makefile.defines.base: Added define for install command
+
+2002-04-11 23:59  miller
+
+	* size_check.c: First drafat.
+
+2002-04-11 23:48  miller
+
+	* zmacro.h, ascii_to_ded.c, ded_to_ascii.c: First draft.
+
+2002-04-11 13:23  miller
+
+	* zparseb.c, zparseb.h, zpblind.c: First entry, from testing on
+	  USTV
+
+2002-04-09 10:56  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-04-09 10:54  miller
+
+	* dip.c: Add check before resending abandoned messages
+
+2002-04-06 17:14  nzmb
+
+	* ml_press.c:
+	  Changed ml_press.c so that press from late players isn't blocked
+	  when the game is over (again)!
+
+2002-04-06 15:37  miller
+
+	* docs/CHANGES: 6th April changes made
+
+2002-04-06 15:03  miller
+
+	* ml_short.c, data/info.shorthand: Added space after "province" and
+	  allow "prov" abbreviation
+
+2002-04-06 14:40  miller
+
+	* dip.c: Fixed a bad '=' that casued all builds to not set SF_MOVE
+	  flag (DAMN!)
+
+2002-04-06 04:23  nzmb
+
+	* draw.c: Fixed bug in draw.c that caused the noconcessions flag to
+	  also reject draw votes.
+
+2002-04-01 11:19  miller
+
+	* Makefile.version: [no log message]
+
+2002-04-01 11:09  miller
+
+	* docs/CHANGES, Makefile.version: [no log message]
+
+2002-03-25 23:47  miller
+
+	* ma_porder.c: Fixed properly bug for ownership when unit has just
+	  moved there (it wasn't having 'loc' set correctly in pr
+	  structure)
+
+2002-03-25 23:24  miller
+
+	* ma_porder.c: Fixed a bug for province ownership not correctly
+	  changing if newly occupied at turn end
+
+2002-03-20 21:54  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-03-20 21:50  miller
+
+	* variant.h: Make Classical use ONECENTRE setting
+
+2002-03-14 03:12  nzmb
+
+	* ml_press.c:
+	  Added fix to ml_press.c to prevent people from getting warning
+	  messages (of if nno late press is on being prohibited from)
+	  sending press when the game is over.
+
+2002-03-11 23:05  miller
+
+	* data/rules.machiavelli: New version
+
+2002-03-10 12:34  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-03-10 12:32  miller
+
+	* dip.c: Added automatic wait for all players in BUILD_TRANSFORM
+	  games
+
+2002-03-05 23:38  miller
+
+	* summary.c: Replaced lost changes revison 1.8
+
+2002-03-05 23:20  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-03-05 23:19  miller
+
+	* ma_movement.c, st_movement.c: Fix special bleagured garisson bug
+
+2002-03-05 23:08  miller
+
+	* Makefile.version, docs/CHANGES: [no log message]
+
+2002-03-05 23:05  miller
+
+	* summary.c: Fixed Machiavelli summary problem
+
+2002-02-25 13:44  miller
+
+	* ma_stats.c: Fixed country ownership bug
+
+2002-02-25 12:35  miller
+
+	* ml_set.c: mall compile error fix
+
+2002-02-25 12:10  miller
+
+	* docs/CHANGES: [no log message]
+
+2002-02-25 12:09  miller
+
+	* data/index: Added NO/MONEY and NO/STORMS flags
+
+2002-02-25 12:02  miller
+
+	* docs/: CHANGES, TODO: [no log message]
+
+2002-02-25 11:56  miller
+
+	* data/: info.mach1, info.mach2, info.mach3, rules.mach1,
+	  rules.mach2, rules.mach3: [no log message]
+
+2002-02-25 11:54  miller
+
+	* starter.flist: Removed mach.<n> files
+
+2002-02-25 11:51  miller
+
+	* Makefile.version, dip.h, functions.h, ma_build.c,
+	  ma_build_basic.c, ma_expenses.c, ma_famplag.c, ma_movement.c,
+	  ma_porder.c, ma_retreat.c, ma_stats.c, mach.h, machlib.c,
+	  ml_set.c, params.c, variant.h, data/info.machiavelli,
+	  data/map.machiavelli: Various updates for Machiavelli bug fixes
+
+2002-02-18 20:18  miller
+
+	* Makefile: Include document subdirectory
+
+2002-02-18 20:08  miller
+
+	* README: [no log message]
+
+2002-02-16 18:07  christ
+
+	* docs/InstallationHOWTO: Installation-howto updates
+
+2002-02-16 14:25  christ
+
+	* docs/: CHANGES, INSTALL, InstallationHOWTO: Small doc updates
+
+2002-02-16 14:16  christ
+
+	* starter.flist, data/ftpbymail, data/install-howto,
+	  docs/InstallationHOWTO: Removed ftpbymail ; moved InstallHOWTO ;
+	  updated starter.flist
+
+2002-02-15 22:54  christ
+
+	* data/: files3, files4, hofpointer, wings: Removed useless files
+	  or already there with different name
+
+2002-02-13 18:29  christ
+
+	* docs/: AUTHORS, TODO: Update TODO
+
+2002-02-11 16:41  christ
+
+	* docs/AUTHORS: Updating AUTHORS
+
+2002-02-10 19:46  christ
+
+	* data/install-howto: [no log message]
+
+2002-02-10 14:14  christ
+
+	* data/log, docs/AUTHORS, docs/CHANGES, docs/archives/log: Merged
+	  log into CHANGES
+
+2002-02-10 11:39  christ
+
+	* docs/AUTHORS: [no log message]
+
+2002-02-10 11:35  christ
+
+	* data/absence: Typo
+
+2002-02-09 19:57  christ
+
+	* docs/TODO: added translations of judge messages to wishlist
+
+2002-02-09 19:00  christ
+
+	* docs/AUTHORS: Error about DEAC (and not DEDO)
+
+2002-02-09 15:54  christ
+
+	* docs/TODO: TODO : BUGS problem
+
+2002-02-09 15:51  christ
+
+	* data/install-howto: install-howto modifications
+
+2002-02-09 15:27  christ
+
+	* CHANGES, README, README.JudgeKeeper, README.duplex,
+	  README.first-install, README.fixids, README.flags, README.flist,
+	  README.gotchas, README.ignore, README.magic, README.makefile,
+	  README.master, README.plyrdata, README.resign, README.statistics,
+	  README.syslog, README.timewarp: Cleanup after creation of docs/
+
+2002-02-09 15:27  christ
+
+	* docs/TODO: Modified TODO
+
+2002-02-09 15:06  christ
+
+	* docs/TODO: add TODO list
+
+2002-02-09 15:01  christ
+
+	* Changelog, README.bailout, data/install-howto: Removing old files
+	  already put into docs/  or docs/archives
+
+2002-02-09 14:58  christ
+
+	* docs/CHANGES: Merge CHANGES and Changelog
+
+2002-02-09 14:54  christ
+
+	* docs/archives/: README.JudgeKeeper, README.duplex,
+	  README.first-install, README.fixids, README.gotchas,
+	  README.ignore, README.makefile, README.old: Put all these files
+	  in archives ; they are out of date or useless now
+
+2002-02-09 14:53  christ
+
+	* docs/: AUTHORS, CHANGES, INSTALL, LICENSE, README,
+	  README.bailout, README.flags, README.flist, README.magic,
+	  README.master, README.plyrdata, README.resign, README.statistics,
+	  README.syslog, README.timewarp: Deep rework of documentation ;
+	  new files
+
+2002-02-09 12:27  christ
+
+	* data/install-howto: Updating install-howto (comile environments)
+
+2002-02-03 23:47  nzmb
+
+	* Makefile.version, phase.c: Fixed phased order bug in Ancient Med
+	  and made phase.c able to handle a wider range of years (all
+	  positive years).
+
+2002-02-03 22:22  christ
+
+	* data/install-howto: Modified install-howto
+
+2002-02-03 19:16  christ
+
+	* data/install-howto: Added install-howto file - C.Courtois
+
+2002-02-03 03:45  nzmb
+
+	* plyrdata.c, summary.c: Fixed bug in plyrdata.c and readded some
+	  concession handler code to summary.c
+
+2002-02-02 16:44  njudge
+
+	* diplog.c, diplog.h: Use define HAS_ON_EXIT in case hasn't
+
+2002-01-08 21:22  miller
+
+	* mail.c: Redid GG fix for JUDGE_CODE != 4
+
+2002-01-06 22:50  miller
+
+	* Makefile.version: [no log message]
+
+2002-01-06 22:49  miller
+
+	* Makefile: depend target now addes Makefile dependency
+
+2002-01-05 17:10  miller
+
+	* Makefile.version: First issue 1.0.0
+
+2002-01-05 17:09  miller
+
+	* Makefile: Moved version to another file (Makefile.version) and
+	  removed mapit
+
+2001-12-29 20:38  nzmb
+
+	* data/index: Updated index for record, infoplayer commands.
+
+2001-12-29 20:38  nzmb
+
+	* Makefile, mail.c, users.c:
+	  Added infoplayer, record commands. Put judge version to 1.0.0 as
+	  we think it is stable.
+
+2001-12-28 06:21  nzmb
+
+	* BUGS, st_build.c: Fixed bug causing segmentation fault in
+	  st_build.c .. there was an extra %s in line 402.
+
+2001-12-15 23:28  miller
+
+	* st_build.c: Fixed status bug for trasnform when cancelled (set to
+	  ':' not ' ')CVS:
+	  ----------------------------------------------------------------------
+
+2001-12-11 12:08  miller
+
+	* po_get.c: Added extra "trafo to" action
+
+2001-12-03 23:58  miller
+
+	* ma_build_basic.c: Fixed garrison disband bug.
+
+2001-11-20 07:43  greg
+
+	* dip.c: VSFixed last (hopefully) problem with "Waiting for Master
+	  to Start" subjectlinE:
+	  ----------------------------------------------------------------------
+
+2001-11-18 17:40  miller
+
+	* st_porder.c: Small typo fix
+
+2001-11-18 17:28  miller
+
+	* st_porder.c: Corrected build checking for chaos-like games
+
+2001-11-17 02:40  nzmb
+
+	* data/info.crowded_1898: Info file for crowded 1898 variant
+
+2001-11-12 11:12  miller
+
+	* ml_signon.c: Fix to correct res_rat if over 1.0
+
+2001-11-11 21:16  greg
+
+	* dip.c, mail.c, ml_set.c: Subjectline Fixes  - New player signons
+	  will no longer show "Preference Change"  - Manual start games
+	  will no longer say "Waiting for More Players" after the game is
+	  full	- reply lines no longer assume JUDGE_CODE is four
+	  characters
+
+2001-10-31 19:16  nzmb
+
+	* data/: map.crowded_1898, report.crowded_1898, seed.crowded_1898:
+	  seed, report, and map files for crowded_1898
+
+2001-10-29 23:41  miller
+
+	* porder.h, st_build.c: Fixed reoccurring chaos bug (use centre()
+	  macro not 'x' to test province)
+
+2001-10-26 23:20  nzmb
+
+	* variant.c, variant.h: put the crowded_1898 variant in (Tim
+	  Miller)
+
+2001-10-24 11:25  miller
+
+	* defaults.inc.base: Remove NORATE default setting
+
+2001-10-24 11:19  miller
+
+	* README.makefile: Added remap target description.
+
+2001-10-24 11:11  miller
+
+	* README.timewarp: Explained TIME_TOLARANCE parameter
+
+2001-10-23 00:39  greg
+
+	* mail.c: Added subjectline for Promote command and fixed
+	  subjectline for Eject command to show power ejected - not master.
+
+2001-10-22 20:09  nzmb
+
+	* draw.c, mail.c: Cw.c draw.c added chenges and fixes so summaries
+	  for draws and concessions are properly sent to the HALL_KEEPER
+	  address.
+
+2001-10-22 19:33  greg
+
+	* mail.c: Added subjectline for Promote command and fixed
+	  subjectline for Eject command to reflect the power that's being
+	  ejected (rather than master)
+
+2001-10-22 07:59  miller
+
+	* data/: duality, info.ancient_med, map.ancient_med,
+	  report.ancient_med, seed.ancient_med: Added Ancient med files
+
+2001-10-20 12:11  miller
+
+	* data/: index, map, map.1898, map.britain, map.chaos,
+	  map.colonial, map.fleet_rome, map.layered, map.milan, map.rootz,
+	  map.shift_around, map.shift_left, map.shift_right,
+	  map.wraparound, map.wraparound2: Merged in changes from DEMA and
+	  USTV
+
+2001-10-20 12:11  miller
+
+	* Makefile, cmap.c, common.c, defaults.inc.base, delgame.c,
+	  dip.conf, dip.h, dipent.c, functions.h, global.c, ma_build.c,
+	  ma_build_basic.c, ma_expenses.c, ma_famplag.c, ma_movement.c,
+	  ma_porder.c, ma_retreat.c, ma_stats.c, mach.h, machlib.c,
+	  ml_set.c, params.c, phase.c, po_errmsg.c, po_init.c, porder.h,
+	  st_build.c, st_movement.c, st_porder.c, st_status.c,
+	  starter.flist, summary.c, variant.c, variant.h: Merged in changes
+	  from DEMA and USTV CVS:
+	  ----------------------------------------------------------------------
+
+2001-10-15 23:24  miller
+
+	* data/: map.1, map.10, map.11, map.12, map.2, map.20, map.21,
+	  map.3, map.4, map.5, map.6, map.7, map.8, map.9: [no log message]
+
+2001-10-15 23:10  miller
+
+	* data/flist: [no log message]
+
+2001-08-31 02:05  greg
+
+	* ml_signon.c: added "Ready to Start" subjectline for manual start
+	  games and fixed subjectline problems with preference changes
+
+2001-08-31 02:03  greg
+
+	* ml_set.c: added "Ready to Start" subjectline for manual start
+	  games
+
+2001-08-30 05:01  nzmb
+
+	* ml_set.c: Modified second argument of calls to check_can_vote.
+
+2001-08-30 04:53  nzmb
+
+	* functions.h, draw.c: Changed second argument of check_can_vote to
+	  int type.
+
+2001-08-30 03:40  greg
+
+	* history.c: fix "history exclstart" to work with both old and new
+	  subject lines
+
+2001-08-26 16:09  nzmb
+
+	* ml_set.c: Fixed problem in 1.12 that was causing a compile error.
+
+2001-08-20 13:05  miller
+
+	* defaults.inc.base: More reasonable (realistic) judge defaults
+
+2001-08-20 13:00  miller
+
+	* defaults.inc.base: Make master-only resume the default
+
+2001-08-19 14:31  miller
+
+	* ma_famplag.c: Fixed small message error for famined units removed
+	  duing plague
+
+2001-08-18 07:40  nzmb
+
+	* ml_set.c: SET commands for concessions added.
+
+2001-08-18 07:15  nzmb
+
+	* data/concessions: Initial revision
+
+2001-08-18 07:15  nzmb
+
+	* data/index: Added concessions commands.
+
+2001-08-18 07:11  nzmb
+
+	* summary.c: Show concessions if applicable
+
+2001-08-18 07:08  nzmb
+
+	* params.c: Show concessions flag. Also new dedication params show
+	  up when either has been modified (not both as before).
+
+2001-08-18 06:31  nzmb
+
+	* functions.h: Added prototypes for new concessions functions,
+	  changed check_can_vote
+
+2001-08-18 06:29  nzmb
+
+	* draw.c: Added concession code and modified check_can_vote to take
+	  extra arg so it can work with both draw and concession code.
+
+2001-08-18 06:25  nzmb
+
+	* dip.h: Added XF_NOCONCESSIONS & SF_CONC
+
+2001-08-18 06:09  nzmb
+
+	* dip.c: Added code to reset concession flags when turn processes,
+	  and not to warn people in terminated games.
+
+2001-08-18 06:07  nzmb
+
+	* Makefile: Iterated version to 0.8.10
+
+2001-07-26 10:30  miller
+
+	* data/index: Small text error fix
+
+2001-07-22 10:03  greg
+
+	* ml_set.c: customized subjectline for player's preference change
+
+2001-07-22 10:03  greg
+
+	* mail.c: subjectline tweaks
+
+2001-07-17 15:16  greg
+
+	* conf.c: added GAME_DIR
+
+2001-07-17 09:55  greg
+
+	* conf.h: added GAME_DIR
+
+2001-07-16 22:54  miller
+
+	* Makefile: Up version to 0.8.9a
+
+2001-07-16 22:53  miller
+
+	* mail.c: Fixed EJECT command (was previosuly doing nothing!)
+
+2001-07-15 15:07  greg
+
+	* mvgames: David Norman's version, which actually works
+
+2001-07-15 09:22  greg
+
+	* mvgames: Initial revision
+
+2001-07-15 09:20  greg
+
+	* summary.c, users.c: added support for game directories in a sub
+	  directory
+
+2001-07-15 09:17  greg
+
+	* ml_list.c, ml_set.c, ml_signon.c, phase.c, po_init.c, porder.c:
+	  added support for game directories in a sub directory
+
+2001-07-15 09:16  greg
+
+	* mail.c: added support for game directories in a sub directory ci
+	  -u ml_list.c
+
+2001-07-15 09:15  greg
+
+	* lib.c: added support for game directories in a sub directory /.
+
+2001-07-15 09:13  greg
+
+	* delgame.c, dip.c, dipent.c, draw.c, history.c: added support for
+	  game directories in a sub directory
+
+2001-07-15 09:12  greg
+
+	* dip.conf: added GAME_DIR
+
+2001-07-14 07:40  greg
+
+	* mail.c: minor bug fix & put "[Error Flag]" in subjectline when
+	  appropriate
+
+2001-07-14 07:25  greg
+
+	* history.c: fix "history exclstart" command with new subjectlines
+
+2001-07-14 07:05  greg
+
+	* dip.c: a few bug fixes & show who's late to GM in quiet games
+
+2001-07-12 03:42  nzmb
+
+	* plyrdata.c: Fixed compilability / portability bug discovered by
+	  Max Lowenthal in get_plyrdata_record.
+
+2001-07-10 21:43  miller
+
+	* st_status.c: Fix for blind to not show summary if not master
+
+2001-07-10 04:31  nzmb
+
+	* dip.c: Fixed bug in last upgrade that caused dedpoints to not
+	  always be applied.
+
+2001-07-09 17:26  miller
+
+	* flist.info, starter.flist: Added mach .ps map file
+
+2001-07-09 17:20  miller
+
+	* data/rules.machiavelli: Major update to explain all
+
+2001-07-09 17:06  miller
+
+	* data/machiavelli.ps: Initial revision
+
+2001-07-09 16:43  miller
+
+	* Makefile: Stop errors on install
+
+2001-07-08 23:29  miller
+
+	* Makefile: Small error comment out
+
+2001-07-08 23:25  miller
+
+	* Makefile: Added missing file and did a make depend
+
+2001-07-08 23:09  miller
+
+	* variant.c: Removed excess names
+
+2001-07-08 23:07  miller
+
+	* variant.h: REmoved excess power names
+
+2001-07-08 23:04  miller
+
+	* st_retreat.c: Add predict flag
+
+2001-07-08 23:01  miller
+
+	* st_movement.c: Space fixup and DISBAND flag and predict usage
+
+2001-07-08 23:00  miller
+
+	* params.c: New flags and tidy-up
+
+2001-07-08 23:00  miller
+
+	* ml_set.c: New commands XF_COSTALCONVOY, MOVEDISBAND
+
+2001-07-08 22:58  miller
+
+	* ma_expenses.c, ma_movement.c, ma_porder.c: Preliminary check for
+	  XF_NOMENY
+
+2001-07-08 22:57  miller
+
+	* conf.h: New defines
+
+2001-07-08 22:56  miller
+
+	* conf.c: Add TIME_TOLERANCE and WARP_FILE
+
+2001-07-08 22:55  miller
+
+	* lib.c: Use CUSTODIAN name in better order
+
+2001-07-08 22:54  miller
+
+	* dipent.c: Set default correctly for rrded, and add TIME_TOLERANCE
+	  usage from dip.conf
+
+2001-07-08 22:53  miller
+
+	* dip.h: New defines
+
+2001-07-08 22:53  miller
+
+	* dip.c: Use define for warp file
+
+2001-07-08 22:50  miller
+
+	* ma_build_basic.c: Initial revision
+
+2001-07-08 22:49  miller
+
+	* data/index: Added new commands.
+
+2001-07-05 18:51  miller
+
+	* data/index: Added new help for Coastal convoys
+
+2001-07-01 23:37  miller
+
+	* Makefile: Update version
+
+2001-07-01 23:32  miller
+
+	* data/map.machiavelli: Fort fix and new tables
+
+2001-07-01 23:32  miller
+
+	* data/index: New commands
+
+2001-07-01 23:19  miller
+
+	* lib.c: Add InformCustodians func
+
+2001-07-01 23:19  miller
+
+	* ml_set.c: Add costal convoys
+
+2001-07-01 23:19  miller
+
+	* mail.h: Add predict flag
+
+2001-07-01 23:19  miller
+
+	* summary.c: Add storm table
+
+2001-07-01 23:19  miller
+
+	* po_init.c: Add storm table and unit limits
+
+2001-07-01 23:19  miller
+
+	* ma_famplag.c: Added Storms
+
+2001-07-01 23:19  miller
+
+	* mail.c: Added predict and eject commands
+
+2001-07-01 23:19  miller
+
+	* po_get.c: Change function signature
+
+2001-07-01 23:19  miller
+
+	* params.c: Coastal convoy
+
+2001-07-01 23:19  miller
+
+	* dipent.c: Default for XF_COASTAL
+
+2001-07-01 23:19  miller
+
+	* machlib.c: Forst and unit type limits
+
+2001-07-01 23:19  miller
+
+	* porder.h, st_movement.c: Limit tables
+
+2001-07-01 23:19  miller
+
+	* mach.h: Lots of fixes
+
+2001-07-01 23:19  miller
+
+	* ma_porder.c: Mach2 settings and other fixes
+
+2001-07-01 23:19  miller
+
+	* ma_movement.c: Many fixes
+
+2001-07-01 23:19  miller
+
+	* ma_expenses.c: Many mach fixes
+
+2001-07-01 23:19  miller
+
+	* dip.h: New Mach flags
+
+2001-07-01 23:19  miller
+
+	* functions.h: New functions
+
+2001-07-01 23:19  miller
+
+	* cmap.c: New processing for storm stables, venice flag, duality
+	  provinces, unit limits
+
+2001-07-01 23:19  miller
+
+	* global.c: New table
+
+2001-07-01 23:19  miller
+
+	* conf.c: New variant guardians
+
+2001-07-01 23:19  miller
+
+	* ma_build.c: Unit type limits and predict
+
+2001-07-01 23:19  miller
+
+	* ma_retreat.c: Various
+
+2001-07-01 23:19  miller
+
+	* flist.info, starter.flist: [no log message]
+
+2001-07-01 23:19  miller
+
+	* phase.c: typo fix
+
+2001-07-01 23:19  miller
+
+	* ma_stats.c: various
+
+2001-06-24 06:32  nzmb
+
+	* data/index: Added "set ontimerat" and "set resrat" commands.
+
+2001-06-24 06:30  nzmb
+
+	* data/newdedsystems: Initial revision
+
+2001-06-24 06:19  nzmb
+
+	* Makefile: Added lines to compile plyrdata files and recdump.c.
+
+2001-06-24 06:12  nzmb
+
+	* dip.h: Added dipent variables (dedapplied, orded, rrded) for use
+	  in new dedication and deadline features.
+
+2001-06-24 06:08  nzmb
+
+	* users.c: Added code so players may now see their plyrdata records
+	  via the "get dedication" command.
+
+2001-06-24 06:05  nzmb
+
+	* params.c: Made it so new dedication settings appear in game
+	  parameters.
+
+2001-06-24 06:03  nzmb
+
+	* ml_signon.c: Added functionality to enforce the new dedication
+	  systems, while keeping intact Millis' previous changes.
+
+2001-06-24 05:49  nzmb
+
+	* ml_set.c: Added functionality to set ontime ratio, resignation
+	  ratio in a game.
+
+2001-06-24 05:35  nzmb
+
+	* lib.c: Reset dipent.dedapplied to 0 when new deadline is
+	  calculated.
+
+2001-06-24 05:30  nzmb
+
+	* dipent.c: Added read/write capability for new dipent variables
+	  (dedapplied, orded, rrded) used in the plyrdata and new deadline
+	  systems.
+
+2001-06-24 05:19  nzmb
+
+	* dip.c: Added inteface to player data database so player records
+	  are recorded, and also provided option of have D_LATE applied at
+	  the deadline or (default) 24 hours later.
+
+2001-06-24 01:35  nzmb
+
+	* README.plyrdata: Initial revision
+
+2001-06-24 01:31  nzmb
+
+	* plyrdata.c, recdump.c: Initial revision
+
+2001-06-24 01:18  nzmb
+
+	* plyrdata.h: Initial revision
+
+2001-06-05 00:52  miller
+
+	* st_movement.c: Fix proxy-unit order bug
+
+2001-05-31 23:41  miller
+
+	* functions.h, lib.c, ml_set.c, ml_signon.c: Added lookupv (to
+	  select if exact string or not is matched)
+
+2001-05-30 21:16  miller
+
+	* lib.c: better lookfor fix
+
+2001-05-30 21:03  miller
+
+	* lib.c: Lookfor will terminate search only if string has really
+	  ended
+
+2001-05-30 20:55  miller
+
+	* data/info.shift_around: Updated for real info
+
+2001-05-26 11:20  miller
+
+	* dipent.c: Do not notify time-warp for shifts < 1 minute
+
+2001-05-14 23:08  miller
+
+	* st_movement.c: Remove DOS ^M
+
+2001-05-14 23:00  miller
+
+	* params.c: Added NoAttackTrans flag
+
+2001-05-14 22:58  miller
+
+	* ml_set.c: Corrected transformation setting/display. Also disabled
+	  Mach1,2,3 flags (to be removed later for good).
+
+2001-05-13 17:18  greg
+
+	* ml_list.c: took off ")" at line 224
+
+2001-05-12 08:05  greg
+
+	* deddump.c: added Mario Becroft's dedication bug fix
+
+2001-05-12 07:57  greg
+
+	* dip.c: added Mario Becroft's dedication problem fix
+
+2001-05-12 07:42  greg
+
+	* ml_list.c: minor bug fixes proposed by Mario Becroft & Philippe
+	  Lalande to display zero dedications in listing and problems with
+	  user's dedication
+
+2001-05-12 06:57  greg
+
+	* dip.c: added subjectlines
+
+2001-05-11 07:28  greg
+
+	* dip.conf: changed igo.org to diplom.org
+
+2001-05-11 07:18  greg
+
+	* mail.c: added subjectlines and allowed "signoff" even if there's
+	  no valid "signon"
+
+2001-05-10 09:05  greg
+
+	* ml_press.c: added subjectlines
+
+2001-05-10 08:33  greg
+
+	* ml_set.c: added subjectlines
+
+2001-05-09 06:38  greg
+
+	* ml_signon.c: added subjectlines
+
+2001-05-09 06:08  greg
+
+	* phase.c: added subjectline
+
+2001-05-09 05:59  greg
+
+	* st_movement.c: minor bug fix
+
+2001-05-08 07:47  greg
+
+	* users.c: minor fix to allow whogame command by players after a
+	  gunboat game ends, unless it's noreveal
+
+2001-05-08 07:37  greg
+
+	* global.c: added subjectline
+
+2001-05-08 07:29  greg
+
+	* draw.c: added subjectline to draws
+
+2001-05-07 04:55  greg
+
+	* dip.h: added subjectline
+
+2001-05-07 04:30  greg
+
+	* deddump.c: minor bug fix
+
+2001-04-25 08:08  miller
+
+	* variant.c: Can only be 252 country names too!
+
+2001-04-24 20:30  miller
+
+	* variant.c: only have 256 entries for country letters
+
+2001-04-24 20:28  miller
+
+	* variant.h: Make sure end special powers (UTONOMOUS, WILD_PLAYER,
+	  OBSERVER & MASTER) do not exceed byte limit
+
+2001-04-18 12:33  miller
+
+	* st_movement.c: Fixed blind flag problem
+
+2001-04-17 21:47  miller
+
+	* Makefile: Another small touch (to preserve data file dates)
+
+2001-04-17 21:30  miller
+
+	* dip.c: Refixed problem with CONFIG_DIR parsing
+
+2001-04-17 19:31  miller
+
+	* Makefile: Automatically regenerate data files
+
+2001-04-15 21:41  miller
+
+	* Makefile: Properly fix beta version sstring
+
+2001-04-15 21:37  miller
+
+	* data/index: [no log message]
+
+2001-04-15 21:30  miller
+
+	* Makefile: Correctly generate new map binaries via cmap if changed
+
+2001-04-15 21:28  miller
+
+	* dip.h: Added XF_NOATTACKTRANS flag
+
+2001-04-15 21:28  miller
+
+	* starter.flist: Added new files
+
+2001-04-15 21:28  miller
+
+	* variant.c, variant.h: Added new variants
+
+2001-04-15 21:21  miller
+
+	* ml_set.c: Add SET_(NO)ATTACKTRANS flag settings
+
+2001-04-15 21:21  miller
+
+	* ml_list.c: Add use of GetMaxCountryStrlen() to space out properly
+	  for big country names
+
+2001-04-15 21:21  miller
+
+	* st_porder.c: Add use of MaxCountryStrlen()
+
+2001-04-15 21:21  miller
+
+	* st_movement.c: Added handling of XF_NOTRANSATTACK flag
+
+2001-04-15 21:21  miller
+
+	* dip.c: Correctly show pending orders when late warning is sent
+
+2001-04-15 21:21  miller
+
+	* ml_signon.c: Only send warning for different emails if not a
+	  substring
+
+2001-04-05 18:35  miller
+
+	* data/: report.african2, report.empire, report.layered,
+	  report.sailho, report.sailho_crowded, report.shift_around,
+	  report.wraparound2, seed.african2, seed.empire, seed.layered,
+	  seed.sailho, seed.sailho_crowded, seed.shift_around,
+	  seed.wraparound2: Initial revision
+
+2001-04-05 18:29  miller
+
+	* data/: info.layered, map.layered, info.african2: Initial revision
+
+2001-04-05 18:25  miller
+
+	* data/: map.african2, map.empire, map.sailho, map.wraparound2,
+	  info.sailho, info.sailho_crowded, info.shift_around,
+	  map.sailho_crowded, map.shift_around, info.empire,
+	  info.wraparound2: Initial revision
+
+2001-04-05 18:24  miller
+
+	* data/index: Add Attaqck Transform desription
+
+2001-04-05 18:17  miller
+
+	* data/index: Remve ^M characters (DOS is a pain!)
+
+2001-03-16 00:06  miller
+
+	* summary.c: Fix 'C' parameter so that next one is not squashed
+
+2001-02-26 11:27  miller
+
+	* st_build.c: Fixed small bug on line 107, using [i] instead of [p]
+
+2001-02-23 00:19  miller
+
+	* porder.h: unDOSify
+
+2001-02-23 00:19  miller
+
+	* history.c, st_movement.c, st_status.c: un-DOSify
+
+2001-02-22 23:53  miller
+
+	* README.first-install: added description of defaults.inc
+
+2001-02-22 23:25  miller
+
+	* dip.c: Fixed bug
+
+2001-02-20 23:53  miller
+
+	* data/absence: Small tidy-up
+
+2001-02-20 23:53  miller
+
+	* data/index: Added missing command ONECENTRES and a small tidy-up
+
+2001-02-20 23:38  miller
+
+	* Makefile: Make archive njudge-*
+
+2001-02-03 10:41  miller
+
+	* st_status.c: fix blind bug
+
+2001-02-03 10:40  miller
+
+	* st_movement.c: Fix blind bug Now no show of others results
+
+2001-02-03 10:38  miller
+
+	* porder.h: add new structure members
+
+2001-02-03 10:36  miller
+
+	* dip.c: fixed blind crashing bug
+
+2001-02-03 10:36  miller
+
+	* history.c: properly hide history in blind game
+
+2001-01-06 18:48  davidn
+
+	* conf.h, dip.conf, mail.c, ml_signon.c: Changes to allow game
+	  creator to be automatically made master
+
+2001-01-06 18:48  davidn
+
+	* conf.c: Changes to allow game creator be automatically made
+	  master
+
+2001-01-06 18:20  davidn
+
+	* users.c: Correction to parsing of players.DENY to only read lines
+	  with = at the start. This stops it reading lines which are
+	  commented out.
+
+2001-01-05 22:27  miller
+
+	* dipent.c: Fix to test using '==' not '=' (made all games
+	  erroneously of Chaos variant when upgrading from older dip.master
+	  format.
+
+2000-11-18 21:12  miller
+
+	* params.c, st_build.c: Fixed ONECENTRE bug
+
+2000-11-16 20:42  miller
+
+	* st_build.c: New changes for phased move syntax check,
+	  transformations and onecentre/anycentre
+
+2000-11-14 15:58  miller
+
+	* data/info: Added descriptions for missing variants
+
+2000-11-14 15:58  miller
+
+	* data/countries.x: Added some (not all) missing countries
+
+2000-11-14 15:58  miller
+
+	* data/index: Big update, showing all new commands added
+
+2000-11-14 15:58  miller
+
+	* data/: absence, convoys, info.a-f, info.blind, info.mach1,
+	  info.mach2, info.mach3, info.shorthand, info.wings, report.blank,
+	  report_w.modern, rules.mach1, rules.mach2, rules.mach3,
+	  seed_w.modern, transform, wings: Initial revision
+
+2000-11-14 15:58  miller
+
+	* data/hofpointer: Reality update
+
+2000-11-14 15:58  miller
+
+	* data/info.chromatic: Small update
+
+2000-11-14 15:58  miller
+
+	* data/press: Small update about observer press
+
+2000-11-14 15:58  miller
+
+	* data/syntax: Updated syntax for Wings and Transformations
+
+2000-11-14 15:58  miller
+
+	* data/rules.machiavelli: Updatwe to remove ficticious unit limits
+
+2000-11-14 15:58  miller
+
+	* data/HOFpointer: [no log message]
+
+2000-11-14 15:58  miller
+
+	* data/: info.h31, info.h32: minor change
+
+2000-11-14 15:58  miller
+
+	* data/seed.h31: small fix
+
+2000-11-14 15:58  miller
+
+	* data/: map.5, map.chaos: unused letter goes to 'x' NOT 'X' (which
+	  is a power letter) (actually, should be changed to each country's
+	  letter to allow OneCentre and Homecentre to work!)
+
+2000-11-14 15:58  miller
+
+	* data/: info.modern, info.shift: updated for Wings information
+
+2000-11-14 14:27  miller
+
+	* summary.c: Accept -C option to specify config_dir Handle blind
+	  summaries differently (if not master)
+
+2000-11-14 14:27  miller
+
+	* global.c: Added Config_dir
+
+2000-11-14 14:27  miller
+
+	* dip.h: Added XF_FLAG defines for Extended flags Added absences to
+	  player and game structures
+
+2000-11-14 14:27  miller
+
+	* mail.h: Added a few extra glags and a couple of defines to force
+	  password of resigned payers to a bad value
+
+2000-11-14 14:27  miller
+
+	* po_init.c: Added blockage handling (where a wing unit doesn't
+	  caputure a SC but blockades it, rendering it unbuildable for both
+	  parties)
+
+2000-11-14 14:27  miller
+
+	* common.c: Added handling for Wing units
+
+2000-11-14 14:27  miller
+
+	* dipent.c, draw.c: Added handling of new XF_:FLAGS , and absence
+	  data elements in master.dip Used gerenric flags to handle
+	  variants (not specificif tests)
+
+2000-11-14 14:27  miller
+
+	* st_movement.c: Added move syntax checker Allow wing units to be
+	  used Allow transformations REcalculate blockade settings
+
+2000-11-14 14:27  miller
+
+	* dip.conf: Added new default setting for new flags
+
+2000-11-14 14:27  miller
+
+	* conf.h: Added new dip.conf variable. Plus allowed dip.conf path
+	  to be passed in as a parameter
+
+2000-11-14 14:27  miller
+
+	* conf.c: Added new dip.conf variables
+
+2000-11-14 14:27  miller
+
+	* functions.h: Added new functions (and for new files)
+
+2000-11-14 14:27  miller
+
+	* variant.c: Added shorthand and wings settings
+
+2000-11-14 14:27  miller
+
+	* po_get.c: Added support for wing units
+
+2000-11-14 14:27  miller
+
+	* porder.h: Added values for blockades and transformations
+
+2000-11-14 14:27  miller
+
+	* st_retreat.c: Allow wing units REcalcultate blockade settings
+	  Allow retreat moves syntax checking
+
+2000-11-14 14:27  miller
+
+	* version.c: Display extra information on a version command,
+	  showing the following: Users registered, Maximium, games running,
+	  maximum
+
+2000-11-14 14:27  miller
+
+	* params.c: Display of all new additional parameters
+
+2000-11-14 14:27  miller
+
+	* ml_set.c: ENORMOUS number of changes, including:  - Checks to
+	  warn if trying to set 'silly' options  (for example, Mach options
+	  in non-Mach game, press options in nopress game etc.)  - Check
+	  when a quorum exists to start the game if number of plyers is
+	  changed  - Show players preferences to master  - New general
+	  purpose function to ease flag setting/resetting  - setting of
+	  absence delay checks (non-master cannot be greater than game
+	  limit)  - New commands, which are:	 SET_(NO)LATECOUNT,
+	  SET_(NO)STRCONVOY, SET(NO)LATEPRESS, SET(NO)MANUALPROC,
+	  SET_(NO)MANSTART, SET_(NO)TRANSFORM, SET_(ANY/ONE/HOME)CENTRES,
+	  SET(NO)ABSENCE, SET_MAXABSENCE, SET_(NO)NORMBROAD,
+	  SET_(NO)BLANKPRESS,	  SET(NO)MINORPRESS, SET_MAC(1/2/3),
+	  SET_(NO)AIRLIFT, SET_BLANKBOARD,     SET_(NO)AUTODISBAND    (some
+	  of which are to be implemented still)   - Observers can watch
+	  press of a game (if flag enablingthis is set)   - Passwords only
+	  allow alpha-numeric characters
+
+2000-11-14 14:27  miller
+
+	* defaults.h: Extracted out judge-specific (i.e. site poliy)
+	  seetings to defaults.inc
+
+2000-11-14 14:27  miller
+
+	* Makefile.defines.base, Makefile.in, README.first-install,
+	  README.magic, README.makefile, README.statistics, README.syslog,
+	  bgreet.old, config.guess, config.sub, configure, configure.in,
+	  defaults.inc.base, diplog.c, diplog.h, dipstats.c, dipstats.h,
+	  ml_short.c: Initial revision
+
+2000-11-14 14:27  miller
+
+	* mail.c: Innumerous changes, some of which are:  - Add new command
+	  'promote'  - Resign command now needs email for master (and can
+	  resign observers)  - Added calls to shorthand functions for
+	  SHORTHAND press games  - set a player flag when a power resigns
+	  (for future use to tell resigned players game has ended.)
+
+	   - Allow termination of unstarted games
+	   - Restrict games witn F_NORESUME to master-only resumation
+	   - Do not show password of player when doing a 'become' command
+
+2000-11-14 14:27  miller
+
+	* smail: Lijux compatible version
+
+2000-11-14 14:27  miller
+
+	* phase.c: Limited syntax checking for phased orders added (only in
+	  non-Mach games)
+
+2000-11-14 14:27  miller
+
+	* dipclean: Linuxify dipcleean
+
+2000-11-14 14:27  miller
+
+	* lib.c: Lots of changes, including  - get_die_magic() Get
+	  DIE_MAGIC value from .magic.dat (or cerate if not found)
+
+2000-11-14 14:27  miller
+
+	* bgreet.c: Make Linux compatible
+
+2000-11-14 14:27  miller
+
+	* dip.c: Many changes, including -   Reminding players to make
+	  moves when close to deadline	 Special handling for blind games
+	  Passing of '-C' option for specifying dip.conf path	Informaing
+	  all masters when a time-warp was detected   Handling of
+	  NOLATEPRESS and MANUALSTART flags   Adding automatic wati for all
+	  players in a build phase of a transform game
+
+2000-11-14 14:27  miller
+
+	* users.c: Minor changes only
+
+2000-11-14 14:27  miller
+
+	* starter.flist: New files added
+
+2000-11-14 14:27  miller
+
+	* mfprintf.c: Nothing
+
+2000-11-14 14:27  miller
+
+	* rdip.c: Passing of config_dir setting to dip, use of syslogging
+
+2000-11-14 14:27  miller
+
+	* history.c: Restrict history for blind games (so that players
+	  cannot find out more than they should!)
+
+2000-11-14 14:27  miller
+
+	* bailout.c: Small change to log bailout error before bailing out
+
+2000-11-14 14:27  miller
+
+	* ml_signon.c: Small changes for Blind/Wings setup data files, also
+	  handling of JK signon from any email account, adjustment of
+	  takeover countries as according to game settings (deadline that
+	  is) Showing of preference and absence settings on signon (the
+	  first restricted to master only) Handling of BLankBoard games
+	  (where game starts with no pieces)
+
+2000-11-14 14:27  miller
+
+	* st_porder.c: Small changes for blockade calculations
+
+2000-11-14 14:27  miller
+
+	* ml_getaddr.c: Small correction
+
+2000-11-14 14:27  miller
+
+	* variant.h: Specify for each variant if it is a homeCentre,
+	  OneCentre or AnyCentre game.	This makes it clearer for the
+	  player (who will see this always in a game listing) as well as
+	  removing specific tests in the code. Plus now any variant uses
+	  this only as a default - a game setup can change this if
+	  required/wanted.
+
+2000-11-14 14:27  miller
+
+	* Makefile, README, README.flags, README.flist, README.gotchas,
+	  README.master: Updadted to add new files and correct existing
+	  targets Also, extract system-dependant stuff to Makefile.defines
+	  See README.makefile for more details
+
+2000-11-14 14:27  miller
+
+	* ml_press.c: Various changes including  - Partial press between
+	  master and only one power is NOT sent to others with WATCHALL set
+	  - Rejct press in a monor phase when XF_NOMINORPRESS is set  -
+	  Change press handling to allow observers to press  in no-press
+	  games f allowed (i.e. BackSeat Driver variant)  - Add prevention
+	  of press from late players, if flag is set
+
+2000-11-14 14:27  miller
+
+	* ml_list.c: Various changes including:  - Adjust display for blind
+	  games  - Display Late Count if enabled  - Display to master who
+	  is whatching press  - Show new flags	- Different message if game
+	  has quota but has XF_MANUALSTART set
+
+2000-11-14 14:27  miller
+
+	* atrun: linuxify atrun
+
+2000-11-14 14:27  miller
+
+	* po_errmsg.c: small change to allow syntax checking to work with
+	  preprocessing commands
+
+2000-11-14 14:27  miller
+
+	* README.timewarp: updated description
+
+2000-05-15 14:26  dippouch
+
+	* data/info.colonial: Corrected the supply center count and victory
+	  conditions which were wrong (SS).
+
+1999-07-13 19:55  davidn
+
+	* st_retreat.c: Size of array increased as array is indexed by
+	  owner number, not index of player in master file entry.  Was
+	  causing core dump on USTR July 1999
+
+1999-02-04 19:10  davidn
+
+	* st_build.c: buildout(). Altered index of mastrpt_pr to fix
+	  crashes on USTR.  Array is indexed by unit[].owner, which can be
+	  1 to NPOWER (=around 100 on the standard judge). MAXPLAYER is 50.
+
+1999-01-17 00:06  davidn
+
+	* data/info.asia: Removed comment that the variant is "VERY well
+	  balenced".
+
+1998-03-01 12:54  davidn
+
+	* po_init.c: Second fix to allow w and x to be power letters.  Fix
+	  was needed in two places, and was originally only put in one.
+
+1998-03-01 12:52  davidn
+
+	* ml_signon.c: Correction to sort routine added
+
+1998-02-28 18:09  david
+
+	* data/: denyallow, draws, ep.house.rules, house.rules, how2gm,
+	  index, log, master, press, rules.machiavelli: Initial revision
+
+1998-02-28 18:06  david
+
+	* data/: countries.x, package, data, deadlines, syntax, files3,
+	  files4, flist, form, ftpbymail, rules: Initial revision
+
+1998-02-28 18:02  david
+
+	* newvers, newlogs, data/map.1, data/map.10, data/map.11,
+	  data/map.12, data/map.1898, data/map.2, data/map.20, data/map.21,
+	  data/map.3, data/map.4, data/map.5, data/map.6, data/map.7,
+	  data/map.8, data/map.9, data/map.aberration, data/map.asia,
+	  data/map.britain, data/map.chaos, data/map.chromatic,
+	  data/map.classical, data/map.colonial, data/map.crowded,
+	  data/map.fleet_rome, data/map.h31, data/map.h32,
+	  data/map.hundred, data/map.hundred3, data/map.loeb9,
+	  data/map.machiavelli, data/map.milan, data/map.modern,
+	  data/map.pure, data/map.rootz, data/map.shift_left,
+	  data/map.shift_right, data/map.top, data/map.wraparound,
+	  data/map.youngstown, data/info.aberration, data/info.asia,
+	  data/info.britain, data/info.chaos, data/info.chromatic,
+	  data/info.classical, data/info.colonial, data/info.crowded,
+	  data/info.duplex, data/info.fleet_rome, data/info.gunboat,
+	  data/info.h31, data/info.h32, data/info.hundred,
+	  data/info.hundred3, data/info.loeb9, data/info.machiavelli,
+	  data/info.milan, data/info.modern, data/info.pure,
+	  data/info.rootz, data/info.shift, data/info.v1898,
+	  data/info.wraparound, data/info.youngstown, data/seed.1898,
+	  data/seed.aberration, data/seed.asia, data/seed.britain,
+	  data/seed.chaos, data/seed.chromatic, data/seed.classical,
+	  data/seed.colonial, data/seed.crowded, data/seed.fleet_rome,
+	  data/seed.h31, data/seed.h32, data/seed.loeb9,
+	  data/seed.machiavelli, data/seed.milan, data/seed.modern,
+	  data/seed.pure, data/seed.rootz, data/seed.shift_right,
+	  data/seed.standard, data/seed.wraparound, data/seed.youngstown,
+	  data/report.1898, data/report.aberration, data/report.asia,
+	  data/report.britain, data/report.chaos, data/report.chromatic,
+	  data/report.classical, data/report.colonial, data/report.crowded,
+	  data/report.fleet_rome, data/report.h31, data/report.h32,
+	  data/report.loeb9, data/report.machiavelli, data/report.milan,
+	  data/report.modern, data/report.pure, data/report.rootz,
+	  data/report.shift_right, data/report.standard,
+	  data/report.wraparound, data/report.youngstown,
+	  data/seed.shift_left, data/HOFpointer, data/asia.asc, data/map,
+	  data/info, data/modern.ps, data/hofpointer: Initial revision
+
+1998-02-28 17:59  david
+
+	* CHANGES, Changelog, starter.flist: Initial revision
+
+1998-02-28 17:54  david
+
+	* dip.conf, dip.template, dipclean, diprun, flist.info, atrun,
+	  atrun.linux, rdip.pl, rundipmap, runlistmap, README, BUGS:
+	  Initial revision
+
+1998-02-28 17:51  david
+
+	* conf.h, defaults.h, dip.h, functions.h, hashtable.h, mach.h,
+	  mail.h, ml_signon.h, porder.h, port.h, variant.h,
+	  README.JudgeKeeper, README.bailout, README.duplex, README.fixids,
+	  README.flags, README.flist, README.gotchas, README.ignore,
+	  README.master, README.resign, README.timewarp, Makefile,
+	  makedata, makeout, smail, smail.linux, smail.pl: Initial revision
+
+1998-02-28 17:46  david
+
+	* assign.c, bailout.c, bgreet.c, cmap.c, common.c, conf.c,
+	  deddump.c, delgame.c, dip.c, dipent.c, draw.c, flock.c, fmtwho.c,
+	  global.c, hashtable.c, history.c, ign.c, jm.c, lib.c, ma_build.c,
+	  ma_expenses.c, ma_famplag.c, ma_movement.c, ma_porder.c,
+	  ma_retreat.c, ma_stats.c, machlib.c, mail.c, mfprintf.c,
+	  ml_date.c, ml_getaddr.c, ml_list.c, ml_press.c, ml_set.c,
+	  ml_signon.c, params.c, pdip.c, phase.c, po_condition.c,
+	  po_errmsg.c, po_get.c, po_init.c, po_mastrpt.c, porder.c, rdip.c,
+	  st_build.c, st_movement.c, st_porder.c, st_retreat.c,
+	  st_status.c, strcasecmp.c, strdup.c, summary.c, users.c,
+	  variant.c, version.c: Initial revision
+

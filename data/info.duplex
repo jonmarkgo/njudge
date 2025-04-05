@@ -1,0 +1,143 @@
+Greetings from the Diplomacy* Adjudicator!!                 Sep 2, 2004
+info.duplex
+
+This file describes the commands that are used to set up a duplex game,
+which is defined as a game where one (or more players) are playing more 
+than one power.
+
+
+Game Creation
+-------------
+
+The command used to define a game as duplex is:
+
+set players <n>
+
+This sets the number of players (not powers) in the game. This number
+<n> must be at least 1, and can be as large as the number of powers
+in the variant.  When the number is only 1, it is generally only useful
+for a GM who wants to use the judge to adjudicate a game being
+run off-the-judge.  If this command is not used at all, the default
+setting is equal to the number of powers in the variant.
+
+When the number of players is set to some number less than the number
+of powers, the game will begin when that number of players signs on
+to the game.
+
+The game's creator may also want to consider using setting the 'Secret' 
+flag if it is not desired that players know the power pairings for each 
+other (obviously, the gunboat flag should also be set for this to make 
+sense!).
+
+
+Country allocation
+------------------
+
+If preference lists are used, the judge assigns the players their first
+powers based on their preference lists.  Players are allocated a second
+power based on their initial preferences over the unassigned powers.  This
+process is repeated for as many rounds as it takes to assign all the powers
+in the game.  If there is ever a round of power allocation in which there
+are more players than powers left to assign, the judge randomly chooses
+which players receive an extra power.
+
+If the game is SET PRFRAND, all powers are assigned randomly. This is
+useful because some players might infer that Italy or Austria is part of
+a duplex, since many people place those two powers last on their
+preference lists.
+
+        An example of the allocations of powers in a duplex game:
+
+e.g. Youngstown 4 players, i.e., the master has SET PLAYERS 4
+
+The powers in the variant are: ACEFGIJNRT
+
+Player 1 pref: ACGNREJTFI
+Player 2 pref: CAIGJENRFT
+Player 3 pref: EJNAIFTRGC
+Player 4 pref: FENITGCRJA
+
+So player 1 gets Austria, Player 2 China, Player 3 England
+and Player 4 France.  The preference lists become :
+
+Player 1 pref: GNRJTI
+Player 2 pref: IGJNRT
+Player 3 pref: JNITRG
+Player 4 pref: NITGRJ
+
+So player 1 also gets Germany, Player 2 Italy, Player 3 Japan and
+Player 4 India.
+
+There are now only two powers left, so the judge randomly picks players
+1 and 4 to get them. There preference lists are :
+
+Player 1 pref: RT
+Player 4 pref: TR
+
+So player 1 gets Russia and Player 4 gets Turkey
+
+So the full line up is :
+Player 1 : Austria, Germany, Russia
+Player 2 : China, Italy
+Player 3 : England, Japan
+Player 4 : France, India, Turkey
+
+
+Use in game
+-----------
+
+When a duplex game is in progress (started) a player may signon as any one
+of their duplex powers. They must submit orders for all of their duplex
+powers that have orders pending, and can do so irrespective of whether they
+are for the power signed on or not.
+All other commands (set draw, set wait, set absence etc.) work in a block,
+independent of which power was signed on as.
+
+Press sent is always identified as being from the power that was signed on
+as.
+
+If you wish to waive a build, the waive command is altered to:
+
+waive <country>
+
+to indicate for which country the waive is required (either country name
+or signon letter).
+
+If a player goes late or becomes abandoned, they are only deducted the 
+dedication points for one power, not for the conjunt of powers they own 
+(same goes for the 'on-time' bonus).
+
+If a player goes abandoned, all powers duplexed to that player are abandoned.
+If they are then taken over, it is enough to singon as one of the abandoned
+powers: all of them will be taken over.
+
+The listing and summary will show which player controls which power (unless
+the game is secret and has not ended, repsecting the reveal flag).
+
+
+Draws and Victory
+-----------------
+
+If the game is drawn to powers that belong all to the same player, it is
+considered as a victory. Otherwise, it works as per a normal draw. The judge
+will not distinguish how many players are involved in the draw, only the
+powers: it is up to interpreting the summary to work out how many players
+actually took part in the draw.
+
+An additional victory condition is if a player's duplexed powers can obtain
+a total of four-thirds of the victory condition supply centres (i.e. 24 in
+a standard game with 18 centres). This value is rounded up to the nearest
+integer.
+
+By default, this is enabled for duplex games, the command:
+
+set no allied victory
+
+will disable this feature.
+
+
+Millis Miller
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

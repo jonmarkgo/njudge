@@ -1,0 +1,96 @@
+Greetings from the Diplomacy* Adjudicator!!               Feb. 23, 2003.
+Info.mach2sfd1*
+
+
+For rule differences between Machiavelli and Diplomacy, see the file
+"rules.machiavelli".
+
+For rule differences between Machiavelli and Machiavelli2 see the file 
+"rules.machiavelli2".
+
+
+Machiavelli 2 Setup
+
+The Struggle for Dominance I Machiavelli scenario starts in 1499 with 
+six powers.  This scenario begins after the French neapolitan campaign 
+that ended with the Treaty of Granada, awarding France the northern 
+Kingdom of Naples (in the scenario Naples and Bari), and the downfall 
+of the Duchy of Milan.
+
+This is the beginning of what has been called the "Italian Wars" 
+that involved the whole peninsula between 1494 and 1559.
+
+The following Machiavelli scenarios cover this period:
+  1. The Struggle for Dominance I
+  2. The Struggle for Dominance II
+  3. The Spanish Preponderance
+
+
+The powers and their initial starting locations and owned provinces are:
+
+A: Austria      A-Austria, Carinthia, Hungary, A-Swiss, A-Tyrol
+                A-Messina, F-Palermo, F-Sardinia
+
+F: France       A-Avignon, F-Marseille, Provence, A-Saluzzo, A-Milan
+                F-Genoa, A-Bari, A-Naples
+
+L: Florence     A-Arezzo, A-Florence, F-Pisa, Pistoia
+
+P: Papacy       F-Ancona, A-Bologna, Patrimony, A-Perugia, A-Rome, 
+                Spoleto, Urbino
+
+T: Turkey       A-Albania, Bosnia, F-Durazzo, Herzegovina, F-Tunis
+
+V: Venice       Bergamo, F-Dalmatia, Friuli, Istria, A-Padua,
+                A-Treviso, G-Venice, Verona
+
+x: Autonomous   G-Cremona, G-Ferrara, G-Lucca, G-Mantua, G-Modena, 
+                G-Montferrat, G-Pavia, G-Piombino, G-Ragusa, G-Savoy, 
+                G-Sienna, G-Trent, G-Turin
+
+
+Note that the single letter abbreviations for the powers Milan, I, and 
+Florence, L, are the second letter of the name rather than the first to 
+avoid conflicts with the Master and France.  These letters are used for 
+signing on and for sending individual press messages.
+
+
+Special rules:
+
+  There are no fortresses in this scenario.
+
+  Bari, Genoa, Milan, Naples and Saluzzo are *not* part of France's 
+  (or anyone elses) home country.
+
+  Florence and Venice each have two die rolls for variable income.
+
+  Austria, France, Papacy and Turkey each have one die roll for var. in.
+
+  The player who controls Genoa city also gets one die roll for var. in.
+
+  The player who controls Naples city also gets one die roll for var. in.
+
+  The player who controls Milan also gets one die roll for var. income.
+
+  Messina, Palermo, Sardinia and Swiss are part of the Austrian home 
+  country and cannot be conquered separately.  
+
+  Milan state is not a home country and cannot be conquered.
+
+  Naples state is not a home country and cannot be conquered.
+
+
+Default victory conditions:
+
+  The first player to control at least 15 cities and have control of at
+  least two power's original home countries (eg: his own and one other
+  player's) is declared the winner.
+
+-----
+
+* Avalon Hill, Machiavelli and Diplomacy are trademarks of Hasbro Inc.
+All rights reserved.  Used with permission.
+
+
+REVISION HISTORY
+v1b, Feb 23rd 2003.  Final release version.  By Sergio Lidsell.

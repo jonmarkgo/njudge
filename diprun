@@ -1,0 +1,3 @@
+#! /bin/csh
+echo "Running diprun at" `date` >> dip.log
+./rdip -Ax

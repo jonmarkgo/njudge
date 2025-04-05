@@ -1,0 +1,125 @@
+Greetings from the Diplomacy* Adjudicator!!                     3 February, 2003
+Rules.
+
+The rules of Diplomacy are copyrighted by the Avalon Hill Game Company, a
+division of Hasbro.  At time of writing, 4th Edition 2000 rules were
+available online at http://www.hasbro.com/common/instruct/Diplomacy.PDF 
+An older (undated) edition of the rules was at http://www.hasbro.com/common/instruct/Diplomacy(OlderVers).PDF
+If you are unable to obtain rules online, you may inquire to Hasbro.
+
+See file 'house.rules' for rules concerning the use of the Judge and the
+conduct of games.  This file only covers the rules for interpretation and
+adjudication of orders.
+
+The adjudicator follows the 1990 edition of the Rules of Diplomacy as
+specified by The Avalon Hill Company (note: there are no major differences
+between the 1990 and 2000 rules, but the numbering is completely different),
+with the following exceptions:
+
+VII.3.b: When a fleet can move to two coasts and the coast is not specified,
+         the adjudicator will pick an arbitrary coast.  Actually not totally
+         arbitrary, but the first one in its movement list.  The same process
+         will apply when a unit is ordered to support a fleet that can move to
+         two coasts.
+
+VII.7:   Abbreviations are the first three characters of the province name
+         except for provinces starting with 'gul', 'liv', 'nor' and 'tyr'.  
+         These are abbreviated as follows:
+
+           gob: Gulf of Bothnia
+           gol: Gulf of Lyon
+           lvp: Liverpool
+           lvn: Livonia
+           naf: North Africa
+           nat: North Atlantic Ocean
+           nrg: Norwegian Sea
+           nth: North Sea
+           nwy: Norway
+           tyr: Tyrolia
+           tys: Tyrrhenian Sea
+
+         Other reasonable abbreviations are also defined.  For a complete
+         list see the 'map' file, available with the "GET MAP" command.
+
+IX.1:    Do not specify owners of units in support and convoy orders.  This
+         redundant specification would unnecessarily complicate the parser.
+         The movement results will indicate the alternate power on support
+         and convoy orders.
+
+IX.7:    Based on the second statement after XIV.5, IX.7 does not apply if
+         either or both of the dislodged or dislodging unit is convoyed.
+
+XII:     Armies intending to use a convoy must specify the convoy route in
+         their movement orders as in the examples: 
+
+               A LON-ENG-BEL, 
+               F ENG C A LON-BEL.
+
+         or    A LON-ENG-MID-WES-TUN, 
+               F ENG C A LON-TUN, 
+               F MID C A LON-TUN,
+               F WES C A LON-TUN,
+               A NAF S A LON-TUN.
+
+XII.4:   Since convoy routes must be specified, there will never be any
+         ambiguity.
+
+XII.5:   This rule when taken literally can have some unintended results.
+         For example:
+
+         England: F Iri-Mid, F Eng S F Iri-Mid
+         France:  F Spa(nc) S F Mid, F Mid Convoy A Por-Bre, A Por-Mid-Bre
+         Italy:   F Gulf of Lyon Convoy A Tus-Spa, A Tus-GoL-Spa
+ 
+         What happens in the Mid-Atlantic Ocean?  What if the additional
+         order
+ 
+         Italy:   A Mar S A Tus-Spa
+ 
+         is entered?  With literal interpretation of the rules, the fleet
+         in Spain would be dislodged, but its support to the fleet in the
+         Mid-Atlantic Ocean (of an action in a body of water containing a
+         convoying fleet) would not be cut.  This adjudicator makes five
+         passes to determine what support gets cut:
+
+         1) Normal non-convoyed movement cuts support.
+         2) Any armies being convoyed by fleets that would be dislodged
+            without further support cuts are flagged "maybe no convoy".
+         3) Any convoyed armies without the "maybe no convoy" status cut
+            support provided by units in their destination provinces.
+         4) Any armies being convoyed by fleets that still would be 
+            dislodged are flagged "definitely no convoy".
+         5) Any armies still flagged "maybe no convoy" status cut support
+            of units in their destination provinces.  The "maybe no convoy"
+            status is cleared.
+
+         Using this algorithm, Spain's support above would be cut in pass
+         three.  The Mid-Atlantic Ocean's dislodgement would be detected
+         in pass four.  Portugal would be given the "no convoy" status and
+         thus would have no effect on any unit in Brest in pass five.
+
+XII.6:   This rule does not apply because an army must specify its convoy
+         route in order to be convoyed.  Convoys between adjacent provinces
+         are permitted if explicitly ordered.
+
+XIII.2:  Possible builds not being using must be specifically marked
+         using the WAIVE command or your orders will be marked as unfinished.
+
+XIV.4:   In an NMR game, if a power is required to remove a unit and no valid
+         order is received, the least recently produced unit that is not at a
+         supply center will be disbanded.  This is the first one listed on
+         the reports which will be the one most likely to be furthest away
+         from a home supply center.
+
+Unusual Board Situations:
+
+Certain extremely rare situations are not covered by the rules of
+Diplomacy.  (For example, Pandin's paradox discovered by Tony Pandin
+in which a convoy causes its own disruption.) In such a situation,
+the results of the Diplomacy Adjudicator will be accepted as final.
+
+-----
+
+* Diplomacy is a trademark of Avalon Hill, a division of Hasbro, Inc., all
+  rights reserved.  Used with permission.
+

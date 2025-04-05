@@ -1,0 +1,34 @@
+/*
+ * This file is for user defined defaults for your particular judge
+ * Change these values as you wish
+ */
+
+#define D_ACCESS         A_ANY  /* A_* */
+#define D_LEVEL          L_ANY  /* L_* */
+#define D_FLAGS          F_NONMR|F_NOPLAGUE|F_GRACEDAYS|F_NOLIST       /* F_* */
+#define D_XFLAGS         0 /* XF_* */
+#define D_X2FLAGS	 0 /* X2F_* */
+#define D_X3FLAGS        0 /* X3F_* */
+#define D_DEDICATE       -10000
+#define D_MOVE_CLOCK     1410
+#define D_MOVE_MINT      12.0
+#define D_MOVE_NEXT      71.0
+#define D_MOVE_GRACE     167.0
+#define D_MOVE_DELAY     0.5
+#define D_MOVE_DAYS      "-MTWTF-"
+#define D_RETREAT_CLOCK  -1
+#define D_RETREAT_MINT   0.0
+#define D_RETREAT_NEXT   23.0
+#define D_RETREAT_GRACE  71.0
+#define D_RETREAT_DELAY  0.5
+#define D_RETREAT_DAYS   "-MTWTF-"
+#define D_BUILDS_CLOCK   -1
+#define D_BUILDS_MINT    0.0
+#define D_BUILDS_NEXT    23.0
+#define D_BUILDS_GRACE   71.0
+#define D_BUILDS_DELAY   0.5
+#define D_BUILDS_DAYS    "-MTWTF-"
+
+#define D_MAX_ABSENCE_DELAY 15
+
+

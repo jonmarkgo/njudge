@@ -1,0 +1,30 @@
+S1901M
+B: A Dijon
+B: A Brussels
+B: F Hague
+C: A Rome
+C: F Naples
+C: F Palermo
+E: A Alcluyd
+E: F Dublin
+E: F Edinburgh
+H: A Budapest
+H: A Szeged
+H: F Zara
+I: A Damascus
+I: A Jerusalem
+I: F Cairo
+P: A Warsaw
+P: A Riga
+P: F Gdansk
+S: A Toledo
+S: F Santander
+S: F Valencia
+U: F Yalta
+U: A Odessa
+U: A Kiev
+Z: A Athens
+Z: F Constantinople
+Z: F Smyrna
+-1 Null ownership/contested record will initialize from the map data.
+-1

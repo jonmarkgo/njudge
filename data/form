@@ -1,0 +1,77 @@
+Greetings from the Diplomacy* Adjudicator!!                31 January 1994.
+form.
+
+When involved in a game of Diplomacy it is best if all the players in a
+game are unique.  Puppet powers tend to spoil the game for the other
+players.  Some games are designated as "all players from different
+sites" or "all players from the same site" to keep the balance from
+becoming too badly tipped if contact between two players is too easy or
+too hard.  It is important for the judge to know who you are in order
+to determine if you are right for a particular game.  Please fill out
+the following registration form by replacing the example text after the
+colons with proper information and return it to the judge.  Name, phone
+and site are required.  You should also list at least one email address
+that won't change.
+
+-------  Cut here  -------
+REGISTER
+Name:      Aretha Holly
+Phone:     (505) 555-5555
+Site:      University of Hodunk
+Address:   1515 St. Claws Lane, Kris Mass
+Country:   USA
+Timezone:  Eastern
+Email:     user@host.domain.edu, user@host.bitnet, host2!host1!user
+Level:     Novice, Amateur, Intermediate, Advanced or Expert
+Birthdate: Dec 25, 1907
+Sex:       Female
+Package:   Yes
+END
+-----
+
+You can query the database of people by sending a "whois user" request
+to the judge.  You may update this information at any time by sending
+in a new registration form.  Note that you can use the information
+returned by the whois command as a template by throwing a REGISTER line
+in front, an END line on the end, changing the other information and
+sending it back to the judge.  Please try to spell your site name the
+same way other players may have spelled it.  Feel free to add additional
+information by making up your own keywords, but keep it under half a page.  
+
+The judge recognizes you by the return address in electronic mail that
+you send in.  If you use multiple accounts, you can tell the judge that
+another return address should be considered the same person by sending
+an "IamAlso address" command from the new account, where "address" is
+one of the electronic mail addresses that you listed on your Email line
+when you last registered.
+
+There are three strict levels the judge recognizes, as well as two
+broader ranges, that you can use in the Level: field.  Amateur is
+interpreted as non-Expert, and Advanced is interpreted as non-Novice.
+Game Masters can restrict games to certain ability levels, so please
+try to be as honest and as accurate as you can when ranking yourself.
+Note that this refers to your ability to play the game of Diplomacy,
+not your ability to use the judge.  It is perfectly acceptable to
+register for the first time as an Expert, if you are truely skilled
+at the game.  Likewise, no matter how much you may know about using
+the judge, if you have never gotten a power over six supply centers, 
+you should register as a Novice.
+
+The 'Package:  Yes/No' line tells the Judge whether to automatically
+forward the 'new users package' of files to you.  If you are registering
+with your first Judge, you are strongly encouraged to set this to 'Yes'
+in order to receive all the information that beginning Judge players
+need.  If you are registering with more than one Judge, of course, you
+do not need to receive multiple copies of these files, although you
+should be aware that each Judge Keeper (the person responsible for each
+Diplomacy Judge site) might add additional files to the 'package' on
+his Judge, such as a file stating a personal policy that he follows.
+If the 'Package:' line is omitted from your registration, then the default
+policy for that Judge is followed for sending or not sending the package
+of files; each Judge Keeper can set the default to send or to not send
+the package to new users on his system.  If the package is not sent,
+either by your specific request or the Judge Keeper's default policy, you
+will still be reminded of the 'get package' command should you choose to
+request the files later.
+
+Thank you for your cooperation.

@@ -1,0 +1,25 @@
+S1901M
+C: A Beijing
+C: A Tibet
+C: F Shanghai
+N: A Calcutta
+N: A Delhi
+N: F Bombay
+I: F Borneo
+I: F Java
+I: F Sumatra
+J: F Hokkaido
+J: F Honshu
+J: A Manchuria
+J: F Philippines
+P: A Iran
+P: A Iraq
+P: F Arabia/ec
+R: A Moscow
+R: A Sevastopol
+R: F St Petersburg
+S: A Irkutsk
+S: F Kamchatka
+S: A West Siberia
+-1 Null ownership/contested record will initialize from the map data.
+-1

@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "purge" ]; then
+  userdel -r judge || true;
+  rm -rf /home/judge || true;
+fi
+
+#DEBHELPER#

@@ -1,0 +1,2862 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head lang="en">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
+
+  <meta name="Description" content="Diplomacy Judge installation HOWTO">
+
+  <meta name="GENERATOR" content="mimine">
+
+  <meta name="Author" content="Christophe COURTOIS">
+
+  <meta name="copyright" content="Christophe Courtois 2001-2003">
+
+  <meta name="KeyWords" content="Diplomacy,njudge,installation">
+
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+
+  <meta name="revisit-after" content="15 days">
+
+  <meta name="robots" content="FOLLOW">
+
+  <meta name="distribution" content="Global">
+
+  <meta name="rating" content="Safe For Kids">
+
+  <meta http-equiv="reply-to" content="christophe@courtois.cc">
+
+  <meta name="language" content="English">
+
+  <meta name="doc-rights" content="Copywritten Work">
+  <title>Diplomacy Judge installation HOWTO</title>
+
+
+</head>
+
+
+<body>
+
+<!-- Please do not edit this text with anything else than an ASCII editor -
+I want this code to stay clean and W3C compliants. Thanks - Christophe -->
+<h1 align="center">Installation-HOWTO for the Diplomacy
+judge</h1>
+
+<p align="center">v.1.7.5.1<br>
+
+<a href="mailto:christophe@courtois.cc">Christophe
+Courtois
+(christophe@courtois.cc)</a>
+<table summary="Summary" align="center" width="80%">
+
+  <tbody>
+
+    <tr valign="top">
+
+      <td><small> <br>
+
+      <a href="#1">1 Introduction</a> <br>
+
+      <a href="#1.1">1.1 History</a> <br>
+
+      <a href="#1.2">1.2 Last version</a> <br>
+
+      <a href="#1.3">1.3 Why?</a> <br>
+
+      <br>
+
+      <a href="#2">2 Before installing</a> <br>
+
+      <a href="#2.1">2.1 Material, learning and paperwork</a>
+      <br>
+
+      <a href="#2.2">2.2 Getting the source code or the
+package</a> <br>
+
+      <a href="#2.3">2.3 Judge user: unix level
+configuration</a> <br>
+
+      <a href="#2.4">2.4 Configure before compilation</a>
+      <br>
+
+      <a href="#2.5">2.5 The Makefile</a> <br>
+
+      <a href="#2.6">2.6 smail.in script</a> <br>
+
+      <a href="#2.7">2.7 sendmail problems</a> <br>
+
+      <a href="#2.8">2.8 atrun script</a> <br>
+
+      <a href="#2.9">2.9 Changing default parameters in
+defaults.inc.in</a> <br>
+
+      <a href="#2.10">2.10 Other source modifications</a>
+      <br>
+
+      <a href="#2.11">2.11 Patches</a> <br>
+
+      <br>
+
+      <a href="#3">3 Compilation and installation</a>
+      <br>
+
+      <a href="#3.1">3.1 Compilation</a> <br>
+
+      <a href="#3.2">3.2 Installation</a> <br>
+
+      <a href="#3.3">3.3 Cleaning</a> <br>
+
+      <br>
+
+      <a href="#4">4 Installing the Debian package</a>
+      <br>
+
+      <br>
+
+      <a href="#5">5 Configuring your new judge</a> <br>
+
+      <a href="#5.1">5.1 Dip.conf</a> <br>
+
+      <a href="#5.2">5.2 Other dip.* files</a> <br>
+
+      <a href="#5.3">5.3 dipclean</a> <br>
+
+      <a href="#5.4">5.4 .forward</a> <br>
+
+      <a href="#5.5">5.5 dip.control date problems</a>
+      <br>
+
+      <a href="#5.6">5.6 Ready?</a> <br>
+
+      <a href="#5.7">5.7 Customise e-mails from the judge</a>
+      </small></td>
+
+      <td><small><br>
+
+      <a href="#6">6 What are these files?</a> <br>
+
+      <a href="#6.1">6.1 Documentation</a> <br>
+
+      <a href="#6.2">6.2 Binaries</a> <br>
+
+      <a href="#6.3">6.3 Shell scripts</a> <br>
+
+      <a href="#6.4">6.4 Parameter and data files</a>
+      <br>
+
+      <a href="#6.5">6.5 Maps and 'data' directory</a>
+      <br>
+
+      <a href="#6.6">6.6 Games</a> <br>
+
+      <a href="#6.7">6.7 Log files</a> <br>
+
+      <a href="#6.8">6.8 Temporary files</a> <br>
+
+      <a href="#6.9">6.9 Files created or left behind by a
+crashed judge</a> <br>
+
+      <a href="#6.10">6.10 Other files</a> <br>
+
+      <br>
+
+      <a href="#7">7 Testing the judge, first game</a>
+      <br>
+
+      <a href="#7.1">7.1 Manual basic testing</a> <br>
+
+      <a href="#7.2">7.2 Automatic judge tester</a> <br>
+
+      <br>
+
+      <a href="#8">8 Troubleshooting</a> <br>
+
+      <br>
+
+      <a href="#9">9 Other customisations</a> <br>
+
+      <br>
+
+      <a href="#10">10 Backup</a> <br>
+
+      <br>
+
+      <a href="#11">11 Upgrading and patching a judge</a>
+      <br>
+
+      <a href="#11.1">11.1 Locking the judge</a> <br>
+
+      <a href="#11.2">11.2 Archiving</a> <br>
+
+      <a href="#11.3">11.3 Makefile variables</a> <br>
+
+      <a href="#11.4">11.4 Patching or upgrading source
+code</a> <br>
+
+      <a href="#11.5">11.5 Recompiling and installation</a>
+      <br>
+
+      <a href="#11.6">11.6 Relaunching the judge</a>
+      <br>
+
+      <br>
+
+      <a href="#12">12 Links</a> <br>
+
+      <br>
+
+      <a href="#13">13 Misc</a> <br>
+
+      <a href="#13.1">13.1 The author</a> <br>
+
+      <a href="#13.2">13.2 Thanks</a> <br>
+
+      <a href="#13.3">13.3 Copyright and boring stuff</a>
+      <br>
+
+      </small> </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<hr>
+<h1><a name="1">1 Introduction</a></h1>
+
+<h2><a name="1.1">1.1 History</a></h2>
+
+<p>- 1.7.5.x : November 2005<br>
+
+- 1.7.5.x : May 2005<br>
+
+- 1.5.1.x : September 2003<br>
+
+- 1.5.1.0 : August 2003<br>
+
+- 1.3.2.x : March-May 2003
+<br>
+
+- 1.3.0-pre : December 2002
+<br>
+
+- 1.1.1.x : May 2002
+<br>
+
+- 1.0.1.x : February 2002
+<br>
+
+- 1.0.0.0-2 : January 2002
+<br>
+
+- 0.8.9.2 : August 2001
+<br>
+
+- 0.8.9 : July 2001
+<br>
+
+- 0.0 - 0.8.7 : February/March 2001
+</p>
+
+<h2><a name="1.2">1.2 Last version</a></h2>
+
+<p> This is an installation guide which aims to be more complete
+and
+newbie-friendly than the INSTALL file.
+</p>
+
+<p> This file deals with installing a clean standard version of
+njudge
+v 1.7.
+There are good chances it will work for following
+versions.
+</p>
+
+<p>The version number of this file follows judge versions.
+<br>
+
+The reference version is now the HTML guide. The text should be
+automatically generated against the HTML.
+<br>
+
+Anyway, the last version of this file should always be in the last CVS
+snapshot of the judge at <a href="http://www.njudge.org/">http://www.njudge.org/</a>.
+</p>
+
+<h2><a name="1.3">1.3 Why?</a></h2>
+
+<p> Once upon a time, a young man decided to install a Diplomacy
+judge
+on
+his Linux box. He wanted to learn C, improve his Unix administration
+knowledge, code some new variants, and say to his friends on the
+mailing
+list 'Look! I have a judge!'.
+</p>
+
+<p> As he wanted the others not to suffer as much as he did, as
+he
+wanted to
+contribute to the Diplomacy community, as he couldn't do anything else
+than writing documentation, he wrote the present installation guide.
+</p>
+
+<p> It is a compilation of what I have read in the judge files
+and
+code, on the
+judge-maint mailing-list, of what I have learned myself by installing
+the judge
+(versions: 0.8.6-FROG, 0.8.7, 0.8.9, 1.0.0,
+1.1.1, 1.3.0-pre, 1.3.2, 1.5.1 on Linux Debian, and 1.7.5 on Mac OS X
+10.4.3 with XCode). Comments, advice, corrections [including spelling
+and
+grammar, I'm not a native English speaker] are <a href="mailto:christophe+insthowto@courtois.cc">welcomed</a>
+(in
+French, English or German)!
+</p>
+
+<p> This guide is focused on the installation on Linux and Mac OS
+X,
+but should be okay for most Unices.
+If you know of some platform-specific installation problems, please ask
+me to add it there.
+</p>
+
+<h1><a name="2">2 Before installing</a></h1>
+
+<h2><a name="2.1">2.1 Material, learning and
+paperwork</a></h2>
+
+<p> Before installing the judge there are a few things you need
+to do :
+</p>
+
+<p>- Find a box: a 486 is enough, such a powerful machine didn't
+even
+exist when the first version of the judge was written; the real load
+will come from your OS and
+the e-mail amount.
+</p>
+
+<p>- Install a Unix system on it. For example, Linux (any
+distribution
+is good enough), as the last versions of the judge are often running
+and maintained on Linux.
+</p>
+
+<p>In the past, many judges were running on SunOS, HP-UX or Irix,
+but the judge wasn't recently compiled on it. Some judges run
+currently on Solaris, Linux-x86 (different distributions), and
+Linux-alpha (Debian).
+</p>
+<p>
+The judge does compile on FreeBSD-x86, Darwin-ppc, and then
+on MacOS&nbsp;X.</p>
+<p>
+There was some discussion on a Win32 port. Maybe is it possible to
+use <a href="http://www.cygwin.org/">Cygwin</a> to
+run a judge on
+Windows.
+</p>
+
+<p>- As development tools, you'll need gcc, and to be on the safe
+side
+at least
+version 2.50 of autoconf and 1.7 of automake. If your
+system/distribution does
+not have it, you can get them on <a href="http://www.gnu.org/">GNU.org</a>.
+<br>
+
+(If you have an old Debian Woody,
+you'll have to install the <tt>autoconf</tt> and <tt>automake1.7</tt>
+package from
+the <i>testing</i> distribution).
+Mac OS X users must download development tools from Apple website
+(especially gcc, included in XCode).<br>
+
+If these tools are too old, you can obtain some very strange
+compilation bugs.
+</p>
+
+<p>- Connect it permanently on the Internet through modem, xDSL,
+T1,
+cable... (although a disconnected judge should perfectly work only
+for local users, or could work with an intermittent connection if the
+deadlines are long enough).
+</p>
+
+<p>- Learn the basis of system administration (users, access
+rights,
+shell, basic commands, compiling).
+</p>
+
+<p>- Begin to learn C. It is not necessary to install the judge
+(I'm
+a living proof of that), but it is to search efficiently for bugs or
+modify the source. You
+don't really need it for creating simple variants.
+</p>
+
+<p>- Decide what you will do with that judge: experimentation?
+private
+for
+friends? candidate for the biggest running judge? just for fun?
+</p>
+
+<p>- Decide what name you'll give to your judge. Theoretically,
+it
+should
+begin by the ISO code of the country it is in. <a href="http://frog.born2play.org/">FROG</a>
+is in France, <a href="http://www.courtois.cc/alex/">ALEX</a>
+should
+have been in Albania,
+USEF is in the United States and so on.
+</p>
+
+<p>- Not necessary for a private judge: Send a mail to
+<a href="mailto:nfitz@sentex.net">Nicholas Fitzpatrick
+(nfitz@sentex.net)</a>
+to tell him that you want to open a judge, and ask him to bless its
+name and add it in
+<a href="http://www.sentex.ca/%7Enfitz/judge.codes">its
+list of judges</a>
+</p>
+
+<p>- If you want your judge to go more or less public and
+Nicholas is
+okay
+with the name, you can add it on the
+<a href="http://devel.diplom.org/DipPouch/Email/registration.html">DipPouch
+Judge Registration Form
+(http://devel.diplom.org/DipPouch/Email/registration.html)</a> to
+make
+it easier
+for people to register on your judge.
+</p>
+
+<p>- Subscribe to the judge-keepers mailing-list (send a mail to
+<a href="mailto:majordomo@diplom.org">majordomo@diplom.org</a>
+with 'help' in the body). It is actually a judge
+maintenance mailing list. The JKs just happen to all be there.
+<br>
+
+There are archives of this list available on Alain Tesio's website:
+<a href="http://www.floc.net/exarch/judgemaint.html">http://www.floc.net/exarch/judgemaint.html</a>
+</p>
+
+<h2><a name="2.2">2.2 Getting the source code or the
+package</a></h2>
+
+<p> Download the source of the judge from the net :
+<a href="http://www.njudge.org/">http://www.njudge.org/</a>
+is the official download site from Millis Miller
+and should indicate which is the last official judge version available,
+and give you a link to download it.
+</p>
+
+<p> A CVS snapshot is available too. It is a tarball generated
+every
+day
+from the CVS (development) tree. It is the most current (and unstable!)
+judge, only for people who know what they are doing. A direct CVS
+access
+is possible only with an account on the development computer.
+</p>
+
+<p> Other sources where you can search in case of a problem on
+njudge.org:&nbsp; ftp.diplom.org/pub/diplomacy/Sources/
+</p>
+
+<p>- The official judge is distributed as a source code tarball
+called
+<span style="font-family: monospace;">njudge-1.X.Y.tar.gz</span>,
+where X and Y change with time. Current version is 1.7.5. Please ignore
+<span style="font-family: monospace;">njudge-0.8.X</span>
+and<span style="font-family: monospace;"> dipsrc-9XXX</span>
+files if you find some, they are out of
+date.
+</p>
+
+<p>- If you're lucky enough to work with a Debian Linux, you have
+a
+package of njudge 1.5 by <a href="http://www.braincells.com/jaldhar/">Jaldhar H. Vyas</a>
+available at Braincells:
+<a href="http://src.braincells.com/debian/woody/njudge/">http://src.braincells.com/debian/woody/njudge/</a>
+<br>
+
+See below (section 4.) how to install it. You can skip the
+Unix configuration and the compilation below. Your judge will use the
+'<tt>judge</tt>' user name, and will be installed directly
+in
+<tt>/home/judge</tt> (no <tt>dip/</tt> binary
+directory).
+</p>
+
+<h2><a name="2.3">2.3 Judge user: unix level
+configuration</a></h2>
+
+<p><span style="font-weight: bold;">Mac users among
+others, please note </span>: The following documentation assumes
+an Unix-like system with usual conventions. With Mac OS X, you must use
+<span style="font-family: monospace;">/Users </span>instead
+of <span style="font-family: monospace;">/home</span>
+in the following examples. Be careful if the user name contains
+uppercase letters too.&nbsp;</p>
+
+<p>- Create an account for the judge on your system. The name of
+the
+account
+may be anything as long as it does NOT contain a '-'. It is often <tt>judge@...</tt>
+The judge must have its own e-mail address. You can create aliases
+to redirect <tt>judge@...</tt> on any other account (the
+setup is
+usually in <tt>/etc/aliases</tt>).
+<br>
+
+For ALEX, the user is '<tt>alex</tt>' and '<tt>judge</tt>'
+is
+redirected on it.
+</p>
+
+<p><b>NB:</b> To write to the judge from the
+Internet, you need a valid
+domain
+(like foo.com, toto.fr, bar.edu), which can be obtained only with a
+permanent IP. If the box has no permanent IP address (like most
+personal
+computers on xDSL or cable), it is possible to use dynamic DNS (for
+example <a href="http://www.dyndns.org/">Dyndns.org</a>)
+to have an
+address anybody on the net
+can write to. Or you can hack something (with fetchmail for example) to
+retrieve mail
+every 10 minutes from a 'real' account (good thing for a disconnected
+judge).&nbsp;
+</p>
+
+<p>- Log out and log yourself as the judge user.
+</p>
+
+<p>- Verify that the commands <tt>rm, cat, date, echo, at,
+atrm</tt>
+are ready to
+use without any directory indication (in a non-interactive shell). They
+must be in directories of
+<tt>$PATH</tt>. If you use bash as often on Linux, you may
+need to
+modify <tt>.bashrc</tt>
+and/or <tt>.profile</tt>.
+</p>
+
+<p>- As the judge script use the csh shell (and not the more
+popular
+bash),
+put the judge binary directories in the <tt>.cshrc</tt>
+file. For
+example:
+<br>
+
+<tt>setenv PATH
+/usr/bin:/usr/local/bin:/home/alex/dip:/home/alex:/bin:~:.</tt>
+</p>
+
+<p>- All the examples here deal with <tt>njudge-1.7.5.tar.gz</tt>.
+</p>
+
+<p>- Extract the archive:
+</p>
+
+<p><tt>tar xzvf njudge-1.7.5.tar.gz</tt>
+</p>
+
+<p>(<span style="font-weight: bold;">NB</span>
+: If you have Mac OS X and Safari, you may have an already-uncompressed
+archive file named <tt>njudge-1.7.5.tar.gz.</tt> Un-tar it
+with&nbsp;<tt>tar xvf njudge-1.7.5.tar</tt> )</p>
+
+<p> The file is extracted into a new directory called <tt>njudge-1.7.5</tt>.
+As I have many versions of the judge on my hard disk, I have created
+a 'source' symbolic link which points to the real current source
+directory.
+</p>
+
+<p><tt> cd ~
+<br>
+
+ln -s njudge-1.7.5 source</tt>
+</p>
+
+<p>- Browse the files you have obtained. You can read the
+README.* or
+docs/README.* files now,
+even if you don't understand everything now. (Some of them are clearly
+out-of-date;
+they are usually in <tt>docs/archives/</tt>).
+</p>
+
+<p>- Create a new directory in the judge's home for the compiled
+judge.
+It
+will contain binaries, judge configuration files, games, maps... The
+directory is often called '<tt>dip</tt>'.
+</p>
+
+<p> For ALEX :
+</p>
+
+<p><tt> mkdir ~/dip</tt>
+</p>
+
+<p> This may be useless as the installation process should create
+the
+directory; but it can't hurt. Note that many people like to install
+the binaries directly under <tt>/home/judge</tt> instead
+of&nbsp;<tt>/home/judge/dip.</tt>
+</p>
+
+<h2><a name="2.4">2.4 Configure before compilation</a></h2>
+
+<p>- The judge uses the GNU Autotools (automake, autoconf) as its
+build
+system
+(thanks for that, <a href="http://www.braincells.com/jaldhar/">Jaldhar</a>
+;-)
+<tt>automake</tt> and <tt>autoconf</tt> are
+pretty much standard
+on Unix-like systems these days but if your vendor or distribution does
+not
+provide them, you can download them from
+<a href="ftp://ftp.gnu.org/pub/gnu/">ftp://ftp.gnu.org/pub/gnu/</a>.
+You will need at least version 2.50 of <tt>autoconf</tt>.
+</p>
+
+<p>- Some modifications (including changing the judge version if
+you
+modify it)
+involves modifications before launching <tt>./configure</tt>.
+Read <tt>docs/README.hackers</tt>
+or wait until the present guide is updated.
+</p>
+
+<p>- A simple '<tt>./configure</tt>' at the command
+line is not really
+enough;
+as you may have another user than '<tt>judge</tt>' and may
+want to use
+the '<tt>dip</tt>'
+directory to store the binaries instead of the root of the user
+directory,
+the command line is more something like:
+</p>
+
+<p><tt><br>
+
+cd ~/source<br>
+
+/configure --with-dir=/home/alex/dip --with-user=alex
+--with-domain=christophecourtois.org</tt>
+</p>
+
+<p>where <tt>alex</tt> must be replaced by your
+judge user name, <tt>christophecourtois.org</tt>
+by the domain of your judge where the address must appear to come from.
+</p>
+
+<p> If you're using <tt>csh</tt> on an old version
+of System V, you
+might need to
+type '<tt>sh ./configure</tt>' instead to prevent <tt>csh</tt>
+from
+trying to execute
+<tt>configure</tt> itself.
+</p>
+
+<p> There are many other command line flags you can give (type
+'<tt>./configure --help</tt>' for a full list) but <tt>--with-dir</tt>
+and <tt>--with-user</tt>
+are the main ones you're likely to use.
+</p>
+
+<p> This command will detect your system configuration, binaries
+paths...
+to generate a <tt>Makefile</tt> suited to your system.
+</p>
+
+<p> There may be a problem if you have a <tt>sendmail</tt>
+binary or
+alias which
+is not easy to find by the script. Although every MTA (Exim, Postfix,
+Qmail, Sendmail itself...)
+seems to provide a compatibility mode, it is sometimes not easy to
+find, and often not in the
+<tt>$PATH</tt>. If the <tt>./.configure</tt>
+fails by telling you it
+didn't find
+<tt>sendmail</tt>, search for it yourself with <tt>find
+/ -name
+sendmail -print</tt>,
+and add another parameter to the script: <tt>--with-sendmail=/path_where_sendmail_is</tt>.
+Thank you for <a href="mailto:judge-maint@devel.diplom.org">telling
+us</a>
+this unknown path,
+it will be added in the script in the next version </p>
+
+. If the <tt>./configure</tt> finds it,
+but the compilation fails by not finding it itself, you may have to:
+<ul type="circle">
+
+  <li>try to launch <tt>automake</tt> and <tt>aclocal</tt>
+and try <tt>./configure</tt>
+and <tt>make all</tt> again,</li>
+
+  <li>or upgrade to <tt>automake 1.7</tt> and begin
+from a fresh
+tarball again (anyway, I had to do that).</li>
+
+</ul>
+
+<p>- (This should not be necessary on new judges) Verify
+permissions
+and change them if necessary to be able to write to the files.
+</p>
+
+<p><tt> cd ~/source
+<br>
+
+chmod -R u+w *
+</tt></p>
+
+<h2><a name="2.5">2.5 The Makefile</a></h2>
+
+<p>- The <tt>Makefile</tt> was created through <tt>./configure</tt>.
+It must not be
+modified anymore (as in the good old times).
+</p>
+
+<p>- The following targets exist in the <tt>Makefile</tt>,
+with their
+use:
+<table summary="targets" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>all</tt>: </td>
+
+      <td>Rebuild all programs</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>ascii_to_ded</tt>: </td>
+
+      <td>Convert text file ded.txt to dip.ded</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>ded_to_ascii</tt>: </td>
+
+      <td>Convert dip.ded to text file</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip</tt>: </td>
+
+      <td>Rebuild dip program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>cmap</tt>: </td>
+
+      <td>Rebuild cmap program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>summary</tt>: </td>
+
+      <td>Rebuild summary program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>deddump</tt>: </td>
+
+      <td>Rebuild deddump program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>delgame</tt>: </td>
+
+      <td>Rebuild delgame program (to erase permanentely a game)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>flock</tt>: </td>
+
+      <td>Rebuild flock program (used for locking of dip.log)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>fmtwho</tt>: </td>
+
+      <td>Rebuild fmtwho program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>ign</tt>: </td>
+
+      <td>Rebuild ign program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>pdip</tt>: </td>
+
+      <td>Rebuild pdip program (no longer used?)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>rdip</tt>: </td>
+
+      <td>Rebuild rdip program</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>install</tt>: </td>
+
+      <td>build and install a judge (Note: this will check if
+dip.master file exists and refuse to run if so, avoiding inadvertently
+deleting an existing njudge installation.)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>upgrade</tt>: </td>
+
+      <td>Rebuild all the programs and install them in correct
+directory (used principally for updating a running judge) </td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>install-strip, upgrade-strip</tt>: </td>
+
+      <td>Same as above, with smaller binary files.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>remap</tt>: </td>
+
+      <td>Force binary map files to be regenerated if required</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>flist</tt>: </td>
+
+      <td>Rebuild the help file "flist"</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dist</tt>: </td>
+
+      <td>Build an update distribution (calls targz)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>clean</tt>: </td>
+
+      <td>Remove all output files</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>magic</tt>: </td>
+
+      <td>Used to generate .magic.dat file (for random seed).</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>size_check</tt>: </td>
+
+      <td>Builds executable that checks sizes of char, int and
+long (to
+give error if judge ported to a machine with different values for this!)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>zpblind</tt>: </td>
+
+      <td>Blind post-processor executable</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dist-gzip</tt>: </td>
+
+      <td>Create a tar.gz of the judge source code</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dist-zip</tt>: </td>
+
+      <td>Idem, with zip instead of gzip</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dist (or dist-all)</tt>: </td>
+
+      <td>Makes both</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<h2><a name="2.6">2.6 smail.in script</a></h2>
+
+<p>'<tt>smail</tt>' is the script which builds the
+messages and sends
+them. This script
+is created during the compilation. There is a <tt>smail.in</tt>
+script
+which
+contains the default lines. (Change only <tt>smail.in</tt>,
+as <tt>smail</tt>
+is
+destroyed when launching <tt>./configure</tt>).
+</p>
+
+<p>- You should not change the <tt>FROM</tt> line:
+there go the user
+and the domain that
+you indicated when launching <tt>./configure</tt>.
+</p>
+
+<p>- The judge uses <tt>dip.msg</tt> (if it exists)
+as a header for
+all messages.
+You can create such a file with any content you like. It uses <tt>dip.footer</tt>
+as a footer.
+</p>
+
+<p>- <b>Warning</b> : <tt>dip.msg</tt>
+and <tt>dip.footer</tt> must
+be configured
+AFTER the installation in the binaries directory, they won't be copied
+when installing.
+<br>
+
+Think to remove the useless blank lines in them. Don't try to add too
+much and take the risk to
+break some tools relying on the judge e-mail format.
+</p>
+
+<p>- The <tt>smail</tt> script may need other
+modifications. For
+example, Greg Greenman
+had some problem on USTX with the mails headers with
+sendmail. This is his smail script which solves the problems: </p>
+
+<p><tt><br>
+
+#!/bin/csh
+<br>
+
+# /bin/sh (Note: /bin/sh fails to work if N files are open)
+<br>
+
+#
+<br>
+
+# Invoked as smail file subject address
+<br>
+
+#
+<br>
+
+# parameters
+<br>
+
+# $1 - name of the file containing the message body
+<br>
+
+# $2 - subject
+<br>
+
+# $3 - e-mail address
+<br>
+
+date &gt;&gt;mail.log
+<br>
+
+echo "===== mail sent to $3/$2" &gt;&gt;mail.log
+<br>
+
+/usr/bin/head -10 $1 &gt;&gt;mail.log
+<br>
+
+cat &gt; /tmp/dip.reply &lt;&lt; _EOF_
+<br>
+
+Subject: $2
+<br>
+
+From: USTX Diplomacy Judge &lt;judge@spencersoft.com&gt;
+<br>
+
+To: $3
+<br>
+
+<br>
+
+_EOF_
+<br>
+
+cat dip.msg $1 dip.footer &gt;&gt; /tmp/dip.reply
+<br>
+
+/usr/sbin/sendmail -f judge@spencersoft.com &lt;/tmp/dip.reply $3
+<br>
+
+rm -f /tmp/dip.reply
+<br>
+
+rm -f dip.xfail
+</tt></p>
+
+<h2><a name="2.7">2.7 sendmail problems</a></h2>
+
+Some people had problems with some <tt>sendmail</tt>
+configuration
+(especially
+with <a href="http://www.redhat.com/">Red Hat Linux</a>).
+If you use <tt>smrsh</tt>,
+place a symbolic link to <tt>rdip</tt> in the <tt>/etc/smrsh/</tt>
+dir. Also make sure
+only the owner has write permission to the <tt>.forward</tt>
+file.
+<br>
+
+(Briefly: <tt>smrsh</tt> allows only programs from a
+unique directory
+to call
+sendmail, allowing the system administrator to choose the set of
+acceptable commands).
+<h2><a name="2.8">2.8 atrun script</a></h2>
+
+<p> '<tt>atrun</tt>' is responsible for putting the '<tt>diprun</tt>'
+script in the '<tt>at</tt>'
+queue. '<tt>at</tt>' is a system command to schedule launch
+of
+programs. '<tt>diprun</tt>'
+will itself launch the '<tt>rdip</tt>' program.
+</p>
+
+<p> <b>NB:</b> If you schedule any jobs as the judge
+user using <tt>at</tt>,
+they will
+be deleted the next time that the Judge receives an e-mail.
+</p>
+
+<p> There are three predefined versions in <tt>atrun</tt>
+for Solaris,
+Linux
+(see below) and MIPS. Activate the version which suits your system.
+</p>
+
+<p> A problem is that some Linux versions of atq don't tell you
+the command each entry will run at the given time, so there is no
+way to delete the rdip entry but not the dipclean entry. So the way
+to get around this in some Linux system, is to put one on one queue,
+and one on another queue, and then search by queue.
+</p>
+
+<p>This is the script if you need it:
+</p>
+
+<p><tt><br>
+
+#! /bin/csh
+<br>
+
+#
+<br>
+
+# Invoked as: atrun norm time month day
+<br>
+
+# or: atrun dorm time month day
+<br>
+
+#
+<br>
+
+if ("$1" == "dorm") then
+<br>
+
+atrm `atq | awk '{print $1}'` &gt;&amp; /dev/null
+<br>
+
+endif
+<br>
+
+<br>
+
+at -q b -f diprun $2 $3 $4
+<br>
+
+rm -f dip.xfail
+</tt></p>
+
+<h2><a name="2.9">2.9 Changing default parameters in
+defaults.inc.in </a></h2>
+
+<p>- This file contains judge default parameters that can't be
+changed
+without recompiling the judge.
+See README.hackers if you want to change some.
+</p>
+
+<h2><a name="2.10">2.10 Other source modifications</a></h2>
+
+<p> If you have a very busy judge, the <tt>MAXUSER</tt>
+parameter in <tt>dip.h</tt>,
+set by default to 8000, may be increased.
+</p>
+
+<h2><a name="2.11">2.11 Patches</a></h2>
+
+<p> No known last-minute patch to add to the official version.
+(Stable
+versions are not
+so much fun anymore ;-)
+</p>
+
+<h1><a name="3">3 Compilation and installation</a></h1>
+
+<h2><a name="3.1">3.1 Compilation</a></h2>
+
+<p> - It should be easy and painless. Enter on the command line:
+</p>
+
+<p><tt> make all</tt>
+</p>
+
+<p>and the judge will be compiled. Any error that you could meet
+in an
+official release
+is probably caused by compilation tools (see <tt>autoconf</tt>
+and <tt>automake</tt>
+requested versions above).
+</p>
+
+<h2><a name="3.2">3.2 Installation</a></h2>
+
+<p>- Type:
+</p>
+
+<p><tt> make install #for a new judge only!</tt>
+</p>
+
+<p> This copies everything that the judge needs into the
+destination directory you gave to <tt>./configure</tt>. On
+a running
+judge,
+use '<tt>make upgrade</tt>' (see below). You don't need to
+be root, and
+nothing will be installed outside of the judge directory.
+</p>
+
+<p>- Total compilation time: it depends of your CPU, of course.
+On my
+old
+P75 with 24&nbsp;Mb memory, it takes less than 30 minutes.
+</p>
+
+<p>- The installation ends with a message telling you to modify <tt>dip.conf</tt>
+and other files (what you have already done), and to activate the
+judge by renaming <tt>dip/xxxx-forward</tt> as <tt>~/.forward</tt>
+(see
+below).
+</p>
+
+<p>- Compiled programs will not be stripped of debug and other
+extra
+information. If you want to make compiled programs a little smaller,
+you can type '<tt>make install-strip</tt>' or '<tt>make
+upgrade-strip</tt>'
+instead. This
+may give a few harmless errors (when it tries to strip scripts) but you
+can ignore them.
+</p>
+
+<h2><a name="3.3">3.3 Cleaning</a></h2>
+
+<p>- You can remove the program binaries and object files from
+the
+source code directory by typing `<tt>make clean</tt>'. To
+also remove
+the
+files that `<tt>configure</tt>' created (so you can compile
+the package
+for
+a different kind of computer), type `<tt>make distclean</tt>'.
+</p>
+
+<h1><a name="4">4 Installing the Debian package</a></h1>
+
+<p> - To avoid compiling yourself,&nbsp;you can get the
+Debian package from
+Jaldhar Vyas.
+<br>
+
+Download the version suitable for your architecture from
+<a href="http://www.njudge.org/">http://www.njudge.org/</a>
+if it is available there, or from
+<a href="http://src.braincells.com/debian/woody/njudge/">http://src.braincells.com/debian/woody/njudge/</a>,
+and (as root) use <tt>dpkg</tt> to install it, or add the
+lines given
+on the site to your
+<tt>/etc/apt/sources.list</tt>, run <tt>apt-get
+update</tt> and <tt>apt-get
+install</tt> it.
+<br>
+
+It is still to be considered experimentaln and this package is probably
+an older njudge version than the current one.
+</p>
+
+<p>- It will create a user called '<tt>judge</tt>',
+with its directory '<tt>/home/judge</tt>'
+containing all binaries and data files (yes, it is against the Debian
+policy).
+<br>
+
+There is no <tt>dip/</tt> directory.
+</p>
+
+<p> Before running the judge, you still must configure <tt>dip.conf</tt>
+as described below.
+</p>
+
+<h1><a name="5">5 Configuring your new judge</a></h1>
+
+<h2><a name="5.1">5.1 Dip.conf</a></h2>
+
+<p>- Go to the binary directory ( <tt>/home/alex/dip</tt>
+in my
+example,
+<tt>/home/judge</tt> or <tt>/home/judge/dip/</tt>
+maybe for you).
+</p>
+
+<p>- In the binary of the executables, the configuration file <tt>dip.conf</tt>
+contains all non-hard-coded parameters before compilation. You must
+check the following variables:
+</p>
+
+<p> * <tt>GAMES_MASTER</tt>: put YOUR email address
+or an alias on it,
+NOT the judge address!!.
+<br>
+
+* <tt>OURSELVES</tt>: the Unix user name of the judge,
+already filed
+by the
+<tt>--with-user</tt> option of <tt>./configure</tt>;
+it is used to
+avoid mail loops.
+<br>
+
+* <tt>JUDGE_CODE</tt>: codename of your judge
+(ALEX,FROG,USEF...), you
+MUST change it.
+<br>
+
+* <tt>SPECIAL_PW</tt>: the password for the judge-keeper,
+keep it for
+yourself!).
+<br>
+
+* <tt>AUTO_MASTER</tt>: yes or no; whatever the default
+is, you should
+put 'yes' for an 'official'
+judge, you can put 'no' for an experimental one.
+</p>
+
+<p>- Optionally, you can decide in which directory must go all
+running
+games
+by setting the <tt>GAME_DIR</tt> variable. You MUST create
+the
+directory before running the judge.
+<br>
+
+Example, to use the <tt>games</tt> directory in the user's
+home:
+</p>
+
+<p><tt>GAME_DIR=games/</tt>
+</p>
+
+<p> Don't forget the last '/'!
+</p>
+
+<p>By default (and <strike>conservatism</strike>
+compatibility with
+old judges), <tt>GAME_DIR=D</tt>. If you leave this
+variable commented
+out, the
+games subdirectories will accumulate in the <tt>dip/</tt>
+directory
+with a name
+beginning by D (example : Dtest). So if you move existing game
+subdirectories from <tt>~/dip/</tt> to <tt>~/dip/my_games/</tt>,
+you
+must set
+<tt>GAME_DIR=./my_games/D</tt> (or remove the leading D
+from all game
+subdirectories).
+You must set the full path if going outside the judge directory
+(ex: <tt>/home/alex/games/</tt> ).
+</p>
+
+<p> Don't use it to share the games across more than one judge,
+unless
+you share
+other files like <tt>dip.whois</tt> or <tt>dip.addr</tt>
+and avoid
+concurrent access (dangerous!).
+</p>
+
+<p>- Default values for other parameters are usually okay. You
+may
+need to comment out some of them before changing them. Be careful with
+<tt>HALL_KEEPER</tt>, <tt>GAMES_OPENER</tt>
+and other mail variables,
+that MUST be commented
+out if you're not running a public stable judge with real games. Don't
+change
+variables like <tt>XFORWARD</tt>, <tt>KEEPOUT</tt>;..
+if you don't
+know what you're really doing.
+</p>
+
+<h2><a name="5.2">5.2 Other dip.* files</a></h2>
+
+<p>- Verify the existence of the following files. If they are not
+there,
+create them using the '<tt>touch</tt>' command. They
+contain the games
+data: <br>
+
+- <tt>dip.master</tt> (should already exist with a game
+named
+'control';
+you may log into the game and edit <tt>dip.master</tt> to
+promote
+yourself as
+master, in order to receive some administrative mail from the judge) <br>
+
+- <tt>dip.whois</tt> <br>
+
+- <tt>dip.addr</tt>
+</p>
+
+<p>- Create or fill in the following files: <br>
+
+- <tt>dip.msg</tt> : each message sent by the judge to
+players begins
+with the content of this file. Put welcome messages there, address of
+the judge keeper... May be empty. <br>
+
+- <tt>dip.footer</tt> : each message ends by the content
+of this file
+(optional, see 'smail' script above). May be empty. <br>
+
+- <tt>ALLOW.map</tt> (if you want to allow use of the map
+command to
+produce .ps maps of a game) <br>
+
+- <tt>ALLOW.map-star</tt> (if you want to allow use of the
+'map *'
+command to produce .ps maps of a game based on a LIST output). <i>[Do
+these options really work nowadays?]</i>
+</p>
+
+<h2><a name="5.3">5.3 dipclean</a></h2>
+
+<p>- (This bug should be corrected in recent judges) Open the '<tt>dipclean</tt>'
+script and change any path that doesn't match
+your system (especially the first line).
+</p>
+
+<p>- It is now useless to run it for a first install.
+</p>
+
+<h2><a name="5.4">5.4 .forward</a></h2>
+
+<p>(Already done if installing through the Debian package).
+</p>
+
+<p> In the home directory of the judge, a file&nbsp;<tt>.forward</tt>
+must
+be created.
+It is usually enough to rename the&nbsp;<tt>xxxx-forward</tt>
+file (where
+xxxx is
+your judge name) in the <tt>dip/</tt> directory. It was
+generated
+while compiling.
+It will redirect automagically all the incoming mails to the judge
+program.
+</p>
+
+<p> It must contain one line (there is no leading space and a
+comma at
+the beginning). For example:
+</p>
+
+<p><tt> ,"| /home/alex/dip/rdip -b -d /home/alex/dip "</tt>
+</p>
+
+<p>(for a judge in <span style="font-family: monospace;">/home/alex</span>,
+with binaries in <tt>/home/alex/dip</tt>
+; change it
+according to your needs, but the install process should have made it
+for you).
+</p>
+
+<p> Some judges (FROG for example) don't use this file and call <tt>procmail</tt>
+to make some processing instead of or before launching the judge
+program
+(mainly logging). Ask on the judge-keepers list (especially to
+Philippe&nbsp;Lalande)
+for more information.
+</p>
+
+<h2><a name="5.5">5.5 dip.control date problems</a></h2>
+
+<p> The <tt>dip.master</tt> file is generated from
+the <tt>Makefile</tt>,
+and according
+to the configuration of your system, it can be faulty (although it may
+be corrected on 1.3 judges).
+</p>
+
+<p> Check that: <br>
+
+- it does not contain AM or PM <br>
+
+- that months are Jan, Feb, Mar, Apr, May, Jul, Aug, Sep, Oct, Nov,
+Dec,
+and nothing else (see source file <tt>jm.c</tt>). If your
+computer is
+not
+English-speaking, and does not put a capital at the beginning, it will
+bail out.
+</p>
+
+<p> This is for example a valid file:
+</p>
+
+<p><tt><br>
+
+control&nbsp;&nbsp;&nbsp;&nbsp;001 S1801MX 1 1 1 0 2 18
+7
+<br>
+
+Process&nbsp;&nbsp;&nbsp;&nbsp;Mon Jan 06 14:05:45 2003
+<br>
+
+Start&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sun
+Jan 06 14:05:45 2002
+</tt></p>
+
+<h2><a name="5.6">5.6 Ready?</a></h2>
+
+<p> At this point, the judge should be ready to run.
+</p>
+
+<h2><a name="5.7">5.7 Customise e-mails from the
+judge</a></h2>
+
+<p>It's time to configure the <tt>dip.msg</tt> and <tt>dip.footer</tt>
+in the new binaries directory.
+</p>
+
+<h1><a name="6">6 What are these files?</a></h1>
+
+<h2><a name="6.1">6.1 Documentation</a></h2>
+
+<p> The <tt>docs/</tt> directory of the source code
+contains mainly
+documentation and,
+<tt>README</tt> files on many subjects. You'll find too the
+<tt>LICENSE</tt>
+file, which
+indicate who owns the source code, the <tt>AUTHORS</tt>
+which lists
+all
+contributors to the Diplomacy judge, <tt>TODO</tt>, which
+contains
+bugs, whishlist,
+and modifications in progress, <tt>CHANGES</tt>, if you
+need to know
+the last modifications.
+</p>
+
+<p> The <tt>archives/</tt> subdirectory contains
+files which are
+out-of-date
+but may be useful for old versions of the judge, for migrating, or for
+historical purpose.
+</p>
+
+<p> (If you used the Debian package, documentation is in <tt>/usr/share/doc/njudge</tt>).
+</p>
+
+<h2><a name="6.2">6.2 Binaries</a></h2>
+
+<table summary="Binaries" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>rdip</tt> </td>
+
+      <td>Its purpose is to read in mail and copy it to a file
+for later processing, it is invoked by incoming mail.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip</tt></td>
+
+      <td>Main file. Invoked by rdip.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>pdip</tt> </td>
+
+      <td>Reads a mail file and pass each message to dip. Used
+when the
+judge has bailed out and mail has stacked up in the spool queue.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>flock</tt> </td>
+
+      <td>It must be used when you modify more or less anything
+in the
+dip directory. Lock the judge by entering '<tt>flock dip.log</tt>'.
+It
+will
+remind you every 5&nbsp;minutes on your console that the judge is
+locked.
+To unlock the judge, just execute <tt>flock</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>deddump</tt> </td>
+
+      <td>Dump/load the binary dedication file to/from a text
+file.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>delgame</tt> </td>
+
+      <td>Used to delete a game (even an active game!)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>ign</tt> </td>
+
+      <td>Used to process bounced mail. See <tt>README.ignore</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>fmtwho</tt> </td>
+
+      <td>Used for the maintenance of the user base. See <tt>README.fixids</tt></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>cmap</tt> </td>
+
+      <td>Responsible for generation of compiled map files from
+textual
+map files.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>summary</tt> </td>
+
+      <td> Creates the summary of a game.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.3">6.3 Shell scripts</a></h2>
+
+<table summary="Shells" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>diprun</tt></td>
+
+      <td>This is the script which is called by '<tt>at</tt>'
+and
+launches <tt>rdip</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dipclean</tt></td>
+
+      <td>This is a csh script that cleans old log files. It
+should put itself onto the at queue for subsequent runs on Saturdays at
+2pm. This script relies on the flock program.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>smail</tt></td>
+
+      <td>Shell script which creates and launch the mails to the
+players. See above.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>atrun</tt></td>
+
+      <td>Shell script which puts the judge in the '<tt>at</tt>'
+queue
+to awaken
+it when needed. (<b>NB:</b> If you put a deadline in the
+very near
+future
+(less than one hour for example), don't expect the judge to awaken
+exactly
+at this time. You can check the next time the judge will wake up by
+looking the at queue with the command '<tt>atq</tt>').</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>newlogs</tt></td>
+
+      <td>Shell scripts which compress old dip.log, dip.rlog,
+mail.log files into compressed *.Z files. (You can use '<tt>uncompress</tt>'
+to extract them).</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.4">6.4 Parameter and data files</a></h2>
+
+<p>(See content for more information)
+<table summary="Config and data files" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>dip.conf</tt></td>
+
+      <td>All parameters on the judge which can be changed
+without recompiling the judge.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.master</tt></td>
+
+      <td>It contains all the information on the games:
+parameters, players...</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.whois</tt></td>
+
+      <td>This is a database containing the registration
+information for the people who have registered with the adjudicator.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.addr</tt></td>
+
+      <td>This file associates a user number and siteid with an
+email address and vice versa. Each user may have multiple email
+addresses.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.msg, dip.footer</tt></td>
+
+      <td>Messages at the end and at the beginning of
+each mail sent by the judge. Used by smail.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.nocreate</tt></td>
+
+      <td>If you add this file, game creation is disabled.
+When someone tries to create a game, the content of this file is sent
+back to them, so please put there the reason why game creation is not
+allowed.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.ded</tt></td>
+
+      <td>binary file where dedication are stored.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.dedicate</tt></td>
+
+      <td>Binary dedication database.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<h2><a name="6.5">6.5 Maps and 'data' directory</a></h2>
+
+<table summary="Data" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>map.n</tt></td>
+
+      <td>Compiled data files, one for each variant.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>data/map.&lt;variant_name&gt;</tt></td>
+
+      <td>Real map source files</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>data/info</tt></td>
+
+      <td>Help file sent to players</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>data/seed.*</tt></td>
+
+      <td>Initial position of units on the map</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>data/report.*</tt></td>
+
+      <td>Initial position report in a game. (You can put
+any other information, text or joke there!!)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>data/</tt></td>
+
+      <td>Other files that can get by the players by the '<tt>get</tt>'
+command (help files...)</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.6">6.6 Games</a></h2>
+
+<p> By default, games are located in the binary directory as
+subdirectories
+whose name begins by a D. You can change that with the <tt>GAME_DIR</tt>
+parameter
+in <tt>dip.conf</tt> (see above).
+<table summary="Games" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>Dxxx/</tt></td>
+
+      <td>All the data of the game xxx is stored in this
+directory.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/Gnnn</tt></td>
+
+      <td>File for turn nnn of the game xxx.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/Mnnn</tt></td>
+
+      <td>This is the current set of moves for game xxx. Only the
+highest numbered file is necessary unless you have a rollback. The
+dipclean script will remove movement files that have not been accessed
+for more than 90 days.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/Pnnn</tt></td>
+
+      <td>The P files contain the pending orders for a particular
+turn. Only the highest numbered file is necessary. Most of these files
+will be zero length because people don't usually send their orders in
+ahead of time.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/Tnnn</tt></td>
+
+      <td>These files are temporary files that can be cleaned up
+if they are found left lying around. The dipclean script will get rid
+of them eventually.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/archive</tt></td>
+
+      <td>This is the archive of broadcasts and game information
+that an observer would see for any given game. This information can be
+retrieved with the HISTORY command.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/info</tt></td>
+
+      <td>Information about the game, which can be set with the
+SET
+COMMENT command. This information is shown in the summary, and in the
+full list.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/summary</tt></td>
+
+      <td>The summary, as seen by a player in the game.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/msummary</tt></td>
+
+      <td>The summary, as seen by a master of the game.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/start</tt></td>
+
+      <td>The date and time when the game started (the point when
+the countries were assigned). This is used in the summary.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>Dxxx/draw</tt></td>
+
+      <td>Contains the date and time when the game ended, and the
+result. This is used in the summary. If this file has been created, it
+will be deleted if another turn processes.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<h2><a name="6.7">6.7 Log files</a></h2>
+
+<table summary="Logs" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>install.log</tt></td>
+
+      <td>Logs all variant map files compiled with cmap.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.log</tt></td>
+
+      <td>This is an interlock file that keeps two dips from
+running
+at the same time. In addition, all received mail is written to this
+file
+to allow reconstruction should some drastic event occur. The <tt>dipclean</tt>
+script will move this file to <tt>dip.log.0</tt> once per
+week to keep
+it from
+getting out of hand. Before editing <tt>dip.master</tt> or
+any of the
+other
+databases that the adjudicator maintains you should lock this file to
+shut it out. The <tt>flock</tt> program can be used to do
+this
+interlocking. This
+is the first place to go and look when a problem occurs. This file can
+become huge!</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.rlog</tt></td>
+
+      <td>Logs the activity of rdip.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>mail.log</tt></td>
+
+      <td>This logs all the mails sent by the judge.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.ignore</tt></td>
+
+      <td>Bounce mail is written to this file. See <tt>README.ignore</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.log.xxx.Z</tt></td>
+
+      <td>Compressed archives of the same files.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>stats</tt></td>
+
+      <td>Statistics directory (if enabled by <tt>STATS_FLAG=1</tt>
+in <tt>dip.conf</tt>).
+See <tt>README.statistics</tt>.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.8">6.8 Temporary files</a></h2>
+
+<table summary="Temporary files" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>dip.incoming</tt></td>
+
+      <td>File containing the last mail received or processed.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.lock1, dip.lock2</tt></td>
+
+      <td>Used internally by <tt>flock</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.broadcast.xxxx</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.mbroadcast.xxxx</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.control</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.xcontrol</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.xfail</tt></td>
+
+      <td>If it exists, the judge bails out (used to check if <tt>smail</tt>
+works.)</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.tmast</tt></td>
+
+      <td>Temporary backup file of <tt>dip.master</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.reply</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.result</tt></td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>dip.temp</tt></td>
+
+      <td>Used for mail construction.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.9">6.9 Files created or left behind
+by a crashed judge</a></h2>
+
+<table summary="Files created" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>zforward</tt></td>
+
+      <td>See <tt>README.bailout</tt>. After a judge
+crash, <tt>.forward</tt>
+is
+renamed to <tt>zforward</tt>, and the judge won't be run
+by an
+incoming email.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2><a name="6.10">6.10 Other files</a></h2>
+
+<table summary="Other files" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td><tt>xforward </tt></td>
+
+      <td>When healing a dead judge, <tt>zforward</tt>
+must be renamed
+to
+xforward. See <tt>README.bailout</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>text.ded</tt> (generated by <tt>deddump</tt>),<br>
+
+      <tt>recdump, plyrdata, text.rc</tt> </td>
+
+      <td>(From Tim Miller) My <tt>recdump</tt>
+program (for viewing
+the new <tt>plyrdata</tt> records)
+creates a file called <tt>text.rec</tt>, which is similar (<tt>recdump</tt>
+also allows
+the JK to modify the binary <tt>plyrdata</tt> file, but
+that's covered
+in the <tt>README.plyrdata</tt> I put in with my changes).</td>
+
+    </tr>
+
+    <tr>
+
+      <td><tt>/var/spool/mail/&lt;user_name&gt;</tt></td>
+
+      <td>System spool file where the mail for
+the judge is stacked when the .forward file is not there. (The exact
+path may change according to your system and distribution).</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h1><a name="7">7 Testing the judge, first game</a></h1>
+
+<h2><a name="7.1">7.1 Manual basic testing</a></h2>
+
+<p> If you have configured everything, the judge should be able
+to
+answer. If any of the following tests fails, see 'Troubleshooting',
+and check that everything above is OK.
+</p>
+
+<p>- From your normal account, with any mail agent you want, send
+him
+a mail with only '<tt>version</tt>' in the body. It should
+answer very
+quickly
+(if the machine is not overloaded and if there is no network problem)
+with its version number (probably 1.7.5 if you are dealing with the
+standard judge), the number of registered players and running games.
+</p>
+
+<p>- Ask him the help files : '<tt>get package</tt>',
+'<tt>get index</tt>'
+, '<tt>get info</tt>'
+</p>
+
+<p>- Register as a new player. In case you had forgotten the
+syntax:
+</p>
+
+<p><tt>REGISTER
+<br>
+
+Name: Marechal Joffre
+<br>
+
+Country: France
+<br>
+
+Site: Verdun
+<br>
+
+Email: put_your_email@here
+<br>
+
+Age: 142
+<br>
+
+Phone:0123456789
+<br>
+
+END
+</tt></p>
+
+<p>- Then, verify in dip.addr and dip.whois that you are
+registered.
+</p>
+
+<p>- Create a new game. Don't set it 'private' or 'nolist'. Don't
+become master now
+(NB: you may have to change <tt>AUTO_MASTER</tt> in <tt>dip.conf</tt>),
+or use different e-mail accounts
+for game creator and players.
+<br>
+
+Take a script for a standard game (let's call it '<tt>test</tt>'),
+and
+send it. For example :
+</p>
+
+<p><tt>create ?test password standard
+<br>
+
+set list
+<br>
+
+set dedication -666
+<br>
+
+set access anysite
+<br>
+
+set level any
+<br>
+
+set comment FIRST GAME !!!!!!
+<br>
+
+set press white/grey
+<br>
+
+set partial
+<br>
+
+set observer no
+<br>
+
+set all press
+<br>
+
+set rated
+<br>
+
+set noreveal
+<br>
+
+set DIAS
+<br>
+
+set NONMR
+<br>
+
+set move delay 0.01
+<br>
+
+set adjust delay 0
+<br>
+
+set retreat delay 0
+</tt></p>
+
+<p>- Send another message to the judge : '<tt>list</tt>'.
+Then '<tt>list
+full</tt>'.
+Then '<tt>list test</tt>'. The judge should answer you and
+give you the
+game parameters.
+</p>
+
+<p>- Now the funny part : send:
+</p>
+
+<p><tt> signon ?test password
+<br>
+
+set players 1
+</tt></p>
+
+<p> As you're the only player, and not the master, the game
+should
+begin
+at this moment. You can enter orders the way you want, you are all
+players at the same time! You will receive a lot of mail saying that
+the game is starting.
+</p>
+
+<p> You don't need to be the master. You can always act as a
+master
+in the game by sending mail as the judge keeper:
+</p>
+
+<p><tt> signon @test SPECIAL_PW</tt> (where <tt>SPECIAL_PW</tt>
+is the
+one defined <tt>in dip.conf</tt>)
+</p>
+
+<p>- Check press (grey, white...) by sending mail between powers.
+</p>
+
+<p>- Now let's test the deadline system: send a deadline in a few
+minutes, check that the grace date is postponed, and wait for the
+players to fall late or abandon. You can always raise your dedication
+back with '<tt>adjust &lt;user_id&gt;
+&lt;increase&gt;</tt>' later
+(anyway, JKs are not
+supposed to play real games on their own judge :-)
+</p>
+
+<p>- Move everything, make convoys (now, you can freely make a
+Lvn-Syr
+convoy :-). Try phase orders. Try proxy orders.
+</p>
+
+<p>- Check that dedication evolves when you give orders.
+</p>
+
+<p>- Verify that '<tt>process</tt>' and '<tt>rollback</tt>'
+do
+function. If you want
+the game to finish normally and quickly, change the parameters to
+NoDIAS, make a quick draw.
+</p>
+
+<p>- Check variants too! A h32 (Hundred) could be quicker to
+check the
+full commands than a standard. A 'chess' variant (not yet on a 1.7.5
+judge) would be good too.
+</p>
+
+<h2><a name="7.2">7.2 Automatic judge tester</a></h2>
+
+<p>Yes, it would be fine to have one. As far as I know, nobody
+finished
+one yet.
+</p>
+
+<h1><a name="8">8 Troubleshooting</a></h1>
+
+<p>These are some problems and solutions:
+<table summary="Troubleshooting" border="1" cellpadding="3">
+
+  <tbody>
+
+    <tr>
+
+      <td>Nothings happen when sending something to the judge and
+in <tt>dip.log</tt>,
+the judge complains he didn't find rm, date, echo... and other commands
+      </td>
+
+      <td>This is a PATH problem. Be careful : The script uses
+csh as a
+shell, and not bash that often. Check '.cshrc' in the home directory.
+Check that mail and head are in the locations defined in
+Makefile (to avoid a reinstallation, add symbolic links).</td>
+
+    </tr>
+
+    <tr>
+
+      <td>Judges makes a bailout</td>
+
+      <td>The judge can send to the judgekeeper a
+message saying 'Bailout executed'. It means that the judge died. It has
+crashed. <tt>.forward</tt> was renamed to <tt>zforward</tt>.
+To solve
+the problem without
+losing some mails, you must follow the instructions in <tt>README.bailout</tt>.</td>
+
+    </tr>
+
+    <tr>
+
+      <td>The judge complains that <tt>dip.input</tt>
+exists</td>
+
+      <td>You didn't clean this
+file after a previous crash. See <tt>README.bailout</tt>
+if you don't
+want to
+lose what it contains.</td>
+
+    </tr>
+
+    <tr>
+
+      <td>The judge crashes at the first time, in <tt>dipent.c</tt>
+      </td>
+
+      <td>Check that the <tt>dip.master</tt>
+file was not generated with a bad format in <tt>dip.control</tt>
+(see <a href="#5.5">5.5</a>).</td>
+
+    </tr>
+
+    <tr>
+
+      <td>The judge crashes when you try a new variant</td>
+
+      <td>Look in <tt>install.log</tt>
+what variants are installed. Check that all files (source and compiled)
+are there.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+
+
+<p>For other problems, read all the log files, the answer must be
+there.
+<br>
+
+<tt>dip.log</tt> contains what came to the judge and the
+actions it
+tried to do,
+<br>
+
+<tt>mail.log</tt> contains all mails sent. At the very
+beginning, you
+have to
+check the existence of all files (including <tt>dip.master</tt>,
+<tt>dip.whois</tt>...)
+And don't forget to read <tt>README.bailout</tt>.
+</p>
+
+<h1><a name="9">9 Other customisations</a></h1>
+
+<p>- You can change the text in <tt>dip.msg</tt> and
+<tt>dip.footer</tt>
+any way you want,
+these are just files added at the beginning or the end of mails sent by
+the judge.
+</p>
+
+<p>The <tt>report.*</tt> files in <tt>data/</tt>
+are the beginning
+positions sent to
+the judge when a game begins. They're just text and you can change
+whatever you want there and add silly comments. (Be careful not to
+break software like DipChief or web observers...). If you want to add
+variants,
+see documentation in the judge code, in <a href="VariantsHOWTO.htm">VariantsHOWTO.html</a>
+or <a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.
+</p>
+
+<p>You can read <tt>README.hackers</tt> if you
+change the code.
+</p>
+
+<h1><a name="10">10 Backup</a></h1>
+
+<p> As far as I know and have experimented, the easiest way to
+backup
+the
+judge is to make a big archive of it and put it anywhere else where it
+is safe. Usually the judge doesn't use any file outside its home
+directory. For example :
+</p>
+
+<p><tt> tar czvf /backup-directory/judge-archive.tgz
+/home/alex/*</tt>
+</p>
+
+<p> You can copy it uncompressed on another drive (this example
+copies
+only newer files):
+</p>
+
+<p><tt> cp -upR /home/alex/* /backup-directory/</tt>
+</p>
+
+<p> Anyway, the backup must be made as often as possible (put it
+in
+your <tt>/etc/crontab</tt>).
+</p>
+
+<p> Be careful: it will probably change in the next versions of
+the
+judge,
+with data in <tt>/var/njudge</tt> for example.
+</p>
+
+<h1><a name="11">11 Upgrading and patching a judge</a></h1>
+
+<h2><a name="11.1">11.1 Locking the judge</a></h2>
+
+<p> Let's suppose that you want to modify the source code of the
+judge
+with a patch found on judge-maint. (This example suppose that you have
+a
+symlink '<tt>source</tt>' pointing to the real 1.7.5 tree).
+</p>
+
+<p> Lock the judge: enter '<tt>flock dip.log</tt>' in
+the executables
+(often '<tt>dip/</tt>') directory.
+</p>
+
+<h2><a name="11.2">11.2 Archiving</a></h2>
+
+<p>- Copy the '<tt>dip/</tt>' directory and archive
+it. For example:
+</p>
+
+<p><tt> cp -R dip dip.backup</tt>
+</p>
+
+<p>- Create a new source directory to be sure
+</p>
+
+<p><tt>cp -R njudge-1.7.5 njudge-1.7.5-patch1</tt>
+</p>
+
+<p>- Make the '<tt>source</tt>' symlink to point to
+the new directory.
+</p>
+
+<p><tt> rm source
+<br>
+
+ln -s /home/alex/njudge-1.7.5-patch1 source
+</tt></p>
+
+<h2><a name="11.3">11.3 Makefile variables</a></h2>
+
+<p> This part is now useless, as the new autoconf/automake
+process
+generates
+automatically the Makefile.
+</p>
+
+<p> Read <tt>docs/README.hackers</tt> until this
+part is updated.
+</p>
+
+<h2><a name="11.4">11.4 Patching or upgrading source
+code</a></h2>
+
+<p>- Modify the .c code, or apply a patch (this way for example:
+<tt>patch summary.c patch-bug160701 </tt>), or download
+the last CVS
+version
+if you have an account on devel.diplom.org, or download a whole new
+source code tarball in a *new* source directory.
+</p>
+
+<p>- You should really read <tt>docs/README.hackers</tt>
+from Jaldhar
+Vyas when
+playing with judge source code modifications, as it sometimes involves
+to re-run <tt>automake/autoconf</tt>.
+</p>
+
+<p>- If you use a new source directory (when upgrading), you
+won't
+compile without making a
+'<tt>./configure</tt>' again. You should use the same
+parameters and it
+will spit the same Makefile. But
+if you have changed them before, you must get the <tt>smail.in</tt>
+and <tt>defaults.inc.in</tt> from
+your old judge source.
+<br>
+
+Don't forget to read
+the <tt>INSTALL</tt> and <tt>InstallationHOWTO.html</tt>
+files of
+this new version to be sure
+that the important configuration files to move across both versions
+are the same (judge maintainers try to do it).
+</p>
+
+<p>- <tt>dip.conf</tt> is the configuration file,
+stored in the
+binaries directory,
+and will not be overwritten. Please check that the new version doesn't
+contain new parameters. Other
+customisation files (<tt>dip.msg, dip.footer</tt>...) won't
+be
+overwritten.
+</p>
+
+<p>- Add any new file that the judge would need (variants...). Be
+very
+careful of
+including files of the form <tt>foo.[0-9x]</tt> in the <tt>data/</tt>
+directory. The tools that maintain the flist handle them in a different
+way, which can produce some really weird results.
+<br>
+
+See <tt>README.hackers</tt> too.
+</p>
+
+<p>- Lauch the configure. In my example :
+</p>
+
+<p><tt>./configure --with-dir=/home/alex/dip
+--with-user=alex
+--with-domain=christophecourtois.org</tt>
+</p>
+
+<p>- If you just want to rebuild the map files (because e.g. you
+added
+a new
+variant,) type '<tt>make remap</tt>'.
+</p>
+
+<h2><a name="11.5">11.5 Recompiling and installation</a></h2>
+
+<p>- Recompile and reinstall:
+</p>
+
+<p><tt> make clean
+<br>
+
+make all
+<br>
+
+make upgrade
+</tt></p>
+
+<p>(<b>NB:</b> if you make a mistake and type '<tt>make
+install</tt>',
+it will fail but
+you won't break anything. It was not the case before 0.8.10 :-)
+</p>
+
+<h2><a name="11.6">11.6 Relaunching the judge</a></h2>
+
+<p>- Run '<tt>dipclean</tt>' (especially after
+upgrading)
+</p>
+
+<p>- Go into the '<tt>dip/</tt>' directory, unlock
+the judge ('<tt>flock</tt>')
+and test it!
+</p>
+
+<h1><a name="12">12 Links</a></h1>
+
+<ul type="circle">
+
+  <li>The <a href="http://www.floc.net/exarch/judgemaint.html">archives
+of the
+judge-maint mailing-list</a>, courtesy from Alain
+T&eacute;sio. </li>
+
+  <li>The official njudge site: <a href="http://www.njudge.org/">Njudge.org</a>. <br>
+
+You'll find on this site (and sometimes in the same tarball than the
+current file):
+    <ul type="disc">
+
+      <li>a <a href="http://devel.diplom.org/%7Enjudge/docs/VariantsHOWTO.html">
+guide to help building variants</a> on njudge v1.x (NB: work in
+progress!),</li>
+
+      <li><a href="http://devel.diplom.org/%7Enjudge/docs/njudgemapdatahowto.htm">How
+to build a Diplomacy Judge Map Data file</a> by Sergio Lidsell</li>
+
+      <li>some <a href="http://devel.diplom.org/%7Enjudge/docs/HowToFloc.html">
+documentation of the building of maps</a> for <a href="http://www.floc.net/">floc.net</a>,</li>
+
+      <li>a <a href="http://devel.diplom.org/%7Enjudge/cgi-bin/viewcvs.cgi/njudge/">full
+CVS
+view</a> of the judge code,</li>
+
+      <li>a sum-up from Millis of <a href="http://devel.diplom.org/%7Enjudge/docs/njudge2-discussion.html">a
+recent discussion on a possible njudge v.2.</a>,</li>
+
+      <li>a <a href="http://devel.diplom.org/%7Enjudge/docs/mail_format.html">
+description of the e-mail judge format</a> (NB: work in progress!)</li>
+
+      <li>some <a href="http://devel.diplom.org/%7Enjudge/docs/">other
+docs</a> from the
+judge tarball.</li>
+
+    </ul>
+
+  </li>
+
+  <li>A Diplomacy Judge user manual on the <a href="http://members.cox.net/russblau/">Russ Blau Diplomacy
+page</a>.</li>
+
+  <li>The worlwide main resource on Diplomacy: The <a href="http://www.diplom.org/">DipPouch</a>.</li>
+
+  <li>An <a href="http://devel.diplom.org/Zine/S2002R/Miller/What_is_njudge.html">
+history of njudge</a> by <a href="http://C.webring.com/hub?ring=millisring">
+Millis Miller</a>, the current main maintener.</li>
+
+</ul>
+
+<h1><a name="13">13 Misc</a></h1>
+
+<h2><a name="13.1">13.1 The author</a></h2>
+
+<p> The author is 31 years old, writes SQL all day long for big
+corporations to eat and to pay the mortgage, and tries to learn Java,
+C and PHP
+(the most difficult part is to find some time for it...)
+</p>
+
+<h2><a name="13.2">13.2 Thanks</a></h2>
+
+<p> Many parts of this HowTo are cut-and-pasted from <tt>README</tt>
+and <tt>INSTALL</tt> files,
+from source code and from mails of the judge-maint mailing list.
+</p>
+
+<p> Thanks to Philippe Lalande, JK of <a target="_blank" href="http://frog.born2play.org/">Frog</a>, who was
+soooooo patient
+with
+all my questions on the judge, and the members of the judge-maint
+mailing-list.
+</p>
+
+<h2><a name="13.3">13.3 Copyright and boring stuff</a></h2>
+
+<p> Permission is granted to make and distribute copies of this
+text
+provided the copyright notice and this permission notice are preserved
+on all copies.
+<br>
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+derived work is distributed under the terms of a permission notice
+identical to this one. Translations fall under the category of
+"modified versions".
+<br>
+
+Warranty: None. Nothing. Nada. Rien. Que dalle. Nitchevo. Nichts. Do
+everything at your own risk. Remember this is a sum-up of a non-native
+English speaker on a subject he recently discovered.
+<br>
+
+Redistribution is allowed and encouraged; however, it is strongly
+recommended that the redistributor contact the author before the
+redistribution, in the interest of keeping things up-to-date (you could
+send me a copy of what you're making while you're at it).
+<br>
+
+Translators are also advised to contact the author before translating
+(no translation known for the moment; it would not make much sens
+anyway).
+</p>
+
+<hr>
+<p> <a href="http://validator.w3.org/check/referer"><img src="valid-html401" alt="Valid HTML 4.01!" border="0" height="31" width="88"></a> </p>
+
+</body>
+</html>

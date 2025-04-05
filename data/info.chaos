@@ -1,0 +1,33 @@
+Greetings from the Diplomacy* Adjudicator!!                 October 19, 1990.
+Info.chaos
+
+
+The chaos variant is played by 34 players, each owning a single supply
+center on the standard Diplomacy map.  The game starts in Winter of
+1900 at the adjustment phase.  Each player starts out choosing which
+type of unit they wish to build and progressing from there.  When
+building units, a unit may be built at any owned supply center.
+
+Due to the number of players, power names are a single character
+followed by the three letter abbreviation of your initial center.
+These are:
+
+     A-Ank, B-Bel, C-Ber, D-Bre, E-Bud, F-Bul, G-Con,
+     H-Den, I-Edi, J-Gre, K-Hol, L-Kie, N-Lvp, P-Lon,
+     Q-Mar, R-Mos, S-Mun, T-Nap, U-Nor, V-Par, W-Por,
+     X-Rom, Y-Rum, Z-Ser, 0-Sev, 1-Smy, 2-Spa, 3-StP,
+     4-Swe, 5-Tri, 6-Tun, 7-Ven, 8-Vie, 9-War.
+
+thus if you were assigned Serbia in game "fontenoy", you would sign on
+to the game as "signon zfontenoy <password>".  Before powers are
+assigned you would continue to use the ?fontenoy syntax for a signon.
+Note that O and M are not used because they are reserved for Observer
+and Master, respectively.
+
+
+Victory conditions are 18 supply centers.
+
+-----
+
+* Diplomacy is a trademark of the Avalon Hill Game Company, Baltimore,
+  Maryland, all rights reserved.  Used with permission.

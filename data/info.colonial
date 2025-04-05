@@ -1,0 +1,157 @@
+Greetings from the Diplomacy* Adjudicator!!                 July 28th,2002
+Info.colonial
+     
+The Colonial Diplomacy variant of diplomacy follows the most of the rules 
+as standard diplomacy with a modified map, and with 3 optional rules which 
+can be set on or off at the GMs desire.  The game is the first Avalon Hill 
+published variant.
+     
+The judge version was designed by Andy Schwarz (who did the grunt work) and 
+Larry Richardson (who did the harder stuff). Millis Miller added the 
+optional rules support.
+     
+Rules:
+     
+1)  Except as noted below, the standard rules of play for Diplomacy on the
+    judge apply.
+     
+2)  There are 7 great powers.  The starting units are as follows:
+     
+    B-BRITAIN           C-CHINA             F-FRANCE
+    A Madras            A Peking            A Tongking 
+    A Delhi             A Canton            F Annam
+    F Bombay            A Sinkiang          A Conchin 
+    F Hong Kong         A Shanghai
+    F Singapore         A Manchuria
+    F Aden
+     
+    H-HOLLAND           J-JAPAN             R-RUSSIA 
+    F Java              A Kyoto             A Moscow
+    A Borneo            F Kyushu            A Vladivostok 
+    F Sumatra           F Otaru             A Omsk
+                        F Tokyo             F Odessa
+                                            F Port Arthur
+     
+    T-TURKEY
+    A Angora
+    F Baghdad
+    F Constantinople
+     
+3)  CEBU looks like a body of water with islands inside of it, which is
+    accurate.  As such, not only can it be occupied by both armies and 
+    fleets, but also fleets there can participate in a convoy (using the
+    'duality' flag, see 'duality' file for more information).
+     
+4)  The Caspian Sea, Lake Baykal and any other unnamed space is
+    not passable.
+     
+5)  There are 58 supply centers.  The victory criterion is possession of 30
+    supply centers at the end of any Fall retreat.
+     
+6)  The game begins in 1870.
+     
+     
+Province Abbreviations
+     
+All land province are abbreviated by the first three letters of the province, 
+except the following:
+     
+hk              Hong Kong
+kag             Kashgar
+kam             Kashmir
+mac             Manchuria
+may             Mandalay
+mna             Manila
+gui             New Guinea
+prs             Persia
+prm             Perm
+part            Port Arthur
+sig             Singapore
+sik             Sinkiang
+ubur            Upper Burma
+     
+Sea Space abbreviations are less obvious, but there is a pattern.
+     
+All sea spaces which take the form Sea of #Something or Gulf of ##Something 
+take the abbreviation so# or go#.  For example, Gulf of Manaar is "gom" and 
+Sea of Japan is "soj".
+     
+All sea spaces which take the form ###something Sea or ###something Gulf 
+take the abbreviation ###s.  For example, Persian Gulf is "perg" and Sulu 
+Sea is "suls".
+     
+All sea spaces which end in Ocean or no water designation (such as Lower 
+Pacific) are abbreviated by their initials. For example, Lower Pacific is 
+"lp" and West Indian Ocean is "wio".
+     
+If there is no conflict, you may be able to use initials even if the sea 
+rules say otherwise.  For example, the Okhotsk Sea is "okhs" but "os" will 
+also work.
+     
+     
+Optional Rules:
+There are three optional rules which can be individually enabled by the GM.
+
+1. Hong Kong
+The supply centre of Hong Kong is considered part of China by the Chinese. 
+With this optional rule enabled, Chinese occupation of Hong Kong does not
+count as a supply centre occupied but only a province occupied.
+China can take Hong Kong to prevent another power gaining it, but will
+not be credited with it as a supply centre. 
+Whilst under Chinese control, Hong Kong will be shown as 'Unowned'.
+
+This rule is enabled by the command 'set hong kong'.
+
+
+2. Trans Siberian Railway
+The Trans Siberian Railway is a line linking the following Russian 
+provinces in order:
+Moscow, Perm, Omsk, Krasnoyarsk, Irkutsk, Vladivostok.
+
+It allows an army to move directly from any province on the line to any other,
+using a syntax similar to ordering a convoy, such as:
+
+Army Vladivostok - Trans Siberian Railway - Moscow
+
+This line is only usable by Russian armies.
+Movement to the destination can be supported as per any normal movement.
+Should the movement fail, or a foreign unit block the line, the ordered
+unit will stop in the nearest empty province to the destination specified. 
+If no free province is found, the unit will remain in the start province
+(from where it can be dislodged as normal, if attacked with sufficient force).
+
+The Trans Siberian Railway can be abbreviated to TSR. 
+
+This rule is enabled by the command 'set railways'.
+
+
+3. Suez Canal
+To allow movement between Red Sea and Mediterranean Sea, the Suez Canal must
+be appropriately ordered. This is implemented as a dummy unit, only 
+available with occupation by a unit of Egypt, that can permit movement or
+support through the canal.
+
+The power which has a unit in Egypt in any one turn will have also a Suez
+Canal unit. That unit can only be ordered to hold or to support a unit
+in either Red Sea or Mediterranean sea itself to hold or to move through the 
+canal. The support given does not count as a real support, but permission to
+use the canal by the unit that is given support.
+
+Failure to give correct permission means that support or movement order
+made through the canal will be marked as *blocked* and automatically fail.
+
+A unit must be present in Egypt to activate the canal: if there is no
+unit there, no-one can move through or support through the canal.
+If the unit in Egypt is ordered to leave the province, and that order
+is successful, the Suez Canal order fails. (Conversely, if it bounces, the 
+Suez Canal order suceeds.)
+
+The Suez Canal can be abbreviated to SC. 
+
+This rule is enabled by the command 'set gateways'.
+
+
+Have Fun!
+     
+     
+

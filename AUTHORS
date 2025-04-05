@@ -1,0 +1,52 @@
+ This is the list of all people having contributed in the code base:
+
+[This is only the skeleton of the file, as I don't know who did that in the 
+12 past years - some digging in CHANGES and log (in archives/) still to be done]
+
+M. Becroft		: plyrdata (with Tim Miller)
+Chris Brand		: (1997) mail.c modifications
+Nicholas Fitzpatrick	: Hall Of Fame
+Gregory A.Greenman	: Many things
+David Kovar		: Many things
+Dietmar Kulsch		: German translation coordinator (DEAC)
+Philippe Lalande	: Some code from FROG
+Alan Lange		: Changes to date handling
+Ken Lowe		: Original development, coded 90% of the judge, from 1987; and others things like NMR/NoNMR
+David Norman		: Many fixes, duplex code, countless variants
+C.Marcus,Jr.		: (from 1994) maintenance, rewrites, mail enhancements
+Millis Miller		: many things, including maintenance, CVS and tarball maintenance
+Tim Miller		: plyrdata, Crowded_1898, and many other things
+Rob Paar		: Many things (1996), old RCS system
+Larry Richardson        : allow/deny (1995)
+Kevin A. Roust		: maintenance (as far as he can remember)
+T.Ruelle		: (1994) params.c, Dedication code stuff
+Andy Schwartz		:
+Nathan Wagner		: (1997)
+
+Contributed to other parts of the development than the code:
+Russell Blau		: data help files and command text rationalisation
+Christophe Courtois	: documentation, data/ cleaning
+Sergio Lidsell		: Mach variant files and help texts
+Alain Tesio		: observer and judge-maint archives on floc.net
+Jaldhar H. Vyas		: autoconfiscation and debian packaging.
+
+
+
+-----------------------------------------------------------------------
+People or pseudonyms found in the source code or logs but who are they?
+
+Positron = Jonathan Scott Haas: positron@eecs.umich.edu and positron@morrolan.eff.org (test judge for new code, Jonathan Haas) that coded the DRAW code, see draw.c.
+
+Curt = Curt Marcus
+
+Eric = Eric Wagoner, who put together version 5.0 at New Mexico before it was ported to Morrolan. DIPLOMACY STATISTICS  Issue 15  Feb 1994
+
+Sean = Sean Starkey, who added various fixes, and the set bnc and set mnc commands. Sean Starkey's summary.c bug fixes DIPLOMACY STATISTICS  Issue 15  Feb 1994
+
+Travis =  Travis C. Ruelle
+
+BLR
+Jimmy
+RV
+SS
+Andre

@@ -1,0 +1,868 @@
+                        How to be a GM          February 19, 1991
+                        by Daniel Loeb
+
+1) Introduction
+
+Why read an article on being a GM?  After all, you've played in dozens
+of games and you know the rule book backwards and forwards.  You even
+have GMed in the past perhaps for your friends.  So what else is there
+to learn?
+
+My answer is a lot.  The problems involved in running a game between
+friends are not at all the same ones you see when running a game over
+the computer.  Keeping track of your players over extending periods or
+time, maintaining player interest and being excruciatingly impartial
+are your main challenges.  
+
+I've run games over the table and by email.  More recently, I've
+started collaborating with the Diplomacy Adjudicator in my email
+GMing.  I think this cooperation makes me a much more efficient GM and
+allows me to concentrate my time on some of the more challenging parts
+of being a GM.  The Diplomacy Adjudicator is constantly getting better
+and better.  Most people who left it early on for one reason or another
+are back now.  The DA still doesn't support all variants, but the list
+is expanding.  I recommend that all GM's use the DA if possible, and if
+not then at least keep in touch with the DA and future improvements in
+it.  
+
+In the comments below, some remarks only apply to DA games.  I've
+preceded these remarks by ">".  Other remarks only apply to non-DA
+games, and I've marked them as "<".
+
+2) How to Start
+
+You want to start a game of Diplomacy.  In addition to deciding if you
+want to use the DA, you should also decide if you want to affiliate
+your game with the Electronic Protocol magazine.  I recommend that you
+do, since then you gets lots of free publicity, and the game will
+automatically become part of the EP records.  The house rules of EP are
+fairly well written.  
+
+>If you are using the DA, be sure the get the DA version of the EP 
+>house rules.  You can do that by sending JUDGE@MILTON.U.WASHINGTON.EDU
+>the command: GET EP.HOUSE.RULES
+>You should also be sure you know all about how DA works by demand the
+>help file (using the command GET INFO), and all the files mentioned
+>in it (especially MASTER).
+
+Tell Eric Klien (the editor of EP) what kind of game you want to run,
+and eventually he'll send you some players.  If you are not in a hurry,
+then just wait.  Otherwise, you should tell Eric to dribble in players
+one-at-a-time until you tell him the game is filled while you start
+your own little search.  (Alternatively, you can tell the players to
+signup with Eric indicating a preference to participate in your game.
+However, that sounds like more work for the editor.)
+
+>At the same time, create the game listing at the DA.  
+>
+>It is possible to run a game on your personal copy of the DA.
+>This gives you greater control over your game.  For info on how to do
+>this contact the programmer Ken Lowe (Ken@Milton.u.washington.edu)
+>for more information.
+>
+>To become a master for a particular game, you must be signed on as the only
+>player and then use the "become master" command.   Thus to create a new
+>Youngstown variant game called "older" with yourself as master send the
+>following text to the judge:
+>   signon ?older <password> youngstown
+>   become master
+>
+>If you want to limit your game only to "reliable" player, then 
+>you should tack on the command
+>   set dedict ###
+>where ### (not zero) is the required level of dedication.  DA
+>players start with dedication of "zero", and then gain or lose points
+>as they meet deadlines, or fall out of games.
+
+Where does one find players?  Don't look too hard at your university
+(unless you are playing a "local" game in which case why are you using
+computers instead of just some sheets pasted to the wall and a box in
+which to put your moves).  Seeing players on a regular basis entails
+the risk that you will inadvertently give them important information.
+Moreover, there is a limit of one person per city, so you can't get
+many players there anyway.
+
+If your game is interesting in some way, write an article in the EP
+about it.  Eric is happy to get new material.  And this is a good way to
+announce your game.
+
+Also, consider posting an article in the REC.GAMES.PBM area of
+usenet or on the DIPL-L@MITVMA.BITNET list of LISTSERV.  
+
+Of course the most useful method is word of mouth.  Tell everyone about
+the game and tell them to tell yet more people.
+
+>When you start getting players, have them signon on to the DA
+>themselves.  If they can't do that, then they are better off in a
+>non-DA game.  If they are having trouble, then give them advice, but
+>don't signon for them.  In brief, tell them to send the message "HELP"
+>to the JUDGE.  Then they should fill out and return the form found at 
+>the end of the HELP file they receive.  (Cute thing about this trick
+>is that it FORCES them to read the help file.) They should also
+>request a copy of the house rules if you are using EP house rules.
+>After that they can sign on to your game using the command 
+>       SIGNON ?<name of game> <password>
+>
+>Tell your players to be very careful with the password they chose.  
+>They should never tell their password to anyone but you.  
+>Moreover, you shouldn't tell their password to anyone else.
+>Any violation of these rules should get the player kicked out of the
+>game and out of all EP games.
+>(The GM can find out the player's password by using the command:
+>       SIGNON M<name of game> <GM's-password>
+>       BECOME <name of country>                        )
+
+Now you have a few players.  When should you start?  And what does it
+mean by starting?  By starting, I mean make country assignments with or
+even without setting a Spring 1901 deadline.  Once you make assignments
+any player who comes in later will be at a disadvantage.
+
+<Instead you should announce the list of players.
+Any player who cannot communicate with the other players can quit at
+this point.  Also, check to make sure you didn't accidentally get two
+players in the same city.  This is not allowed by EP rules since it
+gives an enormous advantage to those players.  
+>The Judge checks where the players come from, but it can't hurt to
+>double check.
+You should also check if there is any conflicts of interest (such as
+family or business relationship or participation at the same time in
+another diplomacy game or ...) between any of the players.
+
+You should also make sure all of the players understand and approve of
+the house rules you will be using.  At this point, you should allow
+them to quit without penalty or to vote for changes in they don't like
+the rules.  Of course, you as GM can also quit without penalty at this
+point if it turns out you can no longer run the game or if you don't 
+like their proposed rule changes.
+
+Once the country assignments have been made, everyone in the game is
+making a personal commitment to finish it.
+
+Once you've checked that everyone is ready to play, you might still
+want to have people hanging around a backup players.  By no means
+should you turn a potential player away.  Just tell them that there is
+no opening AT THE MOMENT.  In fact, you should encourage as many
+observers as possible.  Having observers will really increase the
+quality and quantity of the press in your game.
+
+Make sure that none of your players are on vacation when the game
+starts.  That way everyone will get a fair shot at the game.  Otherwise,
+players risk to arrive at the game with all the other players already
+ganged up against him.
+
+3) Spring 1901
+
+There are many ways to distribute countries.  The simplest is just to
+distribute them randomly.
+>This is what the DA does by default when the last player signs up.
+I prefer this method since it will eventually give each player a
+chance to player each position (whether he wants to or not).
+
+Another way sometimes used is to let players trade countries.  This is
+absolutely to be avoided.  It encourages life-long allies to maneuver
+into positions where they can gang up against a target.  This will
+really make your game stale.
+
+A reasonable way to allow your players to participate in the choice is
+to use preference lists.  Each player of the players submits a list of
+countries in the orders he prefers them.  (The lists need not be
+complete).  For example, 
+        1: EFGRIAT
+        2: IATFR
+        3: IERFGA
+        4: FRAGIT
+        5: EAFGIRT
+        6: TRIGFEA
+        7: ET
+Then give as many players as possible their first choice.  In our
+example, 4 gets F, and 6 gets T unopposed.  I is given at
+random to either 2 or 3 (say 3).  E is given at random to either 1 or 5
+or 7 (say 1).  For the remaining players, redraw the preference grid
+after eliminating any choices which are no longer possible.
+        2: AR
+        5: AGR
+        7: blank
+We repeat the process.  Here A is given to 2 or 5 at random.  Let's say
+2 gets it.  On the next grid, we only have
+        5: GR
+        7: blank
+That means 5 gets G and 7 gets R.
+Remember that once a player exhaust all of his preferences he gets a
+random pick from what is left over at the end.
+>Country assignments can be done by hand either by Ken Lowe,
+>or by you if you have installed DA on your machine.
+
+Give people a little extra time for the first deadline especially if
+they have yet had a chance to verify the email connection between
+their account.  There is a lot of diplomacy to do before Spring 1901.
+
+If a player loses interest at all at this point get them replaced
+before publishing the Spring 1901 orders.  It is much easier to get a
+replacement at this point (when he is really in a starting position)
+then later on.
+
+Once the Spring 1901 deadline has been set.  Send the country
+assignments to Eric Klien for his records.  He will give you the name
+of the Publisher in whose chapter your game will be appearing.  Make
+sure he gets regular reports of the progress of the game.
+>On the DA, it suffices for him to be an "observer".
+
+4) Taking Over
+
+Another way to become a GM is to takeover somebody else's mess.  In
+that case, you should contact the previous GM and get his complete
+records of the game.  Also, John Litvin (jlitvin@st860.intel.com) as
+EP's current archivist has records for EP games.
+>In the case of a DA-game, Ken Lowe can also be contacted for records.
+
+If necessary, you can get the previous results from players, but in
+that case you should use two players in order to make sure you get
+accurate results.  
+
+Similarly, you should get a copy of the house rules used and study
+them.  Any changes you make to the house rules should be approved
+unanimously by the players.  Of course, you have the right to not
+accept the game if you don't like the rules.
+
+>To convert a non-DA game to a DA game, you will have to either get
+>the help of Ken Lowe or use your own DA.  The procedure is to 
+>artificially enter all the orders for each turn played up to now into
+>the JUDGE.  (If desired, display of the adjudication of the orders can
+>be suppressed.) The only tough part is if the original GM made errors
+in his adjudication which you are asking the JUDGE to simulate.
+>However, even these problems can be avoided.
+
+>To take over a DA-game, you must first obtain the password of the old
+>GM.  Ken Lowe can help you there if necessary.  Then send JUDGE the
+>message: 
+>       SIGNON M<name-of-game> <oldpassword>
+>       SET PASSWORD <newpassword>
+>       SET ADDRESS
+
+Ask for a new copy of any orders sent to the old GM, and set a new
+deadline.  Now you are off.
+
+5) Press
+
+Press by players are of three types: black, white, and grey.  White
+press is "signed".  Grey press is "unsigned".  And black press may have
+a name at the bottom, but it could be a fraud.
+What types of press you allow should be decided before the game begin.
+>On the Judge, if you allow various kinds of press, you should also
+>specify the default using the commands:
+>       SET WHITE               SET GREY        
+>       SET GREY/WHITE          SET WHITE/GREY
+
+>The judge (in addition to allowing the master to permit the indicated
+>author of a message to be fraudulant as above) allows the 
+>master to permit the indicated list of recipients of a message to be
+>fraudulant:
+
+>You can request full details on how press works with the Judge with
+>the command
+>       GET PRESS
+
+<Grey and Black press obviously must pass through the GM.  White press
+<can also be sent to the GM.  The player should specify if he wants the
+<press published immediately or with the next set of results.
+
+>All kinds of press can be published by the player himself using the 
+>JUDGE. The only reason the player might need the GM to publish his
+>press is if he wants to submit conditional press or delayed press, or
+>if he is temporarily out of contact with the Judge. 
+>Players should submit even white press to the JUDGE instead of 
+>publishing it themselves in order to be sure of hitting all intended
+>recipients including observers.
+
+>Note that "Press" can be sent to a single recipient in which case it
+>is a simple diplomatic message to another participant. Players can
+>send their messages that way whenever they are having trouble with
+>their normal communication or if they prefer having their message
+>included in the official (and secret) game records.
+
+In theory, the GM can also write press; however, the problem there is to
+write press which is not biased.  My solution to that is to start the
+ball rolling with a single editorial sometime in 1901.  It consists for
+the most part of the "Player's Guide" (or some other neutral source of
+information)'s interpretation of the Spring 1901 moves used.  (The
+Player's Guide can be ordered directly from Avalon Hill.  Parts of the
+Player's Guide have appeared as articles in the EP.) You should of
+course add you own comments on how well the following orders
+corresponded to those predictions.  The point is to create an example
+of press with which to encourage your player's to themselves write,
+and to supply any novice players with some commentary.  
+
+(For variant games, the Player's Guide will not be of much use.
+However, you should be able to find equivalent material by comparing your
+game to other games using similar rules.)
+ 
+In following years the GM doesn't write any editorials (at least not
+as white press).  However, it would be a good idea if he kept
+statistics on the game and published them once a year starting in
+1902.  The statistics should be kept in the following format:
+----------------
+                Diplomacy Game Austerlitz statistics
+
+Country 1900'01'02'03'04'05'06          Player          Result
+
+Austria    3  3 \                       Mike Gianquinto resigned fall 1902
+                 2  2  1  1  1          Ken Lowe
+England    3  5  5 \                    Peter Sweeney   resigned fall 1903
+                    4  4  4  5          Jim Pendergraft
+France     3  4  5  6  6  6  6          Steve Tjin
+Germany    3  5  7  7  6  6  6          Daniel Thomas
+Italy      3  4  4  2  1  1  1          Eric Hyche
+Russia     4  6  5  4  6  5  5          Rick Westerman
+Turkey     3  4  5 *9 10 11 10\         Anton Krukowski replaced winter 1906
+                                        Roger Safian    
+
+*  = number of units the following year was one less than number of SC
+GM = Danny Loeb except for 1905 (Jamie Dreier).
+
+       Bel Bre Bul Den Gre Kie Lon Mos Nap Par Rom Ser Smy StP Tri Ven War
+     Ank Ber Bud Con Edi Hol Lvp Mar Mun Nor Por Rum Sev Spa Swe Tun Vie
+1900  T   G F A   T   E     G E E F R G I   F   I     R T   R   A   I A R
+1901  T F G E A T T G E   G G E E F R G I E F   I R   R T F R R A I I A R
+1902  T G G F R T T G E T E G E E F R G I E F F I R   R T F R G A I I A G
+1903  T G G F R T T G E T G G E E F G G I E F F I R T R T F R G A T A A R
+1904  T F G F R T T G E T G G E E F R G T E F F T T T R T F R G T I A R R
+1905  T F G F T T T G E T G G E E F R G T E F F T R T R T F R G T I T A R
+1906  T F G F R T T G E T G G E E F R G T E F F T R T R T F E G T I T A R
+--------------------
+The entire file should be resent each year.  That way players only have
+to keep the most current version.
+
+The GM can if he wishes write Grey press but only on the condition
+that he is not the only one to do so.  The GM really shouldn't write
+Black press.
+
+Some GM's encourage their players to send them secret information such
+as their plans and ideas each turn along with their moves.  Such
+information is held confidential until the end of the game when all
+is revealed.  If you ask your players to send you such information,
+then you should print no press whatsoever except for the dry
+statistics above.  Moreover, if your players send you secret
+information unnecessarily without you asking, you should warn them
+that while you will try to keep it secret, they are risking
+inadvertantly getting revealed in a possible editorial you write.
+
+Of course whether you ask for secret information or not, players will
+be sending in their moves and that certainly is secret information.
+For that reason, it is best if the GM writes his editorial between the
+moment results are published and the moment he reads the first set of
+moves to come in.
+
+Similarly, moves players sent in which eventually weren't used.  Or
+messages a player asked you to forward to another player because they
+are having eMail problems should be treated with the utmost
+confidentiality.  
+
+6) Collecting Orders
+
+>Keeping track of orders the players send in is really easy on the 
+>JUDGE.  In theory, the JUDGE does all the work.
+>
+>In practice, some players may have email troubles and send the moves to
+>you during a short period of time instead of the JUDGE.  In that case,
+>you enter his moves using the BECOME command.  The JUDGE will send
+>a receipt of the move to him and to you.
+>Proxy orders and particularly complicated conditional orders are
+>handled on a similar basis.
+>
+>You should tell your players to send you a duplicate copy of their
+>orders (or have the JUDGE forward it to you if the JUDGE is on your
+>machine) so that you can proofread them for stupid errors.
+>In any case, the JUDGE does reply to all mail the players send it:
+>either with a receipt of the correct moves, or with an error message.
+>The judge doesn't allow illegal orders to be entered.
+>
+>Mail which is sent only to the GM should be kept in archive.
+>Other mail is automatically archived by the JUDGE and can be
+>retrieved if necessary with the help of Ken Lowe.
+
+<Collecting orders by hand is a little more complicated, but it isn't
+<that bad if you stay organized.
+<
+<Use the previous turn's results as a template on which to type the 
+<orders.  When you receive orders from someone, type them on to the
+<template.  (Avoid cut and pasting since you risk losing or adding
+<units in the process.)
+<
+<Type in illegal orders but with an explanation of their illegality.
+<Then copy the region in the template regarding the player, and 
+<send it to him as a receipt.  This gives him a chance to correct your
+<mistakes.  After results are published, he can no longer hold you
+<responsible for that sort of mistake.
+<
+<Nevertheless you should keep the original letter for safe keeping 
+<in case of any dispute.
+<
+<If the player changes his moves, he should repeat his entire move
+<list indicating which moves have changed.  Players who frequently 
+<change their orders should use "version numbers".
+<
+<Illegal orders should not be allowed UNLESS either the player
+<specifically asked you to allow it (and gave a strategical reason)
+<or if you did not notice that illegality until after results 
+<were published.
+
+In order to maintain some suspense in the game, you should not allow
+player to submit their moves and actually carbon copy them to another
+player.  Alternatively, you can allow players to do that, but also
+allow them to possibly preced their message with a note asking you to
+ignore their next message.  The question is really how much work the GM
+is willing to put up with.
+
+Players should be told that they are expected to submit new orders as
+soon as they can usually just after getting the old results.  They can
+later update their orders as negotiations cause them to change their
+strategy.  This avoids unnecessary delays.
+
+Players might however be worried that you will proceed with their
+tentative orders even before the deadline if all the moves are in.  
+
+<You can alleviate these fears by allowing players to write PLEASE HOLD
+<on their orders.  That means you will not use these orders until the
+<deadline.  If all the moves are in before the deadline, you would
+<merely announce that all moves are in, and suggest that players who
+<submitted a PLEASE HOLD tell you when they are ready.
+
+>On the JUDGE, all of this is handled automatically using SET WAIT and
+>SET NOWAIT.
+
+The EP allows players to use certain kinds of special orders.  First,
+there are contigency or perpetual orders.  These are special orders to
+be used if the player cannot be reached.  You should avoid using these
+orders on a regular basis, but they could prevent the game from being
+slowed down if you use them in certain circumstances.
+
+Another type of special order, really a special case of the above, is
+the conditional order.  A player can submit orders for a future season
+on condition of the current season.  For example, a player can have his
+builds depend on the outcome of the retreats.  Or have his Spring
+orders depend on retreats and builds.  He can even have his orders
+depend on your interpretation of the rules.  For example,
+        "I don't know how you would resolve the conflict below.
+                Turkey: A Bul-Ser, A Rum S A Bul-Ser
+                Austria: A Ser-Bul.
+        If in this situation, Austria keeps Serbia, then I'll order SER-BUL.
+        Otherwise, I'll order SER-GRE."
+This saves you time since otherwise he wouldn't have been able to send
+you orders until you had answered his question.
+
+His orders can depend on all sorts of things such as whether or not
+another player published any press before the deadline.  Or whether or
+not a certain other player was replaced.  Orders which are not used
+remain secret.
+
+However, he is not allowed to have his orders depend on events that
+happen at or after the deadline.  For example, a player cannot say he
+attacks Tunis if Italy didn't defend it.
+
+Finally, there is the question of proxy orders.  The simplest case of
+this which you should always allow is that in which a player submits
+various plans "A" "B" "C" etc....  (notice that the name of the plan
+has nothing to do with the contents of the plan) and allows another
+player to chose among the plans by its name.  This allows a player to
+have his ally chose among many options without having to request a
+deadline extension.  However, note that the ally could easily be
+backstabbed since he doesn't know for sure what plan "A" is.
+The non-used plans remain secret.  Even the fact the ally helped chose
+the plan is secret.  
+
+You might also consider allowing a player "A" to allow a second player
+"B" to actually control a certain number of his units.  You confirm to
+"A" that you will allow that, but you don't say anything to "B".  If
+"B" attempts to submit orders for "A"'s units then you will use them.
+But "B" cannot be SURE that "A" actually gave him the authority to
+order his units.  Generally, "A" is a player on the verge of losing and
+he is acting as a puppet to "B".  Alternatively, "A" and "B" could be
+good allies, and "A" is going on vacation.  This kind of proxy orders
+is more extreme and should not be used merely to allow a player to
+escape the obligations of following a game.  If the player has actually
+lost interest, then replace him.
+
+One final note, you should accept new orders until the very moment you
+actually send out the results.  If the deadline is extended in order to
+wait for Turkey's moves, then England's moves can be changed in the
+meantime.  In fact, if after all the moves have come in---while you are
+typing the results---a change in orders comes in, then you should
+accept it.
+
+7) Resolving Orders
+
+You might have thought this article would have been entirely about
+resolving orders, after all that is the main job of a GM isn't it?
+Well, first of all, there is no point in me writting an article on the
+rules, since there is already the rulebook.  Secondly, when you do make
+a mistake it will sure be against the favor of one of the players.
+This player will be sure to point out your mistake.
+>Thirdly, the DA is very good at computing results.  Obviously, we 
+>can't prove it never makes mistakes.  However, when it does Ken finds
+>the bug in the program and kills it.  In fact, I would be surprised if
+>the DA makes more than one error in every ten games nowadays...
+
+Nevertheless, it certainly looks more professional not to have to
+constantly issue "corrected results." I suggest you all have a
+rulebook handy and read it carefully.  I would have you pay particular
+attention to the rules on when a convoyed unit is effective in cutting
+a support (and in particular to the resulting "Pandora's Paradox"),
+and to the rules on ambiguous convoys, beleagured garrisons, and
+self-dislodgement prohibited.
+
+<You should print up your results in a consistent format using the
+<template you have already created.  A column in the right should
+<indicate the result of each order using the following notations.
+<       VOID: the supported or convoyed order was not made
+<       CUT:  the support was cut by an attack
+<       DISRUPTED: one of the fleets in the convoy was forced to retreat
+<       BOUNCE: move fails but in so doing cause another players move
+<               to fail to support to be cut
+<       FAIL: the move had no effect whatsoever
+<       DISLODGED: the unit was forced to retreat
+<       DISBANDS: the units was forced to retreat but has no place to go
+<
+<Notations such as NO SUCH UNIT or NOT ADJACENT are not needed since 
+<you are supposed to avoid illegal orders.  If an order in unmarked, it
+<it is assumed the move was successful.
+<
+<Note that a DISBAND is not the same thing as a REMOVAL.  Disbands are
+<what you do instead of retreating.  Removals are what you do when 
+<other people are building.
+
+If you are running a game in which some of the players are novices,
+you might want to follow the results with an explanation of all the
+conflicts and how they were resolved.
+
+<After Fall retreats (or moves if there are no retreats), print a
+<summary of the supply centers (possibly in the form of the
+<statistical summary shown above).  And indicate how many builds or
+<removals everyone will be making.
+<
+<Finally, you should indicate the names and addresses of the players
+<each turn.  In case of turnover, this is a good way for players to
+<keep track of the game.
+
+Some GM's follow the results with a table of the current location of
+all units.  I find that this practice leads to some players not reading
+the previous turns orders, and that it is susceptible to errors by the
+GM while creating the table.  It is up to you to decide if you want to
+use such tables.
+
+8) Variants
+
+Obviously the way you generate results is greatly affected by the
+variant you are using.  However, since there are so many variants
+there is little I can say.  
+
+One should be very clear while forming the game what the rules will
+be.  A copy of the rules should be sent to each player.
+>On the Judge, the rules are available via the command
+>       GET INFO.<name of variant>
+If the game is played on an alternative map, copies of the map should
+be sent to all players either electronically or by regular map.
+>On the Judge, list of province connectivity (which is no substitute 
+>for a real map) is available via:
+>       GET MAP.<name of variant>
+>Graphical maps are also available as follows:
+>       GET MAP.PS              standard map---postscript format
+>       GET MAP.TOP             standard map---text graphics
+>       GET YOUNGTOWN.PS        Youngstown (10 player) map---postscript format
+Players can then photocopy the maps as need be.
+
+>The first time you (or a player) signons on to a variant game, 
+>they should specify the name of the variant.  For example,
+>       SIGNON ?FONTENOY CHAOS
+>This is to prevent players from joining weird games accidentally.
+
+Gunboat games are variants in which the identities of the players are
+unknown except to the GM. The Judge will soon be able to support these
+games. In Gunboat games, all negotiation is done via public press, so
+pay special attention to the press section above.
+>Make sure to set the DA option to forbid partial Broadcasts.
+
+You must continue to make sure that the identity of players remains
+secret.  For that reason, even replacements should be done secretly
+when necessary.  After the game is over, the identities are revealed
+possibly along with the identity of the author of the various bits of
+grey press used.
+
+If you find two players working closely together without the necessary
+public press, it may be that they have discovered each others identity
+and are communicating secretly.  That is a violation of the game
+rules, and they should be kicked out of the game and reported to the
+editor of EP.
+
+If a player accidentally learns the identity of another player, then
+he should immediately report this fact to the GM who will replace him
+without penalty.
+
+Blind variants are those inwhich players are not completely aware of
+what occurs on the board.  Special rules are used to determine what is
+reported to each player.  Typically you know what goes on in areas
+which you "control", or were "involved" in, or had your "spy" move to.
+If used, the spy is a third type of unit governed by its own rules. 
+Since each player gets a different report, there is really nothing for
+an observer to see except the press while the game is going on.
+Complete reports are written up nevertheles to be published as an
+end-of-game summary. 
+
+If you make a mistake in a blind variant, none of the players is
+likely to catch your error.  For that reason, you should really be
+careful while running such a game.  In fact, I suggest that the game
+be run by *two* GMs.  Orders are sent to each GM.  The two GMs
+independantly compute the results. The results are then compared for
+verification. If they are identical, then they are released to the
+players.
+
+>At the moment the Judge doesn't run blind variants.  However, you can
+>use the Judge or any of a number of other programs to help you
+>compute results nevertheless.  Create a game of diplomacy as normal
+>with you as GM.  Then specify 
+>       SET UNLISTED 
+>so that noone finds out about the game you created.  Submit orders
+>for the countries as they are sent in (using the BECOME command).
+>When you get back results, forward to the players only the portions
+>which they are allowed to see. 
+
+9) Rulings
+
+No matter how careful you are you are bound to make mistakes
+occasionally.  Players should send their appeal of your decision to
+you.  Unless they carbon-copied their appeal to the other players,
+assume that he wanted to discretely make an anonymous appeal.
+
+If you think you have made a mistake, then release corrected results
+along with an explanation of the error.  Resend the complete results so
+that player can simply replace the old results with the new ones.  
+If the results are corrected several times, then it might be helpful
+to use version numbers.  
+
+Players have the right to the full negotiation period after the
+correction.  However, if the correction is made rapidly or is not very
+important, then you need not change the deadline unless someone asks
+specifically for you to do so.
+
+When you reject an appeal, you make your reasoning public, and you
+should politely ask if players have arguments for or against the
+appeal.  
+
+Of course, when you accept an appeal, there might be similar comments
+asking you to reverse your course.  
+
+The latest date at which an appeal can be accepted is just before
+publication of the *next* set of results.  Once that has happened any
+mistake is fixed, you can acknowledge your error, but you shouldn't
+change anything.  This is a specific example of the more general rule
+that a turn should never be played over.  That is to say, if the
+results were incorrectly computed or if the wrong moves were used,
+then a new set of results are sent out, but under no circumstances
+should a player be allowed to resubmit orders for a turn for which
+results have been sent out---even if by mistake.
+
+If one of the players don't agree with your verdict, he can speak to
+your superiors which would be the chapter publisher and editor if you
+are running an EP game.  If they still don't get satisfaction, then
+they could agree to arbitration by the Diplomacy Ombudsman who is a
+person elected every year by the snail mail Diplomacy community to
+handle such disputes.
+
+Note that the GM never gives the players a chance to vote.  While
+voting for house rules is allowed BEFORE the game begins, questions
+and proposed changes are not allowed to be voted.  The jobs of the GM
+is to decide.  Not to take opinion polls.  Otherwise, one can imagine
+that a losing alliance might enact rule changes to achieve a victory
+that would otherwise be impossible.
+
+Nevertheless, the players if they are unanimous in their opinion are
+allowed to overrule the GM.  It is their game after all in the final
+analysis.  However, the GM is not required to run a game with rules he
+doesn't like, if his ruling is overturned, he is allowed to quit
+without penalty.  Similarly, if the editor doesn't like a certain rule
+change, he might declare that it is no longer an EP game, and refuse
+to supply a replacement GM.
+
+10) Replacement Players
+
+Since games can last for several months, it is inevitable that some of
+your players may need to be replaced.  If a player doesn't turn in
+orders, the GM is not allowed to proceed without them.  He must wait or
+replace the player.
+
+Clearly the best way to deal with this situation is to avoid it in the
+first place.  Make sure your players are aware of the commitment they
+are making, and then keep them interested in the game.  When a player
+is out of town for a brief period of time allow him extensions of up
+to a week.  For longer absences by a single player, arrange a
+replacement (or you choice or his) or use conditional orders together
+with a short delay.  (It is the decision of the replacement however
+whether he wants to give back the country at the end of the vacation.) 
+
+When large groups of players are on vacation at the same time create a
+table listing the days players are available.  Arrange the deadlines as
+best you can while ensuring that each pair of players can communicate
+at least once before each MOVEMENT phase.
+
+Unexpected absences or system crashes can be preempted through the use
+of contingency or provisional orders entered as soon as possible.
+Otherwise, all the GM can do is leave his phone number and require the
+player to call him.
+
+Even given all the above, you might be in a situation where a player
+is late.  Obviously, the best thing to do the first time is just to
+send out a warning.
+>Such warning are sent out automatically by the JUDGE, but you 
+>might want to add your own personal message.
+Find out if other players have heard from him, and
+check your records to see if he is maintaining interest in the game.
+After a sufficient long absence or a series of short delays you will
+have no choice but to replace him.  The question in your mind should be
+whether the game is better off with the continued disruption of the
+original player or with the disruption of a change of command.
+Generally, the balance weighs in favor of finding a replacement if one
+is available especially early on in the game.
+
+Nevertheless, you should allow the original player to return if he
+does so before the replacement has had any of HIS moves used and
+printed in the results, and if the original player apologizes and
+gives a reasonable explanation of his absence.
+
+You should tell Eric Klien about the replacement and its reason.
+Normally, a player being replaced is kicked out of all EP games unless
+his absence is for a reason completely out of his control.
+
+When you replace a player, you should try to get the original player
+to send complete records of his diplomacy to the replacement.  In any
+case, you should give him the current position, house rules, and a
+statistical summary of the game.  Tell him that if he likes you can
+send him the results for previous turns, and tell him that he can ask
+for an automatic one-week extension.  This one-week extension is
+applicable on the current deadline.  However, if the replacement is not
+involved in the current deadline (because he has no unit to retreat
+for example), then he could instead opt to use the one-week extension
+on the next deadline.  In any case, this extension is optional.
+
+It is a good idea if possible to have a standby backup player around.
+First of all, the players know he will be the backup if necessary, so
+they can speak to him whenever they believe that one of the current
+players has vanished.  Secondly, the backup player has been following
+the game, so he can make a quick replacement without the need of an
+extension.  Such a replacement could even submit orders for all
+countries "just in case." The GM could tell him just before the
+deadline which countries still have orders outstanding.  The player
+would mark his orders clearly as backup orders so the GM won't confuse
+them for real orders.  The GM would announce such a replacement with
+the results.
+
+Other than lateness there might be other reasons to replace a player.
+Occasionally, a player might become abusive and threaten other players
+or intimidate them.  You should replace him.
+
+You should also replace players who are no longer following the game.
+You can tell that sometimes because they are entering silly moves.  Of
+course you should be very careful to tell the difference between
+moves you don't think are the best, and silly moves.  Sometimes players
+who are no longer following the game act as puppets.  It could even be
+that they have no interest in the game at all nor do they even know
+the rules, but they submit orders for another player as a favor.  You
+must investigate to tell such a situation apart from a simple case of
+being a puppet.  Sometimes a player has no choice in order to survive
+except to do what another player says.  However, if a player seems
+capable of standing on his own but doesn't, and if he submits his
+orders at the same time and in the same format as another player (or
+by using proxy orders), then you should be suspicious.  Telephone the
+player in question (possibly collect), and ask them about the game.  If
+they have no idea what is going on then they should be replaced.
+
+If several players need to be replaced at the same time, you should
+try to figure out what is wrong with the game.  Perhaps, people have
+lost interest in the game in which case you might be better off killing
+the game.  Or perhaps the game is getting into a stalemate (see the
+section below).  In any case, check the status of your game before
+looking for replacements.  There is no need to waste this valuable
+resource for a game that is doomed anyway.
+
+One final note: although it is preferable to get new people as backup
+players, it is permissible to have a player that has been eliminated
+return as a backup player.  See below for the definition of
+elimination.  
+ 
+11) Draws
+
+The rules of diplomacy stipulate that "draws include all survivors."
+(DIAS) However, some people do play non-DIAS variants.  A player is
+considered eliminated at the end of a fall retreat phase if he has no
+supply centers under his control.  A player can also be eliminated at
+the end of the fall movement phase if he has no unit needing to
+retreat that can affect the game in any way, and he has no supply
+center under his control.  
+
+I believe that DIAS is the best way to play diplomacy.  The interesting
+part of diplomacy is that in order to win you must make alliances, but
+that in the end you will have to backstab your ally.  The only way to
+get a two-way draw is to clear the board and split it 17-17.  But at
+that point, it requires a small push to make a 18-16 win.  In theory,
+two player draws should never exist under DIAS.  
+
+Under non-DIAS, sometimes players who could otherwise affect the game,
+will vote for a draw just because they are discouraged.
+
+In any event, your DIAS or non-DIAS decision should be voted on before
+the game begins and made clear at that point.  However, you should
+remind the players about these matters the first year in which very few
+supply centers change hands.
+
+Draws are voted on by the players.  The votes must be sent secretly to
+the GM.  (In the case of non-DIAS, the voter must specify what draw he
+is voting for.) Unless specified otherwise, the vote is valid only
+until the next set of results are posted.  
+
+The GM calls for votes at the request of a player, or out of his own
+decision.  The GM must specify how he will consider NO-VOTE-RECEIVED
+(NVR): default = yes, default = no, or grounds for possible
+replacement.  The numerical results of the vote are released by the
+identities of the players are not.
+
+If a draw is unanimously accepted by the surving players, then the
+game is over.  Any orders that may have been sent in for future turns
+can be ignored.  Results are sent to the editor of EP in summary form
+to be included in his magazine and forwarded to the Boardman Number
+Coordinator.   
+
+The GM can also declare his own draw.  Such a draw should be based on a
+mathematically valid stalemate line which has been held for a couple
+of turns.  Or based on a lack of "significant" supply center turnover
+through a period of several years.
+
+Players when deciding whether or not to vote for a draw might ask you
+how much a draw is "worth".  There is no absolute answer; it is up to
+each player to decide on his own what his objectives are.
+Nevertheless, the formula used by the Diplomacy eMail Hall of Fame
+could be of use.  It awards to each winner a number of victory points
+equal to the ratio of the number of losers to winners. That way in
+total one point is awarded per player eliminated. In this way, a solo
+victory of a diplomacy game is worth 6 points. A 2-way draw is worth
+2.5 points each, and a 7-way draw is worthless.
+
+The above describes my opinion on how draws should work.  Of course
+other GMs do thing a bit differently on occasion.  Such difference
+include: 
+(a) only allowing draws to be voted on during certain seasons
+        (usually winter).
+(b) revealing the identities of players who vote against draws
+(c) allowing "weighted" draws in which a unequal percentages of the
+victory are awarded to the survivors.
+
+Decide what kind of draw rules you will allow before the game starts! 
+
+12) Conclusions
+
+I hope I haven't bored you all by now, nor scared any of you from
+being GMs.  I feel that their are many details of GMing which are often
+ignored.  By efficiently using the Diplomacy Adjudicator, GMs can
+concentrate their time on improving their quality.
+
+
+
+
+

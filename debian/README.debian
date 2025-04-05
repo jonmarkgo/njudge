@@ -1,0 +1,15 @@
+njudge for DEBIAN
+----------------------
+
+Comments regarding the Package
+
+The home directory is /home/judge (Yes I know using /home is against
+Debian policy.  Some paths are hardcoded in so I can't change them yet.)
+
+Using Sendmail Restricted Shell
+
+If you are using sendmail with the smrsh(1) option, the judge may not work 
+correctly.  I haven't quite figured out why.
+
+
+Jaldhar H. Vyas <judgekeeper@braincells.com>, Mon, 30 Dec 2002 01:04:00 -0500

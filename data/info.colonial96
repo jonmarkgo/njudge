@@ -1,0 +1,19 @@
+Greetings from the Diplomacy* Adjudicator!!                 Aug 3, 2002
+Info.colonial96
+     
+The Colonial96 Diplomacy variant of diplomacy is the implementation of the
+1996 version of Colonial Diplomacy. It follows the rules of the original
+(1994) version, but with two differences:
+ - There is a land bridge between Sakhalin and Ota
+ - There is a land bridge between Sakhalin and Vladivostok
+
+The intent is to provide a better balanced version, offsetting the 
+perceived invincibility of Japan in the first edition.
+
+In all other respects, the info.colonial file is correct for this version.
+
+    
+Millis Miller
+3rd August 2002 
+     
+

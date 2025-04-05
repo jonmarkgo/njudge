@@ -1,0 +1,784 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE"
+ content="text/html; charset=iso-8859-15">
+  <title>Diplomacy Judge variants HOWTO</title>
+  <meta name="GENERATOR" content="OpenOffice.org 1.0.3  (Linux)">
+  <meta name="AUTHOR" content="Christophe COURTOIS">
+  <meta name="CREATED" content="20030723;13531445">
+  <meta name="CHANGEDBY" content="Christophe COURTOIS">
+  <meta name="CHANGED" content="20030726;19053400">
+  <meta name="DESCRIPTION" content="Diplomacy Judge variants HOWTO">
+  <meta name="KEYWORDS" content="Diplomacy,njudge,variants">
+  <meta name="copyright" content="Christophe Courtois 2003">
+  <meta name="MSSmartTagsPreventParsing" content="TRUE">
+  <meta name="revisit-after" content="15 days">
+  <meta name="robots" content="FOLLOW">
+  <meta name="distribution" content="Global">
+  <meta name="rating" content="Safe For Kids">
+  <meta http-equiv="reply-to" content="christophe@courtois.cc">
+  <meta name="language" content="English">
+  <meta name="doc-rights" content="Copywritten Work">
+</head>
+<body lang="en-US">
+<h1 align="center">Creating variants for the Diplomacy judge</h1>
+<div align="center">v 0.33 <a href="mailto:christophe@courtois.cc">Christophe
+Courtois (</a><a href="mailto:christophe@courtois.cc">christophe@courtois.cc</a><a
+ href="mailto:christophe@courtois.cc">)</a> &amp; <a
+ href="mailto:millis@faztek.org">Millis Miller (millis@faztek.org)</a></div>
+<hr>
+<h2 align="center"><font color="#ff0000">This documentation is not
+finished and may contain many errors.</font></h2>
+<hr>
+<center>
+<table width="80%" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr valign="top">
+      <td>
+      <p><font size="2"><a href="#1">1 Introduction</a> <br>
+      <a href="#1.1">1.1 History</a> <br>
+      <a href="#1.2">1.2 Last version</a> <br>
+      <a href="#1.3">1.3 Why?</a> <br>
+      <a href="#2">2 What you can and must do</a> <br>
+      <a href="#2.1">2.1 Possibilities</a> <br>
+      <a href="#2.3.">2.3. Variant options</a> <br>
+      <a href="#3">3 Data to provide</a> <br>
+      <a href="#3.1.">3.1. Map files</a> <br>
+      <a href="#3.1.1">3.1.1 Declaration of lands and centers</a> <br>
+      <a href="#3.1.2">3.1.2 Movements</a> <br>
+      <a href="#3.1.3">3.1.3 ordering for summaries (optional)</a> <br>
+      <a href="#3.1.4">3.1.4 Other optional data</a> <br>
+      <a href="#3.2">3.2 Seed file</a> <br>
+      <a href="#3.2.1">3.2.1 Seed file format</a> <br>
+      <a href="#3.2.2">3.2.2 When units do not begin on home centers</a>
+      <br>
+      <a href="#3.2.3">3.2.3 Special seed files (seed_b, seed_w...)</a>
+      <br>
+      <a href="#3.2.4">3.2.4 In the code</a> <br>
+      <a href="#3.3">3.3 Info files</a> <br>
+      <a href="#3.4">3.4 Variant.h</a> </font></p>
+      </td>
+      <td>
+      <p><font size="2"><br>
+      <a href="#4">4 Examples</a> <br>
+      <a href="#4.1">4.1 H32 (Hundred) Wings</a> <br>
+      <a href="#4.2">4.2 Fleet in Marseille</a> <br>
+      <a href="#4.3">4.3 Switzerland</a> <br>
+      <a href="#4.4">4.4 Chess</a> <br>
+      <a href="#5">5 floc.net</a> <br>
+      <a href="#6">6 Mapmaker</a> <br>
+      <a href="#7">7 Addmap</a> <br>
+      <a href="#8">8 Automatic tests</a> <br>
+      <a href="#9">9 Troubleshooting</a> <br>
+      <a href="#10">10 Integration in the official judge source</a> <br>
+      <a href="#11">11 Moving variants between judges</a> <br>
+      <a href="#12">12 Misc</a> <br>
+      <a href="#12.1">12.1 The author</a> <br>
+      <a href="#12.2">12.2 Thanks</a> <br>
+      <a href="#12.3">12.3 Copyright and boring stuff</a> </font></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<hr>
+<h1><a name="1"></a>1 Introduction</h1>
+<h2><a name="1.1"></a>1.1 History</h2>
+<ul>
+  <li>
+    <p>0.2 : Mar-Apr 2003</p>
+  </li>
+  <li>
+    <p>0.31 : July 2003 First updates</p>
+  </li>
+  <li>
+    <p>0.32 : 23<sup>rd</sup> July 2003 Updated and spelling
+corrections (Millis Miller)</p>
+  </li>
+  <li>
+    <p>0.33 : 27<sup>th July 2003 Update of the updates</sup><br>
+    </p>
+  </li>
+</ul>
+<h2><a name="1.2"></a>1.2 Last version</h2>
+<p>This is a guide which aims to help people creating variants for
+the Diplomacy judge. <br>
+The reference version is the HTML version.
+The text should be automatically generated against the HTML. <br>
+Anyway,
+the last version of this file should always be in the last CVS
+snapshot of the judge at <a href="http://www.njudge.org/">http://www.njudge.org/</a>.
+</p>
+<h2><a name="1.3"></a>1.3 Why?</h2>
+<p>There seems to lack documentation on how to make a variant. <a
+ href="http://www.ellought.demon.co.uk/">David
+Norman</a> provides some useful help but I think that many things
+shoudn't need to go through him now that everyone can have a judge at
+home. </p>
+<p>I'll try to sum up here most knowledge on variants creation,
+beginning by the basic ones, made from existing maps. I won't cover
+variants with new rules not yet implemented in the judge. </p>
+<p>All this was tested on a njudge v. 1.4.1 from June 2003. </p>
+<h1><a name="2"></a>2 What you can and must do</h1>
+<h2><a name="2.1"></a>2.1 Possibilities</h2>
+<p>Trivial "almost-variants" without recompilation needed
+are: </p>
+<ul type="square">
+  <li>Add maps for wings or blind options to existing variants (see <a
+ href="#2.2.3">Special seed files</a>).</li>
+  <li>&nbsp;Change start units positions of existing variants (see <a
+ href="#2">Seed files</a>), but it will not be compatible with the
+'official' set of variants. </li>
+</ul>
+<p>Easy variants covered here are: </p>
+<ul type="square">
+  <li>Variants with an existing map slightly modified </li>
+  <li>Variants with a simple map</li>
+  <li>Variants with new powers </li>
+</ul>
+<p>A bit more difficult, which will lead you to use MapMaker and
+perhaps contacting David Norman: </p>
+<ul type="square">
+  <li>
+    <p>Variants with totally new and complex maps </p>
+  </li>
+</ul>
+<p>You'll have to understand the code of the judge yourself for
+changing any rule... </p>
+<p>And creating the map files and pictures if currently out of
+subject. </p>
+<h2><a name="2.3"></a>2.3. Variant options</h2>
+<p>There are variants based on maps, like <tt>standard, modern,
+h32</tt>... , and there are the variant options or modifiers: <tt>Wings,
+Gunboat, Blind, Shorthand</tt>. See the <tt>info</tt> file for each
+of them, but basically <tt>Shorthand</tt> and <tt>Gunboat</tt> only
+affect press, while <tt>Blind</tt> and <tt>Wings</tt> may have impact
+on map files. </p>
+<h1><a name="3"></a>3 Data to provide</h1>
+<p>(<b>Warning</b>: Some file names changed with judge 1.4; many old
+judges will use numbers instead of variant name as an extension).</p>
+<p>For a complete new variant, you MUST provide this: </p>
+<ul type="square">
+  <li><b>Map file</b>: this lists the
+territories, the way they communicate with each other, the order which
+must be used in summary reports. <br>
+Example: <tt>data/map, data/map.loeb9</tt> </li>
+  <li><b>Seed file</b> : this lists the units
+beginning positions and what are the home centers. <br>
+Example: <tt>data/seed.loeb9</tt></li>
+  <li>
+    <p><b>Report file</b> : this file is sent at
+game start, giving the initial positions. <br>
+    <br>
+Example: <tt>data/report.loeb9</tt></p>
+  </li>
+</ul>
+<p>You MUST modify theses files in the source
+code of the judge: </p>
+<ul type="square">
+  <li><tt>variant.h</tt> </li>
+  <li>
+    <p><tt>variant.c</tt> </p>
+  </li>
+</ul>
+<p>And you MAY provide these files, but the
+judge will work without them. They will be necessary for the players
+though. </p>
+<ul type="square">
+  <li><b>Info file</b>: It contains the
+differences between the standard game and the variant. <br>
+Example: <tt>data/info.wings, data/info.h32</tt> </li>
+  <li>
+    <p><b>Rules file</b>: Only if you create a
+whole new game. <br>
+Example: <tt>data/rules.machiavelli</tt> </p>
+  </li>
+</ul>
+<p>There are some additional files to modify to
+package a new variant into the official judge, see later. </p>
+<h2><a name="3.1"></a>3.1. Map files</h2>
+<p>A map file is in the <tt>data/</tt>
+subdirectory. The name is <tt>map.&lt;<i>variant_name</i>&gt;</tt>. </p>
+<p>The format is fully described by a document
+from Sergio Lidsell that is part of the judge package:
+<a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.
+Following are just examples from the standard map to sum it up. </p>
+<h3><a name="3.1.1"></a>3.1.1 Declaration of
+lands and centers</h3>
+<table cellpadding="3" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>
+      <p><tt>Switzerland,</tt><br>
+(Neutral land)</p>
+      </td>
+      <td>
+      <p><tt>l swi switz swiss</tt><br>
+(Accepted order abbreviations) </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>Adriatic Sea,</tt><br>
+(Sea)</p>
+      </td>
+      <td>
+      <p><tt>w adr adriatic </tt> </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>Ankara,</tt><br>
+(Home center of T)</p>
+      </td>
+      <td>
+      <p><tt>T ank ankar </tt> </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>Belgium,</tt><br>
+(Neutral land center but allowing convoys)</p>
+      </td>
+      <td>
+      <p><tt>xw bel belgi </tt> </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h3><a name="3.1.2"></a>3.1.2 Movements</h3>
+<p>A line must be created for each movement
+type allowed for a province, land routes (mv) and sea routes (xc). If
+a province has only one specified, it is not reachable by the other
+(i.e. A land-locked province such as Munich only has a land route
+specified).</p>
+<p>Fleets use sea-routes (which also specify
+allowed coasts if relevant) and all non-fleet units use land routes.</p>
+<table cellpadding="3" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>
+      <p><tt>swi-mv:</tt><br>
+(Switzerland, no possible move)</p>
+      </td>
+      <td>
+      <p><tt>swi</tt><br>
+&nbsp; </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>adr-xc:</tt><br>
+(Between a coast and its neighbours)</p>
+      </td>
+      <td>
+      <p><tt>alb apu ven tri ion</tt><br>
+&nbsp; </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>bud-mv:</tt><br>
+(Between a land and its neighbours)</p>
+      </td>
+      <td>
+      <p><tt>vie gal rum ser tri</tt><br>
+&nbsp; </p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <p><tt>con-mv:<br>
+con-xc:</tt> <br>
+(Province with land movement and sea movement)</p>
+      </td>
+      <td>
+      <p><tt>bul ank smy<br>
+bul/sc bul/ec bla ank smy aeg</tt><br>
+&nbsp; </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h3><a name="3.1.3"></a>3.1.3 ordering for
+summaries (optional)</h3>
+<p>This specifies how centres are groups in the
+summary report ('summary &lt;gamename&gt;'). They can be in any
+arbitrary order desired, thoguh it is normal to group them by
+home-owner and geographical proximity to aid legibility.</p>
+<p><tt>Center order for summary report: <br>
+&nbsp;&nbsp;ven
+rom nap tun edi lon lvp bre par mar por spa bel hol mun kie ber
+<br>
+&nbsp;&nbsp;den swe nor stp war mos sev con ank smy bul rum gre
+ser bud vie tri <br>
+#End of center ordering </tt>
+</p>
+<h3><a name="3.1.4"></a>3.1.4 Other optional
+data</h3>
+<p>Hong Kong flag, railways, and so on, are
+described in <a href="njudgemapdatahowto.htm">njudgemapdatahowto.htm</a>.
+For a good example, see <tt>map.colonial</tt>. </p>
+<h2><a name="3.2"></a>3.2 Seed file</h2>
+<h3><a name="3.2.1"></a>3.2.1 Seed file format</h3>
+<p>The seed file is in the <tt>data/</tt>
+subdirectory. The name is <tt>seed.&lt;<i>variant_name</i>&gt;. </tt>
+</p>
+<p>The first line contains the first game
+season. This is a redundancy with what is in <tt>variant.c</tt>, but
+both sources must give the same value. If the <tt>seed</tt> file and
+<tt>variant.c</tt> don't match on the start season, the judge will
+crash at the first resolution of orders. (Even if the test disappears
+some day, the file format probably won't change to preserve variant
+files compatibility with <strike>obsolete</strike> old judges). <br>
+Then
+follow the positions of the units at the start of the game for each
+power, and the centers that each player possess at the beginning. On
+the standard map you obtain (file <tt>seed.standard</tt>): </p>
+<p><tt>S1901M <br>
+A: A Budapest <br>
+A: A
+Vienna <br>
+A: F Trieste <br>
+E: A Liverpool <br>
+E: F Edinburgh <br>
+...
+<br>
+T: F Ankara <br>
+-1 Null ownership/contested record will
+initialize from the map data. <br>
+-1 </tt>
+</p>
+<p>The last line indicates the start
+position of each power. In the standard game and most variants, it is
+not given, and the home centers are the one occupied by units. </p>
+<h3><a name="3.2.2"></a>3.2.2 When units do
+not begin on home centers</h3>
+<p>Another example is the seed for the
+Chaos variant (<tt>seed.chaos</tt>) :<tt> </tt>
+</p>
+<p><tt>F1900B <br>
+-1
+<br>
+....A....BC..DEF..GH.I....J...K..LN.PQ.RST...U.V..W.X.YZ0..1234.56....78.9..
+<br>
+-1 </tt>
+</p>
+<p>There is no units at the beginning. Each
+character is a territory. Each dot is one without an owner, and
+letters and numbers indicate the power who possess the center at the
+beginning. There is no list of units ready to begin, and the first
+season is a build phase, so the players must begin by building a
+unit. </p>
+<p>For the last version of the Hundred
+variant, called h32 (<tt>seed.h32</tt>) we have:<tt> </tt>
+</p>
+<p><tt>S1425M <br>
+B: A Dijon <br>
+B: A
+Flanders <br>
+B: A Luxembourg <br>
+B: F Holland <br>
+E: A Calais <br>
+E:
+A Guyenne <br>
+E: A Normandy <br>
+E: F English Channel <br>
+E: F London
+<br>
+F: A Dauphine <br>
+F: A Orleanais <br>
+F: A Paris <br>
+F: A Toulouse
+<br>
+F: A Provence <br>
+-1 <br>
+........E...FEB.B.EB..E.B..E..FF.......F.
+<br>
+-1 </tt>
+</p>
+<p>In this seed, France begins with 5 units
+on the board, but possess only 4 centers, and will have to gain a
+center in the first year to avoid to disband a unit. </p>
+<h3><a name="3.2.3"></a>3.2.3 Special seed
+files (seed_b, seed_w...)</h3>
+<p>There are special seed files for the
+special variants options (wings, gunboat...). For example, a variant
+with the wings option can have a seed file ending by <tt>_w. </tt>If
+such a file does not exist, the standard seed file is used, and the
+game begins without any wing units on the board. The only seed file
+with such a property currently in the source tree is <tt>seed_w.modern</tt>,
+the wings version of the Modern variant. It is the same file as
+<tt>seed.modern</tt>, except that some units at the beginning are
+wings (see <tt>info.wings</tt>): </p>
+<p><tt>B: W London <br>
+F: W Bordeaux</tt> </p>
+<p>There is no example of a seed_b
+or seed_bw file, although all is in place in the judge code
+to use it (it may be removed in the future). There is in any case
+little point in having special seed files for Blind variants... </p>
+<h3><a name="3.2.4"></a>3.2.4 In the code</h3>
+<p>The part of the code responsible for
+opening the seed file is <tt>ml_signon.c</tt>. </p>
+<h2><a name="3.3"></a>3.3 Info files</h2>
+<p>The <tt>info.&lt;variant&gt;
+</tt>contains all informations on your variant: differences against the
+standard map, new units or territory, special territories, starting
+positions and home centers, default variant modifiers (wings...),
+supply centers and how many must be won, who made the variant... See
+other info files as example. </p>
+<p>They are used as reference files for the
+players, providing information about the variant, and are retrieved
+with the judge command '<tt>get info.&lt;variant&gt;</tt>'.
+The judge
+itself doesn't need them. </p>
+<h2><a name="3.4"></a>3.4 Variant.c and
+variant.h</h2>
+<p>These two files are part of the source
+code of the judge. Any modification implies that that judge must be
+recompiled. Here follows all possible modifications in these files,
+in the order where you'll meet them in the code. </p>
+<h3><a name="3.4.1"></a>3.4.1 Variant.c:
+Variants array</h3>
+<p>In variant.c, search<tt> char
+*variants[]</tt>: this array contains the user names of the
+variants.
+You must add yours at the end, BEFORE the name of the variant
+modifiers. Don't forget the comma. </p>
+<h3><a name="3.4.2"></a>3.4.2 Variant.c:
+VValue array</h3>
+<p>Just after that, you must define a
+define for the variant (used later in <tt>variant.h</tt>). Any name is
+permitted, though by convention it is of the form
+<tt>V_&lt;variant-name&gt;</tt>.
+</p>
+<h3><a name="3.4.3"></a>3.4.3 Variant.c:
+Powers array</h3>
+<p>If you add any power name, add it at the
+end of the array <tt>powers</tt>. </p>
+<h3><a name="3.4.4"></a>3.4.4 Variant.c:
+Owners array</h3>
+<p>If you have add any power, add the
+possessive form in the array <tt>owners</tt>, in the same
+order. </p>
+<p>Note: the sizes of both <tt>powers </tt>and
+<tt>owners </tt>array must match, otherwise you will get unexpected
+names
+used!</p>
+<h3><a name="3.4.5"></a>3.4.5 Variant.c:
+pletter array</h3>
+The <tt>pletter</tt>
+contains the
+abbreviations (F for France, 9 for Warsaw in a chaos...) for the powers
+in your variant. You must add a new line for your variant, defining
+which power letters will be used. The position of these power letters
+correspond to the position of the descriptive names in the powers and
+onwers arrays, defined above. Powers that are not played in this
+variant are represented by the 'x'.<br>
+If new power(s) were added, ALL
+lines of all variants must be extended to have the same number of
+letters.
+<ul>
+</ul>
+<h3><a name="3.4.6"></a>3.4.6 Variant.c:
+Sphase array</h3>
+<p>- The <tt>sphase </tt>array contains the
+start season of the variant. It must be the same one as in the seed
+file that you have created. </p>
+<h3><a name="3.4.7"></a>3.4.7 Variant.h:
+Variants array</h3>
+<p>In <tt>variant.h</tt>, in the first enum
+field, you must add a new <tt>V_ </tt>line. If you didn't count it
+before, this array's comments contain each variant number, that will
+be used as the variant number in the <tt>dip.master </tt>file. </p>
+<h3><a name="3.4.8"></a>3.4.8 Variant.h:
+magic numbers</h3>
+<p>You may have to update these 'magic
+numbers' if you really have to, especially the second one if you find
+something more insane than a chaos (and you'll have to find yourself
+if lowercase letters are OK for power names...): <br>
+</p>
+<p><tt>/** UPDATE
+DEFINES AS NECESSARY BELOW **/ <br>
+#define NVAROPTS 4 /* Number of
+variant options (blind/gunboat/shorthand/a/f) */ <br>
+#define
+MAX_POWERS 36 /* Max. powers in a single game (letters+digits) */
+<br>
+#define LPOWER 24 /* Length of the longest power name */</tt> </p>
+<h3><a name="3.4.81"></a><a name="3.4.9"></a>3.4.9
+WILD_PLAYER</h3>
+<p>If you have added new powers, you MUST
+increment this define accordingly by the number of powers added. The
+subsequent defines should be values after this (in njudge 1.4.1
+onwards, this is automatic). Failure to do this will commonly result
+in the Master being called another name.</p>
+<h3>3.4.10 Variant.h: SETNP macro and
+default modifiers</h3>
+<p>The macro <tt>SETNP </tt>contains the
+default behaviour of your variant: number of players, victory points.
+You must add a line for yours too. </p>
+<p>The line for the standard (7 players by
+default, 18 centers to win) is: </p>
+<p><tt>case V_STANDARD: dipent.np = 7;
+dipent.vp = 18; break; \</tt> </p>
+<p>Many variant modifiers can be added as
+the default setup of the variant. Most can be overriden at game
+creation by a SET commande. These many modifiers are defined
+in the file <tt>dip.h</tt>. Some well known are: </p>
+<ul type="square">
+  <li><tt>XF_BUILD_ANYCENTRES</tt>: a power
+can build on any center, like in a Chaos variant. Same as the moderator
+command <tt>SET ANY CENTRE[S]|CENTER[S]</tt>. </li>
+  <li><tt>XF_BUILD_ONECENTRE</tt>: the player
+can build anywhere, but needs to own at least one home center, like in
+Classical or Aberration.</li>
+  <li><tt>XF_COASTAL_CONVOYS</tt>: allows
+coastal convoys, like in Machiavelli. Same as the moderator command<tt>
+SET
+[NO] COASTAL CONVOYS</tt>. </li>
+</ul>
+<p>Other more or less useful modifiers are:
+<tt>XF_MANUALPROC, XF_NOMINORPRESS, XF_AUTODISBAND, XF_ANYDISBAND</tt>...
+</p>
+<p>Don't forget the \ at the end of the
+line. </p>
+<h3><a name="3.5"></a>3.4.11 starter.flist</h3>
+<p>This file lists almost all files from
+<tt>data/</tt>. You shoul add there your info, seed, report
+files, as it is used as a reference for players.<br>
+</p>
+<h1><a name="4"></a>4 Examples</h1>
+<h2><a name="4.1"></a>4.1 H32 (Hundred)
+Wings</h2>
+<h3><a name="4.1.1"></a>4.1.1 Setup</h3>
+<p><font color="#ff0000">(** FIXME : This part must ber updated with
+variant names as extensions **)</font><br>
+H32 (Hundred Years War) with wings seems
+at first sight stupid, but I think the game would be changed by it.
+We need for this the <tt>seed_w</tt> file to place the first wings,
+and the <tt>report_w</tt> file to let it know to the players. We need
+just to copy the <tt>seed.22</tt> and <tt>report.22</tt> as <tt>seed_w.22</tt>
+and <tt>report_w.22</tt>, and modifying them for example this way: </p>
+<ul type="square">
+  <li><tt>seed_w.22: <br>
+B: A Dijon <br>
+B: W Flanders <br>
+B: A Luxembourg <br>
+B: F Holland <br>
+E: A Calais <br>
+E: A Guyenne <br>
+E: A Normandy <br>
+E: F English Channel <br>
+E: W London <br>
+F: A Dauphine <br>
+F: A Orleanais <br>
+F: A Paris <br>
+F: W Toulouse <br>
+F: A Provence </tt> </li>
+  <li>
+    <p><tt>report_w.22: <br>
+Starting position for Spring of 1425. <br>
+    <br>
+Burgundy:Army Dijon. <br>
+Burgundy:Wing Flanders. <br>
+... <br>
+France: Wing Toulouse. <br>
+France: Army (unpaid and angry) Provence.</tt> </p>
+  </li>
+</ul>
+<p>Add <tt>seed_w.22</tt> and<tt> report_w.22</tt>
+to <tt>starter.flist </tt>in the source file directory. </p>
+<p>For this small variant, you don't need
+anything more. You can test it immediately: </p>
+<p><tt>create ?testh32w password h32 wings
+<br>
+set players 1</tt> </p>
+<h3><a name="4.1.2"></a>4.1.2 Test</h3>
+<p>Create a new game by sending to the
+judge: </p>
+<p><tt>create ?test password h32 wings <br>
+set
+players 1</tt> </p>
+<p>And as Burgundy, you'll be able to send
+your planes from Flanders directly to London. </p>
+<h2><a name="4.2"></a>4.2 Test variant</h2>
+<h3><a name="4.2.1"></a>4.2.1 Setup</h3>
+<p><font color="#ff0000">(** FIXME : This part must ber updated with
+variant names as extensions **)</font><br>
+This variant is called Mytest and aims
+to be almost the same as the standard. </p>
+<p>- See in <tt>variant.h </tt>what is the
+biggest variant number. It is 34 (colonial96) for my 1.3.2-pre judge,
+so it will be variant number 35. Create <tt>seed.35</tt> and
+<tt>report.35</tt> by copying <tt>seed.1 </tt>and <tt>report.1</tt>.
+Adjust this value if you have another judge with more or less
+variants. </p>
+<p>- Create the <tt>info.mytest</tt> file. </p>
+<p>- Add the following lines in the
+variants array of <tt>variant.c</tt>: </p>
+<p><tt>"colonial96", /* Colonial
+1996 Diplomacy */ <br>
+"mytest", /* Test !!!! */ <br>
+/**
+ADD NEW VARIANTS ABOVE THIS LINE! **/</tt>
+</p>
+<p>- In the <tt>vvalue </tt>array: </p>
+<p><tt>V_colonial96, /* 34 Colonial 1996
+variant */ <br>
+V_mytest, /* 35 Test */ <br>
+/** ADD NEW
+VARIANTS ABOVE THIS LINE! **/</tt>
+</p>
+<p>- The powers and owners
+don't change. </p>
+<p>- Add a line similar to the one of the
+standard variant to the pletter array: </p>
+<p><tt>".xxBxxCxxxxFxxxxxxJxxxxxxxRxxxTxxHxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",
+/* Colonial 1996 Diplomacy */
+<br>
+".AxxxxxxxExFGxxxxIxxxxxxxxRxxxTxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx?xOM",
+/* MyTest variant */ <br>
+/** ADD NEW VARIANTS ABOVE THIS LINE!
+**/</tt>
+</p>
+<p>- The start season in <tt>sphase
+</tt>must be the same as in the seed file: </p>
+<p><tt>"S1870M", /* Colonial 1996
+Diplomacy */ <br>
+"S1901M", /* My test */ <br>
+/** ADD
+NEW VARIANTS ABOVE THIS LINE! **/</tt>
+</p>
+<p>- In <tt>variant.h</tt>, expand the enum
+this way: </p>
+<p><tt>V_colonial96, /* 34 Colonial 1996
+Diplomacy */ <br>
+V_mytest, /* 35 my test */ <br>
+/** ADD NEW
+VARIANTS ABOVE THIS LINE! **/ <br>
+NVARIANT /* Last variant + 1 */</tt>
+</p>
+<p>- In the <tt>SETNP</tt> macro, add this line
+(here we'll have 7 players, 10 victory points only; disband is
+allowad at any turn, and a retreat leads automatically to a disband):
+</p>
+<p><tt>case V_mytest: dipent.np = 7;
+dipent.vp = 10; dipent.xflags |= XF_ANYDISBAND ; dipent.xflags
+|=XF_AUTODISBAND ;break; \</tt> </p>
+<p>- It's over for the code modification. </p>
+<h3><a name="4.2.2"></a>4.2.2 Installation</h3>
+<p>You should read the upgrade
+documentation (for example my <a href="InstallationHOWTO.html">Installation
+guide</a>) to avoid losing your specific configuration and some mail
+of you have an active judge. Basically, you have to do this: </p>
+<p><font color="#ff0000">**** FIXME ***** A VALIDER !!!!!!
+(histoire avec num de vrsion)</font> </p>
+<p>- The quick and dirty way is to modify
+directly the <tt>Makefile </tt>(change the <tt>VERSION </tt>variable
+from it standard version to 1.3.2+custom variants for
+example), and install <tt>info.mytest</tt>, <tt>seed.35 </tt>and<tt>
+report.35</tt> into the <tt>data/</tt> directory of your current
+running judge. </p>
+<p>- The Right Way, compulsory if you have
+are coming from a fresh tarball, is to : </p>
+<p>- change the version number in
+<tt>configure.ac</tt> (see <tt>README.hackers</tt> for details):
+<br>
+<tt>AC_INIT("njudge", 1.3.2.020030413+variants)</tt> ;
+or change the <tt>Makefile</tt> after lauching </p>
+<p>- add your variant files to the
+<tt>starter.flist</tt>. </p>
+<p>- You must get the <tt>smail.in</tt> and<tt>
+defaults.inc.in</tt> from your old judge source if they are not
+standard. </p>
+<p>- Then compile and upgrade. On my system
+it means: </p>
+<p><tt>./configure
+--with-dir=/home/alex/dip --with-user=alex
+--with-domain=christophecourtois.org <br>
+make all <br>
+make upgrade</tt> </p>
+<h3><a name="4.2.3"></a>4.2.3 Test</h3>
+<p>Create the game: </p>
+<p><tt>create ?foobar password mytest <br>
+set
+players 1</tt> </p>
+<h2><a name="4.3"></a>4.3 Switzerland</h2>
+<p>Let's imagine that Switzerland is a
+territory like any other one.<br>
+</p>
+<p><font color="#ff0000">TODO</font><br>
+</p>
+<h2><a name="4.4"></a>4.4 Chess</h2>
+<font color="#ff0000">TODO (Done already on FREE) ?</font><br>
+<br>
+<h1><a name="5"></a>5 floc.net</h1>
+<h1><a name="6"></a>6 Mapmaker</h1>
+<p>DN : There are a number of files you
+need - a map, a report, a seed and an info file, plus you have to
+update the variant.h (and variant.c in the newer versions of the
+judge). It can be done without MapMaker. But by using MapMaker : (1)
+It takes a fraction of the time (2) You get Mapper, Mapit and a PS
+map too (3) You get floc.net support And also, you get my experience
+of getting a variant through draft versions without confusing the
+various systems that run around the judges... </p>
+<h1><a name="7"></a>7 Addmap</h1>
+<h1><a name="8"></a>8 Automatic tests</h1>
+<p>None known. David Norman may have some. </p>
+<h1><a name="9"></a>9 Troubleshooting</h1>
+<p>These are some problems and solutions:
+<table border="1" cellpadding="3" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>
+      <p>* </p>
+      </td>
+      <td>
+      <p>* </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</p>
+<h1><a name="10"></a>10 Integration in the
+official judge source</h1>
+<p>CVS, Makefile.am </p>
+<h1><a name="11"></a>11 Moving variants
+between judges</h1>
+<p>Numbers ???, </p>
+<h1><a name="12"></a>12 Misc</h1>
+<h2><a name="12.1"></a>12.1 The author</h2>
+<p>The author is 28 years old, writes SQL
+all day long for big corporations to eat and pay the mortgage, and is
+trying to learn Java, C and PHP (The most difficult part is to find
+some time for it...) </p>
+<h2><a name="12.2"></a>12.2 Thanks</h2>
+<p>Many parts of this HowTo are
+cut-and-pasted from source code and mails of the judge-maint mailing
+list. </p>
+<h2><a name="12.3"></a>12.3 Copyright and
+boring stuff</h2>
+<dl>
+Permission is granted to make and
+distribute copies of this text provided the copyright notice and this
+permission notice are preserved on all copies. <br>
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+derived work is distributed under the terms of a permission notice
+identical to this one. Translations fall under the category of
+"modified versions". <br>
+Warranty: None. Nothing. Nada. Rien. Que dalle. Nitchevo. Nichts. Do
+everything at your own risk. Remember this is a sum-up of a non-native
+English speaker on a subject he recently discovered. <br>
+Redistribution is allowed and encouraged; however, it is strongly
+recommended that the redistributor contact the author before the
+redistribution, in the interest of keeping things up-to-date (you could
+send me a copy of the thing you're making while you're at it). <br>
+Translators are also advised to contact the author before translating
+(no translation known for the moment). <dt>
+    <hr></dt>
+</dl>
+</body>
+</html>

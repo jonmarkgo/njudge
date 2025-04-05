@@ -1,0 +1,28 @@
+	 
+With versions of njudge 0.8.7 and up, a game can have multiple masters
+which do not need to be the first entry.  Once a game is created, and the 
+creator has made themselves master, they can promote any observer to also
+be a master (using the "PROMOTE email_address" command). Multiple masters will
+have the same master privileges, and receive all master-directed press. Any
+master can resign using the "EJECT email_address" command. However, any game
+that ends up having no master at all will need JK intervention to hand-edit the
+dip.master file.*
+
+Games can be destroyed at any time by the 'terminate' command, either before
+or after starting.
+
+-Millis Miller 6th Oct 2000
+
+
+*Note that this is not completely true - the JK can promote any observer to be
+a master via the sequence:
+
+signon @game password
+promote <observer-email>
+signoff
+
+(where "game" and "password" are the game name and JK password, in dip.conf).
+
+
+-Millis Miller 5th May 2003 
+

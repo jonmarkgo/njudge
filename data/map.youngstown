@@ -1,0 +1,470 @@
+Switzerland,               l swi switz 
+Adriatic Sea,              w adr adriatic
+Aegean Sea,                w aeg aegean
+Afganistan,                l afg afgan
+Albania,                   l alb
+Algeria,                   l alg
+Andamon Sea,               w and andamon
+Ankara,                    T ank
+Annam,                     l ann
+Apulia,                    l apu
+Arabian Sea,               w ara arabian
+Armenia,                   l arm
+Baghdad,                   T bag
+Baltic Sea,                w bal baltic
+Barents Sea,               w bar barents
+Belgium,                   x bel
+Berlin,                    G ber
+Black Sea,                 w bla black
+Bay of Bengal,             w bob bengal
+Bohemia,                   l boh
+Borneo,                    x bor
+Brest,                     F bre
+Brunie,                    l bru
+Budapest,                  A bud
+Bulgaria,                  x bul
+Burgundy,                  l bur burg
+Burma,                     x brm burm
+Calcutta,                  N cal
+Cambodia,                  x cam
+Canton,                    C can
+Celebes Sea,               w cel celebes
+Ceylon,                    x cey
+Clyde,                     l cly
+Constantinople,            T con
+Danakil,                   l dan
+Deccan,                    l dec
+Delhi,                     N del
+Denmark,                   x den
+East Indian Ocean,         w eio eind eastindian ein
+East Africa,               l eaf eafrica africa
+Eastern Mediterranean Sea, w eas emed ems eme easternmediterranean eastern
+East China Sea,            w ecs eastchina ech
+Edinburgh,                 E edi
+Egypt,                     x egy
+English Channel,           w eng english channel
+Ethiopia,                  x eth
+Fezzan,                    l fez
+Finland,                   l fin
+Formosa,                   x for
+Fuji,                      l fuj
+Galicia,                   l gal
+Gascony,                   l gas
+Gulf of Aden,              w goa ade aden
+Gulf of Bothnia,           w gob bot bothnia
+Gulf of Lyon,              w gol lyo lyon
+Gulf of Siam,              w gos sia siam
+Gulf of Tonkin,            w got ton tonkin
+Greece,                    x gre
+Hankow,                    C han
+Helgoland Bight,           w hel helgoland
+Himalayas,                 l him
+Hir,                       l hir
+Hokkaido,                  l hok
+Holland,                   x hol
+Hon,                       l hon
+Inner Mongolia,            l inn imon inner imo
+Ionian Sea,                w ion ionian
+Iran,                      x ira
+Ireland,                   x ire
+Irish Sea,                 w iri irish
+Java,                      x jav
+Joharra,                   E joh
+Jordan,                    l jor
+Kansu,                     l kan
+Sak,                       l sak
+Kashmir,                   l kas
+Kiel,                      G kie
+Klug,                      A klu
+Korea,                     x kor
+Kyoto,                     J kyo
+Laos,                      l lao
+Libya,                     l lib
+Liverpool,                 E liv livp lvp lpl
+Livonia,                   l lvn livo lvo lva
+London,                    E lon
+Madras,                    N mad
+Magudisco,                 I mag
+Malay Sea,                 w mal malay
+Manchuria,                 x man
+Marseilles,                F mar mars
+Mid-Atlantic Ocean,        w mao mat midatlantic mid
+Monte Negro,               l mon
+Morocco,                   x mor
+Moscow,                    R mos
+Munich,                    G mun
+North Atlantic Ocean,      w nat nao northatlantic
+North Pacific Ocean,       w npo npa northpacific
+Naples,                    I nap
+Nejd,                      l nej
+Nepal,                     l nep
+Norwegian Sea,             w nrg nwg norwegian
+North Sea,                 w nth norsea nts
+Norway,                    x nwy nor norw
+Off Board A,               w oba
+Off Board B,               w obb
+Off Board C,               w obc
+Off Board D,               l obd
+Off Board E,               l obe
+Off Board F,               l obf
+Off Board G,               l obg
+Off Board H,               w obh
+Off Board I,               w obi
+Off Board J,               w obj
+Off Board K,               w obk
+Off Board L,               w obl
+Outer Mongolia,            x omo outer omon out
+Omsk,                      R oms
+Osaka,                     J osa
+Paris,                     F par
+Peking,                    C pek
+Pentopolis,                x pen
+Persian Gulf,              w per perisan
+Philippines,               x phi phillipines philipines phillippines
+Picardy,                   l pic
+Piedmont,                  l pie
+Portugal,                  x por
+Posen,                     G pos
+Prussia,                   l pru
+Rajastan,                  l raj
+Red Sea,                   w red
+Rome,                      I rom
+Ruhr,                      l ruh
+Rumania,                   x rum
+South Atlantic Ocean,      w sat sao southatlantic
+South Pacific Ocean,       w spo southpacific
+South China Sea,           w sch scs southchina
+Sahara,                    l sah
+Saigon,                    F sai
+Kar,                       x kar
+Saxony,                    l sax
+Serbia,                    x ser
+Sevastopol,                R sev
+Shan,                      l sha
+Siberia,                   l sib
+Sikang,                    l sik
+Silesia,                   l sil silesa
+Sind,                      l snd
+Sinkiang,                  x sin sink
+Skagerrak,                 w ska
+Smyrna,                    T smy
+Sea of Japan,              w soj japan jap
+Sea of Okhotsk,            w soo okhotsk okh seaofokutsk seaofokhutsk oku okutsk
+Somali Sea,                w som somali
+Spain,                     x spa
+St Petersburg,            R stp stpeter
+Sudan,                     l sud
+Suez,                      w sue
+Sumatra,                   l sum
+Sweden,                    x swe
+Syria,                     l syr
+Thailand,                  x tha
+Tibet,                     l tib
+Timor Sea,                 w tim timor
+Tokyo,                     J tok
+Trieste,                   A tri
+Tunis,                     x tun
+Turkistan,                 l tur
+Tuscany,                   l tus
+Tyrrhenian Sea,            w tys tyrr tyrrhenian tyn tyh
+Tyrolia,                   l tyr trl
+Ukraine,                   l ukr ukraina
+Venice,                    I ven
+Vienna,                    A vie
+Viet Nam,                  x vtn viet nam
+Vladivostok,               R vla vladovostok
+West Indian Ocean,         w wio westindian win
+Western Mediterranean Sea, w wes wmed wme westernmediterranean westmed wms western
+Wales,                     l wal
+Warsaw,                    R war
+Yellow Sea,                w yel yellow
+Yemen,                     x yem
+Yorkshire,                 l yor
+-1
+swi-mv: swi
+adr-xc: tri ven apu mon alb ion
+aeg-xc: gre bul/sc con smy eme ion
+afg-mv: ira tur kas del snd
+alb-mv: mon ser gre
+alb-xc: mon gre ion adr
+alg-mv: mor tun sah
+alg-xc: wme tun mor
+and-xc: bob brm tha/wc joh mal sum ein
+ank-mv: con arm smy
+ank-xc: con bla arm
+ann-mv: lao vtn sai cam
+ann-xc: vtn got sch sai
+apu-mv: rom ven nap
+apu-xc: ven adr ion nap
+ara-xc: goa yem per ira snd raj mad win som
+arm-mv: ank sev ira bag syr smy
+arm-xc: ank bla sev
+bag-mv: jor syr arm ira nej
+bag-xc: nej/ec ira per
+bal-xc: den swe gob lvn pru pos ber kie
+bar-xc: nrg stp/nc nwy
+bel-mv: pic hol ruh bur
+bel-xc: pic eng nth hol
+ber-mv: kie pos sax
+ber-xc: kie bal pos
+bla-xc: rum sev arm ank con bul/ec
+bob-xc: cal brm and ein mad
+boh-mv: mun sax sil gal vie tyr
+bor-mv: bru
+bor-xc: bru sch cel mal gos
+bre-mv: pic par gas
+bre-xc: mat eng pic gas
+brm-mv: cal tib sik sha tha
+brm-xc: bob cal tha/wc and
+bru-mv: bor
+bru-xc: sch bor gos
+bud-mv: tri vie klu ser mon
+bul-ec: rum bla con
+bul-mv: ser rum con gre
+bul-sc: aeg gre con
+bur-mv: par pic bel ruh mun mar gas
+cal-mv: dec del nep tib brm mad
+cal-xc: mad brm bob
+cam-mv: tha lao ann sai
+cam-xc: tha/ec sai gos
+can-mv: sik han pek
+can-xc: sik pek yel ech sch got
+cel-xc: bor sch phi spo tim jav mal
+cey-xc: win ein
+cly-mv: liv edi
+cly-xc: liv nat nrg edi
+con-mv: bul ank smy
+con-xc: bul/sc bul/ec bla ank smy aeg
+dan-mv: eth mag
+dan-xc: eth goa mag
+dec-mv: raj del cal mad
+del-mv: snd afg kas nep cal dec raj
+den-mv: swe kie
+den-xc: hel nth ska swe bal kie
+eaf-mv: obg sud eth mag
+eaf-xc: obg mag som
+ech-xc: can yel kor soj hon osa fuj spo phi sch for
+edi-mv: yor liv cly
+edi-xc: cly nrg nth yor
+egy-mv: pen jor sud fez
+egy-ec: sue red sud jor/wc jor/sc
+egy-nc: pen eme sue jor/nc
+ein-xc: win cey mad bob and sum mal jav tim
+eme-xc: ion aeg smy syr jor/nc sue egy/nc pen
+eng-xc: mat iri wal lon nth bel pic bre
+eth-mv: sud dan mag eaf
+eth-xc: sud red goa dan
+fez-mv: sah lib pen egy sud
+fin-mv: swe nwy stp
+fin-xc: gob swe stp/sc
+for-xc: ech sch
+fuj-mv: osa kyo tok
+fuj-xc: osa tok spo ech
+gal-mv: boh sil war ukr rum klu vie
+gas-mv: bre par bur mar spa
+gas-xc: mat bre spa/nc
+goa-xc: red yem ara som mag dan eth
+gob-xc: swe fin stp/sc lvn bal
+gol-xc: spa/sc mar pie tus tyn wme
+gos-xc: tha/ec cam sai sch bru bor mal joh
+got-xc: vtn sik can sch ann
+gre-mv: alb ser bul
+gre-xc: alb bul/sc aeg ion
+han-mv: kan pek can sik
+hel-xc: nth den kie hol
+him-mv: him
+hir-mv: kyo tok
+hir-xc: soj tok kyo
+hok-xc: soj npa
+hol-mv: bel kie ruh
+hol-xc: nth hel kie bel
+hon-mv: kyo osa
+hon-xc: soj kyo osa ech
+imo-mv: sin omo man pek kan
+ion-xc: tyn nap apu adr alb gre aeg eme pen lib tun
+ira-mv: bag arm sev tur afg snd
+ira-xc: per bag snd ara
+ire-xc: nat iri
+iri-xc: nat ire liv wal eng mat
+jav-xc: mal cel tim ein
+joh-mv: tha
+joh-xc: tha/wc tha/ec gos mal and
+jor-mv: egy syr bag nej
+jor-nc: eme syr egy/nc
+jor-wc: egy/ec nej/wc red
+jor-sc: egy/ec nej/wc red
+kan-mv: sin imo pek han sik tib
+kar-mv: sak
+kar-xc: sak soo npa soj
+kas-mv: afg del
+kie-mv: hol den ber sax mun ruh
+kie-xc: hol hel den bal ber
+klu-mv: bud vie gal rum ser
+kor-mv: man vla
+kor-xc: yel man vla soj ech
+kyo-mv: hon hir tok fuj osa
+kyo-xc: soj hir hon
+lao-mv: sha sik vtn ann cam tha
+lib-mv: tun pen fez sah
+lib-xc: tun ion pen
+liv-mv: cly edi yor wal
+liv-xc: iri nat cly wal
+lon-mv: wal yor
+lon-xc: wal yor nth eng
+lvn-mv: pru stp mos war
+lvn-xc: bal gob stp/sc pru
+mag-mv: eaf eth dan
+mag-xc: eaf dan goa som
+mal-xc: and joh gos bor cel jav ein sum
+man-mv: omo sib vla kor pek imo
+man-xc: kor yel pek
+mar-mv: spa gas bur pie
+mar-xc: spa/sc pie gol
+mat-xc: obb nat iri eng bre gas spa/nc spa/sc por wme mor sat
+mad-mv: raj dec cal
+mad-xc: ara raj cal bob ein win
+mon-mv: tri bud ser alb
+mon-xc: adr tri alb
+mor-mv: obd alg sah
+mor-xc: obd sat mat wme alg
+mos-mv: lvn stp oms sev ukr war
+mun-mv: bur ruh kie sax boh tyr
+nap-mv: rom apu
+nap-xc: tyn rom apu ion
+nat-xc: oba nrg cly liv iri ire mat
+nej-ec: bag per yem
+nej-mv: jor bag yem
+nej-wc: red jor/wc yem jor/sc
+nep-mv: tib cal del
+npa-xc: sib obl spo tok soj hok kar soo
+nrg-xc: nat bar nwy nth edi cly
+nth-xc: yor edi nrg nwy ska den hel hol bel eng lon
+nwy-mv: stp fin swe
+nwy-xc: nth nrg bar stp/nc swe ska
+oba-xc: nat obl obb
+obb-xc: mat obl obk oba obc
+obc-xc: sat obj obh obi obk obb obd
+obd-mv: mor obg obf obe
+obd-xc: obg mor obc
+obe-mv: sah obd obg
+obf-mv: sud obd obg
+obg-mv: eaf obd obe obf
+obg-xc: obd eaf obh
+obh-xc: som obc obg obi
+obi-xc: win obc obh
+obj-xc: tim obc obk
+obk-xc: spo obb obc obj obl
+obl-xc: oba obb npa obk
+omo-mv: sin sib man imo
+oms-mv: mos stp sib tur
+oms-xc: stp/nc sib
+osa-mv: hon kyo fuj
+osa-xc: ech hon fuj
+par-mv: bre pic bur gas
+pek-mv: imo man can han kan
+pek-xc: man yel can
+pen-mv: lib egy fez
+pen-xc: lib ion eme egy/nc
+per-xc: nej/ec bag ira ara yem
+phi-xc: sch ech spo cel
+pic-mv: bre bel bur par
+pic-xc: bre eng bel
+pie-mv: mar tyr ven tus
+pie-xc: mar tus gol
+por-mv: spa
+por-xc: mat spa/nc spa/sc
+pos-mv: ber pru sil sax
+pos-xc: ber bal pru
+pru-mv: pos lvn war sil
+pru-xc: pos bal lvn
+raj-mv: snd del dec mad
+raj-xc: ara snd mad
+red-xc: egy/ec sue jor/wc nej/wc yem goa eth sud jor/sc
+rom-mv: tus ven apu nap
+rom-xc: tyn tus nap
+ruh-mv: bur bel hol kie mun
+rum-mv: ser klu gal ukr sev bul
+rum-xc: sev bla bul/ec
+sah-mv: obe mor alg tun lib fez
+sai-mv: cam ann
+sai-xc: cam ann sch gos
+sak-mv: kar
+sak-xc: soo kar soj
+sat-xc: obc mat mor
+sax-mv: kie ber pos sil boh mun
+sch-xc: got can ech for phi cel bor bru gos sai ann
+ser-mv: mon bud klu rum bul gre alb
+sev-mv: rum ukr mos ira arm
+sev-xc: rum arm bla
+sha-mv: brm sik lao tha
+sib-mv: oms vla man omo sin tur
+sib-xc: oms npa soo vla
+sik-mv: tib kan han can vtn lao sha brm
+sik-xc: can got vtn
+sil-mv: sax pos pru war gal boh
+sin-mv: tur sib omo imo kan tib
+ska-xc: nth nwy den swe
+smy-mv: con ank arm syr
+smy-xc: aeg con syr eme
+snd-mv: ira afg del raj
+snd-xc: ira raj ara
+soj-xc: vla soo sak kar npa hok tok hir kyo hon ech kor
+som-xc: eaf mag goa ara win obh
+soo-xc: sib npa kar sak soj vla
+spa-mv: por gas mar
+spa-nc: por mat gas
+spa-sc: por mat wme gol mar
+spo-xc: ech fuj tok npa obk tim cel phi
+stp-mv: fin nwy oms mos lvn
+stp-nc: nwy oms bar
+stp-sc: lvn gob fin
+sud-mv: obf fez egy eth eaf
+sud-xc: egy/ec red eth
+sue-xc: egy/ec egy/nc eme red
+sum-xc: ein and mal
+swe-mv: nwy fin den
+swe-xc: ska nwy fin gob bal den
+syr-mv: smy arm bag jor
+syr-xc: eme smy jor/nc
+tha-ec: cam gos joh
+tha-mv: brm sha lao cam joh
+tha-wc: brm and joh
+tib-mv: sin kan sik brm cal nep
+tim-xc: obj ein jav cel spo
+tok-mv: hir fuj kyo
+tok-xc: hir soj npa spo fuj
+tri-mv: ven tyr vie bud mon
+tri-xc: adr ven mon
+tun-mv: alg lib sah
+tun-xc: alg wme tyn ion lib
+tur-mv: ira oms sib sin afg
+tus-mv: pie ven rom
+tus-xc: pie gol tyn rom
+tyn-xc: wme gol tus rom nap ion tun
+tyr-mv: pie mun boh vie tri ven
+ukr-mv: gal war mos sev rum
+ven-mv: pie tyr tri apu rom tus
+ven-xc: tri adr apu
+vie-mv: tyr boh gal klu bud tri
+vla-mv: man sib kor
+vla-xc: sib soo soj kor
+vtn-mv: lao sik ann
+vtn-xc: sik got ann
+wal-mv: liv yor lon
+wal-xc: iri liv lon eng
+war-mv: sil pru lvn mos ukr gal
+win-xc: som ara mad ein cey obi
+wme-xc: mat spa/sc gol tyn tun alg mor
+yel-xc: pek man kor ech can
+yem-mv: nej
+yem-xc: red nej/wc nej/ec per ara goa
+yor-mv: wal liv edi lon
+yor-xc: edi nth lon
+-1
+Center order for summary report:
+  mag eth egy pen tun nap rom ven mar par bre mor spa por ire liv lon
+  edi nwy swe,den hol bel kie ber pos mun vie tri bud klu ser gre rum
+  bul con ank smy bag ira yem del mad cal cey brm tha joh jav bor sai
+  cam vtn can han pek sin omo man for phi osa kyo tok kar kor vla oms
+  stp mos war sev
+-1

@@ -1,0 +1,33 @@
+S1999M
+B: A Calgary
+B: A Vancouver
+B: F Anchorage
+C: A Los Angeles
+C: F San Diego
+C: A San Francisco
+X: A Mexico
+X: A Veracruz
+X: F Guadalajara
+F: A Jacksonville
+F: A Tampa
+F: F Miami
+H: A Chicago
+H: A Minneapolis
+H: A Milwaukee
+N: A Philadelphia
+N: A New Jersey
+N: F New York City
+P: A Bogota
+P: F Cali/nc
+P: F Lima
+Q: A Montreal
+Q: F Quebec
+Q: F Ungava
+T: A Dallas
+T: A San Antonio
+T: F Houston
+U: A Holguin
+U: F Havana
+U: F Kingston
+-1 Null ownership/contested record will initialize from the map data.
+-1

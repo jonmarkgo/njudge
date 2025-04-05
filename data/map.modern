@@ -1,0 +1,371 @@
+Adana,			T ada
+Adriatic Sea,		w adr adrs adriatic
+Aegean Sea,		w aeg aegs aegean
+Albania,		l alb
+Alexandria,		E ale
+Algeria,		l alg
+Alsace,			l als
+Anatolia,		l ana
+Andalusia,		l and
+Ankara,			T ank
+Apulia,			l apu
+Arabian Sea,		w ara aras arabian
+Armenia,		l arm
+Aswan,			E asw
+Austria,		x aus aut
+Auvergne,		l auv
+Arctic Ocean,		w arc arctic
+Azerbaijan,		l aze
+Baltic Sea,		w bal bals baltic
+Bay of Biscay,		w bis bob bay biscay
+Barcelona,		S bar barc
+Barents Sea,		w brn bars brnts barents
+Belgium,		x bel
+Berlin,			G ber
+Bielorussia,		x bie
+Bordeaux,		F bor
+Bornholm Sea,		w bhm bors born bornholm
+Bosnia,			l bos
+Britanny,		l bri
+Bulgaria,		x bul
+Cairo,			E cai
+Caspian Sea,		w cas cass caspian
+Caucasus,		l cau
+Central Russian Plateau, l cen crp pla
+Clyde,			l cly
+Croatia,		x cro
+Czech Republic,		x cze
+Denmark,		x den
+Donbas,			l don
+Eastern Black Sea,	w ebs ebl ebla eblack
+Eastern Mediterannean,	w eme emed
+Eastern Sahara,		l esa esah
+Edinburgh,		B edi
+English Channel,	w eng english cha channel
+Estonia,		l est
+Finland,		l fin
+Frankfurt,		G fra
+Gdansk,			P gda danzig dan
+Georgia,		x geo
+Gibraltar,		B gib
+Gorky,			R gor
+Greece,			x gre
+Gulf of Bothnia,	w gob bot bothnia gbothnia
+Gulf of Lyon,		w gol glyon
+Hamburg,		G ham
+Heligoland Bight,	w hel heligoland
+Holland,		x hol
+Hungary,		x hun
+Iceland,		l ice
+Ionian Sea,		w ion ions ionian
+Irak,			l irk irq iraq
+Iran,			x irn
+Ireland,		x ire eire eir
+Irish Sea,		w iri iris irish
+Israel,			x isr
+Istanbul,		T ist constantinople con
+Izmir,			T izm
+Jordan,			l jor
+Kazakhstan,		l kaz
+Kharkov,		U kha
+Kiev,			U kie
+Krakow,			P kra
+Lapland,		l lap
+Latvia,			l lat
+Libya,			x lib
+Libyan Sea,		w lbn libs libyan
+Ligurian Sea,		w lig ligs ligurian
+Lithuania,		x lit
+Liverpool,		B liv lpl livp
+London,			B lon
+Lyon,			F lyo
+Macedonia,		l mac skopje sko
+Madrid,			S mad
+Maltese Sea,		w mal mals matlese
+Marseilles,		F mar
+Mid Atlantic Ocean,	w mid mao mat
+Milan,			I mil
+Moldavia,		l mol
+Monaco,			x mon
+Morroco,		x mor
+Moscow,			R mos
+Munich,			G mun
+Murmansk,		R mur
+Naples,			I nap
+Navarra,		l nav
+North Atlantic Ocean,	w nao nat
+North Sea,		w nth north
+Norway,			x nor
+Norwegian Sea,		w nwg nors norwegian
+Odessa,			U ode
+Paris,			F par
+Persian Gulf,		w per perg persian
+Picardy,		l pic
+Piedmont,		l pie
+Podolia,		l pod
+Portugal,		x por
+Prussia,		l pru
+Red Sea,		w red reds
+Rome,			I rom
+Rostov,			R ros
+Ruhr,			l ruh
+Rumania,		x rum
+Saudi Arabia,		x sau saudi
+Saxony,			l sax
+Serbia,			x ser
+Sevastopol,		U sev seva
+Seville,		S sve sevi svl
+Siberia,		l sib
+Silesia,		l sil
+Sinai,			l sin
+Skagerrak,		w ska
+Slovakia,		l slo
+South Atlantic Ocean,	w sao sat sou south
+St-Petersburg,		R stp leningrad len
+Straits of Gibraltar,	w sog sgib str straits
+Sweden,			x swe
+Switzerland,		x swi sui
+Syria,			l syr
+Tunisia,		x tun tunis
+Tuscany,		l tus
+Tyrrhenian Sea,		w tyr tyrs tys tyrrhenian
+Urals,			l ura
+Venice,			I ven
+Volga,			l vol
+Wales,			l wal
+Warsaw,			P war
+Western Black Sea,	w wbs wbl wbla wblack
+Western Mediterranean,	w wme wmed
+Western Sahara,		l wsa wsah
+White Sea,		w whi white
+Yorkshire,		l yor york
+-1
+ada-mv: ana ank arm irn irk syr
+ada-xc: ana syr eme
+adr-xc: apu ven cro ser alb ion
+aeg-xc: gre ist izm eme ion
+alb-mv: ser mac gre
+alb-xc: ser gre ion adr
+ale-mv: cai asw esa
+ale-xc: cai esa lbn eme
+alg-mv: tun lib wsa mor
+alg-xc: tun mor str wme
+als-mv: bel ruh mun swi lyo par pic
+ana-mv: izm ank ada
+ana-xc: izm ada eme
+and-mv: gib sve mad bar
+and-xc: gib bar wme str
+ank-mv: geo arm ada ana izm ist
+ank-xc: geo ist wbs ebs
+apu-mv: nap rom ven
+apu-xc: nap ven adr ion
+ara-xc: red sau per irn/sc
+arm-mv: ank geo aze irn ada ank
+asw-mv: esa ale cai
+asw-xc: cai red
+aus-mv: swi mun sax cze slo hun cro ven mil
+auv-mv: bar nav bor par lyo mar
+auv-xc: bar mar gol
+arc-xc: brn nwg nao ice
+aze-mv: irn arm geo cau
+aze-xc: irn/nc cau cas
+bal-xc: swe gob lat lit gda pru bhm
+bis-xc: bri bor nav mid eng
+bar-mv: and mad nav auv
+bar-xc: and auv gol wme
+brn-xc: ura whi mur lap nwg arc
+bel-mv: hol ruh als pic
+bel-xc: hol pic eng nth
+ber-mv: pru sil sax fra ham
+ber-xc: pru ham bhm
+bie-mv: lit lat mos cen kie pod kra war
+bor-mv: bri par auv nav
+bor-xc: bri nav bis
+bhm-xc: swe bal pru ber ham den
+bos-mv: cro ser
+bri-mv: pic par bor
+bri-xc: pic bor bis eng
+bul-mv: ist gre mac ser rum
+bul-xc: ist rum wbs
+cai-mv: asw ale isr sin
+cai-xc: asw ale eme isr sin red
+cas-xc: vol kaz irn/nc aze cau
+cau-mv: aze geo ros vol
+cau-xc: aze vol cas
+cen-mv: bie mos vol kha kie
+cly-mv: edi liv
+cly-xc: edi liv nao nwg
+cro-mv: ven aus hun ser bos
+cro-xc: ven ser adr
+cze-mv: aus sax sil kra slo
+den-mv: swe ham
+den-xc: swe bhm ham hel nth ska
+don-mv: sev kie kha vol ros
+don-xc: sev ros ebs
+ebs-xc: sev don ros geo ank wbs
+eme-xc: izm ana ada syr isr cai ale lbn ion aeg
+esa-mv: ale asw lib
+esa-xc: ale lib lbn
+edi-mv: yor liv cly
+edi-xc: yor cly nwg nth
+eng-xc: bel pic bri bis mid iri wal lon nth
+est-mv: stp lat
+est-xc: stp lat gob
+fin-mv: swe lap mur stp
+fin-xc: swe stp gob
+fra-mv: ruh ham ber sax mun
+gda-mv: lit war pru
+gda-xc: lit pru bal
+geo-mv: ros cau aze arm ank
+geo-xc: ros ank ebs
+gib-mv: sve and
+gib-xc: sve and str sao
+gor-mv: stp mur ura vol mos
+gre-mv: alb mac bul ist
+gre-xc: alb ist aeg ion
+gob-xc: swe fin stp est lat bal
+gol-xc: bar auv mar lig tyr wme
+ham-mv: ber fra ruh hol den
+ham-xc: ber hol hel den bhm
+hel-xc: den ham hol nth
+hol-mv: ham ruh bel
+hol-xc: ham bel nth hel
+hun-mv: aus slo pod rum ser cro
+ice-mv: ice
+ice-xc: arc nwg nao
+ion-xc: nap apu adr alb gre aeg eme lbn mal
+irk-mv: sau jor syr ada irn
+irk-xc: sau irn/sc per
+irn-mv: irk ada arm aze kaz
+irn-nc: kaz aze cas
+irn-sc: irk ara per
+ire-mv: ire
+ire-xc: iri nao
+iri-xc: ire nao liv wal eng mid
+isr-mv: syr jor sin cai
+isr-xc: syr cai eme
+ist-mv: gre bul ank izm
+ist-xc: gre bul wbs ank izm aeg
+izm-mv: ist ank ana
+izm-xc: ist ana eme aeg
+jor-mv: sin isr syr irk sau
+jor-xc: sin sau red
+kaz-mv: vol sib irn
+kaz-xc: vol irn/nc cas
+kha-mv: cen vol don kie
+kie-mv: bie cen kha don sev ode pod
+kra-mv: sil war bie pod slo cze
+lap-mv: mur fin swe nor
+lap-xc: mur nor nwg brn
+lat-mv: est stp mos bie lit
+lat-xc: est lit bal gob
+lib-mv: esa wsa alg tun
+lib-xc: esa tun mal lbn
+lbn-xc: ale esa lib mal ion eme
+lig-xc: mar mon pie tus rom tyr gol
+lit-mv: lat bie war gda
+lit-xc: lat gda bal
+liv-mv: cly edi yor wal
+liv-xc: cly wal iri nao
+lon-mv: yor wal
+lon-xc: yor wal nth eng
+lyo-mv: als swi mar auv par
+mac-mv: alb ser bul gre
+mad-mv: nav bar and sve por
+mal-xc: lib tun tyr nap ion lbn
+mar-mv: auv lyo swi pie mon
+mar-xc: auv mon lig gol
+mid-xc: nav por sao nao iri eng bay
+mil-mv: pie swi aus ven tus
+mol-mv: rum pod ode
+mon-mv: mar pie
+mon-xc: mar pie lig
+mor-mv: alg wsa
+mor-xc: alg sao str
+mos-mv: bie lat stp gor vol cen
+mun-mv: als ruh fra sax aus swi
+mur-mv: ura gor stp fin lap
+mur-xc: ura lap brn whi
+nap-mv: rom apu
+nap-xc: rom apu ion mal tyr
+nav-mv: bor auv bar mad por
+nav-xc: bor por mid bay
+nao-xc: arc ice nwg cly liv iri ire mid
+nth-xc: lon yor edi nwg nor ska den hel hol bel eng
+nor-mv: lap swe
+nor-xc: lap swe ska nth nwg
+nwg-xc: ice arc brn lap nor nth edi cly nao
+ode-mv: rum mol pod kie sev
+ode-xc: rum sev wbs
+par-mv: bri pic als lyo auv bor
+per-xc: sau irk irn/sc ara
+pic-mv: bel als par bri
+pic-xc: bel bri eng
+pie-mv: mon mar swi mil tus
+pie-xc: mon tus lig
+pod-mv: slo kra bie kie ode mol rum hun
+por-mv: nav mad sve
+por-xc: nav sve sao mid
+pru-mv: gda war sil ber
+pru-xc: gda ber bhm bal
+red-xc: asw cai sin jor sau ara
+rom-mv: tus ven apu nap
+rom-xc: tus nap tyr lig
+ros-mv: don vol cau geo
+ros-xc: don vol geo ebs
+ruh-mv: bel hol ham fra mun als
+rum-mv: bul ser hun pod mol ode
+rum-xc: bul ode wbs
+sau-mv: jor irk
+sau-xc: jor irk per ara red
+sax-mv: mun fra ber sil cze aus
+ser-mv: cro bos hun rum bul mac alb
+ser-xc: cro alb adr
+sev-mv: ode kie don
+sev-xc: ode don ebs wbs
+sve-mv: por mad and gib
+sve-xc: por gib sao
+sib-mv: kaz vol ura
+sil-mv: ber pru war kra cze sax
+sin-mv: cai isr jor
+sin-xc: cai jor red
+ska-xc: den nor swe nth
+slo-mv: cze kra pod hun aus
+sao-xc: por sve gib str mor mid
+stp-mv: fin mur gor mos lat est
+stp-xc: fin est gob
+str-xc: gib and wme alg mor sao
+swe-mv: nor lap fin den
+swe-xc: nor fin gob bal bhm den ska
+swi-mv: als mun aus mil pie mar lyo
+syr-mv: ada irk jor isr
+syr-xc: ada isr eme
+tun-mv: lib alg
+tun-xc: lib alg wme tyr mal
+tus-mv: pie mil ven rom
+tus-xc: pie rom lig
+tyr-xc: rom nap mal tun wme gol lig
+ura-mv: sib vol gor mur
+ura-xc: mur whi brn
+ven-mv: apu rom tus mil aus cro
+ven-xc: apu cro adr
+vol-mv: cau ros don kha cen mos gor ura sib kaz
+vol-xc: cau ros kaz cas
+wal-mv: liv yor lon
+wal-xc: liv lon eng iri
+war-mv: sil pru gda lit bie kra
+wbs-xc: ank ist bul rum ode sev ebs
+wme-xc: tun alg str and bar gol tyr
+wsa-mv: mor alg lib
+whi-xc: ura mur brn
+yor-mv: lon wal liv edi
+yor-xc: lon edi nth
+-1
+Center order for summary report:
+  mor tun nap rom mil ven cro ser gre bul ist izm ank ada isr cai ale asw
+  lib sau irn geo kha sev kie ode rum hun aus cze kra war gda lit bie mos
+  gor ros stp mur nor den swe ham ber fra mun hol bel swi mon mar lyo par 
+  bor ire liv edi lon gib sve bar mad por 
+#End of center ordering
+-1
+
