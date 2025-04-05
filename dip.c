@@ -363,10 +363,16 @@ int main(int argc, char *argv[])
 			DIPDEBUG("Processing mail");
 			mail();	/* Process mail message on stdin  */
 		}
-		if (wflg) {
-			DIPDEBUG("Processing immediately in direct mode");
+		// Only call mail() again for -w if the first call wasn't made (i.e., if -x was specified)
+		// This prevents the double call when only -w is used.
+		if (wflg && xflg) {
+			DIPDEBUG("Processing immediately in direct mode (with -x)");
 			mail();	/* Process stdin directly */
-		} else if (!qflg) {
+		} else if (wflg) {
+			   // If -w is set but -x is not, we already called mail() above.
+			   // We should probably just skip the master() call here, similar to the original logic.
+			   DIPDEBUG("Direct mode (-w) specified, skipping master() event processing.");
+		} else if (!qflg) { // True if not -q (quick mode) and not -w
 			DIPDEBUG("Looking for events");
 			master();	/* Process any events pending     */
 		}
