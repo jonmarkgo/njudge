@@ -560,6 +560,7 @@ extern char *rflg;		/* -r name: randomizer for die rolls            */
 extern int sflg;		/* -s sequence: test adjudication               */
 extern int vflg;		/* -v: verbose, issue all error messages        */
 extern int xflg;		/* -x: no incoming mail on stdin                */
+extern int wflg;		/* -w: direct stdin/stdout mode without atrun   */
 extern char *inname;		/* Filename to use for input			*/
 extern int control;
 extern int predict;		/* =1 when predicting a turn			*/

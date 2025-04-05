@@ -643,7 +643,7 @@ int mail(void)
 	rfile = "dip.reply";
 	r2file = "dip.gmreply";
 
-	if (Dflg)
+	if (wflg || Dflg)
 		rfp = stdout;
 	else if (!(rfp = fopen(rfile, "w"))) {
 		perror(rfile);
@@ -1720,15 +1720,13 @@ int mail(void)
 						remove(line);
 					}
 					/*
-					 * This code, ripped from mail.c, around line 1000,
-					 * should force a new summary to be created nicely.
-					 * NB: so many radical changes to the code have been
-					 * made that the line 1000 is like rather inaccurate.
+					 * Only generate summary if game state exists
 					 */
-					{
+					sprintf(line, "%s%s/state", GAME_DIR, dipent.name);
+					if (access(line, F_OK) == 0) {
 						char *mflg, *gflg;
 						gflg = (dipent.flags & F_GUNBOAT && (dipent.phase[6] != 'X'
-										     || dipent.flags & F_NOREVEAL)) ? "g" : "";
+												 || dipent.flags & F_NOREVEAL)) ? "g" : "";
 						mflg = (*gflg && dipent.players[player].power == MASTER)
 						    ? "m" : "";
 						sprintf(line, "%s -C %s -%s%s%slv%d %s", SUMMARY_CMD, CONFIG_DIR, mflg, gflg,
