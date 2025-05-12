@@ -1580,7 +1580,9 @@ static char *GetAddressPart(int index, char *address)
 
 void MailOut(char *out_line, char *address)
 {
-
+   /* In direct mode (wflg), we don't send emails */
+   if (wflg)
+      return;
    int count = 0;
    char *ptr;
    static char lline[256];

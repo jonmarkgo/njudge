@@ -658,7 +658,7 @@ int mail(void)
 	rfile = "dip.reply";
 	r2file = "dip.gmreply";
 
-	if (Dflg)
+	if (wflg || Dflg)
 		rfp = stdout;
 	else if (!(rfp = fopen(rfile, "w"))) {
 		perror(rfile);
@@ -1745,7 +1745,8 @@ int mail(void)
 					 * NB: so many radical changes to the code have been
 					 * made that the line 1000 is like rather inaccurate.
 					 */
-					{
+					sprintf(line, "%s%s/state", GAME_DIR, dipent.name);
+					if (access(line, F_OK) == 0) {
 						char *mflg, *gflg;
 						gflg = (dipent.flags & F_GUNBOAT && (dipent.phase[6] != 'X'
 										     || dipent.flags & F_NOREVEAL)) ? "g" : "";

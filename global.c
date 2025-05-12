@@ -142,6 +142,7 @@ char *rflg = NULL;		/* -r name: randomizer for die rolls            */
 int sflg = 0;			/* -s sequence: test adjudication               */
 int vflg = 0;			/* -v: verbose, issue all error messages        */
 int xflg = 0;			/* -x: no incoming mail on stdin                */
+int wflg = 0;			/* -w: direct stdin/stdout mode without atrun   */
 char *inname = NULL;
 FILE *inp;
 
