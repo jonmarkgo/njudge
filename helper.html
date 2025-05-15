@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machiavelli Adjudicator Command Helper</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding-top: 20px; background-color: #f8f9fa; }
+        .container-fluid { max-width: 1200px; } /* Use container-fluid for wider layout */
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: .25rem;
+            box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+        }
+        h1, h2, h3 { color: #5a2d0c; }
+        label { font-weight: bold; }
+        textarea#commandsArea { font-family: monospace; font-size: 0.9em; min-height: 400px; /* Increased height */ }
+        .btn-brown { background-color: #8c5a3c; color: white; }
+        .btn-brown:hover { background-color: #704830; color: white; }
+        .hidden { display: none !important; }
+        /* Ensure columns have some space between them */
+        .row > [class*="col-"] {
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="text-center mb-4">
+        <h1>Machiavelli Adjudicator Command Helper</h1>
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Input Forms -->
+        <div class="col-md-6">
+            
+
+            <div class="section" id="orderBuilder">
+                <h2>Unit Orders (Current Turn)</h2>
+                <div class="form-row mb-2">
+                    <div class="form-group col-md-4">
+                        <label for="unitType">Unit Type:</label>
+                        <select id="unitType" class="form-control form-control-sm">
+                            <option value="A">Army (A)</option>
+                            <option value="F">Fleet (F)</option>
+                            <option value="G">Garrison (G)</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="unitLocation">Unit Location:</label>
+                        <select id="unitLocation" class="form-control form-control-sm"></select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="unitCoast">Unit Coast (if F):</label>
+                        <select id="unitCoast" class="form-control form-control-sm">
+                            <option value="">N/A</option>
+                            <option value="/NC">(NC)</option>
+                            <option value="/SC">(SC)</option>
+                            <option value="/EC">(EC)</option>
+                            <option value="/WC">(WC)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderType">Order:</label>
+                    <select id="orderType" class="form-control form-control-sm">
+                        <option value="H">Hold (H)</option>
+                        <option value="M">Move (-)</option>
+                        <option value="S_H">Support Hold (S)</option>
+                        <option value="S_M">Support Move (S)</option>
+                        <option value="C">Convoy (C)</option>
+                        <option value="CONV">Convert (=)</option>
+                        <option value="B">Besiege (B)</option>
+                        <option value="LIFT">Lift Siege (LS)</option>
+                        <option value="DISB">Disband (D)</option>
+                    </select>
+                </div>
+
+                <div id="moveFields" class="form-row mb-2 hidden">
+                    <div class="form-group col-md-4"><label for="moveTargetProvince">Target Province:</label><select id="moveTargetProvince" class="form-control form-control-sm"></select></div>
+                    <div class="form-group col-md-4"><label for="moveTargetCoast">Target Coast:</label><select id="moveTargetCoast" class="form-control form-control-sm">
+                        <option value="">N/A</option><option value="/NC">(NC)</option><option value="/SC">(SC)</option><option value="/EC">(EC)</option><option value="/WC">(WC)</option>
+                    </select></div>
+                    <div class="form-group col-md-4"><label for="viaConvoyRoute">Via Convoy Route:</label><input type="text" class="form-control form-control-sm" id="viaConvoyRoute" placeholder="e.g., TYN-GON"></div>
+                </div>
+
+                <div id="supportFields" class="form-row mb-2 hidden">
+                    <div class="form-group col-md-6"><label for="supportedUnitType">Supported Unit Type:</label><select id="supportedUnitType" class="form-control form-control-sm"><option value="A">A</option><option value="F">F</option><option value="G">G</option></select></div>
+                    <div class="form-group col-md-6"><label for="supportedUnitLocation">Supported Unit Location:</label><select id="supportedUnitLocation" class="form-control form-control-sm"></select></div>
+                </div>
+                <div id="supportMoveFields" class="form-row mb-2 hidden">
+                     <div class="form-group col-md-6"><label for="supportedMoveTargetProvince">Supported Move To:</label><select id="supportedMoveTargetProvince" class="form-control form-control-sm"></select></div>
+                     <div class="form-group col-md-6"><label for="supportedMoveTargetCoast">Supported Target Coast:</label><select id="supportedMoveTargetCoast" class="form-control form-control-sm">
+                          <option value="">N/A</option><option value="/NC">(NC)</option><option value="/SC">(SC)</option><option value="/EC">(EC)</option><option value="/WC">(WC)</option>
+                     </select></div>
+                </div>
+
+                 <div id="convoyFields" class="form-row mb-2 hidden">
+                    <div class="form-group col-md-6"><label for="convoyedArmyLocation">Convoyed Army From:</label><select id="convoyedArmyLocation" class="form-control form-control-sm"></select></div>
+                    <div class="form-group col-md-6"><label for="convoyedArmyTargetProvince">Convoyed Army To:</label><select id="convoyedArmyTargetProvince" class="form-control form-control-sm"></select></div>
+                </div>
+
+                <div id="convertFields" class="form-row mb-2 hidden">
+                    <div class="form-group col-md-6"><label for="convertToUnitType">Convert To:</label><select id="convertToUnitType" class="form-control form-control-sm"><option value="A">Army (A)</option><option value="F">Fleet (F)</option><option value="G">Garrison (G)</option></select></div>
+                    <div class="form-group col-md-6"><label for="convertToCoast">Target Coast:</label><select id="convertToCoast" class="form-control form-control-sm">
+                        <option value="">N/A</option><option value="/NC">(NC)</option><option value="/SC">(SC)</option><option value="/EC">(EC)</option><option value="/WC">(WC)</option>
+                    </select></div>
+                </div>
+                <button id="addOrderButton" class="btn btn-brown btn-block">Add Unit Order</button>
+            </div>
+
+            <div class="section" id="financialOrders">
+                <h3>Financial & Special Orders (Current Turn)</h3>
+                <div id="expenditureBuilder" class="mb-3">
+                    <h4>Expenditures (Max 4 per turn)</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="expenditureNumber">Expense #:</label>
+                            <select id="expenditureNumber" class="form-control form-control-sm"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="expenditureType">Type:</label>
+                            <select id="expenditureType" class="form-control form-control-sm">
+                                <option value="famine relief" disabled>Famine Relief (3d)</option>
+                                <option value="pacify rebellion">Pacify Rebellion (12d)</option>
+                                <option value="counter-bribe">Counter-Bribe (3d+)</option>
+                                <option value="disband_auto_g">Disband Autonomous Garrison (6d+)</option>
+                                <option value="buy_auto_g">Buy Autonomous Garrison (9d+)</option>
+                                <option value="commit_g_auto">Committed Garrison to Autonomous (9d+)</option>
+                                <option value="disband_commit_g">Disband Committed Garrison (12d+)</option>
+                                <option value="disband_unit">Disband Army/Fleet (12d+)</option>
+                                <option value="buy_unit">Buy Army/Fleet/Garrison (18d+)</option>
+                                <option value="rebel_conquered">Cause Rebellion (Conquered Prov) (9d)</option>
+                                <option value="rebel_home">Cause Rebellion (Home Prov) (15d)</option>
+                                <option value="assassinate" disabled>Assassinate (12d/24d/36d)</option>
+                                <option value="none">None (Clear this expense)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                         <div class="form-group col-md-4"><label for="expenditureAmount">Amount (Ducats):</label><input type="number" class="form-control form-control-sm" id="expenditureAmount" placeholder="e.g., 9"></div>
+                         <div id="expTargetUnitTypeDiv" class="form-group col-md-3 hidden"><label for="expTargetUnitType">Target Unit Type:</label><select id="expTargetUnitType" class="form-control form-control-sm"><option value="A">A</option><option value="F">F</option><option value="G">G</option></select></div>
+                         <div id="expTargetProvinceDiv" class="form-group col-md-5 hidden"><label for="expTargetProvince">Target Province:</label><select id="expTargetProvince" class="form-control form-control-sm"></select></div>
+                         <div id="expTargetPowerDiv" class="form-group col-md-5 hidden"><label for="expTargetPower">Target Power:</label><select id="expTargetPower" class="form-control form-control-sm"></select></div>
+                    </div>
+                    <button id="addExpenditureButton" class="btn btn-brown btn-sm btn-block">Add Expenditure</button>
+                </div>
+
+                <div id="loanBuilder" class="mb-3">
+                    <h4>Loans & Payments</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="loanPayType">Action:</label>
+                            <select id="loanPayType" class="form-control form-control-sm">
+                                <option value="pay_player">Send Money to Another Player</option>
+                                <option value="borrow" disabled>Borrow from Bank</option>
+                                <option value="pay_bank" disabled>Pay to Bank</option>
+                                
+                                <option value="give_chit" disabled>Give Assassination Chit</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6"><label for="loanAmount">Amount (Ducats):</label> <input type="number" class="form-control form-control-sm" id="loanAmount" placeholder="e.g., 10"></div>
+                    </div>
+                    <div class="form-row">
+                        <div id="loanDurationDiv" class="form-group col-md-4"><label for="loanDuration">Duration:</label><select id="loanDuration" class="form-control form-control-sm"><option value="1">1 Year (20%)</option><option value="2">2 Years (50%)</option></select></div>
+                        <div id="loanTargetPlayerDiv" class="form-group col-md-4 hidden"><label for="loanTargetPlayer">Target Player:</label><select id="loanTargetPlayer" class="form-control form-control-sm"></select></div>
+                        <div id="chitToGiveDiv" class="form-group col-md-4 hidden"><label for="chitToGive">Chit of Power:</label><select id="chitToGive" class="form-control form-control-sm"></select></div>
+                    </div>
+                     <button id="addLoanPayButton" class="btn btn-brown btn-sm btn-block">Add Loan/Pay Command</button>
+                </div>
+
+                <div id="allianceBuilder">
+                    <h4>Alliance (for Straits)</h4>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="allyAction">Action:</label>
+                            <select id="allyAction" class="form-control form-control-sm"><option value="ALLY">ALLY</option><option value="UNALLY">UNALLY</option></select>
+                        </div>
+                        <div class="form-group col-md-6"><label for="allyTargetPower">Target Power:</label><select id="allyTargetPower" class="form-control form-control-sm"></select></div>
+                    </div>
+                    <button id="addAllyButton" class="btn btn-brown btn-sm btn-block">Add Ally/Unally Command</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Command Output -->
+        <div class="col-md-6">
+            <div class="section" id="commandOutput">
+                <h2>Generated Commands</h2>
+                <div class="form-group">
+                    <textarea id="commandsArea" class="form-control" placeholder="Commands will appear here..."></textarea>
+                </div>
+                <div class="command-output-actions">
+                    <button id="generateSignOnButton" class="btn btn-success btn-block mb-2">Generate SIGN ON Block</button>
+                    <button id="addSignOffButton" class="btn btn-info btn-block mb-2">Add SIGNOFF</button>
+                    <button id="copyCommandsButton" class="btn btn-primary btn-block mb-2">Copy All to Clipboard</button>
+                    <button id="clearCommandsButton" class="btn btn-danger btn-block">Clear All Commands</button>
+                </div>
+            </div>
+            <div class="section" id="gameSetup">
+                <h2>Game Setup</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="gameName">Game Name:</label>
+                        <input type="text" class="form-control" id="gameName" value="machgame">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" value="secret">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="playerPower">Your Power:</label>
+                        <select id="playerPower" class="form-control">
+                            <option value="A">Austria</option>
+                            <option value="F">France</option>
+                            <option value="L">Florence</option>
+                            <option value="I">Milan</option>
+                            <option value="N">Naples</option>
+                            <option value="P">Papacy</option>
+                            <option value="T">Turkey</option>
+                            <option value="V">Venice</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="saveSetupButton" class="btn btn-info btn-sm">Save Game Info</button>
+                <button id="clearSetupButton" class="btn btn-warning btn-sm">Clear Saved Game Info</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // --- DATA ---
+    const powers = [
+        { name: "Austria", letter: "A", homeProvinces: ["AUS", "CRI", "HUN", "TYR"] },
+        { name: "France", letter: "F", homeProvinces: ["AVI", "MAR", "PRO", "SWI"] },
+        { name: "Florence", letter: "L", homeProvinces: ["ARE", "FLO", "PSA"] },
+        { name: "Milan", letter: "I", homeProvinces: ["COM", "CRE", "FOR", "MIL", "PAR", "PAV"] },
+        { name: "Naples", letter: "N", homeProvinces: ["AQU", "BAR", "CAP", "MES", "NAP", "OTR", "PAL", "SLR"] },
+        { name: "Papacy", letter: "P", homeProvinces: ["ANC", "BOL", "PAT", "PER", "RME", "SPO", "URB"] },
+        { name: "Turkey", letter: "T", homeProvinces: ["ALB", "BOS", "DUR", "HER", "TUN"] },
+        { name: "Venice", letter: "V", homeProvinces: ["BER", "BRE", "DAL", "FRI", "IST", "PAD", "TRV", "VEN", "VER", "VIC"] }
+    ];
+
+    const multiCoastalProvinces = {
+        "PRO": { name: "Provence", coasts: ["NC", "SC"] },
+        "CRO": { name: "Croatia", coasts: ["NC", "SC"] }
+    };
+
+    let provincesData = {};
+
+    // --- PASTE map.machiavelli DATA HERE ---
+    const mapMachiavelliData = `
+Albania,                 T1.  alb alban
+Ancona,                  P1P  anc ancon
+Aquila,                  N0f  aqu aquil
+Arezzo,                  L1f  are arezz
+Austria,                 A1f  aus austr
+Avignon,                 F1f  avi avign
+Bari,                    N1P  bar
+Bay of Tunis,            w0.  bot cms cmed cm
+Bergamo,                 V0f  ber berga
+Bologna,                 P1f  bol bolog
+Bosnia,                  T0.  bos bosni
+Brescia,                 V0f  bre bresc
+Capua,                   N0.  cap
+Carinthia,               A0.  cri carin
+Carniola,                x1.  crn carni
+Como,                    I0.  com
+Corsica,                 x1p  cor corsi
+Cremona,                 I1f  cre cremo
+Croatia,                 x1.  cro croat
+Dalmatia,                V1.  dal dalma
+Durazzo,                 T1P  dur duraz
+Eastern Gulf of Lyons,   w0.  egl egol lig lis ls
+Eastern Tyrrhenian Sea,  w0.  ets
+Ferrara,                 x1f  fer ferra
+Florence,                L3f  flo flore
+Fornova,                 I0f  for forno
+Friuli,                  V0.  fri friul
+Genoa,                   x3P  gen
+Gulf of Naples,          w0.  gon
+Herzegovina,             T0.  her herze
+Hungary,                 A1.  hun hunga
+Ionian Sea,              w0.  ion is ios
+Istria,                  V0.  ist istri
+Lower Adriatic Sea,      w0.  low las la
+Lucca,                   x1f  luc
+Mantua,                  x1f  man mantu
+Marseilles,              F1P  mar marse marseille
+Messina,                 N1P  mes messi
+Milan,                   I3f  mil
+Modena,                  x1f  mod moden
+Montferrat,              x1f  mon montf
+Naples,                  N2P  nap naple
+Otranto,                 N0.  otr otran
+Padua,                   V1f  pad
+Palermo,                 N1P  pal paler
+Parma,                   I0f  par
+Patrimony,               P0f  pat patri
+Pavia,                   I1f  pav
+Perugia,                 P1f  per perug
+Piancenza,               I0f  pia pianc piace piacenza
+Piombino,                x1P  pio piomb
+Pisa,                    L1P  psa
+Pistoia,                 L0.  pst pisto
+Pontremoli,              x0.  pon pontr
+Provence,                F0.  pro prove
+Ragusa,                  x1P  rag ragus
+Romagna,                 P0f  rma romag
+Rome,                    P2f  rme
+Salerno,                 N0P  sle slr saler
+Saluzzo,                 x1f  slu slz saluz
+Sardinia,                x1p  sar sardi
+Savoy,                   x1P  sav
+Siena,                   x1f  sie sienn sienna
+Slavonia,                x0.  sla slavo
+Spoleto,                 P0f  spo spole
+Swiss,                   F1.  swi
+Tivoli,                  x0P  tiv tivol
+Trent,                   x1f  trt trn
+Treviso,                 V1f  trv trevi
+Tunis,                   T2P  tun
+Turin,                   x1f  tur
+Tyrolea,                 A1f  tyr tyrol
+Upper Adriatic Sea,      w0.  uas upp ua
+Urbino,                  P0f  urb urbin
+Lagoon,                  w0.  lag lagoo
+Venice,                  V3PV  ven venic
+Verona,                  V0f  ver veron
+Vicenza,                 V0f  vic vicen
+Western Gulf of Lyons,   w0.  wgl wgol
+Western Mediterranean,   w0.  wms wme wmed wm
+Western Tyrrhenian Sea,  w0.  wts
+-1
+alb-mv: rag her dur
+alb-xc: rag las dur
+anc-mv: rma aqu urb spo
+anc-xc: rma aqu uas las
+aqu-mv: anc spo cap nap slr bar
+aqu-xc: anc bar las
+are-mv: flo urb per sie
+aus-mv: hun sla cri tyr
+avi-mv: swi tur pro
+avi-xc: pro/nc wgl
+bar-mv: aqu otr slr
+bar-xc: aqu las otr
+bot-xc: wms pal ion tun
+ber-mv: mil trt bre cre
+bol-mv: man fer rma flo pst luc mod
+bol-xc: fer uas rma
+bos-mv: cro her dal
+bre-mv: ber trt ver man cre
+cap-mv: spo aqu nap tiv
+cap-xc: tiv nap gon
+cri-mv: aus sla crn fri vic trt mil tyr
+crn-mv: cri sla cro fri
+crn-xc: cro/nc uas fri
+com-mv: tyr mil pav tur
+cor-xc: egl wts wgl
+cre-mv: mil ber bre man par pia
+cro-mv: crn sla bos dal ist
+cro-nc: crn ist uas
+cro-sc: dal ist
+dal-mv: cro bos her ist
+dal-xc: cro/sc her las uas ist
+dur-mv: alb
+dur-xc: las alb ion
+egl-xc: pro/sc sav gen mod luc psa wts cor wgl
+ets-xc: psa/cc pio sie pat tiv gon mes pal wts
+ets-cc: psa
+fer-mv: man ver pad bol
+fer-xc: pad uas bol
+flo-mv: bol rma urb are sie psa pst
+for-mv: pav pia par pon gen mon
+fri-mv: cri crn trv vic
+fri-xc: crn uas lag trv
+gen-mv: sav mon for pon mod
+gen-xc: sav mod egl
+gon-xc: tiv cap nap slr otr ion/cc mes ets
+gon-cc: ion
+her-mv: bos alb rag dal
+her-xc: rag las dal
+hun-mv: sla aus
+ion-xc: otr las dur bot pal gon/cc mes
+ion-cc: gon
+ist-mv: cro dal
+ist-xc: uas cro/nc cro/sc dal
+las-xc: uas dal her rag alb dur ion otr bar aqu anc
+luc-mv: mod bol pst psa
+luc-xc: mod psa egl
+man-mv: cre bre ver fer bol mod par
+mar-mv: pro
+mar-xc: pro/nc pro/sc wgl
+mes-mv: pal
+mes-xc: ets gon ion pal
+mil-mv: com tyr cri trt ber cre pia pav
+mod-mv: gen pon par man bol luc
+mod-xc: gen luc egl
+mon-mv: tur pav for gen sav
+nap-mv: cap aqu slr
+nap-xc: cap slr gon
+otr-mv: slr bar
+otr-xc: gon slr bar las ion
+pad-mv: ver vic trv fer
+pad-xc: trv lag uas fer
+pal-mv: mes
+pal-xc: wts ets mes ion bot wms
+par-mv: pia cre man mod pon for
+pat-mv: sie per rme tiv
+pat-xc: sie tiv ets
+pav-mv: com mil pia for mon tur
+per-mv: are urb spo rme pat sie
+pia-mv: pav mil cre par for
+pio-mv: psa sie
+pio-xc: wts psa sie ets
+psa-mv: luc pst flo sie pio
+psa-xc: egl luc ets/cc pio wts
+psa-cc: ets
+pst-mv: luc bol flo psa
+pon-mv: for par mod gen
+pro-mv: avi tur slz sav mar
+pro-nc: avi mar wgl
+pro-sc: mar sav egl wgl
+rag-mv: her alb
+rag-xc: her alb las
+rma-mv: bol anc urb flo
+rma-xc: bol uas anc
+rme-mv: per spo tiv pat
+slr-mv: nap aqu bar otr
+slr-xc: nap otr gon
+slz-mv: pro tur sav
+sar-xc: wgl wts wms
+sav-mv: pro slz tur mon gen
+sav-xc: pro/sc gen egl
+sie-mv: pio psa flo are per pat
+sie-xc: pio pat ets
+sla-mv: aus hun cro crn cri
+spo-mv: per urb anc aqu cap tiv rme
+swi-mv: tyr tur avi
+tiv-mv: pat rme spo cap
+tiv-xc: pat cap gon ets
+trt-mv: mil cri vic ver bre ber
+trv-mv: vic fri pad
+trv-xc: fri lag pad
+tun-xc: wms bot
+tur-mv: swi tyr com pav mon sav slz pro avi
+tyr-mv: aus cri mil com tur swi
+uas-xv: fer pad lag fri crn cro/nc ist dal las
+uas-xc: anc rma bol
+urb-mv: flo rma anc spo per are
+lag-xc: pad trv fri uas ven
+ven-xc: lag
+ver-mv: bre trt vic pad fer man
+vic-mv: trt cri fri trv pad ver
+wgl-xc: avi pro/nc mar pro/sc egl cor wts sar wms
+wms-xc: wgl sar wts pal bot tun
+wts-xc: cor egl psa pio ets pal wms sar wgl
+-1
+Famine:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- ----- Prove Patri Moden ----- Corsi Ancon ----- ----- -----
+     3: ----- Piomb ----- ----- ----- ----- ----- Tunis ----- ----- Paler
+     4: Tivol ----- Otran Padua Swiss Cremo Pontr ----- Herze ----- -----
+     5: Friul ----- Bolog Saler Veron Austr Milan Siena ----- ----- Duraz
+     6: Marse Ragus Vicen Carin Berga Pisto Spole ----- Pianc Hunga -----
+     7: ----- Bari  Slavo Montf Urbin Forno ----- Como  Trent ----- -----
+     8: Ferra ----- Rome  Pavia ----- ----- Arezz Bresc Saluz Alban Genoa
+     9: ----- ----- Croat ----- Flore Turin Mantu Capua Trevi ----- -----
+    10: Savoy ----- Sardi ----- Parma Bosni Tyrol ----- Naple Romag Dalma
+    11: ----- ----- Venic ----- ----- ----- ----- Carni ----- Messi -----
+    12: ----- ----- ----- Pisa  Aquil Avign Lucca ----- Istri ----- -----
+
+Plague:   2     3     4     5     6     7     8     9    10    11    12
+     2: Vicen Swiss ----- ----- Carni ----- ----- ----- ----- Montf Capua
+     3: Pontr Bosni Slavo ----- ----- ----- Croat ----- Tivol Bari  Tyrol
+     4: Savoy ----- ----- Friul ----- Rome  ----- Marse Pavia ----- -----
+     5: ----- Saler Veron ----- Dalma Lucca Bolog Carin Prove ----- -----
+     6: ----- ----- Turin Siena Messi Padua Austr Ferra ----- ----- -----
+     7: Paler ----- Genoa Alban Pisa  Tunis Avign Milan ----- ----- Sardi
+     8: Duraz ----- Naple Moden Perug Cremo Venic Flore ----- ----- -----
+     9: ----- Berga Ancon Parma ----- ----- ----- ----- Mantu Istri -----
+    10: Romag Hunga ----- Urbin ----- ----- ----- ----- Trevi ----- Como
+    11: Pianc Forno ----- ----- ----- ----- ----- Otran ----- Aquil Spole
+    12: Trent Herze ----- Bresc ----- ----- ----- Corsi ----- Patri Saluz
+
+Variable Income:  City         dice   1  2  3  4  5  6
+                  Austria       1     1  2  3  3  4  4
+                  Florence      2     1  2  3  3  4  5
+                  Marseilles    1     1  2  3  4  5  6
+                  Genoa         1     1  2  2  3  3  4
+                  Milan         1     2  3  3  4  4  5
+                  Naples        1     1  2  2  3  3  4
+                  Rome          1     2  3  3  4  5  6
+                  Durazzo       1     1  2  3  4  5  6
+                  Venice        2     2  3  3  4  4  5
+# End of Variable Income.
+
+Ownership (city) ordering:
+   avi mar swi tur slz sav cor gen mon pav cre mil trt tyr aus hun crn cro
+   dal trv pad ven man fer mod luc psa flo pio sie are bol per rme anc nap
+   bar mes pal sar tun dur alb rag
+#End of center ordering
+
+Center (province) order for summary report:
+   bosni herze ragus alban duraz tunis sardi paler messi otran bari
+   saler naple aquil capua tivol spole ancon patri rome  perug urbin
+   romag bolog siena piomb arezz flore pisa  pisto lucca corsi prove
+   marse avign swiss turin saluz savoy montf genoa moden pontr parma
+   forno pianc pavia como  milan cremo trent mantu ferra berga bresc
+   padua veron vicen venic trevi friul istri dalma croat carni slavo
+   carin hunga austr tyrol
+#End of province ordering
+
+Storms:   2     3     4     5     6     7     8     9    10    11    12
+     2: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- uas
+     3: ----- ----- wgl   ----- ----- ----- ----- ----- bot   ----- -----
+     4: ----- ----- ----- ----- ----- ----- ----- ----- ----- gon   -----
+     5: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     6: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     7: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     8: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+     9: ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ets
+    10: ----- ion   ----- ----- ----- ----- ----- ----- ----- wme   -----
+    11: ----- ----- las   ----- ----- ----- ----- ----- egl   ----- -----
+    12: wts   ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+-1
+`;
+    // --- UI ELEMENTS ---
+    // ... (declarations remain the same as your previous version)
+    const gameSetupSection = document.getElementById('gameSetup');
+    const orderBuilderSection = document.getElementById('orderBuilder');
+    const financialOrdersSection = document.getElementById('financialOrders');
+
+    const gameNameEl = document.getElementById('gameName');
+    const passwordEl = document.getElementById('password');
+    const playerPowerEl = document.getElementById('playerPower');
+    // Removed currentSeasonEl and currentYearEl
+    const saveSetupButton = document.getElementById('saveSetupButton');
+    const clearSetupButton = document.getElementById('clearSetupButton');
+
+
+    const unitTypeEl = document.getElementById('unitType');
+    const unitLocationEl = document.getElementById('unitLocation');
+    const unitCoastEl = document.getElementById('unitCoast');
+    const orderTypeEl = document.getElementById('orderType');
+
+    const moveFieldsEl = document.getElementById('moveFields');
+    const moveTargetProvinceEl = document.getElementById('moveTargetProvince');
+    const moveTargetCoastEl = document.getElementById('moveTargetCoast');
+    const viaConvoyRouteEl = document.getElementById('viaConvoyRoute');
+
+    const supportFieldsEl = document.getElementById('supportFields');
+    const supportedUnitTypeEl = document.getElementById('supportedUnitType');
+    const supportedUnitLocationEl = document.getElementById('supportedUnitLocation');
+    const supportMoveFieldsEl = document.getElementById('supportMoveFields');
+    const supportedMoveTargetProvinceEl = document.getElementById('supportedMoveTargetProvince');
+    const supportedMoveTargetCoastEl = document.getElementById('supportedMoveTargetCoast');
+
+    const convoyFieldsEl = document.getElementById('convoyFields');
+    const convoyedArmyLocationEl = document.getElementById('convoyedArmyLocation');
+    const convoyedArmyTargetProvinceEl = document.getElementById('convoyedArmyTargetProvince');
+
+    const convertFieldsEl = document.getElementById('convertFields');
+    const convertToUnitTypeEl = document.getElementById('convertToUnitType');
+    const convertToCoastEl = document.getElementById('convertToCoast');
+
+    const addOrderButton = document.getElementById('addOrderButton');
+    const commandsAreaEl = document.getElementById('commandsArea');
+
+    const expenditureNumberEl = document.getElementById('expenditureNumber');
+    const expenditureTypeEl = document.getElementById('expenditureType');
+    const expenditureAmountEl = document.getElementById('expenditureAmount');
+    const expTargetUnitTypeDivEl = document.getElementById('expTargetUnitTypeDiv');
+    const expTargetUnitTypeEl = document.getElementById('expTargetUnitType');
+    const expTargetProvinceDivEl = document.getElementById('expTargetProvinceDiv');
+    const expTargetProvinceEl = document.getElementById('expTargetProvince');
+    const expTargetPowerDivEl = document.getElementById('expTargetPowerDiv');
+    const expTargetPowerEl = document.getElementById('expTargetPower');
+    const addExpenditureButton = document.getElementById('addExpenditureButton');
+
+    const loanPayTypeEl = document.getElementById('loanPayType');
+    const loanAmountEl = document.getElementById('loanAmount');
+    const loanDurationDivEl = document.getElementById('loanDurationDiv');
+    const loanDurationEl = document.getElementById('loanDuration');
+    const loanTargetPlayerDivEl = document.getElementById('loanTargetPlayerDiv');
+    const loanTargetPlayerEl = document.getElementById('loanTargetPlayer');
+    const chitToGiveDivEl = document.getElementById('chitToGiveDiv');
+    const chitToGiveEl = document.getElementById('chitToGive');
+    const addLoanPayButton = document.getElementById('addLoanPayButton');
+
+    const allyActionEl = document.getElementById('allyAction');
+    const allyTargetPowerEl = document.getElementById('allyTargetPower');
+    const addAllyButton = document.getElementById('addAllyButton');
+
+    const generateSignOnButton = document.getElementById('generateSignOnButton');
+    const addSignOffButton = document.getElementById('addSignOffButton');
+    const copyCommandsButton = document.getElementById('copyCommandsButton');
+    const clearCommandsButton = document.getElementById('clearCommandsButton');
+
+
+    // --- COOKIE HELPER FUNCTIONS ---
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/; SameSite=Lax";
+    }
+
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    // --- LOAD/SAVE GAME SETUP FROM/TO COOKIES ---
+    function saveGameSetup() {
+        setCookie('machHelperGameName', gameNameEl.value, 30);
+        setCookie('machHelperPassword', passwordEl.value, 30);
+        setCookie('machHelperPlayerPower', playerPowerEl.value, 30);
+        alert('Game info saved!');
+    }
+
+    function loadGameSetup() {
+        const savedGameName = getCookie('machHelperGameName');
+        const savedPassword = getCookie('machHelperPassword');
+        const savedPlayerPower = getCookie('machHelperPlayerPower');
+
+        if (savedGameName) gameNameEl.value = savedGameName;
+        if (savedPassword) passwordEl.value = savedPassword;
+        if (savedPlayerPower) playerPowerEl.value = savedPlayerPower;
+    }
+
+    function clearSavedGameSetup() {
+        eraseCookie('machHelperGameName');
+        eraseCookie('machHelperPassword');
+        eraseCookie('machHelperPlayerPower');
+        gameNameEl.value = "machgame";
+        passwordEl.value = "secret";
+        playerPowerEl.value = "A";
+        alert('Saved game info cleared!');
+    }
+
+    saveSetupButton.addEventListener('click', saveGameSetup);
+    clearSetupButton.addEventListener('click', clearSavedGameSetup);
+
+
+    // --- PARSING map.machiavelli ---
+    function parseMapMachiavelliData(mapDataString) {
+        const lines = mapDataString.trim().split('\n');
+        let readingProvinces = true;
+        let currentProvinceAdj = null;
+
+        for (const line of lines) {
+            if (line.startsWith('#') || line.trim() === '') continue;
+            if (line.trim() === '-1') {
+                readingProvinces = false;
+                currentProvinceAdj = null;
+                continue;
+            }
+
+            if (readingProvinces) {
+                const parts = line.split(',');
+                if (parts.length < 2) continue;
+                const fullName = parts[0].trim();
+                const detailsAndAbbrs = parts[1].trim().split(/\s+/);
+                const terrainOwnerIncomeType = detailsAndAbbrs[0];
+                const abbrs = detailsAndAbbrs.slice(1);
+
+                const terrain = terrainOwnerIncomeType.charAt(0).toLowerCase();
+                const ownerMatch = terrainOwnerIncomeType.match(/[A-Z]/);
+                const owner = ownerMatch ? ownerMatch[0] : (terrain === 'x' ? 'Neutral' : null);
+                const incomeMatch = terrainOwnerIncomeType.match(/\d+/);
+                const income = incomeMatch ? parseInt(incomeMatch[0]) : 0;
+                const cityTypeMatch = terrainOwnerIncomeType.match(/[Ppf\.V]$/);
+                const cityType = cityTypeMatch ? cityTypeMatch[0] : '.';
+                const isVenice = terrainOwnerIncomeType.endsWith('V');
+
+                const mainAbbr = abbrs[0] ? abbrs[0].toUpperCase() : fullName.substring(0, 3).toUpperCase();
+                 if (!mainAbbr) {
+                    console.warn("Skipping province with no valid abbreviation:", fullName);
+                    continue;
+                }
+
+
+                provincesData[mainAbbr] = {
+                    name: fullName,
+                    abbr: mainAbbr,
+                    allAbbrs: abbrs.map(a => a.toLowerCase()),
+                    terrain: terrain,
+                    owner: owner,
+                    income: income,
+                    cityType: cityType,
+                    isSupplyCenter: (terrain !== 'w' && income > 0) || (terrain === 'x'),
+                    isHomeCenter: !!owner && owner !== 'Neutral',
+                    isPort: cityType === 'P' || cityType === 'p',
+                    isFortified: cityType === 'P' || cityType === 'f',
+                    isVenice: isVenice,
+                    adj: { land: [], sea: [], canal: [] },
+                    coasts: multiCoastalProvinces[mainAbbr] ? multiCoastalProvinces[mainAbbr].coasts : []
+                };
+            } else if (currentProvinceAdj === null && (line.includes('-mv:') || line.includes('-xc:') || line.includes('-cc:'))) {
+                const provAbbr = line.substring(0, line.indexOf('-')).trim().toUpperCase();
+                currentProvinceAdj = provAbbr;
+                if (!provincesData[currentProvinceAdj]) {
+                     provincesData[currentProvinceAdj] = { name: currentProvinceAdj, abbr: currentProvinceAdj, adj: { land: [], sea: [], canal: [] } };
+                }
+                processAdjLine(line, currentProvinceAdj);
+            } else if (currentProvinceAdj && (line.includes('-mv:') || line.includes('-xc:') || line.includes('-cc:'))) {
+                const provAbbr = line.substring(0, line.indexOf('-')).trim().toUpperCase();
+                 if (provAbbr !== currentProvinceAdj) {
+                    currentProvinceAdj = provAbbr;
+                     if (!provincesData[currentProvinceAdj]) {
+                        provincesData[currentProvinceAdj] = { name: currentProvinceAdj, abbr: currentProvinceAdj, adj: { land: [], sea: [], canal: [] } };
+                    }
+                }
+                processAdjLine(line, currentProvinceAdj);
+            } else if (line.startsWith("Famine:") || line.startsWith("Plague:") || line.startsWith("Variable Income:") || line.startsWith("Ownership (city) ordering:") || line.startsWith("Center (province) order for summary report:") || line.startsWith("Storms:") || line.startsWith("Limits for Units Types:")) {
+                currentProvinceAdj = null;
+            }
+        }
+    }
+
+    function processAdjLine(line, provAbbr) {
+        if (!provincesData[provAbbr]) return;
+        const [_, typeAndAdjs] = line.split(':');
+        const adjs = typeAndAdjs.trim().split(/\s+/).map(a => a.toUpperCase());
+
+        if (line.includes('-mv:')) {
+            provincesData[provAbbr].adj.land = [...new Set([...(provincesData[provAbbr].adj.land || []), ...adjs])];
+        } else if (line.includes('-xc:')) {
+            provincesData[provAbbr].adj.sea = [...new Set([...(provincesData[provAbbr].adj.sea || []), ...adjs])];
+        } else if (line.includes('-cc:')) {
+            provincesData[provAbbr].adj.canal = [...new Set([...(provincesData[provAbbr].adj.canal || []), ...adjs])];
+        }
+    }
+
+    // --- UI POPULATION ---
+    function populateProvinceDropdowns() {
+        const sortedProvinces = Object.values(provincesData)
+            .filter(p => p.abbr)
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        const selects = [
+            unitLocationEl, moveTargetProvinceEl, supportedUnitLocationEl,
+            supportedMoveTargetProvinceEl, convoyedArmyLocationEl, convoyedArmyTargetProvinceEl,
+            expTargetProvinceEl
+        ];
+
+        selects.forEach(select => {
+            select.innerHTML = '<option value="">-- Select Province --</option>';
+            sortedProvinces.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.abbr;
+                option.textContent = p.name + ` (${p.abbr})`;
+                select.appendChild(option);
+            });
+        });
+    }
+
+    function populatePowerDropdowns() {
+        const powerSelects = [expTargetPowerEl, loanTargetPlayerEl, chitToGiveEl, allyTargetPowerEl];
+        powerSelects.forEach(select => {
+            select.innerHTML = '<option value="">-- Select Power --</option>';
+            powers.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.letter;
+                option.textContent = p.name + ` (${p.letter})`;
+                select.appendChild(option);
+            });
+        });
+    }
+
+
+    // --- UI LOGIC ---
+    orderTypeEl.addEventListener('change', () => {
+        const order = orderTypeEl.value;
+        moveFieldsEl.classList.add('hidden');
+        supportFieldsEl.classList.add('hidden');
+        supportMoveFieldsEl.classList.add('hidden');
+        convoyFieldsEl.classList.add('hidden');
+        convertFieldsEl.classList.add('hidden');
+
+        if (order === 'M') moveFieldsEl.classList.remove('hidden');
+        else if (order === 'S_H') supportFieldsEl.classList.remove('hidden');
+        else if (order === 'S_M') {
+            supportFieldsEl.classList.remove('hidden');
+            supportMoveFieldsEl.classList.remove('hidden');
+        } else if (order === 'C') convoyFieldsEl.classList.remove('hidden');
+        else if (order === 'CONV') convertFieldsEl.classList.remove('hidden');
+    });
+
+    expenditureTypeEl.addEventListener('change', () => {
+        const type = expenditureTypeEl.value;
+        expTargetUnitTypeDivEl.classList.add('hidden');
+        expTargetProvinceDivEl.classList.add('hidden');
+        expTargetPowerDivEl.classList.add('hidden');
+        expenditureAmountEl.disabled = false;
+        expenditureAmountEl.value = '';
+
+        if (type === "none") {
+             expenditureAmountEl.disabled = true;
+        } else if (["famine relief", "pacify rebellion", "rebel_conquered", "rebel_home"].includes(type)) {
+            expTargetProvinceDivEl.classList.remove('hidden');
+            expenditureAmountEl.disabled = true;
+            if(type === "famine relief") expenditureAmountEl.value = 3;
+            if(type === "pacify rebellion") expenditureAmountEl.value = 12;
+            if(type === "rebel_conquered") expenditureAmountEl.value = 9;
+            if(type === "rebel_home") expenditureAmountEl.value = 15;
+        } else if (["counter-bribe", "disband_unit", "buy_unit"].includes(type)) {
+            expTargetUnitTypeDivEl.classList.remove('hidden');
+            expTargetProvinceDivEl.classList.remove('hidden');
+        } else if (["disband_auto_g", "buy_auto_g", "commit_g_auto", "disband_commit_g"].includes(type)) {
+            expTargetProvinceDivEl.classList.remove('hidden');
+        } else if (type === "assassinate") {
+            expTargetPowerDivEl.classList.remove('hidden');
+        }
+    });
+
+    loanPayTypeEl.addEventListener('change', () => {
+        const type = loanPayTypeEl.value;
+        loanDurationDivEl.classList.add('hidden');
+        loanTargetPlayerDivEl.classList.add('hidden');
+        chitToGiveDivEl.classList.add('hidden');
+        loanAmountEl.disabled = false;
+        loanAmountEl.value = '';
+
+        if (type === "borrow") loanDurationDivEl.classList.remove('hidden');
+        else if (type === "pay_player") loanTargetPlayerDivEl.classList.remove('hidden');
+        else if (type === "give_chit") {
+            chitToGiveDivEl.classList.remove('hidden');
+            loanTargetPlayerDivEl.classList.remove('hidden');
+            loanAmountEl.disabled = true;
+        }
+    });
+
+
+    // --- COMMAND GENERATION ---
+    function addCommandToOutput(command) {
+        commandsAreaEl.value += command + '\n';
+    }
+
+    addOrderButton.addEventListener('click', () => {
+        const unitType = unitTypeEl.value;
+        const unitLocAbbr = unitLocationEl.value;
+        const unitCoast = unitCoastEl.value;
+        const order = orderTypeEl.value;
+        let command = "";
+
+        if (!unitLocAbbr) { alert("Please select unit location."); return; }
+
+        command += `${unitType} ${unitLocAbbr}${unitCoast} `;
+
+        switch (order) {
+            case 'H': command += 'H'; break;
+            case 'M':
+                const moveTarget = moveTargetProvinceEl.value;
+                const moveTargetCoastVal = moveTargetCoastEl.value;
+                const viaConvoy = viaConvoyRouteEl.value.trim();
+                if (!moveTarget) { alert("Please select target province for move."); return; }
+                if (viaConvoy) {
+                    command += `- ${viaConvoy.toUpperCase().replace(/\s+/g, '-')} - ${moveTarget}${moveTargetCoastVal}`;
+                } else {
+                    command += `- ${moveTarget}${moveTargetCoastVal}`;
+                }
+                break;
+            case 'S_H':
+                const supHType = supportedUnitTypeEl.value;
+                const supHLoc = supportedUnitLocationEl.value;
+                if (!supHLoc) { alert("Please select supported unit location."); return; }
+                command += `S ${supHType} ${supHLoc}`;
+                break;
+            case 'S_M':
+                const supMType = supportedUnitTypeEl.value;
+                const supMLoc = supportedUnitLocationEl.value;
+                const supMTarget = supportedMoveTargetProvinceEl.value;
+                const supMTargetCoast = supportedMoveTargetCoastEl.value;
+                if (!supMLoc || !supMTarget) { alert("Please select supported unit and target."); return; }
+                command += `S ${supMType} ${supMLoc} - ${supMTarget}${supMTargetCoast}`;
+                break;
+            case 'C':
+                const convArmyLoc = convoyedArmyLocationEl.value;
+                const convArmyTarget = convoyedArmyTargetProvinceEl.value;
+                if (!convArmyLoc || !convArmyTarget) { alert("Please select convoyed army details."); return; }
+                command += `C A ${convArmyLoc} - ${convArmyTarget}`;
+                break;
+            case 'CONV':
+                const convertTo = convertToUnitTypeEl.value;
+                const convertToCoastVal = convertToCoastEl.value;
+                command += `= ${convertTo}${convertToCoastVal}`;
+                break;
+            case 'B': command += 'B'; break;
+            case 'LIFT': command += 'LS'; break;
+            case 'DISB': command += 'D'; break;
+        }
+        addCommandToOutput(command.trim());
+    });
+
+    addExpenditureButton.addEventListener('click', () => {
+        const expNum = expenditureNumberEl.value;
+        const expType = expenditureTypeEl.value;
+        const expAmount = expenditureAmountEl.value;
+        let command = `expense ${expNum}: `;
+
+        if (expType === "none") {
+            command += "none";
+        } else {
+            if (!expAmount && !expenditureAmountEl.disabled) { alert("Please enter expenditure amount."); return; }
+             if (!expenditureAmountEl.disabled) command += `${expAmount} ducats `;
+            
+            command += expType.replace(/_/g, ' ');
+
+            if (["counter-bribe", "disband_unit", "buy_unit"].includes(expType)) {
+                const unit = expTargetUnitTypeEl.value;
+                const prov = expTargetProvinceEl.value;
+                if (!prov) { alert("Please select target province for expenditure."); return; }
+                command += ` ${unit} ${prov}`;
+            } else if (["disband_auto_g", "buy_auto_g", "commit_g_auto", "disband_commit_g"].includes(expType)) {
+                const prov = expTargetProvinceEl.value;
+                if (!prov) { alert("Please select target province for expenditure."); return; }
+                command += ` G ${prov}`;
+            } else if (["famine relief", "pacify rebellion", "rebel_conquered", "rebel_home"].includes(expType)) {
+                const prov = expTargetProvinceEl.value;
+                if (!prov) { alert("Please select target province for expenditure."); return; }
+                command += ` ${prov}`;
+            } else if (expType === "assassinate") {
+                const power = expTargetPowerEl.value;
+                if (!power) { alert("Please select target power for assassination."); return; }
+                const powerName = powers.find(p => p.letter === power)?.name || power;
+                command += ` ${powerName}`;
+            }
+        }
+        addCommandToOutput(command.trim());
+    });
+
+    addLoanPayButton.addEventListener('click', () => {
+        const type = loanPayTypeEl.value;
+        const amount = loanAmountEl.value;
+        let command = "";
+
+        if (type === "give_chit") {
+            const chitOf = chitToGiveEl.value;
+            const toPlayer = loanTargetPlayerEl.value;
+            if (!chitOf || !toPlayer) { alert("Please select powers for chit trade."); return; }
+            const chitName = powers.find(p => p.letter === chitOf)?.name || chitOf;
+            const toPlayerName = powers.find(p => p.letter === toPlayer)?.name || toPlayer;
+            command = `give ${chitName} to ${toPlayerName}`;
+        } else {
+            if (!amount) { alert("Please enter amount."); return; }
+            command = type.startsWith("pay") ? `pay ${amount} ducats to ` : `borrow ${amount} ducats `;
+
+            if (type === "borrow") {
+                command += `for ${loanDurationEl.value} year${loanDurationEl.value === '1' ? '' : 's'}`;
+            } else if (type === "pay_bank") {
+                command += "bank";
+            } else if (type === "pay_player") {
+                const target = loanTargetPlayerEl.value;
+                if (!target) { alert("Please select target player for payment/loan."); return; }
+                const targetName = powers.find(p => p.letter === target)?.name || target;
+                command += targetName;
+            }
+        }
+        addCommandToOutput(command.trim());
+    });
+
+    addAllyButton.addEventListener('click', () => {
+        const action = allyActionEl.value;
+        const target = allyTargetPowerEl.value;
+        if (!target) { alert("Please select target power for alliance command."); return; }
+        const targetName = powers.find(p => p.letter === target)?.name || target;
+        addCommandToOutput(`${action} ${targetName}`);
+    });
+
+    generateSignOnButton.addEventListener('click', () => {
+        const game = gameNameEl.value.trim();
+        const pass = passwordEl.value.trim();
+        const powerLetter = playerPowerEl.value;
+
+        if (!game || !pass || !powerLetter) {
+            alert("Please fill in Game Name, Password, and Your Power.");
+            return;
+        }
+        const signOnCommand = `SIGNON ${powerLetter}${game} ${pass} machiavelli`;
+        // No PHASE command here for current turn orders
+        commandsAreaEl.value = `${signOnCommand}\n` + commandsAreaEl.value;
+    });
+
+    addSignOffButton.addEventListener('click', () => {
+        addCommandToOutput("SIGNOFF");
+    });
+    
+    copyCommandsButton.addEventListener('click', () => {
+        commandsAreaEl.select();
+        document.execCommand('copy');
+        alert('Commands copied to clipboard!');
+    });
+
+    clearCommandsButton.addEventListener('click', () => {
+        commandsAreaEl.value = '';
+    });
+
+    // --- INITIALIZATION ---
+    function init() {
+        try {
+            loadGameSetup();
+            parseMapMachiavelliData(mapMachiavelliData);
+            populateProvinceDropdowns();
+            populatePowerDropdowns();
+            orderTypeEl.dispatchEvent(new Event('change'));
+            expenditureTypeEl.dispatchEvent(new Event('change'));
+            loanPayTypeEl.dispatchEvent(new Event('change'));
+        } catch (error) {
+            console.error("Error initializing with static map data:", error);
+            alert("Error initializing application. Check console for details.");
+        }
+    }
+
+    window.onload = init;
+
+</script>
+
+</body>
+</html>
