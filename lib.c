@@ -944,7 +944,7 @@ int absence_adjust(long *deadline)
 
 /*************************************************************************/
 
-int deadline(sequence *seq, int new)
+int deadline(sequence *seq, int calculate_new_deadline)
 {
 /*
  *  Compute a new deadline for this dip entry.
@@ -953,188 +953,271 @@ int deadline(sequence *seq, int new)
         int rec_count = 0;
         int i, k;
         long now, temp;
-        struct tm *tm, *localtime();
+        struct tm *tm; // Removed localtime() from declaration, will call it directly
         int did_absence = 0;
-	int adjusted = 0;
+        int adjusted = 0;
+        sequence *seqp; // Declare seqp here
 
         time(&now);
-        if (dipent.phase[6] == 'X') {
-                dipent.process = now + 168 * HRS2SECS;
+        if (dipent.phase[6] == 'X') { // Game is terminated
+                dipent.process = now + 168 * HRS2SECS; // Process far in the future
                 return 0;
         }
-        if (!seq) {
-                if (!(seq = dipent.phase[5] == 'M' ? &dipent.movement :
-                      dipent.phase[5] == 'R' ? &dipent.retreat :
-                      dipent.phase[5] == 'B' ? &dipent.builds : 
-		      dipent.phase[5] == 'A' && (dipent.flags & F_INTIMATE) ? &dipent.builds : NULL)) {
+
+        if (!seq) { // If no specific sequence parameters are passed, determine from current phase
+                seqp = NULL; // Initialize to NULL
+                if (dipent.phase[5] == 'M') {
+                    seqp = &dipent.movement;
+                } else if (dipent.phase[5] == 'R') {
+                    seqp = &dipent.retreat;
+                } else if (dipent.phase[5] == 'B') {
+                    seqp = &dipent.builds;
+                } else if (dipent.phase[5] == 'A') {
+                    if (dipent.flags & F_INTIMATE) {
+                        seqp = &dipent.builds; // Intimate 'A' phase uses build timings
+                    } else if (dipent.flags & F_MACH) {
+                        // For Machiavelli 'A' (Income/Adjustment), the *next* player-facing
+                        // deadline will be for a Movement phase after builds.
+                        // So, using movement parameters for calculating this initial deadline
+                        // (which then gets adjusted by 'next' and 'grace' from these params)
+                        // is a reasonable approach.
+                        // Or, if the 'A' phase itself should have specific timings,
+                        // a new sequence struct in dipent for 'adjustment' would be needed.
+                        // Given the original code used 'builds' for Mach 'A' in mail_igame,
+                        // let's stick to that for consistency if 'new_deadline_calculation' is true,
+                        // but for display/status (new_deadline_calculation=0), movement params make more sense
+                        // for what the *next* real deadline will be.
+                        // For simplicity and to fix the immediate bug for list:
+                        seqp = &dipent.movement; // Or &dipent.builds if that was the original intent for mail_igame
+                    }
+                }
+
+                if (!seqp) { // If seqp is still NULL, the phase is invalid for deadline calculation
                         fprintf(stderr, "Invalid phase [%s] in deadline for '%s'.\n",
                                 dipent.phase, dipent.name);
                         fprintf(log_fp, "Invalid phase [%s] in deadline for '%s'.\n",
                                 dipent.phase, dipent.name);
                         return E_FATAL;
                 }
+        } else {
+                seqp = seq; // Use passed sequence parameters
         }
+
         /*
-           **  If the new flag is indicated, we assume a move has just completed
+           **  If the calculate_new_deadline flag is indicated, we assume a move has just completed
            **  and we establish the next deadline.  We don't want to set the new
            **  deadline earlier than the old one though.
          */
 
-        if (new) {
-		do {
-			rec_count++;
-			adjusted = 0;
-        	        temp = now + (int) (seq->next * HRS2SECS);
+        if (calculate_new_deadline) {
+                do {
+                        rec_count++;
+                        adjusted = 0;
+                        temp = now + (int) (seqp->next * HRS2SECS);
 
-			dipent.dedapplied = 0; 
+                        dipent.dedapplied = 0;
 
-                if (temp < dipent.deadline)
-                        temp = dipent.deadline;
-		/* Deal with clock parameter */
-                if (seq->clock >= 0) 
-		{
-                        tm = localtime(&temp);
-			if ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec > seq->clock * 60)
-				tm->tm_mday ++;
-			tm->tm_hour = 0;
-			tm->tm_min = seq->clock % 1440;
-			tm->tm_sec = 0;
-			tm->tm_isdst = -1;
-			temp = mktime(tm);
-			if (temp < 0)
-			{
-				tm->tm_isdst = 0;
-				temp = mktime(tm);
-			}
-			adjusted = 1;
-                }
-		/* Deal with days parameter */
-                for (k = 0; k < 8; k++) {
-                        tm = localtime(&temp);
-                        if (seq->days[tm->tm_wday] == '-')
-			{
-				tm->tm_isdst = -1;
-				tm->tm_mday ++;
-				tm->tm_hour = 0;
-				tm->tm_min = 0;
-				tm->tm_sec = 0;
-                        	temp = mktime(tm);
-				if (temp < 0)
-				{
-					tm->tm_isdst = 0;
-	                                temp = mktime(tm);
-	                        }
-				adjusted = 1;
-			}
-                        else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
-			{
-				tm->tm_isdst = -1;
-				tm->tm_hour = 12;
-				tm->tm_min = 0;
-				tm->tm_sec = 0;
-                        	temp = mktime(tm);
-				if (temp < 0)
-				{
-					tm->tm_isdst = 0;
-	                                temp = mktime(tm);
-	                        }
-				adjusted = 1;
-			}
-                        else
-                                break;
-                }
+                        if (temp < dipent.deadline && dipent.deadline != 0) // Ensure not to use uninitialized deadline
+                                temp = dipent.deadline;
 
-		did_absence = absence_adjust(&temp);
-
-		/* If old deadline was huge, keep it */
-		dipent.deadline = max(temp,  dipent.deadline) ;
-
-		/* set mailing flag so we can advise an absence adjust */
-		if (did_absence == 1)
-		{
-			broadcast_absence_adjust = 1;
-			adjusted = 1;
-		}
-	    } while (adjusted == 1 && rec_count < 50);
-
-                dipent.process = temp;
-                temp += (int) (seq->grace * HRS2SECS);
-                if (dipent.flags & F_GRACEDAYS) 
-		{
-                        for (k = 0; k < 8; k++) 
-			{
+                        /* Deal with clock parameter */
+                        if (seqp->clock >= 0)
+                        {
                                 tm = localtime(&temp);
-                                if (seq->days[tm->tm_wday] == '-')
-				{
-					tm->tm_mday++;
-					tm->tm_isdst = -1;
-					temp = mktime(tm);
-					if (temp < 0)
-					{
-						tm->tm_isdst = 0;
-						temp=mktime(tm);
-					}
-				}
-                                else if (islower(seq->days[tm->tm_wday]) && tm->tm_hour < 12)
-				{
-					tm->tm_hour = 12;
-					tm->tm_min = 0;
-					tm->tm_sec = 0;
-					tm->tm_isdst = -1;
-					temp = mktime(tm);
-					if (temp < 0)
-					{
-						tm->tm_isdst = 0;
-						temp = mktime(tm);
-					}
-				}
+                                if (tm == NULL) { /* localtime can fail */
+                                    perror("localtime in deadline calculation");
+                                    return E_FATAL;
+                                }
+                                if ((tm->tm_hour * 60 + tm->tm_min) * 60 + tm->tm_sec > seqp->clock * 60)
+                                        tm->tm_mday ++;
+                                tm->tm_hour = seqp->clock / 60; // Integer division for hour
+                                tm->tm_min = seqp->clock % 60;  // Remainder for minute
+                                tm->tm_sec = 0;
+                                tm->tm_isdst = -1; // Let mktime figure out DST
+                                temp = mktime(tm);
+                                if (temp < 0) // mktime can fail
+                                {
+                                        // Attempt without DST hint if mktime failed
+                                        tm->tm_isdst = 0;
+                                        temp = mktime(tm);
+                                        if (temp < 0) {
+                                            perror("mktime in deadline calculation");
+                                            return E_FATAL;
+                                        }
+                                }
+                                adjusted = 1;
+                        }
+
+                        /* Deal with days parameter */
+                        for (k = 0; k < 8; k++) { // Loop at most 8 times to avoid infinite loop on bad input
+                                tm = localtime(&temp);
+                                if (tm == NULL) {
+                                    perror("localtime in days parameter adjustment");
+                                    return E_FATAL;
+                                }
+                                if (seqp->days[tm->tm_wday] == '-')
+                                {
+                                        tm->tm_mday ++;
+                                        tm->tm_hour = 0; // Reset time to start of day if skipping to next day
+                                        tm->tm_min = 0;
+                                        tm->tm_sec = 0;
+                                        tm->tm_isdst = -1;
+                                        temp = mktime(tm);
+                                        if (temp < 0)
+                                        {
+                                                tm->tm_isdst = 0;
+                                                temp=mktime(tm);
+                                                if (temp < 0) {
+                                                    perror("mktime in days parameter adjustment (skip day)");
+                                                    return E_FATAL;
+                                                }
+                                        }
+                                        adjusted = 1;
+                                }
+                                else if (islower(seqp->days[tm->tm_wday]) && tm->tm_hour < 12)
+                                {
+                                        tm->tm_hour = 12;
+                                        tm->tm_min = 0;
+                                        tm->tm_sec = 0;
+                                        tm->tm_isdst = -1;
+                                        temp = mktime(tm);
+                                        if (temp < 0)
+                                        {
+                                                tm->tm_isdst = 0;
+                                                temp = mktime(tm);
+                                                if (temp < 0) {
+                                                    perror("mktime in days parameter adjustment (to noon)");
+                                                    return E_FATAL;
+                                                }
+                                        }
+                                        adjusted = 1;
+                                }
+                                else
+                                        break; // Day is acceptable
+                        }
+
+                        did_absence = absence_adjust(&temp); // absence_adjust is in lib.c or mail.c
+
+                        /* If old deadline was huge, keep it, unless we are explicitly setting a new one */
+                        dipent.deadline = (dipent.deadline != 0 && temp < dipent.deadline) ? dipent.deadline : temp;
+
+                        /* set mailing flag so we can advise an absence adjust */
+                        if (did_absence == 1)
+                        {
+                                broadcast_absence_adjust = 1;
+                                adjusted = 1;
+                        }
+                } while (adjusted == 1 && rec_count < 50); // Safety break for recursion
+
+                dipent.process = dipent.deadline; // Process time is initially the deadline
+                temp = dipent.deadline + (int) (seqp->grace * HRS2SECS);
+
+                if (dipent.flags & F_GRACEDAYS)
+                {
+                        for (k = 0; k < 8; k++)
+                        {
+                                tm = localtime(&temp);
+                                if (tm == NULL) {
+                                    perror("localtime for grace days adjustment");
+                                    return E_FATAL;
+                                }
+                                if (seqp->days[tm->tm_wday] == '-')
+                                {
+                                        tm->tm_mday++;
+                                        tm->tm_hour = 0; // Reset time to start of day
+                                        tm->tm_min = 0;
+                                        tm->tm_sec = 0;
+                                        tm->tm_isdst = -1;
+                                        temp = mktime(tm);
+                                        if (temp < 0)
+                                        {
+                                                tm->tm_isdst = 0;
+                                                temp=mktime(tm);
+                                                if (temp < 0) {
+                                                    perror("mktime for grace days adjustment (skip day)");
+                                                    return E_FATAL;
+                                                }
+                                        }
+                                }
+                                else if (islower(seqp->days[tm->tm_wday]) && tm->tm_hour < 12)
+                                {
+                                        tm->tm_hour = 12;
+                                        tm->tm_min = 0;
+                                        tm->tm_sec = 0;
+                                        tm->tm_isdst = -1;
+                                        temp = mktime(tm);
+                                        if (temp < 0)
+                                        {
+                                                tm->tm_isdst = 0;
+                                                temp = mktime(tm);
+                                                if (temp < 0) {
+                                                    perror("mktime for grace days adjustment (to noon)");
+                                                    return E_FATAL;
+                                                }
+                                        }
+                                }
                                 else
                                         break;
                         }
                 }
-		/* If old grace was huge, keep it */
-                dipent.grace =  max(temp,  dipent.grace);
-                dipent.start = now + (int) (seq->mint * HRS2SECS);
+                /* If old grace was huge, keep it */
+                dipent.grace =  (dipent.grace != 0 && temp < dipent.grace) ? dipent.grace : temp;
+                dipent.start = now + (int) (seqp->mint * HRS2SECS);
         }
         /*
            **  Figure out if we can bump up the process time.
+           **  This part is for when calculate_new_deadline is 0 (e.g., called by list command or master() loop)
          */
 
-        temp = now + (int) (seq->delay * HRS2SECS);
+        temp = now + (int) (seqp->delay * HRS2SECS); // Default next process time based on delay
         for (i = 0; i < dipent.n; i++) {
                 if (dipent.players[i].power < 0)
                         continue;
 
-                if (dipent.players[i].status & SF_PROCESS) {
-                        temp = now - 1 * HRS2SECS;
-                        dipent.players[i].status &= ~SF_PROCESS;
+                if (dipent.players[RealPlayerIndex(i)].status & SF_PROCESS) { // Master forced process
+                        temp = now - 1 * HRS2SECS; // Process immediately (or in the past)
+                        dipent.players[RealPlayerIndex(i)].status &= ~SF_PROCESS; // Clear the flag
+                        break; // No need to check other players
                 }
-                if (dipent.players[i].status & SF_WAIT && now < dipent.deadline) {
-                        temp = dipent.deadline;
+                if ((dipent.players[RealPlayerIndex(i)].status & SF_WAIT) && now < dipent.deadline) {
+                        temp = dipent.deadline; // Wait until deadline if any player has SF_WAIT
                         break;
                 }
-                if (WAITING(dipent.players[i].status)) {
-                        temp = now < dipent.deadline ? dipent.deadline :
-                            now > dipent.grace && dipent.flags & F_NONMR ? dipent.process :
-                            dipent.grace;
+                if (WAITING(dipent.players[RealPlayerIndex(i)].status)) { // If any player still needs to move
+                        temp = now < dipent.deadline ? dipent.deadline : // If before deadline, wait for deadline
+                            (now > dipent.grace && (dipent.flags & F_NONMR)) ? dipent.process : // If NoNMR and past grace, use current process time (don't advance)
+                            dipent.grace; // Otherwise, wait for grace period
                         break;
                 }
         }
 
         /*
          *  We don't want to advance the process time beyond the deadline
-         *  here.  That will be done in 'process' when a reminder is sent
-         *  out to those who haven't gotten their orders in yet.
+         *  here if not all orders are in. That will be done in 'process()'
+         *  when a reminder is sent out.
+         *  However, if all orders *are* in, or if calculate_new_deadline was true,
+         *  we can set dipent.process.
          */
+        if (calculate_new_deadline) { // If we just calculated a new deadline, process is that deadline
+            dipent.process = dipent.deadline;
+        } else { // Otherwise, we are adjusting process time based on current state
+            if (temp < dipent.process || dipent.process == 0) { // Only update if new temp is earlier or process wasn't set
+                 dipent.process = max(dipent.start, temp); // Ensure process is not before start
+            }
+            // If all orders are in (i.e., the loop above didn't break early due to WAITING or SF_WAIT),
+            // temp would be now + delay. We want to ensure process isn't beyond deadline.
+            if (dipent.process > dipent.deadline && dipent.deadline != 0) {
+                 dipent.process = dipent.deadline;
+            }
+        }
+        // Ensure process time is not before start time, especially if start time was just calculated
+        if (dipent.process < dipent.start && dipent.start != 0) {
+            dipent.process = dipent.start;
+        }
 
-        if ((dipent.process < dipent.deadline && temp < dipent.deadline) ||
-            temp < dipent.process)
-                dipent.process = max(dipent.start, temp);
 
         return 0;
-
 }
-
 
 /***** */
 /* This following function will remove all leading 
