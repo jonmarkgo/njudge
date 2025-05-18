@@ -166,7 +166,7 @@ int ma_retreatin(char **s, int p)
 void ma_retreatout(int pt)
 {
 	int u, u2, p,p1, i;
-	char mastrpt_pr[MAXPLAYERS];
+	char mastrpt_pr[MASTER+1];
 
 	int had_rebellion[NPROV+1];  /* Remember if a province had a rebellion */
 	
@@ -209,7 +209,7 @@ void ma_retreatout(int pt)
 /*  Pass two, display results and move the units.  */
 
 	if (pt == MASTER) {
-		for (u = 0; u < MAXPLAYERS; u++)
+		for (u = 0; u <= MASTER; u++)
 			mastrpt_pr[u] = 0;
 		for (u = 1; u <= nunit; u++) {
 			if (unit[u].owner <= 0)
