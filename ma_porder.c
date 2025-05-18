@@ -728,7 +728,9 @@ int ma_process_output(int pt, char phase)
 		income(2);
 		if (dipent.x2flags & X2F_FORT_GARRISON) 
 		   CreateFortGarrisons();
-		dipent.phase[5] = 'B';
+		if (processing) { // 'processing' is true if player == -1 in porder()
+			dipent.phase[5] = 'B';
+		}
 
 	case 'B':		/* Adjustments */
 		if (dipent.xflags & XF_NOMONEY)
